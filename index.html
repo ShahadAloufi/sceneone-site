@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <title>Scene One — حيث تبدأ رحلة النص</title>
+  <meta name="description" content="Scene One منصة تقدّم تقييمات احترافية وتقارير مفصلة تساعد الكتّاب على تطوير نصوصهم السينمائية.">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Scene One — حيث تبدأ رحلة النص">
+  <meta property="og:description" content="تقييمات احترافية وتقارير مفصلة تساعد الكتّاب على تطوير نصوصهم السينمائية.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Scene One — حيث تبدأ رحلة النص">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="alternate icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="landing page">
+
+  <!-- ── NAV ── -->
+  <nav class="nav">
+    <a href="index.html"><img class="nav__logo" src="assets/scene-one-logo.svg" alt="Scene One"></a>
+    <button class="menu-btn" data-menu-open aria-label="القائمة">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ── MENU OVERLAY ── -->
+  <div class="overlay" id="menu">
+    <div class="overlay__top">
+      <img src="assets/scene-one-logo.svg" alt="Scene One">
+      <button class="overlay__close" data-menu-close aria-label="إغلاق">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="overlay__body">
+      <div class="overlay__info">
+        <div>
+          <p class="overlay__muted">Scene One / 2026</p>
+          <p style="margin-top:4px">منصة متخصصة في تقييم النصوص السينمائية وتقديم ملاحظات احترافية تساعد الكتّاب على تطوير أعمالهم وصقلها قبل خطوتهم التالية.</p>
+        </div>
+        <div class="overlay__group">
+          <p class="overlay__muted" style="margin-bottom:4px">تواصل</p>
+          <p>sceneone.info@gmail.com</p>
+        </div>
+        <div class="overlay__group">
+          <p class="overlay__muted" style="margin-bottom:4px">حساباتنا</p>
+          <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+          <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+      </div>
+      <div class="overlay__links">
+        <a href="index.html" data-menu-close>الرئيسية</a>
+        <a href="#about" data-menu-close>Scene One</a>
+        <a href="#journey" data-menu-close>رحلة النص</a>
+        <a href="#register" data-menu-close>سجل اهتمامك</a>
+        <a href="#contact" data-menu-close>تواصل معنا</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <img class="hero__bg" src="assets/hero_bg.jpg" alt="">
+    <div class="hero__shade"></div>
+    <div class="hero__content">
+      <h1 class="hero__title">
+        حيث تبدأ رحلة النص<br>
+        <span>تقييمات احترافية وتقارير مفصلة تساعد الكتّاب</span>
+      </h1>
+      <div class="btn-row">
+        <button class="btn btn--white" data-register>سجل اهتمامك</button>
+        <a class="btn btn--ghost" href="about-coverage.html">دليل المنصة</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── QUOTE ── -->
+  <section class="quote">
+    <div class="quote__rule"></div>
+    <p dir="auto">
+      لأن كل قصة تستحق أن تُمنح فرصة حقيقية للتطور،<br>
+      تمنحك Scene One منظورًا احترافيًا لنصك من خلال قراءات نقدية متخصصة وتقارير مفصلة تساعدك على اكتشاف نقاط القوة ومعالجة مواطن الضعف، لتتمكن من تطوير مشروعك بثقة ووضوح.
+    </p>
+  </section>
+
+  <!-- ── SCRIPT IMAGE ── -->
+  <div class="script-img-wrap">
+    <img src="assets/script_papers.png" alt="مسودة نص">
+  </div>
+
+  <!-- ── ABOUT ── -->
+  <section class="about" id="about">
+    <h2 class="about__title">من الفكرة للنص.</h2>
+    <div class="about__body">
+      <p>يمتلك الكثير من الكتّاب أفكارًا واعدة ونصوصًا تحمل إمكانات حقيقية، لكن تطوير النص السينمائي لا يعتمد على الكتابة وحدها.</p>
+      <p>في كثير من الأحيان، يحتاج الكاتب إلى قراءة نقدية احترافية تساعده على رؤية عمله من منظور مختلف، واكتشاف نقاط القوة وفرص التحسين قبل الانتقال إلى المرحلة التالية.</p>
+      <p>لهذا وُجدت Scene One؛ لتوفير تقييمات متخصصة وتقارير مفصلة تساعد الكتّاب على تطوير نصوصهم واتخاذ قرارات أكثر وضوحًا في رحلتهم الإبداعية.</p>
+    </div>
+  </section>
+
+  <!-- ── THREE CARDS ── -->
+  <section class="cards">
+    <div class="cards__row" id="cards">
+      <div class="cards__item" data-card="0"><img src="assets/card_writers.png" alt="للكُتّاب"></div>
+      <div class="cards__item" data-card="1"><img src="assets/card_producers.png" alt="شركاء الصناعة"></div>
+      <div class="cards__item" data-card="2"><img src="assets/card_cinema.png" alt="السينما السعودية"></div>
+    </div>
+  </section>
+
+  <!-- ── JOURNEY TIMELINE ── -->
+  <section class="journey" id="journey">
+    <h2 class="journey__title">رحلة النص</h2>
+    <div class="timeline">
+      <div class="timeline__line"></div>
+
+      <!-- MOBILE -->
+      <div class="timeline__mobile">
+        <div class="tl-step"><p class="tl-step__title">01 — تقديم النص</p><p class="tl-step__body">يقوم الكاتب برفع النص السينمائي وإدخال المعلومات الأساسية الخاصة بالمشروع.</p></div>
+        <div class="tl-step"><p class="tl-step__title">02 — المراجعة الأولية</p><p class="tl-step__body">يتم التحقق من اكتمال الملف واستيفائه لمتطلبات التقديم.</p></div>
+        <div class="tl-step"><p class="tl-step__title">03 — القراءة والتقييم</p><p class="tl-step__body">يتولى قارئ ناقد متخصص قراءة النص وإعداد تقييم احترافي يتناول عناصره الأساسية.</p></div>
+        <div class="tl-step"><p class="tl-step__title">04 — إعداد التقرير</p><p class="tl-step__body">يتم إعداد تقرير مفصل يتضمن نقاط القوة وفرص التطوير والملاحظات العملية.</p></div>
+        <div class="tl-step"><p class="tl-step__title">05 — استلام النتائج</p><p class="tl-step__body">يتلقى الكاتب تقريره ويبدأ رحلة تطوير النص بناءً على الملاحظات والتوصيات المقدمة.</p></div>
+      </div>
+
+      <!-- DESKTOP -->
+      <div class="timeline__desktop">
+        <div class="tl-row"><div class="tl-half tl-half--left"></div><div class="tl-half tl-half--right"><div class="tl-block"><p class="tl-step__title">01 — تقديم النص</p><p class="tl-step__body">يقوم الكاتب برفع النص السينمائي وإدخال المعلومات الأساسية الخاصة بالمشروع.</p></div></div></div>
+        <div class="tl-row"><div class="tl-half tl-half--left"><div class="tl-block"><p class="tl-step__title">02 — المراجعة الأولية</p><p class="tl-step__body">يتم التحقق من اكتمال الملف واستيفائه لمتطلبات التقديم.</p></div></div><div class="tl-half tl-half--right"></div></div>
+        <div class="tl-row"><div class="tl-half tl-half--left"></div><div class="tl-half tl-half--right"><div class="tl-block"><p class="tl-step__title">03 — القراءة والتقييم</p><p class="tl-step__body">يتولى قارئ ناقد متخصص قراءة النص وإعداد تقييم احترافي يتناول عناصره الأساسية.</p></div></div></div>
+        <div class="tl-row"><div class="tl-half tl-half--left"><div class="tl-block"><p class="tl-step__title">04 — إعداد التقرير</p><p class="tl-step__body">يتم إعداد تقرير مفصل يتضمن نقاط القوة وفرص التطوير والملاحظات العملية.</p></div></div><div class="tl-half tl-half--right"></div></div>
+        <div class="tl-row"><div class="tl-half tl-half--left"></div><div class="tl-half tl-half--right"><div class="tl-block"><p class="tl-step__title">05 — استلام النتائج</p><p class="tl-step__body">يتلقى الكاتب تقريره ويبدأ رحلة تطوير النص بناءً على الملاحظات والتوصيات المقدمة.</p></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── RED BANNER ── -->
+  <section class="banner" id="register">
+    <div class="banner__inner">
+      <div class="banner__text">
+        <p class="banner__h">كل قصة تبدأ بمشهد أول<br>ونحن نبحث عن الكتّاب والقرّاء النقاد الذين يؤمنون بأن النصوص القوية هي أساس السينما.</p>
+        <p class="banner__p">سجّل اهتمامك اليوم لتكون من أوائل المهتمين بمنصة Scene One عند إطلاقها.</p>
+        <button class="btn btn--white" data-register>سجل اهتمامك</button>
+      </div>
+    </div>
+    <div class="banner__clapper">
+      <img src="assets/clapperboard.png" alt="لوحة سينمائية">
+    </div>
+  </section>
+
+  <!-- ── FAQ ── -->
+  <section class="faq" id="faq">
+    <div class="faq__wrap">
+      <h2 class="faq__title">الأسئلة الشائعة</h2>
+      <div class="faq__list" id="faqList">
+        <div class="faq-item">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q">ما هي تغطية النصوص السينمائية؟</span>
+            <svg class="faq-item__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a">تغطية النصوص السينمائية (Script Coverage) هي تحليل مفصّل يقدّمه قارئ/ناقد مختص لعمل الكاتب. نشأت هذه الخدمة في الاستوديوهات حيث كان يُوظَّف قرّاء لقراءة عدد كبير من السيناريوهات نيابةً عن المنتجين. لكن خدمتنا في التغطية النقدية تختلف عن ذلك؛ فهدفنا الأساسي هو مساعدة الكتّاب على تطوير نصوصهم والوصول بها إلى مرحلة تجعلها جاهزة للإرسال إلى شركاء الصناعة، مع تقييم صريح لما ينجح وما لا ينجح وأسباب واضحة لكل رأي.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q">ما هي خدمات التغطية التي نقدمها؟</span>
+            <svg class="faq-item__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a">نقدّم حاليًا نوعين من الملاحظات النقدية: تغطية النصوص السينمائية، حيث يدوّن الناقد ملاحظات بنّاءة تشمل الفكرة والموضوع (Premise & Theme)، عنصر الجذب (Hook)، المخاطر وتطور الحبكة (Stakes & Plot)، الشخصيات، البنية والإيقاع (Structure & Pace)، قابلية الإنتاج (Producibility)، والعرض العام، مع خاتمة تلخّص أبرز نقاط القوة والجوانب التي تحتاج إلى تحسين. وتغطية المعالجات (Treatments)، حيث يدوّن الناقد ملاحظات تمتد إلى صفحتين تشمل المحتوى، والـ logline، وبنية القصة، وأدوار الشخصيات، واقتراحات لتحسين عرضك التقديمي (Pitch).</p></div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q">لماذا أحتاج إلى خدمة التغطية (Coverage)؟</span>
+            <svg class="faq-item__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a">من الصعب النظر إلى عملك بموضوعية تامة عندما تكون أنت المؤلف، لذلك توفّر خدمة التغطية نظرة موضوعية من شخص يفهم متطلبات الصناعة. وعند إرسال نصّك إلى استوديو أو وكيل أو منتج، فلن تتمكّن من الاطلاع على ملاحظات القارئ، مما يعني أنك لن تحصل على فرصة لمعالجة نقاط الضعف — أما من خلال هذه الخدمة فستحصل على هذه الفرصة.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q">ما نوع السكربت الذي يمكنني تقديمه؟</span>
+            <svg class="faq-item__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a">نقبل المعالجات (Treatments/Outlines) وهي نصوص نثرية قصيرة تصل إلى 10 صفحات تهدف إلى عرض فكرة قصتك، بالإضافة إلى سيناريوهات الأفلام الطويلة (Feature Screenplays).</p></div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q">من هم Scene One؟</span>
+            <svg class="faq-item__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a">تأسست Scene One بهدف مساعدة كتّاب السيناريو الصاعدين على دخول صناعة الأفلام.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ── -->
+  <section class="cta" id="contact">
+    <img class="cta__bg" src="assets/cta_script.jpg" alt="">
+    <div class="cta__shade"></div>
+    <div class="cta__content">
+      <h2 class="cta__h">تواصل معنا</h2>
+      <p class="cta__sub">للإستفسارات والأسئلة المتعلقة بالخدمة</p>
+      <a class="cta__btn" href="mailto:sceneone.info@gmail.com" dir="ltr">
+        <span>→</span><span>sceneone.info@gmail.com</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer">
+    <div class="footer__row">
+      <p class="footer__copy">© 2026 — جميع الحقوق محفوظة.</p>
+      <div class="footer__links">
+        <a href="privacy.html">سياسة الخصوصية</a>
+        <a href="terms.html">الشروط والأحكام</a>
+      </div>
+      <div class="footer__social">
+        <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer"><img src="assets/icon_x.png" alt="X"></a>
+        <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer"><img src="assets/icon_instagram.png" alt="Instagram"></a>
+        <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer"><img src="assets/icon_linkedin.png" alt="LinkedIn"></a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ── REGISTER MODAL ── -->
+<div class="modal-backdrop" id="registerModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="regTitle">
+    <button class="modal__close" data-register-close aria-label="إغلاق">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <h2 class="modal__title head" id="regTitle">سجّل اهتمامك</h2>
+    <p class="modal__desc">كن من أوائل المهتمين بمنصة Scene One عند إطلاقها.</p>
+    <form id="registerForm" novalidate>
+      <div class="field" data-field="name">
+        <label>الاسم الكامل</label>
+        <input type="text" name="name" placeholder="اكتب اسمك">
+        <p class="err">الاسم مطلوب</p>
+      </div>
+      <div class="field" data-field="email">
+        <label>البريد الإلكتروني</label>
+        <input type="email" name="email" dir="ltr" placeholder="name@example.com" style="text-align:right">
+        <p class="err">البريد الإلكتروني غير صحيح</p>
+      </div>
+      <div class="field" data-field="phone">
+        <label>رقم الجوال <span class="opt">(اختياري)</span></label>
+        <input type="text" name="phone" dir="ltr" placeholder="05xxxxxxxx" style="text-align:right">
+      </div>
+      <div class="field" data-field="type">
+        <label>نوع الاهتمام</label>
+        <select name="type">
+          <option value="" disabled selected>اختر نوع الاهتمام</option>
+          <option value="كاتب">كاتب</option>
+          <option value="قارئ ناقد">قارئ ناقد</option>
+          <option value="شريك صناعة">شريك صناعة</option>
+          <option value="أخرى">أخرى</option>
+        </select>
+        <p class="err">اختر نوع الاهتمام</p>
+      </div>
+      <div class="field" data-field="notes">
+        <label>ملاحظات <span class="opt">(اختياري)</span></label>
+        <textarea name="notes" placeholder="أخبرنا المزيد عن اهتمامك"></textarea>
+      </div>
+      <button type="submit" class="modal__submit">إرسال</button>
+    </form>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toasts"></div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

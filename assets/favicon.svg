@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <rect width="128" height="128" rx="28" fill="#0E0202"/>
+  <g transform="translate(16 23) scale(0.86)">
+    
+    <g fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M34 8 H10 V32"/>
+      <path d="M78 8 H102 V32"/>
+      <path d="M34 88 H10 V64"/>
+      <path d="M78 88 H102 V64"/>
+    </g>
+    
+    <path d="M30 31 V52 H78 V74 H24" fill="none" stroke="#ffffff" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <g transform="rotate(-7 84 30)">
+      <rect x="28" y="25" width="57" height="12" rx="5" fill="#ffffff"/>
+      <g stroke="#0E0202" stroke-width="3.6" stroke-linecap="round">
+        <line x1="42" y1="26" x2="36" y2="36"/>
+        <line x1="54" y1="26" x2="48" y2="36"/>
+        <line x1="66" y1="26" x2="60" y2="36"/>
+        <line x1="77" y1="26" x2="71" y2="36"/>
+      </g>
+    </g>
+  </g>
+</svg>
