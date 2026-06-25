@@ -116,11 +116,16 @@
   }
 
   function submitRegistration(values) {
-    // No backend in the static build — resolve immediately.
-    // To wire up a real endpoint, replace this with a fetch() call:
-    //   return fetch("https://formspree.io/f/XX: { method:"POST",
-    //     headers:{ "Content-Type":"application/json" }, body: JSON.stringify(values) });
-    return Promise.resolve();
+    // Posts to the Vercel serverless function at /api/registrations,
+    // which sends the registration email via Resend (server-side).
+    return fetch("/api/registrations", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values)
+    }).then(function (res) {
+      if (!res.ok) throw new Error("Request failed: " + res.status);
+      return res.json();
+    });
   }
 
   if (form) {
