@@ -185,6 +185,12 @@
     window.addEventListener("resize", spy);
   }
 
+  /* ---------- AUTO-OPEN REGISTER MODAL (QR / direct links) ----------
+     Visiting https://sceneone.info/?register opens the form immediately. */
+  if (/[?&]register(=|&|$)/.test(window.location.search)) {
+    openModal();
+  }
+
   /* ---------- IN-PAGE HASH SMOOTH SCROLL (landing) ---------- */
   if (window.location.hash) {
     var target = document.getElementById(window.location.hash.replace("#", ""));
