@@ -236,7 +236,7 @@ a, button {
   padding: 56px 24px 0;
   text-align: right;
 }
-.quote__rule { width: 100%; max-width: 560px; height: 1px; background: rgba(255,255,255,.3); margin: 0 auto 24px; }
+.quote__rule { width: 100%; max-width: 560px; height: 1px; background: rgba(255,255,255,.3); margin: 0 0 24px auto; }
 .quote p {
   font-size: 18px;
   line-height: 1.625;
