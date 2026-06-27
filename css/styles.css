@@ -100,20 +100,20 @@ a, button {
 .overlay__info {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 32px;
   direction: rtl;
   border-top: 1px solid rgba(255,255,255,.1);
 }
 .overlay__info p, .overlay__info a {
-  font-size: 13px;
+  font-size: 16px;
   line-height: 24px;
   letter-spacing: .02em;
 }
 .overlay__muted { color: #8c8b87; }
 .overlay__info a { display: block; cursor: pointer; }
 .overlay__info a:hover { color: rgba(255,255,255,.7); }
-.overlay__group { margin-top: 40px; }
+.overlay__group { margin-top: 24px; }
 .overlay__links {
   display: flex;
   flex-direction: column;
