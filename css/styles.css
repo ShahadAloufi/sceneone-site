@@ -131,6 +131,32 @@ a, button {
 }
 .overlay__links a:hover { color: rgba(255,255,255,.6); }
 
+/* ---- MENU OVERLAY DECOR (film equipment) ---- */
+.overlay__decor {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.overlay__top, .overlay__body { position: relative; z-index: 1; }
+.overlay__decor-img {
+  position: absolute;
+  opacity: .14;
+  filter: grayscale(1) brightness(1.6);
+  user-select: none;
+}
+.overlay__decor-chair   { top: 8%;  right: 6%;  width: 150px; }
+.overlay__decor-reel    { top: 42%; left: 4%;   width: 190px; }
+.overlay__decor-camera  { bottom: 4%; left: 5%;  width: 280px; }
+.overlay__decor-clapper { bottom: 8%; right: 7%; width: 120px; }
+@media (max-width: 640px) {
+  .overlay__decor-chair   { width: 90px;  top: 6%;  right: 4%; }
+  .overlay__decor-reel    { width: 110px; top: 38%; left: -10px; }
+  .overlay__decor-camera  { width: 160px; bottom: 2%; left: -10px; }
+  .overlay__decor-clapper { width: 72px;  bottom: 6%; right: 4%; }
+}
+
 @media (min-width: 640px) {
   .overlay__top { padding: 24px 48px; }
   .overlay__top img { height: 64px; }
