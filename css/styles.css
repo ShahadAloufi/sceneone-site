@@ -100,10 +100,10 @@ a, button {
 .overlay__info {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-around;
   padding: 32px;
   direction: rtl;
-  border-top: 1px solid rgba(255,255,255,.1);
+  border-top: 1px solid rgba(255, 255, 255, .1);
 }
 .overlay__info p, .overlay__info a {
   font-size: 16px;
