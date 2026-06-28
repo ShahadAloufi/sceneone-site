@@ -285,7 +285,7 @@ a, button {
 }
 
 /* COVERAGE TYPES */
-.ctypes { padding: 120px 24px; direction: rtl; }
+.ctypes { padding: 120px 24px 200px; direction: rtl; }
 .ctypes__grid {
   display: flex;
   flex-wrap: wrap;
