@@ -608,13 +608,8 @@ a, button {
 .cov-aspects p { font-size: 16px; }
 .cov-aspects strong { font-weight: 700; color: #fff; }
 .cov-section .cov-sub { font-family: var(--font-body); font-size: 18px; color: #c6c6c6; margin-bottom: 24px; }
+.grade { margin-top: 0; }
 .grades { display: flex; flex-direction: column; gap: 32px; margin-top: 48px; }
-.grade {
-  margin-top: 0;
-  padding: 32px;
-  border-radius: 10px;
-  background: linear-gradient(180deg, #D2AF50 0%, rgba(210,175,80,0) 84.6154%), #0E0202;
-}
 .grade__label { display: block; font-size: 18px; font-weight: 700; letter-spacing: .18em; margin-bottom: 12px; }
 .grade p { font-size: 16px; line-height: 1.85; }
 .cov-report { margin-top: 56px; display: flex; flex-direction: column; align-items: center; }
