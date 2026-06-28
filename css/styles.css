@@ -285,7 +285,7 @@ a, button {
 }
 
 /* COVERAGE TYPES */
-.ctypes { padding: 0 24px 120px; direction: rtl; }
+.ctypes { padding: 120px 24px; direction: rtl; }
 .ctypes__grid {
   display: flex;
   flex-wrap: wrap;
@@ -355,7 +355,7 @@ a, button {
 }
 
 /* JOURNEY TIMELINE */
-.journey { margin-bottom: 200px; padding: 56px 24px; direction: rtl; }
+.journey { margin-bottom: 0; padding: 56px 24px; direction: rtl; }
 .journey__title { font-family: var(--font-head); font-size: 40px; font-weight: 700; color: #fff; margin-bottom: 64px; text-align: center; }
 .timeline { position: relative; }
 .timeline__line { display: none; }
