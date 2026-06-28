@@ -271,7 +271,7 @@ a, button {
 }
 
 /* THREE CARDS */
-.cards { padding: 0 24px 56px; }
+.cards { padding: 0 70px 56px; }
 .cards__row { display: flex; flex-direction: column; align-items: stretch; gap: 20px; }
 .cards__item { flex: 1; cursor: pointer; transition: opacity .5s ease; }
 @media (min-width: 640px) {
@@ -279,6 +279,9 @@ a, button {
   .cards__row { flex-direction: row; align-items: flex-end; gap: 16px; }
   .cards__row.has-active .cards__item { opacity: .4; }
   .cards__row.has-active .cards__item.active { opacity: 1; }
+}
+@media (min-width: 1024px) {
+  .cards { padding: 0 160px 80px; }
 }
 
 /* JOURNEY TIMELINE */
