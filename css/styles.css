@@ -303,6 +303,12 @@ a, button {
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
+  transition: transform .3s ease, background-color .3s ease, box-shadow .3s ease;
+}
+.ctype-card:hover {
+  transform: translateY(-6px);
+  background-color: #353230;
+  box-shadow: 0 16px 40px rgba(0,0,0,.35);
 }
 .ctype-card__title {
   font-family: var(--font-head);
