@@ -377,7 +377,14 @@ a, button {
 .readers__bg::after { content: ""; position: absolute; inset: 0; background:
   radial-gradient(ellipse 50% 85% at center, rgba(14,2,2,.9) 0%, rgba(14,2,2,.45) 50%, rgba(14,2,2,.1) 100%),
   linear-gradient(90deg, #0e0202 0%, rgba(14,2,2,0) 16%, rgba(14,2,2,0) 84%, #0e0202 100%); }
-.readers__content { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; text-align: center; padding: 24px 0; }
+.readers__content {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 115px 0;
+}
 .readers__title { font-family: var(--font-head); font-size: 32px; font-weight: 700; color: #fff; margin-bottom: 16px; }
 .readers__sub { font-family: var(--font-head); font-size: 20px; font-weight: 500; color: #D2AF50; margin-bottom: 28px; }
 .readers__body { font-family: var(--font-body); font-size: 16px; line-height: 1.9; color: rgba(255,255,255,.6); }
