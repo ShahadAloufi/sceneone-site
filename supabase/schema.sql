@@ -51,6 +51,13 @@ create policy "admins can read admins"
 grant usage on schema public to authenticated;
 grant select on public.admins to authenticated;
 
+-- The service role (used only by the /api serverless functions) needs full
+-- table privileges. It bypasses RLS, but NOT table-level GRANTs, so without
+-- this the server can't read roles, create admins, or insert submissions.
+grant usage on schema public to service_role;
+grant all on public.admins to service_role;
+grant all on public.submissions to service_role;
+
 -- ------------------------------------------------------------
 -- 2) SUBMISSIONS
 -- The script-submission form's data + a reference to the uploaded file.
