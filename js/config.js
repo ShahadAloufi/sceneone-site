@@ -1,7 +1,8 @@
 /* ===========================================================
    Scene One — public Supabase configuration (single source of truth)
    -----------------------------------------------------------
-   Loaded by both submit.html and admin.html BEFORE any page script.
+   Loaded by admin.html BEFORE any page script (and by the submission
+   page once its frontend is rebuilt).
 
    SAFE TO EXPOSE: the anon (public) key is designed to be shipped to the
    browser. It is constrained by Row Level Security + storage policies:
@@ -13,7 +14,7 @@
    Fill these in after creating your Supabase project (Project Settings → API).
    =========================================================== */
 window.SCENEONE_SUPABASE = {
-  url: "https://YOUR-PROJECT.supabase.co",
-  anonKey: "YOUR-ANON-PUBLIC-KEY",
+  url: "https://tdnhzxlrluqqcrjaajwk.supabase.co",
+  anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkbmh6eGxybHVxcWNyamFhandrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMyNjQ0OTksImV4cCI6MjA5ODg0MDQ5OX0.YwKAfZjLpt7MVSRsSsP5o9smegp8mi0QP2XfmVAKsAg",
   bucket: "scripts"
 };
