@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scene One — لوحة التحكم</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- ── LOGIN VIEW ── -->
+<div class="adm-login" id="adminLogin" hidden>
+  <form class="adm-login__card" id="adminLoginForm" novalidate>
+    <div class="adm-login__brand">🎬 Scene One</div>
+    <h1 class="adm-login__title">لوحة التحكم</h1>
+    <p class="adm-login__sub">تسجيل دخول المشرفين</p>
+    <div class="adm-field">
+      <label>البريد الإلكتروني</label>
+      <input type="email" id="loginEmail" dir="ltr" placeholder="admin@example.com" autocomplete="username">
+    </div>
+    <div class="adm-field">
+      <label>كلمة المرور</label>
+      <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <p class="adm-error" id="loginError" hidden></p>
+    <button type="submit" class="adm-btn adm-btn--primary" id="loginBtn">تسجيل الدخول</button>
+  </form>
+</div>
+
+<!-- ── DASHBOARD VIEW ── -->
+<div class="adm" id="adminDash" hidden>
+  <header class="adm-top">
+    <div class="adm-top__brand">🎬 Scene One · لوحة التحكم</div>
+    <div class="adm-top__right">
+      <span class="adm-who" id="admWho"></span>
+      <span class="adm-role" id="admRole"></span>
+      <button class="adm-btn adm-btn--ghost" id="logoutBtn">تسجيل الخروج</button>
+    </div>
+  </header>
+
+  <nav class="adm-tabs">
+    <button class="adm-tab is-active" data-tab="submissions">النصوص المقدَّمة</button>
+    <button class="adm-tab" data-tab="admins" id="adminsTabBtn" hidden>إدارة المشرفين</button>
+  </nav>
+
+  <!-- Submissions tab -->
+  <section class="adm-panel" id="tab-submissions">
+    <div class="adm-panel__head">
+      <h2>النصوص المقدَّمة <span class="adm-count" id="subCount">0</span></h2>
+      <button class="adm-btn adm-btn--ghost" id="refreshBtn">تحديث</button>
+    </div>
+    <div class="adm-tablewrap">
+      <table class="adm-table" id="subTable">
+        <thead>
+          <tr>
+            <th>التاريخ</th>
+            <th>العنوان</th>
+            <th>الكاتب</th>
+            <th>البريد</th>
+            <th>النوع</th>
+            <th>نوع الفيلم</th>
+            <th>المسودة</th>
+            <th>الحقوق</th>
+            <th>الملف</th>
+            <th>المسند إليه</th>
+          </tr>
+        </thead>
+        <tbody id="subBody"></tbody>
+      </table>
+      <p class="adm-empty" id="subEmpty" hidden>لا توجد نصوص مقدَّمة بعد.</p>
+    </div>
+  </section>
+
+  <!-- Admins tab (super admin only) -->
+  <section class="adm-panel" id="tab-admins" hidden>
+    <div class="adm-panel__head">
+      <h2>المشرفون</h2>
+    </div>
+
+    <div class="adm-tablewrap">
+      <table class="adm-table">
+        <thead>
+          <tr><th>الاسم</th><th>البريد</th><th>الدور</th><th></th></tr>
+        </thead>
+        <tbody id="adminsBody"></tbody>
+      </table>
+    </div>
+
+    <div class="adm-create">
+      <h3>إضافة مشرف جديد</h3>
+      <form id="createAdminForm" class="adm-create__form" novalidate>
+        <div class="adm-field">
+          <label>الاسم</label>
+          <input type="text" id="newName" placeholder="اسم المشرف">
+        </div>
+        <div class="adm-field">
+          <label>البريد الإلكتروني</label>
+          <input type="email" id="newEmail" dir="ltr" placeholder="admin@example.com">
+        </div>
+        <div class="adm-field">
+          <label>كلمة المرور</label>
+          <input type="text" id="newPassword" dir="ltr" placeholder="8 أحرف على الأقل">
+        </div>
+        <div class="adm-field">
+          <label>الدور</label>
+          <select id="newRole">
+            <option value="admin">مشرف</option>
+            <option value="super_admin">مشرف أعلى</option>
+          </select>
+        </div>
+        <p class="adm-error" id="createError" hidden></p>
+        <p class="adm-success" id="createSuccess" hidden></p>
+        <button type="submit" class="adm-btn adm-btn--primary" id="createBtn">إنشاء المشرف</button>
+      </form>
+    </div>
+  </section>
+</div>
+
+<script src="js/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
