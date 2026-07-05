@@ -44,6 +44,13 @@ create policy "admins can read admins"
 -- (Creating/removing admins is done server-side with the service-role key,
 --  which bypasses RLS — so no INSERT/UPDATE/DELETE policies are defined here.)
 
+-- Base table privilege for the signed-in role. RLS (above) still restricts
+-- this to a user's own admin row via is_admin(); without this GRANT, Postgres
+-- denies access at the privilege layer before RLS is ever evaluated.
+-- Nothing is granted to `anon` (least privilege).
+grant usage on schema public to authenticated;
+grant select on public.admins to authenticated;
+
 -- ------------------------------------------------------------
 -- 2) SUBMISSIONS
 -- The script-submission form's data + a reference to the uploaded file.
@@ -89,6 +96,10 @@ create policy "admins can update submissions"
   to authenticated
   using ( public.is_admin(auth.uid()) )
   with check ( public.is_admin(auth.uid()) );
+
+-- Base table privileges for the signed-in role (RLS above restricts these to
+-- admins). No INSERT grant: new submissions are written server-side only.
+grant select, update on public.submissions to authenticated;
 
 -- NOTE: new submissions are INSERTed by the /api/submissions serverless
 -- function using the service-role key (bypasses RLS), so there is deliberately
