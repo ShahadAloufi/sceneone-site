@@ -15,7 +15,11 @@
 //   RESEND_API_KEY              — reuse the existing Resend key for email alerts
 
 const FALLBACK_TO = "sceneone.info@gmail.com";
-const NOTIFY_FROM = "Scene One <onboarding@resend.dev>";
+// Sender must be on a domain you've VERIFIED in Resend (Domains → Add Domain).
+// The shared onboarding@resend.dev sender can only deliver to your own Resend
+// account email, so it can't reach each admin's personal address — hence a
+// verified domain is required to notify all admins.
+const NOTIFY_FROM = "Scene One <no-reply@sceneone.info>";
 
 // --- Allowlists & limits (server is the source of truth; never trust client) ---
 const GENRES = ["drama", "comedy", "thriller", "horror", "action", "documentary", "other"];

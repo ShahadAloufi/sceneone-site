@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <title>Scene One — تقديم النص</title>
+  <meta name="description" content="قدّم نصك السينمائي للحصول على تغطية نقدية احترافية من Scene One.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="alternate icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="submit-page page">
+
+  <!-- ── NAV ── -->
+  <nav class="nav">
+    <a href="/"><img class="nav__logo" src="assets/scene-one-logo.svg" alt="Scene One"></a>
+    <button class="menu-btn" data-menu-open aria-label="القائمة">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ── MENU OVERLAY ── -->
+  <div class="overlay" id="menu">
+    <div class="overlay__decor" aria-hidden="true">
+      <img class="overlay__decor-img overlay__decor-chair"   src="assets/menu-chair.svg"   alt="">
+      <img class="overlay__decor-img overlay__decor-reel"    src="assets/menu-reel.svg"    alt="">
+      <img class="overlay__decor-img overlay__decor-camera"  src="assets/menu-camera.svg"  alt="">
+      <img class="overlay__decor-img overlay__decor-clapper" src="assets/menu-clapper.svg" alt="">
+    </div>
+    <div class="overlay__top">
+      <img src="assets/scene-one-logo.svg" alt="Scene One">
+      <button class="overlay__close" data-menu-close aria-label="إغلاق">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="overlay__body">
+      <div class="overlay__info">
+        <div>
+          <p class="overlay__muted">Scene One / 2026</p>
+          <p style="margin-top:4px">منصة متخصصة في تقييم النصوص السينمائية وتقديم ملاحظات احترافية تساعد الكتّاب على تطوير أعمالهم وصقلها قبل خطوتهم التالية.</p>
+        </div>
+        <div class="overlay__group">
+          <p class="overlay__muted" style="margin-bottom:4px">تواصل</p>
+          <p>sceneone.info@gmail.com</p>
+        </div>
+        <div class="overlay__group">
+          <p class="overlay__muted" style="margin-bottom:4px">حساباتنا</p>
+          <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+          <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+      </div>
+      <div class="overlay__links">
+        <a href="/" data-menu-close>الرئيسية</a>
+        <a href="/#about" data-menu-close>Scene One</a>
+        <a href="/#journey" data-menu-close>رحلة النص</a>
+        <a href="/#register" data-menu-close>سجل اهتمامك</a>
+        <a href="/#contact" data-menu-close>تواصل معنا</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FORM ── -->
+  <main class="sub-wrap">
+    <div class="sub-decor" aria-hidden="true">
+      <img class="sub-decor-img sub-decor-reel"    src="assets/menu-reel.svg"    alt="">
+      <img class="sub-decor-img sub-decor-chair"   src="assets/menu-chair.svg"   alt="">
+      <img class="sub-decor-img sub-decor-clapper" src="assets/menu-clapper.svg" alt="">
+      <img class="sub-decor-img sub-decor-camera"  src="assets/menu-camera.svg"  alt="">
+    </div>
+
+    <form class="sub-card" id="submitForm" novalidate>
+      <div class="sub-card__head">
+        <p class="sub-card__eyebrow">SCRIPT SUBMISSION</p>
+        <h1 class="sub-card__title">تقديم النص</h1>
+      </div>
+
+      <div class="sub-card__body">
+        <div class="sub-grid">
+
+          <div class="sub-field" data-field="titleAr">
+            <label>العنوان بالعربية <span class="req">*</span></label>
+            <input type="text" name="titleAr" placeholder="أدخل العنوان بالعربية">
+            <p class="sub-err">هذا الحقل مطلوب</p>
+          </div>
+
+          <div class="sub-field" data-field="titleEn">
+            <label>العنوان بالإنجليزية <span class="req">*</span></label>
+            <input type="text" name="titleEn" dir="ltr" style="text-align:right" placeholder="Enter the English title">
+            <p class="sub-err">هذا الحقل مطلوب</p>
+          </div>
+
+          <div class="sub-field" data-field="email">
+            <label>البريد الإلكتروني <span class="req">*</span></label>
+            <input type="email" name="email" dir="ltr" style="text-align:right" placeholder="name@example.com">
+            <p class="sub-err">البريد الإلكتروني غير صحيح</p>
+          </div>
+
+          <div class="sub-field" data-field="writer">
+            <label>اسم الكاتب <span class="req">*</span></label>
+            <input type="text" name="writer" placeholder="اسم الكاتب الكامل">
+            <p class="sub-err">هذا الحقل مطلوب</p>
+          </div>
+
+          <div class="sub-field" data-field="genre">
+            <label>النوع <span class="req">*</span></label>
+            <select name="genre">
+              <option value="" disabled selected>اختر النوع</option>
+              <option value="drama">دراما</option>
+              <option value="comedy">كوميديا</option>
+              <option value="thriller">إثارة</option>
+              <option value="horror">رعب</option>
+              <option value="action">أكشن</option>
+              <option value="documentary">وثائقي</option>
+              <option value="other">أخرى</option>
+            </select>
+            <p class="sub-err">اختر النوع</p>
+          </div>
+
+          <div class="sub-field" data-field="filmType">
+            <label>نوع الفيلم <span class="req">*</span></label>
+            <select name="filmType">
+              <option value="" disabled selected>اختر نوع الفيلم</option>
+              <option value="feature">فيلم طويل</option>
+              <option value="short">فيلم قصير</option>
+            </select>
+            <p class="sub-err">اختر نوع الفيلم</p>
+          </div>
+
+          <div class="sub-field" data-field="draft">
+            <label>المسودة <span class="req">*</span></label>
+            <select name="draft">
+              <option value="" disabled selected>اختر المسودة</option>
+              <option value="first">مسودة أولى</option>
+              <option value="revised">مسودة منقّحة</option>
+              <option value="final">مسودة نهائية</option>
+            </select>
+            <p class="sub-err">اختر المسودة</p>
+          </div>
+
+          <div class="sub-field" data-field="duration">
+            <label>المدة <span class="opt">(اختياري)</span></label>
+            <input type="text" name="duration" placeholder="مثال: ١٠ دقيقة / ٩٤ دقيقة">
+          </div>
+
+          <div class="sub-field sub-field--full" data-field="logline">
+            <label>الفكرة المختصرة (Logline) <span class="opt">(اختياري)</span></label>
+            <textarea name="logline" placeholder="بضعة جمل تلخّص فكرة نصك."></textarea>
+          </div>
+
+          <div class="sub-field sub-field--full" data-field="vision">
+            <label>رؤية الكاتب <span class="req">*</span></label>
+            <textarea name="vision" placeholder="نبذة عن رؤيتك لمعالجة المشروع وما تطمح لتحقيقه من خلاله."></textarea>
+            <p class="sub-err">هذا الحقل مطلوب</p>
+          </div>
+
+          <div class="sub-field sub-field--full" data-field="ip">
+            <label>هل قمت بتسجيل الحقوق الملكية الفكرية لنصك؟ <span class="req">*</span></label>
+            <div class="sub-toggle" role="radiogroup" aria-label="تسجيل الحقوق الفكرية">
+              <button type="button" class="sub-toggle__btn active" data-ip="no" aria-pressed="true">لا</button>
+              <button type="button" class="sub-toggle__btn" data-ip="yes" aria-pressed="false">نعم</button>
+            </div>
+            <input type="hidden" name="ip" value="no">
+            <p class="sub-note">تسجيل الحقوق ليس شرطًا؛ تخضع جميع النصوص لاتفاقية عدم إفصاح (NDA) ولا يطّلع عليها سوى القارئ المكلّف بتقييمها.</p>
+          </div>
+
+          <div class="sub-field sub-field--full" data-field="file">
+            <label>ملف النص <span class="req">*</span></label>
+            <div class="sub-drop" id="dropZone" tabindex="0" role="button" aria-label="أرفق ملف النص">
+              <input type="file" id="fileInput" name="file" accept=".pdf,.fdx,.fountain,.docx,.txt" hidden>
+              <svg class="sub-drop__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0 4 4m-4-4-4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+              <p class="sub-drop__text" id="dropText">اسحب ملفك هنا أو اضغط للاختيار</p>
+              <p class="sub-drop__hint">PDF · FDX · Fountain · DOCX · TXT — بحد أقصى 25MB</p>
+            </div>
+            <p class="sub-err">ملف النص مطلوب</p>
+          </div>
+
+        </div>
+
+        <button type="submit" class="sub-submit">إرسال النص</button>
+        <p class="sub-foot">بإرسالك النص فإنك توافق على معالجته وفق سياسة الخصوصية واتفاقية عدم الإفصاح.</p>
+      </div>
+    </form>
+  </main>
+
+</div>
+
+<div class="toast-wrap" id="toasts"></div>
+
+<script src="js/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/submit.js"></script>
+</body>
+</html>
