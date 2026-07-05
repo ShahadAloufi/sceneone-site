@@ -685,6 +685,11 @@ a, button {
 }
 
 /* ===== ADMIN PANEL ===== */
+/* The `hidden` attribute must always win: class rules like `.adm-login {
+   display:flex }` have equal specificity to the UA `[hidden]{display:none}`
+   and would otherwise keep hidden views visible (blocking view switching). */
+[hidden] { display: none !important; }
+
 .adm-login {
   min-height: 100vh; display: flex; align-items: center; justify-content: center;
   background: #0e0202; padding: 24px;
