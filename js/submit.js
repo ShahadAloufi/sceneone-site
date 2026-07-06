@@ -51,20 +51,6 @@
     return i >= 0 ? String(name).slice(i + 1).toLowerCase() : "";
   }
 
-  /* ---------- IP TOGGLE (نعم / لا) ---------- */
-  var ipInput = document.querySelector('input[name="ip"]');
-  document.querySelectorAll(".sub-toggle__btn").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      document.querySelectorAll(".sub-toggle__btn").forEach(function (b) {
-        b.classList.remove("active");
-        b.setAttribute("aria-pressed", "false");
-      });
-      btn.classList.add("active");
-      btn.setAttribute("aria-pressed", "true");
-      if (ipInput) ipInput.value = btn.getAttribute("data-ip");
-    });
-  });
-
   /* ---------- ARABIC-ONLY TITLE ---------- */
   // The Arabic title field must contain no English letters. Rather than
   // stripping what the user types, keep their text and show an inline error.

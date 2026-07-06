@@ -892,27 +892,61 @@ a, button {
 .sub-field.invalid textarea { border-color: var(--red); }
 .sub-field.invalid .sub-drop { border-color: var(--red); }
 
-.sub-note { font-size: 12.5px; color: #7a776f; margin-top: 8px; line-height: 1.7; }
+.sub-hint { font-size: 13px; color: #8a877f; margin-top: 6px; line-height: 1.6; }
 
-/* IP toggle (نعم / لا) */
-.sub-toggle {
+.sub-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 12.5px;
+  color: #7a776f;
+  margin-top: 10px;
+  line-height: 1.7;
+}
+.sub-note__icon { width: 15px; height: 15px; flex-shrink: 0; margin-top: 2px; color: #a3a09a; }
+.sub-note__link { color: var(--gold); text-decoration: underline; font-weight: 600; }
+.sub-note__link:hover { color: #b8963f; }
+
+/* IP registration — radio buttons in a bordered box */
+.sub-ipbox {
+  display: flex;
+  gap: 28px;
+  background: #fff;
+  border: 1px solid #d8d6d0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+.sub-radio {
   display: inline-flex;
-  background: #e9e7e2;
-  border-radius: 10px;
-  padding: 4px;
-  gap: 4px;
-}
-.sub-toggle__btn {
-  min-width: 72px;
-  padding: 8px 18px;
-  border-radius: 7px;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
   font-family: var(--font-head);
-  font-size: 14px;
-  font-weight: 600;
-  color: #555;
-  background: transparent;
+  font-size: 15px;
+  font-weight: 500;
+  color: #1a1a1a;
 }
-.sub-toggle__btn.active { background: #fff; color: #1a1a1a; box-shadow: 0 1px 4px rgba(0,0,0,.12); }
+.sub-radio input { position: absolute; opacity: 0; width: 0; height: 0; }
+.sub-radio__dot {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #c4c1ba;
+  background: #fff;
+  flex-shrink: 0;
+  position: relative;
+  transition: border-color .15s ease;
+}
+.sub-radio input:checked + .sub-radio__dot { border-color: var(--gold); }
+.sub-radio input:checked + .sub-radio__dot::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+.sub-radio input:focus-visible + .sub-radio__dot { box-shadow: 0 0 0 3px rgba(210,175,80,.25); }
 
 /* file dropzone */
 .sub-drop {

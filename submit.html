@@ -90,20 +90,20 @@
           </div>
 
           <div class="sub-field" data-field="titleEn">
-            <label>العنوان بالإنجليزية <span class="req">*</span></label>
-            <input type="text" name="titleEn" dir="ltr" style="text-align:right" placeholder="Enter the English title">
+            <label>العنوان (بالإنجليزية) <span class="req">*</span></label>
+            <input type="text" name="titleEn" dir="ltr" style="text-align:right" placeholder="أدخل العنوان بالإنجليزية">
             <p class="sub-err">هذا الحقل مطلوب</p>
           </div>
 
           <div class="sub-field" data-field="email">
             <label>البريد الإلكتروني <span class="req">*</span></label>
-            <input type="email" name="email" dir="ltr" style="text-align:right" placeholder="name@example.com">
+            <input type="email" name="email" dir="ltr" style="text-align:right" placeholder="أدخل بريدك الإلكتروني">
             <p class="sub-err">البريد الإلكتروني غير صحيح</p>
           </div>
 
           <div class="sub-field" data-field="writer">
             <label>اسم الكاتب <span class="req">*</span></label>
-            <input type="text" name="writer" placeholder="اسم الكاتب الكامل">
+            <input type="text" name="writer" placeholder="الاسم الكامل للكاتب">
             <p class="sub-err">هذا الحقل مطلوب</p>
           </div>
 
@@ -144,34 +144,45 @@
           </div>
 
           <div class="sub-field" data-field="duration">
-            <label>المدة <span class="opt">(اختياري)</span></label>
-            <input type="text" name="duration" placeholder="مثال: ١٠ دقيقة / ٩٤ دقيقة">
+            <label>المدة</label>
+            <input type="text" name="duration" placeholder="مثال: ٩ دقيقة / ٤٥ صفحة">
           </div>
 
           <div class="sub-field" data-field="theme">
-            <label>الثيم <span class="opt">(اختياري)</span></label>
+            <label>الثيم</label>
             <input type="text" name="theme" placeholder="مثال: الفقد، الهوية، العدالة">
           </div>
 
           <div class="sub-field sub-field--full" data-field="logline">
-            <label>الفكرة المختصرة (Logline) <span class="opt">(اختياري)</span></label>
-            <textarea name="logline" placeholder="بضعة جمل تلخّص فكرة نصك."></textarea>
+            <label>الفكرة المختصرة/Logline</label>
+            <textarea name="logline" placeholder="وصف موجز بجملة أو جملتين لنصك."></textarea>
           </div>
 
           <div class="sub-field sub-field--full" data-field="vision">
             <label>رؤية الكاتب <span class="req">*</span></label>
-            <textarea name="vision" placeholder="نبذة عن رؤيتك لمعالجة المشروع وما تطمح لتحقيقه من خلاله."></textarea>
+            <textarea name="vision" placeholder="صف رؤيتك ودوافعك لهذا المشروع."></textarea>
+            <p class="sub-hint">لماذا تود اخراج هذا الفيلم؟</p>
             <p class="sub-err">هذا الحقل مطلوب</p>
           </div>
 
           <div class="sub-field sub-field--full" data-field="ip">
             <label>هل قمت بتسجيل الحقوق الملكية الفكرية لنصك؟ <span class="req">*</span></label>
-            <div class="sub-toggle" role="radiogroup" aria-label="تسجيل الحقوق الفكرية">
-              <button type="button" class="sub-toggle__btn active" data-ip="no" aria-pressed="true">لا</button>
-              <button type="button" class="sub-toggle__btn" data-ip="yes" aria-pressed="false">نعم</button>
+            <div class="sub-ipbox" role="radiogroup" aria-label="تسجيل الحقوق الفكرية">
+              <label class="sub-radio">
+                <input type="radio" name="ip" value="no" checked>
+                <span class="sub-radio__dot"></span>
+                <span class="sub-radio__label">لا</span>
+              </label>
+              <label class="sub-radio">
+                <input type="radio" name="ip" value="yes">
+                <span class="sub-radio__dot"></span>
+                <span class="sub-radio__label">نعم</span>
+              </label>
             </div>
-            <input type="hidden" name="ip" value="no">
-            <p class="sub-note">تسجيل الحقوق ليس شرطًا؛ تخضع جميع النصوص لاتفاقية عدم إفصاح (NDA) ولا يطّلع عليها سوى القارئ المكلّف بتقييمها.</p>
+            <p class="sub-note">
+              <svg class="sub-note__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5" stroke-linecap="round"/><circle cx="12" cy="7.5" r="1" fill="currentColor" stroke="none"/></svg>
+              <span>نصك محمي هنا في Scene One، لكننا نشجعك على حماية نصك بزيارة <a href="https://www.saip.gov.sa/" target="_blank" rel="noopener noreferrer" class="sub-note__link">SAIP</a>.</span>
+            </p>
           </div>
 
           <div class="sub-field sub-field--full" data-field="file">
