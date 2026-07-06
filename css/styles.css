@@ -920,7 +920,7 @@ a, button {
   color: #6a675f;
   line-height: 1.7;
 }
-.sub-assure:first-of-type { margin-top: 22px; }
+.sub-assure:first-of-type { margin-top: 40px; }
 .sub-assure + .sub-submit { margin-top: 14px; }
 .sub-submit + .sub-assure { margin-top: 14px; }
 .sub-assure__icon { width: 18px; height: 18px; flex-shrink: 0; color: #9a978f; }
