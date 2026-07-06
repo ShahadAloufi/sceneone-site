@@ -127,6 +127,43 @@ async function sendNotification(row) {
   }
 }
 
+// Sends a confirmation email to the writer who submitted the script.
+async function sendConfirmation(row) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey || !row.email) return; // optional; requires a valid recipient
+
+  const title = row.title_ar || row.title_en || "";
+  const html =
+    '<div dir="rtl" style="font-family: Arial, sans-serif; font-size: 15px; color: #1a1a1a; line-height: 1.9;">' +
+    '<h2 style="margin: 0 0 16px;">تم استلام نصك - Scene One</h2>' +
+    "<p>شكرًا لتقديم نصك إلى Scene One — لقد استلمنا طلبك وسنراجعه ونتواصل معك عبر بريدك الإلكتروني.</p>" +
+    (title
+      ? '<p style="color:#555;">العنوان: <strong>' + escapeHtml(title) + "</strong></p>"
+      : "") +
+    '<p style="margin-top:20px; color:#888;">فريق Scene One</p>' +
+    "</div>";
+
+  try {
+    await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + apiKey,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: NOTIFY_FROM,
+        to: [row.email],
+        reply_to: NOTIFY_TO,
+        subject: "تم استلام نصك - Scene One",
+        html: html,
+      }),
+    });
+  } catch (err) {
+    // Don't fail the submission if the confirmation email fails.
+    console.error("Confirmation email failed:", err);
+  }
+}
+
 module.exports = async (req, res) => {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
@@ -187,8 +224,9 @@ module.exports = async (req, res) => {
     return res.status(500).json({ message: "تعذّر حفظ النص" });
   }
 
-  // Fire the notification email (non-blocking failure).
+  // Fire the admin notification + writer confirmation (non-blocking failure).
   await sendNotification(row);
+  await sendConfirmation(row);
 
   return res.status(201).json({ ok: true });
 };
