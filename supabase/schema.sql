@@ -155,6 +155,53 @@ create policy "admins can read scripts"
   to authenticated
   using ( bucket_id = 'scripts' and public.is_admin(auth.uid()) );
 
+-- ------------------------------------------------------------
+-- 3.5) COVERAGES
+-- One coverage evaluation per submission, written by the reader/admin who
+-- opens it from the dashboard ("ابدأ التقييم"). The whole evaluation (glance
+-- ratings, per-category scores + notes, market analysis, verdict, etc.) is
+-- stored as a single JSON blob in `data`, so the coverage page can save/restore
+-- it verbatim. `status` drives the dashboard button label (in_progress → resume,
+-- completed → view report).
+-- ------------------------------------------------------------
+create table if not exists public.coverages (
+  id            uuid primary key default gen_random_uuid(),
+  submission_id uuid not null unique references public.submissions(id) on delete cascade,
+  reader_id     uuid references public.admins(id) on delete set null,
+  status        text not null default 'in_progress' check (status in ('in_progress', 'completed')),
+  data          jsonb not null default '{}'::jsonb,
+  created_at    timestamptz not null default now(),
+  updated_at    timestamptz not null default now()
+);
+
+alter table public.coverages enable row level security;
+
+-- Admins can read every coverage (shared workspace).
+drop policy if exists "admins can read coverages" on public.coverages;
+create policy "admins can read coverages"
+  on public.coverages for select
+  to authenticated
+  using ( public.is_admin(auth.uid()) );
+
+-- Admins can create a coverage row (first time a submission is opened).
+drop policy if exists "admins can insert coverages" on public.coverages;
+create policy "admins can insert coverages"
+  on public.coverages for insert
+  to authenticated
+  with check ( public.is_admin(auth.uid()) );
+
+-- Admins can update coverages (autosave while writing the evaluation).
+drop policy if exists "admins can update coverages" on public.coverages;
+create policy "admins can update coverages"
+  on public.coverages for update
+  to authenticated
+  using ( public.is_admin(auth.uid()) )
+  with check ( public.is_admin(auth.uid()) );
+
+-- Base table privileges for the signed-in role (RLS above restricts to admins).
+grant select, insert, update on public.coverages to authenticated;
+grant all on public.coverages to service_role;
+
 -- ============================================================
 -- 4) SEED THE FIRST SUPER ADMIN  (one-time, manual)
 -- ------------------------------------------------------------

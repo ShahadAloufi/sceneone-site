@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scene One — Coverage</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#15110f; --orange:#CD2E07; --orange-d:#a82405;
+    --paper:#ffffff; --card:#ffffff; --line:#e7e2da; --line2:#efebe3;
+    --muted:#8a8178; --label:#6f665e; --soft:#f3efe8;
+    --good:#2f7d4f; --ok:#b7892b; --bad:#b14a3a;
+    --font:'IBM Plex Sans Arabic','IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--font);
+       font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+
+  /* ---------- top nav ---------- */
+  header{position:sticky;top:0;z-index:20;background:rgba(14,14,14,.94);
+         backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.10)}
+  .nav{max-width:920px;margin:0 auto;display:flex;align-items:center;gap:18px;
+       padding:14px 20px;flex-wrap:wrap}
+  .wordmark{display:flex;align-items:center;gap:8px;letter-spacing:.28em;font-weight:600;
+            font-size:13px;text-transform:uppercase;color:#fff;text-decoration:none}
+  .wordmark span{color:var(--orange)}
+  .brand-logo{height:30px;width:auto;display:block}
+  .wordmark .rec{width:7px;height:7px;border-radius:50%;background:var(--orange)}
+  .savestate{font-size:12px;color:#9a938b;letter-spacing:.02em}
+  .tabs{display:flex;gap:4px;margin-left:auto;background:rgba(255,255,255,.08);padding:4px;border-radius:10px}
+  .tab{border:0;background:transparent;font-family:inherit;font-size:13px;font-weight:500;
+       color:#cbc7c1;padding:7px 14px;border-radius:7px;cursor:pointer;transition:.15s}
+  .tab.active{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+  .tab:hover:not(.active){color:#fff}
+
+  main{max-width:920px;margin:0 auto;padding:30px 20px 90px}
+  .view{display:none}
+  .view.active{display:block}
+
+  /* ---------- shared ---------- */
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);
+           font-weight:600;margin:0 0 6px}
+  h1{font-size:26px;font-weight:600;margin:0 0 6px;letter-spacing:-.01em}
+  .lead{color:var(--label);margin:0 0 26px;max-width:60ch}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:18px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:620px){.grid2{grid-template-columns:1fr}}
+  .field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+  .field:last-child{margin-bottom:0}
+  label.lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label);font-weight:600}
+  input[type=text],input[type=number],select,textarea{font-family:inherit;font-size:14.5px;color:var(--ink);
+       background:#fff;border:1px solid var(--line);border-radius:9px;padding:10px 12px;width:100%;
+       outline:none;transition:border-color .15s,box-shadow .15s}
+  input:focus,select:focus,textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(189,61,32,.1)}
+  textarea{resize:vertical;min-height:72px;line-height:1.5}
+  .hint{font-size:12px;color:var(--muted)}
+  .section-title{font-size:13px;font-weight:600;letter-spacing:.02em;margin:0 0 14px;
+                 display:flex;align-items:center;gap:9px}
+  .section-title .no{color:var(--orange);font-variant-numeric:tabular-nums}
+
+  .btn{font-family:inherit;font-size:14px;font-weight:500;border-radius:10px;padding:11px 20px;
+       cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink);transition:.15s}
+  .btn:hover{border-color:#cfc8bd}
+  .btn.primary{background:var(--orange);border-color:var(--orange);color:#fff}
+  .btn.primary:hover{background:var(--orange-d)}
+  .btn.ghost{background:transparent}
+  .row-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:6px}
+
+  /* segmented controls */
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;flex-wrap:wrap}
+  .seg button{border:0;background:#fff;font-family:inherit;font-size:13px;color:var(--label);
+              padding:8px 14px;cursor:pointer;border-right:1px solid var(--line)}
+  .seg button:last-child{border-right:0}
+  .seg button.on{background:var(--ink);color:#fff}
+  .seg.rate button.on[data-v="Excellent"],.seg button.on.good{background:var(--good)}
+  .seg button.on.ok{background:var(--ok)}
+  .seg button.on.bad{background:var(--bad)}
+
+  /* ---------- "pulled from submission" panel ---------- */
+  .pulled{background:linear-gradient(180deg,#fff, #fdfbf7);border:1px solid var(--line);
+          border-left:3px solid var(--orange);border-radius:12px;padding:20px 22px;margin-bottom:22px}
+  .pulled .tag{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;letter-spacing:.14em;
+               text-transform:uppercase;color:var(--orange);font-weight:600;margin-bottom:14px}
+  .pulled .tag .lock{font-size:12px}
+  .meta-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 22px}
+  @media(max-width:620px){.meta-grid{grid-template-columns:1fr 1fr}}
+  .meta-grid .k{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--label);font-weight:600}
+  .meta-grid .v{font-size:14.5px;margin-top:2px}
+  .meta-grid .v a{color:var(--orange);text-decoration:none}
+  .meta-grid .v a:hover{text-decoration:underline}
+  .meta-grid .full{grid-column:1/-1}
+
+  .eval-block{padding:18px 0;border-top:1px solid var(--line2)}
+  .eval-block:first-of-type{border-top:0;padding-top:4px}
+  .eval-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+  .eval-head .name{font-weight:600;font-size:14.5px}
+  .score{display:inline-flex;gap:4px}
+  .score button{width:30px;height:30px;border:1px solid var(--line);background:#fff;border-radius:7px;
+                font-family:inherit;font-size:13px;color:var(--label);cursor:pointer;font-variant-numeric:tabular-nums}
+  .score button.on{background:var(--orange);border-color:var(--orange);color:#fff}
+
+  .stack > .field{margin-bottom:18px}
+
+  /* ---------- report ---------- */
+  #reportWrap{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;max-width:800px;margin:0 auto}
+  .report{padding:46px 54px;max-width:none;margin:0}
+  @media(max-width:620px){.report{padding:30px 22px}}
+  /* report header banner */
+  .rep-header{background:#0E0E0E;margin:-46px -54px 32px;padding:32px 24px 24px;text-align:center;border-bottom:3px solid var(--orange)}
+  .rep-logo{height:48px;width:auto;display:inline-block;margin-bottom:14px}
+  .rep-wm{color:#fff;letter-spacing:.18em;font-weight:700;font-size:23px;line-height:1}
+  .rep-wm span{color:var(--orange)}
+  .rep-cov{color:#9a938b;letter-spacing:.3em;font-size:10px;text-transform:uppercase;margin-top:10px;font-weight:500}
+  .rep-tag{color:var(--orange);font-size:12.5px;margin-top:9px;font-family:'IBM Plex Sans Arabic','IBM Plex Sans',sans-serif}
+  @media(max-width:620px){.rep-header{margin:-30px -22px 26px}}
+  /* arabic report */
+  #reportBody.ar{font-family:'IBM Plex Sans Arabic','IBM Plex Sans',sans-serif}
+  #reportBody.ar .rep-sec h2 .no{margin-right:0;margin-left:8px}
+  #reportBody.ar table.gl td.cat{text-align:right}
+  #reportBody.ar .rep-top{direction:rtl}
+  #reportBody.ar .rep-top .k,#reportBody.ar .rep-top .v{text-align:right}
+  #reportBody.ar .rep-foot{flex-direction:row-reverse}
+  .langseg button{font-size:13px}
+  .rep-top{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 26px;margin-bottom:30px}
+  @media(max-width:620px){.rep-top{grid-template-columns:1fr 1fr}}
+  .rep-top .k{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--label);font-weight:600}
+  .rep-top .v{font-size:14px;margin-top:3px}
+  .rep-title{font-size:22px;font-weight:600;margin:2px 0 0}
+  .rep-title .ar{font-family:'IBM Plex Sans Arabic',sans-serif;color:var(--ink)}
+  .logline{background:var(--soft);border-radius:10px;padding:16px 18px;margin:6px 0 30px}
+  .logline .k{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--label);font-weight:600;margin-bottom:5px}
+  .glance{margin:0 0 30px}
+  .glance h3,.rep-sec h3{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);
+                         font-weight:600;margin:0 0 12px}
+  table.gl{width:100%;border-collapse:collapse;font-size:13px}
+  table.gl td{padding:7px 6px;border-bottom:1px solid var(--line2)}
+  table.gl .cat{color:var(--label);width:34%}
+  table.gl .mark{text-align:center}
+  table.gl .mark.hit{color:var(--ink);font-weight:600}
+  table.gl .mark.dim{color:#d8d2c8}
+  .rep-sec{margin:0 0 26px}
+  .rep-sec .no{color:var(--orange);font-weight:600;margin-right:8px;font-variant-numeric:tabular-nums}
+  .rep-sec h2{font-size:16px;font-weight:600;margin:0 0 14px;display:flex;align-items:baseline}
+  .rep-item{margin:0 0 16px}
+  .rep-item .ih{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:3px}
+  .rep-item .ih .t{font-weight:600;font-size:13.5px;letter-spacing:.01em}
+  .rep-item .ih .sc{font-size:12px;color:var(--orange);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .rep-item p{margin:0;color:#3f3a35;font-size:13.5px;line-height:1.62;white-space:pre-wrap}
+  .verdict{border:1px solid var(--line);border-radius:12px;padding:22px 24px;background:var(--soft);margin-top:8px}
+  .verdict .vh{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);font-weight:600;margin-bottom:8px}
+  .verdict .vd{font-size:18px;font-weight:600;margin-bottom:8px}
+  .verdict .vd .ctx{font-size:13px;font-weight:400;color:var(--label)}
+  .rep-foot{border-top:1px solid var(--line2);margin-top:34px;padding-top:14px;
+            display:flex;justify-content:space-between;font-size:11px;color:var(--muted);letter-spacing:.04em}
+  .empty{color:#c9c2b6;font-style:italic}
+
+  .toolbar{display:flex;gap:12px;justify-content:flex-end;margin-bottom:16px;flex-wrap:wrap}
+
+  .rating-row{display:flex;gap:22px;align-items:center;background:var(--soft);border-radius:11px;
+              padding:16px 20px;margin-bottom:18px;flex-wrap:wrap}
+  .rating-auto .big{font-size:30px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums;color:var(--ink)}
+  .rating-auto .big .den{font-size:15px;color:var(--muted);font-weight:400}
+  .rating-auto .cap{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--label);
+                    font-weight:600;margin-top:5px}
+  .rating-final{display:flex;flex-direction:column;gap:6px}
+  .rating-final input{width:110px}
+  .rating-final .hint{min-height:14px}
+  .vrow{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:8px}
+  .score10{font-weight:600;color:var(--orange);white-space:nowrap;font-variant-numeric:tabular-nums;font-size:16px}
+  .score10 .n{font-size:30px}
+
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(16px);
+         background:var(--ink);color:#fff;padding:11px 18px;border-radius:10px;font-size:13.5px;
+         opacity:0;pointer-events:none;transition:.2s;z-index:50}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* ---------- guard (loading / auth / error) ---------- */
+  .guard{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+         background:var(--paper);padding:40px;text-align:center;z-index:60}
+  .guard__box{max-width:420px}
+  .guard__box h2{font-size:19px;margin:0 0 8px}
+  .guard__box p{color:var(--label);margin:0 0 18px}
+  .guard__box a{color:var(--orange);text-decoration:none;font-weight:600}
+
+  @media print{
+    header,.toolbar,.toast,.guard{display:none!important}
+    body{background:#fff}
+    main{padding:0;max-width:none}
+    #reportWrap{border:0;border-radius:0}
+    .view{display:none!important}
+    #view-report.active{display:block!important}
+  }
+</style>
+</head>
+<body>
+
+<!-- ── GUARD (loading / unauthorized / error) ── -->
+<div class="guard" id="guard">
+  <div class="guard__box" id="guardBox">
+    <h2 id="guardTitle">Loading…</h2>
+    <p id="guardMsg">Checking your session and loading the submission.</p>
+    <a id="guardLink" href="/admin" hidden>Go to the dashboard</a>
+  </div>
+</div>
+
+<!-- ── APP ── -->
+<div id="app" hidden>
+<header>
+  <div class="nav">
+    <a class="wordmark" href="/admin" title="Back to dashboard">
+      <img class="brand-logo" src="assets/scene-one-logo.svg" alt="Scene One">
+    </a>
+    <span class="savestate" id="saveState"></span>
+    <div class="tabs">
+      <button class="tab active" data-view="review">Reader coverage</button>
+      <button class="tab" data-view="report">Report</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ============ READER COVERAGE ============ -->
+  <section class="view active" id="view-review">
+    <p class="eyebrow">Reader workspace</p>
+    <h1>Coverage</h1>
+    <p class="lead">Everything in the orange-edged panel is pulled straight from the writer's
+       submission, locked so you can't change it. You only write the evaluation below.
+       Your work autosaves as you type.</p>
+
+    <!-- pulled, read-only -->
+    <div class="pulled" id="pulled">
+      <div class="tag"><span class="lock">🔒</span> Pulled from the writer's submission · read-only</div>
+      <div class="meta-grid" id="pulledGrid"></div>
+    </div>
+
+    <div class="card stack">
+      <div class="grid2">
+        <div class="field">
+          <label class="lbl" for="c-reader">Reader</label>
+          <input type="text" id="c-reader" placeholder="Scene One Reader">
+        </div>
+        <div class="field">
+          <label class="lbl" for="c-date">Date</label>
+          <input type="text" id="c-date">
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="section-title"><span class="no">—</span> Assessment at a glance</p>
+      <div id="glanceInputs"></div>
+    </div>
+
+    <div class="card">
+      <p class="section-title"><span class="no">01</span> Synopsis</p>
+      <textarea id="c-synopsis" dir="auto" placeholder="Summarize the story in your own words."></textarea>
+    </div>
+
+    <div class="card">
+      <p class="section-title"><span class="no">02</span> Evaluation</p>
+      <div id="evalInputs"></div>
+    </div>
+
+    <div class="card">
+      <p class="section-title"><span class="no">03</span> The market</p>
+      <div id="marketInputs" class="stack"></div>
+    </div>
+
+    <div class="card">
+      <p class="section-title"><span class="no">04</span> Overall comments</p>
+      <div class="field">
+        <label class="lbl" for="c-strengths">Strengths</label>
+        <textarea id="c-strengths" dir="auto"></textarea>
+      </div>
+      <div class="field">
+        <label class="lbl" for="c-develop">To develop</label>
+        <textarea id="c-develop" dir="auto"></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="section-title"><span class="no">★</span> Verdict</p>
+      <div class="rating-row">
+        <div class="rating-auto">
+          <div class="big" id="autoScore">—</div>
+          <div class="cap">Suggested · from the 7 scores</div>
+        </div>
+        <div class="rating-final">
+          <label class="lbl" for="c-score10">Final rating / 10</label>
+          <input type="number" id="c-score10" min="0" max="10" step="0.5" placeholder="auto">
+          <span class="hint" id="overrideHint"></span>
+        </div>
+      </div>
+      <div class="field">
+        <label class="lbl">Decision</label>
+        <div class="seg rec" data-rec="verdict"></div>
+      </div>
+      <div class="field">
+        <label class="lbl" for="c-vctx">Context (optional)</label>
+        <input type="text" id="c-vctx" placeholder="short-film and festival context">
+      </div>
+      <div class="field">
+        <label class="lbl" for="c-vtext">Summary</label>
+        <textarea id="c-vtext" dir="auto"></textarea>
+      </div>
+    </div>
+
+    <div class="row-actions">
+      <button class="btn primary" id="genReport">Generate report</button>
+      <button class="btn ghost" id="finalizeBtn">Mark coverage complete</button>
+    </div>
+  </section>
+
+  <!-- ============ REPORT ============ -->
+  <section class="view" id="view-report">
+    <div class="toolbar">
+      <div class="seg langseg" id="langToggle" style="margin-right:auto">
+        <button data-l="en" class="on">English</button>
+        <button data-l="ar">العربية</button>
+      </div>
+      <button class="btn" id="backToReview">Edit coverage</button>
+      <button class="btn primary" id="printReport">Print / Save as PDF</button>
+    </div>
+    <div id="reportWrap"><div class="report" id="reportBody"></div></div>
+  </section>
+</main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/coverage.js"></script>
+</body>
+</html>

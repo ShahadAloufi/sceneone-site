@@ -135,6 +135,11 @@
       $("subEmpty").textContent = "تعذّر تحميل النصوص."; show($("subEmpty"));
       return;
     }
+
+    // Coverage statuses (keyed by submission id) drive the evaluation button label.
+    var covBySub = {};
+    var cov = await sb.from("coverages").select("submission_id,status");
+    (cov.data || []).forEach(function (c) { covBySub[c.submission_id] = c.status; });
     var rows = res.data || [];
     $("subCount").textContent = rows.length;
     if (!rows.length) { show($("subEmpty")); return; }
@@ -152,7 +157,8 @@
         "<td>" + esc(DRAFT[s.draft] || s.draft) + "</td>" +
         "<td>" + (s.ip_registered ? "نعم" : "لا") + "</td>" +
         "<td class='adm-file'></td>" +
-        "<td class='adm-assign'></td>";
+        "<td class='adm-assign'></td>" +
+        "<td class='adm-cov'></td>";
       // File cell
       var fileCell = tr.querySelector(".adm-file");
       if (s.file_path) {
@@ -164,6 +170,8 @@
       } else { fileCell.textContent = "—"; }
       // Assign cell
       renderAssign(tr.querySelector(".adm-assign"), s);
+      // Coverage cell
+      renderCoverage(tr.querySelector(".adm-cov"), s, covBySub[s.id]);
       body.appendChild(tr);
     });
   }
@@ -199,6 +207,18 @@
       un.addEventListener("click", function () { assign(s.id, null, cell, s); });
       cell.appendChild(un);
     }
+  }
+
+  // Coverage cell: links to the reader workspace, label follows its status.
+  function renderCoverage(cell, s, status) {
+    cell.innerHTML = "";
+    var link = document.createElement("a");
+    link.className = "adm-link adm-link--gold";
+    link.href = "coverage.html?id=" + encodeURIComponent(s.id);
+    if (status === "completed") { link.textContent = "عرض التقرير"; link.className = "adm-link"; }
+    else if (status === "in_progress") link.textContent = "متابعة التقييم";
+    else link.textContent = "ابدأ التقييم";
+    cell.appendChild(link);
   }
 
   async function assign(id, toId, cell, s) {
