@@ -65,6 +65,17 @@
     });
   });
 
+  /* ---------- ARABIC-ONLY TITLE ---------- */
+  // The Arabic title field must not contain English letters. Strip any
+  // Latin characters as the user types (this also covers pasted text).
+  var titleArInput = document.querySelector('input[name="titleAr"]');
+  if (titleArInput) {
+    titleArInput.addEventListener("input", function () {
+      var cleaned = titleArInput.value.replace(/[A-Za-z]/g, "");
+      if (cleaned !== titleArInput.value) titleArInput.value = cleaned;
+    });
+  }
+
   /* ---------- FILE DROPZONE ---------- */
   var dropZone = document.getElementById("dropZone");
   var fileInput = document.getElementById("fileInput");
