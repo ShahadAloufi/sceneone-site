@@ -800,7 +800,8 @@ a, button {
   padding: 120px 20px 80px;
 }
 @media (max-width: 560px) {
-  .submit-page { padding: 96px 16px 56px; }
+  .submit-page { padding: 96px 24px 56px; }
+  .sub-card__body { padding: 26px 20px 30px; }
 }
 .submit-page .nav { align-items: center; }
 
