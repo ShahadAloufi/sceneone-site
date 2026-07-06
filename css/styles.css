@@ -787,6 +787,9 @@ a, button {
   color: #fff;
   padding: 120px 20px 80px;
 }
+@media (max-width: 560px) {
+  .submit-page { padding: 96px 16px 56px; }
+}
 
 .sub-wrap {
   position: relative;
