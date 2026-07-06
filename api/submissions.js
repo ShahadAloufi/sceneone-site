@@ -14,11 +14,9 @@
 // Optional:
 //   RESEND_API_KEY              — reuse the existing Resend key for email alerts
 
-const FALLBACK_TO = "sceneone.info@gmail.com";
+// All submission notifications go to this shared inbox.
+const NOTIFY_TO = "sceneone.info@gmail.com";
 // Sender must be on a domain you've VERIFIED in Resend (Domains → Add Domain).
-// The shared onboarding@resend.dev sender can only deliver to your own Resend
-// account email, so it can't reach each admin's personal address — hence a
-// verified domain is required to notify all admins.
 const NOTIFY_FROM = "Scene One <no-reply@sceneone.info>";
 
 // --- Allowlists & limits (server is the source of truth; never trust client) ---
@@ -56,24 +54,6 @@ function validate(row) {
   return null;
 }
 
-// Fetch every admin's email so new submissions are announced to all of them.
-async function getAdminEmails() {
-  const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) return [];
-  try {
-    const resp = await fetch(url + "/rest/v1/admins?select=email", {
-      headers: { apikey: key, Authorization: "Bearer " + key },
-    });
-    if (!resp.ok) return [];
-    const rows = await resp.json();
-    return rows.map(function (r) { return r.email; }).filter(Boolean);
-  } catch (err) {
-    console.error("Could not load admin emails:", err);
-    return [];
-  }
-}
-
 function escapeHtml(value) {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -87,8 +67,7 @@ async function sendNotification(row) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return; // notifications are optional
 
-  const adminEmails = await getAdminEmails();
-  const recipients = adminEmails.length ? adminEmails : [FALLBACK_TO];
+  const recipients = [NOTIFY_TO];
 
   const rows = [
     ["العنوان (عربي)", row.title_ar],
