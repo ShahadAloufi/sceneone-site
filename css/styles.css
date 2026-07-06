@@ -790,6 +790,20 @@ a, button {
 @media (max-width: 560px) {
   .submit-page { padding: 96px 16px 56px; }
 }
+/* Keep the nav logo + menu button legible once the light card scrolls
+   under the fixed, transparent nav. */
+.submit-page .nav__logo {
+  background: rgba(14, 2, 2, .9);
+  padding: 8px 14px;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .3);
+}
+.submit-page .menu-btn {
+  background: rgba(14, 2, 2, .9);
+  padding: 12px 11px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .3);
+}
 
 .sub-wrap {
   position: relative;
