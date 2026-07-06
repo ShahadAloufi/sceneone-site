@@ -790,19 +790,12 @@ a, button {
 @media (max-width: 560px) {
   .submit-page { padding: 96px 16px 56px; }
 }
-/* Keep the nav logo + menu button legible once the light card scrolls
-   under the fixed, transparent nav. */
-.submit-page .nav__logo {
-  background: rgba(14, 2, 2, .9);
-  padding: 8px 14px;
-  border-radius: 14px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, .3);
-}
-.submit-page .menu-btn {
-  background: rgba(14, 2, 2, .9);
-  padding: 12px 11px;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, .3);
+/* Give the fixed nav a solid bar background so the light logo + menu
+   button stay legible once the white form card scrolls underneath. */
+.submit-page .nav {
+  background: var(--bg);
+  align-items: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .35);
 }
 
 .sub-wrap {
