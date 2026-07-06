@@ -130,6 +130,7 @@
       filmType: (data.get("filmType") || "").toString().trim(),
       draft: (data.get("draft") || "").toString().trim(),
       duration: (data.get("duration") || "").toString().trim(),
+      theme: (data.get("theme") || "").toString().trim(),
       logline: (data.get("logline") || "").toString().trim(),
       vision: (data.get("vision") || "").toString().trim(),
       ip: (data.get("ip") || "no").toString()
@@ -206,6 +207,7 @@
             filmType: v.filmType,
             draft: v.draft,
             duration: v.duration,
+            theme: v.theme,
             logline: v.logline,
             vision: v.vision,
             ip: v.ip,

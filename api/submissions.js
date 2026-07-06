@@ -24,7 +24,7 @@ const GENRES = ["drama", "comedy", "thriller", "horror", "action", "documentary"
 const FILM_TYPES = ["feature", "short"];
 const DRAFTS = ["first", "revised", "final"];
 const ALLOWED_EXT = ["pdf", "fdx", "fountain", "docx", "txt"];
-const MAX = { title: 200, email: 254, writer: 120, duration: 60, logline: 1000, vision: 5000, path: 300, fileName: 255 };
+const MAX = { title: 200, email: 254, writer: 120, duration: 60, theme: 200, logline: 1000, vision: 5000, path: 300, fileName: 255 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // Object path produced by the client: "<digits>-<base36>/<sanitized-name>".
@@ -43,6 +43,7 @@ function validate(row) {
   if (!row.writer || row.writer.length > MAX.writer) return "بيانات غير صحيحة";
   if (!row.vision || row.vision.length > MAX.vision) return "بيانات غير صحيحة";
   if (row.duration && row.duration.length > MAX.duration) return "بيانات غير صحيحة";
+  if (row.theme && row.theme.length > MAX.theme) return "بيانات غير صحيحة";
   if (row.logline && row.logline.length > MAX.logline) return "بيانات غير صحيحة";
   if (!row.email || row.email.length > MAX.email || !EMAIL_RE.test(row.email)) return "بريد إلكتروني غير صحيح";
   if (GENRES.indexOf(row.genre) === -1) return "بيانات غير صحيحة";
@@ -78,6 +79,7 @@ async function sendNotification(row) {
     ["نوع الفيلم", row.film_type],
     ["المسودة", row.draft],
     ["المدة", row.duration || "—"],
+    ["الثيم", row.theme || "—"],
     ["Logline", row.logline || "—"],
     ["رؤية الكاتب", row.vision],
     ["الحقوق مسجّلة", row.ip_registered ? "نعم" : "لا"],
@@ -148,6 +150,7 @@ module.exports = async (req, res) => {
     film_type: (b.filmType || "").toString().trim(),
     draft: (b.draft || "").toString().trim(),
     duration: (b.duration || "").toString().trim(),
+    theme: (b.theme || "").toString().trim(),
     logline: (b.logline || "").toString().trim(),
     vision: (b.vision || "").toString().trim(),
     ip_registered: b.ip === "yes" || b.ip === true,
