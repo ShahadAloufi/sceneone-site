@@ -66,13 +66,23 @@
   });
 
   /* ---------- ARABIC-ONLY TITLE ---------- */
-  // The Arabic title field must not contain English letters. Strip any
-  // Latin characters as the user types (this also covers pasted text).
+  // The Arabic title field must contain no English letters. Rather than
+  // stripping what the user types, keep their text and show an inline error.
   var titleArInput = document.querySelector('input[name="titleAr"]');
-  if (titleArInput) {
+  var titleArField = titleArInput ? titleArInput.closest('[data-field="titleAr"]') : null;
+  var titleArErr = titleArField ? titleArField.querySelector(".sub-err") : null;
+  var TITLE_AR_REQUIRED_MSG = titleArErr ? titleArErr.textContent : "هذا الحقل مطلوب";
+  var TITLE_AR_ENGLISH_MSG = "الرجاء إدخال العنوان بالعربية فقط";
+  function titleArHasEnglish() { return !!titleArInput && /[A-Za-z]/.test(titleArInput.value); }
+  if (titleArInput && titleArField) {
     titleArInput.addEventListener("input", function () {
-      var cleaned = titleArInput.value.replace(/[A-Za-z]/g, "");
-      if (cleaned !== titleArInput.value) titleArInput.value = cleaned;
+      if (titleArHasEnglish()) {
+        if (titleArErr) titleArErr.textContent = TITLE_AR_ENGLISH_MSG;
+        titleArField.classList.add("invalid");
+      } else {
+        titleArField.classList.remove("invalid");
+        if (titleArErr) titleArErr.textContent = TITLE_AR_REQUIRED_MSG;
+      }
     });
   }
 
@@ -140,7 +150,13 @@
   function validate(v, file) {
     var ok = true;
     function req(name, cond) { markInvalid(name, !cond); if (!cond) ok = false; }
-    req("titleAr", v.titleAr.length > 0);
+    // Arabic title: required AND no English letters (with a tailored message).
+    var titleArClean = v.titleAr.length > 0 && !/[A-Za-z]/.test(v.titleAr);
+    markInvalid("titleAr", !titleArClean);
+    if (!titleArClean) {
+      if (titleArErr) titleArErr.textContent = v.titleAr.length === 0 ? TITLE_AR_REQUIRED_MSG : TITLE_AR_ENGLISH_MSG;
+      ok = false;
+    }
     req("titleEn", v.titleEn.length > 0);
     req("email", EMAIL_RE.test(v.email));
     req("writer", v.writer.length > 0);
