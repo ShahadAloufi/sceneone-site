@@ -907,6 +907,24 @@ a, button {
 .sub-note__link { color: var(--gold); text-decoration: underline; font-weight: 600; }
 .sub-note__link:hover { color: #b8963f; }
 
+/* Reassurance boxes around the submit button */
+.sub-assure {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid #e2e0da;
+  border-radius: 10px;
+  padding: 13px 15px;
+  font-size: 13.5px;
+  color: #6a675f;
+  line-height: 1.7;
+}
+.sub-assure:first-of-type { margin-top: 22px; }
+.sub-assure + .sub-submit { margin-top: 14px; }
+.sub-submit + .sub-assure { margin-top: 14px; }
+.sub-assure__icon { width: 18px; height: 18px; flex-shrink: 0; color: #9a978f; }
+
 /* IP registration — radio buttons in a bordered box */
 .sub-ipbox {
   display: flex;
