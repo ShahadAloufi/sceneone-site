@@ -799,8 +799,8 @@ a, button {
   color: #fff;
   padding: 120px 20px 80px;
 }
-@media (max-width: 560px) {
-  .submit-page { padding: 96px 24px 56px; }
+@media (max-width: 768px) {
+  .submit-page { padding: 96px 28px 56px; }
   .sub-card__body { padding: 26px 20px 30px; }
 }
 .submit-page .nav { align-items: center; }
@@ -861,7 +861,7 @@ a, button {
   gap: 18px;
 }
 .sub-field--full { grid-column: 1 / -1; }
-@media (max-width: 560px) { .sub-grid { grid-template-columns: 1fr; } }
+@media (max-width: 768px) { .sub-grid { grid-template-columns: 1fr; } }
 
 .sub-field label {
   display: block;
