@@ -18,14 +18,22 @@
     b.addEventListener("click", closeMenu);
   });
 
-  /* ---------- NAV: solid on scroll ---------- */
+  /* ---------- NAV: solid once past the hero ---------- */
   var nav = document.querySelector(".nav");
   if (nav) {
+    // On the landing page, stay transparent over the hero and only turn
+    // solid once the section after it reaches the nav. Elsewhere, turn
+    // solid as soon as the page scrolls.
+    var navTrigger = document.querySelector(".quote");
     var onScroll = function () {
-      nav.classList.toggle("scrolled", window.scrollY > 30);
+      var solid = navTrigger
+        ? navTrigger.getBoundingClientRect().top <= nav.offsetHeight
+        : window.scrollY > 30;
+      nav.classList.toggle("scrolled", solid);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
   }
 
   /* ---------- FAQ ACCORDION ---------- */
