@@ -53,6 +53,8 @@ a, button {
   justify-content: space-between;
   padding: 20px 24px;
   direction: ltr;
+  background: var(--bg);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .35);
 }
 .nav.center { align-items: center; }
 .nav__logo { height: 56px; width: auto; }
@@ -790,13 +792,7 @@ a, button {
 @media (max-width: 560px) {
   .submit-page { padding: 96px 16px 56px; }
 }
-/* Give the fixed nav a solid bar background so the light logo + menu
-   button stay legible once the white form card scrolls underneath. */
-.submit-page .nav {
-  background: var(--bg);
-  align-items: center;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, .35);
-}
+.submit-page .nav { align-items: center; }
 
 .sub-wrap {
   position: relative;
