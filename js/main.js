@@ -18,6 +18,16 @@
     b.addEventListener("click", closeMenu);
   });
 
+  /* ---------- NAV: solid on scroll ---------- */
+  var nav = document.querySelector(".nav");
+  if (nav) {
+    var onScroll = function () {
+      nav.classList.toggle("scrolled", window.scrollY > 30);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+
   /* ---------- FAQ ACCORDION ---------- */
   document.querySelectorAll(".faq-item").forEach(function (item) {
     var btn = item.querySelector(".faq-item__btn");
