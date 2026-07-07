@@ -6,6 +6,11 @@
 <title>Scene One — Coverage</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<script>
+  (function(){try{var t=localStorage.getItem('sceneone-theme');
+    if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}
+    document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
@@ -14,8 +19,18 @@
     --ink:#15110f; --orange:#CD2E07; --orange-d:#a82405;
     --paper:#ffffff; --card:#ffffff; --line:#e7e2da; --line2:#efebe3;
     --muted:#8a8178; --label:#6f665e; --soft:#f3efe8;
+    --field-bg:#ffffff; --field-dim:#d8d2c8; --body-txt:#3f3a35;
     --good:#2f7d4f; --ok:#b7892b; --bad:#b14a3a;
+    --toast-bg:#15110f; --toast-txt:#ffffff;
     --font:'IBM Plex Sans Arabic','IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  }
+  html[data-theme="dark"]{
+    --ink:#f2ede6; --orange:#f2612f; --orange-d:#d94a1c;
+    --paper:#14110f; --card:#1e1a17; --line:#322c26; --line2:#2a251f;
+    --muted:#a49b90; --label:#b3a99e; --soft:#241f1a;
+    --field-bg:#191512; --field-dim:#4a4239; --body-txt:#d8d0c6;
+    --good:#57b07f; --ok:#d6ad55; --bad:#e57368;
+    --toast-bg:#2c2620; --toast-txt:#f2ede6;
   }
   *{box-sizing:border-box}
   html,body{margin:0}
@@ -43,6 +58,9 @@
        color:#cbc7c1;padding:6px 12px;border-radius:7px;cursor:pointer;transition:.15s}
   .uilang button.on{background:var(--card);color:var(--ink)}
   .uilang button:hover:not(.on){color:#fff}
+  .themebtn{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);
+       color:#fff;font-size:15px;line-height:1;padding:8px 11px;border-radius:9px;cursor:pointer;transition:.15s}
+  .themebtn:hover{background:rgba(255,255,255,.16)}
   /* RTL (Arabic) chrome tweaks */
   [dir=rtl] .pulled{border-left:1px solid var(--line);border-right:3px solid var(--orange)}
   [dir=rtl] .tabs{margin-left:0;margin-right:auto}
@@ -63,7 +81,7 @@
   .field:last-child{margin-bottom:0}
   label.lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label);font-weight:600}
   input[type=text],input[type=number],select,textarea{font-family:inherit;font-size:14.5px;color:var(--ink);
-       background:#fff;border:1px solid var(--line);border-radius:9px;padding:10px 12px;width:100%;
+       background:var(--field-bg);border:1px solid var(--line);border-radius:9px;padding:10px 12px;width:100%;
        outline:none;transition:border-color .15s,box-shadow .15s}
   input:focus,select:focus,textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(189,61,32,.1)}
   textarea{resize:vertical;min-height:72px;line-height:1.5}
@@ -73,8 +91,8 @@
   .section-title .no{color:var(--orange);font-variant-numeric:tabular-nums}
 
   .btn{font-family:inherit;font-size:14px;font-weight:500;border-radius:10px;padding:11px 20px;
-       cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink);transition:.15s}
-  .btn:hover{border-color:#cfc8bd}
+       cursor:pointer;border:1px solid var(--line);background:var(--field-bg);color:var(--ink);transition:.15s}
+  .btn:hover{border-color:var(--muted)}
   .btn.primary{background:var(--orange);border-color:var(--orange);color:#fff}
   .btn.primary:hover{background:var(--orange-d)}
   .btn.ghost{background:transparent}
@@ -82,7 +100,7 @@
 
   /* segmented controls */
   .seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;flex-wrap:wrap}
-  .seg button{border:0;background:#fff;font-family:inherit;font-size:13px;color:var(--label);
+  .seg button{border:0;background:var(--field-bg);font-family:inherit;font-size:13px;color:var(--label);
               padding:8px 14px;cursor:pointer;border-right:1px solid var(--line)}
   .seg button:last-child{border-right:0}
   .seg button.on{background:var(--ink);color:#fff}
@@ -91,7 +109,7 @@
   .seg button.on.bad{background:var(--bad)}
 
   /* ---------- "pulled from submission" panel ---------- */
-  .pulled{background:linear-gradient(180deg,#fff, #fdfbf7);border:1px solid var(--line);
+  .pulled{background:var(--card);border:1px solid var(--line);
           border-left:3px solid var(--orange);border-radius:12px;padding:20px 22px;margin-bottom:22px}
   .pulled .tag{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;letter-spacing:.14em;
                text-transform:uppercase;color:var(--orange);font-weight:600;margin-bottom:14px}
@@ -109,7 +127,7 @@
   .eval-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
   .eval-head .name{font-weight:600;font-size:14.5px}
   .score{display:inline-flex;gap:4px}
-  .score button{width:30px;height:30px;border:1px solid var(--line);background:#fff;border-radius:7px;
+  .score button{width:30px;height:30px;border:1px solid var(--line);background:var(--field-bg);border-radius:7px;
                 font-family:inherit;font-size:13px;color:var(--label);cursor:pointer;font-variant-numeric:tabular-nums}
   .score button.on{background:var(--orange);border-color:var(--orange);color:#fff}
 
@@ -168,6 +186,13 @@
             display:flex;justify-content:space-between;font-size:11px;color:var(--muted);letter-spacing:.04em}
   .empty{color:#c9c2b6;font-style:italic}
 
+  /* keep the printable report a white document even in dark mode */
+  html[data-theme="dark"] #reportWrap{
+    --ink:#15110f; --orange:#CD2E07; --card:#ffffff; --line:#e7e2da; --line2:#efebe3;
+    --muted:#8a8178; --label:#6f665e; --soft:#f3efe8; --body-txt:#3f3a35; --field-dim:#d8d2c8;
+    background:#fff;
+  }
+
   .toolbar{display:flex;gap:12px;justify-content:flex-end;margin-bottom:16px;flex-wrap:wrap}
 
   .rating-row{display:flex;gap:22px;align-items:center;background:var(--soft);border-radius:11px;
@@ -184,7 +209,7 @@
   .score10 .n{font-size:30px}
 
   .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(16px);
-         background:var(--ink);color:#fff;padding:11px 18px;border-radius:10px;font-size:13.5px;
+         background:var(--toast-bg);color:var(--toast-txt);padding:11px 18px;border-radius:10px;font-size:13.5px;
          opacity:0;pointer-events:none;transition:.2s;z-index:50}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
@@ -233,6 +258,7 @@
       <button data-l="ar">العربية</button>
       <button data-l="en">English</button>
     </div>
+    <button class="themebtn" id="themeBtn" type="button" title="Toggle theme" aria-label="Toggle theme">🌙</button>
   </div>
 </header>
 
@@ -344,6 +370,7 @@
 
 <script src="js/config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/theme.js"></script>
 <script src="js/coverage.js"></script>
 </body>
 </html>

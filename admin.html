@@ -6,6 +6,11 @@
   <title>Scene One — لوحة التحكم</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <script>
+    (function(){try{var t=localStorage.getItem('sceneone-theme');
+      if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}
+      document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -39,6 +44,7 @@
     <div class="adm-top__right">
       <span class="adm-who" id="admWho"></span>
       <span class="adm-role" id="admRole"></span>
+      <button class="adm-btn adm-btn--ghost adm-theme" id="themeBtn" type="button" title="تبديل المظهر" aria-label="تبديل المظهر">🌙</button>
       <button class="adm-btn adm-btn--ghost" id="logoutBtn">تسجيل الخروج</button>
     </div>
   </header>
@@ -124,6 +130,7 @@
 
 <script src="js/config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/theme.js"></script>
 <script src="js/admin.js"></script>
 </body>
 </html>
