@@ -193,8 +193,11 @@
   html[data-theme="dark"] #reportWrap{
     --ink:#15110f; --orange:#CD2E07; --card:#ffffff; --line:#e7e2da; --line2:#efebe3;
     --muted:#8a8178; --label:#6f665e; --soft:#f3efe8; --body-txt:#3f3a35; --field-dim:#d8d2c8;
-    background:#fff;
+    background:#fff; color:var(--ink);
   }
+  /* field values and other text that inherit their color must be re-lit too */
+  html[data-theme="dark"] #reportWrap .rep-top .v,
+  html[data-theme="dark"] #reportWrap .rep-title{color:var(--ink)}
 
   .toolbar{display:flex;gap:12px;justify-content:flex-end;margin-bottom:16px;flex-wrap:wrap}
 
