@@ -350,7 +350,6 @@
       if (!ar) return val(raw);
       var x = raw == null ? "" : String(raw);
       if (!x.trim()) return val(raw);
-      if (kind === "reader" && x === "Scene One Reader") return esc("احد قراء SCENE ONE");
       if (kind === "date") return esc(locDate(x));
       var m = { format: t.fmt, draft: t.drf, genre: t.genreMap, length: t.lenMap, writer: t.writerMap }[kind];
       if (m && m[x]) return esc(m[x]);
@@ -359,7 +358,7 @@
     var top = [[t.title, '<span class="rep-title">' + esc(s.titleEn || "Untitled") + (s.titleAr ? ' <span class="ar">(' + esc(s.titleAr) + ")</span>" : "") + "</span>", true],
       [t.writer, lv("writer", s.writer)], [t.format, lv("format", s.format)], [t.genre, lv("genre", s.genre)],
       [t.length, lv("length", s.length)], [t.draft, lv("draft", s.draft)],
-      [t.reader, lv("reader", c.reader)], [t.date, lv("date", c.date)]];
+      [t.reader, esc(ar ? "احد قراء Scene One" : "Scene One Reader")], [t.date, lv("date", c.date)]];
     var topHtml = top.map(function (r) { return "<div" + (r[2] ? ' style="grid-column:1/-1"' : "") + '><div class="k">' + r[0] + '</div><div class="v" dir="auto">' + r[1] + "</div></div>"; }).join("");
 
     var glOpts = [t.excellent, t.good, t.fair, t.poor];
