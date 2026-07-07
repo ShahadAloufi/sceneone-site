@@ -38,6 +38,14 @@
        color:#cbc7c1;padding:7px 14px;border-radius:7px;cursor:pointer;transition:.15s}
   .tab.active{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
   .tab:hover:not(.active){color:#fff}
+  .uilang{display:flex;gap:2px;background:rgba(255,255,255,.08);padding:4px;border-radius:10px}
+  .uilang button{border:0;background:transparent;font-family:inherit;font-size:12.5px;font-weight:500;
+       color:#cbc7c1;padding:6px 12px;border-radius:7px;cursor:pointer;transition:.15s}
+  .uilang button.on{background:var(--card);color:var(--ink)}
+  .uilang button:hover:not(.on){color:#fff}
+  /* RTL (Arabic) chrome tweaks */
+  [dir=rtl] .pulled{border-left:1px solid var(--line);border-right:3px solid var(--orange)}
+  [dir=rtl] .tabs{margin-left:0;margin-right:auto}
 
   main{max-width:920px;margin:0 auto;padding:30px 20px 90px}
   .view{display:none}
@@ -218,8 +226,12 @@
     </a>
     <span class="savestate" id="saveState"></span>
     <div class="tabs">
-      <button class="tab active" data-view="review">Reader coverage</button>
-      <button class="tab" data-view="report">Report</button>
+      <button class="tab active" data-view="review" data-i18n="tabReview">Reader coverage</button>
+      <button class="tab" data-view="report" data-i18n="tabReport">Report</button>
+    </div>
+    <div class="seg uilang" id="uiLang">
+      <button data-l="ar">العربية</button>
+      <button data-l="en">English</button>
     </div>
   </div>
 </header>
@@ -227,92 +239,92 @@
 <main>
   <!-- ============ READER COVERAGE ============ -->
   <section class="view active" id="view-review">
-    <p class="eyebrow">Reader workspace</p>
-    <h1>Coverage</h1>
-    <p class="lead">Everything in the orange-edged panel is pulled straight from the writer's
+    <p class="eyebrow" data-i18n="eyebrow">Reader workspace</p>
+    <h1 data-i18n="h1">Coverage</h1>
+    <p class="lead" data-i18n="lead">Everything in the orange-edged panel is pulled straight from the writer's
        submission, locked so you can't change it. You only write the evaluation below.
        Your work autosaves as you type.</p>
 
     <!-- pulled, read-only -->
     <div class="pulled" id="pulled">
-      <div class="tag"><span class="lock">🔒</span> Pulled from the writer's submission · read-only</div>
+      <div class="tag"><span class="lock">🔒</span> <span data-i18n="pulledTag">Pulled from the writer's submission · read-only</span></div>
       <div class="meta-grid" id="pulledGrid"></div>
     </div>
 
     <div class="card stack">
       <div class="grid2">
         <div class="field">
-          <label class="lbl" for="c-reader">Reader</label>
-          <input type="text" id="c-reader" placeholder="Scene One Reader">
+          <label class="lbl" for="c-reader" data-i18n="reader">Reader</label>
+          <input type="text" id="c-reader" data-i18n-ph="readerPh" placeholder="Scene One Reader">
         </div>
         <div class="field">
-          <label class="lbl" for="c-date">Date</label>
+          <label class="lbl" for="c-date" data-i18n="date">Date</label>
           <input type="text" id="c-date">
         </div>
       </div>
     </div>
 
     <div class="card">
-      <p class="section-title"><span class="no">—</span> Assessment at a glance</p>
+      <p class="section-title"><span class="no">—</span> <span data-i18n="glance">Assessment at a glance</span></p>
       <div id="glanceInputs"></div>
     </div>
 
     <div class="card">
-      <p class="section-title"><span class="no">01</span> Synopsis</p>
-      <textarea id="c-synopsis" dir="auto" placeholder="Summarize the story in your own words."></textarea>
+      <p class="section-title"><span class="no">01</span> <span data-i18n="synopsis">Synopsis</span></p>
+      <textarea id="c-synopsis" dir="auto" data-i18n-ph="synopsisPh" placeholder="Summarize the story in your own words."></textarea>
     </div>
 
     <div class="card">
-      <p class="section-title"><span class="no">02</span> Evaluation</p>
+      <p class="section-title"><span class="no">02</span> <span data-i18n="evaluation">Evaluation</span></p>
       <div id="evalInputs"></div>
     </div>
 
     <div class="card">
-      <p class="section-title"><span class="no">03</span> The market</p>
+      <p class="section-title"><span class="no">03</span> <span data-i18n="market">The market</span></p>
       <div id="marketInputs" class="stack"></div>
     </div>
 
     <div class="card">
-      <p class="section-title"><span class="no">04</span> Overall comments</p>
+      <p class="section-title"><span class="no">04</span> <span data-i18n="overall">Overall comments</span></p>
       <div class="field">
-        <label class="lbl" for="c-strengths">Strengths</label>
+        <label class="lbl" for="c-strengths" data-i18n="strengths">Strengths</label>
         <textarea id="c-strengths" dir="auto"></textarea>
       </div>
       <div class="field">
-        <label class="lbl" for="c-develop">To develop</label>
+        <label class="lbl" for="c-develop" data-i18n="develop">To develop</label>
         <textarea id="c-develop" dir="auto"></textarea>
       </div>
     </div>
 
     <div class="card">
-      <p class="section-title"><span class="no">★</span> Verdict</p>
+      <p class="section-title"><span class="no">★</span> <span data-i18n="verdict">Verdict</span></p>
       <div class="rating-row">
         <div class="rating-auto">
           <div class="big" id="autoScore">—</div>
-          <div class="cap">Suggested · from the 7 scores</div>
+          <div class="cap" data-i18n="suggested">Suggested · from the 7 scores</div>
         </div>
         <div class="rating-final">
-          <label class="lbl" for="c-score10">Final rating / 10</label>
+          <label class="lbl" for="c-score10" data-i18n="finalRating">Final rating / 10</label>
           <input type="number" id="c-score10" min="0" max="10" step="0.5" placeholder="auto">
           <span class="hint" id="overrideHint"></span>
         </div>
       </div>
       <div class="field">
-        <label class="lbl">Decision</label>
+        <label class="lbl" data-i18n="decision">Decision</label>
         <div class="seg rec" data-rec="verdict"></div>
       </div>
       <div class="field">
-        <label class="lbl" for="c-vctx">Context (optional)</label>
-        <input type="text" id="c-vctx" placeholder="short-film and festival context">
+        <label class="lbl" for="c-vctx" data-i18n="context">Context (optional)</label>
+        <input type="text" id="c-vctx" data-i18n-ph="contextPh" placeholder="short-film and festival context">
       </div>
       <div class="field">
-        <label class="lbl" for="c-vtext">Summary</label>
+        <label class="lbl" for="c-vtext" data-i18n="summary">Summary</label>
         <textarea id="c-vtext" dir="auto"></textarea>
       </div>
     </div>
 
     <div class="row-actions">
-      <button class="btn primary" id="genReport">Generate report</button>
+      <button class="btn primary" id="genReport" data-i18n="genReport">Generate report</button>
       <button class="btn ghost" id="finalizeBtn">Mark coverage complete</button>
     </div>
   </section>
@@ -320,12 +332,8 @@
   <!-- ============ REPORT ============ -->
   <section class="view" id="view-report">
     <div class="toolbar">
-      <div class="seg langseg" id="langToggle" style="margin-right:auto">
-        <button data-l="en" class="on">English</button>
-        <button data-l="ar">العربية</button>
-      </div>
-      <button class="btn" id="backToReview">Edit coverage</button>
-      <button class="btn primary" id="printReport">Print / Save as PDF</button>
+      <button class="btn" id="backToReview" data-i18n="editCoverage" style="margin-right:auto">Edit coverage</button>
+      <button class="btn primary" id="printReport" data-i18n="print">Print / Save as PDF</button>
     </div>
     <div id="reportWrap"><div class="report" id="reportBody"></div></div>
   </section>

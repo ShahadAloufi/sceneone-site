@@ -10,7 +10,8 @@
   "use strict";
 
   var CFG = window.SCENEONE_SUPABASE || {};
-  var LANG = "en";
+  var LANG = "ar";    // report language (kept in sync with the workspace language)
+  var UILANG = "ar";  // workspace-chrome language
   var LOGO = "assets/scene-one-logo.svg";
 
   /* ---------- bilingual report strings ---------- */
@@ -64,6 +65,56 @@
   var FORMAT_EN = { feature: "Feature", short: "Short film" };
   var DRAFT_EN = { first: "First draft", revised: "Revised draft", final: "Final draft" };
 
+  /* ---------- workspace-chrome translations ---------- */
+  var UI = {
+    en: {
+      tabReview: "Reader coverage", tabReport: "Report",
+      eyebrow: "Reader workspace", h1: "Coverage",
+      lead: "Everything in the orange-edged panel is pulled straight from the writer's submission, locked so you can't change it. You only write the evaluation below. Your work autosaves as you type.",
+      pulledTag: "Pulled from the writer's submission · read-only",
+      reader: "Reader", readerPh: "Scene One Reader", date: "Date",
+      glance: "Assessment at a glance",
+      synopsis: "Synopsis", synopsisPh: "Summarize the story in your own words.",
+      evaluation: "Evaluation", market: "The market", overall: "Overall comments",
+      strengths: "Strengths", develop: "To develop",
+      verdict: "Verdict", suggested: "Suggested · from the 7 scores",
+      finalRating: "Final rating / 10", decision: "Decision",
+      context: "Context (optional)", contextPh: "short-film and festival context", summary: "Summary",
+      genReport: "Generate report", finalize: "Mark coverage complete", reopen: "Reopen coverage",
+      editCoverage: "Edit coverage", print: "Print / Save as PDF",
+      pl: { title: "Title", writer: "Writer", email: "Email", ref: "Reference", format: "Format", genre: "Genre", length: "Length", draft: "Draft", ip: "IP registered", file: "Script file", logline: "Logline", vision: "Writer's vision" },
+      ipYes: "Registered", ipNo: "Not registered", dl: "Download script", untitled: "Untitled", dash: "—",
+      saving: "Saving…", saved: "Saved", saveFailed: "Save failed", loaded: "Loaded", newCov: "New coverage",
+      hintOverride: function (a) { return "Overriding the suggested " + a; }, hintManual: "Manual rating", hintAuto: "Using the suggested score",
+      evalPh: function (n) { return "Your assessment of " + n + "."; },
+      tComplete: "Coverage marked complete", tReopened: "Coverage reopened", tDlFail: "Couldn't create the download link."
+    },
+    ar: {
+      tabReview: "تقييم القارئ", tabReport: "التقرير",
+      eyebrow: "مساحة القارئ", h1: "التقييم",
+      lead: "كل ما في اللوحة ذات الحدّ البرتقالي مأخوذ مباشرةً من طلب الكاتب، ومقفل لا يمكنك تغييره. أنت تكتب التقييم في الأسفل فقط، ويُحفظ عملك تلقائيًا أثناء الكتابة.",
+      pulledTag: "مأخوذ من طلب الكاتب · للقراءة فقط",
+      reader: "القارئ", readerPh: "قارئ Scene One", date: "التاريخ",
+      glance: "التقييم العام",
+      synopsis: "الملخّص", synopsisPh: "لخّص القصة بأسلوبك.",
+      evaluation: "التقييم", market: "السوق", overall: "ملاحظات عامة",
+      strengths: "نقاط القوة", develop: "ما يحتاج إلى تطوير",
+      verdict: "الحكم", suggested: "مقترح · من الدرجات السبع",
+      finalRating: "التقييم النهائي / ١٠", decision: "القرار",
+      context: "السياق (اختياري)", contextPh: "سياق الأفلام القصيرة والمهرجانات", summary: "الخلاصة",
+      genReport: "إنشاء التقرير", finalize: "وضع علامة اكتمال التقييم", reopen: "إعادة فتح التقييم",
+      editCoverage: "تعديل التقييم", print: "طباعة / حفظ PDF",
+      pl: { title: "العنوان", writer: "الكاتب", email: "البريد", ref: "المرجع", format: "نوع العمل", genre: "النوع", length: "الطول", draft: "المسودة", ip: "تسجيل الحقوق", file: "ملف النص", logline: "الفكرة المختصرة", vision: "رؤية الكاتب" },
+      ipYes: "مُسجّلة", ipNo: "غير مُسجّلة", dl: "تحميل النص", untitled: "بدون عنوان", dash: "—",
+      saving: "جارٍ الحفظ…", saved: "تم الحفظ", saveFailed: "فشل الحفظ", loaded: "تم التحميل", newCov: "تقييم جديد",
+      hintOverride: function (a) { return "يتجاوز الدرجة المقترحة " + a; }, hintManual: "تقييم يدوي", hintAuto: "استخدام الدرجة المقترحة",
+      evalPh: function (n) { return "تقييمك لـ" + n + "."; },
+      tComplete: "تم وضع علامة اكتمال التقييم", tReopened: "أُعيد فتح التقييم", tDlFail: "تعذّر إنشاء رابط التحميل."
+    }
+  };
+  // maps a glance option (canonical English) to its UI translation key
+  var GLANCE_OPT_KEY = { Excellent: "excellent", Good: "good", Fair: "fair", Poor: "poor" };
+
   /* ---------- helpers ---------- */
   function $(id) { return document.getElementById(id); }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>]/g, function (c) { return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]; }); }
@@ -92,13 +143,14 @@
   var covStatus = "in_progress"; // 'in_progress' | 'completed'
   var saveT = null;
 
-  function setSaveState(txt) { var el = $("saveState"); if (el) el.textContent = txt; }
+  var currentSaveKey = "";
+  function setSaveState(key) { currentSaveKey = key; var el = $("saveState"); if (el) el.textContent = UI[UILANG][key] || ""; }
 
   function scheduleSave() { clearTimeout(saveT); saveT = setTimeout(save, 500); }
 
   async function save() {
     if (!sb || !submissionId || !me) return;
-    setSaveState("Saving…");
+    setSaveState("saving");
     var res = await sb.from("coverages").upsert({
       submission_id: submissionId,
       reader_id: me.id,
@@ -106,8 +158,8 @@
       status: covStatus,
       updated_at: new Date().toISOString()
     }, { onConflict: "submission_id" });
-    if (res.error) { setSaveState("Save failed"); return; }
-    setSaveState("Saved");
+    if (res.error) { setSaveState("saveFailed"); return; }
+    setSaveState("saved");
   }
 
   /* ---------- tabs ---------- */
@@ -123,24 +175,24 @@
 
   /* ---------- pulled (read-only) panel ---------- */
   function renderPulled() {
-    var s = state.submission;
-    var title = esc(s.titleEn || "Untitled") + (s.titleAr ? '  <span style="color:var(--label)">· ' + esc(s.titleAr) + "</span>" : "");
+    var s = state.submission, u = UI[UILANG], pl = u.pl, dash = u.dash;
+    var title = esc(s.titleEn || u.untitled) + (s.titleAr ? '  <span style="color:var(--label)">· ' + esc(s.titleAr) + "</span>" : "");
     var fileCell = s.filePath
-      ? '<a href="#" id="dlLink">' + esc(s.file || "Download script") + "</a>"
-      : esc(s.file || "—");
+      ? '<a href="#" id="dlLink">' + esc(s.file || u.dl) + "</a>"
+      : esc(s.file || dash);
     var rows = [
-      ["Title", title, true],
-      ["Writer", esc(s.writer || "—")],
-      ["Email", '<span dir="ltr">' + esc(s.email || "—") + "</span>"],
-      ["Reference", esc(s.ref || "—")],
-      ["Format", esc(s.format || "—")],
-      ["Genre", esc(s.genre || "—")],
-      ["Length", esc(s.length || "—")],
-      ["Draft", esc(s.draft || "—")],
-      ["IP registered", s.ip ? '<span style="color:var(--good);font-weight:600">Registered</span>' : "Not registered"],
-      ["Script file", fileCell],
-      ["Logline", '<span dir="auto">' + esc(s.logline || "—") + "</span>", true],
-      ["Writer's vision", '<span dir="auto">' + esc(s.vision || "—") + "</span>", true]
+      [pl.title, title, true],
+      [pl.writer, esc(s.writer || dash)],
+      [pl.email, '<span dir="ltr">' + esc(s.email || dash) + "</span>"],
+      [pl.ref, esc(s.ref || dash)],
+      [pl.format, esc(s.format || dash)],
+      [pl.genre, esc(s.genre || dash)],
+      [pl.length, esc(s.length || dash)],
+      [pl.draft, esc(s.draft || dash)],
+      [pl.ip, s.ip ? '<span style="color:var(--good);font-weight:600">' + u.ipYes + "</span>" : u.ipNo],
+      [pl.file, fileCell],
+      [pl.logline, '<span dir="auto">' + esc(s.logline || dash) + "</span>", true],
+      [pl.vision, '<span dir="auto">' + esc(s.vision || dash) + "</span>", true]
     ];
     $("pulledGrid").innerHTML = rows.map(function (r) {
       return '<div class="' + (r[2] ? "full" : "") + '"><div class="k">' + r[0] + '</div><div class="v">' + r[1] + "</div></div>";
@@ -153,13 +205,13 @@
     var old = el.textContent; el.textContent = "…";
     var res = await sb.storage.from(CFG.bucket).createSignedUrl(path, 120);
     el.textContent = old;
-    if (res.error || !res.data) { toast("Couldn't create the download link."); return; }
+    if (res.error || !res.data) { toast(UI[UILANG].tDlFail); return; }
     window.open(res.data.signedUrl, "_blank");
   }
 
   /* ---------- coverage inputs ---------- */
-  function buildSeg(container, opts, getVal, setVal, classer) {
-    container.innerHTML = opts.map(function (o) { return '<button data-v="' + o + '">' + o + "</button>"; }).join("");
+  function buildSeg(container, opts, getVal, setVal, classer, labeler) {
+    container.innerHTML = opts.map(function (o) { return '<button data-v="' + o + '">' + (labeler ? labeler(o) : o) + "</button>"; }).join("");
     function refresh() {
       Array.prototype.forEach.call(container.children, function (b) {
         var on = b.dataset.v === getVal();
@@ -192,39 +244,45 @@
     if (el) el.innerHTML = (auto == null ? "—" : auto) + '<span class="den"> / 10</span>';
     var hint = $("overrideHint");
     if (hint) {
+      var u = UI[UILANG];
       var ov = state.coverage.score10;
-      if (ov !== "" && ov != null && !isNaN(+ov) && auto != null && +ov !== auto) hint.textContent = "Overriding the suggested " + auto;
-      else if (ov !== "" && ov != null) hint.textContent = "Manual rating";
-      else hint.textContent = "Using the suggested score";
+      if (ov !== "" && ov != null && !isNaN(+ov) && auto != null && +ov !== auto) hint.textContent = u.hintOverride(auto);
+      else if (ov !== "" && ov != null) hint.textContent = u.hintManual;
+      else hint.textContent = u.hintAuto;
     }
   }
 
+  function glanceLabel(o) { return T[UILANG][GLANCE_OPT_KEY[o]] || o; }
+  function recLabel(o) { return (T[UILANG].decision && T[UILANG].decision[o]) || o; }
+
   function buildCoverageInputs() {
+    var tl = T[UILANG];
     // glance
     var gi = $("glanceInputs"); gi.innerHTML = "";
     GLANCE.forEach(function (cat) {
       var wrap = document.createElement("div"); wrap.className = "field";
-      wrap.innerHTML = '<label class="lbl">' + cat + '</label><div class="seg rate"></div>';
+      wrap.innerHTML = '<label class="lbl">' + esc(tl.glance_l[cat] || cat) + '</label><div class="seg rate"></div>';
       gi.appendChild(wrap);
       buildSeg(wrap.querySelector(".seg"), GLANCE_OPTS,
         function () { return state.coverage.glance[cat] || ""; },
-        function (v) { state.coverage.glance[cat] = v; }, glanceClass);
+        function (v) { state.coverage.glance[cat] = v; }, glanceClass, glanceLabel);
     });
     // rec segs
     document.querySelectorAll(".seg.rec").forEach(function (seg) {
       buildSeg(seg, REC_OPTS,
         function () { return state.coverage.verdict.decision; },
         function (v) { state.coverage.verdict.decision = v; },
-        recClass);
+        recClass, recLabel);
     });
     // evaluation
     var ei = $("evalInputs"); ei.innerHTML = "";
     EVAL.forEach(function (name) {
+      var lbl = tl.eval[name] || name;
       var b = document.createElement("div"); b.className = "eval-block";
       var sc = ""; for (var i = 1; i <= 5; i++) sc += '<button data-s="' + i + '">' + i + "</button>";
-      b.innerHTML = '<div class="eval-head"><span class="name">' + name + "</span>" +
+      b.innerHTML = '<div class="eval-head"><span class="name">' + esc(lbl) + "</span>" +
         '<span class="score">' + sc + "</span></div>" +
-        '<textarea dir="auto" placeholder="Your assessment of ' + name.toLowerCase() + '."></textarea>';
+        '<textarea dir="auto" placeholder="' + esc(UI[UILANG].evalPh(lbl)) + '"></textarea>';
       ei.appendChild(b);
       var ta = b.querySelector("textarea");
       ta.value = state.coverage.eval[name].text;
@@ -243,7 +301,7 @@
     var mi = $("marketInputs"); mi.innerHTML = "";
     MARKET.forEach(function (m) {
       var f = document.createElement("div"); f.className = "field";
-      f.innerHTML = '<label class="lbl">' + m.label + '</label><textarea dir="auto"></textarea>';
+      f.innerHTML = '<label class="lbl">' + esc(tl.market_l[m.k] || m.label) + '</label><textarea dir="auto"></textarea>';
       mi.appendChild(f);
       var ta = f.querySelector("textarea"); ta.value = state.coverage.market[m.k];
       ta.addEventListener("input", function () { state.coverage.market[m.k] = ta.value; scheduleSave(); });
@@ -348,11 +406,28 @@
     rb.classList.toggle("ar", ar);
   }
 
-  document.querySelectorAll("#langToggle button").forEach(function (b) {
-    b.onclick = function () {
-      document.querySelectorAll("#langToggle button").forEach(function (x) { x.classList.remove("on"); });
-      b.classList.add("on"); LANG = b.dataset.l; renderReport();
-    };
+  /* ---------- language (whole workspace + report) ---------- */
+  function applyUILang(lang) {
+    UILANG = lang; LANG = lang;
+    var u = UI[lang];
+    document.documentElement.setAttribute("lang", lang);
+    document.documentElement.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      var k = el.getAttribute("data-i18n"); if (u[k] != null) el.textContent = u[k];
+    });
+    document.querySelectorAll("[data-i18n-ph]").forEach(function (el) {
+      var k = el.getAttribute("data-i18n-ph"); if (u[k] != null) el.setAttribute("placeholder", u[k]);
+    });
+    document.querySelectorAll("#uiLang button").forEach(function (b) { b.classList.toggle("on", b.dataset.l === lang); });
+    finalizeBtn.textContent = covStatus === "completed" ? u.reopen : u.finalize;
+    setSaveState(currentSaveKey);
+    buildCoverageInputs();
+    fillCovFields();
+    renderPulled();
+    if ($("view-report").classList.contains("active")) renderReport();
+  }
+  document.querySelectorAll("#uiLang button").forEach(function (b) {
+    b.onclick = function () { applyUILang(b.dataset.l); };
   });
 
   $("genReport").onclick = function () { show("report"); };
@@ -362,9 +437,10 @@
   var finalizeBtn = $("finalizeBtn");
   finalizeBtn.onclick = async function () {
     covStatus = covStatus === "completed" ? "in_progress" : "completed";
-    finalizeBtn.textContent = covStatus === "completed" ? "Reopen coverage" : "Mark coverage complete";
+    var u = UI[UILANG];
+    finalizeBtn.textContent = covStatus === "completed" ? u.reopen : u.finalize;
     await save();
-    toast(covStatus === "completed" ? "Coverage marked complete" : "Coverage reopened");
+    toast(covStatus === "completed" ? u.tComplete : u.tReopened);
   };
 
   /* ---------- guard helpers ---------- */
@@ -450,17 +526,14 @@
       if (!state.coverage.date) state.coverage.date = today();
       if (state.coverage.score10 == null) state.coverage.score10 = "";
       covStatus = covRes.data.status || "in_progress";
-      setSaveState("Loaded");
+      setSaveState("loaded");
     } else {
       state.coverage.reader = me.name || "Scene One Reader";
       covStatus = "in_progress";
-      setSaveState("New coverage");
+      setSaveState("newCov");
     }
-    finalizeBtn.textContent = covStatus === "completed" ? "Reopen coverage" : "Mark coverage complete";
 
-    fillCovFields();
-    buildCoverageInputs();
-    renderPulled();
+    applyUILang(UILANG); // builds inputs, fills fields, renders the pulled panel
     enterApp();
   })();
 })();
