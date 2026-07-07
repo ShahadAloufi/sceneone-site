@@ -39,10 +39,10 @@
       market_l: { audience: "الجمهور المستهدف", genreDemand: "النوع والطلب في السوق", pathBuyers: "مسار المشروع والجهات المشترية", budgetCeiling: "الميزانية وسقف الإيرادات المتوقع", regional: "إمكانات الانتشار الإقليمي", net: "صافي العائد" },
       glance_l: { "Premise & Theme": "الفكرة والموضوع", "Hook": "عنصر الجذب", "Stakes & Plot": "الرهانات الدرامية والحبكة", "Character": "الشخصيات", "Structure & Pace": "البناء الدرامي والإيقاع", "Producibility": "قابلية الإنتاج", "Overall presentation": "العرض العام" },
       decision: { Recommend: "يُوصى به", Consider: "يستحق الدراسة", Pass: "غير موصى به" },
-      fmt: { "Short film": "فيلم قصير", "Feature": "فيلم طويل", "Series": "مسلسل", "Other": "أخرى" },
-      drf: { "First draft": "مسودة أولى", "Revised draft": "مسودة منقّحة", "Final draft": "مسودة نهائية" },
+      fmt: { "Short film": "فيلم قصير", "Feature": "فيلم طويل", "Feature film": "فيلم طويل", "TV Pilot": "حلقة تجريبية", "Web Series": "مسلسل ويب", "Series": "مسلسل", "Other": "أخرى" },
+      drf: { "First draft": "المسودة الأولى", "Second draft": "المسودة الثانية", "Revised draft": "المسودة الثانية", "Final draft": "النسخة النهائية" },
       months: { January: "يناير", February: "فبراير", March: "مارس", April: "أبريل", May: "مايو", June: "يونيو", July: "يوليو", August: "أغسطس", September: "سبتمبر", October: "أكتوبر", November: "نوفمبر", December: "ديسمبر" },
-      genreMap: { "Drama": "دراما", "Comedy": "كوميديا", "Thriller": "إثارة / تشويق", "Horror": "رعب", "Action": "أكشن", "Documentary": "وثائقي", "Other": "أخرى" },
+      genreMap: { "Drama": "دراما", "Comedy": "كوميديا", "Thriller": "إثارة", "Horror": "رعب", "Action": "أكشن", "Sci-Fi": "خيال علمي", "Romance": "رومانسي", "Animation": "رسوم متحركة", "Documentary": "وثائقي", "Other": "أخرى" },
       lenMap: {},
       writerMap: {}
     }
@@ -91,9 +91,9 @@
     },
     ar: {
       tabReview: "تقييم القارئ", tabReport: "التقرير",
-      eyebrow: "مساحة القارئ", h1: "التقييم",
-      lead: "كل ما في اللوحة ذات الحدّ البرتقالي مأخوذ مباشرةً من طلب الكاتب، ومقفل لا يمكنك تغييره. أنت تكتب التقييم في الأسفل فقط، ويُحفظ عملك تلقائيًا أثناء الكتابة.",
-      pulledTag: "مأخوذ من طلب الكاتب · للقراءة فقط",
+      eyebrow: "مساحة عمل القارئ", h1: "التغطية",
+      lead: "جميع المعلومات داخل الإطار البرتقالي مستوردة مباشرةً من طلب الكاتب وهي للقراءة فقط، ولا يمكن تعديلها. يقتصر دورك على كتابة التقييم في الأقسام المخصصة أدناه. يتم حفظ عملك تلقائيًا أثناء الكتابة.",
+      pulledTag: "مستوردة من طلب الكاتب · للقراءة فقط",
       reader: "القارئ", readerPh: "قارئ Scene One", date: "التاريخ",
       glance: "التقييم العام",
       synopsis: "الملخّص", synopsisPh: "لخّص القصة بأسلوبك.",
@@ -104,8 +104,8 @@
       context: "السياق (اختياري)", contextPh: "سياق الأفلام القصيرة والمهرجانات", summary: "الخلاصة",
       genReport: "إنشاء التقرير", finalize: "وضع علامة اكتمال التقييم", reopen: "إعادة فتح التقييم",
       editCoverage: "تعديل التقييم", print: "طباعة / حفظ PDF",
-      pl: { title: "العنوان", writer: "الكاتب", email: "البريد", ref: "المرجع", format: "نوع العمل", genre: "النوع", length: "الطول", draft: "المسودة", ip: "تسجيل الحقوق", file: "ملف النص", logline: "الفكرة المختصرة", vision: "رؤية الكاتب" },
-      ipYes: "مُسجّلة", ipNo: "غير مُسجّلة", dl: "تحميل النص", untitled: "بدون عنوان", dash: "—",
+      pl: { title: "عنوان السيناريو", writer: "اسم الكاتب", email: "البريد الإلكتروني", ref: "الرقم المرجعي", format: "نوع العمل", genre: "التصنيف", length: "عدد الصفحات", draft: "نسخة السيناريو", ip: "تسجيل الملكية الفكرية", file: "ملف السيناريو", logline: "الملخص المختصر", vision: "رؤية الكاتب" },
+      ipYes: "مسجل", ipNo: "غير مسجل", dl: "تحميل النص", untitled: "بدون عنوان", dash: "—",
       saving: "جارٍ الحفظ…", saved: "تم الحفظ", saveFailed: "فشل الحفظ", loaded: "تم التحميل", newCov: "تقييم جديد",
       hintOverride: function (a) { return "يتجاوز الدرجة المقترحة " + a; }, hintManual: "تقييم يدوي", hintAuto: "استخدام الدرجة المقترحة",
       evalPh: function (n) { return "تقييمك لـ" + n + "."; },
@@ -174,6 +174,14 @@
   document.querySelectorAll(".tab").forEach(function (t) { t.onclick = function () { show(t.dataset.view); }; });
 
   /* ---------- pulled (read-only) panel ---------- */
+  // translate a pulled field value (format/genre/draft) to Arabic when the
+  // workspace is in Arabic; otherwise show the canonical English value.
+  function pulledVal(mapName, v, dash) {
+    if (v == null || v === "") return dash;
+    if (UILANG === "ar") { var m = T.ar[mapName]; if (m && m[v]) return m[v]; }
+    return v;
+  }
+
   function renderPulled() {
     var s = state.submission, u = UI[UILANG], pl = u.pl, dash = u.dash;
     var title = esc(s.titleEn || u.untitled) + (s.titleAr ? '  <span style="color:var(--label)">· ' + esc(s.titleAr) + "</span>" : "");
@@ -185,10 +193,10 @@
       [pl.writer, esc(s.writer || dash)],
       [pl.email, '<span dir="ltr">' + esc(s.email || dash) + "</span>"],
       [pl.ref, esc(s.ref || dash)],
-      [pl.format, esc(s.format || dash)],
-      [pl.genre, esc(s.genre || dash)],
+      [pl.format, esc(pulledVal("fmt", s.format, dash))],
+      [pl.genre, esc(pulledVal("genreMap", s.genre, dash))],
       [pl.length, esc(s.length || dash)],
-      [pl.draft, esc(s.draft || dash)],
+      [pl.draft, esc(pulledVal("drf", s.draft, dash))],
       [pl.ip, s.ip ? '<span style="color:var(--good);font-weight:600">' + u.ipYes + "</span>" : u.ipNo],
       [pl.file, fileCell],
       [pl.logline, '<span dir="auto">' + esc(s.logline || dash) + "</span>", true],
