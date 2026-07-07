@@ -253,7 +253,7 @@
   }
 
   function glanceLabel(o) { return T[UILANG][GLANCE_OPT_KEY[o]] || o; }
-  function recLabel(o) { return (T[UILANG].decision && T[UILANG].decision[o]) || o; }
+  function recLabel(o) { return o; } // verdict stays English in every language
 
   function buildCoverageInputs() {
     var tl = T[UILANG];
@@ -374,7 +374,7 @@
     }).join("");
 
     var fs = finalScore();
-    var dec = c.verdict.decision ? (t.decision[c.verdict.decision] || c.verdict.decision) : t.pending;
+    var dec = c.verdict.decision ? c.verdict.decision : t.pending; // verdict stays English
 
     var header = '<div class="rep-header">' +
       '<img class="rep-logo" src="' + LOGO + '" alt="Scene One">' +
