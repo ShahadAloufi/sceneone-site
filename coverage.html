@@ -227,6 +227,21 @@
   .guard__box p{color:var(--label);margin:0 0 18px}
   .guard__box a{color:var(--orange);text-decoration:none;font-weight:600}
 
+  /* Arabic script is cursive — letter-spacing pulls the joined letters apart.
+     Zero it out on the uppercase-styled labels when the UI is in Arabic. */
+  html[lang="ar"] .eyebrow,
+  html[lang="ar"] label.lbl,
+  html[lang="ar"] .section-title,
+  html[lang="ar"] .meta-grid .k,
+  html[lang="ar"] .pulled .tag,
+  html[lang="ar"] .rep-cov,
+  html[lang="ar"] .rep-top .k,
+  html[lang="ar"] .logline .k,
+  html[lang="ar"] .glance h3,
+  html[lang="ar"] .rep-sec h3,
+  html[lang="ar"] .verdict .vh,
+  html[lang="ar"] .rating-auto .cap{letter-spacing:normal}
+
   @media print{
     header,.toolbar,.toast,.guard{display:none!important}
     body{background:#fff}
