@@ -327,6 +327,7 @@
       var p = covMap[id]; var v = p.length === 1 ? state.coverage[p[0]] : state.coverage[p[0]][p[1]];
       $(id).value = v || "";
     });
+    $("c-reader").value = (UILANG === "ar" ? "احد قراء Scene One" : "Scene One Reader");
     $("c-score10").value = (state.coverage.score10 != null ? state.coverage.score10 : "");
     updateRating();
   }
@@ -535,10 +536,11 @@
       covStatus = covRes.data.status || "in_progress";
       setSaveState("loaded");
     } else {
-      state.coverage.reader = me.name || "Scene One Reader";
       covStatus = "in_progress";
       setSaveState("newCov");
     }
+    // Reader identity is always anonymous — never expose the admin's real name.
+    state.coverage.reader = "Scene One Reader";
 
     applyUILang(UILANG); // builds inputs, fills fields, renders the pulled panel
     enterApp();
