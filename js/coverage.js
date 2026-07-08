@@ -223,7 +223,11 @@
     var old = el.textContent; el.textContent = "…";
     var res = await sb.storage.from(CFG.bucket).createSignedUrl(path, 120);
     el.textContent = old;
-    if (res.error || !res.data) { toast(UI[UILANG].tDlFail); return; }
+    if (res.error || !res.data) {
+      console.error("[download] createSignedUrl failed for path:", path, res.error);
+      toast(UI[UILANG].tDlFail);
+      return;
+    }
     window.open(res.data.signedUrl, "_blank");
   }
 

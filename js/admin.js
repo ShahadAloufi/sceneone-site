@@ -346,7 +346,11 @@
     var old = btn.textContent; btn.textContent = "..."; btn.disabled = true;
     var res = await sb.storage.from(CFG.bucket).createSignedUrl(path, 120);
     btn.textContent = old; btn.disabled = false;
-    if (res.error || !res.data) { alert(t("dlFail")); return; }
+    if (res.error || !res.data) {
+      console.error("[download] createSignedUrl failed for path:", path, res.error);
+      alert(t("dlFail"));
+      return;
+    }
     window.open(res.data.signedUrl, "_blank");
   }
 
