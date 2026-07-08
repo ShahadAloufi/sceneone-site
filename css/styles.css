@@ -848,6 +848,7 @@ html[data-theme="dark"] {
 .adm-fold:hover { background: var(--adm-ghost-hover); color: var(--adm-text); }
 .adm-fold--open { position: fixed; top: 16px; inset-inline-start: 16px; z-index: 40; display: none; background: var(--adm-surface); box-shadow: var(--adm-shadow); }
 .adm.is-nav-collapsed .adm-fold--open { display: inline-flex; }
+@media (min-width: 861px) { .adm.is-nav-collapsed .adm-panel { padding-top: 64px; } }
 
 .adm-nav { display: flex; flex-direction: column; gap: 4px; }
 .adm-navitem {
