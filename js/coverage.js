@@ -10,8 +10,12 @@
   "use strict";
 
   var CFG = window.SCENEONE_SUPABASE || {};
+  // Shared with the admin dashboard so a language choice in either place
+  // carries over to the other.
+  var LANG_KEY = "sceneone-admin-lang";
   var LANG = "ar";    // report language (kept in sync with the workspace language)
   var UILANG = "ar";  // workspace-chrome language
+  try { var _l = localStorage.getItem(LANG_KEY); if (_l === "ar" || _l === "en") { UILANG = _l; LANG = _l; } } catch (e) {}
   var LOGO = "assets/scene-one-logo.svg";
 
   /* ---------- bilingual report strings ---------- */
@@ -108,7 +112,9 @@
       ipYes: "مسجل", ipNo: "غير مسجل", dl: "تحميل النص", untitled: "بدون عنوان", dash: "—",
       saving: "جارٍ الحفظ…", saved: "تم الحفظ", saveFailed: "فشل الحفظ", loaded: "تم التحميل", newCov: "تقييم جديد",
       hintOverride: function (a) { return "يتجاوز الدرجة المقترحة " + a; }, hintManual: "تقييم يدوي", hintAuto: "استخدام الدرجة المقترحة",
-      evalPh: function (n) { return "تقييمك لـ" + n + "."; },
+      // Contract the preposition ل with a leading definite article ال → لل
+      // (e.g. "الفكرة" → "تقييمك للفكرة"), otherwise just prefix ل.
+      evalPh: function (n) { n = String(n); return "تقييمك ل" + (n.slice(0, 2) === "ال" ? n.slice(1) : n) + "."; },
       tComplete: "تم وضع علامة اكتمال التقييم", tReopened: "أُعيد فتح التقييم", tDlFail: "تعذّر إنشاء رابط التحميل."
     }
   };
@@ -290,7 +296,7 @@
       var sc = ""; for (var i = 1; i <= 5; i++) sc += '<button data-s="' + i + '">' + i + "</button>";
       b.innerHTML = '<div class="eval-head"><span class="name">' + esc(lbl) + "</span>" +
         '<span class="score">' + sc + "</span></div>" +
-        '<textarea dir="auto" placeholder="' + esc(UI[UILANG].evalPh(lbl)) + '"></textarea>';
+        '<textarea placeholder="' + esc(UI[UILANG].evalPh(lbl)) + '"></textarea>';
       ei.appendChild(b);
       var ta = b.querySelector("textarea");
       ta.value = state.coverage.eval[name].text;
@@ -309,7 +315,7 @@
     var mi = $("marketInputs"); mi.innerHTML = "";
     MARKET.forEach(function (m) {
       var f = document.createElement("div"); f.className = "field";
-      f.innerHTML = '<label class="lbl">' + esc(tl.market_l[m.k] || m.label) + '</label><textarea dir="auto"></textarea>';
+      f.innerHTML = '<label class="lbl">' + esc(tl.market_l[m.k] || m.label) + '</label><textarea></textarea>';
       mi.appendChild(f);
       var ta = f.querySelector("textarea"); ta.value = state.coverage.market[m.k];
       ta.addEventListener("input", function () { state.coverage.market[m.k] = ta.value; scheduleSave(); });
@@ -417,6 +423,7 @@
   /* ---------- language (whole workspace + report) ---------- */
   function applyUILang(lang) {
     UILANG = lang; LANG = lang;
+    try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
     var u = UI[lang];
     document.documentElement.setAttribute("lang", lang);
     document.documentElement.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
