@@ -207,12 +207,19 @@
   }
 
   async function loadSubmissions() {
-    // Load admin names first (for the assignee column).
-    var ad = await sb.from("admins").select("id,name");
+    // Fetch admins (assignee names), submissions, and coverage statuses in
+    // parallel — they don't depend on each other, so one round-trip's worth of
+    // latency instead of three.
+    var results = await Promise.all([
+      sb.from("admins").select("id,name"),
+      sb.from("submissions").select("*").order("created_at", { ascending: false }),
+      sb.from("coverages").select("submission_id,status")
+    ]);
+    var ad = results[0], res = results[1], cov = results[2];
+
     adminsById = {};
     (ad.data || []).forEach(function (a) { adminsById[a.id] = a.name; });
 
-    var res = await sb.from("submissions").select("*").order("created_at", { ascending: false });
     var body = $("subBody");
     body.innerHTML = "";
     if (res.error) {
@@ -222,7 +229,6 @@
 
     // Coverage statuses (keyed by submission id) drive the evaluation button label.
     var covBySub = {};
-    var cov = await sb.from("coverages").select("submission_id,status");
     (cov.data || []).forEach(function (c) { covBySub[c.submission_id] = c.status; });
     var rows = res.data || [];
     currentRows = rows;
@@ -315,13 +321,25 @@
   }
 
   async function assign(id, toId, cell, s) {
-    cell.style.opacity = ".5";
-    var res = await sb.from("submissions").update({ assigned_to: toId }).eq("id", id);
-    cell.style.opacity = "1";
-    s.assigned_to = res.error ? s.assigned_to : toId;
-    renderAssignee(cell, s); // reflect the new value (or reset on error)
-    if (res.error) { alert(t("assignFail")); return; }
+    if (cell.dataset.busy) return; // ignore clicks while a request is in flight
+    cell.dataset.busy = "1";
+    var prev = s.assigned_to;
+    // Optimistic: reflect the new state immediately so the click feels instant.
+    s.assigned_to = toId;
+    renderAssignee(cell, s);
+    cell.style.opacity = ".6";
     updateKpis(currentRows, currentCov);
+
+    var res = await sb.from("submissions").update({ assigned_to: toId }).eq("id", id);
+
+    cell.style.opacity = "1";
+    delete cell.dataset.busy;
+    if (res.error) { // roll back to the previous assignee on failure
+      s.assigned_to = prev;
+      renderAssignee(cell, s);
+      updateKpis(currentRows, currentCov);
+      alert(t("assignFail"));
+    }
   }
 
   async function downloadFile(path, btn) {
