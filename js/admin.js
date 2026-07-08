@@ -243,7 +243,6 @@
         "<td>" + esc(FILM[ULANG][s.film_type] || s.film_type) + "</td>" +
         "<td>" + esc(DRAFT[ULANG][s.draft] || s.draft) + "</td>" +
         "<td class='adm-file'></td>" +
-        "<td class='adm-assign'></td>" +
         "<td class='adm-assignee'></td>" +
         "<td class='adm-cov'></td>";
       // File cell
@@ -255,46 +254,12 @@
         a.addEventListener("click", function () { downloadFile(s.file_path, a); });
         fileCell.appendChild(a);
       } else { fileCell.textContent = "—"; }
-      // Assign cell
-      renderAssign(tr.querySelector(".adm-assign"), s);
       // Assignee dropdown cell
       renderAssignee(tr.querySelector(".adm-assignee"), s);
       // Coverage cell
       renderCoverage(tr.querySelector(".adm-cov"), s, covBySub[s.id]);
       body.appendChild(tr);
     });
-  }
-
-  function renderAssign(cell, s) {
-    cell.innerHTML = "";
-    if (!s.assigned_to) {
-      var b = document.createElement("button");
-      b.className = "adm-link adm-link--gold";
-      b.textContent = t("assignMe");
-      b.addEventListener("click", function () { assign(s.id, me.id, cell, s); });
-      cell.appendChild(b);
-    } else {
-      var mine = s.assigned_to === me.id;
-      if (!mine) {
-        var badge = document.createElement("span");
-        badge.className = "adm-badge";
-        badge.textContent = adminsById[s.assigned_to] || t("adminFallback");
-        cell.appendChild(badge);
-
-        var take = document.createElement("button");
-        take.className = "adm-link adm-link--gold";
-        take.textContent = t("assignMe");
-        take.style.marginInlineStart = "8px";
-        take.addEventListener("click", function () { assign(s.id, me.id, cell, s); });
-        cell.appendChild(take);
-      }
-      var un = document.createElement("button");
-      un.className = "adm-link adm-link--muted";
-      un.textContent = t("cancel");
-      if (cell.children.length) un.style.marginInlineStart = "8px";
-      un.addEventListener("click", function () { assign(s.id, null, cell, s); });
-      cell.appendChild(un);
-    }
   }
 
   // Assignee dropdown: pick any admin reader (or none) to assign the submission.
@@ -330,20 +295,12 @@
   }
 
   async function assign(id, toId, cell, s) {
-    var tr = cell.closest ? cell.closest("tr") : null;
-    var assignCell = tr ? tr.querySelector(".adm-assign") : cell;
-    var pickCell = tr ? tr.querySelector(".adm-assignee") : null;
     cell.style.opacity = ".5";
     var res = await sb.from("submissions").update({ assigned_to: toId }).eq("id", id);
     cell.style.opacity = "1";
-    if (res.error) {
-      alert(t("assignFail"));
-      if (pickCell) renderAssignee(pickCell, s); // reset dropdown to actual value
-      return;
-    }
-    s.assigned_to = toId;
-    if (assignCell) renderAssign(assignCell, s);
-    if (pickCell) renderAssignee(pickCell, s);
+    s.assigned_to = res.error ? s.assigned_to : toId;
+    renderAssignee(cell, s); // reflect the new value (or reset on error)
+    if (res.error) { alert(t("assignFail")); return; }
     updateKpis(currentRows, currentCov);
   }
 
