@@ -91,7 +91,8 @@
       saving: "Saving…", saved: "Saved", saveFailed: "Save failed", loaded: "Loaded", newCov: "New coverage",
       hintOverride: function (a) { return "Overriding the suggested " + a; }, hintManual: "Manual rating", hintAuto: "Using the suggested score",
       evalPh: function (n) { return "Your assessment of " + n + "."; },
-      tComplete: "Coverage marked complete", tReopened: "Coverage reopened", tDlFail: "Couldn't create the download link."
+      tComplete: "Coverage marked complete", tReopened: "Coverage reopened", tDlFail: "Couldn't create the download link.",
+      finalizeHint: "Fill every section (except Market) with at least two sentences to finish."
     },
     ar: {
       tabReview: "تقييم القارئ", tabReport: "التقرير",
@@ -115,7 +116,8 @@
       // Contract the preposition ل with a leading definite article ال → لل
       // (e.g. "الفكرة" → "تقييمك للفكرة"), otherwise just prefix ل.
       evalPh: function (n) { n = String(n); return "تقييمك ل" + (n.slice(0, 2) === "ال" ? n.slice(1) : n) + "."; },
-      tComplete: "تم وضع علامة اكتمال التقييم", tReopened: "أُعيد فتح التقييم", tDlFail: "تعذّر إنشاء رابط التحميل."
+      tComplete: "تم وضع علامة اكتمال التقييم", tReopened: "أُعيد فتح التقييم", tDlFail: "تعذّر إنشاء رابط التحميل.",
+      finalizeHint: "املأ كل قسم (عدا السوق) بجملتين على الأقل لإكمال التقييم."
     }
   };
   // maps a glance option (canonical English) to its UI translation key
@@ -129,7 +131,34 @@
   // Textareas auto-grow to fit their content so writers never fight a scrollbar.
   function autoGrow(ta) { if (!ta) return; ta.style.height = "auto"; ta.style.height = ta.scrollHeight + "px"; }
   function autoGrowAll() { var t = document.querySelectorAll("textarea"); for (var i = 0; i < t.length; i++) autoGrow(t[i]); }
-  document.addEventListener("input", function (e) { if (e.target && e.target.tagName === "TEXTAREA") autoGrow(e.target); });
+  document.addEventListener("input", function (e) {
+    if (e.target && e.target.tagName === "TEXTAREA") { autoGrow(e.target); refreshFinalizeState(); }
+  });
+
+  // The reader can only mark the coverage complete once every written section
+  // (all except Market, which is optional) holds at least two sentences.
+  function sentenceCount(s) {
+    s = String(s == null ? "" : s).trim();
+    if (!s) return 0;
+    return s.split(/[.!?؟\n]+/).filter(function (p) { return p.trim().length > 0; }).length;
+  }
+  function twoPlus(s) { return sentenceCount(s) >= 2; }
+  function isEvalComplete() {
+    var c = state.coverage;
+    if (!twoPlus(c.synopsis)) return false;
+    for (var i = 0; i < EVAL.length; i++) { if (!twoPlus(c.eval[EVAL[i]].text)) return false; }
+    if (!twoPlus(c.overall.strengths)) return false;
+    if (!twoPlus(c.overall.toDevelop)) return false;
+    if (!twoPlus(c.verdict.text)) return false;
+    return true;
+  }
+  function refreshFinalizeState() {
+    var btn = $("finalizeBtn"); if (!btn) return;
+    if (covStatus === "completed") { btn.disabled = false; btn.removeAttribute("title"); return; }
+    var ok = isEvalComplete();
+    btn.disabled = !ok;
+    if (ok) btn.removeAttribute("title"); else btn.title = UI[UILANG].finalizeHint;
+  }
 
   /* ---------- state ---------- */
   function blank() {
@@ -347,6 +376,7 @@
     $("c-score10").value = (state.coverage.score10 != null ? state.coverage.score10 : "");
     updateRating();
     autoGrowAll();
+    refreshFinalizeState();
   }
   Object.keys(covMap).forEach(function (id) {
     $(id).addEventListener("input", function () {
@@ -462,9 +492,13 @@
 
   var finalizeBtn = $("finalizeBtn");
   finalizeBtn.onclick = async function () {
+    // Safety net: never finalize an incomplete coverage even if the button
+    // is somehow reachable (reopening a completed one is always allowed).
+    if (covStatus !== "completed" && !isEvalComplete()) { toast(UI[UILANG].finalizeHint); return; }
     covStatus = covStatus === "completed" ? "in_progress" : "completed";
     var u = UI[UILANG];
     finalizeBtn.textContent = covStatus === "completed" ? u.reopen : u.finalize;
+    refreshFinalizeState();
     await save();
     toast(covStatus === "completed" ? u.tComplete : u.tReopened);
   };
