@@ -18,6 +18,24 @@
     b.addEventListener("click", closeMenu);
   });
 
+  /* ---------- AUTO-GROW TEXTAREAS ---------- */
+  // Textareas grow to fit their content so they never hide text behind a scrollbar.
+  function autoGrow(ta) {
+    if (!ta) return;
+    ta.style.height = "auto";
+    // With box-sizing:border-box the border isn't part of scrollHeight, so add it
+    // back — otherwise the box ends up a couple px short and clips the last line.
+    var cs = getComputedStyle(ta);
+    var border = (parseFloat(cs.borderTopWidth) || 0) + (parseFloat(cs.borderBottomWidth) || 0);
+    ta.style.height = (ta.scrollHeight + border) + "px";
+  }
+  function autoGrowAll() { document.querySelectorAll("textarea").forEach(autoGrow); }
+  document.addEventListener("input", function (e) { if (e.target && e.target.tagName === "TEXTAREA") autoGrow(e.target); });
+  autoGrowAll();
+  window.addEventListener("load", autoGrowAll);
+  window.addEventListener("resize", autoGrowAll);
+  if (document.fonts && document.fonts.ready && document.fonts.ready.then) document.fonts.ready.then(autoGrowAll);
+
   /* ---------- NAV: solid once past the hero ---------- */
   var nav = document.querySelector(".nav");
   if (nav) {

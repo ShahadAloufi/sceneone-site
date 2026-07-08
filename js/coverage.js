@@ -129,11 +129,28 @@
   function toast(m) { var t = $("toast"); t.textContent = m; t.classList.add("show"); setTimeout(function () { t.classList.remove("show"); }, 2200); }
   function today() { var d = new Date(); return d.toLocaleDateString("en-US", { month: "long", year: "numeric" }); }
   // Textareas auto-grow to fit their content so writers never fight a scrollbar.
-  function autoGrow(ta) { if (!ta) return; ta.style.height = "auto"; ta.style.height = ta.scrollHeight + "px"; }
+  function autoGrow(ta) {
+    if (!ta) return;
+    ta.style.height = "auto";
+    // With box-sizing:border-box the border isn't part of scrollHeight, so add it
+    // back — otherwise the box ends up a couple px short and clips the last line.
+    var cs = getComputedStyle(ta);
+    var border = (parseFloat(cs.borderTopWidth) || 0) + (parseFloat(cs.borderBottomWidth) || 0);
+    ta.style.height = (ta.scrollHeight + border) + "px";
+  }
   function autoGrowAll() { var t = document.querySelectorAll("textarea"); for (var i = 0; i < t.length; i++) autoGrow(t[i]); }
+  // Recompute now, on the next frame, and after web fonts load — measuring
+  // scrollHeight too early (before layout/fonts settle) leaves boxes a line short.
+  function autoGrowSoon() {
+    autoGrowAll();
+    if (window.requestAnimationFrame) requestAnimationFrame(autoGrowAll);
+    if (document.fonts && document.fonts.ready && document.fonts.ready.then) document.fonts.ready.then(autoGrowAll);
+  }
   document.addEventListener("input", function (e) {
     if (e.target && e.target.tagName === "TEXTAREA") { autoGrow(e.target); refreshFinalizeState(); }
   });
+  window.addEventListener("load", autoGrowAll);
+  window.addEventListener("resize", autoGrowAll);
 
   // The reader can only mark the coverage complete once every written section
   // (all except Market, which is optional) has been filled in.
@@ -370,7 +387,7 @@
     $("c-reader").value = (UILANG === "ar" ? "احد قراء Scene One" : "Scene One Reader");
     $("c-score10").value = (state.coverage.score10 != null ? state.coverage.score10 : "");
     updateRating();
-    autoGrowAll();
+    autoGrowSoon();
     refreshFinalizeState();
   }
   Object.keys(covMap).forEach(function (id) {

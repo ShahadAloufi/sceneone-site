@@ -25,9 +25,21 @@
 
   /* ---------- AUTO-GROW TEXTAREAS ---------- */
   // Textareas grow to fit their content so writers never fight a scrollbar.
-  function autoGrow(ta) { if (!ta) return; ta.style.height = "auto"; ta.style.height = ta.scrollHeight + "px"; }
+  function autoGrow(ta) {
+    if (!ta) return;
+    ta.style.height = "auto";
+    // With box-sizing:border-box the border isn't part of scrollHeight, so add it
+    // back — otherwise the box ends up a couple px short and clips the last line.
+    var cs = getComputedStyle(ta);
+    var border = (parseFloat(cs.borderTopWidth) || 0) + (parseFloat(cs.borderBottomWidth) || 0);
+    ta.style.height = (ta.scrollHeight + border) + "px";
+  }
+  function autoGrowAll() { document.querySelectorAll("textarea").forEach(autoGrow); }
   document.addEventListener("input", function (e) { if (e.target && e.target.tagName === "TEXTAREA") autoGrow(e.target); });
-  document.querySelectorAll("textarea").forEach(autoGrow);
+  autoGrowAll();
+  window.addEventListener("load", autoGrowAll);
+  window.addEventListener("resize", autoGrowAll);
+  if (document.fonts && document.fonts.ready && document.fonts.ready.then) document.fonts.ready.then(autoGrowAll);
 
   /* ---------- TOASTS ---------- */
   var toastWrap = document.getElementById("toasts");
