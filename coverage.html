@@ -94,14 +94,9 @@
        background:var(--field-bg);border:1px solid var(--line);border-radius:9px;padding:10px 12px;width:100%;
        outline:none;transition:border-color .15s,box-shadow .15s}
   input:focus,select:focus,textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(189,61,32,.1)}
-  html[data-theme="dark"] input[type=number]{color-scheme:dark}
+  /* let the native resize grip render; color-scheme keeps it visible on dark */
+  html[data-theme="dark"] input[type=number],html[data-theme="dark"] textarea{color-scheme:dark}
   textarea{resize:vertical;min-height:72px;line-height:1.5}
-  /* clearer drag-to-expand grip: three short diagonal lines in the corner
-     (native one is nearly invisible on dark; a full hatch reads too heavy) */
-  textarea::-webkit-resizer{background-color:transparent;background-repeat:no-repeat;background-position:center;background-size:9px 9px;
-    background-image:linear-gradient(135deg,transparent 0 45%,var(--muted) 45% 55%,transparent 55% 72%,var(--muted) 72% 82%,transparent 82%)}
-  html[data-theme="dark"] textarea::-webkit-resizer{
-    background-image:linear-gradient(135deg,transparent 0 45%,#8f8f8f 45% 55%,transparent 55% 72%,#8f8f8f 72% 82%,transparent 82%)}
   .hint{font-size:12px;color:var(--muted)}
   .section-title{font-size:13px;font-weight:600;letter-spacing:.02em;margin:0 0 14px;
                  display:flex;align-items:center;gap:9px}
