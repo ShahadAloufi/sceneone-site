@@ -23,6 +23,12 @@
   document.querySelectorAll("[data-menu-close]").forEach(function (b) { b.addEventListener("click", closeMenu); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeMenu(); });
 
+  /* ---------- AUTO-GROW TEXTAREAS ---------- */
+  // Textareas grow to fit their content so writers never fight a scrollbar.
+  function autoGrow(ta) { if (!ta) return; ta.style.height = "auto"; ta.style.height = ta.scrollHeight + "px"; }
+  document.addEventListener("input", function (e) { if (e.target && e.target.tagName === "TEXTAREA") autoGrow(e.target); });
+  document.querySelectorAll("textarea").forEach(autoGrow);
+
   /* ---------- TOASTS ---------- */
   var toastWrap = document.getElementById("toasts");
   function toast(title, desc, variant) {

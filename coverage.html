@@ -96,6 +96,11 @@
   input:focus,select:focus,textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(189,61,32,.1)}
   html[data-theme="dark"] input[type=number]{color-scheme:dark}
   textarea{resize:vertical;min-height:72px;line-height:1.5}
+  /* clearer drag-to-expand grip in the corner (native one is nearly invisible on dark) */
+  textarea::-webkit-resizer{background:transparent;
+    background-image:repeating-linear-gradient(135deg,var(--field-dim) 0 1.5px,transparent 1.5px 4px)}
+  html[data-theme="dark"] textarea::-webkit-resizer{
+    background-image:repeating-linear-gradient(135deg,#8f8f8f 0 1.5px,transparent 1.5px 4px)}
   .hint{font-size:12px;color:var(--muted)}
   .section-title{font-size:13px;font-weight:600;letter-spacing:.02em;margin:0 0 14px;
                  display:flex;align-items:center;gap:9px}
