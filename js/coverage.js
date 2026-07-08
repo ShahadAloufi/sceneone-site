@@ -92,7 +92,7 @@
       hintOverride: function (a) { return "Overriding the suggested " + a; }, hintManual: "Manual rating", hintAuto: "Using the suggested score",
       evalPh: function (n) { return "Your assessment of " + n + "."; },
       tComplete: "Coverage marked complete", tReopened: "Coverage reopened", tDlFail: "Couldn't create the download link.",
-      finalizeHint: "Fill every section (except Market) with at least two sentences to finish."
+      finalizeHint: "Fill in every section (except Market) to finish."
     },
     ar: {
       tabReview: "تقييم القارئ", tabReport: "التقرير",
@@ -117,7 +117,7 @@
       // (e.g. "الفكرة" → "تقييمك للفكرة"), otherwise just prefix ل.
       evalPh: function (n) { n = String(n); return "تقييمك ل" + (n.slice(0, 2) === "ال" ? n.slice(1) : n) + "."; },
       tComplete: "تم وضع علامة اكتمال التقييم", tReopened: "أُعيد فتح التقييم", tDlFail: "تعذّر إنشاء رابط التحميل.",
-      finalizeHint: "املأ كل قسم (عدا السوق) بجملتين على الأقل لإكمال التقييم."
+      finalizeHint: "املأ كل قسم (عدا السوق) لإكمال التقييم."
     }
   };
   // maps a glance option (canonical English) to its UI translation key
@@ -136,20 +136,15 @@
   });
 
   // The reader can only mark the coverage complete once every written section
-  // (all except Market, which is optional) holds at least two sentences.
-  function sentenceCount(s) {
-    s = String(s == null ? "" : s).trim();
-    if (!s) return 0;
-    return s.split(/[.!?؟\n]+/).filter(function (p) { return p.trim().length > 0; }).length;
-  }
-  function twoPlus(s) { return sentenceCount(s) >= 2; }
+  // (all except Market, which is optional) has been filled in.
+  function filled(s) { return String(s == null ? "" : s).trim().length > 0; }
   function isEvalComplete() {
     var c = state.coverage;
-    if (!twoPlus(c.synopsis)) return false;
-    for (var i = 0; i < EVAL.length; i++) { if (!twoPlus(c.eval[EVAL[i]].text)) return false; }
-    if (!twoPlus(c.overall.strengths)) return false;
-    if (!twoPlus(c.overall.toDevelop)) return false;
-    if (!twoPlus(c.verdict.text)) return false;
+    if (!filled(c.synopsis)) return false;
+    for (var i = 0; i < EVAL.length; i++) { if (!filled(c.eval[EVAL[i]].text)) return false; }
+    if (!filled(c.overall.strengths)) return false;
+    if (!filled(c.overall.toDevelop)) return false;
+    if (!filled(c.verdict.text)) return false;
     return true;
   }
   function refreshFinalizeState() {
