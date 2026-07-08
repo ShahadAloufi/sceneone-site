@@ -903,13 +903,12 @@ html[data-theme="dark"] {
 
 .adm-tablewrap { background: var(--adm-surface); border: 1px solid var(--adm-border); border-radius: 18px; overflow-x: auto; }
 .adm-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
-.adm-table th, .adm-table td { padding: 13px 16px; text-align: right; border-bottom: 1px solid var(--adm-border-soft); white-space: nowrap; }
+.adm-table th, .adm-table td { padding: 13px 16px; text-align: center; border-bottom: 1px solid var(--adm-border-soft); white-space: nowrap; }
 .adm-table th { background: var(--adm-surface-2); font-weight: 700; color: var(--adm-muted); font-size: 12px; letter-spacing: .01em; position: sticky; top: 0; }
 .adm-table tbody tr { transition: background .12s; }
 .adm-table tbody tr:hover { background: var(--adm-surface-2); }
 .adm-table tbody tr:last-child td { border-bottom: none; }
 .adm-table td { vertical-align: top; }
-.adm-table th.adm-th-file, .adm-table td.adm-file { text-align: center; }
 .adm-muted { color: var(--adm-faint); font-size: 12px; }
 .adm-empty { padding: 40px; text-align: center; color: var(--adm-faint); }
 
@@ -937,14 +936,21 @@ html[data-theme="dark"] .adm-link--danger { color: #e57368; border-color: rgba(2
 html[data-theme="dark"] .adm-link--danger:hover { background: rgba(229,115,104,.12); color: #e57368; }
 
 
-/* Assignee dropdown (submissions table) */
-.adm-select {
-  border: 1px solid var(--adm-input-border); border-radius: 8px; padding: 8px 10px; font-size: 13px;
-  font-family: inherit; font-weight: 500; background: var(--adm-input-bg); color: var(--adm-text);
-  cursor: pointer; max-width: 180px; box-sizing: border-box;
+/* Assignee cell: circular letter-avatar / empty "add me" icon */
+.adm-av {
+  width: 36px; height: 36px; border-radius: 50%; box-sizing: border-box;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: inherit; font-size: 15px; font-weight: 700; line-height: 1;
+  color: #fff; border: none; padding: 0; cursor: pointer;
+  transition: transform .12s, box-shadow .12s, border-color .15s, color .15s;
 }
-.adm-select:focus { outline: none; border-color: #C9A24B; box-shadow: 0 0 0 3px rgba(201,162,75,.15); }
-.adm-select option { background: var(--adm-input-bg); color: var(--adm-text); }
+.adm-av--static { cursor: default; }
+button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,.25); }
+.adm-av--add {
+  background: transparent; color: var(--adm-muted);
+  border: 1.5px dashed var(--adm-outline-line);
+}
+.adm-av--add:hover { color: #C9A24B; border-color: #C9A24B; box-shadow: none; transform: none; }
 
 /* Language toggle (ar / en) */
 .adm-lang { display: flex; gap: 2px; background: var(--adm-input-bg); border: 1px solid var(--adm-border); padding: 3px; border-radius: 10px; }

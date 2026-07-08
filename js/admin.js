@@ -36,7 +36,7 @@
       kpiTotal: "إجمالي النصوص", kpiPending: "بانتظار الإسناد", kpiReview: "قيد المراجعة", kpiDone: "مكتملة ومُقيَّمة",
       subListTitle: "قائمة النصوص", thDate: "التاريخ", thTitle: "العنوان", thWriter: "الكاتب", thEmail: "البريد",
       thGenre: "التصنيف", thFilmType: "نوع الفيلم", thDraft: "المسودة", thFile: "الملف", thAssignee: "المسند إليه",
-      thAssignee2: "المُكلَّف", selectAssignee: "— اختر —",
+      thAssignee2: "المُكلَّف",
       thCoverage: "التقييم", subEmpty: "لا توجد نصوص مقدَّمة بعد.",
       adminsTitle: "المشرفون", thName: "الاسم", thRole: "الدور", createTitle: "إضافة مشرف جديد",
       fName: "الاسم", fRole: "الدور", roleAdmin: "مشرف", roleSuper: "مشرف أعلى", createBtn: "إنشاء المشرف",
@@ -44,7 +44,7 @@
       // dynamic
       signingIn: "جارٍ الدخول...", badLogin: "بيانات الدخول غير صحيحة.",
       notAdmin: "هذا الحساب ليس لديه صلاحية دخول لوحة التحكم.",
-      loadFail: "تعذّر تحميل النصوص.", download: "تحميل", assignMe: "أسند إليّ", you: "أنت",
+      loadFail: "تعذّر تحميل النصوص.", download: "تحميل", assignMe: "أسند إليّ",
       adminFallback: "مشرف", cancel: "إلغاء", viewReport: "عرض التقرير", continueEval: "متابعة التقييم",
       startEval: "ابدأ التقييم", assignFail: "تعذّر تحديث الإسناد.", dlFail: "تعذّر إنشاء رابط التحميل.",
       del: "حذف", meParen: "(أنت)", confirmDel: function (n) { return "حذف المشرف " + n + "؟"; },
@@ -59,14 +59,14 @@
       kpiTotal: "Total scripts", kpiPending: "Awaiting assignment", kpiReview: "In review", kpiDone: "Completed & rated",
       subListTitle: "Scripts list", thDate: "Date", thTitle: "Title", thWriter: "Writer", thEmail: "Email",
       thGenre: "Genre", thFilmType: "Film type", thDraft: "Draft", thFile: "File", thAssignee: "Assignee",
-      thAssignee2: "Assignee", selectAssignee: "— Select —",
+      thAssignee2: "Assignee",
       thCoverage: "Coverage", subEmpty: "No submissions yet.",
       adminsTitle: "Admins", thName: "Name", thRole: "Role", createTitle: "Add a new admin",
       fName: "Name", fRole: "Role", roleAdmin: "Admin", roleSuper: "Super admin", createBtn: "Create admin",
       phName: "Admin name", phPassword: "At least 8 characters",
       signingIn: "Signing in...", badLogin: "Invalid login credentials.",
       notAdmin: "This account is not authorized to access the dashboard.",
-      loadFail: "Failed to load submissions.", download: "Download", assignMe: "Assign to me", you: "You",
+      loadFail: "Failed to load submissions.", download: "Download", assignMe: "Assign to me",
       adminFallback: "Admin", cancel: "Unassign", viewReport: "View report", continueEval: "Continue coverage",
       startEval: "Start coverage", assignFail: "Failed to update assignment.", dlFail: "Failed to create download link.",
       del: "Delete", meParen: "(you)", confirmDel: function (n) { return "Delete admin " + n + "?"; },
@@ -262,24 +262,44 @@
     });
   }
 
-  // Assignee dropdown: pick any admin reader (or none) to assign the submission.
+  // First (letter) of a name, upper-cased, for the avatar.
+  function initial(name) {
+    name = (name || "").trim();
+    return name ? name.charAt(0).toUpperCase() : "؟";
+  }
+  // Deterministic, theme-friendly colour derived from a key (admin id).
+  function avatarColor(key) {
+    var h = 0; key = String(key || "");
+    for (var i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) % 360;
+    return "hsl(" + h + ", 42%, 46%)";
+  }
+
+  // Assignee cell: an empty "add me" icon when free; once taken it shows a
+  // circular letter-avatar of the assignee. Clicking your own avatar frees it.
   function renderAssignee(cell, s) {
     cell.innerHTML = "";
-    var sel = document.createElement("select");
-    sel.className = "adm-select";
-    var none = document.createElement("option");
-    none.value = "";
-    none.textContent = t("selectAssignee");
-    sel.appendChild(none);
-    Object.keys(adminsById).forEach(function (aid) {
-      var o = document.createElement("option");
-      o.value = aid;
-      o.textContent = aid === (me && me.id) ? adminsById[aid] + " " + t("meParen") : adminsById[aid];
-      sel.appendChild(o);
-    });
-    sel.value = s.assigned_to || "";
-    sel.addEventListener("change", function () { assign(s.id, sel.value || null, cell, s); });
-    cell.appendChild(sel);
+    if (!s.assigned_to) {
+      var add = document.createElement("button");
+      add.className = "adm-av adm-av--add";
+      add.title = t("assignMe");
+      add.setAttribute("aria-label", t("assignMe"));
+      add.innerHTML =
+        '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<path d="M14 19a6 6 0 0 0-12 0"/><circle cx="8" cy="9" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>';
+      add.addEventListener("click", function () { assign(s.id, me.id, cell, s); });
+      cell.appendChild(add);
+      return;
+    }
+    var name = adminsById[s.assigned_to] || t("adminFallback");
+    var mine = s.assigned_to === (me && me.id);
+    var av = document.createElement(mine ? "button" : "span");
+    av.className = "adm-av" + (mine ? "" : " adm-av--static");
+    av.style.background = avatarColor(s.assigned_to);
+    av.textContent = initial(name);
+    av.title = mine ? name + " " + t("meParen") : name;
+    av.setAttribute("aria-label", av.title);
+    if (mine) av.addEventListener("click", function () { assign(s.id, null, cell, s); });
+    cell.appendChild(av);
   }
 
   // Coverage cell: links to the reader workspace, label follows its status.
