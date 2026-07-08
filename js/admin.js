@@ -36,6 +36,7 @@
       kpiTotal: "إجمالي النصوص", kpiPending: "بانتظار الإسناد", kpiReview: "قيد المراجعة", kpiDone: "مكتملة ومُقيَّمة",
       subListTitle: "قائمة النصوص", thDate: "التاريخ", thTitle: "العنوان", thWriter: "الكاتب", thEmail: "البريد",
       thGenre: "التصنيف", thFilmType: "نوع الفيلم", thDraft: "المسودة", thFile: "الملف", thAssignee: "المسند إليه",
+      thAssignee2: "المُكلَّف", selectAssignee: "— اختر —",
       thCoverage: "التقييم", subEmpty: "لا توجد نصوص مقدَّمة بعد.",
       adminsTitle: "المشرفون", thName: "الاسم", thRole: "الدور", createTitle: "إضافة مشرف جديد",
       fName: "الاسم", fRole: "الدور", roleAdmin: "مشرف", roleSuper: "مشرف أعلى", createBtn: "إنشاء المشرف",
@@ -58,6 +59,7 @@
       kpiTotal: "Total scripts", kpiPending: "Awaiting assignment", kpiReview: "In review", kpiDone: "Completed & rated",
       subListTitle: "Scripts list", thDate: "Date", thTitle: "Title", thWriter: "Writer", thEmail: "Email",
       thGenre: "Genre", thFilmType: "Film type", thDraft: "Draft", thFile: "File", thAssignee: "Assignee",
+      thAssignee2: "Assignee", selectAssignee: "— Select —",
       thCoverage: "Coverage", subEmpty: "No submissions yet.",
       adminsTitle: "Admins", thName: "Name", thRole: "Role", createTitle: "Add a new admin",
       fName: "Name", fRole: "Role", roleAdmin: "Admin", roleSuper: "Super admin", createBtn: "Create admin",
@@ -242,6 +244,7 @@
         "<td>" + esc(DRAFT[ULANG][s.draft] || s.draft) + "</td>" +
         "<td class='adm-file'></td>" +
         "<td class='adm-assign'></td>" +
+        "<td class='adm-assignee'></td>" +
         "<td class='adm-cov'></td>";
       // File cell
       var fileCell = tr.querySelector(".adm-file");
@@ -254,6 +257,8 @@
       } else { fileCell.textContent = "—"; }
       // Assign cell
       renderAssign(tr.querySelector(".adm-assign"), s);
+      // Assignee dropdown cell
+      renderAssignee(tr.querySelector(".adm-assignee"), s);
       // Coverage cell
       renderCoverage(tr.querySelector(".adm-cov"), s, covBySub[s.id]);
       body.appendChild(tr);
@@ -270,13 +275,12 @@
       cell.appendChild(b);
     } else {
       var mine = s.assigned_to === me.id;
-      var name = mine ? t("you") : (adminsById[s.assigned_to] || t("adminFallback"));
-      var badge = document.createElement("span");
-      badge.className = "adm-badge" + (mine ? " adm-badge--me" : "");
-      badge.textContent = name;
-      cell.appendChild(badge);
-
       if (!mine) {
+        var badge = document.createElement("span");
+        badge.className = "adm-badge";
+        badge.textContent = adminsById[s.assigned_to] || t("adminFallback");
+        cell.appendChild(badge);
+
         var take = document.createElement("button");
         take.className = "adm-link adm-link--gold";
         take.textContent = t("assignMe");
@@ -287,10 +291,30 @@
       var un = document.createElement("button");
       un.className = "adm-link adm-link--muted";
       un.textContent = t("cancel");
-      un.style.marginInlineStart = "8px";
+      if (cell.children.length) un.style.marginInlineStart = "8px";
       un.addEventListener("click", function () { assign(s.id, null, cell, s); });
       cell.appendChild(un);
     }
+  }
+
+  // Assignee dropdown: pick any admin reader (or none) to assign the submission.
+  function renderAssignee(cell, s) {
+    cell.innerHTML = "";
+    var sel = document.createElement("select");
+    sel.className = "adm-select";
+    var none = document.createElement("option");
+    none.value = "";
+    none.textContent = t("selectAssignee");
+    sel.appendChild(none);
+    Object.keys(adminsById).forEach(function (aid) {
+      var o = document.createElement("option");
+      o.value = aid;
+      o.textContent = aid === (me && me.id) ? adminsById[aid] + " " + t("meParen") : adminsById[aid];
+      sel.appendChild(o);
+    });
+    sel.value = s.assigned_to || "";
+    sel.addEventListener("change", function () { assign(s.id, sel.value || null, cell, s); });
+    cell.appendChild(sel);
   }
 
   // Coverage cell: links to the reader workspace, label follows its status.
@@ -306,12 +330,20 @@
   }
 
   async function assign(id, toId, cell, s) {
+    var tr = cell.closest ? cell.closest("tr") : null;
+    var assignCell = tr ? tr.querySelector(".adm-assign") : cell;
+    var pickCell = tr ? tr.querySelector(".adm-assignee") : null;
     cell.style.opacity = ".5";
     var res = await sb.from("submissions").update({ assigned_to: toId }).eq("id", id);
     cell.style.opacity = "1";
-    if (res.error) { alert(t("assignFail")); return; }
+    if (res.error) {
+      alert(t("assignFail"));
+      if (pickCell) renderAssignee(pickCell, s); // reset dropdown to actual value
+      return;
+    }
     s.assigned_to = toId;
-    renderAssign(cell, s);
+    if (assignCell) renderAssign(assignCell, s);
+    if (pickCell) renderAssignee(pickCell, s);
     updateKpis(currentRows, currentCov);
   }
 
