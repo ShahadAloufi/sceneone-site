@@ -393,6 +393,22 @@
     }
   }
 
+  // ---------- NAV FOLD ----------
+  var NAV_KEY = "sceneone-admin-nav";
+  function setNavCollapsed(collapsed) {
+    var admEl = document.querySelector(".adm");
+    if (admEl) admEl.classList.toggle("is-nav-collapsed", collapsed);
+    try { localStorage.setItem(NAV_KEY, collapsed ? "1" : "0"); } catch (e) {}
+  }
+  (function initNavFold() {
+    var collapsed = false;
+    try { collapsed = localStorage.getItem(NAV_KEY) === "1"; } catch (e) {}
+    setNavCollapsed(collapsed);
+    var fold = $("navFoldBtn"), open = $("navOpenBtn");
+    if (fold) fold.addEventListener("click", function () { setNavCollapsed(true); });
+    if (open) open.addEventListener("click", function () { setNavCollapsed(false); });
+  })();
+
   // ---------- LANGUAGE ----------
   function applyLang(lang) {
     ULANG = (lang === "en") ? "en" : "ar";
