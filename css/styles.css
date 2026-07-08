@@ -858,7 +858,7 @@ html[data-theme="dark"] {
   padding: 11px 12px; border-radius: 10px; text-align: start; transition: background .15s, color .15s;
 }
 .adm-navitem:hover { background: var(--adm-ghost-hover); color: var(--adm-text); }
-.adm-navitem.is-active { background: var(--adm-accent-grad); color: #fff; }
+.adm-navitem.is-active { background: #D2AF50; color: #fff; }
 
 .adm-side__foot { margin-top: auto; display: flex; flex-direction: column; gap: 12px; padding-top: 16px; border-top: 1px solid var(--adm-border); }
 .adm-user { display: flex; align-items: center; gap: 10px; }
