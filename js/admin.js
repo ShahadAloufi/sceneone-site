@@ -99,6 +99,8 @@
   var dashView = $("adminDash");
   var me = null; // { id, email, name, role }
   var adminsById = {};
+  var currentRows = [];
+  var currentCov = {};
 
   function esc(v) {
     return String(v == null ? "" : v)
@@ -221,6 +223,8 @@
     var cov = await sb.from("coverages").select("submission_id,status");
     (cov.data || []).forEach(function (c) { covBySub[c.submission_id] = c.status; });
     var rows = res.data || [];
+    currentRows = rows;
+    currentCov = covBySub;
     updateKpis(rows, covBySub);
     $("subCount").textContent = rows.length;
     if (!rows.length) { show($("subEmpty")); return; }
@@ -308,6 +312,7 @@
     if (res.error) { alert(t("assignFail")); return; }
     s.assigned_to = toId;
     renderAssign(cell, s);
+    updateKpis(currentRows, currentCov);
   }
 
   async function downloadFile(path, btn) {
