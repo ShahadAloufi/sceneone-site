@@ -885,17 +885,13 @@ html[data-theme="dark"] {
 .adm-kpi {
   background: var(--adm-surface); border: 1px solid var(--adm-border); border-radius: 18px;
   padding: 20px; display: flex; flex-direction: column; gap: 12px;
-  border-top: 3px solid var(--adm-accent);
 }
 .adm-kpi__head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.adm-kpi__badge { font-size: 12px; font-weight: 800; color: var(--adm-accent); background: var(--adm-accent-soft); border-radius: 999px; padding: 3px 10px; }
+.adm-kpi__badge { font-size: 15px; font-weight: 800; color: var(--adm-accent); background: var(--adm-accent-soft); border-radius: 999px; padding: 5px 13px; }
 .adm-kpi__label { font-size: 13px; color: var(--adm-muted); font-weight: 600; }
 .adm-kpi__value { font-size: 32px; font-weight: 800; line-height: 1; color: var(--adm-text); font-variant-numeric: tabular-nums; }
-.adm-kpi--pending { border-top-color: var(--adm-red); }
 .adm-kpi--pending .adm-kpi__badge { color: var(--adm-red); background: var(--adm-red-soft); }
-.adm-kpi--review { border-top-color: var(--adm-amber); }
 .adm-kpi--review .adm-kpi__badge { color: var(--adm-amber); background: var(--adm-amber-soft); }
-.adm-kpi--done { border-top-color: var(--adm-green); }
 .adm-kpi--done .adm-kpi__badge { color: var(--adm-green); background: var(--adm-green-soft); }
 
 .adm-tablehead { display: flex; align-items: center; margin-bottom: 12px; }
