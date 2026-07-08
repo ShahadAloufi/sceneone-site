@@ -7,12 +7,73 @@
   "use strict";
 
   var CFG = window.SCENEONE_SUPABASE || {};
+
+  // ---- i18n ----
+  var LANG_KEY = "sceneone-admin-lang";
+  var ULANG = "ar";
+  try { var stored = localStorage.getItem(LANG_KEY); if (stored === "ar" || stored === "en") ULANG = stored; } catch (e) {}
+
   var GENRES = {
-    drama: "دراما", comedy: "كوميديا", thriller: "إثارة / تشويق",
-    horror: "رعب", action: "أكشن", documentary: "وثائقي", other: "أخرى"
+    ar: { drama: "دراما", comedy: "كوميديا", thriller: "إثارة / تشويق", horror: "رعب", action: "أكشن", documentary: "وثائقي", other: "أخرى" },
+    en: { drama: "Drama", comedy: "Comedy", thriller: "Thriller", horror: "Horror", action: "Action", documentary: "Documentary", other: "Other" }
   };
-  var FILM = { feature: "روائي طويل", short: "قصير" };
-  var DRAFT = { first: "الأولى", revised: "مُنقّحة", final: "نهائية" };
+  var FILM = {
+    ar: { feature: "روائي طويل", short: "قصير" },
+    en: { feature: "Feature", short: "Short" }
+  };
+  var DRAFT = {
+    ar: { first: "الأولى", revised: "مُنقّحة", final: "نهائية" },
+    en: { first: "First", revised: "Revised", final: "Final" }
+  };
+
+  var T = {
+    ar: {
+      // static (data-i18n)
+      loginTitle: "لوحة التحكم", loginSub: "تسجيل دخول المشرفين", fEmail: "البريد الإلكتروني",
+      fPassword: "كلمة المرور", loginSubmit: "تسجيل الدخول",
+      navSubmissions: "النصوص المقدَّمة", navAdmins: "إدارة المشرفين", logout: "تسجيل الخروج",
+      subTitle: "النصوص المقدَّمة", subSub: "نظرة عامة على النصوص المُستلمة وحالة تقييمها", refresh: "تحديث",
+      kpiTotal: "إجمالي النصوص", kpiPending: "بانتظار الإسناد", kpiReview: "قيد المراجعة", kpiDone: "مكتملة ومُقيَّمة",
+      subListTitle: "قائمة النصوص", thDate: "التاريخ", thTitle: "العنوان", thWriter: "الكاتب", thEmail: "البريد",
+      thGenre: "التصنيف", thFilmType: "نوع الفيلم", thDraft: "المسودة", thFile: "الملف", thAssignee: "المسند إليه",
+      thCoverage: "التقييم", subEmpty: "لا توجد نصوص مقدَّمة بعد.",
+      adminsTitle: "المشرفون", thName: "الاسم", thRole: "الدور", createTitle: "إضافة مشرف جديد",
+      fName: "الاسم", fRole: "الدور", roleAdmin: "مشرف", roleSuper: "مشرف أعلى", createBtn: "إنشاء المشرف",
+      phName: "اسم المشرف", phPassword: "8 أحرف على الأقل",
+      // dynamic
+      signingIn: "جارٍ الدخول...", badLogin: "بيانات الدخول غير صحيحة.",
+      notAdmin: "هذا الحساب ليس لديه صلاحية دخول لوحة التحكم.",
+      loadFail: "تعذّر تحميل النصوص.", download: "تحميل", assignMe: "أسند إليّ", you: "أنت",
+      adminFallback: "مشرف", cancel: "إلغاء", viewReport: "عرض التقرير", continueEval: "متابعة التقييم",
+      startEval: "ابدأ التقييم", assignFail: "تعذّر تحديث الإسناد.", dlFail: "تعذّر إنشاء رابط التحميل.",
+      del: "حذف", meParen: "(أنت)", confirmDel: function (n) { return "حذف المشرف " + n + "؟"; },
+      creating: "جارٍ الإنشاء...", createOk: "تم إنشاء المشرف بنجاح.", createGenericErr: "تعذّر إنشاء المشرف",
+      delGenericErr: "تعذّر الحذف"
+    },
+    en: {
+      loginTitle: "Dashboard", loginSub: "Admin sign in", fEmail: "Email",
+      fPassword: "Password", loginSubmit: "Sign in",
+      navSubmissions: "Submissions", navAdmins: "Manage admins", logout: "Sign out",
+      subTitle: "Submissions", subSub: "Overview of received scripts and their coverage status", refresh: "Refresh",
+      kpiTotal: "Total scripts", kpiPending: "Awaiting assignment", kpiReview: "In review", kpiDone: "Completed & rated",
+      subListTitle: "Scripts list", thDate: "Date", thTitle: "Title", thWriter: "Writer", thEmail: "Email",
+      thGenre: "Genre", thFilmType: "Film type", thDraft: "Draft", thFile: "File", thAssignee: "Assignee",
+      thCoverage: "Coverage", subEmpty: "No submissions yet.",
+      adminsTitle: "Admins", thName: "Name", thRole: "Role", createTitle: "Add a new admin",
+      fName: "Name", fRole: "Role", roleAdmin: "Admin", roleSuper: "Super admin", createBtn: "Create admin",
+      phName: "Admin name", phPassword: "At least 8 characters",
+      signingIn: "Signing in...", badLogin: "Invalid login credentials.",
+      notAdmin: "This account is not authorized to access the dashboard.",
+      loadFail: "Failed to load submissions.", download: "Download", assignMe: "Assign to me", you: "You",
+      adminFallback: "Admin", cancel: "Unassign", viewReport: "View report", continueEval: "Continue coverage",
+      startEval: "Start coverage", assignFail: "Failed to update assignment.", dlFail: "Failed to create download link.",
+      del: "Delete", meParen: "(you)", confirmDel: function (n) { return "Delete admin " + n + "?"; },
+      creating: "Creating...", createOk: "Admin created successfully.", createGenericErr: "Failed to create admin",
+      delGenericErr: "Failed to delete"
+    }
+  };
+  function t(k) { return T[ULANG][k]; }
+  function roleLabel(role) { return role === "super_admin" ? t("roleSuper") : t("roleAdmin"); }
 
   if (!window.supabase || !CFG.url || !CFG.anonKey) {
     var showNotConfigured = function () {
@@ -47,8 +108,8 @@
   function fmtDate(s) {
     try {
       var d = new Date(s);
-      return d.toLocaleDateString("ar", { year: "numeric", month: "short", day: "numeric" }) +
-        " · " + d.toLocaleTimeString("ar", { hour: "2-digit", minute: "2-digit" });
+      return d.toLocaleDateString(ULANG, { year: "numeric", month: "short", day: "numeric" }) +
+        " · " + d.toLocaleTimeString(ULANG, { hour: "2-digit", minute: "2-digit" });
     } catch (e) { return s; }
   }
   function show(el) { if (el) el.hidden = false; }
@@ -74,7 +135,8 @@
     hide(loginView);
     show(dashView);
     $("admWho").textContent = me.name;
-    $("admRole").textContent = me.role === "super_admin" ? "مشرف أعلى" : "مشرف";
+    $("admRole").textContent = roleLabel(me.role);
+    var av = $("admAvatar"); if (av) av.textContent = (me.name || "?").trim().charAt(0) || "?";
     if (me.role === "super_admin") { show($("adminsTabBtn")); }
     loadSubmissions();
   }
@@ -83,22 +145,22 @@
   $("adminLoginForm").addEventListener("submit", async function (e) {
     e.preventDefault();
     var err = $("loginError"); hide(err); err.textContent = "";
-    var btn = $("loginBtn"); btn.disabled = true; btn.textContent = "جارٍ الدخول...";
+    var btn = $("loginBtn"); btn.disabled = true; btn.textContent = t("signingIn");
     var email = $("loginEmail").value.trim();
     var pass = $("loginPassword").value;
     var out = await sb.auth.signInWithPassword({ email: email, password: pass });
     if (out.error) {
-      err.textContent = "بيانات الدخول غير صحيحة."; show(err);
+      err.textContent = t("badLogin"); show(err);
     } else {
       me = await loadMe();
       if (!me) {
         await sb.auth.signOut();
-        err.textContent = "هذا الحساب ليس لديه صلاحية دخول لوحة التحكم."; show(err);
+        err.textContent = t("notAdmin"); show(err);
       } else {
         enterDashboard();
       }
     }
-    btn.disabled = false; btn.textContent = "تسجيل الدخول";
+    btn.disabled = false; btn.textContent = t("loginSubmit");
   });
 
   // Logout
@@ -110,10 +172,10 @@
   });
 
   // ---------- TABS ----------
-  document.querySelectorAll(".adm-tab").forEach(function (t) {
+  document.querySelectorAll(".adm-navitem").forEach(function (t) {
     t.addEventListener("click", function () {
       var name = t.getAttribute("data-tab");
-      document.querySelectorAll(".adm-tab").forEach(function (x) { x.classList.remove("is-active"); });
+      document.querySelectorAll(".adm-navitem").forEach(function (x) { x.classList.remove("is-active"); });
       t.classList.add("is-active");
       $("tab-submissions").hidden = name !== "submissions";
       $("tab-admins").hidden = name !== "admins";
@@ -122,6 +184,24 @@
   });
 
   // ---------- SUBMISSIONS ----------
+  // KPI tiles: total / pending (unassigned) / in review (assigned, not done) / completed.
+  function updateKpis(rows, covBySub) {
+    var total = rows.length, pending = 0, review = 0, done = 0;
+    rows.forEach(function (s) {
+      if (covBySub[s.id] === "completed") done++;
+      else if (s.assigned_to) review++;
+      if (!s.assigned_to) pending++;
+    });
+    var pct = function (n) { return (total ? Math.round((n / total) * 100) : 0) + "%"; };
+    $("kpiTotal").textContent = total;
+    $("kpiPending").textContent = pending;
+    $("kpiReview").textContent = review;
+    $("kpiDone").textContent = done;
+    $("kpiPendingPct").textContent = pct(pending);
+    $("kpiReviewPct").textContent = pct(review);
+    $("kpiDonePct").textContent = pct(done);
+  }
+
   async function loadSubmissions() {
     // Load admin names first (for the assignee column).
     var ad = await sb.from("admins").select("id,name");
@@ -132,7 +212,7 @@
     var body = $("subBody");
     body.innerHTML = "";
     if (res.error) {
-      $("subEmpty").textContent = "تعذّر تحميل النصوص."; show($("subEmpty"));
+      $("subEmpty").textContent = t("loadFail"); show($("subEmpty"));
       return;
     }
 
@@ -141,6 +221,7 @@
     var cov = await sb.from("coverages").select("submission_id,status");
     (cov.data || []).forEach(function (c) { covBySub[c.submission_id] = c.status; });
     var rows = res.data || [];
+    updateKpis(rows, covBySub);
     $("subCount").textContent = rows.length;
     if (!rows.length) { show($("subEmpty")); return; }
     hide($("subEmpty"));
@@ -152,10 +233,9 @@
         "<td><strong>" + esc(s.title_ar) + "</strong><br><span class='adm-muted' dir='ltr'>" + esc(s.title_en) + "</span></td>" +
         "<td>" + esc(s.writer) + "</td>" +
         "<td dir='ltr'>" + esc(s.email) + "</td>" +
-        "<td>" + esc(GENRES[s.genre] || s.genre) + "</td>" +
-        "<td>" + esc(FILM[s.film_type] || s.film_type) + "</td>" +
-        "<td>" + esc(DRAFT[s.draft] || s.draft) + "</td>" +
-        "<td>" + (s.ip_registered ? "نعم" : "لا") + "</td>" +
+        "<td>" + esc(GENRES[ULANG][s.genre] || s.genre) + "</td>" +
+        "<td>" + esc(FILM[ULANG][s.film_type] || s.film_type) + "</td>" +
+        "<td>" + esc(DRAFT[ULANG][s.draft] || s.draft) + "</td>" +
         "<td class='adm-file'></td>" +
         "<td class='adm-assign'></td>" +
         "<td class='adm-cov'></td>";
@@ -164,7 +244,7 @@
       if (s.file_path) {
         var a = document.createElement("button");
         a.className = "adm-link";
-        a.textContent = "تحميل";
+        a.textContent = t("download");
         a.addEventListener("click", function () { downloadFile(s.file_path, a); });
         fileCell.appendChild(a);
       } else { fileCell.textContent = "—"; }
@@ -181,12 +261,12 @@
     if (!s.assigned_to) {
       var b = document.createElement("button");
       b.className = "adm-link adm-link--gold";
-      b.textContent = "أسند إليّ";
+      b.textContent = t("assignMe");
       b.addEventListener("click", function () { assign(s.id, me.id, cell, s); });
       cell.appendChild(b);
     } else {
       var mine = s.assigned_to === me.id;
-      var name = mine ? "أنت" : (adminsById[s.assigned_to] || "مشرف");
+      var name = mine ? t("you") : (adminsById[s.assigned_to] || t("adminFallback"));
       var badge = document.createElement("span");
       badge.className = "adm-badge" + (mine ? " adm-badge--me" : "");
       badge.textContent = name;
@@ -195,15 +275,15 @@
       if (!mine) {
         var take = document.createElement("button");
         take.className = "adm-link adm-link--gold";
-        take.textContent = "أسند إليّ";
-        take.style.marginRight = "8px";
+        take.textContent = t("assignMe");
+        take.style.marginInlineStart = "8px";
         take.addEventListener("click", function () { assign(s.id, me.id, cell, s); });
         cell.appendChild(take);
       }
       var un = document.createElement("button");
       un.className = "adm-link adm-link--muted";
-      un.textContent = "إلغاء";
-      un.style.marginRight = "8px";
+      un.textContent = t("cancel");
+      un.style.marginInlineStart = "8px";
       un.addEventListener("click", function () { assign(s.id, null, cell, s); });
       cell.appendChild(un);
     }
@@ -215,9 +295,9 @@
     var link = document.createElement("a");
     link.className = "adm-link adm-link--gold";
     link.href = "coverage.html?id=" + encodeURIComponent(s.id);
-    if (status === "completed") { link.textContent = "عرض التقرير"; link.className = "adm-link"; }
-    else if (status === "in_progress") link.textContent = "متابعة التقييم";
-    else link.textContent = "ابدأ التقييم";
+    if (status === "completed") { link.textContent = t("viewReport"); link.className = "adm-link"; }
+    else if (status === "in_progress") link.textContent = t("continueEval");
+    else link.textContent = t("startEval");
     cell.appendChild(link);
   }
 
@@ -225,7 +305,7 @@
     cell.style.opacity = ".5";
     var res = await sb.from("submissions").update({ assigned_to: toId }).eq("id", id);
     cell.style.opacity = "1";
-    if (res.error) { alert("تعذّر تحديث الإسناد."); return; }
+    if (res.error) { alert(t("assignFail")); return; }
     s.assigned_to = toId;
     renderAssign(cell, s);
   }
@@ -234,7 +314,7 @@
     var old = btn.textContent; btn.textContent = "..."; btn.disabled = true;
     var res = await sb.storage.from(CFG.bucket).createSignedUrl(path, 120);
     btn.textContent = old; btn.disabled = false;
-    if (res.error || !res.data) { alert("تعذّر إنشاء رابط التحميل."); return; }
+    if (res.error || !res.data) { alert(t("dlFail")); return; }
     window.open(res.data.signedUrl, "_blank");
   }
 
@@ -250,17 +330,17 @@
       tr.innerHTML =
         "<td>" + esc(a.name) + "</td>" +
         "<td dir='ltr'>" + esc(a.email) + "</td>" +
-        "<td>" + (a.role === "super_admin" ? "مشرف أعلى" : "مشرف") + "</td>" +
+        "<td>" + esc(roleLabel(a.role)) + "</td>" +
         "<td class='adm-del'></td>";
       var cell = tr.querySelector(".adm-del");
       if (a.id !== me.id) {
         var del = document.createElement("button");
         del.className = "adm-link adm-link--danger";
-        del.textContent = "حذف";
+        del.textContent = t("del");
         del.addEventListener("click", function () { removeAdmin(a, del); });
         cell.appendChild(del);
       } else {
-        cell.innerHTML = "<span class='adm-muted'>(أنت)</span>";
+        cell.innerHTML = "<span class='adm-muted'>" + esc(t("meParen")) + "</span>";
       }
       body.appendChild(tr);
     });
@@ -276,7 +356,7 @@
     e.preventDefault();
     var err = $("createError"); var ok = $("createSuccess");
     hide(err); hide(ok);
-    var btn = $("createBtn"); btn.disabled = true; btn.textContent = "جارٍ الإنشاء...";
+    var btn = $("createBtn"); btn.disabled = true; btn.textContent = t("creating");
     var payload = {
       name: $("newName").value.trim(),
       email: $("newEmail").value.trim(),
@@ -288,31 +368,59 @@
         method: "POST", headers: await authHeader(), body: JSON.stringify(payload)
       });
       var data = await resp.json().catch(function () { return {}; });
-      if (!resp.ok) throw new Error(data.message || "تعذّر إنشاء المشرف");
-      ok.textContent = "تم إنشاء المشرف بنجاح."; show(ok);
+      if (!resp.ok) throw new Error(data.message || t("createGenericErr"));
+      ok.textContent = t("createOk"); show(ok);
       $("createAdminForm").reset();
       loadAdmins();
     } catch (ex) {
       err.textContent = ex.message; show(err);
     }
-    btn.disabled = false; btn.textContent = "إنشاء المشرف";
+    btn.disabled = false; btn.textContent = t("createBtn");
   });
 
   async function removeAdmin(a, btn) {
-    if (!confirm("حذف المشرف " + a.name + "؟")) return;
+    if (!confirm(t("confirmDel")(a.name))) return;
     btn.disabled = true; btn.textContent = "...";
     try {
       var resp = await fetch("/api/admin/admins?id=" + encodeURIComponent(a.id), {
         method: "DELETE", headers: await authHeader()
       });
       var data = await resp.json().catch(function () { return {}; });
-      if (!resp.ok) throw new Error(data.message || "تعذّر الحذف");
+      if (!resp.ok) throw new Error(data.message || t("delGenericErr"));
       loadAdmins();
     } catch (ex) {
-      alert(ex.message); btn.disabled = false; btn.textContent = "حذف";
+      alert(ex.message); btn.disabled = false; btn.textContent = t("del");
     }
   }
 
+  // ---------- LANGUAGE ----------
+  function applyLang(lang) {
+    ULANG = (lang === "en") ? "en" : "ar";
+    try { localStorage.setItem(LANG_KEY, ULANG); } catch (e) {}
+    var dict = T[ULANG];
+    document.documentElement.setAttribute("lang", ULANG);
+    document.documentElement.setAttribute("dir", ULANG === "ar" ? "rtl" : "ltr");
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      var k = el.getAttribute("data-i18n"); if (dict[k] != null) el.textContent = dict[k];
+    });
+    document.querySelectorAll("[data-i18n-ph]").forEach(function (el) {
+      var k = el.getAttribute("data-i18n-ph"); if (dict[k] != null) el.setAttribute("placeholder", dict[k]);
+    });
+    document.querySelectorAll(".adm-lang button").forEach(function (b) {
+      b.classList.toggle("on", b.getAttribute("data-l") === ULANG);
+    });
+    // dynamic chrome + tables
+    if (me) {
+      $("admRole").textContent = roleLabel(me.role);
+      loadSubmissions();
+      if (!$("tab-admins").hidden) loadAdmins();
+    }
+  }
+  document.querySelectorAll(".adm-lang button").forEach(function (b) {
+    b.addEventListener("click", function () { applyLang(b.getAttribute("data-l")); });
+  });
+
   // ---------- START ----------
+  applyLang(ULANG);
   boot();
 })();

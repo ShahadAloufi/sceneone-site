@@ -21,111 +21,175 @@
 <!-- ── LOGIN VIEW ── -->
 <div class="adm-login" id="adminLogin" hidden>
   <form class="adm-login__card" id="adminLoginForm" novalidate>
-    <div class="adm-login__brand">🎬 Scene One</div>
-    <h1 class="adm-login__title">لوحة التحكم</h1>
-    <p class="adm-login__sub">تسجيل دخول المشرفين</p>
+    <div class="adm-login__brand">Scene One</div>
+    <div class="adm-lang adm-login__lang" id="admLangLogin">
+      <button type="button" data-l="ar">العربية</button>
+      <button type="button" data-l="en">English</button>
+    </div>
+    <h1 class="adm-login__title" data-i18n="loginTitle">لوحة التحكم</h1>
+    <p class="adm-login__sub" data-i18n="loginSub">تسجيل دخول المشرفين</p>
     <div class="adm-field">
-      <label>البريد الإلكتروني</label>
+      <label data-i18n="fEmail">البريد الإلكتروني</label>
       <input type="email" id="loginEmail" dir="ltr" placeholder="admin@example.com" autocomplete="username">
     </div>
     <div class="adm-field">
-      <label>كلمة المرور</label>
+      <label data-i18n="fPassword">كلمة المرور</label>
       <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
     </div>
     <p class="adm-error" id="loginError" hidden></p>
-    <button type="submit" class="adm-btn adm-btn--primary" id="loginBtn">تسجيل الدخول</button>
+    <button type="submit" class="adm-btn adm-btn--primary" id="loginBtn" data-i18n="loginSubmit">تسجيل الدخول</button>
   </form>
 </div>
 
 <!-- ── DASHBOARD VIEW ── -->
 <div class="adm" id="adminDash" hidden>
-  <header class="adm-top">
-    <div class="adm-top__brand">🎬 Scene One · لوحة التحكم</div>
-    <div class="adm-top__right">
-      <span class="adm-who" id="admWho"></span>
-      <span class="adm-role" id="admRole"></span>
-      <button class="adm-btn adm-btn--ghost adm-theme" id="themeBtn" type="button" title="تبديل المظهر" aria-label="تبديل المظهر">🌙</button>
-      <button class="adm-btn adm-btn--ghost" id="logoutBtn">تسجيل الخروج</button>
-    </div>
-  </header>
 
-  <nav class="adm-tabs">
-    <button class="adm-tab is-active" data-tab="submissions">النصوص المقدَّمة</button>
-    <button class="adm-tab" data-tab="admins" id="adminsTabBtn" hidden>إدارة المشرفين</button>
-  </nav>
+  <!-- Sidebar -->
+  <aside class="adm-side">
+    <div class="adm-side__brand"><span class="adm-side__name">Scene One</span></div>
+
+    <nav class="adm-nav">
+      <button class="adm-navitem is-active" data-tab="submissions">
+        <span class="adm-navitem__txt" data-i18n="navSubmissions">النصوص المقدَّمة</span>
+      </button>
+      <button class="adm-navitem" data-tab="admins" id="adminsTabBtn" hidden>
+        <span class="adm-navitem__txt" data-i18n="navAdmins">إدارة المشرفين</span>
+      </button>
+    </nav>
+
+    <div class="adm-side__foot">
+      <div class="adm-user">
+        <div class="adm-user__av" id="admAvatar"></div>
+        <div class="adm-user__meta">
+          <span class="adm-who" id="admWho"></span>
+          <span class="adm-role" id="admRole"></span>
+        </div>
+      </div>
+      <div class="adm-lang" id="admLang">
+        <button type="button" data-l="ar">العربية</button>
+        <button type="button" data-l="en">English</button>
+      </div>
+      <div class="adm-side__actions">
+        <button class="adm-btn adm-btn--ghost adm-theme" id="themeBtn" type="button" title="تبديل المظهر" aria-label="تبديل المظهر">🌙</button>
+        <button class="adm-btn adm-btn--ghost" id="logoutBtn" data-i18n="logout">تسجيل الخروج</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <div class="adm-main">
 
   <!-- Submissions tab -->
   <section class="adm-panel" id="tab-submissions">
     <div class="adm-panel__head">
-      <h2>النصوص المقدَّمة <span class="adm-count" id="subCount">0</span></h2>
-      <button class="adm-btn adm-btn--ghost" id="refreshBtn">تحديث</button>
+      <div class="adm-panel__title">
+        <h2 data-i18n="subTitle">النصوص المقدَّمة</h2>
+        <p class="adm-panel__sub" data-i18n="subSub">نظرة عامة على النصوص المُستلمة وحالة تقييمها</p>
+      </div>
+      <button class="adm-btn adm-btn--ghost" id="refreshBtn" data-i18n="refresh">تحديث</button>
+    </div>
+
+    <!-- KPI cards -->
+    <div class="adm-kpis">
+      <div class="adm-kpi adm-kpi--total">
+        <div class="adm-kpi__head">
+          <span class="adm-kpi__label" data-i18n="kpiTotal">إجمالي النصوص</span>
+        </div>
+        <div class="adm-kpi__value" id="kpiTotal">0</div>
+      </div>
+      <div class="adm-kpi adm-kpi--pending">
+        <div class="adm-kpi__head">
+          <span class="adm-kpi__label" data-i18n="kpiPending">بانتظار الإسناد</span>
+          <span class="adm-kpi__badge" id="kpiPendingPct">0%</span>
+        </div>
+        <div class="adm-kpi__value" id="kpiPending">0</div>
+      </div>
+      <div class="adm-kpi adm-kpi--review">
+        <div class="adm-kpi__head">
+          <span class="adm-kpi__label" data-i18n="kpiReview">قيد المراجعة</span>
+          <span class="adm-kpi__badge" id="kpiReviewPct">0%</span>
+        </div>
+        <div class="adm-kpi__value" id="kpiReview">0</div>
+      </div>
+      <div class="adm-kpi adm-kpi--done">
+        <div class="adm-kpi__head">
+          <span class="adm-kpi__label" data-i18n="kpiDone">مكتملة ومُقيَّمة</span>
+          <span class="adm-kpi__badge" id="kpiDonePct">0%</span>
+        </div>
+        <div class="adm-kpi__value" id="kpiDone">0</div>
+      </div>
+    </div>
+
+    <div class="adm-tablehead">
+      <h3><span data-i18n="subListTitle">قائمة النصوص</span> <span class="adm-count" id="subCount">0</span></h3>
     </div>
     <div class="adm-tablewrap">
       <table class="adm-table" id="subTable">
         <thead>
           <tr>
-            <th>التاريخ</th>
-            <th>العنوان</th>
-            <th>الكاتب</th>
-            <th>البريد</th>
-            <th>النوع</th>
-            <th>نوع الفيلم</th>
-            <th>المسودة</th>
-            <th>الحقوق</th>
-            <th>الملف</th>
-            <th>المسند إليه</th>
-            <th>التقييم</th>
+            <th data-i18n="thDate">التاريخ</th>
+            <th data-i18n="thTitle">العنوان</th>
+            <th data-i18n="thWriter">الكاتب</th>
+            <th data-i18n="thEmail">البريد</th>
+            <th data-i18n="thGenre">التصنيف</th>
+            <th data-i18n="thFilmType">نوع الفيلم</th>
+            <th data-i18n="thDraft">المسودة</th>
+            <th data-i18n="thFile">الملف</th>
+            <th data-i18n="thAssignee">المسند إليه</th>
+            <th data-i18n="thCoverage">التقييم</th>
           </tr>
         </thead>
         <tbody id="subBody"></tbody>
       </table>
-      <p class="adm-empty" id="subEmpty" hidden>لا توجد نصوص مقدَّمة بعد.</p>
+      <p class="adm-empty" id="subEmpty" hidden data-i18n="subEmpty">لا توجد نصوص مقدَّمة بعد.</p>
     </div>
   </section>
 
   <!-- Admins tab (super admin only) -->
   <section class="adm-panel" id="tab-admins" hidden>
     <div class="adm-panel__head">
-      <h2>المشرفون</h2>
+      <h2 data-i18n="adminsTitle">المشرفون</h2>
     </div>
 
     <div class="adm-tablewrap">
       <table class="adm-table">
         <thead>
-          <tr><th>الاسم</th><th>البريد</th><th>الدور</th><th></th></tr>
+          <tr><th data-i18n="thName">الاسم</th><th data-i18n="thEmail">البريد</th><th data-i18n="thRole">الدور</th><th></th></tr>
         </thead>
         <tbody id="adminsBody"></tbody>
       </table>
     </div>
 
     <div class="adm-create">
-      <h3>إضافة مشرف جديد</h3>
+      <h3 data-i18n="createTitle">إضافة مشرف جديد</h3>
       <form id="createAdminForm" class="adm-create__form" novalidate>
         <div class="adm-field">
-          <label>الاسم</label>
-          <input type="text" id="newName" placeholder="اسم المشرف">
+          <label data-i18n="fName">الاسم</label>
+          <input type="text" id="newName" data-i18n-ph="phName" placeholder="اسم المشرف">
         </div>
         <div class="adm-field">
-          <label>البريد الإلكتروني</label>
+          <label data-i18n="fEmail">البريد الإلكتروني</label>
           <input type="email" id="newEmail" dir="ltr" placeholder="admin@example.com">
         </div>
         <div class="adm-field">
-          <label>كلمة المرور</label>
-          <input type="text" id="newPassword" dir="ltr" placeholder="8 أحرف على الأقل">
+          <label data-i18n="fPassword">كلمة المرور</label>
+          <input type="text" id="newPassword" dir="ltr" data-i18n-ph="phPassword" placeholder="8 أحرف على الأقل">
         </div>
         <div class="adm-field">
-          <label>الدور</label>
+          <label data-i18n="fRole">الدور</label>
           <select id="newRole">
-            <option value="admin">مشرف</option>
-            <option value="super_admin">مشرف أعلى</option>
+            <option value="admin" data-i18n="roleAdmin">مشرف</option>
+            <option value="super_admin" data-i18n="roleSuper">مشرف أعلى</option>
           </select>
         </div>
         <p class="adm-error" id="createError" hidden></p>
         <p class="adm-success" id="createSuccess" hidden></p>
-        <button type="submit" class="adm-btn adm-btn--primary" id="createBtn">إنشاء المشرف</button>
+        <button type="submit" class="adm-btn adm-btn--primary" id="createBtn" data-i18n="createBtn">إنشاء المشرف</button>
       </form>
     </div>
   </section>
+
+  </div><!-- /.adm-main -->
 </div>
 
 <script src="js/config.js"></script>

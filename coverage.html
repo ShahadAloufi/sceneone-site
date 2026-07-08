@@ -22,15 +22,22 @@
     --field-bg:#ffffff; --field-dim:#d8d2c8; --body-txt:#3f3a35;
     --good:#2f7d4f; --ok:#b7892b; --bad:#b14a3a;
     --toast-bg:#15110f; --toast-txt:#ffffff;
+    /* landing-style action buttons: solid (primary) + ghost outline (secondary) */
+    --btn-solid-bg:#141414; --btn-solid-bg-hover:#000000; --btn-solid-text:#ffffff;
+    --btn-bg:#f4f0ea; --btn-bg-hover:#ece7df; --btn-line:#e0d9cf; --btn-ink:#2c2620;
     --font:'IBM Plex Sans Arabic','IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   }
   html[data-theme="dark"]{
-    --ink:#f2ede6; --orange:#f2612f; --orange-d:#d94a1c;
-    --paper:#14110f; --card:#1e1a17; --line:#322c26; --line2:#2a251f;
-    --muted:#a49b90; --label:#b3a99e; --soft:#241f1a;
-    --field-bg:#191512; --field-dim:#4a4239; --body-txt:#d8d0c6;
+    --ink:#f5f5f5; --orange:#f2612f; --orange-d:#d94a1c;
+    /* neutral cards + black page, matching the dashboard panel (#000 bg / #262626 cards) */
+    --paper:#000000; --card:#262626; --line:#363636; --line2:#303030;
+    --muted:#9a9a9a; --label:#b5b5b5; --soft:#2f2f2f;
+    --field-bg:#1c1c1c; --field-dim:#3a3a3a; --body-txt:#c2c2c2;
     --good:#57b07f; --ok:#d6ad55; --bad:#e57368;
-    --toast-bg:#2c2620; --toast-txt:#f2ede6;
+    --toast-bg:#2f2f2f; --toast-txt:#f5f5f5;
+    /* white solid + light ghost, matching the hero CTAs */
+    --btn-solid-bg:#ffffff; --btn-solid-bg-hover:#eaeaea; --btn-solid-text:#000000;
+    --btn-bg:rgba(255,255,255,.08); --btn-bg-hover:rgba(255,255,255,.16); --btn-line:rgba(255,255,255,.24); --btn-ink:#f2ede6;
   }
   *{box-sizing:border-box}
   html,body{margin:0}
@@ -59,7 +66,8 @@
   .uilang button.on{background:var(--card);color:var(--ink)}
   .uilang button:hover:not(.on){color:#fff}
   .themebtn{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);
-       color:#fff;font-size:15px;line-height:1;padding:8px 11px;border-radius:9px;cursor:pointer;transition:.15s}
+       color:#fff;line-height:0;padding:8px 10px;border-radius:9px;cursor:pointer;transition:.15s;
+       display:inline-flex;align-items:center;justify-content:center}
   .themebtn:hover{background:rgba(255,255,255,.16)}
   /* no lingering focus ring after a mouse click; keep it for keyboard users */
   .uilang button:focus,.tab:focus,.themebtn:focus{outline:none}
@@ -77,7 +85,7 @@
            font-weight:600;margin:0 0 6px}
   h1{font-size:26px;font-weight:600;margin:0 0 6px;letter-spacing:-.01em}
   .lead{color:var(--label);margin:0 0 26px;max-width:60ch}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;margin-bottom:18px}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   @media(max-width:620px){.grid2{grid-template-columns:1fr}}
   .field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
@@ -93,12 +101,14 @@
                  display:flex;align-items:center;gap:9px}
   .section-title .no{color:var(--orange);font-variant-numeric:tabular-nums}
 
-  .btn{font-family:inherit;font-size:14px;font-weight:500;border-radius:10px;padding:11px 20px;
-       cursor:pointer;border:1px solid var(--line);background:var(--field-bg);color:var(--ink);transition:.15s}
-  .btn:hover{border-color:var(--muted)}
-  .btn.primary{background:var(--orange);border-color:var(--orange);color:#fff}
-  .btn.primary:hover{background:var(--orange-d)}
+  /* Action buttons mirror the landing-page CTAs: ghost outline (secondary) + solid (primary). */
+  .btn{font-family:inherit;font-size:14px;font-weight:500;border-radius:8px;padding:11px 20px;
+       cursor:pointer;border:1px solid var(--btn-line);background:var(--btn-bg);color:var(--btn-ink);transition:.15s}
+  .btn:hover{background:var(--btn-bg-hover);border-color:var(--btn-line)}
+  .btn.primary{background:var(--btn-solid-bg);border-color:var(--btn-solid-bg);color:var(--btn-solid-text)}
+  .btn.primary:hover{background:var(--btn-solid-bg-hover);border-color:var(--btn-solid-bg-hover)}
   .btn.ghost{background:transparent}
+  .btn.ghost:hover{background:var(--btn-bg-hover)}
   .row-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:6px}
 
   /* segmented controls */
@@ -113,7 +123,7 @@
 
   /* ---------- "pulled from submission" panel ---------- */
   .pulled{background:var(--card);border:1px solid var(--line);
-          border-left:3px solid var(--orange);border-radius:12px;padding:20px 22px;margin-bottom:22px}
+          border-left:3px solid var(--orange);border-radius:18px;padding:20px 22px;margin-bottom:22px}
   .pulled .tag{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;letter-spacing:.14em;
                text-transform:uppercase;color:var(--orange);font-weight:600;margin-bottom:14px}
   .pulled .tag .lock{font-size:12px}
