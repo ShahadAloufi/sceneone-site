@@ -83,12 +83,19 @@
      white line art: shown faintly on the dark theme, inverted to dark ink on
      the light theme so they stay visible against the paper. */
   .ws-decor{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-  .ws-decor-img{position:absolute;opacity:.13;user-select:none}
-  html[data-theme="light"] .ws-decor-img{filter:invert(1);opacity:.32}
-  .ws-decor-reel   {top:12%;   left:3%;   width:230px}
-  .ws-decor-chair  {top:8%;    right:4%;  width:170px}
-  .ws-decor-camera {bottom:6%; right:5%;  width:210px}
-  .ws-decor-clapper{bottom:9%; left:4%;   width:150px}
+  .ws-decor-img{position:absolute;opacity:.22;user-select:none;
+    background-repeat:no-repeat;background-size:contain;background-position:center}
+  /* Light theme swaps in the light-specific artwork and inverts the white
+     line art to dark ink so it reads against the paper. */
+  html[data-theme="light"] .ws-decor-img{filter:invert(1);opacity:.45}
+  .ws-decor-reel   {top:12%;   left:3%;   width:230px;aspect-ratio:283/391;background-image:url(assets/deco-reel.svg)}
+  .ws-decor-chair  {top:8%;    right:4%;  width:170px;aspect-ratio:191/266;background-image:url(assets/deco-chair.svg)}
+  .ws-decor-camera {bottom:6%; right:5%;  width:210px;aspect-ratio:150/159;background-image:url(assets/deco-camera.svg)}
+  .ws-decor-clapper{bottom:9%; left:4%;   width:150px;aspect-ratio:85/99;background-image:url(assets/deco-clapper.svg)}
+  html[data-theme="light"] .ws-decor-reel   {background-image:url(assets/deco-reel-light.svg)}
+  html[data-theme="light"] .ws-decor-chair  {background-image:url(assets/deco-chair-light.svg)}
+  html[data-theme="light"] .ws-decor-camera {background-image:url(assets/deco-camera-light.svg)}
+  html[data-theme="light"] .ws-decor-clapper{background-image:url(assets/deco-clapper-light.svg)}
   @media(max-width:900px){
     .ws-decor-reel   {width:150px;top:auto;bottom:30%;left:-20px}
     .ws-decor-chair  {width:110px;right:-10px}
@@ -321,10 +328,10 @@
 <!-- ── APP ── -->
 <div id="app" hidden>
 <div class="ws-decor" aria-hidden="true">
-  <img class="ws-decor-img ws-decor-reel"    src="assets/deco-reel.svg"    alt="">
-  <img class="ws-decor-img ws-decor-chair"   src="assets/deco-chair.svg"   alt="">
-  <img class="ws-decor-img ws-decor-camera"  src="assets/deco-camera.svg"  alt="">
-  <img class="ws-decor-img ws-decor-clapper" src="assets/deco-clapper.svg" alt="">
+  <span class="ws-decor-img ws-decor-reel"></span>
+  <span class="ws-decor-img ws-decor-chair"></span>
+  <span class="ws-decor-img ws-decor-camera"></span>
+  <span class="ws-decor-img ws-decor-clapper"></span>
 </div>
 <header>
   <div class="nav">

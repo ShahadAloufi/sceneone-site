@@ -880,12 +880,21 @@ html[data-theme="dark"] {
 /* Decorative hand-drawn illustrations behind the dashboard. White SVG line
    art: faint on the dark theme, inverted to dark ink on the light theme. */
 .adm-decor { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-.adm-decor-img { position: absolute; opacity: .13; user-select: none; }
-html[data-theme="light"] .adm-decor-img { filter: invert(1); opacity: .32; }
-.adm-decor-reel    { top: 10%;    inset-inline-start: 3%;  width: 240px; }
-.adm-decor-chair   { top: 6%;     inset-inline-end: 4%;    width: 180px; }
-.adm-decor-camera  { bottom: 7%;  inset-inline-end: 5%;    width: 220px; }
-.adm-decor-clapper { bottom: 10%; inset-inline-start: 4%;  width: 150px; }
+.adm-decor-img {
+  position: absolute; opacity: .22; user-select: none;
+  background-repeat: no-repeat; background-size: contain; background-position: center;
+}
+/* Light theme swaps in the light-specific artwork and inverts the white line
+   art to dark ink so it reads against the light dashboard. */
+html[data-theme="light"] .adm-decor-img { filter: invert(1); opacity: .45; }
+.adm-decor-reel    { top: 10%;    inset-inline-start: 3%; width: 240px; aspect-ratio: 283/391; background-image: url(../assets/deco-reel.svg); }
+.adm-decor-chair   { top: 6%;     inset-inline-end: 4%;   width: 180px; aspect-ratio: 191/266; background-image: url(../assets/deco-chair.svg); }
+.adm-decor-camera  { bottom: 7%;  inset-inline-end: 5%;   width: 220px; aspect-ratio: 150/159; background-image: url(../assets/deco-camera.svg); }
+.adm-decor-clapper { bottom: 10%; inset-inline-start: 4%; width: 150px; aspect-ratio: 85/99;   background-image: url(../assets/deco-clapper.svg); }
+html[data-theme="light"] .adm-decor-reel    { background-image: url(../assets/deco-reel-light.svg); }
+html[data-theme="light"] .adm-decor-chair   { background-image: url(../assets/deco-chair-light.svg); }
+html[data-theme="light"] .adm-decor-camera  { background-image: url(../assets/deco-camera-light.svg); }
+html[data-theme="light"] .adm-decor-clapper { background-image: url(../assets/deco-clapper-light.svg); }
 @media (max-width: 900px) {
   .adm-decor-reel    { width: 150px; }
   .adm-decor-chair   { width: 110px; }
