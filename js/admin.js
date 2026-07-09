@@ -41,6 +41,7 @@
       adminsTitle: "المشرفون", thName: "الاسم", thRole: "الدور", createTitle: "إضافة مشرف جديد",
       fName: "الاسم", fRole: "الدور", roleAdmin: "مشرف", roleSuper: "مشرف أعلى", createBtn: "إنشاء المشرف",
       roleSeniorReader: "قارئ أول", roleJuniorReader: "قارئ مبتدئ", assignCo: "إضافة قارئ مشارك",
+      assignTwice: "لا يمكنك إسناد نفسك مرتين",
       phName: "اسم المشرف", phPassword: "8 أحرف على الأقل",
       // dynamic
       signingIn: "جارٍ الدخول...", badLogin: "بيانات الدخول غير صحيحة.",
@@ -65,6 +66,7 @@
       adminsTitle: "Admins", thName: "Name", thRole: "Role", createTitle: "Add a new admin",
       fName: "Name", fRole: "Role", roleAdmin: "Admin", roleSuper: "Super admin", createBtn: "Create admin",
       roleSeniorReader: "Senior Reader", roleJuniorReader: "Junior Reader", assignCo: "Add co-reader",
+      assignTwice: "You cannot assign yourself twice",
       phName: "Admin name", phPassword: "At least 8 characters",
       signingIn: "Signing in...", badLogin: "Invalid login credentials.",
       notAdmin: "This account is not authorized to access the dashboard.",
@@ -391,6 +393,8 @@
 
   // Claim/free the co-reader slot (only shown under a junior primary assignee).
   async function assignCo(id, toId, cell, s) {
+    // The primary reader can't also take the co-reader slot.
+    if (toId && toId === s.assigned_to) { alert(t("assignTwice")); return; }
     if (cell.dataset.busy) return;
     cell.dataset.busy = "1";
     var prev = s.co_reader_id;
