@@ -226,32 +226,27 @@ create policy "staff read all, readers read assigned coverages"
     or public.is_assigned(auth.uid(), submission_id)
   );
 
--- Create a coverage row (first time a submission is opened). Readers may only
--- create one for a script they're assigned to.
+-- Create a coverage row (first time a submission is written to). Only the
+-- assigned reader (primary or co-reader) may write — the coverage is read-only
+-- for everyone else, including staff who haven't assigned themselves. Staff
+-- still SEE every coverage via the SELECT policy above.
 drop policy if exists "admins can insert coverages" on public.coverages;
 drop policy if exists "staff insert all, readers insert assigned coverages" on public.coverages;
-create policy "staff insert all, readers insert assigned coverages"
+drop policy if exists "only assigned readers insert coverages" on public.coverages;
+create policy "only assigned readers insert coverages"
   on public.coverages for insert
   to authenticated
-  with check (
-    public.is_staff(auth.uid())
-    or public.is_assigned(auth.uid(), submission_id)
-  );
+  with check ( public.is_assigned(auth.uid(), submission_id) );
 
--- Update coverages (autosave while writing). Same assignment restriction.
+-- Update coverages (autosave while writing). Only the assigned reader may edit.
 drop policy if exists "admins can update coverages" on public.coverages;
 drop policy if exists "staff update all, readers update assigned coverages" on public.coverages;
-create policy "staff update all, readers update assigned coverages"
+drop policy if exists "only assigned readers update coverages" on public.coverages;
+create policy "only assigned readers update coverages"
   on public.coverages for update
   to authenticated
-  using (
-    public.is_staff(auth.uid())
-    or public.is_assigned(auth.uid(), submission_id)
-  )
-  with check (
-    public.is_staff(auth.uid())
-    or public.is_assigned(auth.uid(), submission_id)
-  );
+  using ( public.is_assigned(auth.uid(), submission_id) )
+  with check ( public.is_assigned(auth.uid(), submission_id) );
 
 -- Base table privileges for the signed-in role (RLS above restricts to admins).
 grant select, insert, update on public.coverages to authenticated;

@@ -49,6 +49,7 @@
       notAdmin: "هذا الحساب ليس لديه صلاحية دخول لوحة التحكم.",
       loadFail: "تعذّر تحميل النصوص.", download: "تحميل", assignMe: "أسند إليّ",
       adminFallback: "مشرف", cancel: "إلغاء", viewReport: "عرض التقرير", continueEval: "متابعة التقييم",
+      inReview: "قيد التقييم",
       startEval: "ابدأ التقييم", assignFail: "تعذّر تحديث الإسناد.", dlFail: "تعذّر إنشاء رابط التحميل.",
       del: "حذف", meParen: "(أنت)", confirmDel: function (n) { return "حذف المشرف " + n + "؟"; },
       creating: "جارٍ الإنشاء...", createOk: "تم إنشاء المشرف بنجاح.", createGenericErr: "تعذّر إنشاء المشرف",
@@ -74,6 +75,7 @@
       notAdmin: "This account is not authorized to access the dashboard.",
       loadFail: "Failed to load submissions.", download: "Download", assignMe: "Assign to me",
       adminFallback: "Admin", cancel: "Unassign", viewReport: "View report", continueEval: "Continue coverage",
+      inReview: "In review",
       startEval: "Start coverage", assignFail: "Failed to update assignment.", dlFail: "Failed to create download link.",
       del: "Delete", meParen: "(you)", confirmDel: function (n) { return "Delete admin " + n + "?"; },
       creating: "Creating...", createOk: "Admin created successfully.", createGenericErr: "Failed to create admin",
@@ -357,29 +359,44 @@
   // Coverage cell: links to the reader workspace, label follows its status.
   function renderCoverage(cell, s, status) {
     cell.innerHTML = "";
-    // Label + style follow the coverage status.
-    var label = status === "completed" ? t("viewReport")
-      : status === "in_progress" ? t("continueEval")
-      : t("startEval");
-    var cls = "adm-link" + (status === "completed" ? "" : " adm-link--gold");
+    var assigned = amAssignedTo(s);
+    var reader = isReader(me && me.role);
 
-    // Readers may only open a coverage for a script they're assigned to (as
-    // primary or co-reader). Until then the button shows its normal label but
-    // is disabled. Admins/super-admins can always open a coverage.
-    if (isReader(me && me.role) && !amAssignedTo(s)) {
+    // Open the coverage page (editable for the assigned reader, read-only for
+    // staff who aren't assigned — enforced inside coverage.js).
+    function covLink(label, cls) {
+      var link = document.createElement("a");
+      link.className = cls;
+      link.href = "coverage.html?id=" + encodeURIComponent(s.id);
+      link.textContent = label;
+      cell.appendChild(link);
+    }
+    // A disabled button: shown to readers who haven't assigned themselves yet.
+    function covBtn(label, cls) {
       var btn = document.createElement("button");
-      btn.className = cls;
-      btn.disabled = true;
-      btn.title = t("covLocked");
+      btn.className = cls; btn.disabled = true; btn.title = t("covLocked");
       btn.textContent = label;
       cell.appendChild(btn);
+    }
+
+    // Completed coverage → everyone with access sees "View report".
+    if (status === "completed") { covLink(t("viewReport"), "adm-link"); return; }
+
+    var gold = "adm-link adm-link--gold";
+
+    // In-progress coverage (the reader has started writing). The assigned reader
+    // continues editing; everyone else sees "In review". Staff can still open a
+    // read-only copy; unassigned readers get a disabled button.
+    if (status === "in_progress") {
+      if (assigned) covLink(t("continueEval"), gold);
+      else if (reader) covBtn(t("inReview"), gold);
+      else covLink(t("inReview"), gold);
       return;
     }
-    var link = document.createElement("a");
-    link.className = cls;
-    link.href = "coverage.html?id=" + encodeURIComponent(s.id);
-    link.textContent = label;
-    cell.appendChild(link);
+
+    // No coverage yet → "Start coverage". Readers must assign themselves first.
+    if (reader && !assigned) covBtn(t("startEval"), gold);
+    else covLink(t("startEval"), gold);
   }
 
   // Re-render the coverage cell in the same row so its locked/unlocked state

@@ -88,7 +88,7 @@
       editCoverage: "Edit coverage", print: "Print / Save as PDF",
       pl: { title: "Title", writer: "Writer", email: "Email", ref: "Reference", format: "Format", genre: "Genre", length: "Length", draft: "Draft", ip: "IP registered", file: "Script file", logline: "Logline", vision: "Writer's vision" },
       ipYes: "Registered", ipNo: "Not registered", dl: "Download script", untitled: "Untitled", dash: "—",
-      saving: "Saving…", saved: "Saved", saveFailed: "Save failed", loaded: "Loaded", newCov: "New coverage",
+      saving: "Saving…", saved: "Saved", saveFailed: "Save failed", loaded: "Loaded", newCov: "New coverage", viewOnly: "View only",
       hintOverride: function (a) { return "Overriding the suggested " + a; }, hintManual: "Manual rating", hintAuto: "Using the suggested score",
       evalPh: function (n) { return "Your assessment of " + n + "."; },
       tComplete: "Coverage marked complete", tReopened: "Coverage reopened", tDlFail: "Couldn't create the download link.",
@@ -111,7 +111,7 @@
       editCoverage: "تعديل التقييم", print: "طباعة / حفظ PDF",
       pl: { title: "عنوان السيناريو", writer: "اسم الكاتب", email: "البريد الإلكتروني", ref: "الرقم المرجعي", format: "نوع العمل", genre: "التصنيف", length: "عدد الصفحات/المدة", draft: "نسخة السيناريو", ip: "تسجيل الملكية الفكرية", file: "ملف السيناريو", logline: "الملخص المختصر", vision: "رؤية الكاتب" },
       ipYes: "مسجل", ipNo: "غير مسجل", dl: "تحميل النص", untitled: "بدون عنوان", dash: "—",
-      saving: "جارٍ الحفظ…", saved: "تم الحفظ", saveFailed: "فشل الحفظ", loaded: "تم التحميل", newCov: "تقييم جديد",
+      saving: "جارٍ الحفظ…", saved: "تم الحفظ", saveFailed: "فشل الحفظ", loaded: "تم التحميل", newCov: "تقييم جديد", viewOnly: "عرض فقط",
       hintOverride: function (a) { return "يتجاوز الدرجة المقترحة " + a; }, hintManual: "تقييم يدوي", hintAuto: "استخدام الدرجة المقترحة",
       // Contract the preposition ل with a leading definite article ال → لل
       // (e.g. "الفكرة" → "تقييمك للفكرة"), otherwise just prefix ل.
@@ -192,6 +192,7 @@
   var submissionId = new URLSearchParams(location.search).get("id");
   var me = null;                 // { id, email, name, role }
   var covStatus = "in_progress"; // 'in_progress' | 'completed'
+  var readOnly = false;          // true for staff viewing a coverage they aren't assigned to
   var saveT = null;
 
   var currentSaveKey = "";
@@ -200,6 +201,7 @@
   function scheduleSave() { clearTimeout(saveT); saveT = setTimeout(save, 500); }
 
   async function save() {
+    if (readOnly) return;
     if (!sb || !submissionId || !me) return;
     setSaveState("saving");
     var res = await sb.from("coverages").upsert({
@@ -493,6 +495,24 @@
     fillCovFields();
     renderPulled();
     if ($("view-report").classList.contains("active")) renderReport();
+    if (readOnly) applyReadOnly();
+  }
+
+  // Lock the whole workspace for staff who aren't the assigned reader: every
+  // input becomes read-only and the editing buttons (ratings/segments/finalize)
+  // are disabled, so only the assigned reader can actually write. Re-applied on
+  // every language switch because buildCoverageInputs() rebuilds the controls.
+  function applyReadOnly() {
+    var root = $("view-review");
+    if (root) {
+      root.querySelectorAll("input, textarea, select").forEach(function (el) {
+        el.disabled = true; el.readOnly = true;
+      });
+      root.querySelectorAll("button").forEach(function (b) {
+        if (b.id !== "genReport") b.disabled = true; // keep "Generate report" (nav only)
+      });
+    }
+    setSaveState("viewOnly");
   }
   document.querySelectorAll("#uiLang button").forEach(function (b) {
     b.onclick = function () { applyUILang(b.dataset.l); };
@@ -581,13 +601,19 @@
       guardState("Submission not found", "We couldn't find this submission. It may have been removed.", true);
       return;
     }
-    // Readers may only open a coverage for a script they're assigned to
-    // (primary or co-reader). Admins/super-admins can open any coverage.
+    // Access rules:
+    //  • Assigned reader (primary or co-reader) → full edit access.
+    //  • Readers who aren't assigned → blocked entirely.
+    //  • Staff (admin/super_admin) who aren't assigned → read-only view, so the
+    //    workspace stays locked for everyone except the assigned reader.
     var isReaderRole = me.role === "senior_reader" || me.role === "junior_reader";
     var assignedToMe = subRes.data.assigned_to === me.id || subRes.data.co_reader_id === me.id;
-    if (isReaderRole && !assignedToMe) {
-      guardState("No access", "You can only view this coverage after assigning yourself to the script.", true);
-      return;
+    if (!assignedToMe) {
+      if (isReaderRole) {
+        guardState("No access", "You can only view this coverage after assigning yourself to the script.", true);
+        return;
+      }
+      readOnly = true; // staff may look, but not edit
     }
 
     state.submission = mapSubmission(subRes.data);
