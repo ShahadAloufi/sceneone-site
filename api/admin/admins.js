@@ -60,7 +60,8 @@ module.exports = async (req, res) => {
     const name = (b.name || "").toString().trim();
     const email = (b.email || "").toString().trim().toLowerCase();
     const password = (b.password || "").toString();
-    const role = b.role === "super_admin" ? "super_admin" : "admin";
+    const ALLOWED_ROLES = ["admin", "super_admin", "senior_reader", "junior_reader"];
+    const role = ALLOWED_ROLES.indexOf(b.role) !== -1 ? b.role : "admin";
 
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (name.length < 2 || !emailRe.test(email) || password.length < 8) {

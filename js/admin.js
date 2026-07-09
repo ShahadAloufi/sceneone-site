@@ -40,6 +40,7 @@
       thCoverage: "التقييم", subEmpty: "لا توجد نصوص مقدَّمة بعد.",
       adminsTitle: "المشرفون", thName: "الاسم", thRole: "الدور", createTitle: "إضافة مشرف جديد",
       fName: "الاسم", fRole: "الدور", roleAdmin: "مشرف", roleSuper: "مشرف أعلى", createBtn: "إنشاء المشرف",
+      roleSeniorReader: "قارئ أول", roleJuniorReader: "قارئ مبتدئ", assignCo: "إضافة قارئ مشارك",
       phName: "اسم المشرف", phPassword: "8 أحرف على الأقل",
       // dynamic
       signingIn: "جارٍ الدخول...", badLogin: "بيانات الدخول غير صحيحة.",
@@ -63,6 +64,7 @@
       thCoverage: "Coverage", subEmpty: "No submissions yet.",
       adminsTitle: "Admins", thName: "Name", thRole: "Role", createTitle: "Add a new admin",
       fName: "Name", fRole: "Role", roleAdmin: "Admin", roleSuper: "Super admin", createBtn: "Create admin",
+      roleSeniorReader: "Senior Reader", roleJuniorReader: "Junior Reader", assignCo: "Add co-reader",
       phName: "Admin name", phPassword: "At least 8 characters",
       signingIn: "Signing in...", badLogin: "Invalid login credentials.",
       notAdmin: "This account is not authorized to access the dashboard.",
@@ -75,7 +77,12 @@
     }
   };
   function t(k) { return T[ULANG][k]; }
-  function roleLabel(role) { return role === "super_admin" ? t("roleSuper") : t("roleAdmin"); }
+  function roleLabel(role) {
+    if (role === "super_admin") return t("roleSuper");
+    if (role === "senior_reader") return t("roleSeniorReader");
+    if (role === "junior_reader") return t("roleJuniorReader");
+    return t("roleAdmin");
+  }
 
   if (!window.supabase || !CFG.url || !CFG.anonKey) {
     var showNotConfigured = function () {
@@ -101,6 +108,7 @@
   var dashView = $("adminDash");
   var me = null; // { id, email, name, role }
   var adminsById = {};
+  var adminRoleById = {};
   var currentRows = [];
   var currentCov = {};
 
@@ -212,14 +220,15 @@
     // parallel — they don't depend on each other, so one round-trip's worth of
     // latency instead of three.
     var results = await Promise.all([
-      sb.from("admins").select("id,name"),
+      sb.from("admins").select("id,name,role"),
       sb.from("submissions").select("*").order("created_at", { ascending: false }),
       sb.from("coverages").select("submission_id,status")
     ]);
     var ad = results[0], res = results[1], cov = results[2];
 
     adminsById = {};
-    (ad.data || []).forEach(function (a) { adminsById[a.id] = a.name; });
+    adminRoleById = {};
+    (ad.data || []).forEach(function (a) { adminsById[a.id] = a.name; adminRoleById[a.id] = a.role; });
 
     var body = $("subBody");
     body.innerHTML = "";
@@ -281,32 +290,61 @@
     return "hsl(" + h + ", 42%, 46%)";
   }
 
-  // Assignee cell: an empty "add me" icon when free; once taken it shows a
-  // circular letter-avatar of the assignee. Clicking your own avatar frees it.
-  function renderAssignee(cell, s) {
-    cell.innerHTML = "";
-    if (!s.assigned_to) {
-      var add = document.createElement("button");
-      add.className = "adm-av adm-av--add";
-      add.title = t("assignMe");
-      add.setAttribute("aria-label", t("assignMe"));
-      add.innerHTML =
-        '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-        '<path d="M14 19a6 6 0 0 0-12 0"/><circle cx="8" cy="9" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>';
-      add.addEventListener("click", function () { assign(s.id, me.id, cell, s); });
-      cell.appendChild(add);
-      return;
-    }
-    var name = adminsById[s.assigned_to] || t("adminFallback");
-    var mine = s.assigned_to === (me && me.id);
+  function isJunior(id) { return adminRoleById[id] === "junior_reader"; }
+
+  // The circular "+" icon used to claim a slot (primary or co-reader).
+  function addSlotBtn(cell, s, which) {
+    var label = which === "co" ? t("assignCo") : t("assignMe");
+    var add = document.createElement("button");
+    add.className = "adm-av adm-av--add" + (which === "co" ? " adm-av--co" : "");
+    add.title = label;
+    add.setAttribute("aria-label", label);
+    add.innerHTML =
+      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<path d="M14 19a6 6 0 0 0-12 0"/><circle cx="8" cy="9" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>';
+    add.addEventListener("click", function () {
+      if (which === "co") assignCo(s.id, me.id, cell, s);
+      else assign(s.id, me.id, cell, s);
+    });
+    return add;
+  }
+
+  // A filled avatar; clicking your own frees that slot.
+  function slotAvatar(id, cell, s, which) {
+    var name = adminsById[id] || t("adminFallback");
+    var mine = id === (me && me.id);
     var av = document.createElement(mine ? "button" : "span");
     av.className = "adm-av" + (mine ? "" : " adm-av--static");
-    av.style.background = avatarColor(s.assigned_to);
+    av.style.background = avatarColor(id);
     av.textContent = initial(name);
     av.title = mine ? name + " " + t("meParen") : name;
     av.setAttribute("aria-label", av.title);
-    if (mine) av.addEventListener("click", function () { assign(s.id, null, cell, s); });
-    cell.appendChild(av);
+    if (mine) av.addEventListener("click", function () {
+      if (which === "co") assignCo(s.id, null, cell, s);
+      else assign(s.id, null, cell, s);
+    });
+    return av;
+  }
+
+  // Assignee cell: an empty "add me" icon when free; once taken it shows a
+  // circular letter-avatar of the assignee. Clicking your own avatar frees it.
+  // When the primary assignee is a junior reader, a second (co-reader) slot is
+  // shown so another reader can join them — both names then appear as assignees.
+  function renderAssignee(cell, s) {
+    cell.innerHTML = "";
+    var row = document.createElement("div");
+    row.className = "adm-assignee__row";
+    if (!s.assigned_to) {
+      row.appendChild(addSlotBtn(cell, s, "primary"));
+    } else {
+      row.appendChild(slotAvatar(s.assigned_to, cell, s, "primary"));
+      if (isJunior(s.assigned_to)) {
+        row.appendChild(s.co_reader_id
+          ? slotAvatar(s.co_reader_id, cell, s, "co")
+          : addSlotBtn(cell, s, "co"));
+      }
+    }
+    cell.appendChild(row);
   }
 
   // Coverage cell: links to the reader workspace, label follows its status.
@@ -325,20 +363,48 @@
     if (cell.dataset.busy) return; // ignore clicks while a request is in flight
     cell.dataset.busy = "1";
     var prev = s.assigned_to;
+    var prevCo = s.co_reader_id;
     // Optimistic: reflect the new state immediately so the click feels instant.
     s.assigned_to = toId;
+    // A co-reader only makes sense under a junior primary — drop it otherwise.
+    var update = { assigned_to: toId };
+    if ((!toId || !isJunior(toId)) && s.co_reader_id) {
+      s.co_reader_id = null;
+      update.co_reader_id = null;
+    }
     renderAssignee(cell, s);
     cell.style.opacity = ".6";
     updateKpis(currentRows, currentCov);
 
-    var res = await sb.from("submissions").update({ assigned_to: toId }).eq("id", id);
+    var res = await sb.from("submissions").update(update).eq("id", id);
 
     cell.style.opacity = "1";
     delete cell.dataset.busy;
-    if (res.error) { // roll back to the previous assignee on failure
+    if (res.error) { // roll back to the previous assignees on failure
       s.assigned_to = prev;
+      s.co_reader_id = prevCo;
       renderAssignee(cell, s);
       updateKpis(currentRows, currentCov);
+      alert(t("assignFail"));
+    }
+  }
+
+  // Claim/free the co-reader slot (only shown under a junior primary assignee).
+  async function assignCo(id, toId, cell, s) {
+    if (cell.dataset.busy) return;
+    cell.dataset.busy = "1";
+    var prev = s.co_reader_id;
+    s.co_reader_id = toId;
+    renderAssignee(cell, s);
+    cell.style.opacity = ".6";
+
+    var res = await sb.from("submissions").update({ co_reader_id: toId }).eq("id", id);
+
+    cell.style.opacity = "1";
+    delete cell.dataset.busy;
+    if (res.error) {
+      s.co_reader_id = prev;
+      renderAssignee(cell, s);
       alert(t("assignFail"));
     }
   }

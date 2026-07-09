@@ -14,9 +14,18 @@ create table if not exists public.admins (
   id         uuid primary key references auth.users(id) on delete cascade,
   email      text not null,
   name       text not null,
-  role       text not null default 'admin' check (role in ('admin', 'super_admin')),
+  role       text not null default 'admin' check (role in ('admin', 'super_admin', 'senior_reader', 'junior_reader')),
   created_at timestamptz not null default now()
 );
+
+-- Widen the role allowlist if the table pre-existed with the old two-role check.
+-- Readers (senior_reader / junior_reader) currently share the same access as
+-- admins via is_admin(); payment-gating will restrict them to paid submissions
+-- later. junior readers get a co-reader on each submission they claim.
+alter table public.admins drop constraint if exists admins_role_check;
+alter table public.admins
+  add constraint admins_role_check
+  check (role in ('admin', 'super_admin', 'senior_reader', 'junior_reader'));
 
 -- Helper functions (SECURITY DEFINER so they bypass RLS on `admins` and avoid
 -- infinite recursion when referenced inside `admins` policies).
@@ -80,12 +89,18 @@ create table if not exists public.submissions (
   file_path     text,          -- object path inside the `scripts` bucket
   file_name     text,          -- original filename shown to admins
   status        text not null default 'new',
-  assigned_to   uuid references public.admins(id) on delete set null
+  assigned_to   uuid references public.admins(id) on delete set null,
+  -- Second reader, only used when the primary assignee is a junior reader.
+  co_reader_id  uuid references public.admins(id) on delete set null
 );
 
 -- Add assigned_to if the table pre-existed from an earlier version.
 alter table public.submissions
   add column if not exists assigned_to uuid references public.admins(id) on delete set null;
+
+-- Add co_reader_id if the table pre-existed from an earlier version.
+alter table public.submissions
+  add column if not exists co_reader_id uuid references public.admins(id) on delete set null;
 
 alter table public.submissions enable row level security;
 

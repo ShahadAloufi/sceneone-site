@@ -948,6 +948,8 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   border: 1.5px dashed var(--adm-outline-line);
 }
 .adm-av--add:hover { color: #C9A24B; border-color: #C9A24B; box-shadow: none; transform: none; }
+/* Primary + co-reader avatars sit side by side, slightly overlapped. */
+.adm-assignee__row { display: inline-flex; align-items: center; gap: 6px; }
 
 /* Language toggle (ar / en) */
 .adm-lang { display: flex; gap: 2px; background: var(--adm-input-bg); border: 1px solid var(--adm-border); padding: 3px; border-radius: 10px; }
