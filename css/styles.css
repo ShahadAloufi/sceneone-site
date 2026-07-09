@@ -915,7 +915,7 @@ html[data-theme="dark"] {
   display: inline-flex; align-items: center; justify-content: center; vertical-align: middle;
   border: 1px solid var(--adm-outline-line); background: var(--adm-outline-bg); cursor: pointer;
   font-family: inherit; font-size: 13px; font-weight: 500; color: var(--adm-outline-ink);
-  width: 172px; height: 39px; padding: 8px 18px; border-radius: 8px; text-decoration: none; white-space: nowrap;
+  width: 150px; height: 39px; padding: 8px 18px; border-radius: 8px; text-decoration: none; white-space: nowrap;
   transition: background .15s, border-color .15s, color .15s, opacity .15s;
 }
 .adm-link:hover { background: var(--adm-outline-bg-hover); border-color: var(--adm-outline-line); color: var(--adm-outline-ink); }
