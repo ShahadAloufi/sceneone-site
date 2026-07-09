@@ -50,6 +50,7 @@
       loadFail: "تعذّر تحميل النصوص.", download: "تحميل", assignMe: "أسند إليّ",
       adminFallback: "مشرف", cancel: "إلغاء", viewReport: "عرض التقرير", continueEval: "متابعة التقييم",
       inReview: "قيد التقييم", awaitingAssign: "بانتظار الإسناد",
+      navShow: "إظهار القائمة", navFold: "طيّ القائمة", themeToggle: "تبديل المظهر",
       startEval: "ابدأ التقييم", assignFail: "تعذّر تحديث الإسناد.", dlFail: "تعذّر إنشاء رابط التحميل.",
       del: "حذف", meParen: "(أنت)", confirmDel: function (n) { return "حذف المشرف " + n + "؟"; },
       creating: "جارٍ الإنشاء...", createOk: "تم إنشاء المشرف بنجاح.", createGenericErr: "تعذّر إنشاء المشرف",
@@ -76,6 +77,7 @@
       loadFail: "Failed to load submissions.", download: "Download", assignMe: "Assign to me",
       adminFallback: "Admin", cancel: "Unassign", viewReport: "View report", continueEval: "Continue coverage",
       inReview: "In review", awaitingAssign: "Awaiting assignment",
+      navShow: "Show menu", navFold: "Collapse menu", themeToggle: "Toggle theme",
       startEval: "Start coverage", assignFail: "Failed to update assignment.", dlFail: "Failed to create download link.",
       del: "Delete", meParen: "(you)", confirmDel: function (n) { return "Delete admin " + n + "?"; },
       creating: "Creating...", createOk: "Admin created successfully.", createGenericErr: "Failed to create admin",
@@ -580,6 +582,11 @@
     });
     document.querySelectorAll("[data-i18n-ph]").forEach(function (el) {
       var k = el.getAttribute("data-i18n-ph"); if (dict[k] != null) el.setAttribute("placeholder", dict[k]);
+    });
+    // Tooltips / aria-labels on icon-only buttons (fold, theme, …).
+    document.querySelectorAll("[data-i18n-title]").forEach(function (el) {
+      var k = el.getAttribute("data-i18n-title");
+      if (dict[k] != null) { el.setAttribute("title", dict[k]); el.setAttribute("aria-label", dict[k]); }
     });
     document.querySelectorAll(".adm-lang button").forEach(function (b) {
       b.classList.toggle("on", b.getAttribute("data-l") === ULANG);
