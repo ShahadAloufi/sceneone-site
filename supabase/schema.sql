@@ -215,15 +215,18 @@ alter table public.coverages enable row level security;
 
 -- Coverage access. Staff (admin / super_admin) can read every coverage.
 -- Readers are limited to coverages for scripts they're assigned to (primary or
--- co-reader). Older two-role policies are dropped so the new ones take effect.
+-- co-reader), PLUS any coverage that has been marked completed — a finished
+-- report is viewable by every reader. Older policies are dropped first.
 drop policy if exists "admins can read coverages" on public.coverages;
 drop policy if exists "staff read all, readers read assigned coverages" on public.coverages;
-create policy "staff read all, readers read assigned coverages"
+drop policy if exists "staff+assigned read, everyone reads completed" on public.coverages;
+create policy "staff+assigned read, everyone reads completed"
   on public.coverages for select
   to authenticated
   using (
     public.is_staff(auth.uid())
     or public.is_assigned(auth.uid(), submission_id)
+    or status = 'completed'
   );
 
 -- Create a coverage row (first time a submission is written to). Only the

@@ -601,27 +601,14 @@
       guardState("Submission not found", "We couldn't find this submission. It may have been removed.", true);
       return;
     }
-    // Access rules:
-    //  • Assigned reader (primary or co-reader) → full edit access.
-    //  • Readers who aren't assigned → blocked entirely.
-    //  • Staff (admin/super_admin) who aren't assigned → read-only view, so the
-    //    workspace stays locked for everyone except the assigned reader.
-    var isReaderRole = me.role === "senior_reader" || me.role === "junior_reader";
-    var assignedToMe = subRes.data.assigned_to === me.id || subRes.data.co_reader_id === me.id;
-    if (!assignedToMe) {
-      if (isReaderRole) {
-        guardState("No access", "You can only view this coverage after assigning yourself to the script.", true);
-        return;
-      }
-      readOnly = true; // staff may look, but not edit
-    }
-
     state.submission = mapSubmission(subRes.data);
 
-    // Load an existing coverage, or start blank (default the reader to me).
+    // Load an existing coverage (if any) BEFORE deciding access — a completed
+    // coverage is a finished report that any admin/reader may open read-only.
     var covRes = await sb.from("coverages").select("*").eq("submission_id", submissionId).maybeSingle();
-    if (covRes.data && covRes.data.data) {
-      var d = covRes.data.data;
+    var covRow = covRes.data;
+    if (covRow && covRow.data) {
+      var d = covRow.data;
       // backfill any missing fields against a fresh blank
       var base = blank().coverage;
       state.coverage = Object.assign({}, base, d);
@@ -632,11 +619,30 @@
       state.coverage.glance = d.glance || {};
       if (!state.coverage.date) state.coverage.date = today();
       if (state.coverage.score10 == null) state.coverage.score10 = "";
-      covStatus = covRes.data.status || "in_progress";
+      covStatus = covRow.status || "in_progress";
       setSaveState("loaded");
     } else {
       covStatus = "in_progress";
       setSaveState("newCov");
+    }
+
+    // Access rules:
+    //  • Assigned reader (primary or co-reader) → full edit access.
+    //  • Completed coverage → read-only report, viewable by any admin/reader.
+    //  • Otherwise: unassigned readers are blocked; unassigned staff get a
+    //    read-only view, so the workspace stays locked for everyone but the reader.
+    var isReaderRole = me.role === "senior_reader" || me.role === "junior_reader";
+    var assignedToMe = subRes.data.assigned_to === me.id || subRes.data.co_reader_id === me.id;
+    var isCompleted = !!(covRow && covRow.status === "completed");
+    if (!assignedToMe) {
+      if (isCompleted) {
+        readOnly = true; // finished report — anyone may view, only the reader edits
+      } else if (isReaderRole) {
+        guardState("No access", "You can only view this coverage after assigning yourself to the script.", true);
+        return;
+      } else {
+        readOnly = true; // staff may look, but not edit
+      }
     }
     // Reader identity is always anonymous — never expose the admin's real name.
     state.coverage.reader = "Scene One Reader";
