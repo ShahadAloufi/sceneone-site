@@ -397,7 +397,7 @@
 
     // Claimed by another reader → "In review" for everyone else. Staff can open
     // a read-only copy; other readers get a disabled button.
-    if (reader) covBtn(t("inReview"), gold, t("covLocked"));
+    if (reader) covBtn(t("inReview"), gold);
     else covLink(t("inReview"), gold);
   }
 
