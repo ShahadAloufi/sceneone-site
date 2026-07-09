@@ -379,23 +379,31 @@
       cell.appendChild(btn);
     }
 
-    // Completed coverage → everyone with access sees "View report".
+    // Completed coverage → finished report, viewable by everyone.
     if (status === "completed") { covLink(t("viewReport"), "adm-link"); return; }
 
     var gold = "adm-link adm-link--gold";
 
-    // In-progress coverage (the reader has started writing). The assigned reader
-    // continues editing; everyone else sees "In review". Staff can still open a
-    // read-only copy; unassigned readers get a disabled button.
-    if (status === "in_progress") {
-      if (assigned) covLink(t("continueEval"), gold);
-      else if (reader) covBtn(t("inReview"), gold);
+    // The script is mine to work on (I'm the primary assignee or co-reader):
+    // "Start coverage" until I begin writing, then "Continue coverage".
+    if (assigned) {
+      covLink(status === "in_progress" ? t("continueEval") : t("startEval"), gold);
+      return;
+    }
+
+    // Not mine. Once another reader has claimed the script (assigned) or has
+    // started writing, everyone else sees "In review" — staff can open a
+    // read-only copy, unassigned readers get a disabled button.
+    var claimedByOther = !!s.assigned_to;
+    if (claimedByOther || status === "in_progress") {
+      if (reader) covBtn(t("inReview"), gold);
       else covLink(t("inReview"), gold);
       return;
     }
 
-    // No coverage yet → "Start coverage". Readers must assign themselves first.
-    if (reader && !assigned) covBtn(t("startEval"), gold);
+    // Unclaimed and not started → "Start coverage". Readers must assign
+    // themselves first, so the button is disabled for them.
+    if (reader) covBtn(t("startEval"), gold);
     else covLink(t("startEval"), gold);
   }
 
