@@ -512,6 +512,9 @@
         b.disabled = true; // lock every workspace button, incl. "Generate report"
       });
     }
+    // "Edit coverage" (in the report view) also edits — lock it. Printing/saving
+    // the report stays available to everyone.
+    var edit = $("backToReview"); if (edit) edit.disabled = true;
     setSaveState("viewOnly");
   }
   document.querySelectorAll("#uiLang button").forEach(function (b) {
