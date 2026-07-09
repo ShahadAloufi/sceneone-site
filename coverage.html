@@ -110,23 +110,29 @@
   .btn.primary:hover{background:var(--btn-solid-bg-hover);border-color:var(--btn-solid-bg-hover)}
   .btn.ghost{background:transparent}
   .btn.ghost:hover{background:var(--btn-bg-hover)}
-  .btn:disabled{opacity:.45;cursor:not-allowed}
-  .btn:disabled:hover{background:transparent;border-color:var(--btn-line)}
+  .btn:disabled{opacity:.6;cursor:not-allowed}
+  /* Neutralise hover on disabled buttons per variant. The old blanket
+     "background:transparent" turned a disabled primary button invisible
+     (white text on the page) while hovered — keep each variant's own fill. */
+  .btn:disabled:hover{background:var(--btn-bg);border-color:var(--btn-line)}
+  .btn.primary:disabled:hover{background:var(--btn-solid-bg);border-color:var(--btn-solid-bg)}
+  .btn.ghost:disabled:hover{background:transparent}
   .row-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:6px}
 
   /* Custom tooltip. Lives on a wrapper (not the button) so the button's
-     disabled opacity:.45 never fades the tooltip. Inverted colors keep the
-     text high-contrast in both light and dark themes. */
+     disabled opacity never fades it. Anchored to the button's start edge
+     (not centred) so it never runs off the viewport for edge buttons.
+     Inverted colors keep the text high-contrast in both light and dark. */
   .btn-tip{position:relative;display:inline-flex}
   .btn-tip[data-tip]:hover::after,.btn-tip[data-tip]:focus-within::after{
-    content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 9px);
-    transform:translateX(-50%);width:max-content;max-width:260px;white-space:normal;
-    text-align:center;z-index:60;pointer-events:none;
+    content:attr(data-tip);position:absolute;inset-inline-start:0;bottom:calc(100% + 10px);
+    width:max-content;max-width:260px;white-space:normal;text-align:start;
+    z-index:60;pointer-events:none;
     background:#1b1b1b;color:#fff;font-size:13.5px;font-weight:500;line-height:1.35;
     letter-spacing:0;padding:8px 12px;border-radius:9px;box-shadow:0 6px 18px rgba(0,0,0,.3)}
   .btn-tip[data-tip]:hover::before,.btn-tip[data-tip]:focus-within::before{
-    content:"";position:absolute;left:50%;bottom:calc(100% + 3px);transform:translateX(-50%);
-    border:6px solid transparent;border-top-color:#1b1b1b;z-index:60;pointer-events:none}
+    content:"";position:absolute;inset-inline-start:26px;bottom:calc(100% + 4px);
+    border:6px solid transparent;border-top-color:#1b1b1b;z-index:61;pointer-events:none}
   html[data-theme="dark"] .btn-tip[data-tip]:hover::after,
   html[data-theme="dark"] .btn-tip[data-tip]:focus-within::after{
     background:#f4efe8;color:#15110f;box-shadow:0 6px 18px rgba(0,0,0,.55)}
