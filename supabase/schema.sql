@@ -41,6 +41,28 @@ set search_path = public as $$
   select exists (select 1 from public.admins where id = uid and role = 'super_admin');
 $$;
 
+-- "Staff" = full-access roles (admin / super_admin). Readers are excluded, so
+-- this is the flag used to grant unrestricted coverage access.
+create or replace function public.is_staff(uid uuid)
+returns boolean language sql security definer stable
+set search_path = public as $$
+  select exists (
+    select 1 from public.admins
+    where id = uid and role in ('admin', 'super_admin')
+  );
+$$;
+
+-- True when `uid` is the primary assignee or the co-reader of `sub_id`.
+-- Used to restrict readers to coverages for scripts they've claimed.
+create or replace function public.is_assigned(uid uuid, sub_id uuid)
+returns boolean language sql security definer stable
+set search_path = public as $$
+  select exists (
+    select 1 from public.submissions
+    where id = sub_id and (assigned_to = uid or co_reader_id = uid)
+  );
+$$;
+
 alter table public.admins enable row level security;
 
 -- Any signed-in admin may read the admin list (needed to show names / assignees).
@@ -191,27 +213,45 @@ create table if not exists public.coverages (
 
 alter table public.coverages enable row level security;
 
--- Admins can read every coverage (shared workspace).
+-- Coverage access. Staff (admin / super_admin) can read every coverage.
+-- Readers are limited to coverages for scripts they're assigned to (primary or
+-- co-reader). Older two-role policies are dropped so the new ones take effect.
 drop policy if exists "admins can read coverages" on public.coverages;
-create policy "admins can read coverages"
+drop policy if exists "staff read all, readers read assigned coverages" on public.coverages;
+create policy "staff read all, readers read assigned coverages"
   on public.coverages for select
   to authenticated
-  using ( public.is_admin(auth.uid()) );
+  using (
+    public.is_staff(auth.uid())
+    or public.is_assigned(auth.uid(), submission_id)
+  );
 
--- Admins can create a coverage row (first time a submission is opened).
+-- Create a coverage row (first time a submission is opened). Readers may only
+-- create one for a script they're assigned to.
 drop policy if exists "admins can insert coverages" on public.coverages;
-create policy "admins can insert coverages"
+drop policy if exists "staff insert all, readers insert assigned coverages" on public.coverages;
+create policy "staff insert all, readers insert assigned coverages"
   on public.coverages for insert
   to authenticated
-  with check ( public.is_admin(auth.uid()) );
+  with check (
+    public.is_staff(auth.uid())
+    or public.is_assigned(auth.uid(), submission_id)
+  );
 
--- Admins can update coverages (autosave while writing the evaluation).
+-- Update coverages (autosave while writing). Same assignment restriction.
 drop policy if exists "admins can update coverages" on public.coverages;
-create policy "admins can update coverages"
+drop policy if exists "staff update all, readers update assigned coverages" on public.coverages;
+create policy "staff update all, readers update assigned coverages"
   on public.coverages for update
   to authenticated
-  using ( public.is_admin(auth.uid()) )
-  with check ( public.is_admin(auth.uid()) );
+  using (
+    public.is_staff(auth.uid())
+    or public.is_assigned(auth.uid(), submission_id)
+  )
+  with check (
+    public.is_staff(auth.uid())
+    or public.is_assigned(auth.uid(), submission_id)
+  );
 
 -- Base table privileges for the signed-in role (RLS above restricts to admins).
 grant select, insert, update on public.coverages to authenticated;

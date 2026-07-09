@@ -581,6 +581,15 @@
       guardState("Submission not found", "We couldn't find this submission. It may have been removed.", true);
       return;
     }
+    // Readers may only open a coverage for a script they're assigned to
+    // (primary or co-reader). Admins/super-admins can open any coverage.
+    var isReaderRole = me.role === "senior_reader" || me.role === "junior_reader";
+    var assignedToMe = subRes.data.assigned_to === me.id || subRes.data.co_reader_id === me.id;
+    if (isReaderRole && !assignedToMe) {
+      guardState("No access", "You can only view this coverage after assigning yourself to the script.", true);
+      return;
+    }
+
     state.submission = mapSubmission(subRes.data);
 
     // Load an existing coverage, or start blank (default the reader to me).

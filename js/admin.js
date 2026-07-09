@@ -42,6 +42,7 @@
       fName: "الاسم", fRole: "الدور", roleAdmin: "مشرف", roleSuper: "مشرف أعلى", createBtn: "إنشاء المشرف",
       roleSeniorReader: "قارئ أول", roleJuniorReader: "قارئ مبتدئ", assignCo: "إضافة قارئ مشارك",
       assignTwice: "لا يمكنك إسناد نفسك مرتين",
+      covLocked: "أسند نفسك أولاً", covDenied: "لا يمكنك عرض هذا التقييم إلا بعد إسناد نفسك للنص.",
       phName: "اسم المشرف", phPassword: "8 أحرف على الأقل",
       // dynamic
       signingIn: "جارٍ الدخول...", badLogin: "بيانات الدخول غير صحيحة.",
@@ -67,6 +68,7 @@
       fName: "Name", fRole: "Role", roleAdmin: "Admin", roleSuper: "Super admin", createBtn: "Create admin",
       roleSeniorReader: "Senior Reader", roleJuniorReader: "Junior Reader", assignCo: "Add co-reader",
       assignTwice: "You cannot assign yourself twice",
+      covLocked: "Assign yourself first", covDenied: "You can only view this coverage after assigning yourself to the script.",
       phName: "Admin name", phPassword: "At least 8 characters",
       signingIn: "Signing in...", badLogin: "Invalid login credentials.",
       notAdmin: "This account is not authorized to access the dashboard.",
@@ -293,6 +295,9 @@
   }
 
   function isJunior(id) { return adminRoleById[id] === "junior_reader"; }
+  function isReader(role) { return role === "senior_reader" || role === "junior_reader"; }
+  // True when the signed-in user is assigned to a submission (primary or co-reader).
+  function amAssignedTo(s) { return !!me && (s.assigned_to === me.id || s.co_reader_id === me.id); }
 
   // The circular "+" icon used to claim a slot (primary or co-reader).
   function addSlotBtn(cell, s, which) {
@@ -352,6 +357,17 @@
   // Coverage cell: links to the reader workspace, label follows its status.
   function renderCoverage(cell, s, status) {
     cell.innerHTML = "";
+    // Readers may only open a coverage for a script they're assigned to
+    // (as primary or co-reader). Admins/super-admins can open any coverage.
+    if (isReader(me && me.role) && !amAssignedTo(s)) {
+      var locked = document.createElement("span");
+      locked.className = "adm-link adm-link--muted";
+      locked.setAttribute("aria-disabled", "true");
+      locked.textContent = t("covLocked");
+      locked.title = t("covLocked");
+      cell.appendChild(locked);
+      return;
+    }
     var link = document.createElement("a");
     link.className = "adm-link adm-link--gold";
     link.href = "coverage.html?id=" + encodeURIComponent(s.id);
