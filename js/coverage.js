@@ -509,7 +509,7 @@
         el.disabled = true; el.readOnly = true;
       });
       root.querySelectorAll("button").forEach(function (b) {
-        if (b.id !== "genReport") b.disabled = true; // keep "Generate report" (nav only)
+        b.disabled = true; // lock every workspace button, incl. "Generate report"
       });
     }
     setSaveState("viewOnly");
