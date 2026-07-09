@@ -572,6 +572,19 @@
       if (!$("tab-admins").hidden) loadAdmins();
     }
   }
+
+  // Refresh the board when the dashboard regains focus — e.g. coming back from
+  // the coverage workspace — so coverage statuses (Start → Continue → View
+  // report) reflect any writing done there without a manual reload.
+  function refreshOnReturn() {
+    if (!me || dashView.hidden) return;
+    loadSubmissions();
+    if (!$("tab-admins").hidden) loadAdmins();
+  }
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible") refreshOnReturn();
+  });
+  window.addEventListener("pageshow", function (e) { if (e.persisted) refreshOnReturn(); });
   document.querySelectorAll(".adm-lang button").forEach(function (b) {
     b.addEventListener("click", function () { applyLang(b.getAttribute("data-l")); });
   });
