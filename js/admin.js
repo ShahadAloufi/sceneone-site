@@ -49,7 +49,7 @@
       notAdmin: "هذا الحساب ليس لديه صلاحية دخول لوحة التحكم.",
       loadFail: "تعذّر تحميل النصوص.", download: "تحميل", assignMe: "أسند إليّ",
       adminFallback: "مشرف", cancel: "إلغاء", viewReport: "عرض التقرير", continueEval: "متابعة التقييم",
-      inReview: "قيد التقييم",
+      inReview: "قيد التقييم", awaitingAssign: "بانتظار الإسناد",
       startEval: "ابدأ التقييم", assignFail: "تعذّر تحديث الإسناد.", dlFail: "تعذّر إنشاء رابط التحميل.",
       del: "حذف", meParen: "(أنت)", confirmDel: function (n) { return "حذف المشرف " + n + "؟"; },
       creating: "جارٍ الإنشاء...", createOk: "تم إنشاء المشرف بنجاح.", createGenericErr: "تعذّر إنشاء المشرف",
@@ -75,7 +75,7 @@
       notAdmin: "This account is not authorized to access the dashboard.",
       loadFail: "Failed to load submissions.", download: "Download", assignMe: "Assign to me",
       adminFallback: "Admin", cancel: "Unassign", viewReport: "View report", continueEval: "Continue coverage",
-      inReview: "In review",
+      inReview: "In review", awaitingAssign: "Awaiting assignment",
       startEval: "Start coverage", assignFail: "Failed to update assignment.", dlFail: "Failed to create download link.",
       del: "Delete", meParen: "(you)", confirmDel: function (n) { return "Delete admin " + n + "?"; },
       creating: "Creating...", createOk: "Admin created successfully.", createGenericErr: "Failed to create admin",
@@ -371,10 +371,10 @@
       link.textContent = label;
       cell.appendChild(link);
     }
-    // A disabled button: shown to readers who haven't assigned themselves yet.
-    function covBtn(label, cls) {
+    // A disabled status button (no action) — e.g. a claimed/awaiting script.
+    function covBtn(label, cls, title) {
       var btn = document.createElement("button");
-      btn.className = cls; btn.disabled = true; btn.title = t("covLocked");
+      btn.className = cls; btn.disabled = true; if (title) btn.title = title;
       btn.textContent = label;
       cell.appendChild(btn);
     }
@@ -384,6 +384,10 @@
 
     var gold = "adm-link adm-link--gold";
 
+    // Nobody has claimed the script yet → "Awaiting assignment" (disabled for
+    // everyone; a reader must assign themselves before coverage can begin).
+    if (!s.assigned_to) { covBtn(t("awaitingAssign"), gold); return; }
+
     // The script is mine to work on (I'm the primary assignee or co-reader):
     // "Start coverage" until I begin writing, then "Continue coverage".
     if (assigned) {
@@ -391,20 +395,10 @@
       return;
     }
 
-    // Not mine. Once another reader has claimed the script (assigned) or has
-    // started writing, everyone else sees "In review" — staff can open a
-    // read-only copy, unassigned readers get a disabled button.
-    var claimedByOther = !!s.assigned_to;
-    if (claimedByOther || status === "in_progress") {
-      if (reader) covBtn(t("inReview"), gold);
-      else covLink(t("inReview"), gold);
-      return;
-    }
-
-    // Unclaimed and not started → "Start coverage". Readers must assign
-    // themselves first, so the button is disabled for them.
-    if (reader) covBtn(t("startEval"), gold);
-    else covLink(t("startEval"), gold);
+    // Claimed by another reader → "In review" for everyone else. Staff can open
+    // a read-only copy; other readers get a disabled button.
+    if (reader) covBtn(t("inReview"), gold, t("covLocked"));
+    else covLink(t("inReview"), gold);
   }
 
   // Re-render the coverage cell in the same row so its locked/unlocked state
