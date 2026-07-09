@@ -377,6 +377,14 @@
     cell.appendChild(link);
   }
 
+  // Re-render the coverage cell in the same row so its locked/unlocked state
+  // tracks assignment changes live (e.g. a reader claiming/freeing a script).
+  function refreshCoverageCell(assigneeCell, s) {
+    var tr = assigneeCell.closest ? assigneeCell.closest("tr") : null;
+    var covCell = tr ? tr.querySelector(".adm-cov") : null;
+    if (covCell) renderCoverage(covCell, s, currentCov[s.id]);
+  }
+
   async function assign(id, toId, cell, s) {
     if (cell.dataset.busy) return; // ignore clicks while a request is in flight
     cell.dataset.busy = "1";
@@ -391,6 +399,7 @@
       update.co_reader_id = null;
     }
     renderAssignee(cell, s);
+    refreshCoverageCell(cell, s);
     cell.style.opacity = ".6";
     updateKpis(currentRows, currentCov);
 
@@ -402,6 +411,7 @@
       s.assigned_to = prev;
       s.co_reader_id = prevCo;
       renderAssignee(cell, s);
+      refreshCoverageCell(cell, s);
       updateKpis(currentRows, currentCov);
       alert(t("assignFail"));
     }
@@ -416,6 +426,7 @@
     var prev = s.co_reader_id;
     s.co_reader_id = toId;
     renderAssignee(cell, s);
+    refreshCoverageCell(cell, s);
     cell.style.opacity = ".6";
 
     var res = await sb.from("submissions").update({ co_reader_id: toId }).eq("id", id);
@@ -425,6 +436,7 @@
     if (res.error) {
       s.co_reader_id = prev;
       renderAssignee(cell, s);
+      refreshCoverageCell(cell, s);
       alert(t("assignFail"));
     }
   }
