@@ -174,6 +174,11 @@
     if (!filled(c.verdict.text)) return false;
     return true;
   }
+  // Show/hide a custom tooltip on the button's wrapper (see .btn-tip in CSS).
+  function tip(wrapId, msg) {
+    var w = $(wrapId); if (!w) return;
+    if (msg) w.setAttribute("data-tip", msg); else w.removeAttribute("data-tip");
+  }
   function refreshFinalizeState() {
     if (readOnly) return;
     // The report button only needs every point scored; the finalize button also
@@ -181,14 +186,14 @@
     var scores = allScoresSet();
     var rep = $("genReport");
     if (rep) {
-      if (covStatus === "completed") { rep.disabled = false; rep.removeAttribute("title"); }
-      else { rep.disabled = !scores; if (scores) rep.removeAttribute("title"); else rep.title = UI[UILANG].scoresHint; }
+      if (covStatus === "completed") { rep.disabled = false; tip("genReportTip", ""); }
+      else { rep.disabled = !scores; tip("genReportTip", scores ? "" : UI[UILANG].scoresHint); }
     }
     var btn = $("finalizeBtn"); if (!btn) return;
-    if (covStatus === "completed") { btn.disabled = false; btn.removeAttribute("title"); return; }
+    if (covStatus === "completed") { btn.disabled = false; tip("finalizeTip", ""); return; }
     var ok = isEvalComplete();
     btn.disabled = !ok;
-    if (ok) btn.removeAttribute("title"); else btn.title = UI[UILANG].finalizeHint;
+    tip("finalizeTip", ok ? "" : UI[UILANG].finalizeHint);
   }
 
   /* ---------- state ---------- */
