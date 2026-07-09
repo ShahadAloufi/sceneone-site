@@ -92,7 +92,8 @@
       hintOverride: function (a) { return "Overriding the suggested " + a; }, hintManual: "Manual rating", hintAuto: "Using the suggested score",
       evalPh: function (n) { return "Your assessment of " + n + "."; },
       tComplete: "Coverage marked complete", tReopened: "Coverage reopened", tDlFail: "Couldn't create the download link.",
-      finalizeHint: "Fill in every section (except Market) to finish."
+      finalizeHint: "Fill in every section (except Market) to finish.",
+      scoresHint: "Give every evaluation point a score (1–5) first."
     },
     ar: {
       tabReview: "تقييم القارئ", tabReport: "التقرير",
@@ -117,7 +118,8 @@
       // (e.g. "الفكرة" → "تقييمك للفكرة"), otherwise just prefix ل.
       evalPh: function (n) { n = String(n); return "تقييمك ل" + (n.slice(0, 2) === "ال" ? n.slice(1) : n) + "."; },
       tComplete: "تم وضع علامة اكتمال التقييم", tReopened: "أُعيد فتح التقييم", tDlFail: "تعذّر إنشاء رابط التحميل.",
-      finalizeHint: "املأ كل قسم (عدا السوق) لإكمال التقييم."
+      finalizeHint: "املأ كل قسم (عدا السوق) لإكمال التقييم.",
+      scoresHint: "اختر درجة (١–٥) لكل نقطة تقييم أولاً."
     }
   };
   // maps a glance option (canonical English) to its UI translation key
@@ -155,8 +157,16 @@
   // The reader can only mark the coverage complete once every written section
   // (all except Market, which is optional) has been filled in.
   function filled(s) { return String(s == null ? "" : s).trim().length > 0; }
+  // Every evaluation point must carry a 1–5 score before the coverage can be
+  // reported or marked complete.
+  function allScoresSet() {
+    var c = state.coverage;
+    for (var i = 0; i < EVAL.length; i++) { if (c.eval[EVAL[i]].score == null) return false; }
+    return true;
+  }
   function isEvalComplete() {
     var c = state.coverage;
+    if (!allScoresSet()) return false;
     if (!filled(c.synopsis)) return false;
     for (var i = 0; i < EVAL.length; i++) { if (!filled(c.eval[EVAL[i]].text)) return false; }
     if (!filled(c.overall.strengths)) return false;
@@ -165,6 +175,15 @@
     return true;
   }
   function refreshFinalizeState() {
+    if (readOnly) return;
+    // The report button only needs every point scored; the finalize button also
+    // needs every written section filled in.
+    var scores = allScoresSet();
+    var rep = $("genReport");
+    if (rep) {
+      if (covStatus === "completed") { rep.disabled = false; rep.removeAttribute("title"); }
+      else { rep.disabled = !scores; if (scores) rep.removeAttribute("title"); else rep.title = UI[UILANG].scoresHint; }
+    }
     var btn = $("finalizeBtn"); if (!btn) return;
     if (covStatus === "completed") { btn.disabled = false; btn.removeAttribute("title"); return; }
     var ok = isEvalComplete();
@@ -358,7 +377,7 @@
       btns.forEach(function (x) {
         x.onclick = function () {
           var v = +x.dataset.s; state.coverage.eval[name].score = (state.coverage.eval[name].score === v ? null : v);
-          refreshSc(); updateRating(); scheduleSave();
+          refreshSc(); updateRating(); refreshFinalizeState(); scheduleSave();
         };
       });
       refreshSc();
@@ -521,7 +540,11 @@
     b.onclick = function () { applyUILang(b.dataset.l); };
   });
 
-  $("genReport").onclick = function () { show("report"); };
+  $("genReport").onclick = function () {
+    // Safety net: never open the report until every point is scored.
+    if (covStatus !== "completed" && !allScoresSet()) { toast(UI[UILANG].scoresHint); return; }
+    show("report");
+  };
   $("backToReview").onclick = function () { show("review"); };
   $("printReport").onclick = function () { window.print(); };
 
