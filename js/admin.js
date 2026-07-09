@@ -112,8 +112,9 @@
   function fmtDate(s) {
     try {
       var d = new Date(s);
-      return d.toLocaleDateString(ULANG, { year: "numeric", month: "short", day: "numeric" }) +
-        " · " + d.toLocaleTimeString(ULANG, { hour: "2-digit", minute: "2-digit" });
+      // Show date only. The full timestamp (incl. time) stays in created_at
+      // in the database and can be retrieved when the exact hour is needed.
+      return d.toLocaleDateString(ULANG, { year: "numeric", month: "short", day: "numeric" });
     } catch (e) { return s; }
   }
   function show(el) { if (el) el.hidden = false; }
