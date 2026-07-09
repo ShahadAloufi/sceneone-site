@@ -920,6 +920,9 @@ html[data-theme="dark"] {
 }
 .adm-link:hover { background: var(--adm-outline-bg-hover); border-color: var(--adm-outline-line); color: var(--adm-outline-ink); }
 .adm-link:disabled { opacity: .5; cursor: default; }
+/* Disabled coverage button: keep it visually inert (no hover feedback). */
+.adm-link:disabled:hover { background: var(--adm-outline-bg); border-color: var(--adm-outline-line); color: var(--adm-outline-ink); }
+.adm-link--gold:disabled:hover { background: var(--adm-solid-bg); border-color: var(--adm-solid-bg); color: var(--adm-solid-text); }
 /* Primary action (assign / start-continue coverage): white solid, like the hero's white CTA. */
 .adm-link--gold { background: var(--adm-solid-bg); border-color: var(--adm-solid-bg); color: var(--adm-solid-text); font-weight: 500; }
 .adm-link--gold:hover { background: var(--adm-solid-bg-hover); border-color: var(--adm-solid-bg-hover); color: var(--adm-solid-text); }

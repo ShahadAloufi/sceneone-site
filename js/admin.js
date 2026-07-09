@@ -357,23 +357,28 @@
   // Coverage cell: links to the reader workspace, label follows its status.
   function renderCoverage(cell, s, status) {
     cell.innerHTML = "";
-    // Readers may only open a coverage for a script they're assigned to
-    // (as primary or co-reader). Admins/super-admins can open any coverage.
+    // Label + style follow the coverage status.
+    var label = status === "completed" ? t("viewReport")
+      : status === "in_progress" ? t("continueEval")
+      : t("startEval");
+    var cls = "adm-link" + (status === "completed" ? "" : " adm-link--gold");
+
+    // Readers may only open a coverage for a script they're assigned to (as
+    // primary or co-reader). Until then the button shows its normal label but
+    // is disabled. Admins/super-admins can always open a coverage.
     if (isReader(me && me.role) && !amAssignedTo(s)) {
-      var locked = document.createElement("span");
-      locked.className = "adm-link adm-link--muted";
-      locked.setAttribute("aria-disabled", "true");
-      locked.textContent = t("covLocked");
-      locked.title = t("covLocked");
-      cell.appendChild(locked);
+      var btn = document.createElement("button");
+      btn.className = cls;
+      btn.disabled = true;
+      btn.title = t("covLocked");
+      btn.textContent = label;
+      cell.appendChild(btn);
       return;
     }
     var link = document.createElement("a");
-    link.className = "adm-link adm-link--gold";
+    link.className = cls;
     link.href = "coverage.html?id=" + encodeURIComponent(s.id);
-    if (status === "completed") { link.textContent = t("viewReport"); link.className = "adm-link"; }
-    else if (status === "in_progress") link.textContent = t("continueEval");
-    else link.textContent = t("startEval");
+    link.textContent = label;
     cell.appendChild(link);
   }
 
