@@ -874,8 +874,24 @@ html[data-theme="dark"] {
 .adm-side__actions .adm-theme { flex: 0 0 auto; }
 
 /* ---- Main content ---- */
-.adm-main { flex: 1; min-width: 0; }
-.adm-panel { padding: 28px 32px; max-width: 1480px; margin: 0 auto; }
+.adm-main { flex: 1; min-width: 0; position: relative; overflow: hidden; }
+.adm-panel { padding: 28px 32px; max-width: 1480px; margin: 0 auto; position: relative; z-index: 1; }
+
+/* Decorative hand-drawn illustrations behind the dashboard. White SVG line
+   art: faint on the dark theme, inverted to dark ink on the light theme. */
+.adm-decor { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.adm-decor-img { position: absolute; opacity: .13; user-select: none; }
+html[data-theme="light"] .adm-decor-img { filter: invert(1); opacity: .32; }
+.adm-decor-reel    { top: 10%;    inset-inline-start: 3%;  width: 240px; }
+.adm-decor-chair   { top: 6%;     inset-inline-end: 4%;    width: 180px; }
+.adm-decor-camera  { bottom: 7%;  inset-inline-end: 5%;    width: 220px; }
+.adm-decor-clapper { bottom: 10%; inset-inline-start: 4%;  width: 150px; }
+@media (max-width: 900px) {
+  .adm-decor-reel    { width: 150px; }
+  .adm-decor-chair   { width: 110px; }
+  .adm-decor-camera  { width: 150px; }
+  .adm-decor-clapper { width: 100px; }
+}
 .adm-panel__head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 22px; gap: 16px; }
 .adm-panel__head h2 { font-size: 22px; font-weight: 800; margin: 0; }
 .adm-panel__sub { margin: 4px 0 0; color: var(--adm-muted); font-size: 13.5px; }
