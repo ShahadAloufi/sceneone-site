@@ -8,8 +8,8 @@
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <script>
     (function(){try{var t=localStorage.getItem('sceneone-theme');
-      if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}
-      document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+      if(!t){t='dark';}
+      document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
