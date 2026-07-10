@@ -837,6 +837,10 @@ html[data-theme="dark"] {
 }
 .adm-side__brand { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 10px 22px; font-weight: 800; font-size: 18px; }
 .adm-side__logo { font-size: 22px; }
+/* Scene One logo (white + orange). Shown as-is on the dark sidebar; darkened
+   to solid ink on the light sidebar so it reads against the white surface. */
+.adm-brand-logo { height: 46px; width: auto; display: block; filter: brightness(0); }
+html[data-theme="dark"] .adm-brand-logo { filter: none; }
 
 /* Fold toggle */
 .adm-fold {
