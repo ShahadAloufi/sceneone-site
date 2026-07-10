@@ -593,20 +593,11 @@
     }
   }
 
-  // ---------- NAV FOLD ----------
-  var NAV_KEY = "sceneone-admin-nav";
-  function setNavCollapsed(collapsed) {
+  // ---------- NAV ----------
+  // The sidebar is always shown; make sure no stale collapsed state lingers.
+  (function initNav() {
     var admEl = document.querySelector(".adm");
-    if (admEl) admEl.classList.toggle("is-nav-collapsed", collapsed);
-    try { localStorage.setItem(NAV_KEY, collapsed ? "1" : "0"); } catch (e) {}
-  }
-  (function initNavFold() {
-    var collapsed = false;
-    try { collapsed = localStorage.getItem(NAV_KEY) === "1"; } catch (e) {}
-    setNavCollapsed(collapsed);
-    var fold = $("navFoldBtn"), open = $("navOpenBtn");
-    if (fold) fold.addEventListener("click", function () { setNavCollapsed(true); });
-    if (open) open.addEventListener("click", function () { setNavCollapsed(false); });
+    if (admEl) admEl.classList.remove("is-nav-collapsed");
   })();
 
   // ---------- LANGUAGE ----------

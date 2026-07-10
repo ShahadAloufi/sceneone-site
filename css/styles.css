@@ -882,21 +882,16 @@ html[data-theme="dark"] .adm-login__submit { background: #ffffff; color: #111418
   font-family: 'Tajawal', system-ui, sans-serif; color: var(--adm-text);
 }
 
-/* ---- Sidebar (sits on the RIGHT in RTL) ---- */
+/* ---- Sidebar: a rounded floating card, always visible ---- */
 .adm-side {
   width: 250px; flex-shrink: 0; background: var(--adm-surface);
-  border-inline-start: 1px solid var(--adm-border);
+  border: 1px solid var(--adm-border); border-radius: 20px;
   display: flex; flex-direction: column; padding: 22px 16px;
-  position: sticky; top: 0; height: 100vh;
-  transition: width .2s ease, padding .2s ease, opacity .2s ease;
+  position: sticky; top: 16px; height: calc(100vh - 32px);
+  margin: 16px; box-shadow: var(--adm-shadow);
 }
-@media (min-width: 861px) {
-  .adm.is-nav-collapsed .adm-side {
-    width: 0; padding-inline: 0; opacity: 0; border-inline-start-width: 0; pointer-events: none; overflow: hidden;
-  }
-  .adm-side > * { white-space: nowrap; }
-}
-.adm-side__brand { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 10px 22px; font-weight: 800; font-size: 18px; }
+.adm-side > * { white-space: nowrap; }
+.adm-side__brand { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 6px 10px 22px; font-weight: 800; font-size: 18px; }
 .adm-side__logo { font-size: 22px; }
 /* Scene One logo. Dedicated artwork per theme: white+orange mark on the dark
    sidebar, black+orange mark on the light sidebar. */
@@ -906,27 +901,16 @@ html[data-theme="dark"] .adm-login__submit { background: #ffffff; color: #111418
 }
 html[data-theme="dark"] .adm-brand-logo { background-image: url(../assets/scene-one-logo.svg); }
 
-/* Fold toggle */
-.adm-fold {
-  flex-shrink: 0; width: 34px; height: 34px; border-radius: 9px; padding: 0; cursor: pointer;
-  border: 1px solid var(--adm-border); background: var(--adm-input-bg); color: var(--adm-muted);
-  display: inline-flex; align-items: center; justify-content: center; line-height: 0;
-  transition: background .15s, color .15s;
-}
-.adm-fold:hover { background: var(--adm-ghost-hover); color: var(--adm-text); }
-.adm-fold--open { position: fixed; top: 16px; inset-inline-start: 16px; z-index: 40; display: none; background: var(--adm-surface); box-shadow: var(--adm-shadow); }
-.adm.is-nav-collapsed .adm-fold--open { display: inline-flex; }
-@media (min-width: 861px) { .adm.is-nav-collapsed .adm-panel { padding-top: 64px; } }
-
 .adm-nav { display: flex; flex-direction: column; gap: 4px; }
 .adm-navitem {
   display: flex; align-items: center; gap: 12px; width: 100%;
   border: none; background: transparent; cursor: pointer; font-family: inherit;
   font-size: 14.5px; font-weight: 700; color: var(--adm-muted);
-  padding: 11px 12px; border-radius: 10px; text-align: start; transition: background .15s, color .15s;
+  padding: 11px 12px; border-radius: 12px; text-align: start; transition: background .15s, color .15s;
 }
+.adm-navitem__ico { width: 20px; height: 20px; flex-shrink: 0; }
 .adm-navitem:hover { background: var(--adm-ghost-hover); color: var(--adm-text); }
-.adm-navitem.is-active { background: #CD2E07; color: #fff; }
+.adm-navitem.is-active { background: var(--adm-ghost-hover); color: var(--adm-accent, #CD2E07); }
 
 .adm-side__foot { margin-top: auto; display: flex; flex-direction: column; gap: 12px; padding-top: 16px; border-top: 1px solid var(--adm-border); }
 .adm-user { display: flex; align-items: center; gap: 10px; }
