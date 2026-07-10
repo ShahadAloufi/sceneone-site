@@ -93,7 +93,17 @@
       evalPh: function (n) { return "Your assessment of " + n + "."; },
       tComplete: "Coverage marked complete", tReopened: "Coverage reopened", tDlFail: "Couldn't create the download link.",
       finalizeHint: "Fill in every section (except Market) to finish.",
-      scoresHint: "Give every evaluation point a score (1–5) first."
+      scoresHint: "Give every evaluation point a score (1–5) first.",
+      guard: {
+        link: "Go to the dashboard",
+        loadT: "Loading…", loadM: "Checking your session and loading the submission.",
+        cfgT: "Not configured", cfgM: "Supabase isn't set up yet. Add the project URL and anon key in js/config.js.",
+        subT: "No submission", subM: "This link is missing a submission id. Open a coverage from the dashboard.",
+        authT: "Sign in required", authM: "You need to sign in to the dashboard before opening a coverage.",
+        permT: "No access", permM: "This account doesn't have permission to write coverages.",
+        nfT: "Submission not found", nfM: "We couldn't find this submission. It may have been removed.",
+        assignT: "No access", assignM: "You can only view this coverage after assigning yourself to the script."
+      }
     },
     ar: {
       tabReview: "تقييم القارئ", tabReport: "التقرير",
@@ -119,7 +129,17 @@
       evalPh: function (n) { n = String(n); return "تقييمك ل" + (n.slice(0, 2) === "ال" ? n.slice(1) : n) + "."; },
       tComplete: "تم وضع علامة اكتمال التقييم", tReopened: "أُعيد فتح التقييم", tDlFail: "تعذّر إنشاء رابط التحميل.",
       finalizeHint: "املأ كل قسم (عدا السوق) لإكمال التقييم.",
-      scoresHint: "اختر درجة (١–٥) لكل نقطة تقييم أولاً."
+      scoresHint: "اختر درجة (١–٥) لكل نقطة تقييم أولاً.",
+      guard: {
+        link: "الذهاب إلى لوحة التحكم",
+        loadT: "جارٍ التحميل…", loadM: "جارٍ التحقق من جلستك وتحميل النص.",
+        cfgT: "غير مُهيأ", cfgM: "لم يتم إعداد Supabase بعد. أضف رابط المشروع والمفتاح العام في js/config.js.",
+        subT: "لا يوجد نص", subM: "هذا الرابط لا يحتوي على معرّف نص. افتح تغطية من لوحة التحكم.",
+        authT: "يلزم تسجيل الدخول", authM: "يجب تسجيل الدخول إلى لوحة التحكم قبل فتح التغطية.",
+        permT: "لا صلاحية", permM: "هذا الحساب لا يملك صلاحية كتابة التغطيات.",
+        nfT: "النص غير موجود", nfM: "تعذّر العثور على هذا النص. ربما تمت إزالته.",
+        assignT: "لا صلاحية", assignM: "يمكنك عرض هذه التغطية فقط بعد إسناد النص إلى نفسك."
+      }
     }
   };
   // maps a glance option (canonical English) to its UI translation key
@@ -571,7 +591,7 @@
     var sp = $("guardSpinner"); if (sp) sp.hidden = true; // errors/auth are final states, not loading
     $("guardTitle").textContent = title;
     $("guardMsg").textContent = msg;
-    $("guardLink").hidden = !showLink;
+    var gl = $("guardLink"); if (gl) { gl.textContent = UI[UILANG].guard.link; gl.hidden = !showLink; }
     $("guard").style.display = "flex";
     $("app").hidden = true;
   }
@@ -602,14 +622,19 @@
 
   /* ---------- init ---------- */
   (async function () {
+    var G = UI[UILANG].guard;
+    // Localise the initial "Loading…" screen to the reader's saved language.
+    $("guardTitle").textContent = G.loadT;
+    $("guardMsg").textContent = G.loadM;
+
     if (!window.supabase || !CFG.url || !CFG.anonKey) {
-      guardState("Not configured", "Supabase isn't set up yet. Add the project URL and anon key in js/config.js.", true);
+      guardState(G.cfgT, G.cfgM, true);
       return;
     }
     sb = window.supabase.createClient(CFG.url, CFG.anonKey);
 
     if (!submissionId) {
-      guardState("No submission", "This link is missing a submission id. Open a coverage from the dashboard.", true);
+      guardState(G.subT, G.subM, true);
       return;
     }
 
@@ -617,12 +642,12 @@
     var sess = await sb.auth.getSession();
     var user = sess.data.session && sess.data.session.user;
     if (!user) {
-      guardState("Sign in required", "You need to sign in to the dashboard before opening a coverage.", true);
+      guardState(G.authT, G.authM, true);
       return;
     }
     var meRes = await sb.from("admins").select("id,email,name,role").eq("id", user.id).maybeSingle();
     if (meRes.error || !meRes.data) {
-      guardState("No access", "This account doesn't have permission to write coverages.", true);
+      guardState(G.permT, G.permM, true);
       return;
     }
     me = meRes.data;
@@ -630,7 +655,7 @@
     // Load the submission.
     var subRes = await sb.from("submissions").select("*").eq("id", submissionId).maybeSingle();
     if (subRes.error || !subRes.data) {
-      guardState("Submission not found", "We couldn't find this submission. It may have been removed.", true);
+      guardState(G.nfT, G.nfM, true);
       return;
     }
     state.submission = mapSubmission(subRes.data);
@@ -670,7 +695,7 @@
       if (isCompleted) {
         readOnly = true; // finished report — anyone may view, only the reader edits
       } else if (isReaderRole) {
-        guardState("No access", "You can only view this coverage after assigning yourself to the script.", true);
+        guardState(G.assignT, G.assignM, true);
         return;
       } else {
         readOnly = true; // staff may look, but not edit
