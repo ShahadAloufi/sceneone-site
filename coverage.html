@@ -358,6 +358,25 @@
     <a id="guardLink" href="/admin" hidden>Go to the dashboard</a>
   </div>
 </div>
+<script>
+  /* No-flash localisation of the loading screen: set the direction and text
+     from the saved language before coverage.js loads, so an Arabic reader
+     doesn't briefly see the English default. */
+  (function () {
+    try {
+      var lang = localStorage.getItem("sceneone-admin-lang");
+      if (lang !== "en") lang = "ar";
+      document.documentElement.setAttribute("lang", lang);
+      document.documentElement.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
+      var m = {
+        ar: { t: "جارٍ التحميل…", m: "جارٍ التحقق من جلستك وتحميل النص." },
+        en: { t: "Loading…", m: "Checking your session and loading the submission." }
+      }[lang];
+      document.getElementById("guardTitle").textContent = m.t;
+      document.getElementById("guardMsg").textContent = m.m;
+    } catch (e) {}
+  })();
+</script>
 
 <!-- ── APP ── -->
 <div id="app" hidden>
