@@ -285,6 +285,9 @@
   .guard{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
          background:var(--paper);padding:40px;text-align:center;z-index:60}
   .guard__box{max-width:420px}
+  .guard__spinner{width:40px;height:40px;margin:0 auto 22px;border-radius:50%;
+    border:3px solid var(--line);border-top-color:var(--orange);animation:so-spin .8s linear infinite}
+  @keyframes so-spin{to{transform:rotate(360deg)}}
   .guard__box h2{font-size:19px;margin:0 0 8px}
   .guard__box p{color:var(--label);margin:0 0 18px}
   .guard__box a{color:var(--orange);text-decoration:none;font-weight:600}
@@ -319,6 +322,7 @@
 <!-- ── GUARD (loading / unauthorized / error) ── -->
 <div class="guard" id="guard">
   <div class="guard__box" id="guardBox">
+    <div class="guard__spinner" id="guardSpinner"></div>
     <h2 id="guardTitle">Loading…</h2>
     <p id="guardMsg">Checking your session and loading the submission.</p>
     <a id="guardLink" href="/admin" hidden>Go to the dashboard</a>

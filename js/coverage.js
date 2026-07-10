@@ -568,6 +568,7 @@
 
   /* ---------- guard helpers ---------- */
   function guardState(title, msg, showLink) {
+    var sp = $("guardSpinner"); if (sp) sp.hidden = true; // errors/auth are final states, not loading
     $("guardTitle").textContent = title;
     $("guardMsg").textContent = msg;
     $("guardLink").hidden = !showLink;
