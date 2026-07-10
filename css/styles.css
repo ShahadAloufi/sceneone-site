@@ -796,7 +796,8 @@ html[data-theme="dark"] .adm-login__panel { background: #000000; }
 .adm-login__form .adm-field { margin-bottom: 20px; }
 .adm-login__form .adm-field > label { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
 .adm-login__form .adm-field input { border-radius: 12px; padding: 13px 14px; font-size: 15px; }
-.adm-login__brandwrap { margin-bottom: 42px; text-align: center; }
+.adm-login__brandwrap { margin-bottom: 16px; text-align: center; }
+.adm-login__title { text-align: center; font-size: 22px; font-weight: 700; margin: 0 0 34px; color: var(--adm-text); }
 .adm-login__logo {
   display: block; height: 64px; width: 64px; margin: 0 auto;
   background: no-repeat center / contain url(../assets/scene-one-logo-light.svg);
@@ -806,6 +807,16 @@ html[data-theme="dark"] .adm-login__logo { background-image: url(../assets/scene
 /* password field + show/hide eye */
 .adm-pass { position: relative; }
 .adm-pass input { padding-inline-end: 44px; }
+/* Hide the browser's native password reveal / autofill icons so they don't
+   overlap our custom eye button. */
+.adm-login__form input::-ms-reveal,
+.adm-login__form input::-ms-clear { display: none; }
+.adm-login__form input::-webkit-credentials-auto-fill-button,
+.adm-login__form input::-webkit-contacts-auto-fill-button,
+.adm-login__form input::-webkit-strong-password-auto-fill-button {
+  visibility: hidden; display: none !important; pointer-events: none;
+  width: 0; height: 0; margin: 0;
+}
 .adm-pass__eye {
   position: absolute; inset-inline-end: 8px; top: 50%; transform: translateY(-50%);
   border: 0; background: transparent; color: var(--adm-muted); cursor: pointer;

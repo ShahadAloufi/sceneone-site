@@ -31,7 +31,7 @@
       // static (data-i18n)
       loginTitle: "لوحة التحكم", loginSub: "تسجيل دخول المشرفين", fEmail: "البريد الإلكتروني",
       fPassword: "كلمة المرور", loginSubmit: "تسجيل الدخول",
-      loginId: "الدخول", loginIdPh: "البريد الإلكتروني", passwordPh: "أدخل كلمة المرور",
+      loginId: "الدخول", loginIdPh: "أدخل بريدك الإلكتروني", passwordPh: "أدخل كلمة المرور",
       rememberMe: "تذكّرني", footerRights: "جميع الحقوق محفوظة لـ Scene One © 2026",
       showPw: "إظهار كلمة المرور", hidePw: "إخفاء كلمة المرور",
       navSubmissions: "النصوص المقدَّمة", navAdmins: "إدارة المشرفين", logout: "تسجيل الخروج",
@@ -62,7 +62,7 @@
     en: {
       loginTitle: "Dashboard", loginSub: "Admin sign in", fEmail: "Email",
       fPassword: "Password", loginSubmit: "Sign in",
-      loginId: "Login", loginIdPh: "Email or phone number", passwordPh: "Enter password",
+      loginId: "Login", loginIdPh: "Enter your email", passwordPh: "Enter password",
       rememberMe: "Remember me", footerRights: "All rights reserved · Scene One © 2026",
       showPw: "Show password", hidePw: "Hide password",
       navSubmissions: "Submissions", navAdmins: "Manage admins", logout: "Sign out",
