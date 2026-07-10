@@ -153,7 +153,15 @@
   }
 
   async function boot() {
-    me = await loadMe();
+    // Never leave the page blank: if the initial auth/network call fails,
+    // fall back to the login screen so the user can retry instead of staring
+    // at an empty page.
+    try {
+      me = await loadMe();
+    } catch (e) {
+      console.error("[boot] session check failed", e);
+      me = null;
+    }
     if (me) enterDashboard();
     else { hide(dashView); show(loginView); }
   }
