@@ -1017,8 +1017,8 @@ html[data-theme="light"] .so-loader{ --frame:#15110f; }  /* auto on light theme 
 .so-corner:nth-of-type(4){ animation-delay:.45s; }
 @keyframes so-breathe{ 0%,100%{opacity:.55} 50%{opacity:1} }
 .so-scan{
-  stroke: var(--brand); stroke-width: 1.4; stroke-linecap: round;
-  filter: drop-shadow(0 0 5px var(--brand));
+  stroke: var(--brand); stroke-width: 1.1; stroke-linecap: round;
+  filter: drop-shadow(0 0 2px var(--brand));
   animation: so-sweep 1.9s cubic-bezier(.6,0,.4,1) infinite;
 }
 .so-trail{ fill: var(--brand); opacity: .28; animation: so-sweep 1.9s cubic-bezier(.6,0,.4,1) infinite; }
