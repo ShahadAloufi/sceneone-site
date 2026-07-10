@@ -31,6 +31,9 @@
       // static (data-i18n)
       loginTitle: "لوحة التحكم", loginSub: "تسجيل دخول المشرفين", fEmail: "البريد الإلكتروني",
       fPassword: "كلمة المرور", loginSubmit: "تسجيل الدخول",
+      loginId: "الدخول", loginIdPh: "البريد الإلكتروني", passwordPh: "أدخل كلمة المرور",
+      rememberMe: "تذكّرني", footerRights: "جميع الحقوق محفوظة لـ Scene One © 2026",
+      showPw: "إظهار كلمة المرور", hidePw: "إخفاء كلمة المرور",
       navSubmissions: "النصوص المقدَّمة", navAdmins: "إدارة المشرفين", logout: "تسجيل الخروج",
       subTitle: "النصوص المقدَّمة", subSub: "نظرة عامة على النصوص المُستلمة وحالة تقييمها", refresh: "تحديث",
       kpiTotal: "إجمالي النصوص", kpiPending: "بانتظار الإسناد", kpiReview: "قيد المراجعة", kpiDone: "مكتملة ومُقيَّمة",
@@ -47,7 +50,7 @@
       // dynamic
       signingIn: "جارٍ الدخول...", badLogin: "بيانات الدخول غير صحيحة.",
       notAdmin: "هذا الحساب ليس لديه صلاحية دخول لوحة التحكم.",
-      loadFail: "تعذّر تحميل النصوص.", download: "تحميل", assignMe: "أسند إليّ",
+      loadFail: "تعذّر تحميل النصوص.", loadingSubs: "جارٍ تحميل النصوص…", download: "تحميل", assignMe: "أسند إليّ",
       adminFallback: "مشرف", cancel: "إلغاء", viewReport: "عرض التقرير", continueEval: "متابعة التقييم",
       inReview: "قيد التقييم", awaitingAssign: "بانتظار الإسناد",
       navShow: "إظهار القائمة", navFold: "طيّ القائمة", themeToggle: "تبديل المظهر",
@@ -59,6 +62,9 @@
     en: {
       loginTitle: "Dashboard", loginSub: "Admin sign in", fEmail: "Email",
       fPassword: "Password", loginSubmit: "Sign in",
+      loginId: "Login", loginIdPh: "Email or phone number", passwordPh: "Enter password",
+      rememberMe: "Remember me", footerRights: "All rights reserved · Scene One © 2026",
+      showPw: "Show password", hidePw: "Hide password",
       navSubmissions: "Submissions", navAdmins: "Manage admins", logout: "Sign out",
       subTitle: "Submissions", subSub: "Overview of received scripts and their coverage status", refresh: "Refresh",
       kpiTotal: "Total scripts", kpiPending: "Awaiting assignment", kpiReview: "In review", kpiDone: "Completed & rated",
@@ -74,7 +80,7 @@
       phName: "Admin name", phPassword: "At least 8 characters",
       signingIn: "Signing in...", badLogin: "Invalid login credentials.",
       notAdmin: "This account is not authorized to access the dashboard.",
-      loadFail: "Failed to load submissions.", download: "Download", assignMe: "Assign to me",
+      loadFail: "Failed to load submissions.", loadingSubs: "Loading submissions…", download: "Download", assignMe: "Assign to me",
       adminFallback: "Admin", cancel: "Unassign", viewReport: "View report", continueEval: "Continue coverage",
       inReview: "In review", awaitingAssign: "Awaiting assignment",
       navShow: "Show menu", navFold: "Collapse menu", themeToggle: "Toggle theme",
@@ -162,6 +168,27 @@
     loadSubmissions();
   }
 
+  // Show / hide the password.
+  var pwToggle = $("pwToggle");
+  if (pwToggle) pwToggle.addEventListener("click", function () {
+    var inp = $("loginPassword");
+    var reveal = inp.type === "password";
+    inp.type = reveal ? "text" : "password";
+    this.classList.toggle("is-on", reveal);
+    var label = reveal ? t("hidePw") : t("showPw");
+    this.setAttribute("aria-label", label);
+    this.setAttribute("title", label);
+  });
+
+  // "Remember me": prefill the last-used email on return.
+  var REMEMBER_KEY = "sceneone-remember-email";
+  (function initRemember() {
+    try {
+      var saved = localStorage.getItem(REMEMBER_KEY);
+      if (saved) { $("loginEmail").value = saved; $("rememberMe").checked = true; }
+    } catch (e) {}
+  })();
+
   // Login
   $("adminLoginForm").addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -178,6 +205,10 @@
         await sb.auth.signOut();
         err.textContent = t("notAdmin"); show(err);
       } else {
+        try {
+          if ($("rememberMe").checked) localStorage.setItem(REMEMBER_KEY, email);
+          else localStorage.removeItem(REMEMBER_KEY);
+        } catch (e2) {}
         enterDashboard();
       }
     }
@@ -224,6 +255,11 @@
   }
 
   async function loadSubmissions() {
+    // Show a loading spinner and hide the table while the data is in flight.
+    show($("subLoading"));
+    hide($("subEmpty"));
+    $("subTable").hidden = true;
+
     // Fetch admins (assignee names), submissions, and coverage statuses in
     // parallel — they don't depend on each other, so one round-trip's worth of
     // latency instead of three.
@@ -233,6 +269,9 @@
       sb.from("coverages").select("submission_id,status")
     ]);
     var ad = results[0], res = results[1], cov = results[2];
+
+    hide($("subLoading"));
+    $("subTable").hidden = false;
 
     adminsById = {};
     adminRoleById = {};

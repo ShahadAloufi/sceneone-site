@@ -775,18 +775,68 @@ html[data-theme="dark"] {
   --adm-success-bg: #1c3323; --adm-success-text: #8fd6a3;
 }
 
+/* ---- Split-screen sign-in: cinema image left, form right ---- */
 .adm-login {
-  min-height: 100vh; display: flex; align-items: center; justify-content: center;
-  background: #0e0202; padding: 24px;
+  min-height: 100vh; display: flex;
   font-family: 'Tajawal', system-ui, sans-serif;
+  background: var(--adm-bg);
 }
-.adm-login__card {
-  width: 100%; max-width: 380px; background: var(--adm-surface); border-radius: 16px;
-  padding: 36px 28px; box-shadow: var(--adm-card-shadow);
+.adm-login__media {
+  flex: 1 1 50%; align-self: stretch;
+  background: url(../assets/login-hero.png) center / cover no-repeat;
 }
-.adm-login__brand { text-align: center; color: #C9A24B; font-weight: 700; font-size: 18px; }
-.adm-login__title { text-align: center; font-size: 24px; font-weight: 800; margin: 14px 0 4px; color: var(--adm-text); }
-.adm-login__sub { text-align: center; color: var(--adm-muted); font-size: 14px; margin: 0 0 24px; }
+.adm-login__panel {
+  flex: 1 1 50%; position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 40px; background: #ffffff;
+}
+html[data-theme="dark"] .adm-login__panel { background: #000000; }
+.adm-login__lang { position: absolute; top: 24px; inset-inline-end: 24px; margin: 0; }
+.adm-login__form { width: 100%; max-width: 380px; }
+.adm-login__form .adm-field { margin-bottom: 20px; }
+.adm-login__form .adm-field > label { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+.adm-login__form .adm-field input { border-radius: 12px; padding: 13px 14px; font-size: 15px; }
+.adm-login__brandwrap { margin-bottom: 42px; text-align: center; }
+.adm-login__logo {
+  display: block; height: 64px; width: 64px; margin: 0 auto;
+  background: no-repeat center / contain url(../assets/scene-one-logo-light.svg);
+}
+html[data-theme="dark"] .adm-login__logo { background-image: url(../assets/scene-one-logo.svg); }
+
+/* password field + show/hide eye */
+.adm-pass { position: relative; }
+.adm-pass input { padding-inline-end: 44px; }
+.adm-pass__eye {
+  position: absolute; inset-inline-end: 8px; top: 50%; transform: translateY(-50%);
+  border: 0; background: transparent; color: var(--adm-muted); cursor: pointer;
+  padding: 6px; line-height: 0; border-radius: 8px;
+}
+.adm-pass__eye:hover { color: var(--adm-text); }
+.adm-pass__eye.is-on { color: var(--adm-accent, #CD2E07); }
+
+/* remember-me toggle */
+.adm-remember { display: flex; align-items: center; gap: 10px; cursor: pointer; margin: 2px 0 24px; font-size: 14px; color: var(--adm-text); }
+.adm-remember input { position: absolute; opacity: 0; width: 0; height: 0; }
+.adm-remember__track { width: 40px; height: 22px; border-radius: 999px; background: var(--adm-input-border); position: relative; transition: background .15s; flex-shrink: 0; }
+.adm-remember__thumb { position: absolute; top: 2px; inset-inline-start: 2px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.3); transition: transform .15s; }
+.adm-remember input:checked + .adm-remember__track { background: var(--adm-accent, #CD2E07); }
+.adm-remember input:checked + .adm-remember__track .adm-remember__thumb { transform: translateX(18px); }
+[dir="rtl"] .adm-remember input:checked + .adm-remember__track .adm-remember__thumb { transform: translateX(-18px); }
+.adm-remember input:focus-visible + .adm-remember__track { box-shadow: 0 0 0 3px rgba(201,162,75,.3); }
+
+/* sign-in button: black on light, white on dark (inverse of the panel) */
+.adm-login__submit { width: 100%; padding: 15px; border-radius: 12px; font-size: 15px; font-weight: 700; border: 0; cursor: pointer; background: #111418; color: #fff; transition: opacity .15s; }
+.adm-login__submit:hover { opacity: .88; }
+.adm-login__submit:disabled { opacity: .6; cursor: default; }
+html[data-theme="dark"] .adm-login__submit { background: #ffffff; color: #111418; }
+
+.adm-login__divider { height: 1px; background: var(--adm-border); margin-top: 22px; }
+.adm-login__foot { position: absolute; bottom: 28px; inset-inline: 0; text-align: center; color: var(--adm-muted); font-size: 13px; margin: 0; }
+
+@media (max-width: 860px) {
+  .adm-login__media { display: none; }
+  .adm-login__panel { flex-basis: 100%; }
+}
 
 .adm-field { display: flex; flex-direction: column; margin-bottom: 16px; }
 .adm-field > label { font-weight: 700; font-size: 13px; margin-bottom: 6px; color: var(--adm-text); }
@@ -940,6 +990,10 @@ html[data-theme="light"] .adm-decor-clapper { background-image: url(../assets/de
 .adm-table td { vertical-align: top; }
 .adm-muted { color: var(--adm-faint); font-size: 12px; }
 .adm-empty { padding: 40px; text-align: center; color: var(--adm-faint); }
+/* Loading state while submissions are being fetched. */
+.adm-loading { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 56px 20px; color: var(--adm-muted); font-size: 15px; }
+.adm-spinner { width: 22px; height: 22px; border-radius: 50%; border: 2.5px solid var(--adm-border); border-top-color: var(--adm-accent); animation: adm-spin .8s linear infinite; flex-shrink: 0; }
+@keyframes adm-spin { to { transform: rotate(360deg); } }
 
 /* Table actions render as compact rounded-rectangle buttons (not text links). */
 /* Action buttons mirror the landing-page CTAs: ghost outline (secondary) + white solid (primary). */

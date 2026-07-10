@@ -20,25 +20,53 @@
 
 <!-- ── LOGIN VIEW ── -->
 <div class="adm-login" id="adminLogin" hidden>
-  <form class="adm-login__card" id="adminLoginForm" novalidate>
-    <div class="adm-login__brand">Scene One</div>
+  <!-- Left: cinema hero image -->
+  <div class="adm-login__media" aria-hidden="true"></div>
+
+  <!-- Right: sign-in panel -->
+  <div class="adm-login__panel">
     <div class="adm-lang adm-login__lang" id="admLangLogin">
       <button type="button" data-l="ar">العربية</button>
       <button type="button" data-l="en">English</button>
     </div>
-    <h1 class="adm-login__title" data-i18n="loginTitle">لوحة التحكم</h1>
-    <p class="adm-login__sub" data-i18n="loginSub">تسجيل دخول المشرفين</p>
-    <div class="adm-field">
-      <label data-i18n="fEmail">البريد الإلكتروني</label>
-      <input type="email" id="loginEmail" dir="ltr" placeholder="admin@example.com" autocomplete="username">
-    </div>
-    <div class="adm-field">
-      <label data-i18n="fPassword">كلمة المرور</label>
-      <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
-    </div>
-    <p class="adm-error" id="loginError" hidden></p>
-    <button type="submit" class="adm-btn adm-btn--primary" id="loginBtn" data-i18n="loginSubmit">تسجيل الدخول</button>
-  </form>
+
+    <form class="adm-login__form" id="adminLoginForm" novalidate>
+      <div class="adm-login__brandwrap">
+        <span class="adm-login__logo" role="img" aria-label="Scene One"></span>
+      </div>
+
+      <div class="adm-field">
+        <label data-i18n="loginId">Login</label>
+        <input type="email" id="loginEmail" dir="ltr" data-i18n-ph="loginIdPh" placeholder="Email or phone number" autocomplete="username">
+      </div>
+
+      <div class="adm-field">
+        <label data-i18n="fPassword">Password</label>
+        <div class="adm-pass">
+          <input type="password" id="loginPassword" data-i18n-ph="passwordPh" placeholder="Enter password" autocomplete="current-password">
+          <button type="button" class="adm-pass__eye" id="pwToggle" data-i18n-title="showPw" aria-label="Show password" title="Show password">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <label class="adm-remember">
+        <input type="checkbox" id="rememberMe">
+        <span class="adm-remember__track"><span class="adm-remember__thumb"></span></span>
+        <span class="adm-remember__label" data-i18n="rememberMe">Remember me</span>
+      </label>
+
+      <p class="adm-error" id="loginError" hidden></p>
+
+      <button type="submit" class="adm-btn adm-login__submit" id="loginBtn" data-i18n="loginSubmit">Sign in</button>
+
+      <div class="adm-login__divider"></div>
+    </form>
+
+    <p class="adm-login__foot" data-i18n="footerRights">جميع الحقوق محفوظة لـ Scene One © 2026</p>
+  </div>
 </div>
 
 <!-- ── DASHBOARD VIEW ── -->
@@ -159,6 +187,10 @@
         </thead>
         <tbody id="subBody"></tbody>
       </table>
+      <div class="adm-loading" id="subLoading" hidden>
+        <span class="adm-spinner"></span>
+        <span data-i18n="loadingSubs">Loading submissions…</span>
+      </div>
       <p class="adm-empty" id="subEmpty" hidden data-i18n="subEmpty">لا توجد نصوص مقدَّمة بعد.</p>
     </div>
   </section>
