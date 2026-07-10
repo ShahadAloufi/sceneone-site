@@ -881,7 +881,7 @@ html[data-theme="dark"] {
    art: faint on the dark theme, inverted to dark ink on the light theme. */
 .adm-decor { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
 .adm-decor-img {
-  position: absolute; opacity: .22; user-select: none;
+  position: absolute; opacity: .5; user-select: none;
   background-repeat: no-repeat; background-size: contain; background-position: center;
 }
 /* Light theme swaps in the light-specific artwork and inverts the white line
