@@ -641,6 +641,7 @@ a, button {
 
 /* ====================== ABOUT-COVERAGE PAGE ====================== */
 .cov { min-height: 100vh; background: #000; color: #fff; direction: rtl; font-family: var(--font-head); }
+.cov .nav { background: #000; }
 .cov-hero { background: #000; }
 .cov-hero__head { padding: 128px 24px 48px; text-align: right; }
 .cov-hero__title { font-family: var(--font-head); font-size: 32px; font-weight: 700; color: #fff; line-height: 1.3; }
