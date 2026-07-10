@@ -96,7 +96,7 @@
       scoresHint: "Give every evaluation point a score (1–5) first.",
       guard: {
         link: "Go to the dashboard",
-        loadT: "Loading…", loadM: "Checking your session and loading the submission.",
+        loadT: "Loading…", loadM: "",
         cfgT: "Not configured", cfgM: "Supabase isn't set up yet. Add the project URL and anon key in js/config.js.",
         subT: "No submission", subM: "This link is missing a submission id. Open a coverage from the dashboard.",
         authT: "Sign in required", authM: "You need to sign in to the dashboard before opening a coverage.",
@@ -132,7 +132,7 @@
       scoresHint: "اختر درجة (١–٥) لكل نقطة تقييم أولاً.",
       guard: {
         link: "الذهاب إلى لوحة التحكم",
-        loadT: "جارٍ التحميل…", loadM: "جارٍ التحقق من جلستك وتحميل التقرير.",
+        loadT: "جارٍ التحميل", loadM: "",
         cfgT: "غير مُهيأ", cfgM: "لم يتم إعداد Supabase بعد. أضف رابط المشروع والمفتاح العام في js/config.js.",
         subT: "لا يوجد نص", subM: "هذا الرابط لا يحتوي على معرّف نص. افتح تغطية من لوحة التحكم.",
         authT: "يلزم تسجيل الدخول", authM: "يجب تسجيل الدخول إلى لوحة التحكم قبل فتح التغطية.",
