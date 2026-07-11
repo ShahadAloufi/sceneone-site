@@ -89,7 +89,7 @@
       sendReport: "Send to writer", sending: "Sending…",
       sendOk: "Report sent to the writer", sendFail: "Couldn't send the report",
       pl: { title: "Title", writer: "Writer", email: "Email", ref: "Reference", format: "Format", genre: "Genre", length: "Length", draft: "Draft", ip: "IP registered", file: "Script file", logline: "Logline", vision: "Writer's vision" },
-      ipYes: "Registered", ipNo: "Not registered", dl: "Download script", untitled: "Untitled", dash: "—",
+      ipYes: "Registered", ipNo: "Not registered", dl: "Download script", untitled: "Untitled", dash: "—", pagesUnit: "pages",
       saving: "Saving…", saved: "Saved", saveFailed: "Save failed", loaded: "Loaded", newCov: "New coverage", viewOnly: "View only",
       hintOverride: function (a) { return "Overriding the suggested " + a; }, hintManual: "Manual rating", hintAuto: "Using the suggested score",
       evalPh: function (n) { return "Your assessment of " + n + "."; },
@@ -125,7 +125,7 @@
       sendReport: "إرسال إلى الكاتب", sending: "جارٍ الإرسال…",
       sendOk: "تم إرسال التقرير إلى الكاتب", sendFail: "تعذّر إرسال التقرير",
       pl: { title: "عنوان السيناريو", writer: "اسم الكاتب", email: "البريد الإلكتروني", ref: "الرقم المرجعي", format: "نوع العمل", genre: "التصنيف", length: "عدد الصفحات/المدة", draft: "نسخة السيناريو", ip: "تسجيل الملكية الفكرية", file: "ملف السيناريو", logline: "الملخص المختصر", vision: "رؤية الكاتب" },
-      ipYes: "مسجل", ipNo: "غير مسجل", dl: "تحميل النص", untitled: "بدون عنوان", dash: "—",
+      ipYes: "مسجل", ipNo: "غير مسجل", dl: "تحميل النص", untitled: "بدون عنوان", dash: "—", pagesUnit: "صفحة",
       saving: "جارٍ الحفظ…", saved: "تم الحفظ", saveFailed: "فشل الحفظ", loaded: "تم التحميل", newCov: "تقييم جديد", viewOnly: "عرض فقط",
       hintOverride: function (a) { return "يتجاوز الدرجة المقترحة " + a; }, hintManual: "تقييم يدوي", hintAuto: "استخدام الدرجة المقترحة",
       // Contract the preposition ل with a leading definite article ال → لل
@@ -283,6 +283,12 @@
     return v;
   }
 
+  // Uploaded PDF page count minus the title page (blank when unavailable).
+  function pagesLabel(s) {
+    if (!s.pages) return "";
+    var n = s.pages > 1 ? s.pages - 1 : s.pages;
+    return n + " " + UI[UILANG].pagesUnit;
+  }
   function renderPulled() {
     var s = state.submission, u = UI[UILANG], pl = u.pl, dash = u.dash;
     var title = esc(s.titleEn || u.untitled) + (s.titleAr ? '  <span style="color:var(--label)">· ' + esc(s.titleAr) + "</span>" : "");
@@ -296,7 +302,7 @@
       [pl.ref, esc(s.ref || dash)],
       [pl.format, esc(pulledVal("fmt", s.format, dash))],
       [pl.genre, esc(pulledVal("genreMap", s.genre, dash))],
-      [pl.length, esc(s.length || dash)],
+      [pl.length, esc(pagesLabel(s) || s.length || dash)],
       [pl.draft, esc(pulledVal("drf", s.draft, dash))],
       [pl.ip, s.ip ? '<span style="color:var(--good);font-weight:600">' + u.ipYes + "</span>" : u.ipNo],
       [pl.file, fileCell],
@@ -641,6 +647,7 @@
       format: FORMAT_EN[r.film_type] || "Short film",
       genre: GENRE_EN[r.genre] || r.genre || "",
       length: r.duration || "",
+      pages: (r.pages != null && r.pages > 0) ? r.pages : null,
       draft: DRAFT_EN[r.draft] || "Final draft",
       logline: r.logline || "",
       vision: r.vision || "",

@@ -196,6 +196,12 @@ module.exports = async (req, res) => {
     status: "new",
   };
 
+  // Optional PDF page count computed in the browser (title page included).
+  const pageCount = Number(b.pages);
+  if (Number.isInteger(pageCount) && pageCount > 0 && pageCount <= 3000) {
+    row.pages = pageCount;
+  }
+
   // Server-side validation (the server is the source of truth; the client
   // checks are for UX only). Enforces enum allowlists, length caps, the
   // storage object-path format, and the file extension.

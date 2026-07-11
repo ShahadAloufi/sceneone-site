@@ -69,6 +69,21 @@
     return i >= 0 ? String(name).slice(i + 1).toLowerCase() : "";
   }
 
+  // Count the pages of an uploaded PDF (best-effort). Resolves to the total
+  // page count, or null for non-PDF files / on any error — never rejects, so
+  // a parsing hiccup can't block the submission.
+  function countPdfPages(file) {
+    if (!file || fileExt(file.name) !== "pdf" || !window.pdfjsLib) return Promise.resolve(null);
+    try {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.worker.min.js";
+    } catch (e) {}
+    return file.arrayBuffer()
+      .then(function (buf) { return window.pdfjsLib.getDocument({ data: buf }).promise; })
+      .then(function (doc) { return doc.numPages; })
+      .catch(function () { return null; });
+  }
+
   /* ---------- ARABIC-ONLY TITLE ---------- */
   // The Arabic title field must contain no English letters. Rather than
   // stripping what the user types, keep their text and show an inline error.
@@ -210,30 +225,33 @@
       var sb = window.supabase.createClient(CFG.url, CFG.anonKey);
       var filePath = buildPath(file.name);
 
-      sb.storage.from(BUCKET).upload(filePath, file, {
-        contentType: file.type || "application/octet-stream",
-        upsert: false
-      }).then(function (up) {
-        if (up.error) throw up.error;
-        return fetch("/api/submissions", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            titleAr: v.titleAr,
-            titleEn: v.titleEn,
-            email: v.email,
-            writer: v.writer,
-            genre: v.genre,
-            filmType: v.filmType,
-            draft: v.draft,
-            duration: v.duration,
-            theme: v.theme,
-            logline: v.logline,
-            vision: v.vision,
-            ip: v.ip,
-            filePath: filePath,
-            fileName: file.name
-          })
+      countPdfPages(file).then(function (pageCount) {
+        return sb.storage.from(BUCKET).upload(filePath, file, {
+          contentType: file.type || "application/octet-stream",
+          upsert: false
+        }).then(function (up) {
+          if (up.error) throw up.error;
+          return fetch("/api/submissions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              titleAr: v.titleAr,
+              titleEn: v.titleEn,
+              email: v.email,
+              writer: v.writer,
+              genre: v.genre,
+              filmType: v.filmType,
+              draft: v.draft,
+              duration: v.duration,
+              theme: v.theme,
+              logline: v.logline,
+              vision: v.vision,
+              ip: v.ip,
+              filePath: filePath,
+              fileName: file.name,
+              pages: pageCount
+            })
+          });
         });
       }).then(function (res) {
         if (!res.ok) return res.json().then(function (b) { throw new Error(b.message || "فشل الإرسال"); });

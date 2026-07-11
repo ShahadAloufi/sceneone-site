@@ -987,7 +987,7 @@ html[data-theme="light"] .adm-decor-clapper { background-image: url(../assets/de
 .adm-muted { color: var(--adm-faint); font-size: 12px; }
 .adm-empty { padding: 40px; text-align: center; color: var(--adm-faint); }
 /* Submission deadline (submitted date + 2 weeks) */
-.adm-due__badge { display: inline-block; margin-top: 5px; font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
+.adm-due__badge { display: inline-flex; align-items: center; justify-content: center; text-align: center; margin-top: 6px; font-size: 12px; font-weight: 800; padding: 4px 11px; border-radius: 8px; white-space: nowrap; }
 .adm-due--ok   { color: #2f9d5e; background: rgba(47,157,94,.14); }
 .adm-due--soon { color: #c9962e; background: rgba(201,150,46,.16); }
 .adm-due--over { color: #d9584a; background: rgba(217,88,74,.16); }

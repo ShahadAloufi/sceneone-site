@@ -201,6 +201,28 @@
     var av = $("admAvatar"); if (av) av.textContent = (me.name || "?").trim().charAt(0) || "?";
     if (me.role === "super_admin") { show($("adminsTabBtn")); }
     loadSubmissions();
+    subscribeRealtime();
+  }
+
+  // Live updates: refresh the board when submissions or coverages change, so a
+  // new script appears the moment it's submitted — no manual refresh needed.
+  // Debounced and silent (updates the table in place without a spinner flash).
+  var realtimeSub = null, reloadTimer = null;
+  function scheduleReload() {
+    clearTimeout(reloadTimer);
+    reloadTimer = setTimeout(function () {
+      if (me && !dashView.hidden) {
+        loadSubmissions(true);
+        if (!$("tab-admins").hidden) loadAdmins();
+      }
+    }, 400);
+  }
+  function subscribeRealtime() {
+    if (realtimeSub) return; // subscribe once per session
+    realtimeSub = sb.channel("dashboard-feed")
+      .on("postgres_changes", { event: "*", schema: "public", table: "submissions" }, scheduleReload)
+      .on("postgres_changes", { event: "*", schema: "public", table: "coverages" }, scheduleReload)
+      .subscribe();
   }
 
   // Show / hide the password.
@@ -289,11 +311,15 @@
     $("kpiDonePct").textContent = pct(done);
   }
 
-  async function loadSubmissions() {
+  async function loadSubmissions(silent) {
     // Show a loading spinner and hide the table while the data is in flight.
-    show($("subLoading"));
-    hide($("subEmpty"));
-    $("subTable").hidden = true;
+    // Live (realtime) refreshes pass silent=true so the table updates in place
+    // without a spinner flash.
+    if (!silent) {
+      show($("subLoading"));
+      hide($("subEmpty"));
+      $("subTable").hidden = true;
+    }
 
     // Fetch admins (assignee names), submissions, and coverage statuses in
     // parallel — they don't depend on each other, so one round-trip's worth of
@@ -305,7 +331,7 @@
     ]);
     var ad = results[0], res = results[1], cov = results[2];
 
-    hide($("subLoading"));
+    if (!silent) { hide($("subLoading")); }
     $("subTable").hidden = false;
 
     adminsById = {};

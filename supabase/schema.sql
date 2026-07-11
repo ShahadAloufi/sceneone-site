@@ -124,6 +124,11 @@ alter table public.submissions
 alter table public.submissions
   add column if not exists co_reader_id uuid references public.admins(id) on delete set null;
 
+-- Total page count of the uploaded PDF (title page included; the dashboard
+-- shows page count minus the title page). Null for non-PDF uploads.
+alter table public.submissions
+  add column if not exists pages int;
+
 alter table public.submissions enable row level security;
 
 -- Admins can read every submission (shared inbox).
@@ -270,3 +275,25 @@ grant all on public.coverages to service_role;
 -- where email = 'REPLACE-WITH-SUPER-ADMIN-EMAIL'
 -- on conflict (id) do update set role = 'super_admin';
 -- ============================================================
+
+-- ============================================================
+-- Realtime: let the admin dashboard receive live INSERT/UPDATE/DELETE
+-- events for submissions and coverages, so new scripts appear the
+-- moment they're submitted (no manual refresh). Run once in the SQL
+-- Editor; idempotent (skips tables already in the publication).
+-- ============================================================
+do $$
+begin
+  if not exists (
+    select 1 from pg_publication_tables
+    where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'submissions'
+  ) then
+    alter publication supabase_realtime add table public.submissions;
+  end if;
+  if not exists (
+    select 1 from pg_publication_tables
+    where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'coverages'
+  ) then
+    alter publication supabase_realtime add table public.coverages;
+  end if;
+end $$;
