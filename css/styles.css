@@ -334,6 +334,8 @@ a, button {
 }
 .price-div {
   display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
   align-items: center;
   gap: 10px;
   margin-bottom: 22px;
