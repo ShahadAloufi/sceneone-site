@@ -986,6 +986,12 @@ html[data-theme="light"] .adm-decor-clapper { background-image: url(../assets/de
 .adm-table td { vertical-align: top; }
 .adm-muted { color: var(--adm-faint); font-size: 12px; }
 .adm-empty { padding: 40px; text-align: center; color: var(--adm-faint); }
+/* Submission deadline (submitted date + 2 weeks) */
+.adm-due__badge { display: inline-block; margin-top: 5px; font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
+.adm-due--ok   { color: #2f9d5e; background: rgba(47,157,94,.14); }
+.adm-due--soon { color: #c9962e; background: rgba(201,150,46,.16); }
+.adm-due--over { color: #d9584a; background: rgba(217,88,74,.16); }
+.adm-due--done { color: var(--adm-muted); background: var(--adm-surface-2); }
 /* Loading state while submissions are being fetched. */
 .adm-loading { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 56px 20px; color: var(--adm-muted); font-size: 15px; }
 

@@ -86,6 +86,8 @@
       context: "Context (optional)", contextPh: "short-film and festival context", summary: "Summary",
       genReport: "Generate report", finalize: "Mark coverage complete", reopen: "Reopen coverage",
       editCoverage: "Edit coverage", print: "Print / Save as PDF",
+      sendReport: "Send to writer", sending: "Sending…",
+      sendOk: "Report sent to the writer", sendFail: "Couldn't send the report",
       pl: { title: "Title", writer: "Writer", email: "Email", ref: "Reference", format: "Format", genre: "Genre", length: "Length", draft: "Draft", ip: "IP registered", file: "Script file", logline: "Logline", vision: "Writer's vision" },
       ipYes: "Registered", ipNo: "Not registered", dl: "Download script", untitled: "Untitled", dash: "—",
       saving: "Saving…", saved: "Saved", saveFailed: "Save failed", loaded: "Loaded", newCov: "New coverage", viewOnly: "View only",
@@ -120,6 +122,8 @@
       context: "السياق (اختياري)", contextPh: "سياق الأفلام القصيرة والمهرجانات", summary: "الخلاصة",
       genReport: "إنشاء التقرير", finalize: "وضع علامة اكتمال التقييم", reopen: "إعادة فتح التقييم",
       editCoverage: "تعديل التقييم", print: "طباعة / حفظ PDF",
+      sendReport: "إرسال إلى الكاتب", sending: "جارٍ الإرسال…",
+      sendOk: "تم إرسال التقرير إلى الكاتب", sendFail: "تعذّر إرسال التقرير",
       pl: { title: "عنوان السيناريو", writer: "اسم الكاتب", email: "البريد الإلكتروني", ref: "الرقم المرجعي", format: "نوع العمل", genre: "التصنيف", length: "عدد الصفحات/المدة", draft: "نسخة السيناريو", ip: "تسجيل الملكية الفكرية", file: "ملف السيناريو", logline: "الملخص المختصر", vision: "رؤية الكاتب" },
       ipYes: "مسجل", ipNo: "غير مسجل", dl: "تحميل النص", untitled: "بدون عنوان", dash: "—",
       saving: "جارٍ الحفظ…", saved: "تم الحفظ", saveFailed: "فشل الحفظ", loaded: "تم التحميل", newCov: "تقييم جديد", viewOnly: "عرض فقط",
@@ -540,6 +544,7 @@
     renderPulled();
     if ($("view-report").classList.contains("active")) renderReport();
     if (readOnly) applyReadOnly();
+    updateSendBtn();
   }
 
   // Lock the whole workspace for staff who aren't the assigned reader: every
@@ -573,6 +578,31 @@
   $("backToReview").onclick = function () { show("review"); };
   $("printReport").onclick = function () { window.print(); };
 
+  // "Send to writer" is only offered once the coverage is completed.
+  function updateSendBtn() {
+    var b = $("sendReport"); if (b) b.hidden = covStatus !== "completed";
+  }
+  $("sendReport").onclick = async function () {
+    if (covStatus !== "completed") return;
+    var btn = this, old = btn.textContent;
+    btn.disabled = true; btn.textContent = UI[UILANG].sending;
+    try {
+      var sess = await sb.auth.getSession();
+      var token = sess.data.session && sess.data.session.access_token;
+      var resp = await fetch("/api/send-report", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+        body: JSON.stringify({ submission_id: submissionId })
+      });
+      var data = await resp.json().catch(function () { return {}; });
+      if (!resp.ok) throw new Error(data.message || UI[UILANG].sendFail);
+      toast(UI[UILANG].sendOk);
+    } catch (e) {
+      toast(e.message || UI[UILANG].sendFail);
+    }
+    btn.disabled = false; btn.textContent = old;
+  };
+
   var finalizeBtn = $("finalizeBtn");
   finalizeBtn.onclick = async function () {
     // Safety net: never finalize an incomplete coverage even if the button
@@ -582,6 +612,7 @@
     var u = UI[UILANG];
     finalizeBtn.textContent = covStatus === "completed" ? u.reopen : u.finalize;
     refreshFinalizeState();
+    updateSendBtn();
     await save();
     toast(covStatus === "completed" ? u.tComplete : u.tReopened);
   };

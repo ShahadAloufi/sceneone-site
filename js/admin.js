@@ -40,6 +40,9 @@
       subListTitle: "قائمة النصوص", thDate: "التاريخ", thTitle: "العنوان", thWriter: "الكاتب", thEmail: "البريد الإلكتروني",
       thGenre: "التصنيف", thFilmType: "نوع الفيلم", thDraft: "المسودة", thFile: "الملف", thAssignee: "المسند إليه",
       thAssignee2: "المُكلَّف",
+      thDeadline: "الموعد النهائي",
+      dueOver: "متأخّر", dueDone: "تم التسليم", dueToday: "ينتهي اليوم",
+      dueDays: function (n) { return "متبقٍّ " + n + " يوم"; },
       thCoverage: "التقييم", subEmpty: "لا توجد نصوص مقدَّمة بعد.",
       adminsTitle: "المشرفون", thName: "الاسم", thRole: "الدور", createTitle: "إضافة مشرف جديد",
       fName: "الاسم", fRole: "الدور", roleAdmin: "مشرف", roleSuper: "مشرف أعلى", createBtn: "إنشاء المشرف",
@@ -71,6 +74,9 @@
       subListTitle: "Scripts list", thDate: "Date", thTitle: "Title", thWriter: "Writer", thEmail: "Email",
       thGenre: "Genre", thFilmType: "Film type", thDraft: "Draft", thFile: "File", thAssignee: "Assignee",
       thAssignee2: "Assignee",
+      thDeadline: "Deadline",
+      dueOver: "Overdue", dueDone: "Delivered", dueToday: "Due today",
+      dueDays: function (n) { return n + (n === 1 ? " day left" : " days left"); },
       thCoverage: "Coverage", subEmpty: "No submissions yet.",
       adminsTitle: "Admins", thName: "Name", thRole: "Role", createTitle: "Add a new admin",
       fName: "Name", fRole: "Role", roleAdmin: "Admin", roleSuper: "Super admin", createBtn: "Create admin",
@@ -138,6 +144,27 @@
       // in the database and can be retrieved when the exact hour is needed.
       return d.toLocaleDateString(ULANG, { year: "numeric", month: "short", day: "numeric" });
     } catch (e) { return s; }
+  }
+  // Every submission gets a 2-week window from the day it was submitted.
+  var DEADLINE_DAYS = 14;
+  function deadlineCell(createdAt, completed) {
+    var due = new Date(createdAt);
+    due.setDate(due.getDate() + DEADLINE_DAYS);
+    var dateStr = esc(fmtDate(due.toISOString()));
+    var badge, cls;
+    if (completed) {
+      badge = t("dueDone"); cls = "adm-due--done";
+    } else {
+      // Whole days between today (midnight) and the due date (midnight).
+      var d0 = new Date(); d0.setHours(0, 0, 0, 0);
+      var d1 = new Date(due); d1.setHours(0, 0, 0, 0);
+      var daysLeft = Math.round((d1 - d0) / 86400000);
+      if (daysLeft < 0) { badge = t("dueOver"); cls = "adm-due--over"; }
+      else if (daysLeft === 0) { badge = t("dueToday"); cls = "adm-due--soon"; }
+      else { badge = t("dueDays")(daysLeft); cls = daysLeft <= 3 ? "adm-due--soon" : "adm-due--ok"; }
+    }
+    return "<td class='adm-due'><div>" + dateStr + "</div>" +
+      "<span class='adm-due__badge " + cls + "'>" + esc(badge) + "</span></td>";
   }
   function show(el) { if (el) el.hidden = false; }
   function hide(el) { if (el) el.hidden = true; }
@@ -307,6 +334,7 @@
       var tr = document.createElement("tr");
       tr.innerHTML =
         "<td>" + esc(fmtDate(s.created_at)) + "</td>" +
+        deadlineCell(s.created_at, covBySub[s.id] === "completed") +
         "<td><strong>" + esc(s.title_ar) + "</strong><br><span class='adm-muted' dir='ltr'>" + esc(s.title_en) + "</span></td>" +
         "<td>" + esc(s.writer) + "</td>" +
         "<td dir='ltr'>" + esc(s.email) + "</td>" +
