@@ -588,23 +588,40 @@
   function updateSendBtn() {
     var b = $("sendReport"); if (b) b.hidden = covStatus !== "completed";
   }
-  // Snapshot the on-screen report into a PDF and return its base64 payload
-  // (without the data-URI prefix). Rasterised so Arabic RTL renders exactly as
-  // shown. The report always paints on a white background regardless of theme.
+  // Snapshot the report into a PDF and return its base64 payload (without the
+  // data-URI prefix). We capture the white #reportWrap card — not #reportBody —
+  // so the banner bleed is included, and we force the light theme for the
+  // duration so a reader's dark dashboard never leaks into the emailed PDF.
+  // Fonts and the logo image must be fully loaded first, or Arabic falls back
+  // to a broken font and the logo captures blank.
   async function buildReportPdfBase64() {
-    var el = $("reportBody");
+    var el = $("reportWrap");
     if (!el || typeof html2pdf === "undefined") throw new Error(UI[UILANG].pdfFail);
-    if (document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch (e) {} }
-    var opt = {
-      margin: 0,
-      image: { type: "jpeg", quality: 0.96 },
-      html2canvas: { scale: 2, backgroundColor: "#ffffff", useCORS: true },
-      jsPDF: { unit: "pt", format: "a4", orientation: "portrait" }
-    };
-    var uri = await html2pdf().set(opt).from(el).outputPdf("datauristring");
-    var comma = uri.indexOf(",");
-    if (comma < 0) throw new Error(UI[UILANG].pdfFail);
-    return uri.slice(comma + 1);
+    var root = document.documentElement;
+    var prevTheme = root.getAttribute("data-theme");
+    root.setAttribute("data-theme", "light");
+    try {
+      if (document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch (e) {} }
+      // Wait for report images (the logo) to finish loading before the snapshot.
+      await Promise.all(Array.prototype.map.call(el.querySelectorAll("img"), function (img) {
+        if (img.complete && img.naturalWidth) return null;
+        return new Promise(function (res) { img.addEventListener("load", res); img.addEventListener("error", res); });
+      }));
+      // Let the forced-light styles settle before rasterising.
+      await new Promise(function (r) { requestAnimationFrame(function () { requestAnimationFrame(r); }); });
+      var opt = {
+        margin: 0,
+        image: { type: "jpeg", quality: 0.97 },
+        html2canvas: { scale: 2, backgroundColor: "#ffffff", useCORS: true },
+        jsPDF: { unit: "pt", format: "a4", orientation: "portrait" }
+      };
+      var uri = await html2pdf().set(opt).from(el).outputPdf("datauristring");
+      var comma = uri.indexOf(",");
+      if (comma < 0) throw new Error(UI[UILANG].pdfFail);
+      return uri.slice(comma + 1);
+    } finally {
+      if (prevTheme) root.setAttribute("data-theme", prevTheme); else root.removeAttribute("data-theme");
+    }
   }
 
   $("sendReport").onclick = async function () {
