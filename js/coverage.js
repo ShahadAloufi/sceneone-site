@@ -87,7 +87,7 @@
       genReport: "Generate report", finalize: "Mark coverage complete", reopen: "Reopen coverage",
       editCoverage: "Edit coverage", print: "Print / Save as PDF",
       sendReport: "Send to writer", sending: "Sending…",
-      sendOk: "Report sent to the writer", sendFail: "Couldn't send the report",
+      sendOk: "Report sent to the writer", sendFail: "Couldn't send the report", pdfFail: "Couldn't build the report PDF",
       pl: { title: "Title", writer: "Writer", email: "Email", ref: "Reference", format: "Format", genre: "Genre", length: "Length", draft: "Draft", ip: "IP registered", file: "Script file", logline: "Logline", vision: "Writer's vision" },
       ipYes: "Registered", ipNo: "Not registered", dl: "Download script", untitled: "Untitled", dash: "—", pagesUnit: "pages",
       saving: "Saving…", saved: "Saved", saveFailed: "Save failed", loaded: "Loaded", newCov: "New coverage", viewOnly: "View only",
@@ -123,7 +123,7 @@
       genReport: "إنشاء التقرير", finalize: "وضع علامة اكتمال التقييم", reopen: "إعادة فتح التقييم",
       editCoverage: "تعديل التقييم", print: "طباعة / حفظ PDF",
       sendReport: "إرسال إلى الكاتب", sending: "جارٍ الإرسال…",
-      sendOk: "تم إرسال التقرير إلى الكاتب", sendFail: "تعذّر إرسال التقرير",
+      sendOk: "تم إرسال التقرير إلى الكاتب", sendFail: "تعذّر إرسال التقرير", pdfFail: "تعذّر إنشاء ملف PDF للتقرير",
       pl: { title: "عنوان السيناريو", writer: "اسم الكاتب", email: "البريد الإلكتروني", ref: "الرقم المرجعي", format: "نوع العمل", genre: "التصنيف", length: "عدد الصفحات/المدة", draft: "نسخة السيناريو", ip: "تسجيل الملكية الفكرية", file: "ملف السيناريو", logline: "الملخص المختصر", vision: "رؤية الكاتب" },
       ipYes: "مسجل", ipNo: "غير مسجل", dl: "تحميل النص", untitled: "بدون عنوان", dash: "—", pagesUnit: "صفحة",
       saving: "جارٍ الحفظ…", saved: "تم الحفظ", saveFailed: "فشل الحفظ", loaded: "تم التحميل", newCov: "تقييم جديد", viewOnly: "عرض فقط",
@@ -588,17 +588,37 @@
   function updateSendBtn() {
     var b = $("sendReport"); if (b) b.hidden = covStatus !== "completed";
   }
+  // Snapshot the on-screen report into a PDF and return its base64 payload
+  // (without the data-URI prefix). Rasterised so Arabic RTL renders exactly as
+  // shown. The report always paints on a white background regardless of theme.
+  async function buildReportPdfBase64() {
+    var el = $("reportBody");
+    if (!el || typeof html2pdf === "undefined") throw new Error(UI[UILANG].pdfFail);
+    if (document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch (e) {} }
+    var opt = {
+      margin: 0,
+      image: { type: "jpeg", quality: 0.96 },
+      html2canvas: { scale: 2, backgroundColor: "#ffffff", useCORS: true },
+      jsPDF: { unit: "pt", format: "a4", orientation: "portrait" }
+    };
+    var uri = await html2pdf().set(opt).from(el).outputPdf("datauristring");
+    var comma = uri.indexOf(",");
+    if (comma < 0) throw new Error(UI[UILANG].pdfFail);
+    return uri.slice(comma + 1);
+  }
+
   $("sendReport").onclick = async function () {
     if (covStatus !== "completed") return;
     var btn = this, old = btn.textContent;
     btn.disabled = true; btn.textContent = UI[UILANG].sending;
     try {
+      var pdfBase64 = await buildReportPdfBase64();
       var sess = await sb.auth.getSession();
       var token = sess.data.session && sess.data.session.access_token;
       var resp = await fetch("/api/send-report", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
-        body: JSON.stringify({ submission_id: submissionId })
+        body: JSON.stringify({ submission_id: submissionId, pdf_base64: pdfBase64 })
       });
       var data = await resp.json().catch(function () { return {}; });
       if (!resp.ok) throw new Error(data.message || UI[UILANG].sendFail);

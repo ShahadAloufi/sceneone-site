@@ -38,7 +38,7 @@
       subTitle: "النصوص المقدَّمة", subSub: "نظرة عامة على النصوص المُستلمة وحالة تقييمها", refresh: "تحديث",
       kpiTotal: "إجمالي النصوص", kpiPending: "بانتظار الإسناد", kpiReview: "قيد المراجعة", kpiDone: "مكتملة ومُقيَّمة",
       subListTitle: "قائمة النصوص", thDate: "التاريخ", thTitle: "العنوان", thWriter: "الكاتب", thEmail: "البريد الإلكتروني",
-      thGenre: "التصنيف", thFilmType: "نوع الفيلم", thDraft: "المسودة", thFile: "الملف", thAssignee: "المسند إليه",
+      thGenre: "التصنيف", thFilmType: "نوع الفيلم", thDraft: "المسودة", thPages: "الصفحات", thFile: "الملف", thAssignee: "المسند إليه",
       thAssignee2: "المُكلَّف",
       thDeadline: "الموعد النهائي",
       dueOver: "متأخّر", dueDone: "تم التسليم", dueToday: "ينتهي اليوم",
@@ -72,7 +72,7 @@
       subTitle: "Submissions", subSub: "Overview of received scripts and their coverage status", refresh: "Refresh",
       kpiTotal: "Total scripts", kpiPending: "Awaiting assignment", kpiReview: "In review", kpiDone: "Completed & rated",
       subListTitle: "Scripts list", thDate: "Date", thTitle: "Title", thWriter: "Writer", thEmail: "Email",
-      thGenre: "Genre", thFilmType: "Film type", thDraft: "Draft", thFile: "File", thAssignee: "Assignee",
+      thGenre: "Genre", thFilmType: "Film type", thDraft: "Draft", thPages: "Pages", thFile: "File", thAssignee: "Assignee",
       thAssignee2: "Assignee",
       thDeadline: "Deadline",
       dueOver: "Overdue", dueDone: "Delivered", dueToday: "Due today",
@@ -367,6 +367,7 @@
         "<td>" + esc(GENRES[ULANG][s.genre] || s.genre) + "</td>" +
         "<td>" + esc(FILM[ULANG][s.film_type] || s.film_type) + "</td>" +
         "<td>" + esc(DRAFT[ULANG][s.draft] || s.draft) + "</td>" +
+        "<td>" + esc(pagesCount(s)) + "</td>" +
         "<td class='adm-file'></td>" +
         "<td class='adm-assignee'></td>" +
         "<td class='adm-cov'></td>";
@@ -385,6 +386,13 @@
       renderCoverage(tr.querySelector(".adm-cov"), s, covBySub[s.id]);
       body.appendChild(tr);
     });
+  }
+
+  // Uploaded PDF page count minus the title page (em dash when unavailable),
+  // matching the coverage panel's convention.
+  function pagesCount(s) {
+    if (!s.pages) return "—";
+    return String(s.pages > 1 ? s.pages - 1 : s.pages);
   }
 
   // First (letter) of a name, upper-cased, for the avatar.
