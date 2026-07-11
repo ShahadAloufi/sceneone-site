@@ -323,6 +323,17 @@
   html[lang="ar"] .verdict .vh,
   html[lang="ar"] .rating-auto .cap{letter-spacing:normal}
 
+  /* The emailed report is rasterised (html2canvas), which draws every glyph in
+     its ISOLATED form whenever letter-spacing is set — turning Arabic into
+     disconnected, unreadable letters. Zero letter-spacing across the whole
+     Arabic report; keep it only on the Latin "SCENE ONE" wordmark. */
+  #reportBody.ar, #reportBody.ar *{letter-spacing:normal}
+  #reportBody.ar .rep-wm{letter-spacing:.18em}
+  /* Numeric scores like "2 / 5" are a Latin run; isolate them LTR so the
+     rasteriser doesn't reorder them into "5 / 2". */
+  #reportBody.ar .rep-item .ih .sc,
+  #reportBody.ar .score10{direction:ltr;unicode-bidi:isolate}
+
   @media print{
     header,.toolbar,.toast,.guard{display:none!important}
     body{background:#fff}
