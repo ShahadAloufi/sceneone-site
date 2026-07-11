@@ -335,10 +335,10 @@ a, button {
 .price-div {
   display: flex;
   flex-direction: row-reverse;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   gap: 10px;
-  margin-bottom: 22px;
+  margin-bottom: 4px;
 }
 .price-div h1 {
   font-family: var(--font-head);
@@ -352,6 +352,12 @@ a, button {
   width: 34px;
   height: auto;
   display: block;
+}
+.price-tax {
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255,255,255,.55);
+  margin: 0 0 22px;
 }
 .ctype-card__desc {
   font-size: 16px;
