@@ -47,27 +47,39 @@ async function requireAdmin(req) {
   return { user };
 }
 
-// Bilingual email inviting the writer to open their hosted report.
+// Bilingual email inviting the writer to open their hosted report. Table-based,
+// inline-styled layout for email-client reliability: a warm background with a
+// centered white card, the Scene One wordmark on top, and a black CTA button.
 function reportEmail(sub, link) {
+  var esc = escapeHtml;
   var title = sub.title_ar || sub.title_en || "";
   var name = (sub.writer || "").toString().trim();
-  var arHi = name ? "مرحبًا " + escapeHtml(name) + "،" : "مرحبًا،";
-  var enHi = name ? "Hello " + escapeHtml(name) + "," : "Hello,";
+  var arHi = name ? "مرحبًا " + esc(name) + "،" : "مرحبًا،";
+  var enHi = name ? "Hello " + esc(name) + "," : "Hello,";
   var titleLine = title
-    ? '<p style="color:#555;margin:0 0 18px;">العنوان / Title: <strong>' + escapeHtml(title) + "</strong></p>"
+    ? '<p style="margin:0 0 24px;color:#8a8178;font-size:13px;">العنوان · Title: <strong style="color:#15110f;">' + esc(title) + "</strong></p>"
     : "";
-  var button = '<p style="margin:22px 0;"><a href="' + escapeHtml(link) + '" ' +
-    'style="display:inline-block;background:#CD2E07;color:#fff;text-decoration:none;' +
-    'font-weight:bold;padding:13px 26px;border-radius:9px;">عرض التقرير / View report</a></p>';
-  return '<div dir="rtl" style="font-family:Arial,sans-serif;font-size:15px;color:#1a1a1a;max-width:600px;line-height:1.85;">' +
-    '<h2 style="margin:0 0 12px;">تقرير تقييم النص Scene One</h2>' +
-    titleLine +
-    '<p style="margin:0 0 6px;color:#3f3a35;">' + arHi + '<br>تقرير تقييم نصكم أصبح جاهزًا. يمكنك الاطلاع عليه عبر الرابط أدناه، كما يمكنك حفظه بصيغة PDF إذا رغبت.</p>' +
-    button +
-    '<hr style="border:0;border-top:1px solid #e7e2da;margin:20px 0;">' +
-    '<p dir="ltr" style="margin:0 0 6px;color:#3f3a35;">' + enHi + '<br>Your script coverage report is ready. Open it with the link above, and save it as a PDF from there if you like.</p>' +
-    '<p dir="ltr" style="margin:0 0 14px;color:#888;font-size:13px;">If the button doesn\'t work, copy this link:<br>' + escapeHtml(link) + "</p>" +
-    '<p style="margin-top:24px;color:#888;">فريق Scene One / The Scene One team</p>' +
+  var bodyStyle = "margin:0 auto;max-width:440px;font-size:15px;line-height:1.9;color:#4a453f;";
+  return "" +
+    '<div style="background:#f5f1e9;padding:34px 14px;font-family:Arial,Helvetica,sans-serif;">' +
+      '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f5f1e9;"><tr><td align="center">' +
+        '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:20px;">' +
+          '<tr><td style="padding:46px 44px;text-align:center;">' +
+            '<div style="font-weight:700;letter-spacing:5px;font-size:20px;color:#15110f;margin:0 0 30px;">SCENE&nbsp;<span style="color:#cd2e07;">ONE</span></div>' +
+            '<h1 style="margin:0 0 14px;font-size:25px;line-height:1.3;color:#15110f;font-weight:700;">تقرير تقييم نصكم جاهز</h1>' +
+            titleLine +
+            '<p dir="rtl" style="' + bodyStyle + 'margin-bottom:6px;">' + arHi + "<br>تقرير تقييم نصكم أصبح جاهزًا. يمكنك الاطلاع عليه عبر الزر أدناه، كما يمكنك حفظه بصيغة PDF إذا رغبت.</p>" +
+            '<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:28px auto;"><tr>' +
+              '<td style="border-radius:12px;background:#111111;">' +
+                '<a href="' + esc(link) + '" style="display:inline-block;padding:16px 40px;color:#ffffff;text-decoration:none;font-size:15px;font-weight:700;border-radius:12px;">عرض التقرير · View report</a>' +
+              "</td></tr></table>" +
+            '<hr style="border:0;border-top:1px solid #ece7df;width:78%;margin:26px auto;">' +
+            '<p dir="ltr" style="' + bodyStyle + '">' + enHi + "<br>Your script coverage report is ready. Open it with the button above, and save it as a PDF from there if you like.</p>" +
+            '<p style="margin:30px 0 0;color:#a49b90;font-size:12.5px;">فريق Scene One · The Scene One team</p>' +
+          "</td></tr>" +
+        "</table>" +
+        '<p dir="ltr" style="max-width:600px;margin:18px auto 0;color:#a49b90;font-size:12px;line-height:1.6;">If the button doesn\'t work, copy this link:<br>' + esc(link) + "</p>" +
+      "</td></tr></table>" +
     "</div>";
 }
 
