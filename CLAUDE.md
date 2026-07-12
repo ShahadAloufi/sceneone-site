@@ -80,7 +80,8 @@ Tables (all with RLS enabled):
   `file_path`, `file_name`, `status`, `assigned_to`, `co_reader_id`, `pages`,
   `report_token` (uuid; the unguessable key in the writer's report link).
 - **coverages** — `submission_id`, `data` (jsonb: the full coverage content),
-  `status` (`in_progress` | `completed`).
+  `status` (`in_progress` | `completed`), `delivered_at`, `delivered_by` (set
+  server-side when the report is sent to the writer).
 - **access_log** — `admin_id`, `ip`, `user_agent`, `created_at`. One row per
   dashboard sign-in (written by `/api/log-access`, service role); **super-admins
   only** may read it (RLS). Surfaces possible shared reader accounts.
@@ -119,7 +120,10 @@ must be in the `supabase_realtime` publication for live updates to fire.
   in any browser (native rendering → correct Arabic, no account needed) and can
   Save-as-PDF from there. **Why a link, not a PDF attachment:** client-side
   rasterisation (html2canvas) can't reliably render Arabic word spacing, so the
-  report is rendered natively instead.
+  report is rendered natively instead. A successful send stamps
+  `coverages.delivered_at` / `delivered_by` (service role), which powers the
+  reader's **"Delivered by me"** dashboard tab (readers only) — the scripts they
+  reviewed (assignee/co-reader) whose report was sent to the writer.
 - **PDF page count:** counted in the browser at upload (pdf.js); the coverage panel
   shows **page count − 1** (skips the title page). Non-PDF files keep the manual
   duration.
@@ -213,6 +217,10 @@ must be in the `supabase_realtime` publication for live updates to fire.
     to authenticated using ( public.is_super_admin(auth.uid()) );
   grant select on public.access_log to authenticated;
   grant all on public.access_log to service_role;
+
+  -- "Delivered by me": stamp the coverage when its report is sent to the writer.
+  alter table public.coverages add column if not exists delivered_at timestamptz;
+  alter table public.coverages add column if not exists delivered_by uuid references public.admins(id) on delete set null;
   ```
 
 ---

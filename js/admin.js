@@ -35,6 +35,10 @@
       rememberMe: "تذكّرني", footerRights: "جميع الحقوق محفوظة لـ Scene One © 2026",
       showPw: "إظهار كلمة المرور", hidePw: "إخفاء كلمة المرور",
       navSubmissions: "النصوص المقدَّمة", navAdmins: "إدارة المشرفين", logout: "تسجيل الخروج",
+      navDelivered: "المُسلّمة مني", deliveredTitle: "المُسلّمة مني",
+      deliveredSub: "النصوص التي راجعتها وأُرسل تقريرها إلى الكاتب",
+      deliveredListTitle: "التقارير المُسلّمة", thDelivered: "تاريخ التسليم", thReport: "التقرير",
+      delEmpty: "لم تُسلّم أي تقارير بعد.",
       subTitle: "النصوص المقدَّمة", subSub: "نظرة عامة على النصوص المُستلمة وحالة تقييمها", refresh: "تحديث",
       kpiTotal: "إجمالي النصوص", kpiPending: "بانتظار الإسناد", kpiReview: "قيد المراجعة", kpiDone: "مكتملة ومُقيَّمة",
       subListTitle: "قائمة النصوص", thDate: "التاريخ", thTitle: "العنوان", thWriter: "الكاتب", thEmail: "البريد الإلكتروني",
@@ -71,6 +75,10 @@
       rememberMe: "Remember me", footerRights: "All rights reserved · Scene One © 2026",
       showPw: "Show password", hidePw: "Hide password",
       navSubmissions: "Submissions", navAdmins: "Manage admins", logout: "Sign out",
+      navDelivered: "Delivered by me", deliveredTitle: "Delivered by me",
+      deliveredSub: "Scripts you reviewed whose report was sent to the writer",
+      deliveredListTitle: "Delivered reports", thDelivered: "Delivered on", thReport: "Report",
+      delEmpty: "You haven't delivered any reports yet.",
       subTitle: "Submissions", subSub: "Overview of received scripts and their coverage status", refresh: "Refresh",
       kpiTotal: "Total scripts", kpiPending: "Awaiting assignment", kpiReview: "In review", kpiDone: "Completed & rated",
       subListTitle: "Scripts list", thDate: "Date", thTitle: "Title", thWriter: "Writer", thEmail: "Email",
@@ -206,6 +214,7 @@
     $("admRole").textContent = roleLabel(me.role);
     var av = $("admAvatar"); if (av) av.textContent = (me.name || "?").trim().charAt(0) || "?";
     if (me.role === "super_admin") { show($("adminsTabBtn")); }
+    if (isReader(me.role)) { show($("deliveredTabBtn")); }
     logAccess();
     loadSubmissions();
     subscribeRealtime();
@@ -305,8 +314,10 @@
       document.querySelectorAll(".adm-navitem").forEach(function (x) { x.classList.remove("is-active"); });
       t.classList.add("is-active");
       $("tab-submissions").hidden = name !== "submissions";
+      $("tab-delivered").hidden = name !== "delivered";
       $("tab-admins").hidden = name !== "admins";
       if (name === "admins") loadAdmins();
+      if (name === "delivered") loadDelivered();
     });
   });
 
@@ -607,6 +618,46 @@
   }
 
   $("refreshBtn").addEventListener("click", loadSubmissions);
+
+  // ---------- DELIVERED BY ME (readers) ----------
+  // Scripts this reader worked on (primary or co-reader) whose report was sent to
+  // the writer (coverages.delivered_at set by /api/send-report).
+  async function loadDelivered() {
+    var results = await Promise.all([
+      sb.from("submissions").select("*").order("created_at", { ascending: false }),
+      sb.from("coverages").select("submission_id,delivered_at")
+    ]);
+    var subs = (results[0].data) || [];
+    var deliveredOn = {};
+    ((results[1].data) || []).forEach(function (c) { if (c.delivered_at) deliveredOn[c.submission_id] = c.delivered_at; });
+
+    var rows = subs.filter(function (s) {
+      return deliveredOn[s.id] && (s.assigned_to === me.id || s.co_reader_id === me.id);
+    });
+
+    var body = $("delBody");
+    body.innerHTML = "";
+    $("delCount").textContent = rows.length;
+    if (!rows.length) { show($("delEmpty")); return; }
+    hide($("delEmpty"));
+
+    rows.forEach(function (s) {
+      var tr = document.createElement("tr");
+      tr.innerHTML =
+        "<td>" + esc(fmtDate(s.created_at)) + "</td>" +
+        "<td><strong>" + esc(s.title_ar) + "</strong><br><span class='adm-muted' dir='ltr'>" + esc(s.title_en) + "</span></td>" +
+        "<td>" + esc(s.writer) + "</td>" +
+        "<td dir='ltr'>" + esc(s.email) + "</td>" +
+        "<td>" + esc(fmtDate(deliveredOn[s.id])) + "</td>" +
+        "<td class='adm-report'></td>";
+      var link = document.createElement("a");
+      link.className = "adm-link";
+      link.href = "coverage.html?id=" + encodeURIComponent(s.id);
+      link.textContent = t("viewReport");
+      tr.querySelector(".adm-report").appendChild(link);
+      body.appendChild(tr);
+    });
+  }
 
   // ---------- ADMINS (super admin) ----------
   var IP_FLAG_THRESHOLD = 4;   // distinct IPs (last 30 days) that flags a possibly-shared account

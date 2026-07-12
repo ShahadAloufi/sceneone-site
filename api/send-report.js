@@ -139,5 +139,21 @@ module.exports = async (req, res) => {
     return res.status(500).json({ message: "تعذّر إرسال التقرير" });
   }
 
+  // Record the delivery (who sent it, when) — powers the reader's "Delivered by
+  // me" tab. Best-effort: the email already went out, so don't fail on this.
+  try {
+    await fetch(
+      url + "/rest/v1/coverages?submission_id=eq." + encodeURIComponent(subId),
+      {
+        method: "PATCH",
+        headers: { apikey: key, Authorization: "Bearer " + key, "Content-Type": "application/json", Prefer: "return=minimal" },
+        body: JSON.stringify({ delivered_at: new Date().toISOString(), delivered_by: gate.user.id }),
+      }
+    );
+  } catch (err) {
+    console.error("send-report: delivery-stamp failed:", err);
+  }
+
   return res.status(200).json({ ok: true });
 };
+

@@ -216,6 +216,11 @@ create table if not exists public.coverages (
   updated_at    timestamptz not null default now()
 );
 
+-- Delivery: set (server-side, service role) when a reader/admin sends the report
+-- to the writer via /api/send-report. Drives the reader's "Delivered by me" tab.
+alter table public.coverages add column if not exists delivered_at timestamptz;
+alter table public.coverages add column if not exists delivered_by uuid references public.admins(id) on delete set null;
+
 alter table public.coverages enable row level security;
 
 -- Coverage access. Staff (admin / super_admin) can read every coverage.
