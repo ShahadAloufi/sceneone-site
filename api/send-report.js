@@ -93,7 +93,7 @@ module.exports = async (req, res) => {
 
   // Fetch the submission (writer email + the report token that gates the link).
   const subResp = await fetch(
-    url + "/rest/v1/submissions?id=eq." + encodeURIComponent(subId) + "&select=id,title_ar,title_en,writer,email,report_token",
+    url + "/rest/v1/submissions?id=eq." + encodeURIComponent(subId) + "&select=id,title_ar,title_en,writer,email,film_type,report_token",
     { headers: { apikey: key, Authorization: "Bearer " + key } }
   );
   const subs = subResp.ok ? await subResp.json() : [];
@@ -111,7 +111,9 @@ module.exports = async (req, res) => {
     return res.status(400).json({ message: "التقرير غير مكتمل بعد" });
   }
 
-  const title = sub.title_ar || sub.title_en || "";
+  const FILM_EN = { feature: "Feature", short: "Short Film" };
+  const filmLabel = FILM_EN[sub.film_type];
+  const subject = "Scene One " + (filmLabel ? filmLabel + " " : "") + "Coverage Report";
   const link = SITE_URL + "/report?t=" + encodeURIComponent(sub.report_token);
   const html = reportEmail(sub, link);
 
@@ -123,7 +125,7 @@ module.exports = async (req, res) => {
         from: NOTIFY_FROM,
         to: [sub.email],
         reply_to: NOTIFY_TO,
-        subject: "تقرير تقييم نصك — Scene One" + (title ? (" — " + title) : ""),
+        subject: subject,
         html: html,
       }),
     });
