@@ -106,8 +106,10 @@ must be in the `supabase_realtime` publication for live updates to fire.
   "In review".
 - **Report gating:** "Generate report" needs a 1–5 score on all 7 evaluation points;
   "Mark complete" additionally needs every written section filled.
-- **Deadline:** every submission's deadline = `created_at` + **14 days**, shown on the
-  dashboard with a color-coded days-left/overdue/delivered badge (derived, not stored).
+- **Deadline:** every submission's deadline = `created_at` + the max turnaround for its
+  type — **features 15 days, shorts 10 days** (matches the landing-page cards) — shown
+  on the dashboard with a color-coded days-left/overdue/delivered badge (derived, not
+  stored).
 - **Report delivery:** a manual **"Send to writer"** button on a *completed* report
   emails the writer a **private link** to the hosted report page
   (`/report?t=<report_token>`) via `/api/send-report` (Resend). The writer opens it

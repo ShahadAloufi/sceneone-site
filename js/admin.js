@@ -146,10 +146,12 @@
     } catch (e) { return s; }
   }
   // Every submission gets a 2-week window from the day it was submitted.
-  var DEADLINE_DAYS = 14;
-  function deadlineCell(createdAt, completed) {
+  // Deadline = created_at + the max turnaround for the script's type (matches the
+  // landing page: features 15 days, shorts 10). Derived, never stored.
+  function deadlineDays(filmType) { return filmType === "feature" ? 15 : 10; }
+  function deadlineCell(createdAt, filmType, completed) {
     var due = new Date(createdAt);
-    due.setDate(due.getDate() + DEADLINE_DAYS);
+    due.setDate(due.getDate() + deadlineDays(filmType));
     var dateStr = esc(fmtDate(due.toISOString()));
     var badge, cls;
     if (completed) {
@@ -360,7 +362,7 @@
       var tr = document.createElement("tr");
       tr.innerHTML =
         "<td>" + esc(fmtDate(s.created_at)) + "</td>" +
-        deadlineCell(s.created_at, covBySub[s.id] === "completed") +
+        deadlineCell(s.created_at, s.film_type, covBySub[s.id] === "completed") +
         "<td><strong>" + esc(s.title_ar) + "</strong><br><span class='adm-muted' dir='ltr'>" + esc(s.title_en) + "</span></td>" +
         "<td>" + esc(s.writer) + "</td>" +
         "<td dir='ltr'>" + esc(s.email) + "</td>" +
