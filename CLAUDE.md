@@ -24,8 +24,21 @@ Two audiences:
 ## Current Development Phase
 
 Core product is live in production: submission intake, admin dashboard, reader
-coverage workspace + report, role-based access, deadlines, and manual report
-delivery to writers. Actively iterating on UX polish and workflow features.
+coverage workspace + report, role-based access, deadlines, and report delivery to
+writers. Actively iterating on UX polish and workflow features.
+
+**Recently shipped (2026-07):**
+- **Report delivery pivoted** from a client-rasterized PDF (unreliable Arabic) to a
+  **hosted, tokenized report link** rendered natively (`report.html` / `/api/report`),
+  with a shared renderer (`report-render.js`) and a redesigned bilingual email.
+- **IP access logging** — `access_log` + `/api/log-access`; Manage-admins flags
+  readers seen from many IPs (shared-account detection).
+- **"Delivered by me"** readers-only tab (tracks actual sends via `delivered_at`).
+- **Dashboard/landing polish** — Pages column, film-type deadlines (feature 15d /
+  short 10d), wider scripts table, pricing cards.
+
+**Status:** all merged to `main` and deploying via Vercel. **Blocked on the manual
+Supabase SQL below**; auth/serverless flows are verifiable only on the deploy.
 
 ---
 
@@ -180,8 +193,17 @@ must be in the `supabase_realtime` publication for live updates to fire.
 ## Important Design Decisions
 
 - **Buildless vanilla stack** on purpose — simplicity and zero build tooling.
-- **coverage.html is intentionally self-contained** (own styles + no-flash theme/lang
-  script) to avoid a flash of unstyled/wrong-language content on the reader workspace.
+- **Native rendering over rasterization** — the report is delivered as a hosted link
+  the writer opens (and can browser-Save-as-PDF), *not* an html2canvas PDF, because
+  client-side rasterization can't reliably render Arabic. `report-render.js` is the
+  single source of truth for the report, shared by the workspace and the public page.
+- **File access is all-staff, not per-assignment** — any admin/reader can download any
+  script (still private bucket + short-lived signed URLs + RLS). IP monitoring is
+  **passive + flagged, never blocking** (`IP_FLAG_THRESHOLD = 4`).
+- **"Delivered" means actually sent** (stamped `coverages.delivered_at`), not merely
+  a completed coverage.
+- **coverage.html / report.html are intentionally self-contained** (own styles +
+  no-flash theme/lang script) to avoid a flash of unstyled/wrong-language content.
 - **Writers have no accounts** — all writer interaction is the public form + email.
 - **Deadline is derived** from `created_at` (no stored deadline column) so it can't
   drift.
@@ -222,6 +244,14 @@ must be in the `supabase_realtime` publication for live updates to fire.
   alter table public.coverages add column if not exists delivered_at timestamptz;
   alter table public.coverages add column if not exists delivered_by uuid references public.admins(id) on delete set null;
   ```
+- **Confirm the production domain** — report-email links use `https://sceneone.info`
+  (`SITE_URL` in `api/send-report.js`); update if the live domain differs.
+- **Verify on the deploy** (can't run locally): send a report → open the link on
+  iPhone/Safari (Arabic, logo, dark banner) → Save-as-PDF; confirm the email renders
+  in a real inbox; check the Pages column, film-type deadlines, Manage-admins IP
+  flags, and the "Delivered by me" tab after a real send.
+- **Optional:** host a dark clapperboard PNG for the email logo (currently a wordmark);
+  tune `IP_FLAG_THRESHOLD` once real login data accumulates.
 
 ---
 
