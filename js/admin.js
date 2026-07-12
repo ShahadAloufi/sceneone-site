@@ -39,6 +39,9 @@
       deliveredSub: "النصوص التي راجعتها وأُرسل تقريرها إلى الكاتب",
       deliveredListTitle: "التقارير المُسلّمة", thDelivered: "تاريخ التسليم", thReport: "التقرير",
       delEmpty: "لم تُسلّم أي تقارير بعد.",
+      navDeliveries: "التسليمات", deliveriesTitle: "التسليمات",
+      deliveriesSub: "جميع التقارير المُرسلة إلى الكُتّاب", deliveriesListTitle: "التقارير المُسلّمة",
+      thReader: "القارئ", deliveriesEmpty: "لا توجد تقارير مُسلّمة بعد.",
       subTitle: "النصوص المقدَّمة", subSub: "نظرة عامة على النصوص المُستلمة وحالة تقييمها", refresh: "تحديث",
       kpiTotal: "إجمالي النصوص", kpiPending: "بانتظار الإسناد", kpiReview: "قيد المراجعة", kpiDone: "مكتملة ومُقيَّمة",
       subListTitle: "قائمة النصوص", thDate: "التاريخ", thTitle: "العنوان", thWriter: "الكاتب", thEmail: "البريد الإلكتروني",
@@ -79,6 +82,9 @@
       deliveredSub: "Scripts you reviewed whose report was sent to the writer",
       deliveredListTitle: "Delivered reports", thDelivered: "Delivered on", thReport: "Report",
       delEmpty: "You haven't delivered any reports yet.",
+      navDeliveries: "Deliveries", deliveriesTitle: "Deliveries",
+      deliveriesSub: "All reports sent to writers", deliveriesListTitle: "Delivered reports",
+      thReader: "Reader", deliveriesEmpty: "No reports delivered yet.",
       subTitle: "Submissions", subSub: "Overview of received scripts and their coverage status", refresh: "Refresh",
       kpiTotal: "Total scripts", kpiPending: "Awaiting assignment", kpiReview: "In review", kpiDone: "Completed & rated",
       subListTitle: "Scripts list", thDate: "Date", thTitle: "Title", thWriter: "Writer", thEmail: "Email",
@@ -217,6 +223,7 @@
     // state can't leak across a logout→login — e.g. a reader must never see "Manage
     // admins" (super-admin only), and only readers see "Delivered by me".
     $("adminsTabBtn").hidden = me.role !== "super_admin";
+    $("deliveriesTabBtn").hidden = me.role !== "super_admin";
     $("deliveredTabBtn").hidden = !isReader(me.role);
     logAccess();
     loadSubmissions();
@@ -318,9 +325,11 @@
       t.classList.add("is-active");
       $("tab-submissions").hidden = name !== "submissions";
       $("tab-delivered").hidden = name !== "delivered";
+      $("tab-deliveries").hidden = name !== "deliveries";
       $("tab-admins").hidden = name !== "admins";
       if (name === "admins") loadAdmins();
       if (name === "delivered") loadDelivered();
+      if (name === "deliveries") loadDeliveries();
     });
   });
 
@@ -651,6 +660,51 @@
         "<td><strong>" + esc(s.title_ar) + "</strong><br><span class='adm-muted' dir='ltr'>" + esc(s.title_en) + "</span></td>" +
         "<td>" + esc(s.writer) + "</td>" +
         "<td dir='ltr'>" + esc(s.email) + "</td>" +
+        "<td>" + esc(fmtDate(deliveredOn[s.id])) + "</td>" +
+        "<td class='adm-report'></td>";
+      var link = document.createElement("a");
+      link.className = "adm-link";
+      link.href = "coverage.html?id=" + encodeURIComponent(s.id);
+      link.textContent = t("viewReport");
+      tr.querySelector(".adm-report").appendChild(link);
+      body.appendChild(tr);
+    });
+  }
+
+  // ---------- DELIVERIES OVERSIGHT (super admin) ----------
+  // Every delivered report across all readers, newest first, with the reviewing
+  // reader — so a super-admin can oversee deliveries.
+  async function loadDeliveries() {
+    var results = await Promise.all([
+      sb.from("submissions").select("*").order("created_at", { ascending: false }),
+      sb.from("coverages").select("submission_id,delivered_at,delivered_by"),
+      sb.from("admins").select("id,name")
+    ]);
+    var subs = (results[0].data) || [];
+    var nameById = {};
+    ((results[2].data) || []).forEach(function (a) { nameById[a.id] = a.name; });
+    var deliveredOn = {}, deliveredBy = {};
+    ((results[1].data) || []).forEach(function (c) {
+      if (c.delivered_at) { deliveredOn[c.submission_id] = c.delivered_at; deliveredBy[c.submission_id] = c.delivered_by; }
+    });
+
+    var rows = subs.filter(function (s) { return deliveredOn[s.id]; });
+    rows.sort(function (a, b) { return deliveredOn[b.id] < deliveredOn[a.id] ? -1 : 1; }); // newest delivery first
+
+    var body = $("dlvBody");
+    body.innerHTML = "";
+    $("dlvCount").textContent = rows.length;
+    if (!rows.length) { show($("dlvEmpty")); return; }
+    hide($("dlvEmpty"));
+
+    rows.forEach(function (s) {
+      var reader = nameById[s.assigned_to] || nameById[deliveredBy[s.id]] || "—";
+      var tr = document.createElement("tr");
+      tr.innerHTML =
+        "<td>" + esc(fmtDate(s.created_at)) + "</td>" +
+        "<td><strong>" + esc(s.title_ar) + "</strong><br><span class='adm-muted' dir='ltr'>" + esc(s.title_en) + "</span></td>" +
+        "<td>" + esc(s.writer) + "</td>" +
+        "<td>" + esc(reader) + "</td>" +
         "<td>" + esc(fmtDate(deliveredOn[s.id])) + "</td>" +
         "<td class='adm-report'></td>";
       var link = document.createElement("a");

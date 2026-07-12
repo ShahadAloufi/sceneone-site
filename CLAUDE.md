@@ -136,7 +136,9 @@ must be in the `supabase_realtime` publication for live updates to fire.
   report is rendered natively instead. A successful send stamps
   `coverages.delivered_at` / `delivered_by` (service role), which powers the
   reader's **"Delivered by me"** dashboard tab (readers only) — the scripts they
-  reviewed (assignee/co-reader) whose report was sent to the writer.
+  reviewed (assignee/co-reader) whose report was sent to the writer — and the
+  super-admin **"Deliveries"** oversight tab (all delivered reports + the reviewing
+  reader).
 - **PDF page count:** counted in the browser at upload (pdf.js); the coverage panel
   shows **page count − 1** (skips the title page). Non-PDF files keep the manual
   duration.

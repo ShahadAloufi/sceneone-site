@@ -88,6 +88,10 @@
         <svg class="adm-navitem__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>
         <span class="adm-navitem__txt" data-i18n="navDelivered">المُسلّمة مني</span>
       </button>
+      <button class="adm-navitem" data-tab="deliveries" id="deliveriesTabBtn" hidden>
+        <svg class="adm-navitem__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v14H5.17L4 19.17z"/><path d="m9 10 2 2 4-4"/></svg>
+        <span class="adm-navitem__txt" data-i18n="navDeliveries">التسليمات</span>
+      </button>
       <button class="adm-navitem" data-tab="admins" id="adminsTabBtn" hidden>
         <svg class="adm-navitem__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         <span class="adm-navitem__txt" data-i18n="navAdmins">إدارة المشرفين</span>
@@ -235,6 +239,35 @@
         <tbody id="delBody"></tbody>
       </table>
       <p class="adm-empty" id="delEmpty" hidden data-i18n="delEmpty">لم تُسلّم أي تقارير بعد.</p>
+    </div>
+  </section>
+
+  <!-- Deliveries oversight tab (super admin only) -->
+  <section class="adm-panel" id="tab-deliveries" hidden>
+    <div class="adm-panel__head">
+      <div class="adm-panel__title">
+        <h2 data-i18n="deliveriesTitle">التسليمات</h2>
+        <p class="adm-panel__sub" data-i18n="deliveriesSub">جميع التقارير المُرسلة إلى الكُتّاب</p>
+      </div>
+    </div>
+    <div class="adm-tablehead">
+      <h3><span data-i18n="deliveriesListTitle">التقارير المُسلّمة</span> <span class="adm-count" id="dlvCount">0</span></h3>
+    </div>
+    <div class="adm-tablewrap">
+      <table class="adm-table">
+        <thead>
+          <tr>
+            <th data-i18n="thDate">التاريخ</th>
+            <th data-i18n="thTitle">العنوان</th>
+            <th data-i18n="thWriter">الكاتب</th>
+            <th data-i18n="thReader">القارئ</th>
+            <th data-i18n="thDelivered">تاريخ التسليم</th>
+            <th data-i18n="thReport">التقرير</th>
+          </tr>
+        </thead>
+        <tbody id="dlvBody"></tbody>
+      </table>
+      <p class="adm-empty" id="dlvEmpty" hidden data-i18n="deliveriesEmpty">لا توجد تقارير مُسلّمة بعد.</p>
     </div>
   </section>
 
