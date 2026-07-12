@@ -956,7 +956,7 @@ html[data-theme="dark"] .adm-brand-logo { background-image: url(../assets/scene-
 
 /* ---- Main content ---- */
 .adm-main { flex: 1; min-width: 0; position: relative; overflow: hidden; }
-.adm-panel { padding: 28px 32px; max-width: 1480px; margin: 0 auto; position: relative; z-index: 1; }
+.adm-panel { padding: 28px 20px; max-width: 1760px; margin: 0 auto; position: relative; z-index: 1; }
 
 /* Decorative hand-drawn illustrations behind the dashboard. White SVG line
    art: faint on the dark theme, inverted to dark ink on the light theme. */
@@ -1005,8 +1005,8 @@ html[data-theme="light"] .adm-decor-clapper { background-image: url(../assets/de
 .adm-count { display: inline-block; font-size: 13px; margin-inline-start: 6px; color: var(--adm-soft-text); }
 
 .adm-tablewrap { background: var(--adm-surface); border: 1px solid var(--adm-border); border-radius: 18px; overflow-x: auto; }
-.adm-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
-.adm-table th, .adm-table td { padding: 13px 16px; text-align: center; border-bottom: 1px solid var(--adm-border-soft); white-space: nowrap; }
+.adm-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.adm-table th, .adm-table td { padding: 13px 11px; text-align: center; border-bottom: 1px solid var(--adm-border-soft); white-space: nowrap; }
 .adm-table th { background: var(--adm-surface-2); font-weight: 700; color: var(--adm-muted); font-size: 12px; letter-spacing: .01em; position: sticky; top: 0; }
 .adm-table tbody tr { transition: background .12s; }
 .adm-table tbody tr:hover { background: var(--adm-surface-2); }
