@@ -20,7 +20,11 @@
   }
   *{box-sizing:border-box}
   html,body{margin:0}
-  body{background:var(--page);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+  /* print-color-adjust (inherited) forces the browser's "Save as PDF" to keep the
+     dark report banner and coloured fills, so the PDF matches the on-screen report
+     instead of dropping backgrounds (which hid the white logo + wordmark). */
+  body{background:var(--page);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;
+       -webkit-print-color-adjust:exact;print-color-adjust:exact}
 
   .bar{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:14px;
        padding:12px 20px;background:rgba(14,14,14,.96);border-bottom:2px solid var(--orange)}
