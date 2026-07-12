@@ -5,19 +5,16 @@
 //
 // The caller must send their Supabase session access token as
 // `Authorization: Bearer <token>`; we verify it maps to a row in `admins`.
-// The report is only sent once the coverage is marked "completed". All reads
-// use the service-role key (server-side only), and the email goes out through
-// the existing Resend integration.
+// The report is only sent once the coverage is marked "completed". The writer
+// receives an email with a private link to the hosted report page
+// (report.html?t=<report_token>) — the token in the link is the authorization,
+// so the writer needs no account. All reads use the service-role key.
 //
 // Required env vars: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY
 
 const NOTIFY_FROM = "Scene One <no-reply@sceneone.info>";
 const NOTIFY_TO = "sceneone.info@gmail.com";
-
-// The writer receives the coverage as a PDF attachment; the email body is only
-// a short bilingual cover note.
-const PDF_FILENAME = "Scene-One-Coverage-Report.pdf";
-const MAX_PDF_BYTES = 15 * 1024 * 1024; // 15 MiB ceiling on the uploaded snapshot
+const SITE_URL = "https://sceneone.info";
 
 function svc() {
   return { url: process.env.SUPABASE_URL, key: process.env.SUPABASE_SERVICE_ROLE_KEY };
@@ -50,33 +47,25 @@ async function requireAdmin(req) {
   return { user };
 }
 
-// Short bilingual cover note that accompanies the PDF attachment. The full
-// coverage lives in the attached PDF, not in the email body.
-function coverNote(sub) {
+// Bilingual email inviting the writer to open their hosted report.
+function reportEmail(sub, link) {
   var title = sub.title_ar || sub.title_en || "";
   var titleLine = title
     ? '<p style="color:#555;margin:0 0 18px;">العنوان / Title: <strong>' + escapeHtml(title) + "</strong></p>"
     : "";
+  var button = '<p style="margin:22px 0;"><a href="' + escapeHtml(link) + '" ' +
+    'style="display:inline-block;background:#CD2E07;color:#fff;text-decoration:none;' +
+    'font-weight:bold;padding:13px 26px;border-radius:9px;">عرض التقرير / View report</a></p>';
   return '<div dir="rtl" style="font-family:Arial,sans-serif;font-size:15px;color:#1a1a1a;max-width:600px;line-height:1.85;">' +
     '<h2 style="margin:0 0 12px;">تقرير تغطية النص — Scene One</h2>' +
     titleLine +
-    '<p style="margin:0 0 14px;color:#3f3a35;">مرحبًا،<br>تجدون تقرير تغطية نصكم مرفقًا بصيغة PDF. شكرًا لثقتكم بنا.</p>' +
+    '<p style="margin:0 0 6px;color:#3f3a35;">مرحبًا،<br>تقرير تغطية نصكم جاهز. يمكنكم عرضه عبر الرابط أدناه، ومن هناك حفظه بصيغة PDF عند الحاجة.</p>' +
+    button +
     '<hr style="border:0;border-top:1px solid #e7e2da;margin:20px 0;">' +
-    '<p dir="ltr" style="margin:0 0 14px;color:#3f3a35;">Hello,<br>Your script coverage report is attached as a PDF. Thank you for trusting Scene One.</p>' +
+    '<p dir="ltr" style="margin:0 0 6px;color:#3f3a35;">Hello,<br>Your script coverage report is ready. Open it with the link above, and save it as a PDF from there if you like.</p>' +
+    '<p dir="ltr" style="margin:0 0 14px;color:#888;font-size:13px;">If the button doesn\'t work, copy this link:<br>' + escapeHtml(link) + "</p>" +
     '<p style="margin-top:24px;color:#888;">فريق Scene One / The Scene One team</p>' +
     "</div>";
-}
-
-// Validate the client-supplied PDF snapshot: a base64 string, within the size
-// ceiling, that actually decodes to a PDF (magic bytes "%PDF").
-function validatePdf(raw) {
-  if (typeof raw !== "string" || !raw.trim()) return null;
-  var b64 = raw.replace(/^data:[^,]*,/, "").trim();
-  var buf;
-  try { buf = Buffer.from(b64, "base64"); } catch (e) { return null; }
-  if (!buf.length || buf.length > MAX_PDF_BYTES) return null;
-  if (buf.slice(0, 5).toString("latin1") !== "%PDF-") return null;
-  return b64;
 }
 
 module.exports = async (req, res) => {
@@ -99,18 +88,16 @@ module.exports = async (req, res) => {
   const subId = (b.submission_id || "").toString().trim();
   if (!subId) return res.status(400).json({ message: "معرّف النص مطلوب" });
 
-  const pdfB64 = validatePdf(b.pdf_base64);
-  if (!pdfB64) return res.status(400).json({ message: "ملف التقرير غير صالح" });
-
-  // Fetch the submission (writer + email) and its coverage.
+  // Fetch the submission (writer email + the report token that gates the link).
   const subResp = await fetch(
-    url + "/rest/v1/submissions?id=eq." + encodeURIComponent(subId) + "&select=id,title_ar,title_en,writer,email",
+    url + "/rest/v1/submissions?id=eq." + encodeURIComponent(subId) + "&select=id,title_ar,title_en,writer,email,report_token",
     { headers: { apikey: key, Authorization: "Bearer " + key } }
   );
   const subs = subResp.ok ? await subResp.json() : [];
   if (!subs.length) return res.status(404).json({ message: "النص غير موجود" });
   const sub = subs[0];
   if (!sub.email) return res.status(400).json({ message: "لا يوجد بريد إلكتروني للكاتب" });
+  if (!sub.report_token) return res.status(500).json({ message: "رمز التقرير غير متوفر" });
 
   const covResp = await fetch(
     url + "/rest/v1/coverages?submission_id=eq." + encodeURIComponent(subId) + "&select=status",
@@ -122,7 +109,8 @@ module.exports = async (req, res) => {
   }
 
   const title = sub.title_ar || sub.title_en || "";
-  const html = coverNote(sub);
+  const link = SITE_URL + "/report?t=" + encodeURIComponent(sub.report_token);
+  const html = reportEmail(sub, link);
 
   try {
     const r = await fetch("https://api.resend.com/emails", {
@@ -134,7 +122,6 @@ module.exports = async (req, res) => {
         reply_to: NOTIFY_TO,
         subject: "تقرير تغطية نصك — Scene One" + (title ? (" — " + title) : ""),
         html: html,
-        attachments: [{ filename: PDF_FILENAME, content: pdfB64 }],
       }),
     });
     if (!r.ok) {

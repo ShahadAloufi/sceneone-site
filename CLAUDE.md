@@ -47,18 +47,22 @@ Do NOT introduce Next.js/React/a compiler/npm build. Keep it buildless.
 
 - **Pages (root `.html`):** `index` (landing), `submit` (script submission),
   `admin` (login + dashboard), `coverage` (reader workspace + report),
+  `report` (public, read-only report the writer opens via a tokenized link),
   `about-coverage`, `privacy`, `terms`.
 - **Styles:** single shared `css/styles.css`. Prefix conventions: `adm-` (admin),
   `sub-`/`so-` (submission), `cov-` (about-coverage), `.nav` (shared header),
   `.so-loader` (shared Scene One loader).
-  - **Exception:** `coverage.html` is self-contained — it has its **own inline
-    `<style>` block and its own no-flash theme/lang script**, and does NOT link
-    `css/styles.css`. Shared pieces (e.g. `.so-loader`) are duplicated there.
+  - **Exception:** `coverage.html` and `report.html` are self-contained — each has
+    its **own inline `<style>` block and no-flash theme/lang script**, and does NOT
+    link `css/styles.css`. Shared pieces are duplicated there.
 - **Client JS (`/js`):** `config.js` (client-safe Supabase url/anonKey/bucket),
   `theme.js`, `main.js` (landing), `submit.js` (submission form + PDF page count),
-  `admin.js` (login/dashboard/realtime), `coverage.js` (workspace/report).
+  `admin.js` (login/dashboard/realtime), `coverage.js` (workspace/report),
+  `report.js` (public report page), `report-render.js` (**shared** bilingual report
+  renderer used by BOTH `coverage.js` and `report.js` — single source of truth for
+  the report markup, so the workspace preview and the writer's page never drift).
 - **API (`/api`):** `submissions.js`, `registrations.js`, `admin/admins.js`,
-  `send-report.js`.
+  `send-report.js`, `report.js` (public read-only report data, gated by token).
 - **Schema:** `supabase/schema.sql` is the source of record; **schema changes are
   run manually in the Supabase SQL Editor** (the file is not auto-applied).
 
@@ -73,7 +77,8 @@ Tables (all with RLS enabled):
 - **admins** — `id` (=auth user id), `name`, `email`, `role`, `created_at`.
 - **submissions** — script metadata: `created_at`, `title_ar/en`, `email`, `writer`,
   `genre`, `film_type`, `draft`, `duration`, `logline`, `vision`, `ip_registered`,
-  `file_path`, `file_name`, `status`, `assigned_to`, `co_reader_id`, `pages`.
+  `file_path`, `file_name`, `status`, `assigned_to`, `co_reader_id`, `pages`,
+  `report_token` (uuid; the unguessable key in the writer's report link).
 - **coverages** — `submission_id`, `data` (jsonb: the full coverage content),
   `status` (`in_progress` | `completed`).
 
@@ -104,7 +109,12 @@ must be in the `supabase_realtime` publication for live updates to fire.
 - **Deadline:** every submission's deadline = `created_at` + **14 days**, shown on the
   dashboard with a color-coded days-left/overdue/delivered badge (derived, not stored).
 - **Report delivery:** a manual **"Send to writer"** button on a *completed* report
-  emails the writer the coverage (via `/api/send-report`, Resend, inline HTML).
+  emails the writer a **private link** to the hosted report page
+  (`/report?t=<report_token>`) via `/api/send-report` (Resend). The writer opens it
+  in any browser (native rendering → correct Arabic, no account needed) and can
+  Save-as-PDF from there. **Why a link, not a PDF attachment:** client-side
+  rasterisation (html2canvas) can't reliably render Arabic word spacing, so the
+  report is rendered natively instead.
 - **PDF page count:** counted in the browser at upload (pdf.js); the coverage panel
   shows **page count − 1** (skips the title page). Non-PDF files keep the manual
   duration.
@@ -173,6 +183,10 @@ must be in the `supabase_realtime` publication for live updates to fire.
   alter table public.submissions add column if not exists pages int;
   alter publication supabase_realtime add table public.submissions;
   alter publication supabase_realtime add table public.coverages;
+
+  -- Hosted report link: unguessable per-submission token (backfills existing rows).
+  alter table public.submissions add column if not exists report_token uuid not null default gen_random_uuid();
+  create index if not exists submissions_report_token_idx on public.submissions (report_token);
   ```
 
 ---
@@ -181,8 +195,8 @@ must be in the `supabase_realtime` publication for live updates to fire.
 
 - **Payment gating** for submissions (schema comments already anticipate restricting
   access to paid submissions).
-- Possibly a hosted public report page or PDF export for writers (today the report is
-  emailed as inline HTML).
+- Optional server-generated PDF export (e.g. headless Chrome) if writers want a file
+  without using their browser's Save-as-PDF from the hosted report page.
 
 ---
 
@@ -192,7 +206,9 @@ must be in the `supabase_realtime` publication for live updates to fire.
   count and fall back to the writer's manual duration.
 - `/api` serverless functions and Supabase Auth **do not run in the local preview** —
   the dashboard/report can only be exercised end-to-end on the deployed site.
-- Report delivery emails **inline HTML**; there is no public report link or PDF.
+- Report delivery emails a **tokenized link** to the hosted `report.html`; the writer
+  Saves-as-PDF from their browser. There is no server-generated PDF attachment (Arabic
+  can't be reliably rasterised client-side).
 
 ---
 
@@ -203,8 +219,10 @@ All handlers are plain `module.exports = async (req, res) => {...}`, use native
 privileged reads/writes.
 - **`POST /api/submissions`** — validates + inserts a submission (service role);
   emails an admin notification and a writer confirmation (Resend).
-- **`POST /api/send-report`** — admin-authenticated; emails the writer the completed
-  coverage report.
+- **`POST /api/send-report`** — admin-authenticated; emails the writer a tokenized
+  link to their completed coverage report.
+- **`GET /api/report?t=<report_token>`** — **public** (the token is the auth); returns
+  the report-safe fields (no email/file) of a submission with a *completed* coverage.
 - **`POST|DELETE /api/admin/admins`** — super-admin only; create/delete admin accounts
   (creates the auth user + `admins` row).
 - **`/api/registrations`** — interest/registration intake.

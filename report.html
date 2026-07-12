@@ -1,0 +1,125 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Scene One — تقرير التغطية</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+  (function(){try{var l=localStorage.getItem('sceneone-report-lang');l=(l==='en'||l==='ar')?l:'ar';
+    document.documentElement.setAttribute('lang',l);document.documentElement.setAttribute('dir',l==='ar'?'rtl':'ltr');}
+    catch(e){document.documentElement.setAttribute('lang','ar');document.documentElement.setAttribute('dir','rtl');}})();
+</script>
+<style>
+  :root{
+    --ink:#15110f; --orange:#CD2E07; --line:#e7e2da; --line2:#efebe3;
+    --muted:#8a8178; --label:#6f665e; --soft:#f3efe8;
+    --page:#efeae2;
+    --font:'IBM Plex Sans Arabic','IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--page);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+
+  .bar{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:14px;
+       padding:12px 20px;background:rgba(14,14,14,.96);border-bottom:2px solid var(--orange)}
+  .bar .wm{color:#fff;letter-spacing:.2em;font-weight:700;font-size:15px}
+  .bar .wm span{color:var(--orange)}
+  .bar .spacer{margin-inline-start:auto}
+  .langseg{display:flex;gap:2px;background:rgba(255,255,255,.1);padding:3px;border-radius:9px}
+  .langseg button{border:0;background:transparent;font-family:inherit;font-size:13.5px;font-weight:500;
+                  color:#cfcac3;padding:6px 12px;border-radius:7px;cursor:pointer}
+  .langseg button.on{background:#fff;color:#15110f}
+  .btn{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.1);color:#fff;font-family:inherit;
+       font-size:13.5px;font-weight:600;padding:8px 16px;border-radius:9px;cursor:pointer;transition:.15s}
+  .btn:hover{background:rgba(255,255,255,.2)}
+
+  main{padding:28px 16px 60px}
+  #reportWrap{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;max-width:800px;margin:0 auto;
+              box-shadow:0 18px 50px rgba(0,0,0,.12)}
+  .report{padding:46px 54px}
+  @media(max-width:620px){.report{padding:30px 22px}}
+  .rep-header{background:#0E0E0E;margin:-46px -54px 32px;padding:32px 24px 24px;text-align:center;border-bottom:3px solid var(--orange)}
+  @media(max-width:620px){.rep-header{margin:-30px -22px 26px}}
+  .rep-logo{height:48px;width:auto;display:inline-block;margin-bottom:14px}
+  .rep-wm{color:#fff;letter-spacing:.18em;font-weight:700;font-size:23px;line-height:1}
+  .rep-wm span{color:var(--orange)}
+  .rep-cov{color:#9a938b;letter-spacing:.3em;font-size:10px;text-transform:uppercase;margin-top:10px;font-weight:500}
+  #reportBody.ar{font-family:'IBM Plex Sans Arabic','IBM Plex Sans',sans-serif}
+  #reportBody.ar .rep-sec h2 .no{margin-right:0;margin-left:8px}
+  #reportBody.ar table.gl td.cat{text-align:right}
+  #reportBody.ar .rep-top{direction:rtl}
+  #reportBody.ar .rep-top .k,#reportBody.ar .rep-top .v{text-align:right}
+  #reportBody.ar .rep-foot{flex-direction:row-reverse}
+  .rep-top{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 26px;margin-bottom:30px}
+  @media(max-width:620px){.rep-top{grid-template-columns:1fr 1fr}}
+  .rep-top .k{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--label);font-weight:600}
+  .rep-top .v{font-size:14px;margin-top:3px}
+  .rep-title{font-size:22px;font-weight:600;margin:2px 0 0}
+  .rep-title .ar{font-family:'IBM Plex Sans Arabic',sans-serif;color:var(--ink)}
+  .logline{background:var(--soft);border-radius:10px;padding:16px 18px;margin:6px 0 30px}
+  .logline .k{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--label);font-weight:600;margin-bottom:5px}
+  .glance{margin:0 0 30px}
+  .glance h3,.rep-sec h3{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);font-weight:600;margin:0 0 12px}
+  table.gl{width:100%;border-collapse:collapse;font-size:13px}
+  table.gl td{padding:7px 6px;border-bottom:1px solid var(--line2)}
+  table.gl .cat{color:var(--label);width:34%}
+  table.gl .mark{text-align:center}
+  table.gl .mark.hit{color:var(--ink);font-weight:600}
+  table.gl .mark.dim{color:#d8d2c8}
+  .rep-sec{margin:0 0 26px}
+  .rep-sec .no{color:var(--orange);font-weight:600;margin-right:8px;font-variant-numeric:tabular-nums}
+  .rep-sec h2{font-size:16px;font-weight:600;margin:0 0 14px;display:flex;align-items:baseline}
+  .rep-item{margin:0 0 16px}
+  .rep-item .ih{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:3px}
+  .rep-item .ih .t{font-weight:600;font-size:13.5px}
+  .rep-item .ih .sc{font-size:12px;color:var(--orange);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;direction:ltr}
+  .rep-item p{margin:0;color:#3f3a35;font-size:13.5px;line-height:1.62;white-space:pre-wrap}
+  .verdict{border:1px solid var(--line);border-radius:12px;padding:22px 24px;background:var(--soft);margin-top:8px}
+  .verdict .vh{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);font-weight:600;margin-bottom:8px}
+  .verdict .vd{font-size:18px;font-weight:600;margin-bottom:8px}
+  .verdict .vd .ctx{font-size:13px;font-weight:400;color:var(--label)}
+  .score10{font-weight:600;color:var(--orange);white-space:nowrap;font-variant-numeric:tabular-nums;font-size:16px;direction:ltr}
+  .score10 .n{font-size:30px}
+  .rep-foot{border-top:1px solid var(--line2);margin-top:34px;padding-top:14px;display:flex;justify-content:space-between;font-size:11px;color:var(--muted);letter-spacing:.04em}
+  .empty{color:#c9c2b6;font-style:italic}
+  /* Arabic is cursive — letter-spacing pulls joined letters apart. */
+  html[lang="ar"] .rep-cov,html[lang="ar"] .rep-top .k,html[lang="ar"] .logline .k,
+  html[lang="ar"] .glance h3,html[lang="ar"] .rep-sec h3,html[lang="ar"] .verdict .vh{letter-spacing:normal}
+
+  .state{max-width:520px;margin:80px auto;text-align:center;padding:0 20px;color:var(--label)}
+  .state h2{color:var(--ink);font-size:20px;margin:0 0 8px}
+  .state[hidden]{display:none}
+
+  @media print{
+    .bar{display:none!important}
+    body{background:#fff}
+    main{padding:0}
+    #reportWrap{border:0;border-radius:0;box-shadow:none;max-width:none}
+  }
+</style>
+
+<div class="bar">
+  <div class="wm">SCENE&nbsp;<span>ONE</span></div>
+  <div class="spacer"></div>
+  <div class="langseg" id="langSeg" hidden>
+    <button data-l="ar" class="on">العربية</button>
+    <button data-l="en">English</button>
+  </div>
+  <button class="btn" id="printBtn" hidden></button>
+</div>
+
+<main>
+  <div class="state" id="loading">
+    <h2 id="loadingT">جارٍ تحميل التقرير…</h2>
+  </div>
+  <div class="state" id="errorBox" hidden>
+    <h2 id="errorT">التقرير غير متاح</h2>
+    <p id="errorM">قد يكون الرابط غير صحيح أو أن التقرير لم يُنشر بعد.</p>
+  </div>
+  <div id="reportWrap" hidden><div class="report" id="reportBody"></div></div>
+</main>
+
+<script src="js/report-render.js"></script>
+<script src="js/report.js"></script>

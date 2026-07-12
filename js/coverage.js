@@ -16,58 +16,13 @@
   var LANG = "ar";    // report language (kept in sync with the workspace language)
   var UILANG = "ar";  // workspace-chrome language
   try { var _l = localStorage.getItem(LANG_KEY); if (_l === "ar" || _l === "en") { UILANG = _l; LANG = _l; } } catch (e) {}
-  var LOGO = "assets/scene-one-logo.svg";
-
-  /* ---------- bilingual report strings ---------- */
-  var T = {
-    en: {
-      coverage: "Script coverage", tagline: "Where the script's journey begins",
-      title: "Title", writer: "Writer", format: "Format", genre: "Genre", length: "Length", draft: "Draft", reader: "Reader", date: "Date",
-      logline: "Logline", glance: "Assessment at a glance", excellent: "Excellent", good: "Good", fair: "Fair", poor: "Poor",
-      synopsis: "Synopsis", evaluation: "Evaluation", market: "The market", overall: "Overall comments",
-      strengths: "Strengths", develop: "To develop", verdict: "Verdict", pending: "Pending", notwritten: "Not yet written.",
-      outof: "/ 10", foot: "Script coverage",
-      eval: { "Premise & Theme": "Premise & Theme", "Hook": "Hook", "Stakes & Plot": "Stakes & Plot", "Character": "Character", "Structure & Pace": "Structure & Pace", "Producibility": "Producibility", "Presentation": "Presentation" },
-      market_l: { audience: "Audience", genreDemand: "Genre and demand", pathBuyers: "Path and buyers", budgetCeiling: "Budget and ceiling", regional: "Regional potential", net: "Net" },
-      glance_l: { "Premise & Theme": "Premise & Theme", "Hook": "Hook", "Stakes & Plot": "Stakes & Plot", "Character": "Character", "Structure & Pace": "Structure & Pace", "Producibility": "Producibility", "Overall presentation": "Overall presentation" },
-      decision: { Recommend: "Recommend", Consider: "Consider", Pass: "Pass" }
-    },
-    ar: {
-      coverage: "تقييم النص", tagline: "حيث تبدأ رحلة النص",
-      title: "العنوان", writer: "الكاتب", format: "نوع العمل", genre: "التصنيف", length: "عدد الصفحات/المدة", draft: "المسودة", reader: "القارئ", date: "التاريخ",
-      logline: "الفكرة المختصرة", glance: "التقييم العام", excellent: "ممتاز", good: "جيد", fair: "مقبول", poor: "ضعيف",
-      synopsis: "الملخّص", evaluation: "التقييم", market: "السوق", overall: "ملاحظات عامة",
-      strengths: "نقاط القوة", develop: "ما يحتاج إلى تطوير", verdict: "الحكم", pending: "بانتظار التقييم", notwritten: "لم يُكتب بعد.",
-      outof: "/ 10", foot: "تقييم النصوص",
-      eval: { "Premise & Theme": "الفكرة والموضوع", "Hook": "عنصر الجذب", "Stakes & Plot": "الرهانات الدرامية والحبكة", "Character": "الشخصيات", "Structure & Pace": "البناء الدرامي والإيقاع", "Producibility": "قابلية الإنتاج", "Presentation": "العرض والتنسيق" },
-      market_l: { audience: "الجمهور المستهدف", genreDemand: "النوع والطلب في السوق", pathBuyers: "مسار المشروع والجهات المشترية", budgetCeiling: "الميزانية وسقف الإيرادات المتوقع", regional: "إمكانات الانتشار الإقليمي", net: "الخلاصة" },
-      glance_l: { "Premise & Theme": "الفكرة والموضوع", "Hook": "عنصر الجذب", "Stakes & Plot": "الرهانات الدرامية والحبكة", "Character": "الشخصيات", "Structure & Pace": "البناء الدرامي والإيقاع", "Producibility": "قابلية الإنتاج", "Overall presentation": "العرض العام" },
-      decision: { Recommend: "يُوصى به", Consider: "يستحق الدراسة", Pass: "غير موصى به" },
-      fmt: { "Short film": "فيلم قصير", "Feature": "فيلم طويل", "Feature film": "فيلم طويل", "TV Pilot": "حلقة تجريبية", "Web Series": "مسلسل ويب", "Series": "مسلسل", "Other": "أخرى" },
-      drf: { "First draft": "المسودة الأولى", "Second draft": "المسودة الثانية", "Revised draft": "المسودة الثانية", "Final draft": "النسخة النهائية" },
-      months: { January: "يناير", February: "فبراير", March: "مارس", April: "أبريل", May: "مايو", June: "يونيو", July: "يوليو", August: "أغسطس", September: "سبتمبر", October: "أكتوبر", November: "نوفمبر", December: "ديسمبر" },
-      genreMap: { "Drama": "دراما", "Comedy": "كوميديا", "Thriller": "إثارة", "Horror": "رعب", "Action": "أكشن", "Sci-Fi": "خيال علمي", "Romance": "رومانسي", "Animation": "رسوم متحركة", "Documentary": "وثائقي", "Other": "أخرى" },
-      lenMap: {},
-      writerMap: {}
-    }
-  };
-  var GLANCE = ["Premise & Theme", "Hook", "Stakes & Plot", "Character", "Structure & Pace", "Producibility", "Overall presentation"];
-  var GLANCE_OPTS = ["Excellent", "Good", "Fair", "Poor"];
-  var REC_OPTS = ["Recommend", "Consider", "Pass"];
-  var EVAL = ["Premise & Theme", "Hook", "Stakes & Plot", "Character", "Structure & Pace", "Producibility", "Presentation"];
-  var MARKET = [
-    { k: "audience", label: "Audience" },
-    { k: "genreDemand", label: "Genre and demand" },
-    { k: "pathBuyers", label: "Path and buyers" },
-    { k: "budgetCeiling", label: "Budget and ceiling" },
-    { k: "regional", label: "Regional potential" },
-    { k: "net", label: "Net" }
-  ];
-
-  /* maps between the submission form's stored keys and the report's labels */
-  var GENRE_EN = { drama: "Drama", comedy: "Comedy", thriller: "Thriller", horror: "Horror", action: "Action", documentary: "Documentary", other: "Other" };
-  var FORMAT_EN = { feature: "Feature", short: "Short film" };
-  var DRAFT_EN = { first: "First draft", revised: "Revised draft", final: "Final draft" };
+  // Report strings, constants and the report renderer are shared with the public
+  // report page via js/report-render.js (loaded first). Alias them so the rest of
+  // this workspace keeps referencing T / GLANCE / EVAL / … unchanged.
+  var R = window.SOReport;
+  var LOGO = R.LOGO, T = R.T;
+  var GLANCE = R.GLANCE, GLANCE_OPTS = R.GLANCE_OPTS, REC_OPTS = R.REC_OPTS, EVAL = R.EVAL, MARKET = R.MARKET;
+  var GENRE_EN = R.GENRE_EN, FORMAT_EN = R.FORMAT_EN, DRAFT_EN = R.DRAFT_EN;
 
   /* ---------- workspace-chrome translations ---------- */
   var UI = {
@@ -87,7 +42,7 @@
       genReport: "Generate report", finalize: "Mark coverage complete", reopen: "Reopen coverage",
       editCoverage: "Edit coverage", print: "Print / Save as PDF",
       sendReport: "Send to writer", sending: "Sending…",
-      sendOk: "Report sent to the writer", sendFail: "Couldn't send the report", pdfFail: "Couldn't build the report PDF",
+      sendOk: "Report sent to the writer", sendFail: "Couldn't send the report",
       pl: { title: "Title", writer: "Writer", email: "Email", ref: "Reference", format: "Format", genre: "Genre", length: "Length", draft: "Draft", ip: "IP registered", file: "Script file", logline: "Logline", vision: "Writer's vision" },
       ipYes: "Registered", ipNo: "Not registered", dl: "Download script", untitled: "Untitled", dash: "—", pagesUnit: "pages",
       saving: "Saving…", saved: "Saved", saveFailed: "Save failed", loaded: "Loaded", newCov: "New coverage", viewOnly: "View only",
@@ -123,7 +78,7 @@
       genReport: "إنشاء التقرير", finalize: "وضع علامة اكتمال التقييم", reopen: "إعادة فتح التقييم",
       editCoverage: "تعديل التقييم", print: "طباعة / حفظ PDF",
       sendReport: "إرسال إلى الكاتب", sending: "جارٍ الإرسال…",
-      sendOk: "تم إرسال التقرير إلى الكاتب", sendFail: "تعذّر إرسال التقرير", pdfFail: "تعذّر إنشاء ملف PDF للتقرير",
+      sendOk: "تم إرسال التقرير إلى الكاتب", sendFail: "تعذّر إرسال التقرير",
       pl: { title: "عنوان السيناريو", writer: "اسم الكاتب", email: "البريد الإلكتروني", ref: "الرقم المرجعي", format: "نوع العمل", genre: "التصنيف", length: "عدد الصفحات/المدة", draft: "نسخة السيناريو", ip: "تسجيل الملكية الفكرية", file: "ملف السيناريو", logline: "الملخص المختصر", vision: "رؤية الكاتب" },
       ipYes: "مسجل", ipNo: "غير مسجل", dl: "تحميل النص", untitled: "بدون عنوان", dash: "—", pagesUnit: "صفحة",
       saving: "جارٍ الحفظ…", saved: "تم الحفظ", saveFailed: "فشل الحفظ", loaded: "تم التحميل", newCov: "تقييم جديد", viewOnly: "عرض فقط",
@@ -458,73 +413,12 @@
   });
 
   /* ---------- report ---------- */
-  function val(x, empty) { return x && String(x).trim() ? esc(x) : '<span class="empty">' + (empty || "—") + "</span>"; }
+  // The report markup is built by the shared renderer (js/report-render.js), the
+  // same one the public writer-facing report page uses, so the two never drift.
   function renderReport() {
-    var s = state.submission, c = state.coverage, t = T[LANG], ar = (LANG === "ar"), nw = t.notwritten;
-    function locDate(x) { var p = String(x).split(" "); return (p.length === 2 && t.months && t.months[p[0]]) ? t.months[p[0]] + " " + p[1] : x; }
-    function lv(kind, raw) {
-      if (!ar) return val(raw);
-      var x = raw == null ? "" : String(raw);
-      if (!x.trim()) return val(raw);
-      if (kind === "date") return esc(locDate(x));
-      var m = { format: t.fmt, draft: t.drf, genre: t.genreMap, length: t.lenMap, writer: t.writerMap }[kind];
-      if (m && m[x]) return esc(m[x]);
-      return val(raw);
-    }
-    var top = [[t.title, '<span class="rep-title">' + esc(s.titleEn || "Untitled") + (s.titleAr ? ' <span class="ar">(' + esc(s.titleAr) + ")</span>" : "") + "</span>", true],
-      [t.writer, lv("writer", s.writer)], [t.format, lv("format", s.format)], [t.genre, lv("genre", s.genre)],
-      [t.length, lv("length", s.length)], [t.draft, lv("draft", s.draft)],
-      [t.reader, esc(ar ? "احد قراء Scene One" : "Scene One Reader")], [t.date, lv("date", c.date)]];
-    var topHtml = top.map(function (r) { return "<div" + (r[2] ? ' style="grid-column:1/-1"' : "") + '><div class="k">' + r[0] + '</div><div class="v" dir="auto">' + r[1] + "</div></div>"; }).join("");
-
-    var glOpts = [t.excellent, t.good, t.fair, t.poor];
-    var glHead = "<tr><td></td>" + glOpts.map(function (o) { return '<td class="mark">' + o + "</td>"; }).join("") + "</tr>";
-    var glHtml = GLANCE.map(function (cat) {
-      var v = c.glance[cat];
-      var cells = GLANCE_OPTS.map(function (o) { return '<td class="mark ' + (v === o ? "hit" : "dim") + '">' + (v === o ? "●" : "·") + "</td>"; }).join("");
-      return '<tr><td class="cat">' + t.glance_l[cat] + "</td>" + cells + "</tr>";
-    }).join("");
-    var evalHtml = EVAL.map(function (n) {
-      var e = c.eval[n];
-      return '<div class="rep-item"><div class="ih"><span class="t">' + t.eval[n] + "</span>" +
-        (e.score ? '<span class="sc">' + e.score + " / 5</span>" : "") + "</div>" +
-        "<p>" + val(e.text, nw) + "</p></div>";
-    }).join("");
-
-    var marketHtml = MARKET.map(function (m) {
-      return '<div class="rep-item"><div class="ih"><span class="t">' + t.market_l[m.k] + "</span></div>" +
-        "<p>" + val(c.market[m.k], nw) + "</p></div>";
-    }).join("");
-
-    var fs = finalScore();
-    var dec = c.verdict.decision ? c.verdict.decision : t.pending; // verdict stays English
-
-    var header = '<div class="rep-header">' +
-      '<img class="rep-logo" src="' + LOGO + '" alt="Scene One">' +
-      '<div class="rep-wm">SCENE&nbsp;<span>ONE</span></div>' +
-      '<div class="rep-cov">' + t.coverage + "</div>" +
-      "</div>";
-
-    var html = header +
-      '<div class="rep-top">' + topHtml + "</div>" +
-      '<div class="logline"><div class="k">' + t.logline + '</div><div dir="auto">' + val(s.logline) + "</div></div>" +
-      '<div class="glance"><h3>' + t.glance + "</h3>" +
-        '<table class="gl">' + glHead + glHtml + "</table></div>" +
-      '<div class="rep-sec"><h2><span class="no">01</span>' + t.synopsis + "</h2><p>" + val(c.synopsis, nw) + "</p></div>" +
-      '<div class="rep-sec"><h2><span class="no">02</span>' + t.evaluation + "</h2>" + evalHtml + "</div>" +
-      '<div class="rep-sec"><h2><span class="no">03</span>' + t.market + "</h2>" + marketHtml + "</div>" +
-      '<div class="rep-sec"><h2><span class="no">04</span>' + t.overall + "</h2>" +
-        '<div class="rep-item"><div class="ih"><span class="t">' + t.strengths + "</span></div><p>" + val(c.overall.strengths, nw) + "</p></div>" +
-        '<div class="rep-item"><div class="ih"><span class="t">' + t.develop + "</span></div><p>" + val(c.overall.toDevelop, nw) + "</p></div></div>" +
-      '<div class="verdict"><div class="vh">' + t.verdict + "</div>" +
-        '<div style="display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:8px">' +
-          '<div class="vd" style="margin:0">' + dec + (c.verdict.context ? ' <span class="ctx">· ' + esc(c.verdict.context) + "</span>" : "") + "</div>" +
-          (fs != null ? '<div class="score10"><span class="n">' + fs + "</span> " + t.outof + "</div>" : "") +
-        "</div>" +
-        '<p style="margin:0;color:#3f3a35">' + val(c.verdict.text, nw) + "</p></div>" +
-      '<div class="rep-foot"><span>Scene One · sceneone.info</span><span>' + t.foot + "</span></div>";
+    var ar = (LANG === "ar");
     var rb = $("reportBody");
-    rb.innerHTML = html;
+    rb.innerHTML = R.render(state.submission, state.coverage, LANG);
     rb.setAttribute("dir", ar ? "rtl" : "ltr");
     rb.classList.toggle("ar", ar);
   }
@@ -588,54 +482,19 @@
   function updateSendBtn() {
     var b = $("sendReport"); if (b) b.hidden = covStatus !== "completed";
   }
-  // Snapshot the report into a PDF and return its base64 payload (without the
-  // data-URI prefix). We capture the white #reportWrap card — not #reportBody —
-  // so the banner bleed is included, and we force the light theme for the
-  // duration so a reader's dark dashboard never leaks into the emailed PDF.
-  // Fonts and the logo image must be fully loaded first, or Arabic falls back
-  // to a broken font and the logo captures blank.
-  async function buildReportPdfBase64() {
-    var el = $("reportWrap");
-    if (!el || typeof html2pdf === "undefined") throw new Error(UI[UILANG].pdfFail);
-    var root = document.documentElement;
-    var prevTheme = root.getAttribute("data-theme");
-    root.setAttribute("data-theme", "light");
-    try {
-      if (document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch (e) {} }
-      // Wait for report images (the logo) to finish loading before the snapshot.
-      await Promise.all(Array.prototype.map.call(el.querySelectorAll("img"), function (img) {
-        if (img.complete && img.naturalWidth) return null;
-        return new Promise(function (res) { img.addEventListener("load", res); img.addEventListener("error", res); });
-      }));
-      // Let the forced-light styles settle before rasterising.
-      await new Promise(function (r) { requestAnimationFrame(function () { requestAnimationFrame(r); }); });
-      var opt = {
-        margin: 0,
-        image: { type: "jpeg", quality: 0.97 },
-        html2canvas: { scale: 2, backgroundColor: "#ffffff", useCORS: true },
-        jsPDF: { unit: "pt", format: "a4", orientation: "portrait" }
-      };
-      var uri = await html2pdf().set(opt).from(el).outputPdf("datauristring");
-      var comma = uri.indexOf(",");
-      if (comma < 0) throw new Error(UI[UILANG].pdfFail);
-      return uri.slice(comma + 1);
-    } finally {
-      if (prevTheme) root.setAttribute("data-theme", prevTheme); else root.removeAttribute("data-theme");
-    }
-  }
-
+  // Email the writer a private link to the hosted report page. The server looks
+  // up the submission's report token and sends the link; nothing is rasterised.
   $("sendReport").onclick = async function () {
     if (covStatus !== "completed") return;
     var btn = this, old = btn.textContent;
     btn.disabled = true; btn.textContent = UI[UILANG].sending;
     try {
-      var pdfBase64 = await buildReportPdfBase64();
       var sess = await sb.auth.getSession();
       var token = sess.data.session && sess.data.session.access_token;
       var resp = await fetch("/api/send-report", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
-        body: JSON.stringify({ submission_id: submissionId, pdf_base64: pdfBase64 })
+        body: JSON.stringify({ submission_id: submissionId })
       });
       var data = await resp.json().catch(function () { return {}; });
       if (!resp.ok) throw new Error(data.message || UI[UILANG].sendFail);
