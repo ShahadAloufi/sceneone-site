@@ -364,6 +364,7 @@ a, button {
   line-height: 1.9;
   color: rgba(255,255,255,.9);
   text-align: right;
+  margin-bottom: 20px;
 }
 .ctype-card__list {
   list-style: none;
