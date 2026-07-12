@@ -50,6 +50,9 @@ async function requireAdmin(req) {
 // Bilingual email inviting the writer to open their hosted report.
 function reportEmail(sub, link) {
   var title = sub.title_ar || sub.title_en || "";
+  var name = (sub.writer || "").toString().trim();
+  var arHi = name ? "مرحبًا " + escapeHtml(name) + "،" : "مرحبًا،";
+  var enHi = name ? "Hello " + escapeHtml(name) + "," : "Hello,";
   var titleLine = title
     ? '<p style="color:#555;margin:0 0 18px;">العنوان / Title: <strong>' + escapeHtml(title) + "</strong></p>"
     : "";
@@ -57,12 +60,12 @@ function reportEmail(sub, link) {
     'style="display:inline-block;background:#CD2E07;color:#fff;text-decoration:none;' +
     'font-weight:bold;padding:13px 26px;border-radius:9px;">عرض التقرير / View report</a></p>';
   return '<div dir="rtl" style="font-family:Arial,sans-serif;font-size:15px;color:#1a1a1a;max-width:600px;line-height:1.85;">' +
-    '<h2 style="margin:0 0 12px;">تقرير تغطية النص — Scene One</h2>' +
+    '<h2 style="margin:0 0 12px;">تقرير تقييم النص Scene One</h2>' +
     titleLine +
-    '<p style="margin:0 0 6px;color:#3f3a35;">مرحبًا،<br>تقرير تغطية نصكم جاهز. يمكنكم عرضه عبر الرابط أدناه، ومن هناك حفظه بصيغة PDF عند الحاجة.</p>' +
+    '<p style="margin:0 0 6px;color:#3f3a35;">' + arHi + '<br>تقرير تقييم نصكم أصبح جاهزًا. يمكنك الاطلاع عليه عبر الرابط أدناه، كما يمكنك حفظه بصيغة PDF إذا رغبت.</p>' +
     button +
     '<hr style="border:0;border-top:1px solid #e7e2da;margin:20px 0;">' +
-    '<p dir="ltr" style="margin:0 0 6px;color:#3f3a35;">Hello,<br>Your script coverage report is ready. Open it with the link above, and save it as a PDF from there if you like.</p>' +
+    '<p dir="ltr" style="margin:0 0 6px;color:#3f3a35;">' + enHi + '<br>Your script coverage report is ready. Open it with the link above, and save it as a PDF from there if you like.</p>' +
     '<p dir="ltr" style="margin:0 0 14px;color:#888;font-size:13px;">If the button doesn\'t work, copy this link:<br>' + escapeHtml(link) + "</p>" +
     '<p style="margin-top:24px;color:#888;">فريق Scene One / The Scene One team</p>' +
     "</div>";
@@ -120,7 +123,7 @@ module.exports = async (req, res) => {
         from: NOTIFY_FROM,
         to: [sub.email],
         reply_to: NOTIFY_TO,
-        subject: "تقرير تغطية نصك — Scene One" + (title ? (" — " + title) : ""),
+        subject: "تقرير تقييم نصك — Scene One" + (title ? (" — " + title) : ""),
         html: html,
       }),
     });
