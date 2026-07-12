@@ -135,6 +135,12 @@ must be in the `supabase_realtime` publication for live updates to fire.
   action, return safe messages and proper status codes.
 - File uploads: validate extension, size, and reject unsafe files; never trust the
   filename.
+- **Script files are IP-protected — never expose them.** The `scripts` bucket MUST
+  stay **private** (`public = false`); **never** use a public bucket or
+  `getPublicUrl`. Every view/download MUST be a **short-lived signed URL**
+  (`createSignedUrl`, ≤120s) minted **only after** Storage RLS verifies the caller
+  (currently `is_admin(auth.uid())`). Never return `file_path` to unauthenticated
+  callers (e.g. the public report page/API must omit it).
 
 ---
 
