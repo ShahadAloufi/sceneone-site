@@ -262,6 +262,13 @@
   html[data-theme="dark"] #reportWrap .rep-title{color:var(--ink)}
 
   .toolbar{display:flex;gap:12px;justify-content:flex-end;margin-bottom:16px;flex-wrap:wrap}
+  #backToReview{margin-inline-end:auto} /* push "Edit coverage" to the start, away from the actions */
+  /* On phones the three buttons can't share a row; stack them full-width so the
+     wrap doesn't scatter (e.g. "Print / Save" stranded on its own line). */
+  @media(max-width:560px){
+    .toolbar{flex-direction:column;align-items:stretch}
+    #backToReview{margin-inline-end:0}
+  }
 
   .rating-row{display:flex;gap:22px;align-items:center;background:var(--soft);border-radius:11px;
               padding:16px 20px;margin-bottom:18px;flex-wrap:wrap}
@@ -507,7 +514,7 @@
   <!-- ============ REPORT ============ -->
   <section class="view" id="view-report">
     <div class="toolbar">
-      <button class="btn" id="backToReview" data-i18n="editCoverage" style="margin-inline-end:auto">Edit coverage</button>
+      <button class="btn" id="backToReview" data-i18n="editCoverage">Edit coverage</button>
       <button class="btn" id="sendReport" data-i18n="sendReport" hidden>Send to writer</button>
       <button class="btn primary" id="printReport" data-i18n="print">Print / Save as PDF</button>
     </div>
