@@ -662,9 +662,12 @@
         "<td dir='ltr'>" + esc(s.email) + "</td>" +
         "<td>" + esc(fmtDate(deliveredOn[s.id])) + "</td>" +
         "<td class='adm-report'></td>";
+      // Open the exact report the writer received (hosted, read-only), not the
+      // editable workspace.
       var link = document.createElement("a");
       link.className = "adm-link";
-      link.href = "coverage.html?id=" + encodeURIComponent(s.id);
+      link.href = "report.html?t=" + encodeURIComponent(s.report_token);
+      link.target = "_blank"; link.rel = "noopener";
       link.textContent = t("viewReport");
       tr.querySelector(".adm-report").appendChild(link);
       body.appendChild(tr);
@@ -707,9 +710,12 @@
         "<td>" + esc(reader) + "</td>" +
         "<td>" + esc(fmtDate(deliveredOn[s.id])) + "</td>" +
         "<td class='adm-report'></td>";
+      // Open the exact report the writer received (hosted, read-only), not the
+      // editable workspace.
       var link = document.createElement("a");
       link.className = "adm-link";
-      link.href = "coverage.html?id=" + encodeURIComponent(s.id);
+      link.href = "report.html?t=" + encodeURIComponent(s.report_token);
+      link.target = "_blank"; link.rel = "noopener";
       link.textContent = t("viewReport");
       tr.querySelector(".adm-report").appendChild(link);
       body.appendChild(tr);
