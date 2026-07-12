@@ -1020,6 +1020,9 @@ html[data-theme="light"] .adm-decor-clapper { background-image: url(../assets/de
 .adm-due--soon { color: #c9962e; background: rgba(201,150,46,.16); }
 .adm-due--over { color: #d9584a; background: rgba(217,88,74,.16); }
 .adm-due--done { color: var(--adm-muted); background: var(--adm-surface-2); }
+/* Access log: distinct-IP count per admin; flagged when it looks shared. */
+.adm-ipcount { display: inline-flex; align-items: center; font-size: 12.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.adm-ipcount--flag { color: var(--adm-red); background: var(--adm-red-soft); padding: 3px 10px; border-radius: 8px; font-weight: 800; }
 /* Loading state while submissions are being fetched. */
 .adm-loading { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 56px 20px; color: var(--adm-muted); font-size: 15px; }
 

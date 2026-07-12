@@ -45,6 +45,8 @@
       dueDays: function (n) { return "متبقٍّ " + n + " يوم"; },
       thCoverage: "التقييم", subEmpty: "لا توجد نصوص مقدَّمة بعد.",
       adminsTitle: "المشرفون", thName: "الاسم", thRole: "الدور", createTitle: "إضافة مشرف جديد",
+      thAccess: "الدخول (٣٠ يوم)", accessNone: "لا يوجد", accessIps: function (n) { return n + " عنوان IP"; },
+      accessFlagTip: "عدد كبير من عناوين IP — قد يكون الحساب مُشاركًا", accessMore: "…والمزيد",
       fName: "الاسم", fRole: "الدور", roleAdmin: "مشرف", roleSuper: "مشرف أعلى", createBtn: "إنشاء المشرف",
       roleSeniorReader: "قارئ أول", roleJuniorReader: "قارئ مبتدئ", assignCo: "إضافة قارئ مشارك",
       assignTwice: "لا يمكنك إسناد نفسك مرتين",
@@ -79,6 +81,8 @@
       dueDays: function (n) { return n + (n === 1 ? " day left" : " days left"); },
       thCoverage: "Coverage", subEmpty: "No submissions yet.",
       adminsTitle: "Admins", thName: "Name", thRole: "Role", createTitle: "Add a new admin",
+      thAccess: "Logins (30d)", accessNone: "None", accessIps: function (n) { return n + (n === 1 ? " IP" : " IPs"); },
+      accessFlagTip: "Many distinct IPs — the account may be shared", accessMore: "…and more",
       fName: "Name", fRole: "Role", roleAdmin: "Admin", roleSuper: "Super admin", createBtn: "Create admin",
       roleSeniorReader: "Senior Reader", roleJuniorReader: "Junior Reader", assignCo: "Add co-reader",
       assignTwice: "You cannot assign yourself twice",
@@ -202,8 +206,20 @@
     $("admRole").textContent = roleLabel(me.role);
     var av = $("admAvatar"); if (av) av.textContent = (me.name || "?").trim().charAt(0) || "?";
     if (me.role === "super_admin") { show($("adminsTabBtn")); }
+    logAccess();
     loadSubmissions();
     subscribeRealtime();
+  }
+
+  // Record this dashboard visit (the server captures the real IP) so a super-admin
+  // can spot accounts used from many IPs. Fire-and-forget — never blocks the UI.
+  async function logAccess() {
+    try {
+      var sess = await sb.auth.getSession();
+      var token = sess.data.session && sess.data.session.access_token;
+      if (!token) return;
+      await fetch("/api/log-access", { method: "POST", headers: { Authorization: "Bearer " + token } });
+    } catch (e) {}
   }
 
   // Live updates: refresh the board when submissions or coverages change, so a
@@ -593,8 +609,43 @@
   $("refreshBtn").addEventListener("click", loadSubmissions);
 
   // ---------- ADMINS (super admin) ----------
+  var IP_FLAG_THRESHOLD = 4;   // distinct IPs (last 30 days) that flags a possibly-shared account
+  var ACCESS_WINDOW_DAYS = 30;
+
+  // Aggregate the access log by admin: distinct IPs + most-recent visits (last 30 days).
+  function summarizeAccess(rows) {
+    var by = {};
+    (rows || []).forEach(function (r) {
+      var m = by[r.admin_id] || (by[r.admin_id] = { ips: {}, recent: [] });
+      if (r.ip) m.ips[r.ip] = true;
+      if (m.recent.length < 8) m.recent.push(r); // rows arrive newest-first
+    });
+    return by;
+  }
+
+  // The per-admin "Logins (30d)" cell: distinct-IP count + last visit, with a
+  // warning when an account has logged in from many IPs (possible sharing).
+  function accessCell(info) {
+    if (!info || !info.recent.length) return "<span class='adm-muted'>" + esc(t("accessNone")) + "</span>";
+    var n = Object.keys(info.ips).length;
+    var flagged = n >= IP_FLAG_THRESHOLD;
+    var tip = info.recent.map(function (r) { return (r.ip || "?") + " · " + fmtDate(r.created_at); }).join("\n");
+    if (flagged) tip = t("accessFlagTip") + "\n\n" + tip;
+    var count = "<span class='adm-ipcount" + (flagged ? " adm-ipcount--flag" : "") + "'>" +
+      (flagged ? "⚠ " : "") + esc(t("accessIps")(n)) + "</span>";
+    var last = "<span class='adm-muted' style='display:block;font-size:11.5px;margin-top:3px'>" +
+      esc(fmtDate(info.recent[0].created_at)) + "</span>";
+    return "<div title=\"" + esc(tip) + "\">" + count + last + "</div>";
+  }
+
   async function loadAdmins() {
-    var res = await sb.from("admins").select("id,email,name,role").order("created_at", { ascending: true });
+    var since = new Date(Date.now() - ACCESS_WINDOW_DAYS * 86400000).toISOString();
+    var results = await Promise.all([
+      sb.from("admins").select("id,email,name,role").order("created_at", { ascending: true }),
+      sb.from("access_log").select("admin_id,ip,created_at").gte("created_at", since).order("created_at", { ascending: false })
+    ]);
+    var res = results[0];
+    var access = summarizeAccess(results[1].data);
     var body = $("adminsBody");
     body.innerHTML = "";
     (res.data || []).forEach(function (a) {
@@ -603,6 +654,7 @@
         "<td>" + esc(a.name) + "</td>" +
         "<td dir='ltr'>" + esc(a.email) + "</td>" +
         "<td>" + esc(roleLabel(a.role)) + "</td>" +
+        "<td dir='ltr'>" + accessCell(access[a.id]) + "</td>" +
         "<td class='adm-del'></td>";
       var cell = tr.querySelector(".adm-del");
       if (a.id !== me.id) {

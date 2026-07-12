@@ -297,3 +297,31 @@ begin
     alter publication supabase_realtime add table public.coverages;
   end if;
 end $$;
+
+-- ------------------------------------------------------------
+-- 5) ACCESS LOG — records each dashboard sign-in with the client IP so a
+-- super-admin can spot accounts used from many IPs (shared reader access).
+-- Rows are written only by the service role (/api/log-access); reads are
+-- restricted to super-admins by RLS.
+-- ------------------------------------------------------------
+create table if not exists public.access_log (
+  id          bigint generated always as identity primary key,
+  admin_id    uuid references public.admins(id) on delete cascade,
+  ip          text,
+  user_agent  text,
+  created_at  timestamptz not null default now()
+);
+create index if not exists access_log_admin_created_idx on public.access_log (admin_id, created_at desc);
+
+alter table public.access_log enable row level security;
+
+-- Only super-admins may read the access log.
+drop policy if exists "super admins read access log" on public.access_log;
+create policy "super admins read access log"
+  on public.access_log for select
+  to authenticated
+  using ( public.is_super_admin(auth.uid()) );
+
+-- No client INSERT policy: rows are written only by the service role.
+grant select on public.access_log to authenticated;
+grant all on public.access_log to service_role;

@@ -81,6 +81,9 @@ Tables (all with RLS enabled):
   `report_token` (uuid; the unguessable key in the writer's report link).
 - **coverages** — `submission_id`, `data` (jsonb: the full coverage content),
   `status` (`in_progress` | `completed`).
+- **access_log** — `admin_id`, `ip`, `user_agent`, `created_at`. One row per
+  dashboard sign-in (written by `/api/log-access`, service role); **super-admins
+  only** may read it (RLS). Surfaces possible shared reader accounts.
 
 RLS uses `SECURITY DEFINER` helper functions: `is_admin(uid)` (in admins table),
 `is_staff(uid)` (admin/super_admin), `is_assigned(uid, submission_id)` (primary
@@ -195,6 +198,21 @@ must be in the `supabase_realtime` publication for live updates to fire.
   -- Hosted report link: unguessable per-submission token (backfills existing rows).
   alter table public.submissions add column if not exists report_token uuid not null default gen_random_uuid();
   create index if not exists submissions_report_token_idx on public.submissions (report_token);
+
+  -- Access log (detect shared reader accounts). Also in supabase/schema.sql §5.
+  create table if not exists public.access_log (
+    id bigint generated always as identity primary key,
+    admin_id uuid references public.admins(id) on delete cascade,
+    ip text, user_agent text,
+    created_at timestamptz not null default now()
+  );
+  create index if not exists access_log_admin_created_idx on public.access_log (admin_id, created_at desc);
+  alter table public.access_log enable row level security;
+  drop policy if exists "super admins read access log" on public.access_log;
+  create policy "super admins read access log" on public.access_log for select
+    to authenticated using ( public.is_super_admin(auth.uid()) );
+  grant select on public.access_log to authenticated;
+  grant all on public.access_log to service_role;
   ```
 
 ---
@@ -231,6 +249,9 @@ privileged reads/writes.
   link to their completed coverage report.
 - **`GET /api/report?t=<report_token>`** — **public** (the token is the auth); returns
   the report-safe fields (no email/file) of a submission with a *completed* coverage.
+- **`POST /api/log-access`** — any signed-in admin/reader; records their dashboard
+  visit with the **server-read client IP** (`x-forwarded-for`) to `access_log`.
+  Fire-and-forget from the client on sign-in; never blocks the UI.
 - **`POST|DELETE /api/admin/admins`** — super-admin only; create/delete admin accounts
   (creates the auth user + `admins` row).
 - **`/api/registrations`** — interest/registration intake.
