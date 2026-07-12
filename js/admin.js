@@ -213,8 +213,11 @@
     $("admWho").textContent = me.name;
     $("admRole").textContent = roleLabel(me.role);
     var av = $("admAvatar"); if (av) av.textContent = (me.name || "?").trim().charAt(0) || "?";
-    if (me.role === "super_admin") { show($("adminsTabBtn")); }
-    if (isReader(me.role)) { show($("deliveredTabBtn")); }
+    // Role-gated nav tabs: set explicitly (not just show) so a previous session's
+    // state can't leak across a logout→login — e.g. a reader must never see "Manage
+    // admins" (super-admin only), and only readers see "Delivered by me".
+    $("adminsTabBtn").hidden = me.role !== "super_admin";
+    $("deliveredTabBtn").hidden = !isReader(me.role);
     logAccess();
     loadSubmissions();
     subscribeRealtime();
