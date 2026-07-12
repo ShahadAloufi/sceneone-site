@@ -911,6 +911,14 @@ html[data-theme="dark"] .adm-login__submit { background: #ffffff; color: #111418
   font-family: 'Tajawal', system-ui, sans-serif; color: var(--adm-text);
 }
 
+/* Boot loader: covers the page while the session check runs so it's never blank. */
+.adm-boot {
+  position: fixed; inset: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--adm-bg);
+}
+.adm-boot[hidden] { display: none; }
+
 /* ---- Sidebar: a rounded floating card, always visible ---- */
 .adm-side {
   width: 250px; flex-shrink: 0; background: var(--adm-surface);

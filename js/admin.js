@@ -211,6 +211,7 @@
     }
     if (me) enterDashboard();
     else { hide(dashView); show(loginView); }
+    hide($("admBoot")); // reveal whichever view boot resolved to
   }
 
   function enterDashboard() {
