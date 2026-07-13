@@ -66,12 +66,12 @@ function reportEmail(sub, link) {
         '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:20px;">' +
           '<tr><td style="padding:46px 44px;text-align:center;">' +
             '<div style="font-weight:700;letter-spacing:5px;font-size:20px;color:#15110f;margin:0 0 30px;">SCENE&nbsp;<span style="color:#cd2e07;">ONE</span></div>' +
-            '<h1 style="margin:0 0 14px;font-size:25px;line-height:1.3;color:#15110f;font-weight:700;">تقرير تقييم نصكم جاهز</h1>' +
+            '<h1 style="margin:0 0 14px;font-size:25px;line-height:1.3;color:#15110f;font-weight:700;">تقرير تقييم نصك جاهز الآن</h1>' +
             titleLine +
-            '<p dir="rtl" style="' + bodyStyle + 'margin-bottom:6px;">' + arHi + "<br>تقرير تقييم نصكم أصبح جاهزًا. يمكنك الاطلاع عليه عبر الزر أدناه، كما يمكنك حفظه بصيغة PDF إذا رغبت.</p>" +
+            '<p dir="rtl" style="' + bodyStyle + 'margin-bottom:6px;">' + arHi + "<br>PDF يمكنك عرض التقرير والإطلاع على تفاصيله من خلال الضغط على الزر أدناه </p>" +
             '<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:28px auto;"><tr>' +
               '<td style="border-radius:12px;background:#111111;">' +
-                '<a href="' + esc(link) + '" style="display:inline-block;padding:16px 40px;color:#ffffff;text-decoration:none;font-size:15px;font-weight:700;border-radius:12px;">عرض التقرير · View report</a>' +
+                '<a href="' + esc(link) + '" style="display:inline-block;padding:16px 40px;color:#ffffff;text-decoration:none;font-size:15px;font-weight:700;border-radius:12px;">عرض التقرير </a>' +
               "</td></tr></table>" +
             '<hr style="border:0;border-top:1px solid #ece7df;width:78%;margin:26px auto;">' +
             '<p dir="ltr" style="' + bodyStyle + '">' + enHi + "<br>Your script coverage report is ready. Open it with the button above, and save it as a PDF from there if you like.</p>" +
