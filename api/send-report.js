@@ -57,7 +57,7 @@ function reportEmail(sub, link) {
   var arHi = name ? "مرحبًا " + esc(name) + "،" : "مرحبًا،";
   var enHi = name ? "Hello " + esc(name) + "," : "Hello,";
   var titleLine = title
-    ? '<p style="margin:0 0 24px;color:#8a8178;font-size:13px;">العنوان: <strong style="color:#15110f;">' + esc(title) + "</strong></p>"
+    ? '<p style="margin:0 0 24px;color:#8a8178;font-size:13px;">العنوان · Title: <strong style="color:#15110f;">' + esc(title) + "</strong></p>"
     : "";
   var bodyStyle = "margin:0 auto;max-width:440px;font-size:15px;line-height:1.9;color:#4a453f;";
   return "" +
