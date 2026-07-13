@@ -80,7 +80,7 @@ function reportEmail(sub, link) {
 
             '<p dir="rtl" style="' + bodyStyle + 'margin-bottom:6px;">' +
               arHi +
-              "<br> يمكنك عرض التقرير والاطلاع على تفاصيله من خلال الضغط على الزر أدناه" +
+              "<br> يمكنك عرض التقرير والإطلاع على تفاصيله من خلال الضغط على الزر أدناه" +
             "</p>" +
 
             '<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:28px auto;"><tr>' +
