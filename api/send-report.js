@@ -57,7 +57,7 @@ function reportEmail(sub, link) {
   var arHi = name ? "مرحبًا " + esc(name) + "،" : "مرحبًا،";
   var enHi = name ? "Hello " + esc(name) + "," : "Hello,";
   var titleLine = title
-    ? '<p style="margin:0 0 24px;color:#8a8178;font-size:13px;">العنوان · Title: <strong style="color:#15110f;">' + esc(title) + "</strong></p>"
+    ? '<p style="margin:0 0 24px;color:#8a8178;font-size:13px;">العنوان: <strong style="color:#15110f;">' + esc(title) + "</strong></p>"
     : "";
   var bodyStyle = "margin:0 auto;max-width:440px;font-size:15px;line-height:1.9;color:#4a453f;";
   return "" +
@@ -68,7 +68,7 @@ function reportEmail(sub, link) {
             '<div style="font-weight:700;letter-spacing:5px;font-size:20px;color:#15110f;margin:0 0 30px;">SCENE&nbsp;<span style="color:#cd2e07;">ONE</span></div>' +
             '<h1 style="margin:0 0 14px;font-size:25px;line-height:1.3;color:#15110f;font-weight:700;">تقرير تقييم نصك جاهز الآن</h1>' +
             titleLine +
-            '<p dir="rtl" style="' + bodyStyle + 'margin-bottom:6px;">' + arHi + "<br>PDF يمكنك عرض التقرير والإطلاع على تفاصيله من خلال الضغط على الزر أدناه </p>" +
+            '<p dir="rtl" style="' + bodyStyle + 'margin-bottom:6px;">' + arHi + "<br> يمكنك عرض التقرير والإطلاع على تفاصيله من خلال الضغط على الزر أدناه </p>" +
             '<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:28px auto;"><tr>' +
               '<td style="border-radius:12px;background:#111111;">' +
                 '<a href="' + esc(link) + '" style="display:inline-block;padding:16px 40px;color:#ffffff;text-decoration:none;font-size:15px;font-weight:700;border-radius:12px;">عرض التقرير </a>' +
