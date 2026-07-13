@@ -95,7 +95,7 @@ function reportEmail(sub, link) {
               "<br>Your script coverage report is ready. Open it with the button above, and save it as a PDF from there if you like." +
             "</p>" +
 
-            '<p style="margin:30px 0 0;color:#a49b90;font-size:12.5px;"> The Scene One team </p>' +
+            '<p style="margin:30px 0 0;color:#a49b90;font-size:12.5px;"> The Scene One team</p>' +
 
           "</td></tr>" +
         "</table>" +
