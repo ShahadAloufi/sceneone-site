@@ -3,7 +3,8 @@
   "functions": {
     "api/report-pdf.js": {
       "memory": 1536,
-      "maxDuration": 30
+      "maxDuration": 30,
+      "includeFiles": "node_modules/@sparticuz/chromium/**"
     }
   }
 }
