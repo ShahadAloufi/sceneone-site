@@ -245,13 +245,20 @@
   // Live updates: refresh the board when submissions or coverages change, so a
   // new script appears the moment it's submitted — no manual refresh needed.
   // Debounced and silent (updates the table in place without a spinner flash).
+  // Reload whichever secondary tab is currently open (delivery lists shift the
+  // moment a report is sent, so they must stay in sync with the main board).
+  function reloadOpenSecondaryTab() {
+    if (!$("tab-admins").hidden) loadAdmins();
+    if (!$("tab-delivered").hidden) loadDelivered();
+    if (!$("tab-deliveries").hidden) loadDeliveries();
+  }
   var realtimeSub = null, reloadTimer = null;
   function scheduleReload() {
     clearTimeout(reloadTimer);
     reloadTimer = setTimeout(function () {
       if (me && !dashView.hidden) {
         loadSubmissions(true);
-        if (!$("tab-admins").hidden) loadAdmins();
+        reloadOpenSecondaryTab();
       }
     }, 400);
   }
@@ -369,7 +376,7 @@
     var results = await Promise.all([
       sb.from("admins").select("id,name,role"),
       sb.from("submissions").select("*").order("created_at", { ascending: false }),
-      sb.from("coverages").select("submission_id,status")
+      sb.from("coverages").select("submission_id,status,delivered_at")
     ]);
     var ad = results[0], res = results[1], cov = results[2];
 
@@ -389,8 +396,14 @@
 
     // Coverage statuses (keyed by submission id) drive the evaluation button label.
     var covBySub = {};
-    (cov.data || []).forEach(function (c) { covBySub[c.submission_id] = c.status; });
-    var rows = res.data || [];
+    var deliveredBySub = {};
+    (cov.data || []).forEach(function (c) {
+      covBySub[c.submission_id] = c.status;
+      if (c.delivered_at) deliveredBySub[c.submission_id] = true;
+    });
+    // Delivered reports move to the Delivered/Deliveries tabs; the main list keeps
+    // only the active pipeline (unassigned / in review / completed-but-not-sent).
+    var rows = (res.data || []).filter(function (s) { return !deliveredBySub[s.id]; });
     currentRows = rows;
     currentCov = covBySub;
     updateKpis(rows, covBySub);
@@ -402,7 +415,7 @@
       var tr = document.createElement("tr");
       tr.innerHTML =
         "<td>" + esc(fmtDate(s.created_at)) + "</td>" +
-        deadlineCell(s.created_at, s.film_type, covBySub[s.id] === "completed") +
+        deadlineCell(s.created_at, s.film_type, !!deliveredBySub[s.id]) +
         "<td><strong>" + esc(s.title_ar) + "</strong><br><span class='adm-muted' dir='ltr'>" + esc(s.title_en) + "</span></td>" +
         "<td>" + esc(s.writer) + "</td>" +
         "<td dir='ltr'>" + esc(s.email) + "</td>" +
@@ -864,7 +877,7 @@
     if (me) {
       $("admRole").textContent = roleLabel(me.role);
       loadSubmissions();
-      if (!$("tab-admins").hidden) loadAdmins();
+      reloadOpenSecondaryTab();
     }
   }
 
@@ -874,7 +887,7 @@
   function refreshOnReturn() {
     if (!me || dashView.hidden) return;
     loadSubmissions();
-    if (!$("tab-admins").hidden) loadAdmins();
+    reloadOpenSecondaryTab();
   }
   document.addEventListener("visibilitychange", function () {
     if (document.visibilityState === "visible") refreshOnReturn();

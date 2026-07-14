@@ -138,7 +138,10 @@ must be in the `supabase_realtime` publication for live updates to fire.
   reader's **"Delivered by me"** dashboard tab (readers only) — the scripts they
   reviewed (assignee/co-reader) whose report was sent to the writer — and the
   super-admin **"Deliveries"** oversight tab (all delivered reports + the reviewing
-  reader).
+  reader). Once delivered, a submission **leaves the main Scripts list** (which shows
+  only the active pipeline: unassigned / in review / completed-but-not-sent) and
+  appears in those delivery tabs instead. The move happens live (realtime + on
+  return to the dashboard).
 - **PDF page count:** counted in the browser at upload (pdf.js); the coverage panel
   shows **page count − 1** (skips the title page). Non-PDF files keep the manual
   duration.
