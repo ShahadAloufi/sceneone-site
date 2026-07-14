@@ -1075,6 +1075,14 @@ display: flex;
 
 /* ===== Scene One loader (shared) ===== */
 
+/* Base loader box + colours. Without this the CSS variables (--frame/--brand)
+   are undefined on the dark theme and the loader renders invisibly (black on
+   black) — e.g. the admin boot loader. Mirrors the self-contained definition in
+   coverage.html / report.html. */
+.so-loader{ --size:88px; --brand:#CD2E07; --frame:#ffffff; width:var(--size); height:var(--size); position:relative; display:inline-block; }
+.so-loader[hidden]{ display:none; }
+.so-loader svg{ width:100%; height:100%; display:block; overflow:visible; }
+
   /* use on white backgrounds */
 html[data-theme="light"] .so-loader{ --frame:#15110f; }  /* auto on light theme */
 .so-loader.sm{ --size:40px; }

@@ -209,9 +209,15 @@
       console.error("[boot] session check failed", e);
       me = null;
     }
-    if (me) enterDashboard();
-    else { hide(dashView); show(loginView); }
-    hide($("admBoot")); // reveal whichever view boot resolved to
+    if (me) {
+      // Keep the boot loader up until the submissions have actually loaded, so a
+      // refresh shows the Scene One loader (not a blank dashboard) until the
+      // table is ready. enterDashboard hides admBoot once the first load settles.
+      enterDashboard();
+    } else {
+      hide(dashView); show(loginView);
+      hide($("admBoot"));
+    }
   }
 
   function enterDashboard() {
@@ -227,7 +233,9 @@
     $("deliveriesTabBtn").hidden = me.role !== "super_admin";
     $("deliveredTabBtn").hidden = !isReader(me.role);
     logAccess();
-    loadSubmissions();
+    // Hide the boot loader only once the first submissions load settles (success
+    // or failure), so the loader covers the empty-dashboard gap on refresh.
+    loadSubmissions().finally(function () { hide($("admBoot")); });
     subscribeRealtime();
   }
 
