@@ -130,8 +130,8 @@ must be in the `supabase_realtime` publication for live updates to fire.
   "Mark complete" additionally needs every written section filled.
 - **Deadline:** every submission's deadline = `created_at` + the max turnaround for its
   type — **features 15 days, shorts 10 days** (matches the landing-page cards) — shown
-  on the dashboard with a color-coded days-left/overdue/delivered badge (derived, not
-  stored).
+  on the dashboard with a color-coded days-left/overdue badge (derived, not stored;
+  delivered submissions leave the main list, so no "delivered" badge appears there).
 - **Report delivery:** a manual **"Send to writer"** button on a *completed* report
   emails the writer a **private link** to the hosted report page
   (`/report?t=<report_token>`) via `/api/send-report` (Resend). The writer opens it
@@ -356,8 +356,9 @@ privileged reads/writes.
 2. **Only push when the user explicitly says "push it."** Verify first.
 3. **Keep everything bilingual** via the i18n dictionaries; never hardcode one language
    in the UI, and mind RTL.
-4. **Remember `coverage.html` is self-contained** (inline styles + own theme/lang
-   script) — shared CSS changes there must be duplicated, not linked.
+4. **Remember `coverage.html` and `report.html` are self-contained** (inline styles +
+   own theme/lang script) — shared CSS changes there must be duplicated, not linked.
+   The report markup itself lives in the shared `js/report-render.js`.
 5. **Server is the source of truth** — validate/authorize in `/api`; never move
    privileged logic or the service-role key into the browser.
 6. **For schema/Supabase changes**, hand the user exact SQL to run manually.
