@@ -9,8 +9,8 @@
 
   var LANG_KEY = "sceneone-report-lang";
   var UI = {
-    ar: { loading: "جارٍ تحميل التقرير…", errT: "التقرير غير متاح", errM: "قد يكون الرابط غير صحيح أو أن التقرير لم يُنشر بعد.", save: "حفظ PDF", docTitle: "Scene One — تقرير التغطية" },
-    en: { loading: "Loading the report…", errT: "Report unavailable", errM: "This link may be invalid, or the report hasn't been published yet.", save: "Save as PDF", docTitle: "Scene One — Coverage report" }
+    ar: { loading: "جارٍ تحميل التقرير…", errT: "التقرير غير متاح", errM: "قد يكون الرابط غير صحيح أو أن التقرير لم يُنشر بعد.", save: "حفظ PDF", preparing: "جارٍ التحضير…", pdfErr: "تعذّر إنشاء ملف PDF، حاول مرة أخرى.", fileBase: "تقرير Scene One", docTitle: "Scene One — تقرير التغطية" },
+    en: { loading: "Loading the report…", errT: "Report unavailable", errM: "This link may be invalid, or the report hasn't been published yet.", save: "Save as PDF", preparing: "Preparing…", pdfErr: "Couldn't generate the PDF, please try again.", fileBase: "Scene One Coverage Report", docTitle: "Scene One — Coverage report" }
   };
 
   function $(id) { return document.getElementById(id); }
@@ -51,10 +51,33 @@
   $("langSeg").querySelectorAll("button").forEach(function (b) {
     b.addEventListener("click", function () { applyLang(b.dataset.l); });
   });
-  // Native "Save as PDF": the browser's print pipeline is the only path that
-  // renders Arabic correctly (client-side rasterisation can't), so on iPhone this
-  // opens the share sheet → "Save to Files" = a real PDF saved to the device.
-  $("saveBtn").addEventListener("click", function () { window.print(); });
+  // "Save as PDF": download a real PDF straight to the user's Downloads folder
+  // (no browser print dialog). The file is rendered server-side by /api/report-pdf
+  // with headless Chrome — the only path that renders Arabic correctly.
+  function fileName(u) {
+    var t = data && data.submission ? (data.submission.titleEn || data.submission.titleAr) : "";
+    var base = t ? u.fileBase + " — " + t : u.fileBase;
+    return base.replace(/[\\/:*?"<>|]+/g, "").trim() + ".pdf";
+  }
+  $("saveBtn").addEventListener("click", async function () {
+    var btn = this, u = UI[lang()];
+    if (btn.dataset.busy) return;
+    btn.dataset.busy = "1"; btn.disabled = true;
+    var old = btn.textContent; btn.textContent = u.preparing;
+    try {
+      var resp = await fetch("/api/report-pdf?t=" + encodeURIComponent(token));
+      if (!resp.ok) throw new Error("pdf");
+      var blob = await resp.blob();
+      var href = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = href; a.download = fileName(u);
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(href); }, 4000);
+    } catch (e) {
+      alert(u.pdfErr);
+    }
+    btn.textContent = old; btn.disabled = false; delete btn.dataset.busy;
+  });
 
   applyLang(lang()); // localise the loading screen immediately
 
