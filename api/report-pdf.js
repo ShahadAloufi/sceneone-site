@@ -56,10 +56,28 @@ async function debugInfo() {
   out.tmp = ls("/tmp");
   // Hunt for libnss3.so under the likely extraction roots.
   out.libnss3 = [];
-  ["/tmp", "/tmp/al2", "/tmp/al2023", "/tmp/lib"].forEach(function (d) {
+  ["/tmp", "/tmp/al2/lib", "/tmp/al2023/lib", "/tmp/lib"].forEach(function (d) {
     var found = ls(d);
     if (Array.isArray(found)) found.forEach(function (f) { if (/libnss3/.test(f)) out.libnss3.push(d + "/" + f); });
   });
+  // Definitive check: actually launch Chromium and render a trivial PDF.
+  var browser;
+  try {
+    browser = await puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: { width: 600, height: 400 },
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
+    });
+    var page = await browser.newPage();
+    await page.setContent("<h1>ok</h1>");
+    var pdf = await page.pdf({ format: "A4" });
+    out.launch = "OK, pdf bytes=" + pdf.length;
+  } catch (e) {
+    out.launch = "FAIL: " + (e && e.message ? e.message : e);
+  } finally {
+    if (browser) { try { await browser.close(); } catch (e) {} }
+  }
   return out;
 }
 
