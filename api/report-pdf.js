@@ -13,6 +13,14 @@
 // Required env vars: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY.
 // Optional: SITE_URL (defaults to the production domain).
 
+// @sparticuz/chromium only wires up LD_LIBRARY_PATH and extracts its bundled OS
+// libraries (libnss3.so, …) when it detects an AWS Lambda Node 20/22 runtime,
+// which it does purely from these env vars. Vercel runs on Lambda (Amazon Linux
+// 2023) but doesn't set them in that form, so Chromium launches without libnss3
+// and dies. We pin Node 20, so declare the runtime ourselves — this MUST run
+// before @sparticuz/chromium is required (its detection runs at module load).
+if (!process.env.AWS_LAMBDA_JS_RUNTIME) process.env.AWS_LAMBDA_JS_RUNTIME = "nodejs20.x";
+
 const fs = require("fs");
 const path = require("path");
 const chromium = require("@sparticuz/chromium");
