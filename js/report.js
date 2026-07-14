@@ -9,8 +9,8 @@
 
   var LANG_KEY = "sceneone-report-lang";
   var UI = {
-    ar: { loading: "جارٍ تحميل التقرير…", errT: "التقرير غير متاح", errM: "قد يكون الرابط غير صحيح أو أن التقرير لم يُنشر بعد.", print: "طباعة / حفظ PDF", docTitle: "Scene One — تقرير التغطية" },
-    en: { loading: "Loading the report…", errT: "Report unavailable", errM: "This link may be invalid, or the report hasn't been published yet.", print: "Print / Save as PDF", docTitle: "Scene One — Coverage report" }
+    ar: { loading: "جارٍ تحميل التقرير…", errT: "التقرير غير متاح", errM: "قد يكون الرابط غير صحيح أو أن التقرير لم يُنشر بعد.", save: "حفظ PDF", docTitle: "Scene One — تقرير التغطية" },
+    en: { loading: "Loading the report…", errT: "Report unavailable", errM: "This link may be invalid, or the report hasn't been published yet.", save: "Save as PDF", docTitle: "Scene One — Coverage report" }
   };
 
   function $(id) { return document.getElementById(id); }
@@ -27,7 +27,7 @@
     $("loadingT").textContent = u.loading;
     $("errorT").textContent = u.errT;
     $("errorM").textContent = u.errM;
-    $("printBtn").textContent = u.print;
+    $("saveBtn").textContent = u.save;
     var seg = $("langSeg");
     seg.querySelectorAll("button").forEach(function (b) { b.classList.toggle("on", b.dataset.l === l); });
     if (data) {
@@ -45,13 +45,16 @@
     $("errorBox").hidden = true;
     $("reportWrap").hidden = false;
     $("langSeg").hidden = false;
-    $("printBtn").hidden = false;
+    $("saveBtn").hidden = false;
   }
 
   $("langSeg").querySelectorAll("button").forEach(function (b) {
     b.addEventListener("click", function () { applyLang(b.dataset.l); });
   });
-  $("printBtn").addEventListener("click", function () { window.print(); });
+  // Native "Save as PDF": the browser's print pipeline is the only path that
+  // renders Arabic correctly (client-side rasterisation can't), so on iPhone this
+  // opens the share sheet → "Save to Files" = a real PDF saved to the device.
+  $("saveBtn").addEventListener("click", function () { window.print(); });
 
   applyLang(lang()); // localise the loading screen immediately
 

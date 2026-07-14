@@ -102,6 +102,25 @@
     main{padding:0}
     #reportWrap{border:0;border-radius:0;box-shadow:none;max-width:none}
   }
+
+  /* Phones (iPhone 13 Pro ≈ 390px and similar). The sticky bar can wrap so the
+     wordmark, language switch and Save button never overflow horizontally, and
+     the card gets tighter padding for small screens. */
+  @media(max-width:480px){
+    .bar{flex-wrap:wrap;gap:8px 10px;padding:10px 14px}
+    .bar .wm{font-size:14px;letter-spacing:.14em}
+    .bar .spacer{margin-inline-start:auto}
+    .langseg button{padding:6px 10px;font-size:13px}
+    .btn{padding:8px 14px;font-size:13px}
+    main{padding:20px 12px 48px}
+    #reportWrap{border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.1)}
+    .report{padding:26px 18px}
+    .rep-header{margin:-26px -18px 24px;padding:26px 18px 20px}
+    .rep-wm{font-size:20px}
+    .rep-title{font-size:20px}
+    .rep-top{grid-template-columns:1fr 1fr;gap:16px 20px}
+    .verdict{padding:18px 18px}
+  }
 </style>
 
 <div class="bar">
@@ -111,7 +130,7 @@
     <button data-l="ar" class="on">العربية</button>
     <button data-l="en">English</button>
   </div>
-  <button class="btn" id="printBtn" hidden></button>
+  <button class="btn" id="saveBtn" hidden></button>
 </div>
 
 <main>
