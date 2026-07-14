@@ -33,9 +33,14 @@ writers. Actively iterating on UX polish and workflow features.
   with a shared renderer (`report-render.js`) and a redesigned bilingual email.
 - **IP access logging** — `access_log` + `/api/log-access`; Manage-admins flags
   readers seen from many IPs (shared-account detection).
-- **"Delivered by me"** readers-only tab (tracks actual sends via `delivered_at`).
+- **Delivery tracking + tabs** — sends stamp `coverages.delivered_at/by`; readers get
+  a **"Delivered by me"** tab, super-admins a **"Deliveries"** oversight tab (with the
+  reviewing reader). Both open the hosted report read-only. Delivered submissions
+  **leave the main Scripts list** (active pipeline only) and move to the tabs live.
+- **Role-gated nav hardened** — tabs set explicitly per role (readers never see Manage
+  admins); a **boot loader** so the admin page is never blank during the session check.
 - **Dashboard/landing polish** — Pages column, film-type deadlines (feature 15d /
-  short 10d), wider scripts table, pricing cards.
+  short 10d), wider scripts table, pricing cards, redesigned writer email.
 
 **Status:** all merged to `main` and deploying via Vercel. **Blocked on the manual
 Supabase SQL below**; auth/serverless flows are verifiable only on the deploy.
