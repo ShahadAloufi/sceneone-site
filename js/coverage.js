@@ -41,7 +41,7 @@
       context: "Context (optional)", contextPh: "short-film and festival context", summary: "Summary",
       genReport: "Generate report", finalize: "Mark coverage complete", reopen: "Reopen coverage",
       editCoverage: "Edit coverage", print: "Print / Save as PDF",
-      sendReport: "Send to writer", sending: "Sending…",
+      sendReport: "Send to writer", sending: "Sending…", sent: "Sent to writer ✓",
       sendOk: "Report sent to the writer", sendFail: "Couldn't send the report",
       pl: { title: "Title", writer: "Writer", email: "Email", ref: "Reference", format: "Format", genre: "Genre", length: "Length", draft: "Draft", ip: "IP registered", file: "Script file", logline: "Logline", vision: "Writer's vision" },
       ipYes: "Registered", ipNo: "Not registered", dl: "Download script", untitled: "Untitled", dash: "—", pagesUnit: "pages",
@@ -77,7 +77,7 @@
       context: "السياق (اختياري)", contextPh: "سياق الأفلام القصيرة والمهرجانات", summary: "الخلاصة",
       genReport: "إنشاء التقرير", finalize: "وضع علامة اكتمال التقييم", reopen: "إعادة فتح التقييم",
       editCoverage: "تعديل التقييم", print: "طباعة / حفظ PDF",
-      sendReport: "إرسال إلى الكاتب", sending: "جارٍ الإرسال…",
+      sendReport: "إرسال إلى الكاتب", sending: "جارٍ الإرسال…", sent: "تم الإرسال ✓",
       sendOk: "تم إرسال التقرير إلى الكاتب", sendFail: "تعذّر إرسال التقرير",
       pl: { title: "عنوان السيناريو", writer: "اسم الكاتب", email: "البريد الإلكتروني", ref: "الرقم المرجعي", format: "نوع العمل", genre: "التصنيف", length: "عدد الصفحات/المدة", draft: "نسخة السيناريو", ip: "تسجيل الملكية الفكرية", file: "ملف السيناريو", logline: "الملخص المختصر", vision: "رؤية الكاتب" },
       ipYes: "مسجل", ipNo: "غير مسجل", dl: "تحميل النص", untitled: "بدون عنوان", dash: "—", pagesUnit: "صفحة",
@@ -195,6 +195,7 @@
   var submissionId = new URLSearchParams(location.search).get("id");
   var me = null;                 // { id, email, name, role }
   var covStatus = "in_progress"; // 'in_progress' | 'completed'
+  var delivered = false;         // true once the report has been emailed to the writer
   var readOnly = false;          // true for staff viewing a coverage they aren't assigned to
   var saveT = null;
 
@@ -480,13 +481,18 @@
 
   // "Send to writer" is only offered once the coverage is completed.
   function updateSendBtn() {
-    var b = $("sendReport"); if (b) b.hidden = covStatus !== "completed";
+    var b = $("sendReport"); if (!b) return;
+    b.hidden = covStatus !== "completed";
+    // Once delivered, the button becomes a disabled "Sent ✓" confirmation so the
+    // reader can't fire duplicate emails and the sent state survives re-renders.
+    b.disabled = delivered;
+    b.textContent = delivered ? UI[UILANG].sent : UI[UILANG].sendReport;
   }
   // Email the writer a private link to the hosted report page. The server looks
   // up the submission's report token and sends the link; nothing is rasterised.
   $("sendReport").onclick = async function () {
-    if (covStatus !== "completed") return;
-    var btn = this, old = btn.textContent;
+    if (covStatus !== "completed" || delivered) return;
+    var btn = this;
     btn.disabled = true; btn.textContent = UI[UILANG].sending;
     try {
       var sess = await sb.auth.getSession();
@@ -498,11 +504,13 @@
       });
       var data = await resp.json().catch(function () { return {}; });
       if (!resp.ok) throw new Error(data.message || UI[UILANG].sendFail);
+      delivered = true;
       toast(UI[UILANG].sendOk);
     } catch (e) {
       toast(e.message || UI[UILANG].sendFail);
     }
-    btn.disabled = false; btn.textContent = old;
+    // Reflect the outcome: delivered → disabled "Sent ✓"; failed → back to "Send".
+    updateSendBtn();
   };
 
   var finalizeBtn = $("finalizeBtn");
@@ -611,6 +619,7 @@
       if (!state.coverage.date) state.coverage.date = today();
       if (state.coverage.score10 == null) state.coverage.score10 = "";
       covStatus = covRow.status || "in_progress";
+      delivered = !!covRow.delivered_at;
       setSaveState("loaded");
     } else {
       covStatus = "in_progress";
