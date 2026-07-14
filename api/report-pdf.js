@@ -92,8 +92,9 @@ module.exports = async (req, res) => {
     res.setHeader("Cache-Control", "no-store");
     return res.status(200).end(pdf);
   } catch (err) {
-    console.error("report-pdf error:", err);
-    return res.status(500).json({ message: "Couldn't generate the PDF" });
+    console.error("report-pdf error:", err && err.stack ? err.stack : err);
+    // TEMP: surface the real error to the caller so we can diagnose the deploy.
+    return res.status(500).json({ message: "Couldn't generate the PDF", error: String(err && err.message ? err.message : err) });
   } finally {
     if (browser) { try { await browser.close(); } catch (e) {} }
   }

@@ -66,7 +66,13 @@
     var old = btn.textContent; btn.textContent = u.preparing;
     try {
       var resp = await fetch("/api/report-pdf?t=" + encodeURIComponent(token));
-      if (!resp.ok) throw new Error("pdf");
+      if (!resp.ok) {
+        // TEMP diagnostic: surface the server error (JSON) or platform error (text).
+        var raw = await resp.text().catch(function () { return ""; });
+        var detail = raw;
+        try { var j = JSON.parse(raw); detail = j.error || j.message || raw; } catch (e2) {}
+        throw new Error(resp.status + " · " + String(detail || "").slice(0, 400));
+      }
       var blob = await resp.blob();
       var href = URL.createObjectURL(blob);
       var a = document.createElement("a");
@@ -74,7 +80,7 @@
       document.body.appendChild(a); a.click(); a.remove();
       setTimeout(function () { URL.revokeObjectURL(href); }, 4000);
     } catch (e) {
-      alert(u.pdfErr);
+      alert(u.pdfErr + (e && e.message ? "\n\n" + e.message : ""));
     }
     btn.textContent = old; btn.disabled = false; delete btn.dataset.busy;
   });
