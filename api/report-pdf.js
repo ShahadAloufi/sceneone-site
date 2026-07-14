@@ -13,6 +13,8 @@
 // Required env vars: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY.
 // Optional: SITE_URL (defaults to the production domain).
 
+const fs = require("fs");
+const path = require("path");
 const chromium = require("@sparticuz/chromium");
 const puppeteer = require("puppeteer-core");
 
@@ -23,10 +25,44 @@ function svc() {
   return { url: process.env.SUPABASE_URL, key: process.env.SUPABASE_SERVICE_ROLE_KEY };
 }
 
+// TEMP diagnostic — reports the runtime OS/Node, whether @sparticuz/chromium's
+// files shipped, and where (if anywhere) libnss3.so ends up after extraction.
+async function debugInfo() {
+  function ls(dir) { try { return fs.readdirSync(dir); } catch (e) { return "ERR:" + e.message; } }
+  function firstLine(f) { try { return fs.readFileSync(f, "utf8").split("\n")[0]; } catch (e) { return "(none)"; } }
+  var out = {
+    node: process.version,
+    arch: process.arch,
+    platform: process.platform,
+    osRelease: firstLine("/etc/os-release"),
+    systemRelease: firstLine("/etc/system-release"),
+  };
+  var pkgDir;
+  try { pkgDir = path.dirname(require.resolve("@sparticuz/chromium/package.json")); } catch (e) { pkgDir = "unresolved:" + e.message; }
+  out.chromiumPkgDir = pkgDir;
+  out.chromiumBin = typeof pkgDir === "string" ? ls(path.join(pkgDir, "bin")) : null;
+  try {
+    out.execPath = await chromium.executablePath();
+  } catch (e) { out.execPathError = e.message; }
+  out.LD_LIBRARY_PATH = process.env.LD_LIBRARY_PATH || null;
+  out.tmp = ls("/tmp");
+  // Hunt for libnss3.so under the likely extraction roots.
+  out.libnss3 = [];
+  ["/tmp", "/tmp/al2", "/tmp/al2023", "/tmp/lib"].forEach(function (d) {
+    var found = ls(d);
+    if (Array.isArray(found)) found.forEach(function (f) { if (/libnss3/.test(f)) out.libnss3.push(d + "/" + f); });
+  });
+  return out;
+}
+
 module.exports = async (req, res) => {
   if (req.method !== "GET") {
     res.setHeader("Allow", "GET");
     return res.status(405).json({ message: "Method not allowed" });
+  }
+  if (req.query && req.query.debug === "1") {
+    try { return res.status(200).json(await debugInfo()); }
+    catch (e) { return res.status(500).json({ debugError: String(e && e.stack ? e.stack : e) }); }
   }
   const { url, key } = svc();
   if (!url || !key) {
