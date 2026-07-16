@@ -56,6 +56,11 @@ Supabase SQL below**; auth/serverless flows are verifiable only on the deploy.
 - **Database/Auth/Storage:** Supabase (Postgres + RLS, Supabase Auth, Storage).
 - **Email:** Resend (verified sender domain `sceneone.info`).
 - **Hosting:** Vercel (static + serverless). Repo: `ShahadAloufi/sceneone-site`.
+- **Analytics:** Vercel Web Analytics via `<script defer src="/_vercel/insights/script.js">`
+  (Vercel's edge serves that path — no npm package, no build). Added to the **public
+  pages only** (`index`, `submit`, `about-coverage`, `privacy`, `terms`). Deliberately
+  **not** on `report.html` (writer's private tokenized link), `admin.html` or
+  `coverage.html` (internal staff tools) — don't add it there.
 
 Do NOT introduce Next.js/React/a compiler/npm build. Keep it buildless.
 
