@@ -222,7 +222,15 @@
       submitBtn.disabled = true;
       submitBtn.textContent = "جارٍ الإرسال...";
 
-      var sb = window.supabase.createClient(CFG.url, CFG.anonKey);
+      // The public submission form must always act as an ANONYMOUS writer. Without
+      // this, a Supabase session left in this browser (e.g. an admin signed into
+      // the dashboard) would be restored here and the file upload would run as
+      // `authenticated` — which the anon-only Storage insert policy rejects
+      // ("new row violates row-level security policy"). A sessionless client keeps
+      // the upload on the `anon` role no matter who's logged in on this device.
+      var sb = window.supabase.createClient(CFG.url, CFG.anonKey, {
+        auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
+      });
       var filePath = buildPath(file.name);
 
       countPdfPages(file).then(function (pageCount) {
