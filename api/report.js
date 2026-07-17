@@ -4,7 +4,7 @@
 //
 // The unguessable per-submission token IS the authorization: no login. Returns
 // only the fields the report shows (never the writer's email, file path, etc.),
-// and only once the coverage is marked "completed". Reads use the service-role
+// and only once the coverage is "approved" by staff. Reads use the service-role
 // key (server-side only).
 //
 // Required env vars: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
@@ -41,13 +41,14 @@ module.exports = async (req, res) => {
   if (!subs.length) return res.status(404).json({ message: "Report not found" });
   const sub = subs[0];
 
-  // Only expose a completed coverage.
+  // Only expose an APPROVED coverage — the writer sees the report only after it
+  // has passed staff quality review (a submitted/revision coverage stays private).
   const covResp = await fetch(
     url + "/rest/v1/coverages?submission_id=eq." + encodeURIComponent(sub.id) + "&select=data,status",
     { headers }
   );
   const covs = covResp.ok ? await covResp.json() : [];
-  if (!covs.length || covs[0].status !== "completed") {
+  if (!covs.length || covs[0].status !== "approved") {
     return res.status(404).json({ message: "Report not found" });
   }
 

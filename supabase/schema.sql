@@ -168,14 +168,16 @@ begin
   if new.assigned_to is distinct from old.assigned_to and new.assigned_to = caller then
     select role into caller_role from public.admins where id = caller;
     if caller_role in ('senior_reader', 'junior_reader') then
-      -- Any other primary assignment of theirs whose report isn't delivered yet?
-      -- (LEFT JOIN so a submission with no coverage row still counts as active.)
+      -- Any other primary assignment of theirs that they haven't handed off yet?
+      -- A reader is freed once they SUBMIT for approval, so "active" = a coverage
+      -- still in their hands: no coverage row, in_progress, or revision_requested.
+      -- (submitted/approved no longer count — QC/delivery is out of their hands.)
       select count(*) into active_count
       from public.submissions s
       left join public.coverages c on c.submission_id = s.id
       where s.assigned_to = caller
         and s.id <> new.id
-        and c.delivered_at is null;
+        and (c.status is null or c.status in ('in_progress', 'revision_requested'));
       if active_count > 0 then
         raise exception 'READER_HAS_ACTIVE_ASSIGNMENT'
           using errcode = 'check_violation';
@@ -255,33 +257,54 @@ create table if not exists public.coverages (
   id            uuid primary key default gen_random_uuid(),
   submission_id uuid not null unique references public.submissions(id) on delete cascade,
   reader_id     uuid references public.admins(id) on delete set null,
-  status        text not null default 'in_progress' check (status in ('in_progress', 'completed')),
+  -- Coverage lifecycle (quality-controlled): in_progress (reader drafting) →
+  -- submitted (reader sent it for approval, locked from edits) → approved
+  -- (staff signed off, report sent to the writer) OR revision_requested (staff
+  -- bounced it back to the reader with a note). Only 'approved' is writer-visible.
+  status        text not null default 'in_progress'
+                check (status in ('in_progress', 'submitted', 'revision_requested', 'approved')),
   data          jsonb not null default '{}'::jsonb,
   created_at    timestamptz not null default now(),
   updated_at    timestamptz not null default now()
 );
 
--- Delivery: set (server-side, service role) when a reader/admin sends the report
--- to the writer via /api/send-report. Drives the reader's "Delivered by me" tab.
+-- Delivery: set (server-side, service role) when a STAFF reviewer approves the
+-- coverage via /api/review-coverage. Drives the reader's "Delivered by me" tab.
 alter table public.coverages add column if not exists delivered_at timestamptz;
 alter table public.coverages add column if not exists delivered_by uuid references public.admins(id) on delete set null;
+
+-- Quality-control review note: the reason a staff reviewer sent the coverage back
+-- for revision. Set server-side on request_revision, shown to the reader.
+alter table public.coverages add column if not exists review_note text;
+
+-- Migrate the old two-state model (in_progress | completed) to the QC lifecycle:
+-- a completed coverage that was already delivered → approved; completed but never
+-- sent → submitted (awaiting the new quality review). Swap the CHECK constraint
+-- around the data migration so both old and new values are momentarily allowed.
+alter table public.coverages drop constraint if exists coverages_status_check;
+update public.coverages set status = 'approved'  where status = 'completed' and delivered_at is not null;
+update public.coverages set status = 'submitted' where status = 'completed' and delivered_at is null;
+alter table public.coverages add constraint coverages_status_check
+  check (status in ('in_progress', 'submitted', 'revision_requested', 'approved'));
 
 alter table public.coverages enable row level security;
 
 -- Coverage access. Staff (admin / super_admin) can read every coverage.
 -- Readers are limited to coverages for scripts they're assigned to (primary or
--- co-reader), PLUS any coverage that has been marked completed — a finished
--- report is viewable by every reader. Older policies are dropped first.
+-- co-reader), PLUS any coverage that has been APPROVED — an approved report is
+-- the writer-visible, finished product and any reader may view it. Older
+-- policies are dropped first.
 drop policy if exists "admins can read coverages" on public.coverages;
 drop policy if exists "staff read all, readers read assigned coverages" on public.coverages;
 drop policy if exists "staff+assigned read, everyone reads completed" on public.coverages;
-create policy "staff+assigned read, everyone reads completed"
+drop policy if exists "staff+assigned read, everyone reads approved" on public.coverages;
+create policy "staff+assigned read, everyone reads approved"
   on public.coverages for select
   to authenticated
   using (
     public.is_staff(auth.uid())
     or public.is_assigned(auth.uid(), submission_id)
-    or status = 'completed'
+    or status = 'approved'
   );
 
 -- Create a coverage row (first time a submission is written to). Only the
@@ -305,6 +328,47 @@ create policy "only assigned readers update coverages"
   to authenticated
   using ( public.is_assigned(auth.uid(), submission_id) )
   with check ( public.is_assigned(auth.uid(), submission_id) );
+
+-- Quality-control state machine (client side). A signed-in READER edits their
+-- own coverage via the client; the privileged transitions (approve / request
+-- revision, delivery stamping) happen ONLY through /api/review-coverage using the
+-- service role. This trigger enforces that split so a reader can never approve
+-- their own work (which would expose it to the writer) or edit a locked coverage:
+--   • service role (auth.uid() IS NULL) — the API — may do anything;
+--   • a reader may only leave status in ('in_progress','submitted');
+--   • once 'submitted' or 'approved' the coverage is LOCKED to the reader until a
+--     staff reviewer sends it back ('revision_requested') or approves it;
+--   • readers can never set delivered_at/by or review_note.
+create or replace function public.enforce_coverage_reader_transitions()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if auth.uid() is null then
+    return new; -- service role (the review API) is trusted
+  end if;
+
+  if tg_op = 'UPDATE' and old.status in ('submitted', 'approved') then
+    raise exception 'COVERAGE_LOCKED' using errcode = 'check_violation';
+  end if;
+  if new.status not in ('in_progress', 'submitted') then
+    raise exception 'COVERAGE_FORBIDDEN_STATUS' using errcode = 'check_violation';
+  end if;
+
+  -- Delivery + review fields are staff/service-only.
+  new.delivered_at := case when tg_op = 'UPDATE' then old.delivered_at else null end;
+  new.delivered_by := case when tg_op = 'UPDATE' then old.delivered_by else null end;
+  new.review_note  := case when tg_op = 'UPDATE' then old.review_note  else null end;
+  return new;
+end;
+$$;
+
+drop trigger if exists trg_coverage_reader_transitions on public.coverages;
+create trigger trg_coverage_reader_transitions
+  before insert or update on public.coverages
+  for each row execute function public.enforce_coverage_reader_transitions();
 
 -- Base table privileges for the signed-in role (RLS above restricts to admins).
 grant select, insert, update on public.coverages to authenticated;

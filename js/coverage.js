@@ -43,6 +43,18 @@
       editCoverage: "Edit coverage", print: "Print / Save as PDF",
       sendReport: "Send to writer", sending: "Sending…", sent: "Sent to writer ✓",
       sendOk: "Report sent to the writer", sendFail: "Couldn't send the report",
+      // Quality-control review flow
+      submitApproval: "Submit Coverage for Approval",
+      approveSend: "Approve & Send to Writer", requestRevision: "Request Revision",
+      revisionNotePh: "Why does this need revision? (required)",
+      noteRequired: "Add a revision note before requesting changes.",
+      awaitingBanner: "Submitted for approval — awaiting the quality team's review. It's locked until they respond.",
+      revisionBanner: "Revision requested by the quality team:",
+      approvedBanner: "Approved and sent to the writer.",
+      reviewPrompt: "This coverage is awaiting your approval.",
+      tSubmitted: "Coverage submitted for approval", tApproved: "Approved and sent to the writer",
+      tRevision: "Sent back to the reader for revision",
+      approving: "Approving…", requesting: "Sending…", reviewFail: "Couldn't complete the action.",
       pl: { title: "Title", writer: "Writer", email: "Email", ref: "Reference", format: "Format", genre: "Genre", length: "Length", draft: "Draft", ip: "IP registered", file: "Script file", logline: "Logline", vision: "Writer's vision" },
       ipYes: "Registered", ipNo: "Not registered", dl: "Download script", untitled: "Untitled", dash: "—", pagesUnit: "pages",
       saving: "Saving…", saved: "Saved", saveFailed: "Save failed", loaded: "Loaded", newCov: "New coverage", viewOnly: "View only",
@@ -79,6 +91,18 @@
       editCoverage: "تعديل التقييم", print: "طباعة / حفظ PDF",
       sendReport: "إرسال إلى الكاتب", sending: "جارٍ الإرسال…", sent: "تم الإرسال ✓",
       sendOk: "تم إرسال التقرير إلى الكاتب", sendFail: "تعذّر إرسال التقرير",
+      // مسار مراجعة الجودة
+      submitApproval: "إرسال التغطية للاعتماد",
+      approveSend: "اعتماد وإرسال إلى الكاتب", requestRevision: "طلب تعديل",
+      revisionNotePh: "ما سبب الحاجة إلى التعديل؟ (مطلوب)",
+      noteRequired: "أضف ملاحظة التعديل قبل طلب التعديل.",
+      awaitingBanner: "تم الإرسال للاعتماد — بانتظار مراجعة فريق الجودة. التغطية مقفلة حتى ردّهم.",
+      revisionBanner: "طلب فريق الجودة إجراء تعديل:",
+      approvedBanner: "تم الاعتماد والإرسال إلى الكاتب.",
+      reviewPrompt: "هذه التغطية بانتظار اعتمادك.",
+      tSubmitted: "تم إرسال التغطية للاعتماد", tApproved: "تم الاعتماد والإرسال إلى الكاتب",
+      tRevision: "أُعيدت إلى القارئ للتعديل",
+      approving: "جارٍ الاعتماد…", requesting: "جارٍ الإرسال…", reviewFail: "تعذّر إكمال الإجراء.",
       pl: { title: "عنوان السيناريو", writer: "اسم الكاتب", email: "البريد الإلكتروني", ref: "الرقم المرجعي", format: "نوع العمل", genre: "التصنيف", length: "عدد الصفحات/المدة", draft: "نسخة السيناريو", ip: "تسجيل الملكية الفكرية", file: "ملف السيناريو", logline: "الملخص المختصر", vision: "رؤية الكاتب" },
       ipYes: "مسجل", ipNo: "غير مسجل", dl: "تحميل النص", untitled: "بدون عنوان", dash: "—", pagesUnit: "صفحة",
       saving: "جارٍ الحفظ…", saved: "تم الحفظ", saveFailed: "فشل الحفظ", loaded: "تم التحميل", newCov: "تقييم جديد", viewOnly: "عرض فقط",
@@ -160,16 +184,12 @@
   }
   function refreshFinalizeState() {
     if (readOnly) return;
-    // The report button only needs every point scored; the finalize button also
-    // needs every written section filled in.
+    // The report-preview button only needs every point scored; the "Submit for
+    // approval" button also needs every written section filled in.
     var scores = allScoresSet();
     var rep = $("genReport");
-    if (rep) {
-      if (covStatus === "completed") { rep.disabled = false; tip("genReportTip", ""); }
-      else { rep.disabled = !scores; tip("genReportTip", scores ? "" : UI[UILANG].scoresHint); }
-    }
+    if (rep) { rep.disabled = !scores; tip("genReportTip", scores ? "" : UI[UILANG].scoresHint); }
     var btn = $("finalizeBtn"); if (!btn) return;
-    if (covStatus === "completed") { btn.disabled = false; tip("finalizeTip", ""); return; }
     var ok = isEvalComplete();
     btn.disabled = !ok;
     tip("finalizeTip", ok ? "" : UI[UILANG].finalizeHint);
@@ -194,8 +214,10 @@
   var sb = null;
   var submissionId = new URLSearchParams(location.search).get("id");
   var me = null;                 // { id, email, name, role }
-  var covStatus = "in_progress"; // 'in_progress' | 'completed'
-  var delivered = false;         // true once the report has been emailed to the writer
+  var covStatus = "in_progress"; // 'in_progress' | 'submitted' | 'revision_requested' | 'approved'
+  var reviewNote = "";           // staff's revision note (shown to the reader)
+  var isStaff = false;           // admin / super_admin — the quality reviewer
+  var assignedToMe = false;      // I'm the primary assignee or co-reader of this script
   var readOnly = false;          // true for staff viewing a coverage they aren't assigned to
   var saveT = null;
 
@@ -207,6 +229,10 @@
   async function save() {
     if (readOnly) return;
     if (!sb || !submissionId || !me) return;
+    // A reader working on a bounced-back coverage moves it out of
+    // 'revision_requested' the moment they save — the DB trigger only lets readers
+    // persist 'in_progress' or 'submitted', so map the revision state to a draft.
+    if (covStatus === "revision_requested") covStatus = "in_progress";
     setSaveState("saving");
     var res = await sb.from("coverages").upsert({
       submission_id: submissionId,
@@ -438,14 +464,12 @@
       var k = el.getAttribute("data-i18n-ph"); if (u[k] != null) el.setAttribute("placeholder", u[k]);
     });
     document.querySelectorAll("#uiLang button").forEach(function (b) { b.classList.toggle("on", b.dataset.l === lang); });
-    finalizeBtn.textContent = covStatus === "completed" ? u.reopen : u.finalize;
     setSaveState(currentSaveKey);
     buildCoverageInputs();
     fillCovFields();
     renderPulled();
     if ($("view-report").classList.contains("active")) renderReport();
-    if (readOnly) applyReadOnly();
-    updateSendBtn();
+    configureWorkspaceState();
   }
 
   // Lock the whole workspace for staff who aren't the assigned reader: every
@@ -472,59 +496,109 @@
   });
 
   $("genReport").onclick = function () {
-    // Safety net: never open the report until every point is scored.
-    if (covStatus !== "completed" && !allScoresSet()) { toast(UI[UILANG].scoresHint); return; }
+    // Safety net: never open the report preview until every point is scored (a
+    // submitted/approved coverage is already scored, so allow it regardless).
+    if (covStatus === "in_progress" && !allScoresSet()) { toast(UI[UILANG].scoresHint); return; }
     show("report");
   };
   $("backToReview").onclick = function () { show("review"); };
   $("printReport").onclick = function () { window.print(); };
 
-  // "Send to writer" is only offered once the coverage is completed.
-  function updateSendBtn() {
-    var b = $("sendReport"); if (!b) return;
-    b.hidden = covStatus !== "completed";
-    // Once delivered, the button becomes a disabled "Sent ✓" confirmation so the
-    // reader can't fire duplicate emails and the sent state survives re-renders.
-    b.disabled = delivered;
-    b.textContent = delivered ? UI[UILANG].sent : UI[UILANG].sendReport;
+  // Whether the assigned reader may currently edit (draft states only; a
+  // submitted or approved coverage is locked until staff act on it).
+  function readerCanEdit() {
+    return assignedToMe && (covStatus === "in_progress" || covStatus === "revision_requested");
   }
-  // Email the writer a private link to the hosted report page. The server looks
-  // up the submission's report token and sends the link; nothing is rasterised.
-  $("sendReport").onclick = async function () {
-    if (covStatus !== "completed" || delivered) return;
-    var btn = this;
-    btn.disabled = true; btn.textContent = UI[UILANG].sending;
+
+  function setBanner(kind, text) {
+    var el = $("covBanner"); if (!el) return;
+    el.hidden = !kind;
+    el.className = "cov-banner" + (kind ? " cov-banner--" + kind : "");
+    el.textContent = text || "";
+  }
+
+  // Single source of truth for every status-dependent piece of the workspace:
+  // the read-only lock, the reader's submit button, the reader/staff banner, and
+  // the staff review bar. Re-run after load, each language switch, and every
+  // status transition.
+  function configureWorkspaceState() {
+    var u = UI[UILANG];
+    var editable = readerCanEdit();
+    readOnly = !editable;
+    var showReview = isStaff && covStatus === "submitted";
+
+    // Banner (top of the review view).
+    if (showReview) setBanner("await", u.reviewPrompt);
+    else if (covStatus === "approved") setBanner("approved", u.approvedBanner);
+    else if (covStatus === "submitted") setBanner("await", u.awaitingBanner);
+    else if (reviewNote) setBanner("revision", u.revisionBanner + " " + reviewNote);
+    else setBanner("", "");
+
+    // Reader's "Submit Coverage for Approval" — shown only while editable.
+    var submit = $("finalizeBtn");
+    if (submit) { submit.hidden = !editable; submit.textContent = u.submitApproval; }
+
+    // Staff quality-review bar — only when the coverage is awaiting review.
+    var bar = $("reviewBar"); if (bar) bar.hidden = !showReview;
+
+    // Lock everything when read-only, THEN restore the always-available preview
+    // and (for staff) the live review controls, which live inside the locked view.
+    if (readOnly) applyReadOnly();
+    var gen = $("genReport"); if (gen) gen.disabled = false;
+    if (showReview) {
+      var ap = $("approveBtn"), rv = $("requestRevisionBtn"), note = $("revisionNote");
+      if (ap) { ap.disabled = false; ap.textContent = u.approveSend; }
+      if (rv) { rv.disabled = false; rv.textContent = u.requestRevision; }
+      if (note) { note.disabled = false; note.readOnly = false; note.setAttribute("placeholder", u.revisionNotePh); }
+    }
+    if (editable) refreshFinalizeState();
+  }
+
+  // Reader submits the coverage for quality approval (in_progress/revision → submitted).
+  var finalizeBtn = $("finalizeBtn");
+  finalizeBtn.onclick = async function () {
+    if (!readerCanEdit()) return;
+    if (!isEvalComplete()) { toast(UI[UILANG].finalizeHint); return; }
+    var prev = covStatus;
+    covStatus = "submitted";
+    await save();
+    if (currentSaveKey === "saveFailed") { covStatus = prev; toast(UI[UILANG].saveFailed); return; }
+    configureWorkspaceState();
+    toast(UI[UILANG].tSubmitted);
+  };
+
+  // Staff quality actions → the privileged /api/review-coverage endpoint.
+  async function callReview(action, note, btn, busyText) {
+    var ap = $("approveBtn"), rv = $("requestRevisionBtn"), prevText = btn.textContent;
+    ap.disabled = true; rv.disabled = true; btn.textContent = busyText;
     try {
       var sess = await sb.auth.getSession();
       var token = sess.data.session && sess.data.session.access_token;
-      var resp = await fetch("/api/send-report", {
+      var body = { submission_id: submissionId, action: action };
+      if (note != null) body.note = note;
+      var resp = await fetch("/api/review-coverage", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
-        body: JSON.stringify({ submission_id: submissionId })
+        body: JSON.stringify(body)
       });
       var data = await resp.json().catch(function () { return {}; });
-      if (!resp.ok) throw new Error(data.message || UI[UILANG].sendFail);
-      delivered = true;
-      toast(UI[UILANG].sendOk);
+      if (!resp.ok) throw new Error(data.message || UI[UILANG].reviewFail);
+      covStatus = data.status || (action === "approve" ? "approved" : "revision_requested");
+      if (action === "request_revision") reviewNote = note;
+      configureWorkspaceState();
+      toast(action === "approve" ? UI[UILANG].tApproved : UI[UILANG].tRevision);
     } catch (e) {
-      toast(e.message || UI[UILANG].sendFail);
+      ap.disabled = false; rv.disabled = false; btn.textContent = prevText;
+      toast(e.message || UI[UILANG].reviewFail);
     }
-    // Reflect the outcome: delivered → disabled "Sent ✓"; failed → back to "Send".
-    updateSendBtn();
-  };
-
-  var finalizeBtn = $("finalizeBtn");
-  finalizeBtn.onclick = async function () {
-    // Safety net: never finalize an incomplete coverage even if the button
-    // is somehow reachable (reopening a completed one is always allowed).
-    if (covStatus !== "completed" && !isEvalComplete()) { toast(UI[UILANG].finalizeHint); return; }
-    covStatus = covStatus === "completed" ? "in_progress" : "completed";
-    var u = UI[UILANG];
-    finalizeBtn.textContent = covStatus === "completed" ? u.reopen : u.finalize;
-    refreshFinalizeState();
-    updateSendBtn();
-    await save();
-    toast(covStatus === "completed" ? u.tComplete : u.tReopened);
+  }
+  var approveBtn = $("approveBtn");
+  if (approveBtn) approveBtn.onclick = function () { callReview("approve", null, this, UI[UILANG].approving); };
+  var requestRevisionBtn = $("requestRevisionBtn");
+  if (requestRevisionBtn) requestRevisionBtn.onclick = function () {
+    var note = ($("revisionNote").value || "").trim();
+    if (!note) { toast(UI[UILANG].noteRequired); $("revisionNote").focus(); return; }
+    callReview("request_revision", note, this, UI[UILANG].requesting);
   };
 
   /* ---------- guard helpers ---------- */
@@ -619,30 +693,24 @@
       if (!state.coverage.date) state.coverage.date = today();
       if (state.coverage.score10 == null) state.coverage.score10 = "";
       covStatus = covRow.status || "in_progress";
-      delivered = !!covRow.delivered_at;
+      reviewNote = covRow.review_note || "";
       setSaveState("loaded");
     } else {
       covStatus = "in_progress";
       setSaveState("newCov");
     }
 
-    // Access rules:
-    //  • Assigned reader (primary or co-reader) → full edit access.
-    //  • Completed coverage → read-only report, viewable by any admin/reader.
-    //  • Otherwise: unassigned readers are blocked; unassigned staff get a
-    //    read-only view, so the workspace stays locked for everyone but the reader.
-    var isReaderRole = me.role === "senior_reader" || me.role === "junior_reader";
-    var assignedToMe = subRes.data.assigned_to === me.id || subRes.data.co_reader_id === me.id;
-    var isCompleted = !!(covRow && covRow.status === "completed");
-    if (!assignedToMe) {
-      if (isCompleted) {
-        readOnly = true; // finished report — anyone may view, only the reader edits
-      } else if (isReaderRole) {
-        guardState(G.assignT, G.assignM, true);
-        return;
-      } else {
-        readOnly = true; // staff may look, but not edit
-      }
+    // Access rules (the precise read-only lock is derived per-status in
+    // configureWorkspaceState()):
+    //  • Assigned reader → edits while drafting; locked once submitted/approved.
+    //  • Staff (admin/super_admin) → read-only view + review actions when submitted.
+    //  • Approved coverage → the writer-visible report, viewable read-only by any.
+    //  • Otherwise an unassigned non-staff reader has no access → block.
+    isStaff = me.role === "admin" || me.role === "super_admin";
+    assignedToMe = subRes.data.assigned_to === me.id || subRes.data.co_reader_id === me.id;
+    if (!assignedToMe && !isStaff && covStatus !== "approved") {
+      guardState(G.assignT, G.assignM, true);
+      return;
     }
     // Reader identity is always anonymous — never expose the admin's real name.
     state.coverage.reader = "Scene One Reader";

@@ -85,7 +85,8 @@ Do NOT introduce Next.js/React/a compiler/npm build. Keep it buildless.
   renderer used by BOTH `coverage.js` and `report.js` — single source of truth for
   the report markup, so the workspace preview and the writer's page never drift).
 - **API (`/api`):** `submissions.js`, `registrations.js`, `admin/admins.js`,
-  `send-report.js`, `report.js` (public read-only report data, gated by token).
+  `review-coverage.js` (staff approve / request-revision + writer email),
+  `report.js` (public report data, token-gated), `report-pdf.js` (server PDF).
 - **Schema:** `supabase/schema.sql` is the source of record; **schema changes are
   run manually in the Supabase SQL Editor** (the file is not auto-applied).
 
@@ -103,7 +104,8 @@ Tables (all with RLS enabled):
   `file_path`, `file_name`, `status`, `assigned_to`, `co_reader_id`, `pages`,
   `report_token` (uuid; the unguessable key in the writer's report link).
 - **coverages** — `submission_id`, `data` (jsonb: the full coverage content),
-  `status` (`in_progress` | `completed`), `delivered_at`, `delivered_by` (set
+  `status` (`in_progress` | `submitted` | `revision_requested` | `approved`),
+  `review_note` (staff revision note), `delivered_at`, `delivered_by` (set
   server-side when the report is sent to the writer).
 - **access_log** — `admin_id`, `ip`, `user_agent`, `created_at`. One row per
   dashboard sign-in (written by `/api/log-access`, service role); **super-admins
@@ -111,7 +113,7 @@ Tables (all with RLS enabled):
 
 RLS uses `SECURITY DEFINER` helper functions: `is_admin(uid)` (in admins table),
 `is_staff(uid)` (admin/super_admin), `is_assigned(uid, submission_id)` (primary
-assignee or co_reader). Coverages: SELECT = staff OR assigned OR status='completed';
+assignee or co_reader). Coverages: SELECT = staff OR assigned OR status='approved';
 INSERT/UPDATE = assigned only.
 
 **Realtime:** the dashboard subscribes to `submissions` and `coverages`. These tables
@@ -126,38 +128,49 @@ must be in the `supabase_realtime` publication for live updates to fire.
 - **Assignment:** a reader claims a script (primary assignee). If the primary is a
   **junior** reader, a **co-reader** slot opens for a second reader.
 - **One active assignment (readers):** a reader may **not** claim the **primary** slot
-  of a new submission while they still have another primary assignment whose report
-  hasn't been **delivered** to the writer (`coverages.delivered_at IS NULL`). Enforced
-  authoritatively by the DB trigger `enforce_single_active_assignment()` (a `check_violation`
-  raising `READER_HAS_ACTIVE_ASSIGNMENT`); the admin UI mirrors it by disabling the "+"
-  claim button. **Co-reader slots are exempt** (don't count and aren't blocked), staff
-  assignment/self-unassignment/status edits are untouched, and completed-but-unsent
-  coverage still counts as active.
-- **Coverage access (read-only model):** the assignee edits; non-assigned readers are
-  blocked; non-assigned staff get a read-only view; a **completed** coverage is a
-  finished report viewable read-only by any authenticated staff/reader.
-- **Dashboard coverage label:** completed → "View report"; unassigned → "Awaiting
-  assignment"; assigned-to-me → "Start/Continue coverage"; claimed-by-another →
-  "In review".
-- **Report gating:** "Generate report" needs a 1–5 score on all 7 evaluation points;
-  "Mark complete" additionally needs every written section filled.
+  of a new submission while they still have another primary assignment they haven't
+  **handed off** — i.e. its coverage is still `in_progress` / `revision_requested` (or
+  not started). Submitting for approval frees them (QC/delivery is out of their hands).
+  Enforced authoritatively by the DB trigger `enforce_single_active_assignment()` (a
+  `check_violation` raising `READER_HAS_ACTIVE_ASSIGNMENT`); the admin UI mirrors it by
+  disabling the "+" claim button. **Co-reader slots are exempt.**
+- **Coverage lifecycle (quality-controlled):** `in_progress` (reader drafting) →
+  `submitted` (reader hit **"Submit Coverage for Approval"**; locked from reader edits;
+  NOT writer-visible) → `approved` (staff signed off, report sent to the writer) OR
+  `revision_requested` (staff bounced it back with a required note; reader revises and
+  resubmits). **Readers can never send to the writer or self-approve** — the DB trigger
+  `enforce_coverage_reader_transitions()` restricts client (reader) writes to
+  `in_progress`/`submitted` and locks a submitted/approved coverage. **Only staff
+  (admin/super_admin)** approve or request revision, and only via the service-role
+  endpoint `/api/review-coverage` (`action: approve | request_revision`). Approval
+  stamps `coverages.delivered_at`/`delivered_by` and emails the writer.
+- **Coverage access:** the assignee edits while drafting; staff get a read-only view
+  plus the review actions when `submitted`; an **approved** coverage is the
+  writer-visible report, viewable read-only by any authenticated staff/reader.
+- **Writer visibility:** the writer sees the report **only when `status = 'approved'`**
+  (`/api/report` and `/api/report-pdf` gate on it; RLS SELECT exposes only `approved`).
+- **Dashboard coverage label:** approved → "View report"; submitted → staff "Review
+  coverage" / others "Awaiting approval"; revision_requested → assignee "Revise
+  coverage" / others "Revision requested"; unassigned → "Awaiting assignment";
+  assigned-to-me drafting → "Start/Continue coverage"; claimed-by-another → "In review".
+- **Report gating:** "Generate report" (preview) needs a 1–5 score on all 7 evaluation
+  points; "Submit Coverage for Approval" additionally needs every written section filled.
 - **Deadline:** every submission's deadline = `created_at` + the max turnaround for its
   type — **features 15 days, shorts 10 days** (matches the landing-page cards) — shown
   on the dashboard with a color-coded days-left/overdue badge (derived, not stored;
   delivered submissions leave the main list, so no "delivered" badge appears there).
-- **Report delivery:** a manual **"Send to writer"** button on a *completed* report
-  emails the writer a **private link** to the hosted report page
-  (`/report?t=<report_token>`) via `/api/send-report` (Resend). The writer opens it
-  in any browser (native rendering → correct Arabic, no account needed) and can
-  Save-as-PDF from there. **Why a link, not a PDF attachment:** client-side
-  rasterisation (html2canvas) can't reliably render Arabic word spacing, so the
-  report is rendered natively instead. A successful send stamps
-  `coverages.delivered_at` / `delivered_by` (service role), which powers the
+- **Report delivery:** delivery is the side effect of **staff approval** (there is no
+  reader "Send to writer" anymore). Approving via `/api/review-coverage` emails the
+  writer a **private link** to the hosted report page (`/report?t=<report_token>`,
+  Resend). The writer opens it in any browser (native rendering → correct Arabic, no
+  account) and can Save-as-PDF (server-generated PDF via `/api/report-pdf`). **Why a
+  link, not a PDF attachment:** client-side rasterisation can't reliably render Arabic.
+  Approval stamps `coverages.delivered_at` / `delivered_by` (the approving admin), which powers the
   reader's **"Delivered by me"** dashboard tab (readers only) — the scripts they
   reviewed (assignee/co-reader) whose report was sent to the writer — and the
   super-admin **"Deliveries"** oversight tab (all delivered reports + the reviewing
   reader). Once delivered, a submission **leaves the main Scripts list** (which shows
-  only the active pipeline: unassigned / in review / completed-but-not-sent) and
+  only the active pipeline: unassigned / in review / submitted-awaiting-approval) and
   appears in those delivery tabs instead. The move happens live (realtime + on
   return to the dashboard).
 - **PDF page count:** counted in the browser at upload (pdf.js); the coverage panel
@@ -267,8 +280,43 @@ must be in the `supabase_realtime` publication for live updates to fire.
   alter table public.coverages add column if not exists delivered_at timestamptz;
   alter table public.coverages add column if not exists delivered_by uuid references public.admins(id) on delete set null;
 
-  -- One-active-assignment rule: a reader can't claim a new primary slot while an
-  -- earlier primary assignment's report is undelivered. Full body in supabase/schema.sql.
+  -- Quality-control coverage flow: new statuses + review_note, migrate old data,
+  -- writer sees only 'approved', and a trigger that stops readers approving their
+  -- own work or editing a locked coverage. Full bodies in supabase/schema.sql.
+  alter table public.coverages add column if not exists review_note text;
+  alter table public.coverages drop constraint if exists coverages_status_check;
+  update public.coverages set status = 'approved'  where status = 'completed' and delivered_at is not null;
+  update public.coverages set status = 'submitted' where status = 'completed' and delivered_at is null;
+  alter table public.coverages add constraint coverages_status_check
+    check (status in ('in_progress','submitted','revision_requested','approved'));
+
+  drop policy if exists "staff+assigned read, everyone reads completed" on public.coverages;
+  drop policy if exists "staff+assigned read, everyone reads approved" on public.coverages;
+  create policy "staff+assigned read, everyone reads approved" on public.coverages for select
+    to authenticated using (
+      public.is_staff(auth.uid()) or public.is_assigned(auth.uid(), submission_id) or status = 'approved');
+
+  create or replace function public.enforce_coverage_reader_transitions()
+  returns trigger language plpgsql security definer set search_path = public as $$
+  begin
+    if auth.uid() is null then return new; end if; -- service role (review API) trusted
+    if tg_op = 'UPDATE' and old.status in ('submitted','approved') then
+      raise exception 'COVERAGE_LOCKED' using errcode = 'check_violation';
+    end if;
+    if new.status not in ('in_progress','submitted') then
+      raise exception 'COVERAGE_FORBIDDEN_STATUS' using errcode = 'check_violation';
+    end if;
+    new.delivered_at := case when tg_op = 'UPDATE' then old.delivered_at else null end;
+    new.delivered_by := case when tg_op = 'UPDATE' then old.delivered_by else null end;
+    new.review_note  := case when tg_op = 'UPDATE' then old.review_note  else null end;
+    return new;
+  end; $$;
+  drop trigger if exists trg_coverage_reader_transitions on public.coverages;
+  create trigger trg_coverage_reader_transitions
+    before insert or update on public.coverages
+    for each row execute function public.enforce_coverage_reader_transitions();
+
+  -- One-active-assignment rule (readers freed on SUBMIT, not delivery).
   create or replace function public.enforce_single_active_assignment()
   returns trigger language plpgsql security definer set search_path = public as $$
   declare caller uuid := auth.uid(); caller_role text; active_count int;
@@ -279,7 +327,8 @@ must be in the `supabase_realtime` publication for live updates to fire.
         select count(*) into active_count
         from public.submissions s
         left join public.coverages c on c.submission_id = s.id
-        where s.assigned_to = caller and s.id <> new.id and c.delivered_at is null;
+        where s.assigned_to = caller and s.id <> new.id
+          and (c.status is null or c.status in ('in_progress','revision_requested'));
         if active_count > 0 then
           raise exception 'READER_HAS_ACTIVE_ASSIGNMENT' using errcode = 'check_violation';
         end if;
@@ -293,7 +342,7 @@ must be in the `supabase_realtime` publication for live updates to fire.
     for each row execute function public.enforce_single_active_assignment();
   ```
 - **Confirm the production domain** — report-email links use `https://sceneone.info`
-  (`SITE_URL` in `api/send-report.js`); update if the live domain differs.
+  (`SITE_URL` in `api/review-coverage.js`); update if the live domain differs.
 - **Verify on the deploy** (can't run locally): send a report → open the link on
   iPhone/Safari (Arabic, logo, dark banner) → Save-as-PDF; confirm the email renders
   in a real inbox; check the Pages column, film-type deadlines, Manage-admins IP
@@ -331,10 +380,12 @@ All handlers are plain `module.exports = async (req, res) => {...}`, use native
 privileged reads/writes.
 - **`POST /api/submissions`** — validates + inserts a submission (service role);
   emails an admin notification and a writer confirmation (Resend).
-- **`POST /api/send-report`** — admin-authenticated; emails the writer a tokenized
-  link to their completed coverage report.
+- **`POST /api/review-coverage`** — **staff-only** (admin/super_admin); `action:
+  "approve"` sets the coverage `approved`, stamps delivery, and emails the writer the
+  tokenized report link; `action: "request_revision"` (with a required `note`) sets it
+  `revision_requested`. The only path that can approve — readers can't reach it.
 - **`GET /api/report?t=<report_token>`** — **public** (the token is the auth); returns
-  the report-safe fields (no email/file) of a submission with a *completed* coverage.
+  the report-safe fields (no email/file) of a submission with an *approved* coverage.
 - **`POST /api/log-access`** — any signed-in admin/reader; records their dashboard
   visit with the **server-read client IP** (`x-forwarded-for`) to `access_log`.
   Fire-and-forget from the client on sign-in; never blocks the UI.

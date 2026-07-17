@@ -45,7 +45,7 @@ module.exports = async (req, res) => {
   const token = ((req.query && req.query.t) || "").toString().trim();
   if (!UUID_RE.test(token)) return res.status(404).json({ message: "Report not found" });
 
-  // Validate the token maps to a submission with a *completed* coverage before
+  // Validate the token maps to a submission with an *approved* coverage before
   // spending time/memory launching Chromium (mirrors /api/report's gate).
   const headers = { apikey: key, Authorization: "Bearer " + key };
   const subResp = await fetch(
@@ -59,7 +59,7 @@ module.exports = async (req, res) => {
     { headers }
   );
   const covs = covResp.ok ? await covResp.json() : [];
-  if (!covs.length || covs[0].status !== "completed") {
+  if (!covs.length || covs[0].status !== "approved") {
     return res.status(404).json({ message: "Report not found" });
   }
 

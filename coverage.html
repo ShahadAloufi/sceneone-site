@@ -143,6 +143,20 @@
   .btn.ghost:disabled:hover{background:transparent}
   .row-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:6px}
 
+  /* Status banner + staff review bar */
+  .cov-banner{border-radius:12px;padding:14px 18px;margin:0 0 18px;font-size:14.5px;font-weight:500;
+    line-height:1.6;border:1px solid var(--line);background:var(--card)}
+  .cov-banner[hidden]{display:none}
+  .cov-banner--await{background:rgba(205,46,7,.06);border-color:rgba(205,46,7,.32);color:var(--ink)}
+  .cov-banner--revision{background:rgba(205,46,7,.09);border-color:rgba(205,46,7,.5);color:var(--ink)}
+  .cov-banner--approved{background:rgba(34,139,73,.1);border-color:rgba(34,139,73,.45);color:var(--ink)}
+  .cov-reviewbar{border:1px solid rgba(205,46,7,.4);background:var(--card);border-radius:14px;
+    padding:16px 18px;margin:0 0 18px;display:flex;flex-direction:column;gap:12px}
+  .cov-reviewbar[hidden]{display:none}
+  .cov-reviewbar textarea{width:100%;resize:vertical;min-height:52px;font:inherit;color:var(--ink);
+    background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+  .cov-reviewbar__actions{display:flex;gap:12px;flex-wrap:wrap}
+
   /* Custom tooltip. Lives on a wrapper (not the button) so the button's
      disabled opacity never fades it. Anchored to the button's start edge
      (not centred) so it never runs off the viewport for edge buttons.
@@ -427,6 +441,19 @@
        submission, locked so you can't change it. You only write the evaluation below.
        Your work autosaves as you type.</p>
 
+    <!-- Status banner (awaiting approval / revision requested / approved). JS-driven. -->
+    <div class="cov-banner" id="covBanner" hidden></div>
+
+    <!-- Staff quality-review bar — shown only to admins/super-admins when the
+         coverage has been submitted for approval. -->
+    <div class="cov-reviewbar" id="reviewBar" hidden>
+      <textarea id="revisionNote" rows="2" placeholder="Why does this need revision? (required)"></textarea>
+      <div class="cov-reviewbar__actions">
+        <button class="btn primary" id="approveBtn">Approve &amp; Send to Writer</button>
+        <button class="btn" id="requestRevisionBtn">Request Revision</button>
+      </div>
+    </div>
+
     <!-- pulled, read-only -->
     <div class="pulled" id="pulled">
       <div class="tag"><span data-i18n="pulledTag">Pulled from the writer's submission · read-only</span></div>
@@ -507,7 +534,7 @@
 
     <div class="row-actions">
       <span class="btn-tip" id="genReportTip"><button class="btn primary" id="genReport" data-i18n="genReport">Generate report</button></span>
-      <span class="btn-tip" id="finalizeTip"><button class="btn ghost" id="finalizeBtn">Mark coverage complete</button></span>
+      <span class="btn-tip" id="finalizeTip"><button class="btn ghost" id="finalizeBtn">Submit Coverage for Approval</button></span>
     </div>
   </section>
 
@@ -515,7 +542,6 @@
   <section class="view" id="view-report">
     <div class="toolbar">
       <button class="btn" id="backToReview" data-i18n="editCoverage">Edit coverage</button>
-      <button class="btn" id="sendReport" data-i18n="sendReport" hidden>Send to writer</button>
       <button class="btn primary" id="printReport" data-i18n="print">Print / Save as PDF</button>
     </div>
     <div id="reportWrap"><div class="report" id="reportBody"></div></div>

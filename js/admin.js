@@ -66,6 +66,8 @@
       loadFail: "تعذّر تحميل النصوص.", loadingSubs: "جارٍ تحميل النصوص…", download: "تحميل", assignMe: "أسند إليّ",
       adminFallback: "مشرف", cancel: "إلغاء", viewReport: "عرض التقرير", continueEval: "متابعة التقييم",
       inReview: "قيد التقييم", awaitingAssign: "بانتظار الإسناد",
+      reviewCov: "مراجعة التغطية", awaitingApproval: "بانتظار الاعتماد", revisionCov: "مطلوب تعديل", reviseCov: "تعديل التغطية",
+      kpiApproval: "بانتظار الاعتماد",
       navShow: "إظهار القائمة", navFold: "طيّ القائمة", themeToggle: "تبديل المظهر",
       startEval: "ابدأ التقييم", assignFail: "تعذّر تحديث الإسناد.", dlFail: "تعذّر إنشاء رابط التحميل.",
       del: "حذف", meParen: "(أنت)", confirmDel: function (n) { return "حذف المشرف " + n + "؟"; },
@@ -109,6 +111,8 @@
       loadFail: "Failed to load submissions.", loadingSubs: "Loading submissions…", download: "Download", assignMe: "Assign to me",
       adminFallback: "Admin", cancel: "Unassign", viewReport: "View report", continueEval: "Continue coverage",
       inReview: "In review", awaitingAssign: "Awaiting assignment",
+      reviewCov: "Review coverage", awaitingApproval: "Awaiting approval", revisionCov: "Revision requested", reviseCov: "Revise coverage",
+      kpiApproval: "Awaiting approval",
       navShow: "Show menu", navFold: "Collapse menu", themeToggle: "Toggle theme",
       startEval: "Start coverage", assignFail: "Failed to update assignment.", dlFail: "Failed to create download link.",
       del: "Delete", meParen: "(you)", confirmDel: function (n) { return "Delete admin " + n + "?"; },
@@ -352,13 +356,15 @@
   });
 
   // ---------- SUBMISSIONS ----------
-  // KPI tiles: total / pending (unassigned) / in review (assigned, not done) / completed.
+  // KPI tiles over the active pipeline (approved/delivered scripts have left the
+  // list): total / pending (unassigned) / in review (assigned, still drafting or
+  // in revision) / awaiting approval (submitted to the quality team).
   function updateKpis(rows, covBySub) {
     var total = rows.length, pending = 0, review = 0, done = 0;
     rows.forEach(function (s) {
-      if (covBySub[s.id] === "completed") done++;
-      else if (s.assigned_to) review++;
-      if (!s.assigned_to) pending++;
+      if (!s.assigned_to) { pending++; return; }
+      if (covBySub[s.id] === "submitted") done++;
+      else review++;
     });
     var pct = function (n) { return (total ? Math.round((n / total) * 100) : 0) + "%"; };
     $("kpiTotal").textContent = total;
@@ -477,17 +483,23 @@
 
   function isJunior(id) { return adminRoleById[id] === "junior_reader"; }
   function isReader(role) { return role === "senior_reader" || role === "junior_reader"; }
+  function isStaff(role) { return role === "admin" || role === "super_admin"; }
   // True when the signed-in user is assigned to a submission (primary or co-reader).
   function amAssignedTo(s) { return !!me && (s.assigned_to === me.id || s.co_reader_id === me.id); }
 
   // One-active-assignment rule (readers only): true while I'm the PRIMARY assignee
-  // of a submission whose report hasn't been delivered yet. The main list already
-  // excludes delivered submissions, so any row assigned to me is still active.
-  // Mirrors the DB trigger enforce_single_active_assignment(); the trigger is the
-  // real guard, this just disables the "+" so readers don't hit an error.
+  // of a submission I haven't handed off yet — no coverage, still drafting, or in
+  // revision. A reader is freed the moment they submit for approval, so submitted/
+  // approved don't count. Mirrors the DB trigger enforce_single_active_assignment();
+  // the trigger is the real guard, this just disables the "+" so readers don't hit
+  // an error.
   function readerHasActivePrimary() {
     if (!me || !isReader(me.role)) return false;
-    return (currentRows || []).some(function (s) { return s.assigned_to === me.id; });
+    return (currentRows || []).some(function (s) {
+      if (s.assigned_to !== me.id) return false;
+      var st = currentCov[s.id];
+      return !st || st === "in_progress" || st === "revision_requested";
+    });
   }
 
   // Re-render every assignee cell in place (no refetch) so the primary "+"
@@ -585,8 +597,10 @@
       cell.appendChild(btn);
     }
 
-    // Completed coverage → finished report, viewable by everyone.
-    if (status === "completed") { covLink(t("viewReport"), "adm-link"); return; }
+    var staff = isStaff(me && me.role);
+
+    // Approved coverage → finished, writer-visible report (viewable by everyone).
+    if (status === "approved") { covLink(t("viewReport"), "adm-link"); return; }
 
     var gold = "adm-link adm-link--gold";
 
@@ -594,17 +608,26 @@
     // everyone; a reader must assign themselves before coverage can begin).
     if (!s.assigned_to) { covBtn(t("awaitingAssign"), gold); return; }
 
-    // The script is mine to work on (I'm the primary assignee or co-reader):
-    // "Start coverage" until I begin writing, then "Continue coverage".
-    if (assigned) {
-      covLink(status === "in_progress" ? t("continueEval") : t("startEval"), gold);
+    // Submitted for approval → staff open it to review (Approve / Request Revision
+    // inside the workspace); everyone else sees a disabled "Awaiting approval".
+    if (status === "submitted") {
+      if (staff) covLink(t("reviewCov"), gold);
+      else covBtn(t("awaitingApproval"), gold);
       return;
     }
 
-    // Claimed by another reader → "In review" for everyone else. Staff can open
-    // a read-only copy; other readers get a disabled button.
-    if (reader) covBtn(t("inReview"), gold);
-    else covLink(t("inReview"), gold);
+    // The script is mine to work on (primary assignee or co-reader).
+    if (assigned) {
+      if (status === "revision_requested") covLink(t("reviseCov"), gold);
+      else covLink(status === "in_progress" ? t("continueEval") : t("startEval"), gold);
+      return;
+    }
+
+    // Claimed by another reader. Staff can open a read-only copy; other readers
+    // get a disabled status. Revision-requested shows its own label.
+    var label = status === "revision_requested" ? t("revisionCov") : t("inReview");
+    if (staff) covLink(label, gold);
+    else covBtn(label, gold);
   }
 
   // Re-render the coverage cell in the same row so its locked/unlocked state
