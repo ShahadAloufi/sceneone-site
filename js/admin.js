@@ -57,6 +57,7 @@
       fName: "الاسم", fRole: "الدور", roleAdmin: "مشرف", roleSuper: "مشرف أعلى", createBtn: "إنشاء المشرف",
       roleSeniorReader: "قارئ أول", roleJuniorReader: "قارئ مبتدئ", assignCo: "إضافة قارئ مشارك",
       assignTwice: "لا يمكنك إسناد نفسك مرتين",
+      assignBlocked: "أكمل نصك الحالي وسلّم تقريره قبل إسناد نص جديد.",
       covLocked: "أسند نفسك أولاً", covDenied: "لا يمكنك عرض هذا التقييم إلا بعد إسناد نفسك للنص.",
       phName: "اسم المشرف", phPassword: "8 أحرف على الأقل",
       // dynamic
@@ -100,6 +101,7 @@
       fName: "Name", fRole: "Role", roleAdmin: "Admin", roleSuper: "Super admin", createBtn: "Create admin",
       roleSeniorReader: "Senior Reader", roleJuniorReader: "Junior Reader", assignCo: "Add co-reader",
       assignTwice: "You cannot assign yourself twice",
+      assignBlocked: "Finish your current submission and deliver its report before taking a new one.",
       covLocked: "Assign yourself first", covDenied: "You can only view this coverage after assigning yourself to the script.",
       phName: "Admin name", phPassword: "At least 8 characters",
       signingIn: "Signing in...", badLogin: "Invalid login credentials.",
@@ -443,8 +445,11 @@
         a.addEventListener("click", function () { downloadFile(s.file_path, a); });
         fileCell.appendChild(a);
       } else { fileCell.textContent = "—"; }
-      // Assignee dropdown cell
-      renderAssignee(tr.querySelector(".adm-assignee"), s);
+      // Assignee dropdown cell (tag with its submission so we can re-render the
+      // whole column when my active-assignment state changes).
+      var assigneeCell = tr.querySelector(".adm-assignee");
+      assigneeCell.__sub = s;
+      renderAssignee(assigneeCell, s);
       // Coverage cell
       renderCoverage(tr.querySelector(".adm-cov"), s, covBySub[s.id]);
       body.appendChild(tr);
@@ -474,6 +479,24 @@
   function isReader(role) { return role === "senior_reader" || role === "junior_reader"; }
   // True when the signed-in user is assigned to a submission (primary or co-reader).
   function amAssignedTo(s) { return !!me && (s.assigned_to === me.id || s.co_reader_id === me.id); }
+
+  // One-active-assignment rule (readers only): true while I'm the PRIMARY assignee
+  // of a submission whose report hasn't been delivered yet. The main list already
+  // excludes delivered submissions, so any row assigned to me is still active.
+  // Mirrors the DB trigger enforce_single_active_assignment(); the trigger is the
+  // real guard, this just disables the "+" so readers don't hit an error.
+  function readerHasActivePrimary() {
+    if (!me || !isReader(me.role)) return false;
+    return (currentRows || []).some(function (s) { return s.assigned_to === me.id; });
+  }
+
+  // Re-render every assignee cell in place (no refetch) so the primary "+"
+  // lock/unlock updates across all rows the moment my assignment state changes.
+  function rerenderAssigneeCells() {
+    document.querySelectorAll("#subBody .adm-assignee").forEach(function (cell) {
+      if (cell.__sub) renderAssignee(cell, cell.__sub);
+    });
+  }
 
   // The circular "+" icon used to claim a slot (primary or co-reader).
   function addSlotBtn(cell, s, which) {
@@ -518,7 +541,16 @@
     var row = document.createElement("div");
     row.className = "adm-assignee__row";
     if (!s.assigned_to) {
-      row.appendChild(addSlotBtn(cell, s, "primary"));
+      var addBtn = addSlotBtn(cell, s, "primary");
+      // Reader already has an undelivered assignment → lock the claim button.
+      if (readerHasActivePrimary()) {
+        addBtn.disabled = true;
+        addBtn.title = t("assignBlocked");
+        addBtn.setAttribute("aria-label", t("assignBlocked"));
+        addBtn.style.opacity = ".4";
+        addBtn.style.cursor = "not-allowed";
+      }
+      row.appendChild(addBtn);
     } else {
       row.appendChild(slotAvatar(s.assigned_to, cell, s, "primary"));
       if (isJunior(s.assigned_to)) {
@@ -611,7 +643,13 @@
       renderAssignee(cell, s);
       refreshCoverageCell(cell, s);
       updateKpis(currentRows, currentCov);
-      alert(t("assignFail"));
+      // The DB trigger blocks a reader from taking a second active assignment.
+      var blocked = /READER_HAS_ACTIVE_ASSIGNMENT/.test(res.error.message || "");
+      alert(blocked ? t("assignBlocked") : t("assignFail"));
+    } else if (isReader(me && me.role) && (toId === me.id || prev === me.id)) {
+      // My active-assignment state changed → re-render so every other row's "+"
+      // reflects the new locked/unlocked state without waiting for a refetch.
+      rerenderAssigneeCells();
     }
   }
 

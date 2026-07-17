@@ -146,6 +146,51 @@ create policy "admins can update submissions"
   using ( public.is_admin(auth.uid()) )
   with check ( public.is_admin(auth.uid()) );
 
+-- One-active-assignment rule: a READER may not claim the PRIMARY slot of a new
+-- submission while they still have another primary assignment whose report has
+-- not yet been delivered to the writer (coverages.delivered_at IS NULL). Enforced
+-- as a BEFORE UPDATE trigger (not RLS) because it must compare OLD vs NEW to fire
+-- only on the specific "reader assigns the primary slot to themselves" transition
+-- — leaving staff assignment, self-unassignment, co-reader claims, and ordinary
+-- status edits untouched. This is the authoritative guard; the admin UI mirrors it.
+create or replace function public.enforce_single_active_assignment()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  caller uuid := auth.uid();
+  caller_role text;
+  active_count int;
+begin
+  -- Only guard the reader claiming the primary slot for THEMSELVES on this row.
+  if new.assigned_to is distinct from old.assigned_to and new.assigned_to = caller then
+    select role into caller_role from public.admins where id = caller;
+    if caller_role in ('senior_reader', 'junior_reader') then
+      -- Any other primary assignment of theirs whose report isn't delivered yet?
+      -- (LEFT JOIN so a submission with no coverage row still counts as active.)
+      select count(*) into active_count
+      from public.submissions s
+      left join public.coverages c on c.submission_id = s.id
+      where s.assigned_to = caller
+        and s.id <> new.id
+        and c.delivered_at is null;
+      if active_count > 0 then
+        raise exception 'READER_HAS_ACTIVE_ASSIGNMENT'
+          using errcode = 'check_violation';
+      end if;
+    end if;
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists trg_single_active_assignment on public.submissions;
+create trigger trg_single_active_assignment
+  before update on public.submissions
+  for each row execute function public.enforce_single_active_assignment();
+
 -- Base table privileges for the signed-in role (RLS above restricts these to
 -- admins). No INSERT grant: new submissions are written server-side only.
 grant select, update on public.submissions to authenticated;

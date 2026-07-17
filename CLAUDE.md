@@ -125,6 +125,14 @@ must be in the `supabase_realtime` publication for live updates to fire.
   admin/super_admin; readers = senior/junior.
 - **Assignment:** a reader claims a script (primary assignee). If the primary is a
   **junior** reader, a **co-reader** slot opens for a second reader.
+- **One active assignment (readers):** a reader may **not** claim the **primary** slot
+  of a new submission while they still have another primary assignment whose report
+  hasn't been **delivered** to the writer (`coverages.delivered_at IS NULL`). Enforced
+  authoritatively by the DB trigger `enforce_single_active_assignment()` (a `check_violation`
+  raising `READER_HAS_ACTIVE_ASSIGNMENT`); the admin UI mirrors it by disabling the "+"
+  claim button. **Co-reader slots are exempt** (don't count and aren't blocked), staff
+  assignment/self-unassignment/status edits are untouched, and completed-but-unsent
+  coverage still counts as active.
 - **Coverage access (read-only model):** the assignee edits; non-assigned readers are
   blocked; non-assigned staff get a read-only view; a **completed** coverage is a
   finished report viewable read-only by any authenticated staff/reader.
@@ -258,6 +266,31 @@ must be in the `supabase_realtime` publication for live updates to fire.
   -- "Delivered by me": stamp the coverage when its report is sent to the writer.
   alter table public.coverages add column if not exists delivered_at timestamptz;
   alter table public.coverages add column if not exists delivered_by uuid references public.admins(id) on delete set null;
+
+  -- One-active-assignment rule: a reader can't claim a new primary slot while an
+  -- earlier primary assignment's report is undelivered. Full body in supabase/schema.sql.
+  create or replace function public.enforce_single_active_assignment()
+  returns trigger language plpgsql security definer set search_path = public as $$
+  declare caller uuid := auth.uid(); caller_role text; active_count int;
+  begin
+    if new.assigned_to is distinct from old.assigned_to and new.assigned_to = caller then
+      select role into caller_role from public.admins where id = caller;
+      if caller_role in ('senior_reader','junior_reader') then
+        select count(*) into active_count
+        from public.submissions s
+        left join public.coverages c on c.submission_id = s.id
+        where s.assigned_to = caller and s.id <> new.id and c.delivered_at is null;
+        if active_count > 0 then
+          raise exception 'READER_HAS_ACTIVE_ASSIGNMENT' using errcode = 'check_violation';
+        end if;
+      end if;
+    end if;
+    return new;
+  end; $$;
+  drop trigger if exists trg_single_active_assignment on public.submissions;
+  create trigger trg_single_active_assignment
+    before update on public.submissions
+    for each row execute function public.enforce_single_active_assignment();
   ```
 - **Confirm the production domain** — report-email links use `https://sceneone.info`
   (`SITE_URL` in `api/send-report.js`); update if the live domain differs.
