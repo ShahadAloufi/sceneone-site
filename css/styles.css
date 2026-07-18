@@ -1012,7 +1012,21 @@ html[data-theme="light"] .adm-decor-clapper { background-image: url(../assets/de
 /* Month filter (deliveries) — sits at the end of the table header row. */
 .adm-monthfilter { margin-inline-start: auto; display: inline-flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--adm-muted); }
 .adm-monthfilter[hidden] { display: none; }
-.adm-monthfilter select { font: inherit; font-size: 14px; line-height: 1.3; color: var(--adm-text); background: var(--adm-surface-2); border: 1px solid var(--adm-border); border-radius: 10px; padding: 10px 14px; min-height: 42px; cursor: pointer; }
+/* Custom chevron (native appearance off) so the arrow can sit inset from the
+   edge instead of pinned to it — and flip sides correctly in RTL. */
+.adm-monthfilter select {
+  font: inherit; font-size: 14px; line-height: 1.3; color: var(--adm-text);
+  background-color: var(--adm-surface-2);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239a9a9a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 13px 13px;
+  border: 1px solid var(--adm-border); border-radius: 10px;
+  padding: 10px 42px 10px 14px;
+  min-height: 42px; cursor: pointer;
+  -webkit-appearance: none; appearance: none;
+}
+html[dir="rtl"] .adm-monthfilter select { background-position: left 16px center; padding: 10px 14px 10px 42px; }
 /* Month group header inside a deliveries table. */
 .adm-table tbody tr.adm-monthrow td { background: var(--adm-surface-2); text-align: start; font-weight: 800; font-size: 12.5px; letter-spacing: .02em; padding: 9px 11px; }
 .adm-table tbody tr.adm-monthrow:hover td { background: var(--adm-surface-2); }
