@@ -1040,7 +1040,7 @@ html[dir="rtl"] .adm-tablefilter select { background-position: left 16px center;
 .adm-kancol__head { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 13.5px; letter-spacing: .02em; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--adm-border-soft); }
 .adm-kancol__body { display: flex; flex-direction: column; gap: 10px; }
 .adm-kancol__empty { color: var(--adm-muted); font-size: 12.5px; line-height: 1.6; padding: 10px 2px 12px; }
-.adm-card { background: var(--adm-bg); border: 1px solid var(--adm-border); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 7px; }
+.adm-card { background: transparent; border: 1px solid var(--adm-border); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 7px; }
 .adm-card__title { font-weight: 600; font-size: 13px; line-height: 1.35; }
 .adm-card__row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .adm-card__right { display: inline-flex; align-items: center; gap: 8px; }
