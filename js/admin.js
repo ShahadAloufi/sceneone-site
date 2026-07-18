@@ -377,9 +377,11 @@
     $("loginPassword").value = "";
   });
 
-  // Month filter on the delivered reports — re-renders from memory, no refetch.
+  // Month filters — re-render from memory, no refetch.
   var delMonthSel = $("delMonth");
   if (delMonthSel) delMonthSel.addEventListener("change", renderDelivered);
+  var dlvMonthSel = $("dlvMonth");
+  if (dlvMonthSel) dlvMonthSel.addEventListener("change", renderDeliveries);
 
   // ---------- TABS ----------
   document.querySelectorAll(".adm-navitem").forEach(function (t) {
@@ -924,6 +926,8 @@
   // a reader can see their output month by month. Kept in memory so the month
   // filter re-renders without refetching.
   var deliveredRows = [];
+  // Deliveries oversight (staff): rows + the lookup maps renderDetailRows needs.
+  var dlvRows = [], dlvCov = {}, dlvDelivered = {}, dlvReader = {};
 
   function monthKey(iso) {
     var d = new Date(iso);
@@ -951,15 +955,18 @@
       // A deliveries list reads by delivery date, not submission date.
       .sort(function (a, b) { return new Date(b.at) - new Date(a.at); });
 
-    buildMonthFilter();
+    buildMonthFilter("delMonth", deliveredRows);
     renderDelivered();
   }
 
+  // ---- Shared month grouping (delivered-by-me + deliveries oversight) ----
+  // Rows are [{ s: submission, at: deliveredAt }], already sorted newest first.
+
   // Options are derived from the months actually present, newest first.
-  function buildMonthFilter() {
-    var sel = $("delMonth"); if (!sel) return;
+  function buildMonthFilter(selId, rows) {
+    var sel = $(selId); if (!sel) return;
     var prev = sel.value, seen = {}, opts = [];
-    deliveredRows.forEach(function (r) {
+    rows.forEach(function (r) {
       var k = monthKey(r.at);
       if (!seen[k]) { seen[k] = true; opts.push({ k: k, label: fmtMonth(r.at) }); }
     });
@@ -967,7 +974,52 @@
       opts.map(function (o) { return '<option value="' + esc(o.k) + '">' + esc(o.label) + "</option>"; }).join("");
     if (prev && seen[prev]) sel.value = prev; // keep the choice across refreshes
     var wrap = sel.closest ? sel.closest(".adm-monthfilter") : null;
-    if (wrap) wrap.hidden = !deliveredRows.length;
+    if (wrap) wrap.hidden = !rows.length;
+  }
+
+  function applyMonthFilter(selId, rows) {
+    var sel = $(selId), pick = sel ? sel.value : "";
+    return pick ? rows.filter(function (r) { return monthKey(r.at) === pick; }) : rows;
+  }
+
+  function groupByMonth(rows) {
+    var groups = [], index = {};
+    rows.forEach(function (r) {
+      var k = monthKey(r.at);
+      if (!index[k]) { index[k] = { label: fmtMonth(r.at), items: [] }; groups.push(index[k]); }
+      index[k].items.push(r);
+    });
+    return groups;
+  }
+
+  // Each month renders as its own section: a heading ABOVE its own table, so the
+  // month label never becomes a full-width row inside the table. buildTable(items)
+  // returns the <table> for that month.
+  function renderMonthGroups(container, groups, buildTable) {
+    container.innerHTML = "";
+    groups.forEach(function (g) {
+      var sec = document.createElement("section");
+      sec.className = "adm-monthgroup";
+      var h = document.createElement("h4");
+      h.className = "adm-monthgroup__head";
+      h.innerHTML = esc(g.label) + ' <span class="adm-count">' + g.items.length + "</span>";
+      sec.appendChild(h);
+      var tw = document.createElement("div");
+      tw.className = "adm-tablewrap";
+      tw.appendChild(buildTable(g.items));
+      sec.appendChild(tw);
+      container.appendChild(sec);
+    });
+  }
+
+  // <table> shell with a header row built from the given i18n keys.
+  function monthTable(headKeys) {
+    var table = document.createElement("table");
+    table.className = "adm-table";
+    table.innerHTML = "<thead><tr>" + headKeys.map(function (k) {
+      return "<th>" + esc(t(k)) + "</th>";
+    }).join("") + "</tr></thead><tbody></tbody>";
+    return table;
   }
 
   // One <tr> for a delivered report.
@@ -992,60 +1044,24 @@
     return tr;
   }
 
-  // Each month renders as its own section: a heading above its own table, so the
-  // month label never becomes a full-width row inside the table.
-  function renderDelivered() {
-    var sel = $("delMonth");
-    var pick = sel ? sel.value : "";
-    var rows = pick ? deliveredRows.filter(function (r) { return monthKey(r.at) === pick; }) : deliveredRows;
+  var DEL_HEAD = ["thDate", "thTitle", "thWriter", "thEmail", "thDelivered", "thReport"];
 
-    var wrap = $("delGroups");
-    wrap.innerHTML = "";
+  function renderDelivered() {
+    var rows = applyMonthFilter("delMonth", deliveredRows);
     $("delCount").textContent = rows.length;
     if (!rows.length) {
+      $("delGroups").innerHTML = "";
       var empty = $("delEmpty");
-      empty.textContent = pick ? t("delEmptyMonth") : t("delEmpty");
+      empty.textContent = $("delMonth") && $("delMonth").value ? t("delEmptyMonth") : t("delEmpty");
       show(empty);
       return;
     }
     hide($("delEmpty"));
-
-    // Group in order (rows are already sorted newest delivery first).
-    var groups = [], index = {};
-    rows.forEach(function (r) {
-      var k = monthKey(r.at);
-      if (!index[k]) { index[k] = { label: fmtMonth(r.at), items: [] }; groups.push(index[k]); }
-      index[k].items.push(r);
-    });
-
-    var head = "<thead><tr>" +
-      "<th>" + esc(t("thDate")) + "</th>" +
-      "<th>" + esc(t("thTitle")) + "</th>" +
-      "<th>" + esc(t("thWriter")) + "</th>" +
-      "<th>" + esc(t("thEmail")) + "</th>" +
-      "<th>" + esc(t("thDelivered")) + "</th>" +
-      "<th>" + esc(t("thReport")) + "</th>" +
-      "</tr></thead><tbody></tbody>";
-
-    groups.forEach(function (g) {
-      var sec = document.createElement("section");
-      sec.className = "adm-monthgroup";
-
-      var h = document.createElement("h4");
-      h.className = "adm-monthgroup__head";
-      h.innerHTML = esc(g.label) + ' <span class="adm-count">' + g.items.length + "</span>";
-      sec.appendChild(h);
-
-      var tw = document.createElement("div");
-      tw.className = "adm-tablewrap";
-      var table = document.createElement("table");
-      table.className = "adm-table";
-      table.innerHTML = head;
+    renderMonthGroups($("delGroups"), groupByMonth(rows), function (items) {
+      var table = monthTable(DEL_HEAD);
       var tbody = table.querySelector("tbody");
-      g.items.forEach(function (r) { tbody.appendChild(deliveredRowEl(r)); });
-      tw.appendChild(table);
-      sec.appendChild(tw);
-      wrap.appendChild(sec);
+      items.forEach(function (r) { tbody.appendChild(deliveredRowEl(r)); });
+      return table;
     });
   }
 
@@ -1066,22 +1082,43 @@
       if (c.delivered_at) { deliveredOn[c.submission_id] = c.delivered_at; deliveredBy[c.submission_id] = c.delivered_by; }
     });
 
-    var rows = subs.filter(function (s) { return deliveredOn[s.id]; });
-    rows.sort(function (a, b) { return deliveredOn[b.id] < deliveredOn[a.id] ? -1 : 1; }); // newest delivery first
-
-    $("dlvCount").textContent = rows.length;
-    if (!rows.length) { show($("dlvEmpty")); $("dlvBody").innerHTML = ""; return; }
-    hide($("dlvEmpty"));
-
     // Full submission detail; the "Reader" column is the reviewing reader, and
     // the coverage column links to the delivered report.
-    var covBySub = {}, deliveredBySub = {}, readerBySub = {};
-    rows.forEach(function (s) {
-      covBySub[s.id] = "approved";
-      deliveredBySub[s.id] = true;
-      readerBySub[s.id] = nameById[s.assigned_to] || nameById[deliveredBy[s.id]] || "—";
+    dlvCov = {}; dlvDelivered = {}; dlvReader = {};
+    dlvRows = subs
+      .filter(function (s) { return deliveredOn[s.id]; })
+      .map(function (s) {
+        dlvCov[s.id] = "approved";
+        dlvDelivered[s.id] = true;
+        dlvReader[s.id] = nameById[s.assigned_to] || nameById[deliveredBy[s.id]] || "—";
+        return { s: s, at: deliveredOn[s.id] };
+      })
+      .sort(function (a, b) { return new Date(b.at) - new Date(a.at); }); // newest delivery first
+
+    buildMonthFilter("dlvMonth", dlvRows);
+    renderDeliveries();
+  }
+
+  var DLV_HEAD = ["thDate", "thDeadline", "thTitle", "thWriter", "thEmail", "thGenre",
+                  "thFilmType", "thDraft", "thPages", "thFile", "thReader", "thCoverage"];
+
+  function renderDeliveries() {
+    var rows = applyMonthFilter("dlvMonth", dlvRows);
+    $("dlvCount").textContent = rows.length;
+    if (!rows.length) {
+      $("dlvGroups").innerHTML = "";
+      var empty = $("dlvEmpty");
+      empty.textContent = $("dlvMonth") && $("dlvMonth").value ? t("delEmptyMonth") : t("deliveriesEmpty");
+      show(empty);
+      return;
+    }
+    hide($("dlvEmpty"));
+    renderMonthGroups($("dlvGroups"), groupByMonth(rows), function (items) {
+      var table = monthTable(DLV_HEAD);
+      renderDetailRows(table.querySelector("tbody"),
+        items.map(function (r) { return r.s; }), dlvCov, dlvDelivered, dlvReader);
+      return table;
     });
-    renderDetailRows($("dlvBody"), rows, covBySub, deliveredBySub, readerBySub);
   }
 
   // ---------- ADMINS (super admin) ----------

@@ -296,27 +296,14 @@
     </div>
     <div class="adm-tablehead">
       <h3><span data-i18n="deliveriesListTitle">التقارير المُسلّمة</span> <span class="adm-count" id="dlvCount">0</span></h3>
+      <label class="adm-monthfilter" for="dlvMonth">
+        <span data-i18n="monthFilter">الشهر</span>
+        <select id="dlvMonth"></select>
+      </label>
     </div>
-    <div class="adm-tablewrap">
-      <table class="adm-table">
-        <thead><tr>
-          <th data-i18n="thDate">التاريخ</th>
-          <th data-i18n="thDeadline">الموعد النهائي</th>
-          <th data-i18n="thTitle">العنوان</th>
-          <th data-i18n="thWriter">الكاتب</th>
-          <th data-i18n="thEmail">البريد</th>
-          <th data-i18n="thGenre">التصنيف</th>
-          <th data-i18n="thFilmType">نوع الفيلم</th>
-          <th data-i18n="thDraft">المسودة</th>
-          <th data-i18n="thPages">الصفحات</th>
-          <th data-i18n="thFile">الملف</th>
-          <th data-i18n="thReader">القارئ</th>
-          <th data-i18n="thCoverage">التقييم</th>
-        </tr></thead>
-        <tbody id="dlvBody"></tbody>
-      </table>
-      <p class="adm-empty" id="dlvEmpty" hidden data-i18n="deliveriesEmpty">لا توجد تقارير مُسلّمة بعد.</p>
-    </div>
+    <!-- One section per delivery month (heading + its own table), built in JS. -->
+    <div id="dlvGroups"></div>
+    <p class="adm-empty" id="dlvEmpty" hidden data-i18n="deliveriesEmpty">لا توجد تقارير مُسلّمة بعد.</p>
   </section>
 
   <!-- Admins tab (super admin only) -->
