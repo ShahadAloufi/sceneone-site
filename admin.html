@@ -280,22 +280,10 @@
         <select id="delMonth"></select>
       </label>
     </div>
-    <div class="adm-tablewrap">
-      <table class="adm-table">
-        <thead>
-          <tr>
-            <th data-i18n="thDate">التاريخ</th>
-            <th data-i18n="thTitle">العنوان</th>
-            <th data-i18n="thWriter">الكاتب</th>
-            <th data-i18n="thEmail">البريد</th>
-            <th data-i18n="thDelivered">تاريخ التسليم</th>
-            <th data-i18n="thReport">التقرير</th>
-          </tr>
-        </thead>
-        <tbody id="delBody"></tbody>
-      </table>
-      <p class="adm-empty" id="delEmpty" hidden data-i18n="delEmpty">لم تُسلّم أي تقارير بعد.</p>
-    </div>
+    <!-- One section per delivery month (heading + its own table), built in JS so
+         the month heading sits above the table rather than inside it. -->
+    <div id="delGroups"></div>
+    <p class="adm-empty" id="delEmpty" hidden data-i18n="delEmpty">لم تُسلّم أي تقارير بعد.</p>
   </section>
 
   <!-- Deliveries oversight tab (super admin only) -->

@@ -1027,9 +1027,9 @@ html[data-theme="light"] .adm-decor-clapper { background-image: url(../assets/de
   -webkit-appearance: none; appearance: none;
 }
 html[dir="rtl"] .adm-monthfilter select { background-position: left 16px center; padding: 10px 14px 10px 42px; }
-/* Month group header inside a deliveries table. */
-.adm-table tbody tr.adm-monthrow td { background: var(--adm-surface-2); text-align: start; font-weight: 800; font-size: 12.5px; letter-spacing: .02em; padding: 9px 11px; }
-.adm-table tbody tr.adm-monthrow:hover td { background: var(--adm-surface-2); }
+/* Deliveries grouped by month: a heading ABOVE each month's own table. */
+.adm-monthgroup + .adm-monthgroup { margin-top: 22px; }
+.adm-monthgroup__head { margin: 0 0 10px; font-size: 13.5px; font-weight: 800; letter-spacing: .02em; color: var(--adm-text); }
 .adm-tablehead h3 { font-size: 15px; font-weight: 800; margin: 0; }
 .adm-count { display: inline-block; font-size: 13px; margin-inline-start: 6px; color: var(--adm-soft-text); }
 

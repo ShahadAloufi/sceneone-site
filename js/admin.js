@@ -970,13 +970,37 @@
     if (wrap) wrap.hidden = !deliveredRows.length;
   }
 
+  // One <tr> for a delivered report.
+  function deliveredRowEl(r) {
+    var s = r.s;
+    var tr = document.createElement("tr");
+    tr.innerHTML =
+      "<td>" + esc(fmtDate(s.created_at)) + "</td>" +
+      "<td><strong>" + esc(s.title_ar) + "</strong><br><span class='adm-muted' dir='ltr'>" + esc(s.title_en) + "</span></td>" +
+      "<td>" + esc(s.writer) + "</td>" +
+      "<td dir='ltr'>" + esc(s.email) + "</td>" +
+      "<td>" + esc(fmtDate(r.at)) + "</td>" +
+      "<td class='adm-report'></td>";
+    // Open the exact report the writer received (hosted, read-only), not the
+    // editable workspace.
+    var link = document.createElement("a");
+    link.className = "adm-link";
+    link.href = "report.html?t=" + encodeURIComponent(s.report_token);
+    link.target = "_blank"; link.rel = "noopener";
+    link.textContent = t("viewReport");
+    tr.querySelector(".adm-report").appendChild(link);
+    return tr;
+  }
+
+  // Each month renders as its own section: a heading above its own table, so the
+  // month label never becomes a full-width row inside the table.
   function renderDelivered() {
     var sel = $("delMonth");
     var pick = sel ? sel.value : "";
     var rows = pick ? deliveredRows.filter(function (r) { return monthKey(r.at) === pick; }) : deliveredRows;
 
-    var body = $("delBody");
-    body.innerHTML = "";
+    var wrap = $("delGroups");
+    wrap.innerHTML = "";
     $("delCount").textContent = rows.length;
     if (!rows.length) {
       var empty = $("delEmpty");
@@ -986,38 +1010,42 @@
     }
     hide($("delEmpty"));
 
-    // Count per month so each group header can show its own total.
-    var perMonth = {};
-    rows.forEach(function (r) { var k = monthKey(r.at); perMonth[k] = (perMonth[k] || 0) + 1; });
-
-    var lastMonth = "";
+    // Group in order (rows are already sorted newest delivery first).
+    var groups = [], index = {};
     rows.forEach(function (r) {
-      var s = r.s, k = monthKey(r.at);
-      if (k !== lastMonth) {
-        lastMonth = k;
-        var hdr = document.createElement("tr");
-        hdr.className = "adm-monthrow";
-        hdr.innerHTML = '<td colspan="6">' + esc(fmtMonth(r.at)) +
-          ' <span class="adm-count">' + perMonth[k] + "</span></td>";
-        body.appendChild(hdr);
-      }
-      var tr = document.createElement("tr");
-      tr.innerHTML =
-        "<td>" + esc(fmtDate(s.created_at)) + "</td>" +
-        "<td><strong>" + esc(s.title_ar) + "</strong><br><span class='adm-muted' dir='ltr'>" + esc(s.title_en) + "</span></td>" +
-        "<td>" + esc(s.writer) + "</td>" +
-        "<td dir='ltr'>" + esc(s.email) + "</td>" +
-        "<td>" + esc(fmtDate(r.at)) + "</td>" +
-        "<td class='adm-report'></td>";
-      // Open the exact report the writer received (hosted, read-only), not the
-      // editable workspace.
-      var link = document.createElement("a");
-      link.className = "adm-link";
-      link.href = "report.html?t=" + encodeURIComponent(s.report_token);
-      link.target = "_blank"; link.rel = "noopener";
-      link.textContent = t("viewReport");
-      tr.querySelector(".adm-report").appendChild(link);
-      body.appendChild(tr);
+      var k = monthKey(r.at);
+      if (!index[k]) { index[k] = { label: fmtMonth(r.at), items: [] }; groups.push(index[k]); }
+      index[k].items.push(r);
+    });
+
+    var head = "<thead><tr>" +
+      "<th>" + esc(t("thDate")) + "</th>" +
+      "<th>" + esc(t("thTitle")) + "</th>" +
+      "<th>" + esc(t("thWriter")) + "</th>" +
+      "<th>" + esc(t("thEmail")) + "</th>" +
+      "<th>" + esc(t("thDelivered")) + "</th>" +
+      "<th>" + esc(t("thReport")) + "</th>" +
+      "</tr></thead><tbody></tbody>";
+
+    groups.forEach(function (g) {
+      var sec = document.createElement("section");
+      sec.className = "adm-monthgroup";
+
+      var h = document.createElement("h4");
+      h.className = "adm-monthgroup__head";
+      h.innerHTML = esc(g.label) + ' <span class="adm-count">' + g.items.length + "</span>";
+      sec.appendChild(h);
+
+      var tw = document.createElement("div");
+      tw.className = "adm-tablewrap";
+      var table = document.createElement("table");
+      table.className = "adm-table";
+      table.innerHTML = head;
+      var tbody = table.querySelector("tbody");
+      g.items.forEach(function (r) { tbody.appendChild(deliveredRowEl(r)); });
+      tw.appendChild(table);
+      sec.appendChild(tw);
+      wrap.appendChild(sec);
     });
   }
 
