@@ -222,22 +222,9 @@
         </thead>
         <tbody id="subBody"></tbody>
       </table>
-      <div class="adm-loading" id="subLoading" hidden>
-        <span class="so-loader" role="status" aria-label="Loading">
-          <svg viewBox="0 0 100 100" aria-hidden="true">
-            <defs><clipPath id="soClip-admin"><rect x="22" y="22" width="56" height="56" rx="2"/></clipPath></defs>
-            <path class="so-corner" d="M36 14 H14 V36"/>
-            <path class="so-corner" d="M64 14 H86 V36"/>
-            <path class="so-corner" d="M36 86 H14 V64"/>
-            <path class="so-corner" d="M64 86 H86 V64"/>
-            <g clip-path="url(#soClip-admin)">
-              <rect class="so-trail" x="22" y="8" width="56" height="14"/>
-              <line class="so-scan" x1="24" y1="22" x2="76" y2="22"/>
-            </g>
-            <circle class="so-rec-halo" cx="50" cy="50" r="5"/>
-            <circle class="so-rec" cx="50" cy="50" r="4.6"/>
-          </svg>
-        </span>
+      <!-- In-table loading: the plain spinner (.adm-loading::before) only — the
+           Scene One clapperboard loader is reserved for full-page/boot loading. -->
+      <div class="adm-loading" id="subLoading" role="status" hidden>
         <span data-i18n="loadingSubs">Loading submissions…</span>
       </div>
       <p class="adm-empty" id="subEmpty" hidden data-i18n="subEmpty">لا توجد نصوص مقدَّمة بعد.</p>
