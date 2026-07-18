@@ -153,6 +153,15 @@ must be in the `supabase_realtime` publication for live updates to fire.
   coverage" / others "Awaiting approval"; revision_requested → assignee "Revise
   coverage" / others "Revision requested"; unassigned → "Awaiting assignment";
   assigned-to-me drafting → "Start/Continue coverage"; claimed-by-another → "In review".
+- **Role-specific dashboard:** the main "Submissions" view differs by role.
+  **Readers** get the detailed table (assign "+", writer info, open the workspace).
+  **Staff (admin/super_admin)** get a **kanban board** — three columns *Awaiting
+  assignment / In review / Awaiting approval* with cards (title, deadline badge,
+  read-only assignee avatar, action) and **no writer PII** — since they only act on
+  review/approval and care about deadlines. Staff also get two full-detail tabs:
+  **All submissions** (every script, all columns, coverage→View report) and
+  **Deliveries** (approved/delivered only). Readers keep **Delivered by me**;
+  super-admins keep **Manage admins**.
 - **Report gating:** "Generate report" (preview) needs a 1–5 score on all 7 evaluation
   points; "Submit Coverage for Approval" additionally needs every written section filled.
 - **Deadline:** every submission's deadline = `created_at` + the max turnaround for its

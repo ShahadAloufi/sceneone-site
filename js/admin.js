@@ -67,7 +67,10 @@
       adminFallback: "مشرف", cancel: "إلغاء", viewReport: "عرض التقرير", continueEval: "متابعة التقييم",
       inReview: "قيد التقييم", awaitingAssign: "بانتظار الإسناد",
       reviewCov: "مراجعة التغطية", awaitingApproval: "بانتظار الاعتماد", revisionCov: "مطلوب تعديل", reviseCov: "تعديل التغطية",
-      kpiApproval: "بانتظار الاعتماد",
+      kpiApproval: "بانتظار الاعتماد", openCov: "فتح",
+      navAll: "جميع النصوص", allTitle: "جميع النصوص", allSub: "أرشيف كامل بكل تفاصيل النصوص المُستلمة",
+      allListTitle: "جميع النصوص",
+      kanUnassigned: "بانتظار الإسناد", kanReview: "قيد التقييم", kanApproval: "بانتظار الاعتماد",
       navShow: "إظهار القائمة", navFold: "طيّ القائمة", themeToggle: "تبديل المظهر",
       startEval: "ابدأ التقييم", assignFail: "تعذّر تحديث الإسناد.", dlFail: "تعذّر إنشاء رابط التحميل.",
       del: "حذف", meParen: "(أنت)", confirmDel: function (n) { return "حذف المشرف " + n + "؟"; },
@@ -112,7 +115,10 @@
       adminFallback: "Admin", cancel: "Unassign", viewReport: "View report", continueEval: "Continue coverage",
       inReview: "In review", awaitingAssign: "Awaiting assignment",
       reviewCov: "Review coverage", awaitingApproval: "Awaiting approval", revisionCov: "Revision requested", reviseCov: "Revise coverage",
-      kpiApproval: "Awaiting approval",
+      kpiApproval: "Awaiting approval", openCov: "Open",
+      navAll: "All submissions", allTitle: "All submissions", allSub: "Full archive of every script received, with all details",
+      allListTitle: "All submissions",
+      kanUnassigned: "Awaiting assignment", kanReview: "In review", kanApproval: "Awaiting approval",
       navShow: "Show menu", navFold: "Collapse menu", themeToggle: "Toggle theme",
       startEval: "Start coverage", assignFail: "Failed to update assignment.", dlFail: "Failed to create download link.",
       del: "Delete", meParen: "(you)", confirmDel: function (n) { return "Delete admin " + n + "?"; },
@@ -189,8 +195,22 @@
       else if (daysLeft === 0) { badge = t("dueToday"); cls = "adm-due--soon"; }
       else { badge = t("dueDays")(daysLeft); cls = daysLeft <= 3 ? "adm-due--soon" : "adm-due--ok"; }
     }
-    return "<td class='adm-due'><div>" + dateStr + "</div>" +
-      "<span class='adm-due__badge " + cls + "'>" + esc(badge) + "</span></td>";
+    return "<td class='adm-due'>" + deadlineInner(dateStr, cls, badge) + "</td>";
+  }
+  function deadlineInner(dateStr, cls, badge) {
+    return "<div>" + dateStr + "</div><span class='adm-due__badge " + cls + "'>" + esc(badge) + "</span>";
+  }
+  // The deadline badge markup (date + coloured days-left pill) without the <td>,
+  // for use inside kanban cards. Mirrors deadlineCell's computation.
+  function deadlineBadge(createdAt, filmType) {
+    var due = new Date(createdAt); due.setDate(due.getDate() + deadlineDays(filmType));
+    var d0 = new Date(); d0.setHours(0, 0, 0, 0);
+    var d1 = new Date(due); d1.setHours(0, 0, 0, 0);
+    var daysLeft = Math.round((d1 - d0) / 86400000), badge, cls;
+    if (daysLeft < 0) { badge = t("dueOver"); cls = "adm-due--over"; }
+    else if (daysLeft === 0) { badge = t("dueToday"); cls = "adm-due--soon"; }
+    else { badge = t("dueDays")(daysLeft); cls = daysLeft <= 3 ? "adm-due--soon" : "adm-due--ok"; }
+    return "<span class='adm-due'>" + deadlineInner(esc(fmtDate(due.toISOString())), cls, badge) + "</span>";
   }
   function show(el) { if (el) el.hidden = false; }
   function hide(el) { if (el) el.hidden = true; }
@@ -236,8 +256,15 @@
     // state can't leak across a logout→login — e.g. a reader must never see "Manage
     // admins" (super-admin only), and only readers see "Delivered by me".
     $("adminsTabBtn").hidden = me.role !== "super_admin";
-    $("deliveriesTabBtn").hidden = me.role !== "super_admin";
+    // Staff (admin/super_admin) get the full-detail archive + deliveries tabs and a
+    // kanban main board; readers keep the detailed table + their "Delivered by me".
+    $("allTabBtn").hidden = !isStaff(me.role);
+    $("deliveriesTabBtn").hidden = !isStaff(me.role);
     $("deliveredTabBtn").hidden = !isReader(me.role);
+    // Main dashboard: kanban for staff, the detailed reader table otherwise.
+    var staff = isStaff(me.role);
+    $("kanbanBoard").hidden = !staff;
+    $("subTableView").hidden = staff;
     logAccess();
     // Hide the boot loader only once the first submissions load settles (success
     // or failure), so the loader covers the empty-dashboard gap on refresh.
@@ -263,6 +290,7 @@
   // moment a report is sent, so they must stay in sync with the main board).
   function reloadOpenSecondaryTab() {
     if (!$("tab-admins").hidden) loadAdmins();
+    if (!$("tab-all").hidden) loadAll();
     if (!$("tab-delivered").hidden) loadDelivered();
     if (!$("tab-deliveries").hidden) loadDeliveries();
   }
@@ -346,10 +374,12 @@
       document.querySelectorAll(".adm-navitem").forEach(function (x) { x.classList.remove("is-active"); });
       t.classList.add("is-active");
       $("tab-submissions").hidden = name !== "submissions";
+      $("tab-all").hidden = name !== "all";
       $("tab-delivered").hidden = name !== "delivered";
       $("tab-deliveries").hidden = name !== "deliveries";
       $("tab-admins").hidden = name !== "admins";
       if (name === "admins") loadAdmins();
+      if (name === "all") loadAll();
       if (name === "delivered") loadDelivered();
       if (name === "deliveries") loadDeliveries();
     });
@@ -423,6 +453,10 @@
     currentRows = rows;
     currentCov = covBySub;
     updateKpis(rows, covBySub);
+
+    // Staff see the segmented kanban board (no writer detail); readers get the table.
+    if (isStaff(me && me.role)) { renderKanban(rows, covBySub); return; }
+
     $("subCount").textContent = rows.length;
     if (!rows.length) { show($("subEmpty")); return; }
     hide($("subEmpty"));
@@ -714,6 +748,134 @@
 
   $("refreshBtn").addEventListener("click", loadSubmissions);
 
+  // ---------- STAFF KANBAN (admin / super_admin main dashboard) ----------
+  // Read-only assignee avatar (no claim button — staff don't assign).
+  function roAvatar(id) {
+    var name = adminsById[id] || t("adminFallback");
+    var av = document.createElement("span");
+    av.className = "adm-av adm-av--static";
+    av.style.background = avatarColor(id);
+    av.textContent = initial(name);
+    av.title = name; av.setAttribute("aria-label", name);
+    return av;
+  }
+
+  function kanCard(s, st, bucket) {
+    var card = document.createElement("div"); card.className = "adm-card";
+    var title = document.createElement("div"); title.className = "adm-card__title";
+    title.innerHTML = "<strong>" + esc(s.title_ar || t("untitled")) + "</strong>" +
+      (s.title_en ? "<span class='en'>" + esc(s.title_en) + "</span>" : "");
+    card.appendChild(title);
+
+    var row = document.createElement("div"); row.className = "adm-card__row";
+    var dl = document.createElement("span"); dl.innerHTML = deadlineBadge(s.created_at, s.film_type);
+    row.appendChild(dl);
+    if (s.assigned_to) {
+      var avs = document.createElement("span"); avs.className = "adm-card__avatars";
+      avs.appendChild(roAvatar(s.assigned_to));
+      if (s.co_reader_id) avs.appendChild(roAvatar(s.co_reader_id));
+      row.appendChild(avs);
+    }
+    card.appendChild(row);
+
+    // Action: staff review a submitted coverage; open (read-only) one in review.
+    if (bucket === "app") {
+      var a = document.createElement("a"); a.className = "adm-link adm-link--gold";
+      a.href = "coverage.html?id=" + encodeURIComponent(s.id); a.textContent = t("reviewCov");
+      card.appendChild(a);
+    } else if (bucket === "rev") {
+      var o = document.createElement("a"); o.className = "adm-link";
+      o.href = "coverage.html?id=" + encodeURIComponent(s.id);
+      o.textContent = st === "revision_requested" ? t("revisionCov") : t("openCov");
+      card.appendChild(o);
+    }
+    return card;
+  }
+
+  function renderKanban(rows, covBySub) {
+    var un = $("kanUnassigned"), rev = $("kanReview"), app = $("kanApproval");
+    un.innerHTML = ""; rev.innerHTML = ""; app.innerHTML = "";
+    var cu = 0, cr = 0, ca = 0;
+    rows.forEach(function (s) {
+      var st = covBySub[s.id];
+      if (!s.assigned_to) { un.appendChild(kanCard(s, st, "un")); cu++; }
+      else if (st === "submitted") { app.appendChild(kanCard(s, st, "app")); ca++; }
+      else { rev.appendChild(kanCard(s, st, "rev")); cr++; }
+    });
+    $("kanUnassignedCount").textContent = cu;
+    $("kanReviewCount").textContent = cr;
+    $("kanApprovalCount").textContent = ca;
+    [[un, cu], [rev, cr], [app, ca]].forEach(function (p) {
+      if (!p[1]) { var d = document.createElement("div"); d.className = "adm-kancol__empty"; d.textContent = "—"; p[0].appendChild(d); }
+    });
+  }
+
+  // ---------- DETAIL TABLE (All submissions + Deliveries tabs) ----------
+  // Full submission detail; the coverage column links to the report the writer
+  // sees once approved, otherwise shows the status label. `readerName` maps a
+  // submission id → the reviewing reader's name (used by the Deliveries tab).
+  function renderDetailRows(bodyEl, rows, covBySub, deliveredBySub, readerNameCol) {
+    bodyEl.innerHTML = "";
+    rows.forEach(function (s) {
+      var st = covBySub[s.id];
+      var delivered = !!deliveredBySub[s.id];
+      var tr = document.createElement("tr");
+      tr.innerHTML =
+        "<td>" + esc(fmtDate(s.created_at)) + "</td>" +
+        deadlineCell(s.created_at, s.film_type, delivered) +
+        "<td><strong>" + esc(s.title_ar) + "</strong><br><span class='adm-muted' dir='ltr'>" + esc(s.title_en) + "</span></td>" +
+        "<td>" + esc(s.writer) + "</td>" +
+        "<td dir='ltr'>" + esc(s.email) + "</td>" +
+        "<td>" + esc(GENRES[ULANG][s.genre] || s.genre) + "</td>" +
+        "<td>" + esc(FILM[ULANG][s.film_type] || s.film_type) + "</td>" +
+        "<td>" + esc(DRAFT[ULANG][s.draft] || s.draft) + "</td>" +
+        "<td>" + esc(pagesCount(s)) + "</td>" +
+        "<td class='adm-file'></td>" +
+        (readerNameCol ? "<td>" + esc(readerNameCol[s.id] || "—") + "</td>" : "<td class='adm-assignee2'>" + esc(adminsById[s.assigned_to] || "—") + "</td>") +
+        "<td class='adm-cov'></td>";
+      var fileCell = tr.querySelector(".adm-file");
+      if (s.file_path) {
+        var b = document.createElement("button");
+        b.className = "adm-link"; b.textContent = t("download");
+        b.addEventListener("click", function () { downloadFile(s.file_path, b); });
+        fileCell.appendChild(b);
+      } else { fileCell.textContent = "—"; }
+      // Coverage: an approved report is viewable; otherwise show the status label.
+      var covCell = tr.querySelector(".adm-cov");
+      if (st === "approved" || delivered) {
+        var link = document.createElement("a");
+        link.className = "adm-link"; link.href = "report.html?t=" + encodeURIComponent(s.report_token);
+        link.target = "_blank"; link.rel = "noopener"; link.textContent = t("viewReport");
+        covCell.appendChild(link);
+      } else {
+        covCell.textContent = !s.assigned_to ? t("awaitingAssign")
+          : st === "submitted" ? t("awaitingApproval")
+          : st === "revision_requested" ? t("revisionCov")
+          : t("inReview");
+        covCell.className += " adm-muted";
+      }
+      bodyEl.appendChild(tr);
+    });
+  }
+
+  // ---------- ALL SUBMISSIONS (staff) ----------
+  async function loadAll() {
+    var results = await Promise.all([
+      sb.from("submissions").select("*").order("created_at", { ascending: false }),
+      sb.from("coverages").select("submission_id,status,delivered_at")
+    ]);
+    var subs = (results[0].data) || [];
+    var covBySub = {}, deliveredBySub = {};
+    ((results[1].data) || []).forEach(function (c) {
+      covBySub[c.submission_id] = c.status;
+      if (c.delivered_at) deliveredBySub[c.submission_id] = true;
+    });
+    $("allCount").textContent = subs.length;
+    if (!subs.length) { show($("allEmpty")); $("allBody").innerHTML = ""; return; }
+    hide($("allEmpty"));
+    renderDetailRows($("allBody"), subs, covBySub, deliveredBySub, null);
+  }
+
   // ---------- DELIVERED BY ME (readers) ----------
   // Scripts this reader worked on (primary or co-reader) whose report was sent to
   // the writer (coverages.delivered_at set by /api/send-report).
@@ -777,32 +939,19 @@
     var rows = subs.filter(function (s) { return deliveredOn[s.id]; });
     rows.sort(function (a, b) { return deliveredOn[b.id] < deliveredOn[a.id] ? -1 : 1; }); // newest delivery first
 
-    var body = $("dlvBody");
-    body.innerHTML = "";
     $("dlvCount").textContent = rows.length;
-    if (!rows.length) { show($("dlvEmpty")); return; }
+    if (!rows.length) { show($("dlvEmpty")); $("dlvBody").innerHTML = ""; return; }
     hide($("dlvEmpty"));
 
+    // Full submission detail; the "Reader" column is the reviewing reader, and
+    // the coverage column links to the delivered report.
+    var covBySub = {}, deliveredBySub = {}, readerBySub = {};
     rows.forEach(function (s) {
-      var reader = nameById[s.assigned_to] || nameById[deliveredBy[s.id]] || "—";
-      var tr = document.createElement("tr");
-      tr.innerHTML =
-        "<td>" + esc(fmtDate(s.created_at)) + "</td>" +
-        "<td><strong>" + esc(s.title_ar) + "</strong><br><span class='adm-muted' dir='ltr'>" + esc(s.title_en) + "</span></td>" +
-        "<td>" + esc(s.writer) + "</td>" +
-        "<td>" + esc(reader) + "</td>" +
-        "<td>" + esc(fmtDate(deliveredOn[s.id])) + "</td>" +
-        "<td class='adm-report'></td>";
-      // Open the exact report the writer received (hosted, read-only), not the
-      // editable workspace.
-      var link = document.createElement("a");
-      link.className = "adm-link";
-      link.href = "report.html?t=" + encodeURIComponent(s.report_token);
-      link.target = "_blank"; link.rel = "noopener";
-      link.textContent = t("viewReport");
-      tr.querySelector(".adm-report").appendChild(link);
-      body.appendChild(tr);
+      covBySub[s.id] = "approved";
+      deliveredBySub[s.id] = true;
+      readerBySub[s.id] = nameById[s.assigned_to] || nameById[deliveredBy[s.id]] || "—";
     });
+    renderDetailRows($("dlvBody"), rows, covBySub, deliveredBySub, readerBySub);
   }
 
   // ---------- ADMINS (super admin) ----------
