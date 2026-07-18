@@ -1013,12 +1013,12 @@ html[data-theme="light"] .adm-decor-clapper { background-image: url(../assets/de
 .adm-count { display: inline-block; font-size: 13px; margin-inline-start: 6px; color: var(--adm-soft-text); }
 
 /* Staff kanban board (segmented main dashboard) */
-.adm-kanban { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: start; }
+.adm-kanban { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; align-items: start; }
 .adm-kanban[hidden] { display: none; }
 .adm-kancol { background: var(--adm-surface); border: 1px solid var(--adm-border); border-radius: 16px; padding: 14px; min-height: 120px; }
 .adm-kancol__head { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 13.5px; letter-spacing: .02em; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--adm-border-soft); }
 .adm-kancol__body { display: flex; flex-direction: column; gap: 10px; }
-.adm-kancol__empty { color: var(--adm-muted); font-size: 12.5px; padding: 6px 2px; }
+.adm-kancol__empty { color: var(--adm-muted); font-size: 12.5px; line-height: 1.6; padding: 10px 2px 12px; }
 .adm-card { background: var(--adm-bg); border: 1px solid var(--adm-border); border-radius: 12px; padding: 12px 13px; display: flex; flex-direction: column; gap: 9px; }
 .adm-card__title { font-weight: 600; font-size: 13.5px; line-height: 1.4; }
 .adm-card__title .en { display: block; color: var(--adm-muted); font-size: 12px; font-weight: 400; direction: ltr; }

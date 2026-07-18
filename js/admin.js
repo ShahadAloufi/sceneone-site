@@ -71,6 +71,8 @@
       navAll: "جميع النصوص", allTitle: "جميع النصوص", allSub: "أرشيف كامل بكل تفاصيل النصوص المُستلمة",
       allListTitle: "جميع النصوص",
       kanUnassigned: "بانتظار الإسناد", kanReview: "قيد التقييم", kanApproval: "بانتظار الاعتماد",
+      kanEmptyReview: "لا توجد تغطيات قيد الكتابة حاليًا.",
+      kanEmptyApproval: "لا يوجد ما ينتظر اعتمادك.",
       navShow: "إظهار القائمة", navFold: "طيّ القائمة", themeToggle: "تبديل المظهر",
       startEval: "ابدأ التقييم", assignFail: "تعذّر تحديث الإسناد.", dlFail: "تعذّر إنشاء رابط التحميل.",
       del: "حذف", meParen: "(أنت)", confirmDel: function (n) { return "حذف المشرف " + n + "؟"; },
@@ -119,6 +121,8 @@
       navAll: "All submissions", allTitle: "All submissions", allSub: "Full archive of every script received, with all details",
       allListTitle: "All submissions",
       kanUnassigned: "Awaiting assignment", kanReview: "In review", kanApproval: "Awaiting approval",
+      kanEmptyReview: "No coverage is being written right now.",
+      kanEmptyApproval: "Nothing is waiting for your approval.",
       navShow: "Show menu", navFold: "Collapse menu", themeToggle: "Toggle theme",
       startEval: "Start coverage", assignFail: "Failed to update assignment.", dlFail: "Failed to create download link.",
       del: "Delete", meParen: "(you)", confirmDel: function (n) { return "Delete admin " + n + "?"; },
@@ -792,21 +796,24 @@
     return card;
   }
 
+  // Unassigned scripts are deliberately NOT a board column: staff don't claim
+  // scripts (readers self-assign), so there's no action for them there. The count
+  // still shows in the "Awaiting assignment" KPI tile above.
   function renderKanban(rows, covBySub) {
-    var un = $("kanUnassigned"), rev = $("kanReview"), app = $("kanApproval");
-    un.innerHTML = ""; rev.innerHTML = ""; app.innerHTML = "";
-    var cu = 0, cr = 0, ca = 0;
+    var rev = $("kanReview"), app = $("kanApproval");
+    rev.innerHTML = ""; app.innerHTML = "";
+    var cr = 0, ca = 0;
     rows.forEach(function (s) {
+      if (!s.assigned_to) return; // counted in the KPI tile only
       var st = covBySub[s.id];
-      if (!s.assigned_to) { un.appendChild(kanCard(s, st, "un")); cu++; }
-      else if (st === "submitted") { app.appendChild(kanCard(s, st, "app")); ca++; }
+      if (st === "submitted") { app.appendChild(kanCard(s, st, "app")); ca++; }
       else { rev.appendChild(kanCard(s, st, "rev")); cr++; }
     });
-    $("kanUnassignedCount").textContent = cu;
     $("kanReviewCount").textContent = cr;
     $("kanApprovalCount").textContent = ca;
-    [[un, cu], [rev, cr], [app, ca]].forEach(function (p) {
-      if (!p[1]) { var d = document.createElement("div"); d.className = "adm-kancol__empty"; d.textContent = "—"; p[0].appendChild(d); }
+    // Empty columns get a plain-language line, not a bare dash.
+    [[rev, cr, "kanEmptyReview"], [app, ca, "kanEmptyApproval"]].forEach(function (p) {
+      if (!p[1]) { var d = document.createElement("div"); d.className = "adm-kancol__empty"; d.textContent = t(p[2]); p[0].appendChild(d); }
     });
   }
 
