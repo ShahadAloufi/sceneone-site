@@ -1040,11 +1040,20 @@ html[dir="rtl"] .adm-tablefilter select { background-position: left 16px center;
 .adm-kancol__head { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 13.5px; letter-spacing: .02em; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--adm-border-soft); }
 .adm-kancol__body { display: flex; flex-direction: column; gap: 10px; }
 .adm-kancol__empty { color: var(--adm-muted); font-size: 12.5px; line-height: 1.6; padding: 10px 2px 12px; }
-.adm-card { background: var(--adm-bg); border: 1px solid var(--adm-border); border-radius: 12px; padding: 12px 13px; display: flex; flex-direction: column; gap: 9px; }
-.adm-card__title { font-weight: 600; font-size: 13.5px; line-height: 1.4; }
-.adm-card__title .en { display: block; color: var(--adm-muted); font-size: 12px; font-weight: 400; direction: ltr; }
+.adm-card { background: var(--adm-bg); border: 1px solid var(--adm-border); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 7px; }
+.adm-card__title { font-weight: 600; font-size: 13px; line-height: 1.35; }
+.adm-card__title .en { display: block; color: var(--adm-muted); font-size: 11.5px; font-weight: 400; direction: ltr; }
 .adm-card__row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.adm-card__right { display: inline-flex; align-items: center; gap: 8px; }
 .adm-card__avatars { display: flex; gap: 4px; }
+/* Compact the shared bits inside a card: the deadline sits on one line (the
+   table keeps it stacked) and the action is a small inline button, so a card
+   stays close to the height of an empty column. */
+.adm-card .adm-due { display: inline-flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.adm-card .adm-due > div { display: inline; font-size: 12px; }
+.adm-card .adm-due__badge { margin-top: 0; padding: 2px 8px; font-size: 11px; }
+.adm-card .adm-link { width: auto; height: 28px; padding: 4px 12px; font-size: 12px; border-radius: 7px; }
+.adm-card .adm-av { width: 26px; height: 26px; font-size: 11.5px; }
 @media (max-width: 900px) { .adm-kanban { grid-template-columns: 1fr; } }
 
 .adm-tablewrap { background: var(--adm-surface); border: 1px solid var(--adm-border); border-radius: 18px; overflow-x: auto; }

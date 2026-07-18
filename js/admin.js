@@ -846,28 +846,32 @@
       (s.title_en ? "<span class='en'>" + esc(s.title_en) + "</span>" : "");
     card.appendChild(title);
 
+    // Single meta row: deadline on one side, assignee + action on the other, so a
+    // card stays two lines tall instead of stacking each piece.
     var row = document.createElement("div"); row.className = "adm-card__row";
     var dl = document.createElement("span"); dl.innerHTML = deadlineBadge(s.created_at, s.film_type);
     row.appendChild(dl);
+
+    var right = document.createElement("span"); right.className = "adm-card__right";
     if (s.assigned_to) {
       var avs = document.createElement("span"); avs.className = "adm-card__avatars";
       avs.appendChild(roAvatar(s.assigned_to));
       if (s.co_reader_id) avs.appendChild(roAvatar(s.co_reader_id));
-      row.appendChild(avs);
+      right.appendChild(avs);
     }
-    card.appendChild(row);
-
     // Action: staff review a submitted coverage; open (read-only) one in review.
     if (bucket === "app") {
       var a = document.createElement("a"); a.className = "adm-link adm-link--gold";
       a.href = "coverage.html?id=" + encodeURIComponent(s.id); a.textContent = t("reviewCov");
-      card.appendChild(a);
+      right.appendChild(a);
     } else if (bucket === "rev") {
       var o = document.createElement("a"); o.className = "adm-link";
       o.href = "coverage.html?id=" + encodeURIComponent(s.id);
       o.textContent = st === "revision_requested" ? t("revisionCov") : t("openCov");
-      card.appendChild(o);
+      right.appendChild(o);
     }
+    row.appendChild(right);
+    card.appendChild(row);
     return card;
   }
 
