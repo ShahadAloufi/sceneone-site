@@ -73,6 +73,7 @@
       kanUnassigned: "بانتظار الإسناد", kanReview: "قيد التقييم", kanApproval: "بانتظار الاعتماد",
       kanEmptyReview: "لا توجد تغطيات قيد الكتابة حاليًا.",
       kanEmptyApproval: "لا يوجد ما ينتظر اعتمادك.",
+      fileLocked: "مقفل", fileLockedTip: "هذا النص مُسند إلى قارئ آخر.",
       navShow: "إظهار القائمة", navFold: "طيّ القائمة", themeToggle: "تبديل المظهر",
       startEval: "ابدأ التقييم", assignFail: "تعذّر تحديث الإسناد.", dlFail: "تعذّر إنشاء رابط التحميل.",
       del: "حذف", meParen: "(أنت)", confirmDel: function (n) { return "حذف المشرف " + n + "؟"; },
@@ -123,6 +124,7 @@
       kanUnassigned: "Awaiting assignment", kanReview: "In review", kanApproval: "Awaiting approval",
       kanEmptyReview: "No coverage is being written right now.",
       kanEmptyApproval: "Nothing is waiting for your approval.",
+      fileLocked: "Locked", fileLockedTip: "Another reader is assigned to this script.",
       navShow: "Show menu", navFold: "Collapse menu", themeToggle: "Toggle theme",
       startEval: "Start coverage", assignFail: "Failed to update assignment.", dlFail: "Failed to create download link.",
       del: "Delete", meParen: "(you)", confirmDel: function (n) { return "Delete admin " + n + "?"; },
@@ -480,14 +482,24 @@
         "<td class='adm-file'></td>" +
         "<td class='adm-assignee'></td>" +
         "<td class='adm-cov'></td>";
-      // File cell
+      // File cell. Scripts are IP-protected: a reader may only open one that is
+      // unassigned (preview before claiming) or assigned to them. Staff see all.
+      // Mirrors the Storage RLS policy — that policy is the real guard.
       var fileCell = tr.querySelector(".adm-file");
       if (s.file_path) {
-        var a = document.createElement("button");
-        a.className = "adm-link";
-        a.textContent = t("download");
-        a.addEventListener("click", function () { downloadFile(s.file_path, a); });
-        fileCell.appendChild(a);
+        if (canReadScript(s)) {
+          var a = document.createElement("button");
+          a.className = "adm-link";
+          a.textContent = t("download");
+          a.addEventListener("click", function () { downloadFile(s.file_path, a); });
+          fileCell.appendChild(a);
+        } else {
+          var lock = document.createElement("span");
+          lock.className = "adm-muted";
+          lock.textContent = t("fileLocked");
+          lock.title = t("fileLockedTip");
+          fileCell.appendChild(lock);
+        }
       } else { fileCell.textContent = "—"; }
       // Assignee dropdown cell (tag with its submission so we can re-render the
       // whole column when my active-assignment state changes).
@@ -522,6 +534,14 @@
   function isJunior(id) { return adminRoleById[id] === "junior_reader"; }
   function isReader(role) { return role === "senior_reader" || role === "junior_reader"; }
   function isStaff(role) { return role === "admin" || role === "super_admin"; }
+  // Script files are IP-protected. Staff may open any; a reader may open one only
+  // if it's unassigned (preview before claiming) or assigned to them. Mirrors the
+  // Storage RLS policy "staff read all scripts, readers read unassigned or their own".
+  function canReadScript(s) {
+    if (!me) return false;
+    if (isStaff(me.role)) return true;
+    return !s.assigned_to || s.assigned_to === me.id || s.co_reader_id === me.id;
+  }
   // True when the signed-in user is assigned to a submission (primary or co-reader).
   function amAssignedTo(s) { return !!me && (s.assigned_to === me.id || s.co_reader_id === me.id); }
 
@@ -842,10 +862,16 @@
         "<td class='adm-cov'></td>";
       var fileCell = tr.querySelector(".adm-file");
       if (s.file_path) {
-        var b = document.createElement("button");
-        b.className = "adm-link"; b.textContent = t("download");
-        b.addEventListener("click", function () { downloadFile(s.file_path, b); });
-        fileCell.appendChild(b);
+        if (canReadScript(s)) {
+          var b = document.createElement("button");
+          b.className = "adm-link"; b.textContent = t("download");
+          b.addEventListener("click", function () { downloadFile(s.file_path, b); });
+          fileCell.appendChild(b);
+        } else {
+          var lk = document.createElement("span");
+          lk.className = "adm-muted"; lk.textContent = t("fileLocked"); lk.title = t("fileLockedTip");
+          fileCell.appendChild(lk);
+        }
       } else { fileCell.textContent = "—"; }
       // Coverage: an approved report is viewable; otherwise show the status label.
       var covCell = tr.querySelector(".adm-cov");

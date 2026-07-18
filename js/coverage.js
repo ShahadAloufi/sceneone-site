@@ -59,6 +59,7 @@
       approving: "Approving…", requesting: "Sending…", reviewFail: "Couldn't complete the action.",
       pl: { title: "Title", writer: "Writer", email: "Email", ref: "Reference", format: "Format", genre: "Genre", length: "Length", draft: "Draft", ip: "IP registered", file: "Script file", logline: "Logline", vision: "Writer's vision" },
       ipYes: "Registered", ipNo: "Not registered", dl: "Download script", untitled: "Untitled", dash: "—", pagesUnit: "pages",
+      fileLocked: "Locked", fileLockedTip: "Another reader is assigned to this script.",
       saving: "Saving…", saved: "Saved", saveFailed: "Save failed", loaded: "Loaded", newCov: "New coverage", viewOnly: "View only",
       hintOverride: function (a) { return "Overriding the suggested " + a; }, hintManual: "Manual rating", hintAuto: "Using the suggested score",
       evalPh: function (n) { return "Your assessment of " + n + "."; },
@@ -109,6 +110,7 @@
       approving: "جارٍ الاعتماد…", requesting: "جارٍ الإرسال…", reviewFail: "تعذّر إكمال الإجراء.",
       pl: { title: "عنوان السيناريو", writer: "اسم الكاتب", email: "البريد الإلكتروني", ref: "الرقم المرجعي", format: "نوع العمل", genre: "التصنيف", length: "عدد الصفحات/المدة", draft: "نسخة السيناريو", ip: "تسجيل الملكية الفكرية", file: "ملف السيناريو", logline: "الملخص المختصر", vision: "رؤية الكاتب" },
       ipYes: "مسجل", ipNo: "غير مسجل", dl: "تحميل النص", untitled: "بدون عنوان", dash: "—", pagesUnit: "صفحة",
+      fileLocked: "مقفل", fileLockedTip: "هذا النص مُسند إلى قارئ آخر.",
       saving: "جارٍ الحفظ…", saved: "تم الحفظ", saveFailed: "فشل الحفظ", loaded: "تم التحميل", newCov: "تقييم جديد", viewOnly: "عرض فقط",
       hintOverride: function (a) { return "يتجاوز الدرجة المقترحة " + a; }, hintManual: "تقييم يدوي", hintAuto: "استخدام الدرجة المقترحة",
       // Contract the preposition ل with a leading definite article ال → لل
@@ -222,6 +224,7 @@
   var reviewNote = "";           // staff's revision note (shown to the reader)
   var isStaff = false;           // admin / super_admin — the quality reviewer
   var assignedToMe = false;      // I'm the primary assignee or co-reader of this script
+  var scriptReadable = false;    // may I open the writer's script file? (staff / assigned / unclaimed)
   var readOnly = false;          // true for staff viewing a coverage they aren't assigned to
   var saveT = null;
 
@@ -278,9 +281,11 @@
   function renderPulled() {
     var s = state.submission, u = UI[UILANG], pl = u.pl, dash = u.dash;
     var title = esc(s.titleEn || u.untitled) + (s.titleAr ? '  <span style="color:var(--label)">· ' + esc(s.titleAr) + "</span>" : "");
-    var fileCell = s.filePath
-      ? '<a href="#" id="dlLink">' + esc(s.file || u.dl) + "</a>"
-      : esc(s.file || dash);
+    // Scripts are IP-protected: only staff, the assigned reader, or an unclaimed
+    // script may be opened. Mirrors the Storage RLS policy (the real guard).
+    var fileCell = !s.filePath ? esc(s.file || dash)
+      : scriptReadable ? '<a href="#" id="dlLink">' + esc(s.file || u.dl) + "</a>"
+      : '<span style="color:var(--label)" title="' + esc(u.fileLockedTip) + '">' + esc(u.fileLocked) + "</span>";
     var rows = [
       [pl.title, title, true],
       [pl.writer, esc(s.writer || dash)],
@@ -726,6 +731,8 @@
     //  • Otherwise an unassigned non-staff reader has no access → block.
     isStaff = me.role === "admin" || me.role === "super_admin";
     assignedToMe = subRes.data.assigned_to === me.id || subRes.data.co_reader_id === me.id;
+    // A reader may open the script only when it's theirs or still unclaimed.
+    scriptReadable = isStaff || assignedToMe || !subRes.data.assigned_to;
     if (!assignedToMe && !isStaff && covStatus !== "approved") {
       guardState(G.assignT, G.assignM, true);
       return;

@@ -242,9 +242,16 @@ must be in the `supabase_realtime` publication for live updates to fire.
   the writer opens (and can browser-Save-as-PDF), *not* an html2canvas PDF, because
   client-side rasterization can't reliably render Arabic. `report-render.js` is the
   single source of truth for the report, shared by the workspace and the public page.
-- **File access is all-staff, not per-assignment** — any admin/reader can download any
-  script (still private bucket + short-lived signed URLs + RLS). IP monitoring is
-  **passive + flagged, never blocking** (`IP_FLAG_THRESHOLD = 4`).
+- **Script file access is per-assignment for readers** (changed from the earlier
+  all-staff model): **staff** (admin/super_admin) may download any script for quality
+  review; a **reader** may download only a script that is **unassigned** (so they can
+  preview before claiming) or that they're **assigned to** (primary or co-reader) — never
+  one another reader is working on. Enforced by the Storage RLS policy "staff read all
+  scripts, readers read unassigned or their own" via `can_read_script(uid, object_name)`,
+  which maps the storage object back to `submissions.file_path`; the dashboard and
+  coverage workspace mirror it with a "Locked" label. Still a private bucket +
+  short-lived signed URLs. IP monitoring is **passive + flagged, never blocking**
+  (`IP_FLAG_THRESHOLD = 4`).
 - **"Delivered" means actually sent** (stamped `coverages.delivered_at`), not merely
   a completed coverage.
 - **coverage.html / report.html are intentionally self-contained** (own styles +
@@ -324,6 +331,25 @@ must be in the `supabase_realtime` publication for live updates to fire.
   create trigger trg_coverage_reader_transitions
     before insert or update on public.coverages
     for each row execute function public.enforce_coverage_reader_transitions();
+
+  -- Script files are per-assignment for readers: staff read any; a reader reads a
+  -- script only if it's unassigned (preview before claiming) or assigned to them.
+  create or replace function public.can_read_script(uid uuid, object_name text)
+  returns boolean language sql stable security definer set search_path = public as $$
+    select exists (
+      select 1 from public.submissions s
+      where s.file_path = object_name
+        and (s.assigned_to is null or s.assigned_to = uid or s.co_reader_id = uid)
+    );
+  $$;
+  drop policy if exists "admins can read scripts" on storage.objects;
+  drop policy if exists "staff read all scripts, readers read unassigned or their own" on storage.objects;
+  create policy "staff read all scripts, readers read unassigned or their own"
+    on storage.objects for select to authenticated
+    using (
+      bucket_id = 'scripts' and public.is_admin(auth.uid())
+      and (public.is_staff(auth.uid()) or public.can_read_script(auth.uid(), name))
+    );
 
   -- One-active-assignment rule (readers freed on SUBMIT, not delivery).
   create or replace function public.enforce_single_active_assignment()

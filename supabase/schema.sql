@@ -237,12 +237,39 @@ create policy "anon can upload scripts"
   to anon
   with check ( bucket_id = 'scripts' );
 
--- Signed-in admins may READ files (to generate signed download URLs).
+-- Script files are IP-protected, so READ access is per-assignment for readers:
+--   • staff (admin/super_admin) — any script, for quality review;
+--   • readers — only a script that is UNASSIGNED (so they can preview it before
+--     claiming) or that they are assigned to (primary or co-reader).
+-- A reader therefore cannot download a script another reader is working on.
+-- Maps the storage object back to its submission via submissions.file_path.
+create or replace function public.can_read_script(uid uuid, object_name text)
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1 from public.submissions s
+    where s.file_path = object_name
+      and (s.assigned_to is null or s.assigned_to = uid or s.co_reader_id = uid)
+  );
+$$;
+
 drop policy if exists "admins can read scripts" on storage.objects;
-create policy "admins can read scripts"
+drop policy if exists "staff read all scripts, readers read unassigned or their own" on storage.objects;
+create policy "staff read all scripts, readers read unassigned or their own"
   on storage.objects for select
   to authenticated
-  using ( bucket_id = 'scripts' and public.is_admin(auth.uid()) );
+  using (
+    bucket_id = 'scripts'
+    and public.is_admin(auth.uid())
+    and (
+      public.is_staff(auth.uid())
+      or public.can_read_script(auth.uid(), name)
+    )
+  );
 
 -- ------------------------------------------------------------
 -- 3.5) COVERAGES
