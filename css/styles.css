@@ -1009,6 +1009,13 @@ html[data-theme="light"] .adm-decor-clapper { background-image: url(../assets/de
 .adm-kpi--done .adm-kpi__badge { color: var(--adm-green); background: var(--adm-green-soft); }
 
 .adm-tablehead { display: flex; align-items: center; margin-bottom: 12px; }
+/* Month filter (deliveries) — sits at the end of the table header row. */
+.adm-monthfilter { margin-inline-start: auto; display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--adm-muted); }
+.adm-monthfilter[hidden] { display: none; }
+.adm-monthfilter select { font: inherit; font-size: 12.5px; color: var(--adm-text); background: var(--adm-surface-2); border: 1px solid var(--adm-border); border-radius: 9px; padding: 6px 10px; cursor: pointer; }
+/* Month group header inside a deliveries table. */
+.adm-table tbody tr.adm-monthrow td { background: var(--adm-surface-2); text-align: start; font-weight: 800; font-size: 12.5px; letter-spacing: .02em; padding: 9px 11px; }
+.adm-table tbody tr.adm-monthrow:hover td { background: var(--adm-surface-2); }
 .adm-tablehead h3 { font-size: 15px; font-weight: 800; margin: 0; }
 .adm-count { display: inline-block; font-size: 13px; margin-inline-start: 6px; color: var(--adm-soft-text); }
 

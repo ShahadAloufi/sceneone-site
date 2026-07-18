@@ -39,6 +39,8 @@
       deliveredSub: "النصوص التي راجعتها وأُرسل تقريرها إلى الكاتب",
       deliveredListTitle: "التقارير المُسلّمة", thDelivered: "تاريخ التسليم", thReport: "التقرير",
       delEmpty: "لم تُسلّم أي تقارير بعد.",
+      monthFilter: "الشهر", allMonths: "كل الأشهر",
+      delEmptyMonth: "لا توجد تقارير مُسلّمة في هذا الشهر.",
       navDeliveries: "التسليمات", deliveriesTitle: "التسليمات",
       deliveriesSub: "جميع التقارير المُرسلة إلى الكُتّاب", deliveriesListTitle: "التقارير المُسلّمة",
       thReader: "القارئ", deliveriesEmpty: "لا توجد تقارير مُسلّمة بعد.",
@@ -91,6 +93,8 @@
       deliveredSub: "Scripts you reviewed whose report was sent to the writer",
       deliveredListTitle: "Delivered reports", thDelivered: "Delivered on", thReport: "Report",
       delEmpty: "You haven't delivered any reports yet.",
+      monthFilter: "Month", allMonths: "All months",
+      delEmptyMonth: "No reports were delivered in this month.",
       navDeliveries: "Deliveries", deliveriesTitle: "Deliveries",
       deliveriesSub: "All reports sent to writers", deliveriesListTitle: "Delivered reports",
       thReader: "Reader", deliveriesEmpty: "No reports delivered yet.",
@@ -372,6 +376,10 @@
     hide(dashView); show(loginView);
     $("loginPassword").value = "";
   });
+
+  // Month filter on the delivered reports — re-renders from memory, no refetch.
+  var delMonthSel = $("delMonth");
+  if (delMonthSel) delMonthSel.addEventListener("change", renderDelivered);
 
   // ---------- TABS ----------
   document.querySelectorAll(".adm-navitem").forEach(function (t) {
@@ -912,6 +920,20 @@
   // ---------- DELIVERED BY ME (readers) ----------
   // Scripts this reader worked on (primary or co-reader) whose report was sent to
   // the writer (coverages.delivered_at set by /api/send-report).
+  // Delivered reports, newest first, grouped by the month they were delivered so
+  // a reader can see their output month by month. Kept in memory so the month
+  // filter re-renders without refetching.
+  var deliveredRows = [];
+
+  function monthKey(iso) {
+    var d = new Date(iso);
+    return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2);
+  }
+  function fmtMonth(iso) {
+    try { return new Date(iso).toLocaleDateString(ULANG, { year: "numeric", month: "long" }); }
+    catch (e) { return iso; }
+  }
+
   async function loadDelivered() {
     var results = await Promise.all([
       sb.from("submissions").select("*").order("created_at", { ascending: false }),
@@ -921,24 +943,71 @@
     var deliveredOn = {};
     ((results[1].data) || []).forEach(function (c) { if (c.delivered_at) deliveredOn[c.submission_id] = c.delivered_at; });
 
-    var rows = subs.filter(function (s) {
-      return deliveredOn[s.id] && (s.assigned_to === me.id || s.co_reader_id === me.id);
+    deliveredRows = subs
+      .filter(function (s) {
+        return deliveredOn[s.id] && (s.assigned_to === me.id || s.co_reader_id === me.id);
+      })
+      .map(function (s) { return { s: s, at: deliveredOn[s.id] }; })
+      // A deliveries list reads by delivery date, not submission date.
+      .sort(function (a, b) { return new Date(b.at) - new Date(a.at); });
+
+    buildMonthFilter();
+    renderDelivered();
+  }
+
+  // Options are derived from the months actually present, newest first.
+  function buildMonthFilter() {
+    var sel = $("delMonth"); if (!sel) return;
+    var prev = sel.value, seen = {}, opts = [];
+    deliveredRows.forEach(function (r) {
+      var k = monthKey(r.at);
+      if (!seen[k]) { seen[k] = true; opts.push({ k: k, label: fmtMonth(r.at) }); }
     });
+    sel.innerHTML = '<option value="">' + esc(t("allMonths")) + "</option>" +
+      opts.map(function (o) { return '<option value="' + esc(o.k) + '">' + esc(o.label) + "</option>"; }).join("");
+    if (prev && seen[prev]) sel.value = prev; // keep the choice across refreshes
+    var wrap = sel.closest ? sel.closest(".adm-monthfilter") : null;
+    if (wrap) wrap.hidden = !deliveredRows.length;
+  }
+
+  function renderDelivered() {
+    var sel = $("delMonth");
+    var pick = sel ? sel.value : "";
+    var rows = pick ? deliveredRows.filter(function (r) { return monthKey(r.at) === pick; }) : deliveredRows;
 
     var body = $("delBody");
     body.innerHTML = "";
     $("delCount").textContent = rows.length;
-    if (!rows.length) { show($("delEmpty")); return; }
+    if (!rows.length) {
+      var empty = $("delEmpty");
+      empty.textContent = pick ? t("delEmptyMonth") : t("delEmpty");
+      show(empty);
+      return;
+    }
     hide($("delEmpty"));
 
-    rows.forEach(function (s) {
+    // Count per month so each group header can show its own total.
+    var perMonth = {};
+    rows.forEach(function (r) { var k = monthKey(r.at); perMonth[k] = (perMonth[k] || 0) + 1; });
+
+    var lastMonth = "";
+    rows.forEach(function (r) {
+      var s = r.s, k = monthKey(r.at);
+      if (k !== lastMonth) {
+        lastMonth = k;
+        var hdr = document.createElement("tr");
+        hdr.className = "adm-monthrow";
+        hdr.innerHTML = '<td colspan="6">' + esc(fmtMonth(r.at)) +
+          ' <span class="adm-count">' + perMonth[k] + "</span></td>";
+        body.appendChild(hdr);
+      }
       var tr = document.createElement("tr");
       tr.innerHTML =
         "<td>" + esc(fmtDate(s.created_at)) + "</td>" +
         "<td><strong>" + esc(s.title_ar) + "</strong><br><span class='adm-muted' dir='ltr'>" + esc(s.title_en) + "</span></td>" +
         "<td>" + esc(s.writer) + "</td>" +
         "<td dir='ltr'>" + esc(s.email) + "</td>" +
-        "<td>" + esc(fmtDate(deliveredOn[s.id])) + "</td>" +
+        "<td>" + esc(fmtDate(r.at)) + "</td>" +
         "<td class='adm-report'></td>";
       // Open the exact report the writer received (hosted, read-only), not the
       // editable workspace.
