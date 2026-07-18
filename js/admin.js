@@ -841,9 +841,11 @@
 
   function kanCard(s, st, bucket) {
     var card = document.createElement("div"); card.className = "adm-card";
+    // Arabic title only — the English subtitle is dropped to keep the card short.
+    // The full title pair is still available in the detail tabs and on hover.
     var title = document.createElement("div"); title.className = "adm-card__title";
-    title.innerHTML = "<strong>" + esc(s.title_ar || t("untitled")) + "</strong>" +
-      (s.title_en ? "<span class='en'>" + esc(s.title_en) + "</span>" : "");
+    title.textContent = s.title_ar || s.title_en || t("untitled");
+    if (s.title_en) title.title = s.title_en;
     card.appendChild(title);
 
     // Single meta row: deadline on one side, assignee + action on the other, so a

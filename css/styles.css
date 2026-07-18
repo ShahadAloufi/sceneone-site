@@ -1042,7 +1042,6 @@ html[dir="rtl"] .adm-tablefilter select { background-position: left 16px center;
 .adm-kancol__empty { color: var(--adm-muted); font-size: 12.5px; line-height: 1.6; padding: 10px 2px 12px; }
 .adm-card { background: var(--adm-bg); border: 1px solid var(--adm-border); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 7px; }
 .adm-card__title { font-weight: 600; font-size: 13px; line-height: 1.35; }
-.adm-card__title .en { display: block; color: var(--adm-muted); font-size: 11.5px; font-weight: 400; direction: ltr; }
 .adm-card__row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .adm-card__right { display: inline-flex; align-items: center; gap: 8px; }
 .adm-card__avatars { display: flex; gap: 4px; }
