@@ -156,6 +156,7 @@
   .cov-reviewbar textarea{width:100%;resize:vertical;min-height:52px;font:inherit;color:var(--ink);
     background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
   .cov-reviewbar__actions{display:flex;gap:12px;flex-wrap:wrap}
+  .cov-reviewbar__hint{margin:0;font-size:13px;color:var(--label);line-height:1.5}
 
   /* Custom tooltip. Lives on a wrapper (not the button) so the button's
      disabled opacity never fades it. Anchored to the button's start edge
@@ -447,11 +448,12 @@
     <!-- Staff quality-review bar — shown only to admins/super-admins when the
          coverage has been submitted for approval. -->
     <div class="cov-reviewbar" id="reviewBar" hidden>
-      <textarea id="revisionNote" rows="2" placeholder="Why does this need revision? (required)"></textarea>
       <div class="cov-reviewbar__actions">
         <button class="btn primary" id="approveBtn">Approve &amp; Send to Writer</button>
         <button class="btn" id="requestRevisionBtn">Request Revision</button>
       </div>
+      <p class="cov-reviewbar__hint" id="revisionNoteHint">Approving needs no note. A note is only required to request a revision.</p>
+      <textarea id="revisionNote" rows="2" placeholder="Reason for revision — only needed to request a revision"></textarea>
     </div>
 
     <!-- pulled, read-only -->

@@ -46,8 +46,10 @@
       // Quality-control review flow
       submitApproval: "Submit Coverage for Approval",
       approveSend: "Approve & Send to Writer", requestRevision: "Request Revision",
-      revisionNotePh: "Why does this need revision? (required)",
+      revisionNotePh: "Reason for revision — only needed to request a revision",
+      reviewHint: "Approving needs no note. A note is only required to request a revision.",
       noteRequired: "Add a revision note before requesting changes.",
+      reviewTimeout: "The request timed out. Check whether the report was sent before retrying.",
       awaitingBanner: "Submitted for approval — awaiting the quality team's review. It's locked until they respond.",
       revisionBanner: "Revision requested by the quality team:",
       approvedBanner: "Approved and sent to the writer.",
@@ -94,8 +96,10 @@
       // مسار مراجعة الجودة
       submitApproval: "إرسال التغطية للاعتماد",
       approveSend: "اعتماد وإرسال إلى الكاتب", requestRevision: "طلب تعديل",
-      revisionNotePh: "ما سبب الحاجة إلى التعديل؟ (مطلوب)",
+      revisionNotePh: "سبب التعديل — مطلوب فقط عند طلب تعديل",
+      reviewHint: "الاعتماد لا يحتاج إلى ملاحظة. الملاحظة مطلوبة فقط عند طلب تعديل.",
       noteRequired: "أضف ملاحظة التعديل قبل طلب التعديل.",
+      reviewTimeout: "انتهت مهلة الطلب. تحقق مما إذا كان التقرير قد أُرسل قبل إعادة المحاولة.",
       awaitingBanner: "تم الإرسال للاعتماد — بانتظار مراجعة فريق الجودة. التغطية مقفلة حتى ردّهم.",
       revisionBanner: "طلب فريق الجودة إجراء تعديل:",
       approvedBanner: "تم الاعتماد والإرسال إلى الكاتب.",
@@ -550,6 +554,7 @@
       if (ap) { ap.disabled = false; ap.textContent = u.approveSend; }
       if (rv) { rv.disabled = false; rv.textContent = u.requestRevision; }
       if (note) { note.disabled = false; note.readOnly = false; note.setAttribute("placeholder", u.revisionNotePh); }
+      var hint = $("revisionNoteHint"); if (hint) hint.textContent = u.reviewHint;
     }
     if (editable) refreshFinalizeState();
   }
@@ -576,11 +581,24 @@
       var token = sess.data.session && sess.data.session.access_token;
       var body = { submission_id: submissionId, action: action };
       if (note != null) body.note = note;
-      var resp = await fetch("/api/review-coverage", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
-        body: JSON.stringify(body)
-      });
+      // Approving does two Supabase round-trips and sends the writer's email, so
+      // it can take a few seconds. Abort rather than leave the buttons stuck on
+      // "Approving…" forever if the request never comes back.
+      var ctrl = new AbortController();
+      var timer = setTimeout(function () { ctrl.abort(); }, 30000);
+      var resp;
+      try {
+        resp = await fetch("/api/review-coverage", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+          body: JSON.stringify(body),
+          signal: ctrl.signal
+        });
+      } catch (netErr) {
+        throw new Error(netErr && netErr.name === "AbortError" ? UI[UILANG].reviewTimeout : (netErr.message || UI[UILANG].reviewFail));
+      } finally {
+        clearTimeout(timer);
+      }
       var data = await resp.json().catch(function () { return {}; });
       if (!resp.ok) throw new Error(data.message || UI[UILANG].reviewFail);
       covStatus = data.status || (action === "approve" ? "approved" : "revision_requested");
