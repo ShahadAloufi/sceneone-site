@@ -201,6 +201,12 @@
     <div id="subTableView">
     <div class="adm-tablehead">
       <h3><span data-i18n="subListTitle">قائمة النصوص</span> <span class="adm-count" id="subCount">0</span></h3>
+      <!-- Lets a reader pull up their own script when new submissions push it
+           down the list. Options are filled in JS so they follow the language. -->
+      <label class="adm-tablefilter" for="subFilter">
+        <span data-i18n="showFilter">عرض</span>
+        <select id="subFilter"></select>
+      </label>
     </div>
     <div class="adm-tablewrap">
       <table class="adm-table" id="subTable">
@@ -275,7 +281,7 @@
     </div>
     <div class="adm-tablehead">
       <h3><span data-i18n="deliveredListTitle">التقارير المُسلّمة</span> <span class="adm-count" id="delCount">0</span></h3>
-      <label class="adm-monthfilter" for="delMonth">
+      <label class="adm-tablefilter" for="delMonth">
         <span data-i18n="monthFilter">الشهر</span>
         <select id="delMonth"></select>
       </label>
@@ -296,7 +302,7 @@
     </div>
     <div class="adm-tablehead">
       <h3><span data-i18n="deliveriesListTitle">التقارير المُسلّمة</span> <span class="adm-count" id="dlvCount">0</span></h3>
-      <label class="adm-monthfilter" for="dlvMonth">
+      <label class="adm-tablefilter" for="dlvMonth">
         <span data-i18n="monthFilter">الشهر</span>
         <select id="dlvMonth"></select>
       </label>

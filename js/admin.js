@@ -53,6 +53,8 @@
       dueOver: "متأخّر", dueDone: "تم التسليم", dueToday: "ينتهي اليوم",
       dueDays: function (n) { return "متبقٍّ " + n + " يوم"; },
       thCoverage: "التقييم", subEmpty: "لا توجد نصوص مقدَّمة بعد.",
+      showFilter: "عرض", filterAll: "كل النصوص", filterMine: "التي أعمل عليها", filterOpen: "متاحة للإسناد",
+      subEmptyFilter: "لا توجد نصوص تطابق هذا العرض.",
       adminsTitle: "المشرفون", thName: "الاسم", thRole: "الدور", createTitle: "إضافة مشرف جديد",
       thAccess: "الدخول (٣٠ يوم)", accessNone: "لا يوجد", accessIps: function (n) { return n + " عنوان IP"; },
       accessFlagTip: "عدد كبير من عناوين IP — قد يكون الحساب مُشاركًا", accessMore: "…والمزيد",
@@ -107,6 +109,8 @@
       dueOver: "Overdue", dueDone: "Delivered", dueToday: "Due today",
       dueDays: function (n) { return n + (n === 1 ? " day left" : " days left"); },
       thCoverage: "Coverage", subEmpty: "No submissions yet.",
+      showFilter: "Show", filterAll: "All scripts", filterMine: "What I'm working on", filterOpen: "Available to claim",
+      subEmptyFilter: "No scripts match this view.",
       adminsTitle: "Admins", thName: "Name", thRole: "Role", createTitle: "Add a new admin",
       thAccess: "Logins (30d)", accessNone: "None", accessIps: function (n) { return n + (n === 1 ? " IP" : " IPs"); },
       accessFlagTip: "Many distinct IPs — the account may be shared", accessMore: "…and more",
@@ -377,6 +381,10 @@
     $("loginPassword").value = "";
   });
 
+  // Scripts-list view filter (readers) — re-renders from memory, no refetch.
+  var subFilterSel = $("subFilter");
+  if (subFilterSel) subFilterSel.addEventListener("change", renderSubmissionsTable);
+
   // Month filters — re-render from memory, no refetch.
   var delMonthSel = $("delMonth");
   if (delMonthSel) delMonthSel.addEventListener("change", renderDelivered);
@@ -473,15 +481,50 @@
     // Staff see the segmented kanban board (no writer detail); readers get the table.
     if (isStaff(me && me.role)) { renderKanban(rows, covBySub); return; }
 
-    $("subCount").textContent = rows.length;
-    if (!rows.length) { show($("subEmpty")); return; }
-    hide($("subEmpty"));
+    buildSubFilter();
+    renderSubmissionsTable();
+  }
 
-    rows.forEach(function (s) {
+  // Reader-only view filter, so a reader can pull up the script they're working
+  // on when new submissions push it down the list.
+  function subFilterRows(rows) {
+    var sel = $("subFilter"), pick = sel ? sel.value : "";
+    if (pick === "mine") return rows.filter(function (s) { return amAssignedTo(s); });
+    if (pick === "open") return rows.filter(function (s) { return !s.assigned_to; });
+    return rows;
+  }
+
+  function buildSubFilter() {
+    var sel = $("subFilter"); if (!sel) return;
+    var prev = sel.value;
+    sel.innerHTML =
+      '<option value="">' + esc(t("filterAll")) + "</option>" +
+      '<option value="mine">' + esc(t("filterMine")) + "</option>" +
+      '<option value="open">' + esc(t("filterOpen")) + "</option>";
+    if (prev) sel.value = prev; // survive realtime reloads / language switches
+  }
+
+  function renderSubmissionsTable() {
+    var rows = subFilterRows(currentRows);
+    var body = $("subBody");
+    body.innerHTML = "";
+    $("subCount").textContent = rows.length;
+    if (!rows.length) {
+      var empty = $("subEmpty");
+      empty.textContent = ($("subFilter") && $("subFilter").value) ? t("subEmptyFilter") : t("subEmpty");
+      show(empty);
+      return;
+    }
+    hide($("subEmpty"));
+    rows.forEach(function (s) { body.appendChild(submissionRowEl(s)); });
+  }
+
+  function submissionRowEl(s) {
       var tr = document.createElement("tr");
       tr.innerHTML =
         "<td>" + esc(fmtDate(s.created_at)) + "</td>" +
-        deadlineCell(s.created_at, s.film_type, !!deliveredBySub[s.id]) +
+        // Rows here are never delivered (delivered ones move to the delivery tabs).
+        deadlineCell(s.created_at, s.film_type, false) +
         "<td><strong>" + esc(s.title_ar) + "</strong><br><span class='adm-muted' dir='ltr'>" + esc(s.title_en) + "</span></td>" +
         "<td>" + esc(s.writer) + "</td>" +
         "<td dir='ltr'>" + esc(s.email) + "</td>" +
@@ -517,9 +560,8 @@
       assigneeCell.__sub = s;
       renderAssignee(assigneeCell, s);
       // Coverage cell
-      renderCoverage(tr.querySelector(".adm-cov"), s, covBySub[s.id]);
-      body.appendChild(tr);
-    });
+      renderCoverage(tr.querySelector(".adm-cov"), s, currentCov[s.id]);
+      return tr;
   }
 
   // Uploaded PDF page count minus the title page (em dash when unavailable),
@@ -740,7 +782,10 @@
     } else if (isReader(me && me.role) && (toId === me.id || prev === me.id)) {
       // My active-assignment state changed → re-render so every other row's "+"
       // reflects the new locked/unlocked state without waiting for a refetch.
-      rerenderAssigneeCells();
+      // Under a view filter the row set itself changes (e.g. freeing a script
+      // drops it out of "What I'm working on"), so rebuild the whole table.
+      if ($("subFilter") && $("subFilter").value) renderSubmissionsTable();
+      else rerenderAssigneeCells();
     }
   }
 
@@ -973,7 +1018,7 @@
     sel.innerHTML = '<option value="">' + esc(t("allMonths")) + "</option>" +
       opts.map(function (o) { return '<option value="' + esc(o.k) + '">' + esc(o.label) + "</option>"; }).join("");
     if (prev && seen[prev]) sel.value = prev; // keep the choice across refreshes
-    var wrap = sel.closest ? sel.closest(".adm-monthfilter") : null;
+    var wrap = sel.closest ? sel.closest(".adm-tablefilter") : null;
     if (wrap) wrap.hidden = !rows.length;
   }
 
