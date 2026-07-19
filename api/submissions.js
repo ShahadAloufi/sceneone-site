@@ -127,21 +127,64 @@ async function sendNotification(row) {
   }
 }
 
+// Bilingual "we received your script" email. Deliberately mirrors the report
+// email in api/review-coverage.js — same warm background, centered white card,
+// Scene One wordmark, Arabic block then an English block — so the two messages a
+// writer gets look like one brand. No CTA button here: there's nothing to open
+// yet (the report link only exists once staff approve the coverage).
+function confirmationEmail(row) {
+  var esc = escapeHtml;
+  var title = row.title_ar || row.title_en || "";
+  var name = (row.writer || "").toString().trim();
+
+  var arHi = name ? "مرحبًا " + esc(name) + "،" : "مرحبًا،";
+  var enHi = name ? "Hello " + esc(name) + "," : "Hello,";
+
+  var titleLine = title
+    ? '<p style="margin:0 0 24px;color:#8a8178;font-size:13px;">العنوان: ' +
+      '<strong style="color:#15110f;">' + esc(title) + "</strong></p>"
+    : "";
+
+  var bodyStyle = "margin:0 auto;max-width:440px;font-size:15px;line-height:1.9;color:#4a453f;";
+
+  return "" +
+    '<div style="background:#f5f1e9;padding:34px 14px;font-family:Arial,Helvetica,sans-serif;">' +
+      '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f5f1e9;"><tr><td align="center">' +
+        '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:20px;">' +
+          '<tr><td style="padding:46px 44px;text-align:center;">' +
+
+            '<div style="font-weight:700;letter-spacing:5px;font-size:20px;color:#15110f;margin:0 0 30px;">SCENE&nbsp;<span style="color:#cd2e07;">ONE</span></div>' +
+
+            '<h1 style="margin:0 0 14px;font-size:25px;line-height:1.3;color:#15110f;font-weight:700;">تم استلام نصك</h1>' +
+
+            titleLine +
+
+            '<p dir="rtl" style="' + bodyStyle + '">' +
+              arHi +
+              "<br>شكرًا لتقديم نصك إلى Scene One. لقد استلمنا طلبك، وسيقوم أحد قرّائنا بمراجعته، ثم نرسل إليك تقرير التقييم عبر بريدك الإلكتروني." +
+            "</p>" +
+
+            '<hr style="border:0;border-top:1px solid #ece7df;width:78%;margin:26px auto;">' +
+
+            '<p dir="ltr" style="' + bodyStyle + '">' +
+              enHi +
+              "<br>Thanks for submitting your script to Scene One. We've received it — one of our readers will review it, and we'll email you the coverage report when it's ready." +
+            "</p>" +
+
+            '<p style="margin:30px 0 0;color:#a49b90;font-size:12.5px;"> The Scene One team</p>' +
+
+          "</td></tr>" +
+        "</table>" +
+      "</td></tr></table>" +
+    "</div>";
+}
+
 // Sends a confirmation email to the writer who submitted the script.
 async function sendConfirmation(row) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey || !row.email) return; // optional; requires a valid recipient
 
-  const title = row.title_ar || row.title_en || "";
-  const html =
-    '<div dir="rtl" style="font-family: Arial, sans-serif; font-size: 15px; color: #1a1a1a; line-height: 1.9;">' +
-    '<h2 style="margin: 0 0 16px;">تم استلام نصك - Scene One</h2>' +
-    "<p>شكرًا لتقديم نصك إلى Scene One — لقد استلمنا طلبك وسنراجعه ونتواصل معك عبر بريدك الإلكتروني.</p>" +
-    (title
-      ? '<p style="color:#555;">العنوان: <strong>' + escapeHtml(title) + "</strong></p>"
-      : "") +
-    '<p style="margin-top:20px; color:#888;">فريق Scene One</p>' +
-    "</div>";
+  const html = confirmationEmail(row);
 
   try {
     await fetch("https://api.resend.com/emails", {
