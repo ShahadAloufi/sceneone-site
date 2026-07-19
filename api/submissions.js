@@ -18,6 +18,8 @@
 const NOTIFY_TO = "sceneone.info@gmail.com";
 // Sender must be on a domain you've VERIFIED in Resend (Domains → Add Domain).
 const NOTIFY_FROM = "Scene One <no-reply@sceneone.info>";
+// Used for the dashboard link in the team notification email.
+const SITE_URL = process.env.SITE_URL || "https://sceneone.info";
 
 // --- Allowlists & limits (server is the source of truth; never trust client) ---
 const GENRES = ["drama", "comedy", "thriller", "horror", "action", "documentary", "other"];
@@ -64,6 +66,51 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
+// Internal "new submission" email for the team. Same brand shell as the writer
+// emails (background, white card, wordmark) but the body stays a scannable
+// key/value table rather than centered prose — this is a working notification,
+// so legibility of the fields matters more than styling. Ends with a CTA into
+// the dashboard, where the script is actually picked up.
+function notificationEmail(row, rows) {
+  var esc = escapeHtml;
+  var title = row.title_ar || row.title_en || "";
+  var keyCell = "padding:9px 12px;border-bottom:1px solid #ece7df;font-size:13px;color:#8a8178;font-weight:700;white-space:nowrap;vertical-align:top;";
+  var valCell = "padding:9px 12px;border-bottom:1px solid #ece7df;font-size:13.5px;color:#4a453f;line-height:1.7;";
+
+  var body = rows.map(function (r) {
+    var v = (r[1] == null || r[1] === "") ? "—" : r[1];
+    return '<tr><td style="' + keyCell + '">' + esc(r[0]) + "</td>" +
+           '<td style="' + valCell + '">' + esc(v) + "</td></tr>";
+  }).join("");
+
+  return "" +
+    '<div style="background:#f5f1e9;padding:34px 14px;font-family:Arial,Helvetica,sans-serif;">' +
+      '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f5f1e9;"><tr><td align="center">' +
+        '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:20px;">' +
+          '<tr><td style="padding:40px 36px;">' +
+
+            '<div style="text-align:center;font-weight:700;letter-spacing:5px;font-size:20px;color:#15110f;margin:0 0 26px;">SCENE&nbsp;<span style="color:#cd2e07;">ONE</span></div>' +
+
+            '<h1 style="margin:0 0 6px;font-size:22px;line-height:1.3;color:#15110f;font-weight:700;text-align:center;">نص جديد مقدَّم</h1>' +
+            '<p style="margin:0 0 26px;text-align:center;color:#8a8178;font-size:13px;">' +
+              (title ? "العنوان: <strong style=\"color:#15110f;\">" + esc(title) + "</strong>" : "&nbsp;") +
+            "</p>" +
+
+            '<table role="presentation" dir="rtl" width="100%" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;">' +
+              body +
+            "</table>" +
+
+            '<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:28px auto 0;"><tr>' +
+              '<td style="border-radius:12px;background:#111111;">' +
+                '<a href="' + esc(SITE_URL) + '/admin" style="display:inline-block;padding:14px 34px;color:#ffffff;text-decoration:none;font-size:14px;font-weight:700;border-radius:12px;">فتح لوحة التحكم</a>' +
+              "</td></tr></table>" +
+
+          "</td></tr>" +
+        "</table>" +
+      "</td></tr></table>" +
+    "</div>";
+}
+
 async function sendNotification(row) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return; // notifications are optional
@@ -86,25 +133,7 @@ async function sendNotification(row) {
     ["الملف", row.file_name || "—"],
   ];
 
-  const html =
-    '<div dir="rtl" style="font-family: Arial, sans-serif; font-size: 15px; color: #1a1a1a;">' +
-    '<h2 style="margin: 0 0 16px;">نص جديد مقدَّم - Scene One</h2>' +
-    '<table style="border-collapse: collapse; width: 100%; max-width: 640px;">' +
-    rows
-      .map(function (r) {
-        return (
-          "<tr>" +
-          '<td style="padding: 8px 12px; border: 1px solid #e2e2e2; background: #f7f7f7; font-weight: bold; white-space: nowrap;">' +
-          r[0] +
-          "</td>" +
-          '<td style="padding: 8px 12px; border: 1px solid #e2e2e2;">' +
-          escapeHtml(r[1]) +
-          "</td>" +
-          "</tr>"
-        );
-      })
-      .join("") +
-    "</table></div>";
+  const html = notificationEmail(row, rows);
 
   try {
     await fetch("https://api.resend.com/emails", {
