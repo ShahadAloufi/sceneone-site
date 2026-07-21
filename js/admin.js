@@ -192,7 +192,10 @@
   // Every submission gets a 2-week window from the day it was submitted.
   // Deadline = created_at + the max turnaround for the script's type (matches the
   // landing page: features 15 days, shorts 10). Derived, never stored.
-  function deadlineDays(filmType) { return filmType === "feature" ? 15 : 10; }
+  // Mirrors the turnaround promised on the landing-page cards: features up to
+  // 4 weeks, shorts 10–15 days (we track the outer bound). Keep in sync with
+  // index.html — "Overdue" should mean the public commitment was missed.
+  function deadlineDays(filmType) { return filmType === "feature" ? 28 : 15; }
   function deadlineCell(createdAt, filmType, completed) {
     var due = new Date(createdAt);
     due.setDate(due.getDate() + deadlineDays(filmType));

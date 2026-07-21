@@ -165,9 +165,11 @@ must be in the `supabase_realtime` publication for live updates to fire.
 - **Report gating:** "Generate report" (preview) needs a 1–5 score on all 7 evaluation
   points; "Submit Coverage for Approval" additionally needs every written section filled.
 - **Deadline:** every submission's deadline = `created_at` + the max turnaround for its
-  type — **features 15 days, shorts 10 days** (matches the landing-page cards) — shown
+  type — **features 28 days (up to 4 weeks), shorts 15 days (typically 10–15)** — shown
   on the dashboard with a color-coded days-left/overdue badge (derived, not stored;
   delivered submissions leave the main list, so no "delivered" badge appears there).
+  These mirror the turnaround promised on the landing-page cards, so "Overdue" means
+  the public commitment was missed — **keep `deadlineDays()` and `index.html` in sync.**
 - **Report delivery:** delivery is the side effect of **staff approval** (there is no
   reader "Send to writer" anymore). Approving via `/api/review-coverage` emails the
   writer a **private link** to the hosted report page (`/report?t=<report_token>`,
