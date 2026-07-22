@@ -78,6 +78,7 @@
       kanEmptyReview: "لا توجد تغطيات قيد الكتابة حاليًا.",
       kanEmptyApproval: "لا يوجد ما ينتظر اعتمادك.",
       fileLocked: "مقفل", fileLockedTip: "هذا النص مُسند إلى قارئ آخر.",
+      reassignTip: "إعادة الإسناد إلى قارئ آخر",
       releaseHint: "يمكنك إلغاء الإسناد خلال ساعتين من استلامه",
       lockedHint: "مقفل: أُبلغ الكاتب ببدء العمل، ولم يعد بالإمكان إلغاء الإسناد",
       navShow: "إظهار القائمة", navFold: "طيّ القائمة", themeToggle: "تبديل المظهر",
@@ -135,6 +136,7 @@
       kanEmptyReview: "No coverage is being written right now.",
       kanEmptyApproval: "Nothing is waiting for your approval.",
       fileLocked: "Locked", fileLockedTip: "Another reader is assigned to this script.",
+      reassignTip: "Reassign to another reader",
       releaseHint: "you can still release this within 2 hours of claiming it",
       lockedHint: "locked: the writer has been told work started, so this can no longer be released",
       navShow: "Show menu", navFold: "Collapse menu", themeToggle: "Toggle theme",
@@ -772,9 +774,26 @@
     if (covCell) renderCoverage(covCell, s, currentCov[s.id]);
   }
 
-  // Claiming/releasing the PRIMARY slot goes through /api/claim-script rather than
-  // a direct table update: the server also schedules (or cancels) the writer's
+  // Every primary-assignment change goes through /api/claim-script rather than a
+  // direct table update: the server also schedules (or cancels) the writer's
   // "work has started" notice, which needs the Resend key.
+  async function claimApi(id, action, to) {
+    try {
+      var sess = await sb.auth.getSession();
+      var token = sess.data.session && sess.data.session.access_token;
+      var body = { submission_id: id, action: action };
+      if (to) body.to = to;
+      var resp = await fetch("/api/claim-script", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+        body: JSON.stringify(body)
+      });
+      var out = await resp.json().catch(function () { return {}; });
+      out.ok = resp.ok;
+      return out;
+    } catch (e) { return { ok: false }; }
+  }
+
   async function assign(id, toId, cell, s) {
     if (cell.dataset.busy) return; // ignore clicks while a request is in flight
     cell.dataset.busy = "1";
@@ -788,18 +807,7 @@
     cell.style.opacity = ".6";
     updateKpis(currentRows, currentCov);
 
-    var out = {};
-    try {
-      var sess = await sb.auth.getSession();
-      var token = sess.data.session && sess.data.session.access_token;
-      var resp = await fetch("/api/claim-script", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
-        body: JSON.stringify({ submission_id: id, action: claiming ? "claim" : "release" })
-      });
-      out = await resp.json().catch(function () { return {}; });
-      out.ok = resp.ok;
-    } catch (e) { out = { ok: false }; }
+    var out = await claimApi(id, claiming ? "claim" : "release");
 
     cell.style.opacity = "1";
     delete cell.dataset.busy;
@@ -877,6 +885,41 @@
     return av;
   }
 
+  // Staff-only: swap the script to a different reader. Never offers "unassign" —
+  // once claimed, a script always has someone responsible (and after the notice
+  // window it's locked anyway). Reassigning keeps the original window/notice.
+  function reassignSelect(s) {
+    var sel = document.createElement("select");
+    sel.className = "adm-reassign";
+    sel.title = t("reassignTip");
+    sel.setAttribute("aria-label", t("reassignTip"));
+    var ids = Object.keys(adminRoleById).filter(function (id) { return isReader(adminRoleById[id]); });
+    // Keep the current assignee listed even if their role changed since.
+    if (s.assigned_to && ids.indexOf(s.assigned_to) === -1) ids.unshift(s.assigned_to);
+    sel.innerHTML = ids.map(function (id) {
+      return '<option value="' + esc(id) + '"' + (id === s.assigned_to ? " selected" : "") + ">" +
+        esc(adminsById[id] || t("adminFallback")) + "</option>";
+    }).join("");
+    sel.addEventListener("change", function () { reassign(s, sel); });
+    return sel;
+  }
+
+  async function reassign(s, sel) {
+    var to = sel.value, prev = s.assigned_to;
+    if (!to || to === prev) return;
+    sel.disabled = true;
+    var out = await claimApi(s.id, "reassign", to);
+    sel.disabled = false;
+    if (!out.ok) {
+      sel.value = prev; // put the control back to the truth
+      alert(out.message || t("assignFail"));
+      return;
+    }
+    s.assigned_to = to;
+    if (out.co_reader_cleared) s.co_reader_id = null;
+    loadSubmissions(true); // silent refresh so the board reflects the new owner
+  }
+
   function kanCard(s, st, bucket) {
     var card = document.createElement("div"); card.className = "adm-card";
     // Arabic title only — the English subtitle is dropped to keep the card short.
@@ -894,10 +937,15 @@
 
     var right = document.createElement("span"); right.className = "adm-card__right";
     if (s.assigned_to) {
-      var avs = document.createElement("span"); avs.className = "adm-card__avatars";
-      avs.appendChild(roAvatar(s.assigned_to));
-      if (s.co_reader_id) avs.appendChild(roAvatar(s.co_reader_id));
-      right.appendChild(avs);
+      // Staff can hand the script to a different reader — the only way to move a
+      // locked assignment (e.g. the reader is unavailable). Readers see avatars.
+      if (isStaff(me && me.role)) right.appendChild(reassignSelect(s));
+      else {
+        var avs = document.createElement("span"); avs.className = "adm-card__avatars";
+        avs.appendChild(roAvatar(s.assigned_to));
+        if (s.co_reader_id) avs.appendChild(roAvatar(s.co_reader_id));
+        right.appendChild(avs);
+      }
     }
     // Action: staff review a submitted coverage; open (read-only) one in review.
     if (bucket === "app") {

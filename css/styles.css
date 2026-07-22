@@ -1051,6 +1051,11 @@ html[dir="rtl"] .adm-tablefilter select { background-position: left 16px center;
 .adm-card__title { font-weight: 600; font-size: 13px; line-height: 1.35; }
 .adm-card__row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .adm-card__right { display: inline-flex; align-items: center; gap: 8px; }
+/* Staff reassign picker on a kanban card — sized to sit inline with the action. */
+.adm-reassign { font: inherit; font-size: 12px; height: 28px; max-width: 130px; padding: 0 10px;
+  color: var(--adm-text); background: var(--adm-surface-2); border: 1px solid var(--adm-border);
+  border-radius: 7px; cursor: pointer; }
+.adm-reassign:disabled { opacity: .5; cursor: default; }
 .adm-card__avatars { display: flex; gap: 4px; }
 /* Compact the shared bits inside a card: the deadline sits on one line (the
    table keeps it stacked) and the action is a small inline button, so a card

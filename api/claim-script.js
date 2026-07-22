@@ -124,7 +124,7 @@ module.exports = async (req, res) => {
   const subId = (b.submission_id || "").toString().trim();
   const action = (b.action || "").toString().trim();
   if (!subId) return res.status(400).json({ message: "معرّف النص مطلوب" });
-  if (action !== "claim" && action !== "release") {
+  if (action !== "claim" && action !== "release" && action !== "reassign") {
     return res.status(400).json({ message: "إجراء غير معروف" });
   }
 
@@ -153,6 +153,45 @@ module.exports = async (req, res) => {
       headers: Object.assign({}, jsonHeaders, { Prefer: "return=minimal" }),
       body: JSON.stringify({ writer_notified_at: new Date(startedAt + ASSIGNMENT_WINDOW_MS).toISOString() }),
     });
+  }
+
+  // --------------------------- REASSIGN ----------------------------
+  // Staff hand a claimed script to a DIFFERENT reader. Deliberately never sets
+  // assigned_to back to null: once claimed, a script always has someone
+  // responsible. The window and the scheduled notice are left untouched — "work
+  // started on your script" stays true under a new reader, so the writer isn't
+  // re-notified and the clock isn't restarted.
+  if (action === "reassign") {
+    if (me.role !== "admin" && me.role !== "super_admin") {
+      return res.status(403).json({ message: "إعادة الإسناد مخصصة للمشرفين" });
+    }
+    const to = (b.to || "").toString().trim();
+    if (!to) return res.status(400).json({ message: "يجب اختيار قارئ" });
+    if (!sub.assigned_to) return res.status(409).json({ message: "هذا النص غير مُسند" });
+    if (to === sub.assigned_to) return res.status(200).json({ ok: true, assigned_to: to });
+
+    const tResp = await fetch(
+      url + "/rest/v1/admins?id=eq." + encodeURIComponent(to) + "&select=id,role",
+      { headers }
+    );
+    const tRows = tResp.ok ? await tResp.json() : [];
+    if (!tRows.length) return res.status(400).json({ message: "القارئ غير موجود" });
+
+    // A co-reader only makes sense under a junior primary, and can't be the
+    // primary as well — drop it otherwise.
+    const body = { assigned_to: to };
+    if (sub.co_reader_id === to || tRows[0].role !== "junior_reader") body.co_reader_id = null;
+
+    const patch = await fetch(url + "/rest/v1/submissions?id=eq." + encodeURIComponent(subId), {
+      method: "PATCH",
+      headers: Object.assign({}, jsonHeaders, { Prefer: "return=minimal" }),
+      body: JSON.stringify(body),
+    });
+    if (!patch.ok) {
+      console.error("claim-script reassign failed:", patch.status, await patch.text());
+      return res.status(502).json({ message: "تعذّر إعادة الإسناد" });
+    }
+    return res.status(200).json({ ok: true, assigned_to: to });
   }
 
   // ---------------------------- RELEASE ----------------------------

@@ -139,8 +139,14 @@ must be in the `supabase_realtime` publication for live updates to fire.
   `/api/claim-script`; the `enforce_assignment_lock()` trigger rejects client-side
   claims outright (`ASSIGNMENT_VIA_API_ONLY`) so the notice can never be skipped, and
   rejects any release once locked (`ASSIGNMENT_LOCKED`). **Co-reader slots have no
-  window and no notice.** ⚠️ Staff currently have **no reassign UI** (they see the
-  kanban), so a post-window reassignment has to be done in Supabase for now.
+  window and no notice.**
+- **Staff reassignment:** staff (admin/super_admin) get a reader picker on each
+  kanban card (`action: "reassign"`). It is the only way to move a locked
+  assignment, and deliberately offers **no "unassign"** — once claimed, a script
+  always has someone responsible. Reassigning **keeps the original window and
+  scheduled notice**: "work started on your script" is still true under a new
+  reader, so the writer isn't re-notified and the clock isn't restarted. A
+  co-reader is dropped unless the incoming primary is a junior reader.
 - **One active assignment (readers):** a reader may **not** claim the **primary** slot
   of a new submission while they still have another primary assignment they haven't
   **handed off** — i.e. its coverage is still `in_progress` / `revision_requested` (or
