@@ -129,6 +129,20 @@ alter table public.submissions
 alter table public.submissions
   add column if not exists pages int;
 
+-- Assignment notice window. A reader who claims a script has ASSIGNMENT_WINDOW
+-- (2 hours) to release it again. When the window closes the writer is emailed
+-- that work has started and the submission can no longer be cancelled/refunded,
+-- after which the assignment is locked: staff may hand it to a DIFFERENT reader,
+-- but it can never go back to unassigned.
+--   assigned_at        — when the current primary assignment started
+--   notice_email_id    — Resend id of the scheduled notice, so it can be cancelled
+--   writer_notified_at — set once the notice has actually gone out (the writer is
+--                        told once per script; later reassignments send nothing)
+alter table public.submissions
+  add column if not exists assigned_at timestamptz,
+  add column if not exists notice_email_id text,
+  add column if not exists writer_notified_at timestamptz;
+
 alter table public.submissions enable row level security;
 
 -- Admins can read every submission (shared inbox).
@@ -192,6 +206,53 @@ drop trigger if exists trg_single_active_assignment on public.submissions;
 create trigger trg_single_active_assignment
   before update on public.submissions
   for each row execute function public.enforce_single_active_assignment();
+
+-- Assignment lock. A reader gets a 2-hour grace period after claiming a script in
+-- which they may still release it. Once that window closes the writer has been
+-- told work started (and that the submission can't be cancelled/refunded), so the
+-- assignment is final: it may be moved to another reader by staff via
+-- /api/claim-script (service role), but no client may release it back to
+-- unassigned. This trigger is the authoritative guard against a reader releasing
+-- a locked script by talking to the database directly.
+create or replace function public.enforce_assignment_lock()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  window_closed boolean;
+begin
+  -- Only assignment changes matter.
+  if new.assigned_to is not distinct from old.assigned_to then
+    return new;
+  end if;
+  -- The claim API (service role) performs the vetted transitions itself.
+  if auth.uid() is null then
+    return new;
+  end if;
+
+  -- Claims must go through /api/claim-script, which is what schedules the
+  -- writer's notice and stamps assigned_at. Without this a client could claim
+  -- straight from the browser and the writer would never be told work started.
+  if old.assigned_to is null and new.assigned_to is not null then
+    raise exception 'ASSIGNMENT_VIA_API_ONLY' using errcode = 'check_violation';
+  end if;
+
+  window_closed := old.writer_notified_at is not null
+    or (old.assigned_at is not null and now() >= old.assigned_at + interval '2 hours');
+
+  if window_closed then
+    raise exception 'ASSIGNMENT_LOCKED' using errcode = 'check_violation';
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists trg_assignment_lock on public.submissions;
+create trigger trg_assignment_lock
+  before update on public.submissions
+  for each row execute function public.enforce_assignment_lock();
 
 -- Base table privileges for the signed-in role (RLS above restricts these to
 -- admins). No INSERT grant: new submissions are written server-side only.

@@ -78,6 +78,8 @@
       kanEmptyReview: "لا توجد تغطيات قيد الكتابة حاليًا.",
       kanEmptyApproval: "لا يوجد ما ينتظر اعتمادك.",
       fileLocked: "مقفل", fileLockedTip: "هذا النص مُسند إلى قارئ آخر.",
+      releaseHint: "يمكنك إلغاء الإسناد خلال ساعتين من استلامه",
+      lockedHint: "مقفل: أُبلغ الكاتب ببدء العمل، ولم يعد بالإمكان إلغاء الإسناد",
       navShow: "إظهار القائمة", navFold: "طيّ القائمة", themeToggle: "تبديل المظهر",
       startEval: "ابدأ التقييم", assignFail: "تعذّر تحديث الإسناد.", dlFail: "تعذّر إنشاء رابط التحميل.",
       del: "حذف", meParen: "(أنت)", confirmDel: function (n) { return "حذف المشرف " + n + "؟"; },
@@ -133,6 +135,8 @@
       kanEmptyReview: "No coverage is being written right now.",
       kanEmptyApproval: "Nothing is waiting for your approval.",
       fileLocked: "Locked", fileLockedTip: "Another reader is assigned to this script.",
+      releaseHint: "you can still release this within 2 hours of claiming it",
+      lockedHint: "locked: the writer has been told work started, so this can no longer be released",
       navShow: "Show menu", navFold: "Collapse menu", themeToggle: "Toggle theme",
       startEval: "Start coverage", assignFail: "Failed to update assignment.", dlFail: "Failed to create download link.",
       del: "Delete", meParen: "(you)", confirmDel: function (n) { return "Delete admin " + n + "?"; },
@@ -600,6 +604,19 @@
   // True when the signed-in user is assigned to a submission (primary or co-reader).
   function amAssignedTo(s) { return !!me && (s.assigned_to === me.id || s.co_reader_id === me.id); }
 
+  // A reader has 2 hours after claiming a script to release it again. Once that
+  // window closes the writer is emailed that work started (and that the
+  // submission can't be cancelled/refunded), so the claim is final. Mirrors
+  // ASSIGNMENT_WINDOW in api/claim-script.js and the enforce_assignment_lock()
+  // trigger — the trigger is the real guard, this just hides the control.
+  var ASSIGNMENT_WINDOW_MS = 2 * 60 * 60 * 1000;
+  function canRelease(s) {
+    if (!me || s.assigned_to !== me.id) return false;
+    if (s.writer_notified_at) return false;
+    if (!s.assigned_at) return true; // claimed before this rule existed
+    return Date.now() < new Date(s.assigned_at).getTime() + ASSIGNMENT_WINDOW_MS;
+  }
+
   // One-active-assignment rule (readers only): true while I'm the PRIMARY assignee
   // of a submission I haven't handed off yet — no coverage, still drafting, or in
   // revision. A reader is freed the moment they submit for approval, so submitted/
@@ -640,17 +657,21 @@
     return add;
   }
 
-  // A filled avatar; clicking your own frees that slot.
+  // A filled avatar; clicking your own frees that slot. The PRIMARY slot can only
+  // be freed inside the 2-hour notice window — after that the writer has been told
+  // work started, so the avatar becomes static and explains why.
   function slotAvatar(id, cell, s, which) {
     var name = adminsById[id] || t("adminFallback");
     var mine = id === (me && me.id);
-    var av = document.createElement(mine ? "button" : "span");
-    av.className = "adm-av" + (mine ? "" : " adm-av--static");
+    var releasable = mine && (which === "co" || canRelease(s)); // co-reader has no lock
+    var av = document.createElement(releasable ? "button" : "span");
+    av.className = "adm-av" + (releasable ? "" : " adm-av--static");
     av.style.background = avatarColor(id);
     av.textContent = initial(name);
-    av.title = mine ? name + " " + t("meParen") : name;
+    av.title = !mine ? name
+      : name + " " + t("meParen") + " — " + t(releasable ? "releaseHint" : "lockedHint");
     av.setAttribute("aria-label", av.title);
-    if (mine) av.addEventListener("click", function () {
+    if (releasable) av.addEventListener("click", function () {
       if (which === "co") assignCo(s.id, null, cell, s);
       else assign(s.id, null, cell, s);
     });
@@ -751,38 +772,52 @@
     if (covCell) renderCoverage(covCell, s, currentCov[s.id]);
   }
 
+  // Claiming/releasing the PRIMARY slot goes through /api/claim-script rather than
+  // a direct table update: the server also schedules (or cancels) the writer's
+  // "work has started" notice, which needs the Resend key.
   async function assign(id, toId, cell, s) {
     if (cell.dataset.busy) return; // ignore clicks while a request is in flight
     cell.dataset.busy = "1";
-    var prev = s.assigned_to;
-    var prevCo = s.co_reader_id;
+    var claiming = !!toId;
+    var prev = s.assigned_to, prevCo = s.co_reader_id, prevAt = s.assigned_at;
     // Optimistic: reflect the new state immediately so the click feels instant.
     s.assigned_to = toId;
-    // A co-reader only makes sense under a junior primary — drop it otherwise.
-    var update = { assigned_to: toId };
-    if ((!toId || !isJunior(toId)) && s.co_reader_id) {
-      s.co_reader_id = null;
-      update.co_reader_id = null;
-    }
+    if (!claiming) { s.co_reader_id = null; s.assigned_at = null; }
     renderAssignee(cell, s);
     refreshCoverageCell(cell, s);
     cell.style.opacity = ".6";
     updateKpis(currentRows, currentCov);
 
-    var res = await sb.from("submissions").update(update).eq("id", id);
+    var out = {};
+    try {
+      var sess = await sb.auth.getSession();
+      var token = sess.data.session && sess.data.session.access_token;
+      var resp = await fetch("/api/claim-script", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+        body: JSON.stringify({ submission_id: id, action: claiming ? "claim" : "release" })
+      });
+      out = await resp.json().catch(function () { return {}; });
+      out.ok = resp.ok;
+    } catch (e) { out = { ok: false }; }
 
     cell.style.opacity = "1";
     delete cell.dataset.busy;
-    if (res.error) { // roll back to the previous assignees on failure
+    if (!out.ok) { // roll back to the previous assignees on failure
       s.assigned_to = prev;
       s.co_reader_id = prevCo;
+      s.assigned_at = prevAt;
       renderAssignee(cell, s);
       refreshCoverageCell(cell, s);
       updateKpis(currentRows, currentCov);
-      // The DB trigger blocks a reader from taking a second active assignment.
-      var blocked = /READER_HAS_ACTIVE_ASSIGNMENT/.test(res.error.message || "");
-      alert(blocked ? t("assignBlocked") : t("assignFail"));
-    } else if (isReader(me && me.role) && (toId === me.id || prev === me.id)) {
+      var msg = out.message || "";
+      alert(/READER_HAS_ACTIVE_ASSIGNMENT/.test(msg) ? t("assignBlocked") : (msg || t("assignFail")));
+      return;
+    }
+    // Keep the claim timestamp so the release window is judged correctly without
+    // waiting for a refetch.
+    if (claiming) s.assigned_at = out.assigned_at || new Date().toISOString();
+    if (isReader(me && me.role)) {
       // My active-assignment state changed → re-render so every other row's "+"
       // reflects the new locked/unlocked state without waiting for a refetch.
       // Under a view filter the row set itself changes (e.g. freeing a script

@@ -127,6 +127,20 @@ must be in the `supabase_realtime` publication for live updates to fire.
   admin/super_admin; readers = senior/junior.
 - **Assignment:** a reader claims a script (primary assignee). If the primary is a
   **junior** reader, a **co-reader** slot opens for a second reader.
+- **2-hour assignment window:** claiming a script starts a **2-hour** grace period in
+  which the reader may still release it. When it closes, the writer is emailed that
+  work has started **and that the submission can no longer be cancelled or refunded**,
+  and the assignment is locked — staff may hand it to a **different** reader, but it
+  can never return to unassigned. Implemented with **Resend scheduled sending**
+  (`scheduled_at` at claim time, `POST /emails/:id/cancel` on release) rather than a
+  cron job, because Vercel Hobby only runs cron once a day. The writer is notified
+  **once per script**: `writer_notified_at` is stamped when the window lapses, and a
+  later reassignment sends nothing. All primary claims/releases go through
+  `/api/claim-script`; the `enforce_assignment_lock()` trigger rejects client-side
+  claims outright (`ASSIGNMENT_VIA_API_ONLY`) so the notice can never be skipped, and
+  rejects any release once locked (`ASSIGNMENT_LOCKED`). **Co-reader slots have no
+  window and no notice.** ⚠️ Staff currently have **no reassign UI** (they see the
+  kanban), so a post-window reassignment has to be done in Supabase for now.
 - **One active assignment (readers):** a reader may **not** claim the **primary** slot
   of a new submission while they still have another primary assignment they haven't
   **handed off** — i.e. its coverage is still `in_progress` / `revision_requested` (or
@@ -352,6 +366,34 @@ must be in the `supabase_realtime` publication for live updates to fire.
       bucket_id = 'scripts' and public.is_admin(auth.uid())
       and (public.is_staff(auth.uid()) or public.can_read_script(auth.uid(), name))
     );
+
+  -- 2-hour assignment window: a reader may release a script they just claimed until
+  -- the writer is told work started, after which the assignment is locked.
+  alter table public.submissions
+    add column if not exists assigned_at timestamptz,
+    add column if not exists notice_email_id text,
+    add column if not exists writer_notified_at timestamptz;
+
+  create or replace function public.enforce_assignment_lock()
+  returns trigger language plpgsql security definer set search_path = public as $$
+  declare window_closed boolean;
+  begin
+    if new.assigned_to is not distinct from old.assigned_to then return new; end if;
+    if auth.uid() is null then return new; end if; -- claim API (service role) is trusted
+    if old.assigned_to is null and new.assigned_to is not null then
+      raise exception 'ASSIGNMENT_VIA_API_ONLY' using errcode = 'check_violation';
+    end if;
+    window_closed := old.writer_notified_at is not null
+      or (old.assigned_at is not null and now() >= old.assigned_at + interval '2 hours');
+    if window_closed then
+      raise exception 'ASSIGNMENT_LOCKED' using errcode = 'check_violation';
+    end if;
+    return new;
+  end; $$;
+  drop trigger if exists trg_assignment_lock on public.submissions;
+  create trigger trg_assignment_lock
+    before update on public.submissions
+    for each row execute function public.enforce_assignment_lock();
 
   -- One-active-assignment rule (readers freed on SUBMIT, not delivery).
   create or replace function public.enforce_single_active_assignment()
