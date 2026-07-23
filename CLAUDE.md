@@ -291,9 +291,24 @@ must be in the `supabase_realtime` publication for live updates to fire.
 
 - **Run these once in the Supabase SQL Editor** (required by the latest features):
   ```sql
+  -- The whole block is idempotent: safe to paste and run in full, any number of
+  -- times, whatever has already been applied.
   alter table public.submissions add column if not exists pages int;
-  alter publication supabase_realtime add table public.submissions;
-  alter publication supabase_realtime add table public.coverages;
+
+  -- Realtime publication (ALTER PUBLICATION ... ADD errors if already present).
+  do $$
+  begin
+    if exists (select 1 from pg_publication where pubname = 'supabase_realtime') then
+      if not exists (select 1 from pg_publication_tables
+                     where pubname='supabase_realtime' and schemaname='public' and tablename='submissions') then
+        alter publication supabase_realtime add table public.submissions;
+      end if;
+      if not exists (select 1 from pg_publication_tables
+                     where pubname='supabase_realtime' and schemaname='public' and tablename='coverages') then
+        alter publication supabase_realtime add table public.coverages;
+      end if;
+    end if;
+  end $$;
 
   -- Hosted report link: unguessable per-submission token (backfills existing rows).
   alter table public.submissions add column if not exists report_token uuid not null default gen_random_uuid();
