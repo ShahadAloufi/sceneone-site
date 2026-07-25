@@ -61,7 +61,7 @@
       fName: "الاسم", fRole: "الدور", roleAdmin: "مشرف", roleSuper: "مشرف أعلى", createBtn: "إنشاء المشرف",
       roleSeniorReader: "قارئ أول", roleJuniorReader: "قارئ مبتدئ", assignCo: "إضافة قارئ مشارك",
       assignTwice: "لا يمكنك إسناد نفسك مرتين",
-      assignBlocked: "أكمل نصك الحالي وسلّم تقريره قبل إسناد نص جديد.",
+      assignBlocked: "أرسل تغطيتك الحالية للاعتماد قبل إسناد نص جديد.",
       covLocked: "أسند نفسك أولاً", covDenied: "لا يمكنك عرض هذا التقييم إلا بعد إسناد نفسك للنص.",
       phName: "اسم المشرف", phPassword: "8 أحرف على الأقل",
       // dynamic
@@ -120,7 +120,7 @@
       fName: "Name", fRole: "Role", roleAdmin: "Admin", roleSuper: "Super admin", createBtn: "Create admin",
       roleSeniorReader: "Senior Reader", roleJuniorReader: "Junior Reader", assignCo: "Add co-reader",
       assignTwice: "You cannot assign yourself twice",
-      assignBlocked: "Finish your current submission and deliver its report before taking a new one.",
+      assignBlocked: "Submit your current coverage for approval before taking a new one.",
       covLocked: "Assign yourself first", covDenied: "You can only view this coverage after assigning yourself to the script.",
       phName: "Admin name", phPassword: "At least 8 characters",
       signingIn: "Signing in...", badLogin: "Invalid login credentials.",
