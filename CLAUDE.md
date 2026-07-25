@@ -28,22 +28,28 @@ coverage workspace + report, role-based access, deadlines, and report delivery t
 writers. Actively iterating on UX polish and workflow features.
 
 **Recently shipped (2026-07):**
-- **Report delivery pivoted** from a client-rasterized PDF (unreliable Arabic) to a
-  **hosted, tokenized report link** rendered natively (`report.html` / `/api/report`),
-  with a shared renderer (`report-render.js`) and a redesigned bilingual email.
-- **IP access logging** — `access_log` + `/api/log-access`; Manage-admins flags
-  readers seen from many IPs (shared-account detection).
-- **Delivery tracking + tabs** — sends stamp `coverages.delivered_at/by`; readers get
-  a **"Delivered by me"** tab, super-admins a **"Deliveries"** oversight tab (with the
-  reviewing reader). Both open the hosted report read-only. Delivered submissions
-  **leave the main Scripts list** (active pipeline only) and move to the tabs live.
-- **Role-gated nav hardened** — tabs set explicitly per role (readers never see Manage
-  admins); a **boot loader** so the admin page is never blank during the session check.
-- **Dashboard/landing polish** — Pages column, film-type deadlines (feature 15d /
-  short 10d), wider scripts table, pricing cards, redesigned writer email.
+- **Quality-control coverage flow** — reader **Submits for approval** → staff
+  **Approve & Send** (emails the writer) or **Request Revision** (required note). The
+  writer sees the report only once **approved**. See the Business Rules for the full
+  state machine, `/api/review-coverage`, and the DB triggers.
+- **Assignment notice window** — claiming a script shows a confirm ("writer notified
+  after 2h"), starts a release window, and schedules the writer's "work started" email
+  via **Resend scheduled sending**. Readers are told **2h** but the real window is
+  **3h** (intentional buffer). No one-active-assignment limit — readers claim freely.
+  All claims/releases/reassigns go through `/api/claim-script`.
+- **Staff dashboard = kanban** (In review / Awaiting approval) with a **reassign**
+  picker; readers keep the detailed table (with a "what I'm working on" filter). Staff
+  also get **All submissions** + **Deliveries** full-detail tabs (grouped by month,
+  with a month filter). Report delivery is a hosted tokenized link + **server-generated
+  PDF** (`/api/report-pdf`, headless Chrome).
+- **Per-assignment script access** — a reader may download a script only if it's
+  unassigned or theirs (Storage RLS + `can_read_script`); staff download any.
+- **Branded emails** (submission confirmation, team notification, report, notice all
+  share one shell), **Vercel Web Analytics** on the public pages, turnaround updated
+  (feature ≤4 weeks = 28d / short 10–15 = 15d), commercial registration in the footer.
 
-**Status:** all merged to `main` and deploying via Vercel. **Blocked on the manual
-Supabase SQL below**; auth/serverless flows are verifiable only on the deploy.
+**Status:** all merged to `main`, deploying via Vercel, and the manual Supabase SQL
+below has been applied. Auth/serverless/email flows are verifiable only on the deploy.
 
 ---
 
@@ -52,7 +58,9 @@ Supabase SQL below**; auth/serverless flows are verifiable only on the deploy.
 - **Frontend:** vanilla HTML + CSS + JavaScript. **No framework, no build step,
   no bundler.** Libraries loaded via CDN `<script>` tags (supabase-js UMD, pdf.js).
 - **Backend:** Vercel serverless functions (plain `module.exports` handlers in
-  `/api`, native `fetch`, no `package.json`).
+  `/api`, native `fetch`). A **root `package.json` exists only for the two Chromium
+  deps** used by `report-pdf.js` (`@sparticuz/chromium`, `puppeteer-core`) — there is
+  **no build script**; the frontend is still served static and never bundled.
 - **Database/Auth/Storage:** Supabase (Postgres + RLS, Supabase Auth, Storage).
 - **Email:** Resend (verified sender domain `sceneone.info`).
 - **Hosting:** Vercel (static + serverless). Repo: `ShahadAloufi/sceneone-site`.
@@ -85,8 +93,10 @@ Do NOT introduce Next.js/React/a compiler/npm build. Keep it buildless.
   renderer used by BOTH `coverage.js` and `report.js` — single source of truth for
   the report markup, so the workspace preview and the writer's page never drift).
 - **API (`/api`):** `submissions.js`, `registrations.js`, `admin/admins.js`,
-  `review-coverage.js` (staff approve / request-revision + writer email),
-  `report.js` (public report data, token-gated), `report-pdf.js` (server PDF).
+  `log-access.js` (IP logging), `claim-script.js` (claim / release / reassign + the
+  scheduled writer notice), `review-coverage.js` (staff approve / request-revision +
+  writer email), `report.js` (public report data, token-gated), `report-pdf.js`
+  (server PDF via headless Chrome).
 - **Schema:** `supabase/schema.sql` is the source of record; **schema changes are
   run manually in the Supabase SQL Editor** (the file is not auto-applied).
 
@@ -102,7 +112,10 @@ Tables (all with RLS enabled):
 - **submissions** — script metadata: `created_at`, `title_ar/en`, `email`, `writer`,
   `genre`, `film_type`, `draft`, `duration`, `logline`, `vision`, `ip_registered`,
   `file_path`, `file_name`, `status`, `assigned_to`, `co_reader_id`, `pages`,
-  `report_token` (uuid; the unguessable key in the writer's report link).
+  `report_token` (uuid; the unguessable key in the writer's report link),
+  `assigned_at` / `notice_email_id` / `writer_notified_at` (the assignment notice
+  window — when the claim started, the scheduled Resend email id, and when the writer
+  was notified).
 - **coverages** — `submission_id`, `data` (jsonb: the full coverage content),
   `status` (`in_progress` | `submitted` | `revision_requested` | `approved`),
   `review_note` (staff revision note), `delivered_at`, `delivered_by` (set
@@ -461,12 +474,23 @@ All handlers are plain `module.exports = async (req, res) => {...}`, use native
 privileged reads/writes.
 - **`POST /api/submissions`** — validates + inserts a submission (service role);
   emails an admin notification and a writer confirmation (Resend).
+- **`POST /api/claim-script`** — signed-in reader/staff; `action: "claim"` assigns the
+  caller, stamps `assigned_at`, and schedules the writer's "work started" email (+3h,
+  Resend `scheduled_at`); `action: "release"` (assignee, window still open) cancels
+  that email and frees the script; `action: "reassign"` (**staff only**) hands it to
+  another reader without re-notifying. The only path that may claim — a client-side
+  claim is rejected by the DB trigger.
 - **`POST /api/review-coverage`** — **staff-only** (admin/super_admin); `action:
   "approve"` sets the coverage `approved`, stamps delivery, and emails the writer the
   tokenized report link; `action: "request_revision"` (with a required `note`) sets it
   `revision_requested`. The only path that can approve — readers can't reach it.
 - **`GET /api/report?t=<report_token>`** — **public** (the token is the auth); returns
   the report-safe fields (no email/file) of a submission with an *approved* coverage.
+- **`GET /api/report-pdf?t=<report_token>`** — **public**, same token gate; renders the
+  live report page to a real PDF with headless Chrome (`@sparticuz/chromium` +
+  `puppeteer-core`) and returns it as a download. Needs the `vercel.json`
+  `includeFiles` glob, `engines.node` = 20, and `AWS_LAMBDA_JS_RUNTIME=nodejs20.x` set
+  before the require — see the comment atop `api/report-pdf.js`.
 - **`POST /api/log-access`** — any signed-in admin/reader; records their dashboard
   visit with the **server-read client IP** (`x-forwarded-for`) to `access_log`.
   Fire-and-forget from the client on sign-in; never blocks the UI.
