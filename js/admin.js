@@ -62,6 +62,7 @@
       roleSeniorReader: "قارئ أول", roleJuniorReader: "قارئ مبتدئ", assignCo: "إضافة قارئ مشارك",
       assignTwice: "لا يمكنك إسناد نفسك مرتين",
       assignBlocked: "أرسل تغطيتك الحالية للاعتماد قبل إسناد نص جديد.",
+      claimConfirm: "سيتم إشعار الكاتب ببدء العمل على نصه بعد ساعتين. يمكنك إلغاء الإسناد خلال هذه المدة. هل تريد المتابعة؟",
       covLocked: "أسند نفسك أولاً", covDenied: "لا يمكنك عرض هذا التقييم إلا بعد إسناد نفسك للنص.",
       phName: "اسم المشرف", phPassword: "8 أحرف على الأقل",
       // dynamic
@@ -121,6 +122,7 @@
       roleSeniorReader: "Senior Reader", roleJuniorReader: "Junior Reader", assignCo: "Add co-reader",
       assignTwice: "You cannot assign yourself twice",
       assignBlocked: "Submit your current coverage for approval before taking a new one.",
+      claimConfirm: "The writer will be notified that you started working on their script after 2 hours. You can release it before then. Continue?",
       covLocked: "Assign yourself first", covDenied: "You can only view this coverage after assigning yourself to the script.",
       phName: "Admin name", phPassword: "At least 8 characters",
       signingIn: "Signing in...", badLogin: "Invalid login credentials.",
@@ -606,12 +608,14 @@
   // True when the signed-in user is assigned to a submission (primary or co-reader).
   function amAssignedTo(s) { return !!me && (s.assigned_to === me.id || s.co_reader_id === me.id); }
 
-  // A reader has 2 hours after claiming a script to release it again. Once that
-  // window closes the writer is emailed that work started (and that the
-  // submission can't be cancelled/refunded), so the claim is final. Mirrors
-  // ASSIGNMENT_WINDOW in api/claim-script.js and the enforce_assignment_lock()
-  // trigger — the trigger is the real guard, this just hides the control.
-  var ASSIGNMENT_WINDOW_MS = 2 * 60 * 60 * 1000;
+  // Release window. A reader can release a script they just claimed until the
+  // writer is notified, after which the claim is locked. IMPORTANT: readers are
+  // TOLD 2 hours, but the real window is 3 (a hidden buffer). This constant is the
+  // REAL window — it must match ASSIGNMENT_WINDOW in api/claim-script.js and the
+  // enforce_assignment_lock() trigger so the release control stays available for
+  // the full actual window. Only user-facing copy says "2 hours" (see
+  // claimConfirm / releaseHint). Do NOT "fix" this to 2h.
+  var ASSIGNMENT_WINDOW_MS = 3 * 60 * 60 * 1000;
   function canRelease(s) {
     if (!me || s.assigned_to !== me.id) return false;
     if (s.writer_notified_at) return false;
@@ -619,23 +623,8 @@
     return Date.now() < new Date(s.assigned_at).getTime() + ASSIGNMENT_WINDOW_MS;
   }
 
-  // One-active-assignment rule (readers only): true while I'm the PRIMARY assignee
-  // of a submission I haven't handed off yet — no coverage, still drafting, or in
-  // revision. A reader is freed the moment they submit for approval, so submitted/
-  // approved don't count. Mirrors the DB trigger enforce_single_active_assignment();
-  // the trigger is the real guard, this just disables the "+" so readers don't hit
-  // an error.
-  function readerHasActivePrimary() {
-    if (!me || !isReader(me.role)) return false;
-    return (currentRows || []).some(function (s) {
-      if (s.assigned_to !== me.id) return false;
-      var st = currentCov[s.id];
-      return !st || st === "in_progress" || st === "revision_requested";
-    });
-  }
-
   // Re-render every assignee cell in place (no refetch) so the primary "+"
-  // lock/unlock updates across all rows the moment my assignment state changes.
+  // state updates across all rows the moment my assignment state changes.
   function rerenderAssigneeCells() {
     document.querySelectorAll("#subBody .adm-assignee").forEach(function (cell) {
       if (cell.__sub) renderAssignee(cell, cell.__sub);
@@ -653,8 +642,11 @@
       '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
       '<path d="M14 19a6 6 0 0 0-12 0"/><circle cx="8" cy="9" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>';
     add.addEventListener("click", function () {
-      if (which === "co") assignCo(s.id, me.id, cell, s);
-      else assign(s.id, me.id, cell, s);
+      if (which === "co") { assignCo(s.id, me.id, cell, s); return; }
+      // Claiming the primary slot schedules the writer's "work started" notice.
+      // Warn first (co-reader claims carry no notice, so no prompt there).
+      if (!window.confirm(t("claimConfirm"))) return;
+      assign(s.id, me.id, cell, s);
     });
     return add;
   }
@@ -689,16 +681,8 @@
     var row = document.createElement("div");
     row.className = "adm-assignee__row";
     if (!s.assigned_to) {
-      var addBtn = addSlotBtn(cell, s, "primary");
-      // Reader already has an undelivered assignment → lock the claim button.
-      if (readerHasActivePrimary()) {
-        addBtn.disabled = true;
-        addBtn.title = t("assignBlocked");
-        addBtn.setAttribute("aria-label", t("assignBlocked"));
-        addBtn.style.opacity = ".4";
-        addBtn.style.cursor = "not-allowed";
-      }
-      row.appendChild(addBtn);
+      // Readers may claim freely — there is no one-active-assignment limit.
+      row.appendChild(addSlotBtn(cell, s, "primary"));
     } else {
       row.appendChild(slotAvatar(s.assigned_to, cell, s, "primary"));
       if (isJunior(s.assigned_to)) {

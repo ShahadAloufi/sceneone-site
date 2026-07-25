@@ -160,52 +160,11 @@ create policy "admins can update submissions"
   using ( public.is_admin(auth.uid()) )
   with check ( public.is_admin(auth.uid()) );
 
--- One-active-assignment rule: a READER may not claim the PRIMARY slot of a new
--- submission while they still have another primary assignment whose report has
--- not yet been delivered to the writer (coverages.delivered_at IS NULL). Enforced
--- as a BEFORE UPDATE trigger (not RLS) because it must compare OLD vs NEW to fire
--- only on the specific "reader assigns the primary slot to themselves" transition
--- — leaving staff assignment, self-unassignment, co-reader claims, and ordinary
--- status edits untouched. This is the authoritative guard; the admin UI mirrors it.
-create or replace function public.enforce_single_active_assignment()
-returns trigger
-language plpgsql
-security definer
-set search_path = public
-as $$
-declare
-  caller uuid := auth.uid();
-  caller_role text;
-  active_count int;
-begin
-  -- Only guard the reader claiming the primary slot for THEMSELVES on this row.
-  if new.assigned_to is distinct from old.assigned_to and new.assigned_to = caller then
-    select role into caller_role from public.admins where id = caller;
-    if caller_role in ('senior_reader', 'junior_reader') then
-      -- Any other primary assignment of theirs that they haven't handed off yet?
-      -- A reader is freed once they SUBMIT for approval, so "active" = a coverage
-      -- still in their hands: no coverage row, in_progress, or revision_requested.
-      -- (submitted/approved no longer count — QC/delivery is out of their hands.)
-      select count(*) into active_count
-      from public.submissions s
-      left join public.coverages c on c.submission_id = s.id
-      where s.assigned_to = caller
-        and s.id <> new.id
-        and (c.status is null or c.status in ('in_progress', 'revision_requested'));
-      if active_count > 0 then
-        raise exception 'READER_HAS_ACTIVE_ASSIGNMENT'
-          using errcode = 'check_violation';
-      end if;
-    end if;
-  end if;
-  return new;
-end;
-$$;
-
+-- (Removed) One-active-assignment rule: readers may now claim freely, so the
+-- former enforce_single_active_assignment() trigger is dropped. Kept as an
+-- explicit drop so re-running this file, or an old DB, converges to "no limit".
 drop trigger if exists trg_single_active_assignment on public.submissions;
-create trigger trg_single_active_assignment
-  before update on public.submissions
-  for each row execute function public.enforce_single_active_assignment();
+drop function if exists public.enforce_single_active_assignment();
 
 -- Assignment lock. A reader gets a 2-hour grace period after claiming a script in
 -- which they may still release it. Once that window closes the writer has been
@@ -239,8 +198,10 @@ begin
     raise exception 'ASSIGNMENT_VIA_API_ONLY' using errcode = 'check_violation';
   end if;
 
+  -- 3 hours is the REAL window. Readers are told 2 (a hidden buffer); the extra
+  -- hour lives only in the dashboard copy, never here. Do not lower to 2h.
   window_closed := old.writer_notified_at is not null
-    or (old.assigned_at is not null and now() >= old.assigned_at + interval '2 hours');
+    or (old.assigned_at is not null and now() >= old.assigned_at + interval '3 hours');
 
   if window_closed then
     raise exception 'ASSIGNMENT_LOCKED' using errcode = 'check_violation';

@@ -127,19 +127,27 @@ must be in the `supabase_realtime` publication for live updates to fire.
   admin/super_admin; readers = senior/junior.
 - **Assignment:** a reader claims a script (primary assignee). If the primary is a
   **junior** reader, a **co-reader** slot opens for a second reader.
-- **2-hour assignment window:** claiming a script starts a **2-hour** grace period in
-  which the reader may still release it. When it closes, the writer is emailed that
-  work has started **and that the submission can no longer be cancelled or refunded**,
-  and the assignment is locked — staff may hand it to a **different** reader, but it
-  can never return to unassigned. Implemented with **Resend scheduled sending**
-  (`scheduled_at` at claim time, `POST /emails/:id/cancel` on release) rather than a
-  cron job, because Vercel Hobby only runs cron once a day. The writer is notified
-  **once per script**: `writer_notified_at` is stamped when the window lapses, and a
-  later reassignment sends nothing. All primary claims/releases go through
-  `/api/claim-script`; the `enforce_assignment_lock()` trigger rejects client-side
-  claims outright (`ASSIGNMENT_VIA_API_ONLY`) so the notice can never be skipped, and
-  rejects any release once locked (`ASSIGNMENT_LOCKED`). **Co-reader slots have no
-  window and no notice.**
+- **Assignment notice window (told 2h, actually 3h):** claiming a script pops a
+  confirm dialog — *"the writer will be notified that you started working after 2
+  hours; you can release it before then"* — and starts a grace period in which the
+  reader may still release it. **The reader is told 2 hours, but the real window is
+  3** — a deliberate hidden buffer. The "2h" figure lives **only** in user-facing
+  copy (`claimConfirm` / `releaseHint`); every enforcement point uses **3h**
+  (`ASSIGNMENT_WINDOW_MS` in `api/claim-script.js` and `js/admin.js`, and the
+  `enforce_assignment_lock()` trigger's `interval '3 hours'`). **Do not "reconcile"
+  the two — the mismatch is intentional.** When the window closes the writer is
+  emailed that work has started **and that the submission can no longer be cancelled
+  or refunded**, and the assignment is locked — staff may hand it to a **different**
+  reader, but it can never return to unassigned. Implemented with **Resend scheduled
+  sending** (`scheduled_at` at claim time, `POST /emails/:id/cancel` on release)
+  rather than a cron job, because Vercel Hobby only runs cron once a day. The writer
+  is notified **once per script**: `writer_notified_at` is stamped when the window
+  lapses, and a later reassignment sends nothing. All primary claims/releases go
+  through `/api/claim-script`; `enforce_assignment_lock()` rejects client-side claims
+  outright (`ASSIGNMENT_VIA_API_ONLY`) so the notice can never be skipped, and rejects
+  any release once locked (`ASSIGNMENT_LOCKED`). **Co-reader slots have no window and
+  no notice.** **No one-active-assignment limit** — readers may claim as many scripts
+  as they like.
 - **Staff reassignment:** staff (admin/super_admin) get a reader picker on each
   kanban card (`action: "reassign"`). It is the only way to move a locked
   assignment, and deliberately offers **no "unassign"** — once claimed, a script
@@ -147,13 +155,6 @@ must be in the `supabase_realtime` publication for live updates to fire.
   scheduled notice**: "work started on your script" is still true under a new
   reader, so the writer isn't re-notified and the clock isn't restarted. A
   co-reader is dropped unless the incoming primary is a junior reader.
-- **One active assignment (readers):** a reader may **not** claim the **primary** slot
-  of a new submission while they still have another primary assignment they haven't
-  **handed off** — i.e. its coverage is still `in_progress` / `revision_requested` (or
-  not started). Submitting for approval frees them (QC/delivery is out of their hands).
-  Enforced authoritatively by the DB trigger `enforce_single_active_assignment()` (a
-  `check_violation` raising `READER_HAS_ACTIVE_ASSIGNMENT`); the admin UI mirrors it by
-  disabling the "+" claim button. **Co-reader slots are exempt.**
 - **Coverage lifecycle (quality-controlled):** `in_progress` (reader drafting) →
   `submitted` (reader hit **"Submit Coverage for Approval"**; locked from reader edits;
   NOT writer-visible) → `approved` (staff signed off, report sent to the writer) OR
@@ -404,8 +405,9 @@ must be in the `supabase_realtime` publication for live updates to fire.
     if old.assigned_to is null and new.assigned_to is not null then
       raise exception 'ASSIGNMENT_VIA_API_ONLY' using errcode = 'check_violation';
     end if;
+    -- 3 hours is the REAL window (readers are only TOLD 2h in the dashboard copy).
     window_closed := old.writer_notified_at is not null
-      or (old.assigned_at is not null and now() >= old.assigned_at + interval '2 hours');
+      or (old.assigned_at is not null and now() >= old.assigned_at + interval '3 hours');
     if window_closed then
       raise exception 'ASSIGNMENT_LOCKED' using errcode = 'check_violation';
     end if;
@@ -416,30 +418,9 @@ must be in the `supabase_realtime` publication for live updates to fire.
     before update on public.submissions
     for each row execute function public.enforce_assignment_lock();
 
-  -- One-active-assignment rule (readers freed on SUBMIT, not delivery).
-  create or replace function public.enforce_single_active_assignment()
-  returns trigger language plpgsql security definer set search_path = public as $$
-  declare caller uuid := auth.uid(); caller_role text; active_count int;
-  begin
-    if new.assigned_to is distinct from old.assigned_to and new.assigned_to = caller then
-      select role into caller_role from public.admins where id = caller;
-      if caller_role in ('senior_reader','junior_reader') then
-        select count(*) into active_count
-        from public.submissions s
-        left join public.coverages c on c.submission_id = s.id
-        where s.assigned_to = caller and s.id <> new.id
-          and (c.status is null or c.status in ('in_progress','revision_requested'));
-        if active_count > 0 then
-          raise exception 'READER_HAS_ACTIVE_ASSIGNMENT' using errcode = 'check_violation';
-        end if;
-      end if;
-    end if;
-    return new;
-  end; $$;
+  -- No one-active-assignment limit: readers may claim freely. Drop the old trigger.
   drop trigger if exists trg_single_active_assignment on public.submissions;
-  create trigger trg_single_active_assignment
-    before update on public.submissions
-    for each row execute function public.enforce_single_active_assignment();
+  drop function if exists public.enforce_single_active_assignment();
   ```
 - **Confirm the production domain** — report-email links use `https://sceneone.info`
   (`SITE_URL` in `api/review-coverage.js`); update if the live domain differs.

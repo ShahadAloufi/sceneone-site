@@ -19,7 +19,10 @@
 
 const NOTIFY_FROM = "Scene One <no-reply@sceneone.info>";
 const NOTIFY_TO = "sceneone.info@gmail.com";
-const ASSIGNMENT_WINDOW_MS = 2 * 60 * 60 * 1000; // 2 hours — keep in sync with the DB trigger
+// The REAL notice/lock window. Readers are TOLD 2 hours (see claimConfirm in the
+// dashboard) but actually get 3 — a deliberate hidden buffer. Keep in sync with
+// the enforce_assignment_lock() trigger's interval and admin.js. Not a bug.
+const ASSIGNMENT_WINDOW_MS = 3 * 60 * 60 * 1000;
 
 function svc() {
   return { url: process.env.SUPABASE_URL, key: process.env.SUPABASE_SERVICE_ROLE_KEY };
@@ -230,25 +233,9 @@ module.exports = async (req, res) => {
   }
 
   // ----------------------------- CLAIM -----------------------------
+  // Readers may claim freely — there is no one-active-assignment limit.
   if (sub.assigned_to) {
     return res.status(409).json({ message: "هذا النص مُسند بالفعل" });
-  }
-  // Re-check the one-active-assignment rule: the DB trigger keys off auth.uid(),
-  // which is null for the service role, so it wouldn't fire for this write.
-  if (me.role === "senior_reader" || me.role === "junior_reader") {
-    const activeResp = await fetch(
-      url + "/rest/v1/submissions?assigned_to=eq." + encodeURIComponent(me.id) + "&select=id,coverages(status)",
-      { headers }
-    );
-    const active = activeResp.ok ? await activeResp.json() : [];
-    const blocking = active.filter(function (r) {
-      if (r.id === subId) return false;
-      const c = (r.coverages && r.coverages[0]) || null;
-      return !c || c.status === "in_progress" || c.status === "revision_requested";
-    });
-    if (blocking.length) {
-      return res.status(409).json({ message: "READER_HAS_ACTIVE_ASSIGNMENT" });
-    }
   }
 
   const claimedAt = new Date();
