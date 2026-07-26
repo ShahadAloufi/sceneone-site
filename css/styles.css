@@ -243,6 +243,7 @@ a, button {
 .btn--white { background: #fff; color: #000; }
 .btn--white:hover { background: rgba(255,255,255,.9); }
 .btn--ghost { border: 1px solid #fff; background: rgba(255,255,255,.1); color: #fff; }
+.btn--disabled { opacity: .4; pointer-events: none; cursor: not-allowed; }
 .btn--ghost:hover { background: rgba(255,255,255,.2); }
 
 /* QUOTE */
