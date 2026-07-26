@@ -1610,7 +1610,8 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   /* overlay the title on the photo's dark ceiling-truss band, above the
      light row and well clear of the SCENE ONE wordmark further down */
   .au-hero__title {
-    position: absolute; top: 78px; right: 24px; left: 140px; text-align: right;
+    position: absolute; top: 78px; right: 24px; left: auto; width: max-content;
+    max-width: calc(100% - 160px); text-align: right;
     font-size: 26px; line-height: 1.15; text-shadow: 0 2px 14px rgba(0,0,0,.65); z-index: 5;
   }
   .au-hero__quote { order: 2; position: static; margin: 24px 24px 0; max-width: none; }
