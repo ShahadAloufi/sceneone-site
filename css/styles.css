@@ -1506,6 +1506,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   position: absolute; bottom: 0; left: 0; right: 0; z-index: 3;
   margin: 0 clamp(24px, 7vw, 140px); height: 1px; background: rgba(255,255,255,.22);
 }
+.au-hero__photo { display: none; }
 .au-hero__inner {
   position: relative; z-index: 2; width: 100%;
   max-width: none; margin: 0; padding: 96px 56px 64px;
@@ -1593,12 +1594,18 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   .au-cards { grid-template-columns: 1fr; max-width: 460px; gap: 48px; }
 }
 @media (max-width: 640px) {
-  .au-hero__inner { grid-template-columns: 1fr; padding: 110px 24px 40px; }
+  /* the hero was forced to 100vh even though the image (and text above
+     it) don't need that much room, leaving a big empty gap before the
+     divider. Stack title -> quote -> image -> rule in normal flow,
+     sized to content, instead of a fixed-height overlay box. */
+  .au-hero { display: block; height: auto; min-height: 0; }
+  .au-hero__bg { display: none; }
+  .au-hero__shade { display: none; }
+  .au-hero__photo { display: block; width: 100%; aspect-ratio: 2200 / 1916; margin-top: 32px;
+    background: #050505 url('../assets/aboutus-hero.jpg') center center / cover no-repeat; }
+  .au-hero__inner { grid-template-columns: 1fr; padding: 110px 24px 0; position: static; }
   .au-hero__title { grid-column: 1; grid-row: 1; justify-self: start; text-align: right; }
-  .au-hero__quote { position: static; margin-top: 28px; max-width: none; grid-row: 2; grid-column: 1; }
-  .au-hero__mark { grid-row: 3; }
+  .au-hero__quote { position: static; margin-top: 24px; max-width: none; grid-row: 2; grid-column: 1; }
+  .au-hero__rule { position: static; margin: 32px 24px 0; }
   .au-about, .au-team { padding-left: 24px; padding-right: 24px; }
-  /* on narrow/tall screens "cover" crops the wordmark off both edges;
-     "contain" shows the whole photo letterboxed instead */
-  .au-hero__bg { background-size: contain; background-position: center 28%; }
 }
