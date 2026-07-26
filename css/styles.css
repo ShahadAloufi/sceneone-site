@@ -1514,7 +1514,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 .au-hero__title {
   grid-column: 2; justify-self: end; direction: rtl; text-align: right;
   font-family: var(--font-body); font-weight: 700; color: #fff;
-  font-size: clamp(42px, 6.4vw, 88px); line-height: .98; letter-spacing: -0.01em;
+  font-size: clamp(34px, 5vw, 68px); line-height: .98; letter-spacing: -0.01em;
 }
 .au-hero__quote {
   position: absolute; left: 24px; top: clamp(160px, 20vw, 260px);
