@@ -1479,3 +1479,106 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 .sub-submit:disabled { opacity: .6; cursor: default; }
 
 .sub-foot { text-align: center; font-size: 12px; color: #8a877f; margin-top: 14px; line-height: 1.7; }
+
+/* ===========================================================
+   About Us / Readers page (readers.html) — dark theme
+   =========================================================== */
+.au { background: #000; color: #fff; min-height: 100vh; }
+.au .nav { background: transparent; position: absolute; top: 0; left: 0; right: 0; z-index: 20; }
+
+/* ── HERO ── */
+.au-hero { position: relative; min-height: 88vh; overflow: hidden; display: flex; }
+.au-hero__bg {
+  position: absolute; inset: 0;
+  background: #050505 url('../assets/aboutus-hero.jpg') center center / cover no-repeat;
+}
+.au-hero__shade {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,.35) 0%, rgba(0,0,0,.15) 45%, rgba(0,0,0,.9) 100%);
+}
+.au-hero__inner {
+  position: relative; z-index: 2; width: 100%;
+  max-width: 1400px; margin: 0 auto; padding: 140px 48px 64px;
+  display: grid; grid-template-columns: 1fr 1fr; align-items: start;
+}
+.au-hero__title {
+  grid-column: 2; justify-self: end; text-align: left;
+  font-family: var(--font-head); font-weight: 700; color: #fff;
+  font-size: clamp(48px, 8vw, 104px); line-height: .98; letter-spacing: -0.01em;
+}
+.au-hero__quote {
+  grid-column: 1; grid-row: 1; align-self: start; max-width: 320px;
+  margin-top: 12px; direction: rtl; text-align: right;
+}
+.au-hero__quote blockquote {
+  font-family: var(--font-body); font-size: 15px; line-height: 1.9; color: rgba(255,255,255,.85);
+}
+.au-hero__quote figcaption {
+  font-family: var(--font-body); font-size: 13px; color: rgba(255,255,255,.5); margin-top: 10px;
+}
+.au-hero__mark {
+  grid-column: 1 / -1; justify-self: center; align-self: center;
+  margin-top: clamp(40px, 8vw, 110px); width: 100%; max-width: 620px; text-align: center;
+}
+.au-hero__mark img { width: 100%; height: auto; margin: 0 auto; }
+
+/* ── ABOUT / STORY ── */
+.au-about { padding: clamp(56px, 9vw, 112px) 48px; }
+.au-about__inner {
+  max-width: 1120px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr auto; gap: 64px; align-items: start;
+}
+.au-about__label {
+  grid-column: 2; font-family: var(--font-head); font-weight: 600;
+  font-size: 15px; letter-spacing: .05em; color: rgba(255,255,255,.9); white-space: nowrap;
+}
+.au-about__label span { color: rgba(255,255,255,.9); }
+.au-about__body { grid-column: 1; max-width: 720px; }
+.au-about__body p {
+  font-family: var(--font-body); font-size: 17px; line-height: 2; color: rgba(255,255,255,.72);
+  text-align: right; margin-bottom: 22px;
+}
+.au-about__body p:last-child { margin-bottom: 0; }
+
+/* ── READERS TEAM ── */
+.au-team { padding: clamp(24px, 4vw, 48px) 48px clamp(80px, 12vw, 140px); }
+.au-team__title {
+  font-family: var(--font-head); font-weight: 700; color: #fff; text-align: center;
+  font-size: clamp(34px, 5vw, 56px); margin-bottom: clamp(48px, 7vw, 88px);
+}
+.au-cards {
+  max-width: 800px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(24px, 4vw, 64px);
+}
+.au-card__photo {
+  aspect-ratio: 3 / 4; overflow: hidden; background: transparent; margin-bottom: 24px;
+}
+.au-card__photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); }
+.au-card__role {
+  font-family: var(--font-body); font-size: 13px; color: var(--red);
+  text-align: right; margin-bottom: 8px;
+}
+.au-card__name {
+  font-family: var(--font-head); font-weight: 700; font-size: 24px; color: #fff;
+  text-align: right; margin-bottom: 16px;
+}
+.au-card__bio {
+  font-family: var(--font-body); font-size: 15px; line-height: 1.95; color: rgba(255,255,255,.62);
+  text-align: right;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .au-hero__inner { padding: 120px 32px 48px; }
+  .au-about__inner { grid-template-columns: 1fr; gap: 20px; }
+  .au-about__label { grid-column: 1; grid-row: 1; text-align: right; }
+  .au-about__body { grid-column: 1; }
+  .au-cards { grid-template-columns: 1fr; max-width: 460px; gap: 48px; }
+}
+@media (max-width: 640px) {
+  .au-hero__inner { grid-template-columns: 1fr; padding: 110px 24px 40px; }
+  .au-hero__title { grid-column: 1; grid-row: 1; justify-self: start; text-align: right; }
+  .au-hero__quote { grid-column: 1; grid-row: 2; margin-top: 28px; max-width: none; }
+  .au-hero__mark { grid-row: 3; }
+  .au-about, .au-team { padding-left: 24px; padding-right: 24px; }
+}
