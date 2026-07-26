@@ -1564,7 +1564,8 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(24px, 4vw, 64px);
 }
 .au-card__photo {
-  aspect-ratio: 3 / 4; overflow: hidden; background: transparent; margin-bottom: 24px;
+  aspect-ratio: 3 / 4; overflow: hidden; background: transparent; margin: 0 0 24px auto;
+  width: 80%; max-width: 320px;
 }
 .au-card__photo img { width: 100%; height: 100%; object-fit: contain; object-position: bottom; filter: grayscale(100%); }
 .au-card__role {
