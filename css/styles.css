@@ -1498,7 +1498,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 }
 .au-hero__inner {
   position: relative; z-index: 2; width: 100%;
-  max-width: 1400px; margin: 0 auto; padding: 140px 48px 64px;
+  max-width: none; margin: 0; padding: 140px 56px 64px;
   display: grid; grid-template-columns: 1fr 1fr; align-items: start;
   direction: ltr; /* physical columns: col 1 = left, col 2 = right */
 }
