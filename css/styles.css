@@ -1487,9 +1487,10 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 .au .nav { background: transparent; position: absolute; top: 0; left: 0; right: 0; z-index: 20; }
 
 /* ── HERO ── */
-.au-hero { position: relative; min-height: 88vh; overflow: hidden; display: flex; }
+.au-hero { position: relative; width: 100%; aspect-ratio: 2200 / 1916; overflow: hidden; display: flex; }
 .au-hero__bg {
   position: absolute; inset: 0;
+  /* aspect-ratio matches the image, so "cover" fills the box with no crop */
   background: #050505 url('../assets/aboutus-hero.jpg') center center / cover no-repeat;
 }
 .au-hero__shade {
