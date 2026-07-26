@@ -1543,7 +1543,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 }
 .au-about__label {
   grid-column: 2; grid-row: 1; direction: rtl; font-family: var(--font-head); font-weight: 600;
-  font-size: 20px; line-height: 2; letter-spacing: .05em; color: rgba(255,255,255,.9); white-space: nowrap;
+  font-size: 25px; line-height: 2; letter-spacing: .05em; color: rgba(255,255,255,.9); white-space: nowrap;
 }
 .au-about__label span { color: rgba(255,255,255,.9); }
 .au-about__body { grid-column: 1; grid-row: 1; direction: rtl; max-width: 720px; }
