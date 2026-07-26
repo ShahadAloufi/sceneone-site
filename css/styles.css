@@ -1507,18 +1507,18 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 }
 .au-hero__inner {
   position: relative; z-index: 2; width: 100%;
-  max-width: none; margin: 0; padding: 140px 56px 64px;
+  max-width: none; margin: 0; padding: 96px 56px 64px;
   display: grid; grid-template-columns: 1fr 1fr; align-items: start;
   direction: ltr; /* physical columns: col 1 = left, col 2 = right */
 }
 .au-hero__title {
   grid-column: 2; justify-self: end; direction: rtl; text-align: right;
-  font-family: var(--font-head); font-weight: 700; color: #fff;
+  font-family: var(--font-body); font-weight: 700; color: #fff;
   font-size: clamp(48px, 8vw, 104px); line-height: .98; letter-spacing: -0.01em;
 }
 .au-hero__quote {
   grid-column: 1; grid-row: 1; justify-self: start; align-self: start; max-width: 320px;
-  margin-top: 12px; direction: rtl; text-align: right;
+  margin-top: 0; direction: rtl; text-align: right;
 }
 .au-hero__quote blockquote {
   font-family: var(--font-body); font-size: 15px; line-height: 1.9; color: rgba(255,255,255,.85);
