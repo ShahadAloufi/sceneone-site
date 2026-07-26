@@ -1517,8 +1517,8 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   font-size: clamp(42px, 6.4vw, 88px); line-height: .98; letter-spacing: -0.01em;
 }
 .au-hero__quote {
-  grid-column: 1; grid-row: 1; justify-self: start; align-self: start; max-width: 320px;
-  margin-top: clamp(64px, 7vw, 104px); margin-left: -16px; direction: rtl; text-align: right;
+  position: absolute; left: 24px; top: clamp(160px, 20vw, 260px);
+  max-width: 320px; direction: rtl; text-align: right;
 }
 .au-hero__quote blockquote {
   font-family: var(--font-body); font-size: 15px; line-height: 1.9; color: rgba(255,255,255,.85);
@@ -1593,7 +1593,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 @media (max-width: 640px) {
   .au-hero__inner { grid-template-columns: 1fr; padding: 110px 24px 40px; }
   .au-hero__title { grid-column: 1; grid-row: 1; justify-self: start; text-align: right; }
-  .au-hero__quote { grid-column: 1; grid-row: 2; margin-top: 28px; max-width: none; }
+  .au-hero__quote { position: static; margin-top: 28px; max-width: none; grid-row: 2; grid-column: 1; }
   .au-hero__mark { grid-row: 3; }
   .au-about, .au-team { padding-left: 24px; padding-right: 24px; }
 }
