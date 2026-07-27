@@ -1489,7 +1489,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 .au .nav.scrolled { background: var(--bg); box-shadow: 0 6px 20px rgba(0, 0, 0, .35); }
 
 /* ── HERO ── */
-.au-hero { position: relative; width: 1512px; max-width: 100%; height: 4310px; overflow: hidden; display: flex; }
+.au-hero { position: relative; width: 1431.999px; max-width: 100%; height: 2421px; overflow: hidden; display: flex; }
 .au-hero__bg {
   position: absolute; inset: 0;
   /* fill the viewport as a full-bleed hero; "cover" preserves the image
