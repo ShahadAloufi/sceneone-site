@@ -416,6 +416,8 @@ a, button {
 .readers__bg { position: absolute; inset: 0; display: flex; z-index: 0; }
 .readers__bg img { flex: 1 1 0; min-width: 0; height: 100%; object-fit: cover; object-position: center 32%; filter: grayscale(1); opacity: 1; }
 .readers__bg::after { content: ""; position: absolute; inset: 0; background:
+  /* same dark-top / clear-middle / fade-to-bg transition as the hero photos */
+  linear-gradient(to bottom, rgba(0,0,0,.3), transparent, var(--bg)),
   radial-gradient(ellipse 70% 100% at center, rgba(14,2,2,.45) 0%, rgba(14,2,2,.3) 60%, rgba(14,2,2,.2) 100%),
   linear-gradient(90deg, #0e0202 0%, rgba(14,2,2,0) 14%, rgba(14,2,2,0) 86%, #0e0202 100%); }
 .readers__content {
