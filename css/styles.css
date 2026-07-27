@@ -1499,7 +1499,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   /* fill the viewport as a full-bleed hero; "cover" preserves the image
      aspect (no stretch); anchored a little below the top so a shorter
      box trims a bit off the very top (dark truss) as well as the bottom */
-  background: #050505 url('../assets/aboutus-hero.jpg') center 30% / cover no-repeat;
+  background: #050505 url('../assets/aboutus-hero.jpg') center 36% / cover no-repeat;
 }
 .au-hero__shade {
   position: absolute; inset: 0;
