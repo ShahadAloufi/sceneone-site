@@ -79,10 +79,11 @@ Do NOT introduce Next.js/React/a compiler/npm build. Keep it buildless.
 - **Pages (root `.html`):** `index` (landing), `submit` (script submission),
   `admin` (login + dashboard), `coverage` (reader workspace + report),
   `report` (public, read-only report the writer opens via a tokenized link),
-  `about-coverage`, `privacy`, `terms`.
+  `about-coverage`, `readers` (public "تعرّف على قصتنا" / about-us + reader
+  team page, see below), `privacy`, `terms`.
 - **Styles:** single shared `css/styles.css`. Prefix conventions: `adm-` (admin),
-  `sub-`/`so-` (submission), `cov-` (about-coverage), `.nav` (shared header),
-  `.so-loader` (shared Scene One loader).
+  `sub-`/`so-` (submission), `cov-` (about-coverage), `au-` (readers/about-us),
+  `.nav` (shared header), `.so-loader` (shared Scene One loader).
   - **Exception:** `coverage.html` and `report.html` are self-contained — each has
     its **own inline `<style>` block and no-flash theme/lang script**, and does NOT
     link `css/styles.css`. Shared pieces are duplicated there.
@@ -102,6 +103,61 @@ Do NOT introduce Next.js/React/a compiler/npm build. Keep it buildless.
 
 Business logic, validation, and privileged operations live server-side in `/api`.
 Client JS is UI only; client validation is UX-only and always re-validated server-side.
+
+---
+
+## Public Page: `readers.html` (About Us / Reader Team)
+
+Added 2026-07-26/27. Dark-themed public page ("تعرّف على قصتنا") linked from the
+nav overlay on every page as **"من يقرأ نصك؟"**, and from the landing page's
+"من يقرأ نصك؟" section link. All styling is in the `.au-*`-prefixed block at the
+bottom of `css/styles.css`; markup is `readers.html`.
+
+- **Sections:** full-bleed hero (photo + right-aligned title + quote + thin
+  divider) → "عن SCENE ONE" story (3 paragraphs) → "فريق القرّاء" reader cards
+  (currently **فجر الفرحان** and **هيفاء السيد** only — a third card, دانيا
+  جابر, was removed early on; don't re-add without being asked).
+- **Hero structure is easy to get wrong — read this before touching it:**
+  - `.au-hero` has `overflow: hidden`. Anything meant to sit *below* the hero
+    (the divider `.au-hero__rule`, the quote `.au-hero__quote`) **must live
+    outside `<header class="au-hero">` in the DOM**, as siblings after
+    `</header>`. Putting them inside and pushing them past the box's bottom
+    edge (negative `bottom`, large `margin-top`) just clips them invisible —
+    this bit us twice in-session.
+  - Desktop hero background is `.au-hero__bg` (`position:absolute`,
+    `background-size:cover`), height is a plain `vh` value (currently `80vh`
+    — this number has been tuned back and forth several times per feedback,
+    don't assume it's final). `background-position` is `center <N>%`;
+    increasing `N` crops further into the top of the photo (ceiling truss)
+    while keeping the wordmark roughly centered — that's how "zoom"/"crop
+    from top" requests were implemented, not by changing hero height.
+  - **Mobile (`≤640px`) does not reuse `.au-hero__bg`.** It's a totally
+    separate flow: `.au-hero` becomes a flex column, `.au-hero__inner`
+    dissolves via `display:contents` (so title/quote inside it can be
+    reordered independently), and a dedicated `.au-hero__photo` block (own
+    `aspect-ratio`, hidden on desktop) renders the image at full size, no
+    crop. Order on mobile: photo → title (overlaid on the photo's dark top
+    band) → quote → rule.
+  - Hero shade (`.au-hero__shade`) gradient intentionally mirrors the landing
+    page's hero gradient (`rgba(0,0,0,.3) → transparent → rgba(14,2,2,.88)`)
+    for visual consistency between the two heroes — the bottom stop is a
+    *partial-opacity* version of `--bg`, not the bare variable, so the photo
+    still shows through slightly; don't make it fully opaque again.
+  - The landing page's own readers-section photo (`.readers__bg` on
+    `index.html`) got the same top-to-bottom gradient treatment layered onto
+    its existing radial/horizontal vignette, for consistency across the site.
+- **Assets:** `assets/aboutus-hero.jpg` (cinema/wordmark photo), `assets/reader-1.png`
+  (فجر), `assets/reader-2.png` (هيفاء) — both grayscale via CSS filter, sized
+  with `object-fit: contain` (not `cover` — an earlier `cover` crop zoomed too
+  tightly into هيفاء's photo).
+- **"اطلب التغطية" buttons are deliberately disabled** (`.btn--disabled`:
+  faded, `pointer-events:none`, `aria-disabled`) on both pricing cards in
+  `index.html` — not a bug, a temporary product decision. Markup/href kept
+  intact so re-enabling is a one-line class removal.
+- **Nav on this page must stay `position:fixed` with a `.au .nav.scrolled`
+  rule** (mirrors the landing page's scroll-to-solid nav) — it was briefly
+  `position:absolute` with no `.scrolled` style, which made it scroll away
+  and never turn solid; don't reintroduce that.
 
 ---
 
