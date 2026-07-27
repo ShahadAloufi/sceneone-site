@@ -1507,9 +1507,10 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
      page's hero, for a consistent look between the two hero sections */
   background: linear-gradient(to bottom, rgba(0,0,0,.3), transparent, var(--bg));
 }
+/* normal block below the hero (not inside it, since .au-hero has
+   overflow:hidden and would clip anything pushed past its bottom edge) */
 .au-hero__rule {
-  position: absolute; bottom: 0; left: 0; right: 0; z-index: 3;
-  margin: 0 clamp(24px, 7vw, 140px); height: 1px; background: rgba(255,255,255,.22);
+  margin: 113px clamp(24px, 7vw, 140px) 0; height: 1px; background: rgba(255,255,255,.22);
 }
 .au-hero__photo { display: none; }
 .au-hero__inner {
