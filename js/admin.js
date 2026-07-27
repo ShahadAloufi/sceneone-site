@@ -484,7 +484,13 @@
     });
     // Delivered reports move to the Delivered/Deliveries tabs; the main list keeps
     // only the active pipeline (unassigned / in review / completed-but-not-sent).
-    var rows = (res.data || []).filter(function (s) { return !deliveredBySub[s.id]; });
+    // Scripts still behind the payment gate aren't in the pipeline at all — they
+    // can't be claimed (/api/claim-script rejects them), so showing them here would
+    // only pile up abandoned checkouts in front of readers. Staff can still see
+    // them in the "all submissions" tab.
+    var rows = (res.data || []).filter(function (s) {
+      return !deliveredBySub[s.id] && s.status !== "pending_payment";
+    });
     currentRows = rows;
     currentCov = covBySub;
     updateKpis(rows, covBySub);

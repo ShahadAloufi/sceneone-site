@@ -210,9 +210,12 @@ must be in the `supabase_realtime` publication for live updates to fire.
   posted body, verifies the amount against `payment_amount`, sets `paid` + `paid_at`,
   and immediately releases it into the pool as `unassigned`. The update is filtered on
   the current status, so a replayed delivery is a no-op and no second email goes out.
-  `/api/claim-script` refuses to claim anything that isn't `unassigned`. **No email is
-  sent at submission time** — the writer confirmation and the team alert both fire
-  from the webhook, once money has cleared. Prices live in `lib/moyasar.js` (`PRICES`,
+  `/api/claim-script` refuses to claim anything that isn't `unassigned`, and the
+  dashboard's pipeline list hides `pending_payment` rows (staff still see them under
+  "all submissions"). The only email sent before money clears is the **"complete your
+  payment" prompt**, which carries the stored `payment_url` so a writer who closes the
+  checkout tab can get back to their invoice; it promises nothing about review. The
+  writer confirmation and the team alert both fire from the webhook. Prices live in `lib/moyasar.js` (`PRICES`,
   in halalas) and must match the homepage: feature 1200 SAR / short 750 SAR.
 - **Roles:** `admin`, `super_admin`, `senior_reader`, `junior_reader`. Staff =
   admin/super_admin; readers = senior/junior.
@@ -553,8 +556,8 @@ privileged reads/writes.
 - **`POST /api/submissions`** — validates + inserts a submission as
   `pending_payment` (service role), creates the Moyasar invoice, stores
   `payment_invoice_id`/`payment_url`/`payment_amount`, and returns `paymentUrl` for
-  the browser to redirect to. **Sends no email** — see the payment gate in Business
-  Rules.
+  the browser to redirect to, and emails the writer that same link as a fallback.
+  Sends **no confirmation** — see the payment gate in Business Rules.
 - **`POST /api/payment-webhook`** — **public**, called by Moyasar (the shared
   `MOYASAR_WEBHOOK_SECRET` is the auth). Re-reads the payment from Moyasar's API
   before trusting anything, then `pending_payment` → `paid` → `unassigned` and sends

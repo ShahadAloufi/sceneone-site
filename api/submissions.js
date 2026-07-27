@@ -8,15 +8,19 @@
 // as `pending_payment` and the response carries a Moyasar checkout URL — the
 // script only enters the review pipeline once payment is confirmed.
 //
-// No email goes out here: the writer confirmation and the team alert now fire
-// from api/payment-webhook.js, once the payment has actually cleared.
+// The only email sent here is the "complete your payment" prompt, so a writer who
+// closes the checkout tab can still reach their invoice. The confirmation and the
+// team alert fire from api/payment-webhook.js, once the payment has cleared.
 //
 // Required environment variables (set in Vercel project settings):
 //   SUPABASE_URL                — e.g. https://xxxx.supabase.co
 //   SUPABASE_SERVICE_ROLE_KEY   — the "service_role" secret key
 //   MOYASAR_SECRET_KEY          — see lib/moyasar.js
+// Optional:
+//   RESEND_API_KEY              — without it the payment prompt is skipped
 
 const { createPayment } = require("../lib/moyasar");
+const { sendPaymentPrompt } = require("../lib/submission-emails");
 
 // Where Moyasar returns the writer after checkout.
 const SITE_URL = process.env.SITE_URL || "https://sceneone.info";
@@ -171,6 +175,10 @@ module.exports = async (req, res) => {
   } catch (err) {
     console.error("invoice patch error:", err);
   }
+
+  // The browser redirects to checkout straight away; this is the fallback for a
+  // writer who abandons that page. Non-blocking — the invoice already exists.
+  await sendPaymentPrompt(row, payment.url);
 
   return res.status(201).json({ ok: true, paymentUrl: payment.url });
 };
