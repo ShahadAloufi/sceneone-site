@@ -145,15 +145,34 @@ alter table public.submissions
 
 -- Payment gate. A submission is created as `pending_payment` and carries the
 -- Moyasar invoice that must clear before it can be assigned to a reader.
---   payment_id     — Moyasar invoice id, how the webhook finds this row
---   payment_amount — charged amount in halalas, as quoted at submission time
---   paid_at        — set by /api/payment-webhook when Moyasar confirms payment
+--   payment_invoice_id — Moyasar invoice id, how the webhook finds this row
+--   payment_url        — hosted checkout URL, kept so the writer can be sent back
+--   payment_amount     — charged amount in halalas, as quoted at submission time
+--   paid_at            — set by /api/payment-webhook when Moyasar confirms payment
+--
+-- The first cut of this shipped as `payment_id`; rename it in place so an existing
+-- database converges instead of growing a second, empty column.
+do $$
+begin
+  if exists (
+    select 1 from information_schema.columns
+    where table_schema = 'public' and table_name = 'submissions' and column_name = 'payment_id'
+  ) then
+    alter table public.submissions rename column payment_id to payment_invoice_id;
+  end if;
+end $$;
+
+alter index if exists public.submissions_payment_id_idx
+  rename to submissions_payment_invoice_id_idx;
+
 alter table public.submissions
-  add column if not exists payment_id text,
+  add column if not exists payment_invoice_id text,
+  add column if not exists payment_url text,
   add column if not exists payment_amount int,
   add column if not exists paid_at timestamptz;
 
-create index if not exists submissions_payment_id_idx on public.submissions (payment_id);
+create index if not exists submissions_payment_invoice_id_idx
+  on public.submissions (payment_invoice_id);
 
 -- Pipeline, in order:
 --   pending_payment → paid → unassigned → in_review → approved

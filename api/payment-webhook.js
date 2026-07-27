@@ -95,7 +95,7 @@ module.exports = async (req, res) => {
                  (claimed.metadata && claimed.metadata.submission_id) || null;
 
   const query = invoiceId
-    ? "payment_id=eq." + encodeURIComponent(invoiceId)
+    ? "payment_invoice_id=eq." + encodeURIComponent(invoiceId)
     : (metaId ? "id=eq." + encodeURIComponent(metaId) : null);
 
   if (!query) {
@@ -150,7 +150,7 @@ module.exports = async (req, res) => {
         body: JSON.stringify({
           status: "paid",
           paid_at: new Date().toISOString(),
-          payment_id: sub.payment_id || invoiceId,
+          payment_invoice_id: sub.payment_invoice_id || invoiceId,
         }),
       }
     );

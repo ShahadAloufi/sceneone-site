@@ -149,8 +149,9 @@ module.exports = async (req, res) => {
     return res.status(502).json({ message: "تعذّر بدء عملية الدفع" });
   }
 
-  // Store the invoice id so the webhook can match on it. A failure here is not
-  // fatal — the invoice also carries metadata.submission_id as a fallback.
+  // Store the invoice so the webhook can match on it, and keep the checkout URL
+  // so the writer can be sent back to it later. A failure here is not fatal —
+  // the invoice also carries metadata.submission_id as a fallback.
   try {
     const patch = await fetch(supabaseUrl + "/rest/v1/submissions?id=eq." + submissionId, {
       method: "PATCH",
@@ -160,11 +161,15 @@ module.exports = async (req, res) => {
         "Content-Type": "application/json",
         Prefer: "return=minimal",
       },
-      body: JSON.stringify({ payment_id: payment.id, payment_amount: payment.amount }),
+      body: JSON.stringify({
+        payment_invoice_id: payment.id,
+        payment_url: payment.url,
+        payment_amount: payment.amount,
+      }),
     });
-    if (!patch.ok) console.error("payment_id patch failed:", patch.status, await patch.text());
+    if (!patch.ok) console.error("invoice patch failed:", patch.status, await patch.text());
   } catch (err) {
-    console.error("payment_id patch error:", err);
+    console.error("invoice patch error:", err);
   }
 
   return res.status(201).json({ ok: true, paymentUrl: payment.url });

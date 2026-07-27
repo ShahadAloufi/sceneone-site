@@ -175,8 +175,9 @@ Tables (all with RLS enabled):
   `report_token` (uuid; the unguessable key in the writer's report link),
   `assigned_at` / `notice_email_id` / `writer_notified_at` (the assignment notice
   window — when the claim started, the scheduled Resend email id, and when the writer
-  was notified), `payment_id` / `payment_amount` / `paid_at` (the Moyasar invoice,
-  the amount quoted in halalas, and when payment cleared).
+  was notified), `payment_invoice_id` / `payment_url` / `payment_amount` / `paid_at`
+  (the Moyasar invoice, its hosted checkout URL, the amount quoted in halalas, and
+  when payment cleared).
   `status` runs `pending_payment` → `paid` → `unassigned` → `in_review`; column
   default is `pending_payment`. The legacy `new` status was backfilled to
   `unassigned` when the payment gate landed.
@@ -551,8 +552,9 @@ All handlers are plain `module.exports = async (req, res) => {...}`, use native
 privileged reads/writes.
 - **`POST /api/submissions`** — validates + inserts a submission as
   `pending_payment` (service role), creates the Moyasar invoice, stores
-  `payment_id`/`payment_amount`, and returns `paymentUrl` for the browser to redirect
-  to. **Sends no email** — see the payment gate in Business Rules.
+  `payment_invoice_id`/`payment_url`/`payment_amount`, and returns `paymentUrl` for
+  the browser to redirect to. **Sends no email** — see the payment gate in Business
+  Rules.
 - **`POST /api/payment-webhook`** — **public**, called by Moyasar (the shared
   `MOYASAR_WEBHOOK_SECRET` is the auth). Re-reads the payment from Moyasar's API
   before trusting anything, then `pending_payment` → `paid` → `unassigned` and sends
