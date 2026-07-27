@@ -1493,12 +1493,13 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 .au .nav.scrolled { background: var(--bg); box-shadow: 0 6px 20px rgba(0, 0, 0, .35); }
 
 /* ── HERO ── */
-.au-hero { position: relative; width: 100%; height: 100vh; min-height: 620px; overflow: hidden; display: flex; }
+.au-hero { position: relative; width: 100%; height: 88vh; min-height: 620px; overflow: hidden; display: flex; }
 .au-hero__bg {
   position: absolute; inset: 0;
   /* fill the viewport as a full-bleed hero; "cover" preserves the image
-     aspect (no stretch) and keeps the wordmark centred */
-  background: #050505 url('../assets/aboutus-hero.jpg') center center / cover no-repeat;
+     aspect (no stretch); anchored to the top so a shorter box crops the
+     seat row off the bottom instead of the ceiling off the top */
+  background: #050505 url('../assets/aboutus-hero.jpg') center top / cover no-repeat;
 }
 .au-hero__shade {
   position: absolute; inset: 0;
