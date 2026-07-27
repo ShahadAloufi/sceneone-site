@@ -1510,7 +1510,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 /* normal block below the hero (not inside it, since .au-hero has
    overflow:hidden and would clip anything pushed past its bottom edge) */
 .au-hero__rule {
-  margin: 113px clamp(24px, 7vw, 140px) 0; height: 1px; background: rgba(255,255,255,.22);
+  margin: 24px clamp(24px, 7vw, 140px) 0; height: 1px; background: rgba(255,255,255,.22);
 }
 .au-hero__photo { display: none; }
 .au-hero__inner {
@@ -1524,9 +1524,10 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   font-family: var(--font-body); font-weight: 700; color: #fff;
   font-size: clamp(34px, 5vw, 56px); line-height: .98; letter-spacing: -0.01em;
 }
+/* normal block below the hero (sibling of .au-hero__rule below it), not
+   an overlay -- sits naturally just above the divider line */
 .au-hero__quote {
-  position: absolute; left: 24px; bottom: 40px;
-  max-width: 320px; direction: rtl; text-align: right;
+  margin: 24px clamp(24px, 7vw, 140px) 0; max-width: 320px; direction: rtl; text-align: right;
 }
 .au-hero__quote blockquote {
   font-family: var(--font-body); font-size: 15px; line-height: 1.9; color: rgba(255,255,255,.85);
