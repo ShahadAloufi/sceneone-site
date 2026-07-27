@@ -263,8 +263,12 @@
         });
       }).then(function (res) {
         if (!res.ok) return res.json().then(function (b) { throw new Error(b.message || "فشل الإرسال"); });
-        toast("تم استلام نصك بنجاح", "سنراجع طلبك ونتواصل معك عبر بريدك الإلكتروني.");
-        setTimeout(function () { window.location.href = "/"; }, 1800);
+        return res.json();
+      }).then(function (body) {
+        // The script is saved but sits at `pending_payment` — send the writer
+        // to Moyasar's hosted checkout to complete the order.
+        toast("تم استلام نصك بنجاح", "سيتم تحويلك إلى صفحة الدفع لإتمام الطلب.");
+        setTimeout(function () { window.location.href = body.paymentUrl; }, 1800);
       }).catch(function (err) {
         toast("تعذّر إرسال النص", (err && err.message) ? err.message : "حاول مرة أخرى.", "error");
         submitBtn.disabled = false;

@@ -97,7 +97,11 @@ Do NOT introduce Next.js/React/a compiler/npm build. Keep it buildless.
   `log-access.js` (IP logging), `claim-script.js` (claim / release / reassign + the
   scheduled writer notice), `review-coverage.js` (staff approve / request-revision +
   writer email), `report.js` (public report data, token-gated), `report-pdf.js`
-  (server PDF via headless Chrome).
+  (server PDF via headless Chrome), `payment-webhook.js` (Moyasar → `paid`).
+- **Server modules (`/lib`):** shared server-side code, deliberately **outside
+  `/api`** because Vercel turns every file under `/api` into a public route.
+  `moyasar.js` (invoice creation + payment lookup), `submission-emails.js` (the
+  writer confirmation + team alert, sent from the payment webhook).
 - **Schema:** `supabase/schema.sql` is the source of record; **schema changes are
   run manually in the Supabase SQL Editor** (the file is not auto-applied).
 
@@ -171,7 +175,11 @@ Tables (all with RLS enabled):
   `report_token` (uuid; the unguessable key in the writer's report link),
   `assigned_at` / `notice_email_id` / `writer_notified_at` (the assignment notice
   window — when the claim started, the scheduled Resend email id, and when the writer
-  was notified).
+  was notified), `payment_id` / `payment_amount` / `paid_at` (the Moyasar invoice,
+  the amount quoted in halalas, and when payment cleared).
+  `status` runs `pending_payment` → `paid` → `unassigned` → `in_review`; column
+  default is `pending_payment`. The legacy `new` status was backfilled to
+  `unassigned` when the payment gate landed.
 - **coverages** — `submission_id`, `data` (jsonb: the full coverage content),
   `status` (`in_progress` | `submitted` | `revision_requested` | `approved`),
   `review_note` (staff revision note), `delivered_at`, `delivered_by` (set
@@ -192,6 +200,19 @@ must be in the `supabase_realtime` publication for live updates to fire.
 
 ## Business Rules
 
+- **Payment gate (payment before assignment):** a script must be paid for before it
+  can enter the review pipeline. `/api/submissions` inserts the row as
+  `pending_payment` and creates a **Moyasar invoice** (hosted checkout — card data
+  never touches our servers), then redirects the writer there. **Only
+  `/api/payment-webhook` may mark a submission paid**: it checks the shared secret
+  token, then **re-reads the payment from Moyasar's API** rather than trusting the
+  posted body, verifies the amount against `payment_amount`, sets `paid` + `paid_at`,
+  and immediately releases it into the pool as `unassigned`. The update is filtered on
+  the current status, so a replayed delivery is a no-op and no second email goes out.
+  `/api/claim-script` refuses to claim anything that isn't `unassigned`. **No email is
+  sent at submission time** — the writer confirmation and the team alert both fire
+  from the webhook, once money has cleared. Prices live in `lib/moyasar.js` (`PRICES`,
+  in halalas) and must match the homepage: feature 1200 SAR / short 750 SAR.
 - **Roles:** `admin`, `super_admin`, `senior_reader`, `junior_reader`. Staff =
   admin/super_admin; readers = senior/junior.
 - **Assignment:** a reader claims a script (primary assignee). If the primary is a
@@ -528,14 +549,23 @@ must be in the `supabase_realtime` publication for live updates to fire.
 All handlers are plain `module.exports = async (req, res) => {...}`, use native
 `fetch`, verify the caller's Supabase bearer token, and use the service-role key for
 privileged reads/writes.
-- **`POST /api/submissions`** — validates + inserts a submission (service role);
-  emails an admin notification and a writer confirmation (Resend).
-- **`POST /api/claim-script`** — signed-in reader/staff; `action: "claim"` assigns the
-  caller, stamps `assigned_at`, and schedules the writer's "work started" email (+3h,
-  Resend `scheduled_at`); `action: "release"` (assignee, window still open) cancels
-  that email and frees the script; `action: "reassign"` (**staff only**) hands it to
-  another reader without re-notifying. The only path that may claim — a client-side
-  claim is rejected by the DB trigger.
+- **`POST /api/submissions`** — validates + inserts a submission as
+  `pending_payment` (service role), creates the Moyasar invoice, stores
+  `payment_id`/`payment_amount`, and returns `paymentUrl` for the browser to redirect
+  to. **Sends no email** — see the payment gate in Business Rules.
+- **`POST /api/payment-webhook`** — **public**, called by Moyasar (the shared
+  `MOYASAR_WEBHOOK_SECRET` is the auth). Re-reads the payment from Moyasar's API
+  before trusting anything, then `pending_payment` → `paid` → `unassigned` and sends
+  the writer confirmation + team alert. Idempotent; ignores every non-`payment_paid`
+  event with a 200 so Moyasar stops retrying. The **only** path that may mark a
+  submission paid.
+- **`POST /api/claim-script`** — signed-in reader/staff; `action: "claim"` requires
+  status `unassigned` (the payment gate), assigns the caller, sets `in_review`, stamps
+  `assigned_at`, and schedules the writer's "work started" email (+3h, Resend
+  `scheduled_at`); `action: "release"` (assignee, window still open) cancels that
+  email, frees the script and returns it to `unassigned`; `action: "reassign"`
+  (**staff only**) hands it to another reader without re-notifying. The only path that
+  may claim — a client-side claim is rejected by the DB trigger.
 - **`POST /api/review-coverage`** — **staff-only** (admin/super_admin); `action:
   "approve"` sets the coverage `approved`, stamps delivery, and emails the writer the
   tokenized report link; `action: "request_revision"` (with a required `note`) sets it
@@ -580,8 +610,13 @@ privileged reads/writes.
 
 - **Vercel**, `vercel.json` sets `cleanUrls` (so `/admin` serves `admin.html`, etc.).
 - **Env vars (Vercel project settings):** `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`,
-  `RESEND_API_KEY`. Resend sender domain `sceneone.info` is verified; notifications go
-  to `sceneone.info@gmail.com`.
+  `RESEND_API_KEY`, `MOYASAR_SECRET_KEY`, `MOYASAR_WEBHOOK_SECRET`. Resend sender
+  domain `sceneone.info` is verified; notifications go to `sceneone.info@gmail.com`.
+- **Moyasar** keeps **test and live completely separate** — separate keys *and*
+  separate webhooks. A `sk_test_` key in Vercel with only a live webhook registered
+  means payments succeed but nothing is ever marked paid. The webhook is registered at
+  `https://sceneone.info/api/payment-webhook` (POST) and its Secret Token must equal
+  `MOYASAR_WEBHOOK_SECRET` exactly, or every delivery 401s.
 - `js/config.js` holds only client-safe values (Supabase URL, anon key, bucket name).
 - Schema changes are applied manually in Supabase (not automated).
 

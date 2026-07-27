@@ -1,0 +1,68 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Scene One — حالة الدفع</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#15110f; --orange:#CD2E07; --line:#e7e2da; --muted:#8a8178;
+    --page:#f5f1e9;
+    --font:'IBM Plex Sans Arabic','IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--page);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.7;
+       -webkit-font-smoothing:antialiased;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:34px 14px}
+  .card{background:#fff;border-radius:20px;max-width:600px;width:100%;padding:46px 44px;text-align:center}
+  .wm{font-weight:700;letter-spacing:5px;font-size:20px;margin:0 0 30px}
+  .wm span{color:var(--orange)}
+  h1{margin:0 0 14px;font-size:25px;line-height:1.3;font-weight:700}
+  .body{margin:0 auto;max-width:440px;color:#4a453f}
+  hr{border:0;border-top:1px solid #ece7df;width:78%;margin:26px auto}
+  .btn{display:inline-block;margin-top:30px;padding:14px 34px;border-radius:12px;background:#111;color:#fff;
+       text-decoration:none;font-size:14px;font-weight:700}
+  .foot{margin:26px 0 0;color:#a49b90;font-size:12.5px}
+</style>
+
+<div class="card">
+  <div class="wm">SCENE&nbsp;<span>ONE</span></div>
+  <h1 id="ar-title"></h1>
+  <p class="body" id="ar-body" dir="rtl"></p>
+  <hr>
+  <p class="body" id="en-body" dir="ltr"></p>
+  <a class="btn" href="/">العودة إلى الموقع</a>
+  <p class="foot">The Scene One team</p>
+</div>
+
+<script>
+  // Moyasar returns the writer here after checkout with ?status=paid|failed.
+  //
+  // This page is COSMETIC. The submission's real state is set by
+  // /api/payment-webhook, which re-reads the payment from Moyasar's API —
+  // never from anything in this URL, which the writer can edit freely.
+  (function () {
+    var status = new URLSearchParams(location.search).get("status");
+    var paid = status === "paid";
+
+    document.documentElement.setAttribute("lang", "ar");
+    document.documentElement.setAttribute("dir", "rtl");
+
+    var copy = paid ? {
+      title: "تم استلام الدفع",
+      ar: "شكرًا لك. تم استلام دفعتك وسيصلك بريد تأكيد خلال لحظات، ثم يبدأ أحد قرّائنا بمراجعة نصك.",
+      en: "Thank you. Your payment has been received — a confirmation email is on its way, and one of our readers will begin reviewing your script."
+    } : {
+      title: "لم تكتمل عملية الدفع",
+      ar: "لم تكتمل عملية الدفع، ولم يتم خصم أي مبلغ. نصك محفوظ لدينا — يمكنك المحاولة مرة أخرى، وإن استمرت المشكلة راسلنا على sceneone.info@gmail.com.",
+      en: "The payment didn't go through and you have not been charged. Your script is saved — you can try again, and if the problem persists email us at sceneone.info@gmail.com."
+    };
+
+    document.getElementById("ar-title").textContent = copy.title;
+    document.getElementById("ar-body").textContent = copy.ar;
+    document.getElementById("en-body").textContent = copy.en;
+    document.title = "Scene One — " + copy.title;
+  })();
+</script>

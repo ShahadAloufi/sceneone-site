@@ -136,7 +136,7 @@ module.exports = async (req, res) => {
 
   const subResp = await fetch(
     url + "/rest/v1/submissions?id=eq." + encodeURIComponent(subId) +
-    "&select=id,title_ar,title_en,writer,email,assigned_to,co_reader_id,assigned_at,notice_email_id,writer_notified_at",
+    "&select=id,title_ar,title_en,writer,email,status,assigned_to,co_reader_id,assigned_at,notice_email_id,writer_notified_at",
     { headers }
   );
   const subs = subResp.ok ? await subResp.json() : [];
@@ -223,7 +223,9 @@ module.exports = async (req, res) => {
     const patch = await fetch(url + "/rest/v1/submissions?id=eq." + encodeURIComponent(subId), {
       method: "PATCH",
       headers: Object.assign({}, jsonHeaders, { Prefer: "return=minimal" }),
-      body: JSON.stringify({ assigned_to: null, co_reader_id: null, assigned_at: null, notice_email_id: null }),
+      // Back into the pool — the script stays paid for, so it returns to
+      // `unassigned`, never to `pending_payment`.
+      body: JSON.stringify({ status: "unassigned", assigned_to: null, co_reader_id: null, assigned_at: null, notice_email_id: null }),
     });
     if (!patch.ok) {
       console.error("claim-script release failed:", patch.status, await patch.text());
@@ -236,6 +238,11 @@ module.exports = async (req, res) => {
   // Readers may claim freely — there is no one-active-assignment limit.
   if (sub.assigned_to) {
     return res.status(409).json({ message: "هذا النص مُسند بالفعل" });
+  }
+  // The payment gate. Only a script the writer has actually paid for reaches the
+  // pool, and /api/payment-webhook is the only thing that puts it there.
+  if (sub.status !== "unassigned") {
+    return res.status(409).json({ message: "لم يكتمل دفع رسوم هذا النص" });
   }
 
   const claimedAt = new Date();
@@ -273,6 +280,7 @@ module.exports = async (req, res) => {
     method: "PATCH",
     headers: Object.assign({}, jsonHeaders, { Prefer: "return=minimal" }),
     body: JSON.stringify({
+      status: "in_review",
       assigned_to: me.id,
       assigned_at: claimedAt.toISOString(),
       notice_email_id: noticeId,

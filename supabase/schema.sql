@@ -143,6 +143,33 @@ alter table public.submissions
   add column if not exists notice_email_id text,
   add column if not exists writer_notified_at timestamptz;
 
+-- Payment gate. A submission is created as `pending_payment` and carries the
+-- Moyasar invoice that must clear before it can be assigned to a reader.
+--   payment_id     — Moyasar invoice id, how the webhook finds this row
+--   payment_amount — charged amount in halalas, as quoted at submission time
+--   paid_at        — set by /api/payment-webhook when Moyasar confirms payment
+alter table public.submissions
+  add column if not exists payment_id text,
+  add column if not exists payment_amount int,
+  add column if not exists paid_at timestamptz;
+
+create index if not exists submissions_payment_id_idx on public.submissions (payment_id);
+
+-- Pipeline, in order:
+--   pending_payment → paid → unassigned → in_review → approved
+-- `pending_payment` is set on insert by /api/submissions; only the Moyasar
+-- webhook may move a row to `paid` and then straight into the pool as
+-- `unassigned`; /api/claim-script moves it to `in_review` and back.
+--
+-- Backfill: rows created before the payment gate carry the legacy status `new`.
+-- Those writers were handled under the old arrangement, so they are grandfathered
+-- into the pool rather than left unclaimable. Safe to re-run — after the first
+-- pass no `new` rows remain.
+update public.submissions set status = 'unassigned' where status = 'new';
+
+-- New submissions must start behind the payment gate.
+alter table public.submissions alter column status set default 'pending_payment';
+
 alter table public.submissions enable row level security;
 
 -- Admins can read every submission (shared inbox).
