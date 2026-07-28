@@ -654,12 +654,27 @@ must be in the `supabase_realtime` publication for live updates to fire.
   payers to production's non-existent `/payment-status`. Check `SUPABASE_URL`,
   `SUPABASE_SERVICE_ROLE_KEY` and `RESEND_API_KEY` are Preview-scoped too.
 - **The sandbox run needs the payment SQL, and there is only ONE Supabase project** — so
-  migrating for the preview migrates production. The deployed code inserts
-  `status: "new"` explicitly (`api/submissions.js`), and the `new → unassigned` backfill
-  runs once, so from the moment the SQL lands until `main` is pushed, **every real
-  submission is stranded at `'new'`**: invisible to the pool, unclaimable, no error
-  anywhere. Decide before applying — a deliberately tight SQL→test→push window, or a
-  second Supabase project for the preview.
+  migrating for the preview migrates production. **Chosen 2026-07-28: accept that, and
+  hold the `main` push until the bank account is ready.** Applying the SQL early is safe
+  for the live code, verified rather than assumed: the deployed `/api/claim-script`
+  gates on **`assigned_to`** (null = claimable) and never reads `submissions.status`,
+  and the deployed `admin.js` status checks are all against `coverages.status`. So
+  `submissions.status` is **inert in production today** — the new columns and the
+  rename are unused there, the backfill is a no-op for behaviour, and the new
+  `pending_payment` default never applies because the old code inserts `'new'`
+  explicitly.
+- **THEREFORE, at push time: re-run the backfill AFTER pushing `main`.**
+  ```sql
+  update public.submissions set status = 'unassigned' where status = 'new';
+  ```
+  Every submission taken during the waiting window lands at `'new'`, and the push is the
+  moment `'new'` stops being understood — that is when those rows go invisible and
+  unclaimable, not before. The line is idempotent, and running it *after* the push is
+  what matters: run it before and anything arriving in between is missed.
+- **Sandbox test data lands in the production database.** The preview writes real rows
+  into the live Supabase project, and once paid in test mode they enter the reader pool
+  where readers can claim them. Use obviously-fake titles, run it outside reading hours,
+  and delete the rows afterwards.
 - **Repeat the whole Moyasar setup for live at deploy time.** Everything done so far is
   test-only: (a) regenerate the live secret key, store it in a password manager, and add
   `MOYASAR_SECRET_KEY` scoped to **Production**; (b) list live webhooks — none has ever
