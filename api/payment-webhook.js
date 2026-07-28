@@ -116,8 +116,12 @@ module.exports = async (req, res) => {
     });
   }
 
-  // Match the payment to its submission: by the invoice id we stored at
-  // submission time, falling back to the metadata we attached to the invoice.
+  // Match the payment to its submission by the invoice id we stored at submission
+  // time. The metadata fallback below is near-dead weight for invoice payments:
+  // Moyasar does NOT copy invoice metadata onto the payment (verified 2026-07-28 —
+  // a real sandbox payment arrived with `metadata: null` while its invoice had
+  // `submission_id`). Kept because it costs nothing and would catch a payment
+  // created directly rather than through an invoice.
   const invoiceId = payment.invoice_id || claimed.invoice_id || null;
   const metaId = (payment.metadata && payment.metadata.submission_id) ||
                  (claimed.metadata && claimed.metadata.submission_id) || null;

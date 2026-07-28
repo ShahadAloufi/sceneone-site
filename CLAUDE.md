@@ -627,10 +627,20 @@ must be in the `supabase_realtime` publication for live updates to fire.
   `'new'` forever — invisible to the pool and unclaimable (`claim-script` requires
   `unassigned`), with no error anywhere. There is no status check constraint on
   `submissions` to catch it. Apply the SQL, then push, in that order and close together.
-- **Payment gate is BUILT BUT NOT DEPLOYED** (as of 2026-07-28). 16 commits sit on
-  local `main`; `origin/main` is untouched, so production still has the old, unpaid
-  flow. Before deploying: (1) run the payment-gate SQL above — the code writes
-  `payment_invoice_id` and will fail against a database that still has `payment_id`;
+- **Payment gate is VALIDATED IN THE SANDBOX, NOT DEPLOYED** (2026-07-28). The work sits
+  on `main` locally and on the pushed `payment-gate` branch; `origin/main` is untouched,
+  so production still runs the old, unpaid flow. The **payment-gate SQL has been applied**
+  to the (single, shared) production database — see the shared-database decision above,
+  and the backfill that must be re-run *after* the eventual `main` push.
+- **What the sandbox run actually proved (2026-07-28).** Two test submissions paid with
+  `4111 1111 1111 1111` on the preview: invoice created and `payment_invoice_id` /
+  `payment_amount` stored; Moyasar delivered `payment_paid` unaided; the row moved
+  `pending_payment → paid → unassigned`; `paid_at` and `confirmation_sent_at` stamped;
+  **both** emails (writer confirmation + team notification) arrived. Test 1 needed a hand
+  replay because its build predated the env fixes — test 2 ran untouched, which is the
+  run that proves delivery and the registered secret. **Still unexercised:** refunds,
+  every `unreconciled` branch, and anything on the live Moyasar environment.
+- Before deploying to production: (1) ~~run the payment-gate SQL~~ **done 2026-07-28**;
   (2) check that `MOYASAR_SECRET_KEY` and the registered webhook are in the **same**
   Moyasar environment; (3) ~~rotate `MOYASAR_WEBHOOK_SECRET`~~ — **done for test on
   2026-07-28**, still owed for live. Note the **test secret key was regenerated on
@@ -819,13 +829,48 @@ privileged reads/writes.
   Production would point live checkouts at test Moyasar, where no real money moves. The
   split is also the only realistic way to exercise the payment gate at all, since it
   can't run locally: deploy a preview and it talks to test Moyasar end to end.
-- **Test-environment webhook** (rotated 2026-07-28): id
-  `47fa5798-8891-4e67-abe1-a7ca10858762`, POST to the URL above, events narrowed to
-  `payment_paid` + `payment_refunded`. Its `shared_secret` was regenerated at the same
-  time and lives in Vercel as `MOYASAR_WEBHOOK_SECRET`, **Preview** scope. This replaced
-  `7901eb37-…` (all 16 events, screenshot-exposed secret), which was deleted.
-  **Whether live has a webhook at all is still unknown** — every check so far ran with a
-  `sk_test_` key.
+- **Test-environment webhook** (recreated 2026-07-28): id
+  `356c6eea-128f-40b8-8608-ba96a3953bbe`, POST to
+  `https://sceneone-site-git-payment-gate-scene-one.vercel.app/api/payment-webhook`,
+  events `payment_paid` + `payment_refunded`. Its `shared_secret` is in Vercel as
+  `MOYASAR_WEBHOOK_SECRET`, **Preview** scope. It replaced `47fa5798-…`, which pointed
+  at **production** — wrong for a sandbox run, since the test key is Preview-scoped and
+  production still runs the pre-gate code. Before it, `7901eb37-…` (all 16 events,
+  screenshot-exposed secret). **Whether live has a webhook at all is still unknown** —
+  every check so far ran with a `sk_test_` key.
+- **The sandbox rig (validated end to end 2026-07-28).** Branch `payment-gate` → Vercel
+  **Preview**, reached at the stable branch alias
+  `sceneone-site-git-payment-gate-scene-one.vercel.app` (pattern:
+  `<project>-git-<branch>-<team>`). Use the alias, never the per-deploy hash URL — the
+  hash changes on every push and would break the registered webhook. Three things have
+  to be true for a sandbox run, and all three bit us in order:
+  1. **Vercel Authentication OFF.** Standard Protection 302s every request to
+     `vercel.com/sso-api`, so Moyasar's POST never reaches the function. Settings →
+     Deployment Protection → the **Require Log In** toggle (none of the dropdown options
+     make previews public). **Turn it back ON after testing** — with it off, the public
+     preview `/submit` writes into the *production* database.
+  2. **`SITE_URL` set at Preview scope** to the alias. It does not exist otherwise and
+     the code falls back to `https://sceneone.info`, so `callback_url` sends test payers
+     to production's non-existent `/payment-status`. Confirmed by reading `callback_url`
+     back off the created invoice.
+  3. **`MOYASAR_WEBHOOK_SECRET` must match, and a redeploy must finish before paying.**
+     Env vars are baked in at build time, so a payment made against a build that predates
+     the change hits the old secret and 401s. Editing a **Sensitive** var did not take —
+     remove the entry and add it fresh. Copy with `printf '%s' "$SECRET" | pbcopy` so no
+     trailing newline sneaks in; the compare is `timingSafeEqual` and length-checks first.
+  Redeploy via `git commit --allow-empty && git push` on the branch — the dashboard's
+  Redeploy dialog offers the deployments of whichever branch you opened it from, which is
+  `main` by default and silently gives you a preview of the pre-gate code.
+- **Replaying a webhook by hand** (the fastest way to isolate handler bugs from delivery
+  bugs — the endpoint re-reads the payment from Moyasar, so a hand-made POST is
+  equivalent to a real one):
+  ```bash
+  curl -s -X POST "$PREVIEW/api/payment-webhook" -H 'Content-Type: application/json' \
+    -d "{\"type\":\"payment_paid\",\"secret_token\":\"$WH_SECRET\",\"data\":{\"id\":\"$PAYMENT_ID\"}}"
+  ```
+  Get `$PAYMENT_ID` from `GET /v1/invoices/<invoice_id>` → `payments[0].id` (**not** the
+  invoice id). A replay proves the handler; it does **not** prove Moyasar's own delivery
+  or that the registered `shared_secret` matches — only an untouched payment does that.
 - **Inspecting webhooks from the terminal.** `export MOYASAR_SECRET_KEY='sk_...'` (leading
   space keeps it out of `~/.zsh_history`), then
   `curl -s https://api.moyasar.com/v1/webhooks -u "$MOYASAR_SECRET_KEY:"`. The API has
