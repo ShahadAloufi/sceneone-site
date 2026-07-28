@@ -249,6 +249,19 @@ must be in the `supabase_realtime` publication for live updates to fire.
   the script stays with its reader. `refunded_at` is stamped **either way** (filtered
   `is null`, which is what makes the handler idempotent). Refunds are issued in the
   **Moyasar dashboard** — there is no in-app refund button, on purpose.
+- **Refunds are full or nothing — partial refunds are not part of the policy.** The
+  handler assumes a refund is for the whole amount: it pulls an unclaimed script to
+  the terminal `refunded` status, which would be the wrong outcome for, say, a 100 SAR
+  goodwill refund on a 1200 SAR feature — the script dies for a writer who paid almost
+  all of it. Nothing external can produce a partial refund; it only exists if a human
+  types a smaller amount into the Moyasar dashboard, so the policy closes the gap
+  instead of code. Moyasar's docs, checked 2026-07-28, state "the payment status
+  changes to `refunded`" under **full** refund only and say nothing about the status
+  after a partial one, so the handler's behaviour in that case is unverified as well as
+  unwanted. **If this policy ever changes, the webhook has to change first** — accept
+  `payment_refunded` when the re-read payment is `paid` with a non-zero `refunded`
+  amount (today it is dropped as a status mismatch), and gate the pull on the refund
+  covering the full quoted `payment_amount`.
 - **Where payment state shows up in the dashboard:** the pipeline list and kanban drop
   both `pending_payment` and `refunded` (neither is claimable), so a refunded card on
   the board can only be the still-assigned case — it gets a red **"needs a decision"**
