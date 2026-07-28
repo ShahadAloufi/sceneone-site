@@ -116,7 +116,8 @@ Do NOT introduce Next.js/React/a compiler/npm build. Keep it buildless.
 - **Server modules (`/lib`):** shared server-side code, deliberately **outside
   `/api`** because Vercel turns every file under `/api` into a public route.
   `moyasar.js` (invoice creation + payment lookup), `submission-emails.js` (the
-  writer confirmation + team alert, sent from the payment webhook).
+  writer confirmation + team alert + refund alert + unreconciled-payment alert,
+  all sent from the payment webhook; the payment prompt from `/api/submissions`).
 - **Schema:** `supabase/schema.sql` is the source of record; **schema changes are
   run manually in the Supabase SQL Editor** (the file is not auto-applied).
 
@@ -249,6 +250,17 @@ must be in the `supabase_realtime` publication for live updates to fire.
   the script stays with its reader. `refunded_at` is stamped **either way** (filtered
   `is null`, which is what makes the handler idempotent). Refunds are issued in the
   **Moyasar dashboard** — there is no in-app refund button, on purpose.
+- **A Moyasar event the webhook can't act on emails the team** (`sendUnreconciledAlert`).
+  Three paths reach it: the re-read payment's status contradicts the event
+  (`status_mismatch`), the payment carries no invoice id or metadata and no row
+  matches it (`unmatched`), or the amount paid differs from the quoted
+  `payment_amount` (`amount_mismatch`). Each answers **200** — no retry would fix
+  any of them, and Moyasar retries only on non-2xx — which is exactly why the email
+  matters: without it, Moyasar has moved money the database doesn't reflect and the
+  only trace is a Vercel log. `amount_mismatch` is the one that strands a writer, who
+  has paid but stays behind the gate. Resolve by hand in the Moyasar dashboard. A
+  malformed event carrying no payment id at all is logged only — there is nothing to
+  reconcile it against.
 - **Refunds are full or nothing — partial refunds are not part of the policy.** The
   handler assumes a refund is for the whole amount: it pulls an unclaimed script to
   the terminal `refunded` status, which would be the wrong outcome for, say, a 100 SAR

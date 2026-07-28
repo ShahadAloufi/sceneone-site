@@ -32,7 +32,9 @@
 
 const crypto = require("crypto");
 const { fetchPayment } = require("../lib/moyasar");
-const { sendNotification, sendConfirmation, sendRefundAlert } = require("../lib/submission-emails");
+const {
+  sendNotification, sendConfirmation, sendRefundAlert, sendUnreconciledAlert,
+} = require("../lib/submission-emails");
 
 // Statuses a refund may pull out of the pipeline on its own. These are exactly
 // the states in which no reader has the script: `unassigned` is the pool, and
@@ -106,9 +108,12 @@ module.exports = async (req, res) => {
   }
 
   if (String(payment.status || "").toLowerCase() !== expectedStatus) {
-    console.error("payment-webhook: payment", payment.id, "is", payment.status,
-                  "- expected", expectedStatus, "for", eventType);
-    return res.status(200).json({ ok: true, ignored: payment.status });
+    return unreconciled(res, "status_mismatch", {
+      eventType: eventType + " (expected " + expectedStatus + ")",
+      paymentId: payment.id,
+      paymentStatus: payment.status,
+      paidAmount: formatAmount(payment.amount),
+    });
   }
 
   // Match the payment to its submission: by the invoice id we stored at
@@ -122,8 +127,12 @@ module.exports = async (req, res) => {
     : (metaId ? "id=eq." + encodeURIComponent(metaId) : null);
 
   if (!query) {
-    console.error("payment-webhook: payment", payment.id, "has no invoice id or metadata to match on");
-    return res.status(200).json({ ok: true, ignored: "unmatched" });
+    return unreconciled(res, "unmatched", {
+      eventType: eventType,
+      paymentId: payment.id,
+      paymentStatus: payment.status,
+      paidAmount: formatAmount(payment.amount),
+    });
   }
 
   const rest = {
@@ -148,19 +157,33 @@ module.exports = async (req, res) => {
 
   if (!sub) {
     // Retrying won't conjure the row; ack so Moyasar stops.
-    console.error("payment-webhook: no submission matches", query);
-    return res.status(200).json({ ok: true, ignored: "unmatched" });
+    return unreconciled(res, "unmatched", {
+      eventType: eventType,
+      paymentId: payment.id,
+      paymentStatus: payment.status,
+      paidAmount: formatAmount(payment.amount),
+      invoiceId: invoiceId,
+      submissionId: metaId,
+    });
   }
 
   if (eventType === "payment_refunded") {
     return handleRefunded(res, { supabaseUrl, rest, sub, payment });
   }
 
-  // Guard against a payment for less than we quoted.
+  // Guard against a payment for less than we quoted. The script stays behind the
+  // gate, so this is the case most likely to strand a writer who believes they
+  // have paid — it must reach a human.
   if (sub.payment_amount != null && payment.amount !== sub.payment_amount) {
-    console.error("payment-webhook: amount mismatch on", sub.id,
-                  "- quoted", sub.payment_amount, "paid", payment.amount);
-    return res.status(200).json({ ok: true, ignored: "amount mismatch" });
+    return unreconciled(res, "amount_mismatch", {
+      eventType: eventType,
+      paymentId: payment.id,
+      paymentStatus: payment.status,
+      paidAmount: formatAmount(payment.amount),
+      quotedAmount: formatAmount(sub.payment_amount),
+      invoiceId: invoiceId,
+      submissionId: sub.id,
+    });
   }
 
   // The `status=eq.pending_payment` filter is what makes this idempotent: on a
@@ -259,6 +282,17 @@ module.exports = async (req, res) => {
 
   return res.status(200).json({ ok: true, submission: updated[0].id });
 };
+
+// The event cleared the secret check and came from Moyasar, but we can't act on
+// it — and no retry would change that, so we answer 200 and Moyasar stops
+// re-delivering. That makes this the end of the line: past here, the only record
+// that Moyasar moved money our database doesn't reflect is a log line nobody
+// reads. So every one of these paths emails the team before it acks.
+async function unreconciled(res, reason, info) {
+  console.error("payment-webhook: unreconciled (" + reason + "):", JSON.stringify(info));
+  await sendUnreconciledAlert(Object.assign({ reason: reason }, info));
+  return res.status(200).json({ ok: true, ignored: reason });
+}
 
 // Halalas → a human "1200.00 SAR" for the staff alert.
 function formatAmount(halalas) {
