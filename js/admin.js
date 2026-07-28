@@ -53,6 +53,11 @@
       dueOver: "متأخّر", dueDone: "تم التسليم", dueToday: "ينتهي اليوم",
       dueDays: function (n) { return "متبقٍّ " + n + " يوم"; },
       thCoverage: "التقييم", subEmpty: "لا توجد نصوص مقدَّمة بعد.",
+      thPayment: "الدفع",
+      payPaid: "مدفوع", payUnpaid: "بانتظار الدفع", payRefunded: "مُسترد",
+      payStale: "متروك", payStaleTip: "لم يُكمل الكاتب الدفع منذ أكثر من ٤٨ ساعة",
+      payRefundedFlag: "مُسترد — يحتاج قرارًا",
+      payRefundedTip: "تم استرداد المبلغ والنص ما زال مُسندًا لقارئ. لم يُغيَّر الإسناد تلقائيًا.",
       showFilter: "عرض", filterAll: "كل النصوص", filterMine: "التي أعمل عليها", filterOpen: "متاحة للإسناد",
       subEmptyFilter: "لا توجد نصوص تطابق هذا العرض.",
       adminsTitle: "المشرفون", thName: "الاسم", thRole: "الدور", createTitle: "إضافة مشرف جديد",
@@ -113,6 +118,11 @@
       dueOver: "Overdue", dueDone: "Delivered", dueToday: "Due today",
       dueDays: function (n) { return n + (n === 1 ? " day left" : " days left"); },
       thCoverage: "Coverage", subEmpty: "No submissions yet.",
+      thPayment: "Payment",
+      payPaid: "Paid", payUnpaid: "Awaiting payment", payRefunded: "Refunded",
+      payStale: "Abandoned", payStaleTip: "The writer hasn't completed payment in over 48 hours",
+      payRefundedFlag: "Refunded — needs a decision",
+      payRefundedTip: "This was refunded while still assigned to a reader. The assignment was deliberately left untouched.",
       showFilter: "Show", filterAll: "All scripts", filterMine: "What I'm working on", filterOpen: "Available to claim",
       subEmptyFilter: "No scripts match this view.",
       adminsTitle: "Admins", thName: "Name", thRole: "Role", createTitle: "Add a new admin",
@@ -486,10 +496,14 @@
     // only the active pipeline (unassigned / in review / completed-but-not-sent).
     // Scripts still behind the payment gate aren't in the pipeline at all — they
     // can't be claimed (/api/claim-script rejects them), so showing them here would
-    // only pile up abandoned checkouts in front of readers. Staff can still see
-    // them in the "all submissions" tab.
+    // only pile up abandoned checkouts in front of readers. `refunded` is dropped
+    // for the same reason: it's terminal and unclaimable. Note this only removes
+    // refunds caught *before* a reader claimed the script — a refund on an
+    // assigned one keeps its status, stays on the board, and is flagged on the
+    // card instead, because someone has to decide what to do with it. Staff can
+    // still see everything in the "all submissions" tab.
     var rows = (res.data || []).filter(function (s) {
-      return !deliveredBySub[s.id] && s.status !== "pending_payment";
+      return !deliveredBySub[s.id] && s.status !== "pending_payment" && s.status !== "refunded";
     });
     currentRows = rows;
     currentCov = covBySub;
@@ -919,6 +933,19 @@
     if (s.title_en) title.title = s.title_en;
     card.appendChild(title);
 
+    // A refunded card that is still on the board means the refund landed after a
+    // reader claimed it: the webhook stamps `refunded_at` but deliberately never
+    // touches the assignment, so this badge is the only thing standing between an
+    // unpaid script and a reader who keeps working on it. Unclaimed refunds never
+    // reach the board at all (filtered out in loadSubmissions).
+    if (s.refunded_at) {
+      var flag = document.createElement("div");
+      flag.className = "adm-card__flag";
+      flag.textContent = t("payRefundedFlag");
+      flag.title = t("payRefundedTip");
+      card.appendChild(flag);
+    }
+
     // Single meta row: deadline on one side, assignee + action on the other, so a
     // card stays two lines tall instead of stacking each piece.
     var row = document.createElement("div"); row.className = "adm-card__row";
@@ -975,10 +1002,45 @@
   }
 
   // ---------- DETAIL TABLE (All submissions + Deliveries tabs) ----------
+  // How long an unpaid checkout sits before it reads as abandoned rather than
+  // in-progress. Nothing expires it — this is a label, not a state change.
+  var PAYMENT_STALE_MS = 48 * 60 * 60 * 1000;
+
+  // Payment state, shown only in the All-submissions tab: the Deliveries tab
+  // lists reports that already shipped, which are paid by definition.
+  function paymentCell(s) {
+    // Rows predating the payment gate carry no invoice at all. They were handled
+    // under the old arrangement, so there is no payment to report on.
+    if (!s.paid_at && !s.payment_invoice_id && s.status !== "pending_payment") {
+      return "<td class='adm-muted'>—</td>";
+    }
+    var badge, cls, tip = "";
+    if (s.refunded_at || s.status === "refunded") {
+      badge = t("payRefunded"); cls = "adm-pay--refunded";
+      // Refunded but NOT pulled from the pipeline = the refund landed after a
+      // reader claimed it, and a human still has to resolve it.
+      if (s.status !== "refunded") tip = t("payRefundedTip");
+    } else if (s.status === "pending_payment") {
+      var stale = (Date.now() - new Date(s.created_at).getTime()) > PAYMENT_STALE_MS;
+      badge = stale ? t("payStale") : t("payUnpaid");
+      cls = stale ? "adm-pay--stale" : "adm-pay--unpaid";
+      if (stale) tip = t("payStaleTip");
+    } else {
+      badge = t("payPaid"); cls = "adm-pay--paid";
+    }
+    var amount = s.payment_amount != null ? (s.payment_amount / 100).toFixed(2) + " SAR" : "";
+    return "<td class='adm-pay'>" +
+      "<span class='adm-pay__badge " + cls + "'" + (tip ? " title='" + esc(tip) + "'" : "") + ">" +
+        esc(badge) +
+      "</span>" +
+      (amount ? "<div class='adm-muted' dir='ltr'>" + esc(amount) + "</div>" : "") +
+      "</td>";
+  }
+
   // Full submission detail; the coverage column links to the report the writer
   // sees once approved, otherwise shows the status label. `readerName` maps a
   // submission id → the reviewing reader's name (used by the Deliveries tab).
-  function renderDetailRows(bodyEl, rows, covBySub, deliveredBySub, readerNameCol) {
+  function renderDetailRows(bodyEl, rows, covBySub, deliveredBySub, readerNameCol, showPayment) {
     bodyEl.innerHTML = "";
     rows.forEach(function (s) {
       var st = covBySub[s.id];
@@ -996,6 +1058,7 @@
         "<td>" + esc(pagesCount(s)) + "</td>" +
         "<td class='adm-file'></td>" +
         (readerNameCol ? "<td>" + esc(readerNameCol[s.id] || "—") + "</td>" : "<td class='adm-assignee2'>" + esc(adminsById[s.assigned_to] || "—") + "</td>") +
+        (showPayment ? paymentCell(s) : "") +
         "<td class='adm-cov'></td>";
       var fileCell = tr.querySelector(".adm-file");
       if (s.file_path) {
@@ -1043,7 +1106,7 @@
     $("allCount").textContent = subs.length;
     if (!subs.length) { show($("allEmpty")); $("allBody").innerHTML = ""; return; }
     hide($("allEmpty"));
-    renderDetailRows($("allBody"), subs, covBySub, deliveredBySub, null);
+    renderDetailRows($("allBody"), subs, covBySub, deliveredBySub, null, true);
   }
 
   // ---------- DELIVERED BY ME (readers) ----------

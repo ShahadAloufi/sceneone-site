@@ -230,6 +230,14 @@ must be in the `supabase_realtime` publication for live updates to fire.
   the script stays with its reader. `refunded_at` is stamped **either way** (filtered
   `is null`, which is what makes the handler idempotent). Refunds are issued in the
   **Moyasar dashboard** — there is no in-app refund button, on purpose.
+- **Where payment state shows up in the dashboard:** the pipeline list and kanban drop
+  both `pending_payment` and `refunded` (neither is claimable), so a refunded card on
+  the board can only be the still-assigned case — it gets a red **"needs a decision"**
+  flag under the title, which is the one thing standing between an unpaid script and a
+  reader who keeps working. The **All submissions** tab carries a **Payment** column
+  (paid / awaiting payment / abandoned after 48h / refunded, with the amount); the
+  Deliveries tab deliberately doesn't, since a delivered report is paid by definition.
+  "Abandoned" is only a label — nothing expires an unpaid checkout.
 - **Roles:** `admin`, `super_admin`, `senior_reader`, `junior_reader`. Staff =
   admin/super_admin; readers = senior/junior.
 - **Assignment:** a reader claims a script (primary assignee). If the primary is a
@@ -571,9 +579,9 @@ must be in the `supabase_realtime` publication for live updates to fire.
 - **Register `payment_refunded` on the Moyasar webhook.** Refund handling is now built
   (see Business Rules), but the dashboard webhook is still subscribed to `payment_paid`
   only — without the second event the handler never runs.
-- **Surface refunds in the dashboard.** `refunded_at` is stamped and staff get an email,
-  but `js/admin.js` shows nothing: no refunded flag, no paid/unpaid column, no view of
-  stuck `pending_payment` rows. This is the next piece of work.
+- **Verify the payment column against real rows** — it was built against injected sample
+  data (the dashboard needs Supabase auth, which the local preview can't run), so the
+  badge logic is only proven on the deploy.
 - **Confirm the production domain** — report-email links use `https://sceneone.info`
   (`SITE_URL` in `api/review-coverage.js`); update if the live domain differs.
 - **Verify on the deploy** (can't run locally): send a report → open the link on
