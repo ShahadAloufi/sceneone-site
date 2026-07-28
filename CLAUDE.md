@@ -97,7 +97,7 @@ Do NOT introduce Next.js/React/a compiler/npm build. Keep it buildless.
   `log-access.js` (IP logging), `claim-script.js` (claim / release / reassign + the
   scheduled writer notice), `review-coverage.js` (staff approve / request-revision +
   writer email), `report.js` (public report data, token-gated), `report-pdf.js`
-  (server PDF via headless Chrome), `payment-webhook.js` (Moyasar → `paid`).
+  (server PDF via headless Chrome), `payment-webhook.js` (Moyasar → `paid` / `refunded`).
 - **Server modules (`/lib`):** shared server-side code, deliberately **outside
   `/api`** because Vercel turns every file under `/api` into a public route.
   `moyasar.js` (invoice creation + payment lookup), `submission-emails.js` (the
@@ -217,6 +217,19 @@ must be in the `supabase_realtime` publication for live updates to fire.
   checkout tab can get back to their invoice; it promises nothing about review. The
   writer confirmation and the team alert both fire from the webhook. Prices live in `lib/moyasar.js` (`PRICES`,
   in halalas) and must match the homepage: feature 1200 SAR / short 750 SAR.
+- **Refunds (`payment_refunded` → `/api/payment-webhook`):** the same secret-check and
+  re-read-from-Moyasar path as a payment, then the disposition depends on whether a
+  reader already has the script. **Nobody has it yet** (`unassigned`/`paid`) → pulled
+  from the pool into the terminal status **`refunded`**, which can never be claimed
+  again because `/api/claim-script` only accepts `unassigned`. **A reader already has
+  it** → the assignment is **left completely untouched**; only `refunded_at` is stamped
+  and staff get an "ACTION NEEDED" alert to resolve by hand. Yanking a script mid-draft
+  would destroy a reader's work, and this is rare by design — the writer is told at the
+  3h notice that the submission can no longer be cancelled or refunded. The pull is
+  filtered on the pullable statuses, so a claim that lands in the same moment wins and
+  the script stays with its reader. `refunded_at` is stamped **either way** (filtered
+  `is null`, which is what makes the handler idempotent). Refunds are issued in the
+  **Moyasar dashboard** — there is no in-app refund button, on purpose.
 - **Roles:** `admin`, `super_admin`, `senior_reader`, `junior_reader`. Staff =
   admin/super_admin; readers = senior/junior.
 - **Assignment:** a reader claims a script (primary assignee). If the primary is a
@@ -531,13 +544,22 @@ must be in the `supabase_realtime` publication for live updates to fire.
     add column if not exists payment_invoice_id text,
     add column if not exists payment_url text,
     add column if not exists payment_amount int,
-    add column if not exists paid_at timestamptz;
+    add column if not exists paid_at timestamptz,
+    -- Refunds: stamped on every refund; `refunded` status only when unclaimed.
+    add column if not exists refunded_at timestamptz;
   create index if not exists submissions_payment_invoice_id_idx
     on public.submissions (payment_invoice_id);
   -- Pre-gate rows are grandfathered into the pool; new rows start behind the gate.
   update public.submissions set status = 'unassigned' where status = 'new';
   alter table public.submissions alter column status set default 'pending_payment';
   ```
+  ⚠️ **Run this WITH the deploy, not before it.** The currently-deployed
+  `api/submissions.js` inserts `status: 'new'` explicitly, so the new default never
+  applies to it; the one-time `new → unassigned` backfill above has already passed by
+  then, and every submission taken on the old code after the migration would sit at
+  `'new'` forever — invisible to the pool and unclaimable (`claim-script` requires
+  `unassigned`), with no error anywhere. There is no status check constraint on
+  `submissions` to catch it. Apply the SQL, then push, in that order and close together.
 - **Payment gate is BUILT BUT NOT DEPLOYED** (as of 2026-07-28). Three commits sit on
   local `main`; `origin/main` is untouched, so production still has the old, unpaid
   flow. Before deploying: (1) run the payment-gate SQL above — the code writes
@@ -546,8 +568,12 @@ must be in the `supabase_realtime` publication for live updates to fire.
   test-environment toggle); (3) check that `MOYASAR_SECRET_KEY` and the registered
   webhook are in the **same** Moyasar environment; (4) rotate
   `MOYASAR_WEBHOOK_SECRET`, which was exposed in a screenshot during setup.
-- **Refund handling is next up.** `PAYMENT_REFUNDED` reaches `/api/payment-webhook`
-  today and is ignored with a 200, so a refunded script stays claimable.
+- **Register `payment_refunded` on the Moyasar webhook.** Refund handling is now built
+  (see Business Rules), but the dashboard webhook is still subscribed to `payment_paid`
+  only — without the second event the handler never runs.
+- **Surface refunds in the dashboard.** `refunded_at` is stamped and staff get an email,
+  but `js/admin.js` shows nothing: no refunded flag, no paid/unpaid column, no view of
+  stuck `pending_payment` rows. This is the next piece of work.
 - **Confirm the production domain** — report-email links use `https://sceneone.info`
   (`SITE_URL` in `api/review-coverage.js`); update if the live domain differs.
 - **Verify on the deploy** (can't run locally): send a report → open the link on
@@ -577,10 +603,13 @@ must be in the `supabase_realtime` publication for live updates to fire.
 - Report delivery emails a **tokenized link** to the hosted `report.html`; the writer
   Saves-as-PDF from their browser. There is no server-generated PDF attachment (Arabic
   can't be reliably rasterised client-side).
-- **No refund handling.** A refund issued in the Moyasar dashboard fires
-  `PAYMENT_REFUNDED` at `/api/payment-webhook`, which acks it with a 200 and changes
-  nothing — the script keeps its `unassigned`/`in_review` status and stays claimable.
-  Cleaning up after a refund is manual today.
+- **A refund on an already-claimed script is resolved manually** — by design. The
+  webhook stamps `refunded_at` and emails staff, but never touches the assignment, so
+  someone has to decide whether the reader keeps going. Refunds on *unclaimed* scripts
+  are fully automatic.
+- **Partial refunds are treated as full ones.** The handler acts on Moyasar's
+  `refunded` payment status; the alert email reports the actual refunded amount, but a
+  partially-refunded unclaimed script is still pulled from the pool outright.
 - **`submissions.status` never reaches `approved`.** The pipeline diagram ends there,
   but approval lives only in `coverages.status`; mirroring it onto the submission
   would mean touching the QC state machine and its triggers.
@@ -602,9 +631,11 @@ privileged reads/writes.
 - **`POST /api/payment-webhook`** — **public**, called by Moyasar (the shared
   `MOYASAR_WEBHOOK_SECRET` is the auth). Re-reads the payment from Moyasar's API
   before trusting anything, then `pending_payment` → `paid` → `unassigned` and sends
-  the writer confirmation + team alert. Idempotent; ignores every non-`payment_paid`
-  event with a 200 so Moyasar stops retrying. The **only** path that may mark a
-  submission paid.
+  the writer confirmation + team alert. Also handles **`payment_refunded`**: unclaimed
+  scripts are pulled to the terminal status `refunded`, claimed ones keep their
+  assignment, and either way `refunded_at` is stamped and staff are alerted. Idempotent;
+  ignores every other event with a 200 so Moyasar stops retrying. The **only** path
+  that may mark a submission paid or refunded.
 - **`POST /api/claim-script`** — signed-in reader/staff; `action: "claim"` requires
   status `unassigned` (the payment gate), assigns the caller, sets `in_review`, stamps
   `assigned_at`, and schedules the writer's "work started" email (+3h, Resend

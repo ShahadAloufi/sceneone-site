@@ -149,6 +149,7 @@ alter table public.submissions
 --   payment_url        — hosted checkout URL, kept so the writer can be sent back
 --   payment_amount     — charged amount in halalas, as quoted at submission time
 --   paid_at            — set by /api/payment-webhook when Moyasar confirms payment
+--   refunded_at        — set by /api/payment-webhook on a Moyasar refund
 --
 -- The first cut of this shipped as `payment_id`; rename it in place so an existing
 -- database converges instead of growing a second, empty column.
@@ -169,7 +170,8 @@ alter table public.submissions
   add column if not exists payment_invoice_id text,
   add column if not exists payment_url text,
   add column if not exists payment_amount int,
-  add column if not exists paid_at timestamptz;
+  add column if not exists paid_at timestamptz,
+  add column if not exists refunded_at timestamptz;
 
 create index if not exists submissions_payment_invoice_id_idx
   on public.submissions (payment_invoice_id);
@@ -179,6 +181,12 @@ create index if not exists submissions_payment_invoice_id_idx
 -- `pending_payment` is set on insert by /api/submissions; only the Moyasar
 -- webhook may move a row to `paid` and then straight into the pool as
 -- `unassigned`; /api/claim-script moves it to `in_review` and back.
+--
+-- `refunded` is a terminal status off to the side of that pipeline, set only by
+-- /api/payment-webhook and only when the script had not yet been claimed. It is
+-- never claimable again, since claim-script requires `unassigned`. A refund on a
+-- script a reader already holds leaves the status alone and only stamps
+-- `refunded_at` — staff resolve those by hand, on purpose.
 --
 -- Backfill: rows created before the payment gate carry the legacy status `new`.
 -- Those writers were handled under the old arrangement, so they are grandfathered
