@@ -674,6 +674,13 @@ must be in the `supabase_realtime` publication for live updates to fire.
 - **Verify the payment column against real rows** — it was built against injected sample
   data (the dashboard needs Supabase auth, which the local preview can't run), so the
   badge logic is only proven on the deploy.
+- **Upload the Scene One logo in the Moyasar dashboard** — the hosted checkout shows a
+  grey "company logo" placeholder today (seen on a test invoice 2026-07-28; the API
+  returns `logo_url: .../default-logo.png`). It is the one screen in the flow we don't
+  style, and the writer reaches it straight from a fully branded submission form, so an
+  unbranded page there reads as a redirect to the wrong site — on a payment page, that
+  costs conversions. **Dashboard setting, no code.** Do it for **both** the test and
+  live environments; like keys and webhooks, they're configured separately.
 - **Confirm the production domain** — report-email links use `https://sceneone.info`
   (`SITE_URL` in `api/review-coverage.js`); update if the live domain differs.
 - **Verify on the deploy** (can't run locally): send a report → open the link on
