@@ -627,16 +627,39 @@ must be in the `supabase_realtime` publication for live updates to fire.
   `'new'` forever — invisible to the pool and unclaimable (`claim-script` requires
   `unassigned`), with no error anywhere. There is no status check constraint on
   `submissions` to catch it. Apply the SQL, then push, in that order and close together.
-- **Payment gate is BUILT BUT NOT DEPLOYED** (as of 2026-07-28). Three commits sit on
+- **Payment gate is BUILT BUT NOT DEPLOYED** (as of 2026-07-28). 16 commits sit on
   local `main`; `origin/main` is untouched, so production still has the old, unpaid
   flow. Before deploying: (1) run the payment-gate SQL above — the code writes
   `payment_invoice_id` and will fail against a database that still has `payment_id`;
-  (2) finish **Moyasar onboarding** (business bank account — it also gates the
-  test-environment toggle); (3) check that `MOYASAR_SECRET_KEY` and the registered
-  webhook are in the **same** Moyasar environment; (4) ~~rotate
-  `MOYASAR_WEBHOOK_SECRET`~~ — **done for test on 2026-07-28**, still owed for live.
-  Note the **test secret key was regenerated on 2026-07-28**, which invalidated the
-  previous one.
+  (2) check that `MOYASAR_SECRET_KEY` and the registered webhook are in the **same**
+  Moyasar environment; (3) ~~rotate `MOYASAR_WEBHOOK_SECRET`~~ — **done for test on
+  2026-07-28**, still owed for live. Note the **test secret key was regenerated on
+  2026-07-28**, which invalidated the previous one.
+- **Moyasar TEST mode works today — onboarding gates LIVE only.** An earlier note here
+  claimed the business bank account also gated the test environment; that was wrong and
+  it held the sandbox up. Verified 2026-07-28 by creating a test invoice from the
+  terminal with the `sk_test_` key (`POST /v1/invoices`, 1 SAR) — it came back
+  `status: initiated` with a real `checkout.moyasar.com` URL. Test webhook management
+  with the same key had already been working, which was the clue. So the sandbox can be
+  exercised now; the bank account is only needed for `sk_live_` and settlement.
+- **The test webhook points at PRODUCTION, which is wrong for sandbox testing.** Webhook
+  `47fa5798-…` POSTs to `https://sceneone.info/api/payment-webhook`, but the `sk_test_`
+  key and `MOYASAR_WEBHOOK_SECRET` are **Preview**-scoped and production still runs the
+  pre-gate code — that route 404s there, and a preview never sees the delivery. Before
+  the sandbox run: push the gate to a **non-`main` branch** (main deploys to production),
+  take the branch's stable preview alias, then **delete and recreate** the test webhook
+  against `<preview-url>/api/payment-webhook` — the API has no update endpoint. Also set
+  **`SITE_URL` in Preview scope** to that URL: it defaults to `https://sceneone.info`
+  (`api/submissions.js`), so the Moyasar `callback_url` would otherwise bounce test
+  payers to production's non-existent `/payment-status`. Check `SUPABASE_URL`,
+  `SUPABASE_SERVICE_ROLE_KEY` and `RESEND_API_KEY` are Preview-scoped too.
+- **The sandbox run needs the payment SQL, and there is only ONE Supabase project** — so
+  migrating for the preview migrates production. The deployed code inserts
+  `status: "new"` explicitly (`api/submissions.js`), and the `new → unassigned` backfill
+  runs once, so from the moment the SQL lands until `main` is pushed, **every real
+  submission is stranded at `'new'`**: invisible to the pool, unclaimable, no error
+  anywhere. Decide before applying — a deliberately tight SQL→test→push window, or a
+  second Supabase project for the preview.
 - **Repeat the whole Moyasar setup for live at deploy time.** Everything done so far is
   test-only: (a) regenerate the live secret key, store it in a password manager, and add
   `MOYASAR_SECRET_KEY` scoped to **Production**; (b) list live webhooks — none has ever
