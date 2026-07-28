@@ -11,7 +11,14 @@
 //
 // Idempotent: the paid UPDATE is filtered on `status = pending_payment` and the
 // refund UPDATE on `refunded_at is null`, so a replayed webhook (Moyasar retries
-// on non-2xx) touches zero rows and sends no second email.
+// on non-2xx) touches zero rows.
+//
+// Emails are gated separately, on `confirmation_sent_at is null` / `refunded_at
+// is null`, because "did this write match a row" is not the same question as
+// "have we emailed yet". The paid path writes twice — mark paid, then release to
+// the pool — and a retry after the second write fails would find the row already
+// `paid`, read that as a duplicate, and drop the writer's confirmation for a
+// payment that cleared.
 //
 // Configure in the Moyasar dashboard: Settings → Webhooks → add
 //   URL:    https://sceneone.info/api/payment-webhook
@@ -157,16 +164,16 @@ module.exports = async (req, res) => {
   }
 
   // The `status=eq.pending_payment` filter is what makes this idempotent: on a
-  // replay the row is already `paid`, so zero rows come back and no second
-  // email goes out.
-  let updated;
+  // replay the row is already `paid`, so zero rows come back and nothing is
+  // written twice. Note it is NOT what decides whether the emails go out — see
+  // the confirmation_sent_at claim below.
   try {
     const patch = await fetch(
       supabaseUrl + "/rest/v1/submissions?id=eq." + encodeURIComponent(sub.id) +
       "&status=eq.pending_payment",
       {
         method: "PATCH",
-        headers: Object.assign({ Prefer: "return=representation" }, rest),
+        headers: Object.assign({ Prefer: "return=minimal" }, rest),
         body: JSON.stringify({
           status: "paid",
           paid_at: new Date().toISOString(),
@@ -179,13 +186,10 @@ module.exports = async (req, res) => {
       console.error("payment-webhook: status update failed:", patch.status, await patch.text());
       return res.status(502).json({ message: "Update failed" }); // retryable
     }
-    updated = await patch.json();
   } catch (err) {
     console.error("payment-webhook: status update error:", err);
     return res.status(502).json({ message: "Update failed" }); // retryable
   }
-
-  const firstTime = !!(updated && updated.length);
 
   // Release into the reader pool. Filtered on `status = paid` so it runs exactly
   // once — and so a retry still promotes a row that got stuck at `paid` because
@@ -211,12 +215,45 @@ module.exports = async (req, res) => {
     return res.status(502).json({ message: "Release failed" });
   }
 
-  if (!firstTime) {
-    // Duplicate delivery: the row was already paid, so no second email.
+  // Claim the emails with their own stamp, filtered on `confirmation_sent_at
+  // is.null`. This has to be a separate durable fact rather than "did the
+  // pending_payment → paid PATCH above match a row": if the release to the pool
+  // fails, Moyasar retries, and on that retry the row is no longer
+  // `pending_payment`, so keying the emails off that PATCH would read the retry
+  // as a duplicate and drop both emails on a payment that actually cleared.
+  // Whichever delivery wins this PATCH is the one that emails; the rest see zero
+  // rows. It also returns the row the emails are rendered from.
+  let updated;
+  try {
+    const claim = await fetch(
+      supabaseUrl + "/rest/v1/submissions?id=eq." + encodeURIComponent(sub.id) +
+      "&confirmation_sent_at=is.null",
+      {
+        method: "PATCH",
+        headers: Object.assign({ Prefer: "return=representation" }, rest),
+        body: JSON.stringify({ confirmation_sent_at: new Date().toISOString() }),
+      }
+    );
+    if (!claim.ok) {
+      console.error("payment-webhook: confirmation claim failed:", claim.status, await claim.text());
+      // Nothing has been emailed yet, and the row is fully paid + released, so a
+      // retry re-runs only the two no-op PATCHes and lands here again.
+      return res.status(502).json({ message: "Update failed" });
+    }
+    updated = await claim.json();
+  } catch (err) {
+    console.error("payment-webhook: confirmation claim error:", err);
+    return res.status(502).json({ message: "Update failed" });
+  }
+
+  if (!(updated && updated.length)) {
+    // Duplicate delivery: this submission's emails already went out.
     return res.status(200).json({ ok: true, duplicate: true });
   }
 
-  // Now that the money has cleared, tell the writer and the team.
+  // Now that the money has cleared, tell the writer and the team. Neither send
+  // throws — both swallow and log their own failures — so a Resend outage can't
+  // turn into a 502 that replays the whole webhook.
   await sendConfirmation(updated[0]);
   await sendNotification(updated[0]);
 

@@ -150,6 +150,12 @@ alter table public.submissions
 --   payment_amount     — charged amount in halalas, as quoted at submission time
 --   paid_at            — set by /api/payment-webhook when Moyasar confirms payment
 --   refunded_at        — set by /api/payment-webhook on a Moyasar refund
+--   confirmation_sent_at — stamped by /api/payment-webhook the once it sends the
+--     writer's confirmation + the team notification. It exists so "have we
+--     already emailed?" is a durable fact rather than an inference from which
+--     write happened to win: the webhook does two PATCHes (paid, then release to
+--     the pool), and a retry after the second one fails would otherwise look like
+--     a duplicate delivery and swallow both emails for a payment that cleared.
 --
 -- The first cut of this shipped as `payment_id`; rename it in place so an existing
 -- database converges instead of growing a second, empty column.
@@ -171,7 +177,8 @@ alter table public.submissions
   add column if not exists payment_url text,
   add column if not exists payment_amount int,
   add column if not exists paid_at timestamptz,
-  add column if not exists refunded_at timestamptz;
+  add column if not exists refunded_at timestamptz,
+  add column if not exists confirmation_sent_at timestamptz;
 
 create index if not exists submissions_payment_invoice_id_idx
   on public.submissions (payment_invoice_id);

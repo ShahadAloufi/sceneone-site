@@ -192,7 +192,8 @@ Tables (all with RLS enabled):
   window — when the claim started, the scheduled Resend email id, and when the writer
   was notified), `payment_invoice_id` / `payment_url` / `payment_amount` / `paid_at`
   (the Moyasar invoice, its hosted checkout URL, the amount quoted in halalas, and
-  when payment cleared).
+  when payment cleared), `refunded_at`, `confirmation_sent_at` (when the paid
+  confirmation + team notification went out — the webhook's send-once key).
   `status` runs `pending_payment` → `paid` → `unassigned` → `in_review`; column
   default is `pending_payment`. The legacy `new` status was backfilled to
   `unassigned` when the payment gate landed.
@@ -223,8 +224,11 @@ must be in the `supabase_realtime` publication for live updates to fire.
   `/api/payment-webhook` may mark a submission paid**: it checks the shared secret
   token, then **re-reads the payment from Moyasar's API** rather than trusting the
   posted body, verifies the amount against `payment_amount`, sets `paid` + `paid_at`,
-  and immediately releases it into the pool as `unassigned`. The update is filtered on
-  the current status, so a replayed delivery is a no-op and no second email goes out.
+  and immediately releases it into the pool as `unassigned`. Both updates are filtered
+  on the current status, so a replayed delivery rewrites nothing. The **emails** are
+  keyed off `confirmation_sent_at` instead, not off which update matched a row: the
+  release is a second write, and a retry after it fails would otherwise look like a
+  duplicate and swallow the confirmation for a payment that really cleared.
   `/api/claim-script` refuses to claim anything that isn't `unassigned`, and the
   dashboard's pipeline list hides `pending_payment` rows (staff still see them under
   "all submissions"). The only email sent before money clears is the **"complete your
@@ -582,7 +586,9 @@ must be in the `supabase_realtime` publication for live updates to fire.
     add column if not exists payment_amount int,
     add column if not exists paid_at timestamptz,
     -- Refunds: stamped on every refund; `refunded` status only when unclaimed.
-    add column if not exists refunded_at timestamptz;
+    add column if not exists refunded_at timestamptz,
+    -- Claims the paid emails, so exactly one delivery ever sends them.
+    add column if not exists confirmation_sent_at timestamptz;
   create index if not exists submissions_payment_invoice_id_idx
     on public.submissions (payment_invoice_id);
   -- Pre-gate rows are grandfathered into the pool; new rows start behind the gate.
