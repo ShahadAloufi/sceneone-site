@@ -515,7 +515,39 @@ must be in the `supabase_realtime` publication for live updates to fire.
   -- No one-active-assignment limit: readers may claim freely. Drop the old trigger.
   drop trigger if exists trg_single_active_assignment on public.submissions;
   drop function if exists public.enforce_single_active_assignment();
+
+  -- Payment gate (payment before assignment). The column was first shipped as
+  -- `payment_id`, so rename in place rather than growing a second empty column.
+  do $$
+  begin
+    if exists (select 1 from information_schema.columns
+               where table_schema='public' and table_name='submissions' and column_name='payment_id') then
+      alter table public.submissions rename column payment_id to payment_invoice_id;
+    end if;
+  end $$;
+  alter index if exists public.submissions_payment_id_idx
+    rename to submissions_payment_invoice_id_idx;
+  alter table public.submissions
+    add column if not exists payment_invoice_id text,
+    add column if not exists payment_url text,
+    add column if not exists payment_amount int,
+    add column if not exists paid_at timestamptz;
+  create index if not exists submissions_payment_invoice_id_idx
+    on public.submissions (payment_invoice_id);
+  -- Pre-gate rows are grandfathered into the pool; new rows start behind the gate.
+  update public.submissions set status = 'unassigned' where status = 'new';
+  alter table public.submissions alter column status set default 'pending_payment';
   ```
+- **Payment gate is BUILT BUT NOT DEPLOYED** (as of 2026-07-28). Three commits sit on
+  local `main`; `origin/main` is untouched, so production still has the old, unpaid
+  flow. Before deploying: (1) run the payment-gate SQL above — the code writes
+  `payment_invoice_id` and will fail against a database that still has `payment_id`;
+  (2) finish **Moyasar onboarding** (business bank account — it also gates the
+  test-environment toggle); (3) check that `MOYASAR_SECRET_KEY` and the registered
+  webhook are in the **same** Moyasar environment; (4) rotate
+  `MOYASAR_WEBHOOK_SECRET`, which was exposed in a screenshot during setup.
+- **Refund handling is next up.** `PAYMENT_REFUNDED` reaches `/api/payment-webhook`
+  today and is ignored with a 200, so a refunded script stays claimable.
 - **Confirm the production domain** — report-email links use `https://sceneone.info`
   (`SITE_URL` in `api/review-coverage.js`); update if the live domain differs.
 - **Verify on the deploy** (can't run locally): send a report → open the link on
@@ -545,6 +577,15 @@ must be in the `supabase_realtime` publication for live updates to fire.
 - Report delivery emails a **tokenized link** to the hosted `report.html`; the writer
   Saves-as-PDF from their browser. There is no server-generated PDF attachment (Arabic
   can't be reliably rasterised client-side).
+- **No refund handling.** A refund issued in the Moyasar dashboard fires
+  `PAYMENT_REFUNDED` at `/api/payment-webhook`, which acks it with a 200 and changes
+  nothing — the script keeps its `unassigned`/`in_review` status and stays claimable.
+  Cleaning up after a refund is manual today.
+- **`submissions.status` never reaches `approved`.** The pipeline diagram ends there,
+  but approval lives only in `coverages.status`; mirroring it onto the submission
+  would mean touching the QC state machine and its triggers.
+- The payment gate cannot be exercised locally at all — it needs the deployed
+  functions **and** a real Moyasar environment on both ends.
 
 ---
 
