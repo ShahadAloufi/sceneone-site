@@ -177,7 +177,14 @@ create index if not exists submissions_payment_invoice_id_idx
   on public.submissions (payment_invoice_id);
 
 -- Pipeline, in order:
---   pending_payment → paid → unassigned → in_review → approved
+--   pending_payment → paid → unassigned → in_review
+--
+-- `in_review` is the LAST status a submission reaches. Approval and delivery are
+-- deliberately not mirrored here: they live in `coverages.status` / `delivered_at`,
+-- which is the single source of truth for whether a report has shipped. The
+-- dashboard asks the coverage, never this column. Do not add an `approved` status
+-- to submissions "for completeness" — two columns tracking one fact drift apart,
+-- and every claim/refund/RLS branch on `submissions.status` would need re-auditing.
 -- `pending_payment` is set on insert by /api/submissions; only the Moyasar
 -- webhook may move a row to `paid` and then straight into the pool as
 -- `unassigned`; /api/claim-script moves it to `in_review` and back.

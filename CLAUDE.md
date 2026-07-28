@@ -381,6 +381,14 @@ must be in the `supabase_realtime` publication for live updates to fire.
 ## Important Design Decisions
 
 - **Buildless vanilla stack** on purpose — simplicity and zero build tooling.
+- **`coverages` is the single source of truth for approval and delivery.**
+  `submissions.status` stops at `in_review` and is never advanced to `approved` — the
+  dashboard reads `coverages.status` / `delivered_at` instead. Considered and rejected
+  (2026-07-28) mirroring approval onto the submission: two columns tracking one fact
+  drift apart, and it would mean re-auditing every claim, refund, RLS and trigger
+  branch that reads `submissions.status`, all with quiet failure modes. The schema
+  comment previously described a pipeline ending in `approved` that no code ever wrote;
+  the comment was corrected rather than the code changed.
 - **Native rendering over rasterization** — the report is delivered as a hosted link
   the writer opens (and can browser-Save-as-PDF), *not* an html2canvas PDF, because
   client-side rasterization can't reliably render Arabic. `report-render.js` is the
@@ -633,9 +641,6 @@ must be in the `supabase_realtime` publication for live updates to fire.
 - **Partial refunds are treated as full ones.** The handler acts on Moyasar's
   `refunded` payment status; the alert email reports the actual refunded amount, but a
   partially-refunded unclaimed script is still pulled from the pool outright.
-- **`submissions.status` never reaches `approved`.** The pipeline diagram ends there,
-  but approval lives only in `coverages.status`; mirroring it onto the submission
-  would mean touching the QC state machine and its triggers.
 - The payment gate cannot be exercised locally at all — it needs the deployed
   functions **and** a real Moyasar environment on both ends.
 
