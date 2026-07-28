@@ -48,8 +48,23 @@ writers. Actively iterating on UX polish and workflow features.
   share one shell), **Vercel Web Analytics** on the public pages, turnaround updated
   (feature ≤4 weeks = 28d / short 10–15 = 15d), commercial registration in the footer.
 
-**Status:** all merged to `main`, deploying via Vercel, and the manual Supabase SQL
-below has been applied. Auth/serverless/email flows are verifiable only on the deploy.
+**Built but NOT deployed (as of 2026-07-28)** — 12 commits on local `main`,
+`origin/main` untouched, so production still runs the old, unpaid flow:
+- **Payment gate** — a submission starts `pending_payment` and is invisible to readers
+  until a Moyasar invoice is paid; `/api/payment-webhook` is the only path that may
+  mark it paid.
+- **Refund handling** — `payment_refunded` pulls an *unclaimed* script to the terminal
+  `refunded` status; a refund on a script a reader already holds leaves the assignment
+  alone and only flags it, because yanking it mid-draft would destroy their work.
+- **Payment state in the dashboard** — Payment column on All submissions (paid /
+  awaiting / abandoned after 48h / refunded) and a red "needs a decision" flag on
+  refunded-but-still-assigned kanban cards.
+
+**Status:** everything above is committed but unpushed, and the payment-gate SQL has
+**not** been applied. The rest of the project is merged, deployed via Vercel, and its
+SQL applied. Auth/serverless/email flows are verifiable only on the deploy — and the
+payment gate not even there until Moyasar onboarding completes. See Current TODOs for
+the deploy sequence; the SQL must land in the same window as the push, SQL first.
 
 ---
 
@@ -750,6 +765,10 @@ privileged reads/writes.
   regenerate and store it in a password manager immediately.
 - `js/config.js` holds only client-safe values (Supabase URL, anon key, bucket name).
 - Schema changes are applied manually in Supabase (not automated).
+- **No secrets in the repo.** `.env*` is gitignored — commits are made with
+  `git add -A`, so an un-ignored `.env` from `vercel env pull` would carry the Moyasar,
+  Supabase and Resend keys into history, where rotating them is the only cleanup. Keys
+  live in Vercel env vars and a password manager, nowhere else.
 
 ---
 
