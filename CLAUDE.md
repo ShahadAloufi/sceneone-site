@@ -575,10 +575,18 @@ must be in the `supabase_realtime` publication for live updates to fire.
   (2) finish **Moyasar onboarding** (business bank account — it also gates the
   test-environment toggle); (3) check that `MOYASAR_SECRET_KEY` and the registered
   webhook are in the **same** Moyasar environment; (4) rotate
-  `MOYASAR_WEBHOOK_SECRET`, which was exposed in a screenshot during setup.
-- **Register `payment_refunded` on the Moyasar webhook.** Refund handling is now built
-  (see Business Rules), but the dashboard webhook is still subscribed to `payment_paid`
-  only — without the second event the handler never runs.
+  `MOYASAR_WEBHOOK_SECRET`, which was exposed in a screenshot during setup — with no
+  update endpoint this means deleting and recreating the webhook, so do it in the same
+  pass as any event change, and narrow `events` to
+  `["payment_paid","payment_refunded"]` while recreating.
+  Note the **test secret key was regenerated on 2026-07-28**, which invalidated the
+  previous one; Vercel still holds the live key and was deliberately left alone.
+- ~~Register `payment_refunded` on the Moyasar webhook~~ — **already subscribed in test**
+  (verified 2026-07-28). The one registered webhook carries all 16 event types, which is
+  what Moyasar does when `events` is omitted at creation. Harmless but noisy: payout and
+  balance events all reach the endpoint and get a 200. **The live side is unverified** —
+  the check ran with a `sk_test_` key, so it only proves the test environment. Re-run the
+  list with the live key before deploying.
 - **Verify the payment column against real rows** — it was built against injected sample
   data (the dashboard needs Supabase auth, which the local preview can't run), so the
   badge logic is only proven on the deploy.
@@ -702,6 +710,22 @@ privileged reads/writes.
   means payments succeed but nothing is ever marked paid. The webhook is registered at
   `https://sceneone.info/api/payment-webhook` (POST) and its Secret Token must equal
   `MOYASAR_WEBHOOK_SECRET` exactly, or every delivery 401s.
+- **Known test-environment webhook** (as of 2026-07-28): id
+  `7901eb37-d011-43a9-b2da-23f1312d5314`, created 2026-07-27, POST to the URL above, all
+  16 events. Whether live has one is unknown.
+- **Inspecting webhooks from the terminal.** `export MOYASAR_SECRET_KEY='sk_...'` (leading
+  space keeps it out of `~/.zsh_history`), then
+  `curl -s https://api.moyasar.com/v1/webhooks -u "$MOYASAR_SECRET_KEY:"`. The API has
+  **no update endpoint** — create, fetch, list, delete only — so changing a webhook's
+  events *or* rotating its `shared_secret` means deleting and recreating it.
+- **The dashboard's "Secret Key ID" is not the secret key.** It's a ~22-char identifier
+  that stays visible forever; the real key is ~48 chars and shown **once**, at
+  regeneration. Authenticating with the ID returns "You provided your secret key ID
+  instead of the full secret key". Copying the masked field yields literal `*`
+  characters, which fail the same way — `printf '%s' "$KEY" | grep -c '[^a-zA-Z0-9_]'`
+  returns 0 for a clean value. Vercel can't help either: `MOYASAR_SECRET_KEY` is marked
+  **Sensitive** there, meaning non-readable after creation. So a lost key is lost —
+  regenerate and store it in a password manager immediately.
 - `js/config.js` holds only client-safe values (Supabase URL, anon key, bucket name).
 - Schema changes are applied manually in Supabase (not automated).
 
