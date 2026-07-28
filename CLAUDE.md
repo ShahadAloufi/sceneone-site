@@ -237,7 +237,12 @@ must be in the `supabase_realtime` publication for live updates to fire.
   reader who keeps working. The **All submissions** tab carries a **Payment** column
   (paid / awaiting payment / abandoned after 48h / refunded, with the amount); the
   Deliveries tab deliberately doesn't, since a delivered report is paid by definition.
-  "Abandoned" is only a label — nothing expires an unpaid checkout.
+  "Abandoned" is only a label — nothing expires an unpaid checkout, **by decision**
+  (2026-07-28), not by omission. Expiring them to a terminal status and letting the
+  writer resume a stale checkout were both considered and deferred: labelling loses no
+  data and answers the only question staff actually had ("who hasn't paid?"). Revisit
+  if abandoned rows pile up enough to clutter All submissions. Do **not** add an expiry
+  sweep on the assumption it was simply missed.
 - **Roles:** `admin`, `super_admin`, `senior_reader`, `junior_reader`. Staff =
   admin/super_admin; readers = senior/junior.
 - **Assignment:** a reader claims a script (primary assignee). If the primary is a
@@ -710,6 +715,12 @@ privileged reads/writes.
   means payments succeed but nothing is ever marked paid. The webhook is registered at
   `https://sceneone.info/api/payment-webhook` (POST) and its Secret Token must equal
   `MOYASAR_WEBHOOK_SECRET` exactly, or every delivery 401s.
+- **`MOYASAR_SECRET_KEY` is split by Vercel environment** (set 2026-07-28): **Preview**
+  holds the `sk_test_` key, **Production** holds `sk_live_`. Production is deliberately
+  **unset** until deploy day — nothing deployed reads it yet, and a test key scoped to
+  Production would point live checkouts at test Moyasar, where no real money moves. The
+  split is also the only realistic way to exercise the payment gate at all, since it
+  can't run locally: deploy a preview and it talks to test Moyasar end to end.
 - **Known test-environment webhook** (as of 2026-07-28): id
   `7901eb37-d011-43a9-b2da-23f1312d5314`, created 2026-07-27, POST to the URL above, all
   16 events. Whether live has one is unknown.
