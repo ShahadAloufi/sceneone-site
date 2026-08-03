@@ -155,6 +155,7 @@
       titleEn: (data.get("titleEn") || "").toString().trim(),
       email: (data.get("email") || "").toString().trim(),
       writer: (data.get("writer") || "").toString().trim(),
+      writerLevel: (data.get("writerLevel") || "").toString().trim(),
       genre: (data.get("genre") || "").toString().trim(),
       filmType: (data.get("filmType") || "").toString().trim(),
       draft: (data.get("draft") || "").toString().trim(),
@@ -179,6 +180,7 @@
     req("titleEn", v.titleEn.length > 0);
     req("email", EMAIL_RE.test(v.email));
     req("writer", v.writer.length > 0);
+    req("writerLevel", v.writerLevel.length > 0);
     req("genre", v.genre.length > 0);
     req("filmType", v.filmType.length > 0);
     req("draft", v.draft.length > 0);
@@ -247,6 +249,7 @@
               titleEn: v.titleEn,
               email: v.email,
               writer: v.writer,
+              writerLevel: v.writerLevel,
               genre: v.genre,
               filmType: v.filmType,
               draft: v.draft,

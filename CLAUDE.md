@@ -186,7 +186,7 @@ bottom of `css/styles.css`; markup is `readers.html`.
 Tables (all with RLS enabled):
 - **admins** — `id` (=auth user id), `name`, `email`, `role`, `created_at`.
 - **submissions** — script metadata: `created_at`, `title_ar/en`, `email`, `writer`,
-  `genre`, `film_type`, `draft`, `duration`, `logline`, `vision`, `ip_registered`,
+  `genre`, `film_type`, `draft`, `writer_level`, `duration`, `logline`, `vision`, `ip_registered`,
   `file_path`, `file_name`, `status`, `assigned_to`, `co_reader_id`, `pages`,
   `report_token` (uuid; the unguessable key in the writer's report link),
   `assigned_at` / `notice_email_id` / `writer_notified_at` (the assignment notice
@@ -237,6 +237,23 @@ must be in the `supabase_realtime` publication for live updates to fire.
   checkout tab can get back to their invoice; it promises nothing about review. The
   writer confirmation and the team alert both fire from the webhook. Prices live in `lib/moyasar.js` (`PRICES`,
   in halalas) and must match the homepage: feature 1200 SAR / short 750 SAR.
+- **Writer level (`writer_level`)** — required select on the submission form, four
+  values ordered least → most experienced: `new` / `emerging` / `professional` /
+  `veteran`. Deliberately **evidence-based** ("لم يُنتج لي عمل بعد", "أفلام قصيرة أو
+  ورش كتابة", "عمل منتج أو مشارك في مهرجانات", "أعمال طويلة أو جوائز") rather than a
+  bare مبتدئ/متوسط/محترف self-rating, so two writers choosing the same level mean
+  roughly the same thing and a reader can actually calibrate on it. It exists to set
+  the coverage's **depth and tone** — it is **not** a quality score, does **not**
+  affect price, and does **not** gate acceptance; the form says so under the field.
+  That is also why the dashboard badge uses a neutral palette instead of the
+  payment column's green/amber — a red or green level would read as a verdict on
+  the writer. Shown as a **المستوى / Level** column right after the writer's name in
+  the readers' scripts table, All submissions, and Deliveries. The allowlist lives in
+  `WRITER_LEVELS` (`api/submissions.js`); labels are duplicated in `submit.html`
+  (long, writer-facing), `js/admin.js` (`LEVEL` short + `LEVEL_TIP` tooltip) and
+  `lib/submission-emails.js` (`LEVEL_AR`, team notification) — **add a level in all
+  four or the column falls back to the raw key.** The column is nullable and
+  pre-field rows render an em dash.
 - **Refunds (`payment_refunded` → `/api/payment-webhook`):** the same secret-check and
   re-read-from-Moyasar path as a payment, then the disposition depends on whether a
   reader already has the script. **Nobody has it yet** (`unassigned`/`paid`) → pulled
@@ -593,6 +610,11 @@ must be in the `supabase_realtime` publication for live updates to fire.
   -- No one-active-assignment limit: readers may claim freely. Drop the old trigger.
   drop trigger if exists trg_single_active_assignment on public.submissions;
   drop function if exists public.enforce_single_active_assignment();
+
+  -- Writer's self-declared experience level (required on the submission form).
+  -- MUST be applied before the code that writes it deploys, or every insert fails
+  -- on an unknown column.
+  alter table public.submissions add column if not exists writer_level text;
 
   -- Payment gate (payment before assignment). The column was first shipped as
   -- `payment_id`, so rename in place rather than growing a second empty column.

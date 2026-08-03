@@ -29,6 +29,11 @@ const SITE_URL = process.env.SITE_URL || "https://sceneone.info";
 const GENRES = ["drama", "comedy", "thriller", "horror", "action", "documentary", "other"];
 const FILM_TYPES = ["feature", "short"];
 const DRAFTS = ["first", "revised", "final"];
+// Writer's self-declared experience, shown to readers so they can pitch the
+// coverage's depth and tone. Ordered least → most experienced; the labels live
+// in submit.html (writer-facing) and js/admin.js (reader-facing), keyed on these
+// values — add a level in all three or the table falls back to the raw key.
+const WRITER_LEVELS = ["new", "emerging", "professional", "veteran"];
 const ALLOWED_EXT = ["pdf", "fdx", "fountain", "docx", "txt"];
 const MAX = { title: 200, email: 254, writer: 120, duration: 60, theme: 200, logline: 1000, vision: 5000, path: 300, fileName: 255 };
 
@@ -55,6 +60,7 @@ function validate(row) {
   if (GENRES.indexOf(row.genre) === -1) return "بيانات غير صحيحة";
   if (FILM_TYPES.indexOf(row.film_type) === -1) return "بيانات غير صحيحة";
   if (DRAFTS.indexOf(row.draft) === -1) return "بيانات غير صحيحة";
+  if (WRITER_LEVELS.indexOf(row.writer_level) === -1) return "بيانات غير صحيحة";
   if (!row.file_path || row.file_path.length > MAX.path || !PATH_RE.test(row.file_path)) return "ملف النص مطلوب";
   if (!row.file_name || row.file_name.length > MAX.fileName) return "ملف النص مطلوب";
   if (ALLOWED_EXT.indexOf(fileExt(row.file_name)) === -1) return "صيغة الملف غير مدعومة";
@@ -80,6 +86,7 @@ module.exports = async (req, res) => {
     title_en: (b.titleEn || "").toString().trim(),
     email: (b.email || "").toString().trim(),
     writer: (b.writer || "").toString().trim(),
+    writer_level: (b.writerLevel || "").toString().trim(),
     genre: (b.genre || "").toString().trim(),
     film_type: (b.filmType || "").toString().trim(),
     draft: (b.draft || "").toString().trim(),

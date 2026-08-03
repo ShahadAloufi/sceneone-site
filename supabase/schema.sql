@@ -143,6 +143,15 @@ alter table public.submissions
   add column if not exists notice_email_id text,
   add column if not exists writer_notified_at timestamptz;
 
+-- Writer's self-declared experience, collected on the submission form and shown
+-- to readers as a column so they can pitch the coverage's depth and tone.
+-- Values: new | emerging | professional | veteran (see WRITER_LEVELS in
+-- api/submissions.js, which is the allowlist — deliberately no check constraint
+-- here, so adding a level never needs a migration). Nullable: rows created
+-- before this field carry NULL and the dashboard shows an em dash.
+alter table public.submissions
+  add column if not exists writer_level text;
+
 -- Payment gate. A submission is created as `pending_payment` and carries the
 -- Moyasar invoice that must clear before it can be assigned to a reader.
 --   payment_invoice_id — Moyasar invoice id, how the webhook finds this row

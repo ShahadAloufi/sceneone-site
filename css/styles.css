@@ -1100,6 +1100,17 @@ html[dir="rtl"] .adm-tablefilter select { background-position: left 16px center;
 .adm-pay--unpaid   { color: #c9962e; background: rgba(201,150,46,.16); }
 .adm-pay--stale    { color: var(--adm-muted); background: var(--adm-surface-2); }
 .adm-pay--refunded { color: #d9584a; background: rgba(217,88,74,.16); }
+/* Writer's self-declared level. Same badge geometry as the payment state, but a
+   deliberately neutral palette: this is context for the reader, NOT a quality
+   score, and green/amber would read as "good writer / weak writer". The four
+   levels step through one accent's opacity, so the ordering is visible without
+   any level looking like a warning. */
+.adm-level { display: inline-flex; align-items: center; justify-content: center; text-align: center; font-size: 12px; font-weight: 800; padding: 4px 11px; border-radius: 8px; white-space: nowrap; color: var(--adm-text); background: var(--adm-surface-2); }
+.adm-level--new          { opacity: .72; }
+.adm-level--emerging     { background: rgba(120,120,120,.18); }
+.adm-level--professional { background: rgba(90,110,150,.20); }
+.adm-level--veteran      { background: rgba(90,110,150,.32); }
+
 /* Refund flag on a kanban card: the script was refunded but a reader still holds
    it, so it stays on the board until a human decides. Full-width under the title
    because it must not be mistaken for the deadline badge beside it. */

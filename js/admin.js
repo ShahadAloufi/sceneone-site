@@ -25,6 +25,37 @@
     ar: { first: "الأولى", revised: "مُنقّحة", final: "نهائية" },
     en: { first: "First", revised: "Revised", final: "Final" }
   };
+  // Writer's self-declared experience (see WRITER_LEVELS in api/submissions.js).
+  // Short labels here on purpose — the table column has to stay narrow; the full
+  // wording the writer chose from lives in submit.html.
+  var LEVEL = {
+    ar: { new: "جديد", emerging: "ناشئ", professional: "محترف", veteran: "متمرّس" },
+    en: { new: "New", emerging: "Emerging", professional: "Professional", veteran: "Veteran" }
+  };
+  // The tooltip restores what the short label drops.
+  var LEVEL_TIP = {
+    ar: {
+      new: "لم يُنتج له عمل بعد",
+      emerging: "أفلام قصيرة أو ورش كتابة",
+      professional: "عمل منتج أو مشارك في مهرجانات",
+      veteran: "أعمال طويلة أو جوائز"
+    },
+    en: {
+      new: "No produced work yet",
+      emerging: "Short films or writing workshops",
+      professional: "Produced work or festival selections",
+      veteran: "Features or awards"
+    }
+  };
+  // Rows predating the field carry no level; the column shows an em dash.
+  function levelCell(s) {
+    var key = s.writer_level;
+    if (!key) return "<td class='adm-muted'>—</td>";
+    var label = (LEVEL[ULANG] && LEVEL[ULANG][key]) || key;
+    var tip = (LEVEL_TIP[ULANG] && LEVEL_TIP[ULANG][key]) || "";
+    return "<td><span class='adm-level adm-level--" + esc(key) + "'" +
+           (tip ? " title='" + esc(tip) + "'" : "") + ">" + esc(label) + "</span></td>";
+  }
 
   var T = {
     ar: {
@@ -46,7 +77,7 @@
       thReader: "القارئ", deliveriesEmpty: "لا توجد تقارير مُسلّمة بعد.",
       subTitle: "النصوص المقدَّمة", subSub: "نظرة عامة على النصوص المُستلمة وحالة تقييمها", refresh: "تحديث",
       kpiTotal: "إجمالي النصوص", kpiPending: "بانتظار الإسناد", kpiReview: "قيد المراجعة", kpiDone: "مكتملة ومُقيَّمة",
-      subListTitle: "قائمة النصوص", thDate: "التاريخ", thTitle: "العنوان", thWriter: "الكاتب", thEmail: "البريد الإلكتروني",
+      subListTitle: "قائمة النصوص", thDate: "التاريخ", thTitle: "العنوان", thWriter: "الكاتب", thLevel: "المستوى", thEmail: "البريد الإلكتروني",
       thGenre: "التصنيف", thFilmType: "نوع الفيلم", thDraft: "المسودة", thPages: "الصفحات", thFile: "الملف", thAssignee: "المسند إليه",
       thAssignee2: "المُكلَّف",
       thDeadline: "الموعد النهائي",
@@ -111,7 +142,7 @@
       thReader: "Reader", deliveriesEmpty: "No reports delivered yet.",
       subTitle: "Submissions", subSub: "Overview of received scripts and their coverage status", refresh: "Refresh",
       kpiTotal: "Total scripts", kpiPending: "Awaiting assignment", kpiReview: "In review", kpiDone: "Completed & rated",
-      subListTitle: "Scripts list", thDate: "Date", thTitle: "Title", thWriter: "Writer", thEmail: "Email",
+      subListTitle: "Scripts list", thDate: "Date", thTitle: "Title", thWriter: "Writer", thLevel: "Level", thEmail: "Email",
       thGenre: "Genre", thFilmType: "Film type", thDraft: "Draft", thPages: "Pages", thFile: "File", thAssignee: "Assignee",
       thAssignee2: "Assignee",
       thDeadline: "Deadline",
@@ -558,6 +589,7 @@
         deadlineCell(s.created_at, s.film_type, false) +
         "<td><strong>" + esc(s.title_ar) + "</strong><br><span class='adm-muted' dir='ltr'>" + esc(s.title_en) + "</span></td>" +
         "<td>" + esc(s.writer) + "</td>" +
+        levelCell(s) +
         "<td dir='ltr'>" + esc(s.email) + "</td>" +
         "<td>" + esc(GENRES[ULANG][s.genre] || s.genre) + "</td>" +
         "<td>" + esc(FILM[ULANG][s.film_type] || s.film_type) + "</td>" +
@@ -1051,6 +1083,7 @@
         deadlineCell(s.created_at, s.film_type, delivered) +
         "<td><strong>" + esc(s.title_ar) + "</strong><br><span class='adm-muted' dir='ltr'>" + esc(s.title_en) + "</span></td>" +
         "<td>" + esc(s.writer) + "</td>" +
+        levelCell(s) +
         "<td dir='ltr'>" + esc(s.email) + "</td>" +
         "<td>" + esc(GENRES[ULANG][s.genre] || s.genre) + "</td>" +
         "<td>" + esc(FILM[ULANG][s.film_type] || s.film_type) + "</td>" +
@@ -1289,7 +1322,8 @@
     renderDeliveries();
   }
 
-  var DLV_HEAD = ["thDate", "thDeadline", "thTitle", "thWriter", "thEmail", "thGenre",
+  // Must stay in step with renderDetailRows' cell order — it builds these rows too.
+  var DLV_HEAD = ["thDate", "thDeadline", "thTitle", "thWriter", "thLevel", "thEmail", "thGenre",
                   "thFilmType", "thDraft", "thPages", "thFile", "thReader", "thCoverage"];
 
   function renderDeliveries() {
