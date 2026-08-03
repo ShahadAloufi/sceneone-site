@@ -22,7 +22,7 @@
   var R = window.SOReport;
   var LOGO = R.LOGO, T = R.T;
   var GLANCE = R.GLANCE, GLANCE_OPTS = R.GLANCE_OPTS, REC_OPTS = R.REC_OPTS, EVAL = R.EVAL, MARKET = R.MARKET;
-  var GENRE_EN = R.GENRE_EN, FORMAT_EN = R.FORMAT_EN, DRAFT_EN = R.DRAFT_EN;
+  var GENRE_EN = R.GENRE_EN, FORMAT_EN = R.FORMAT_EN, DRAFT_EN = R.DRAFT_EN, LEVEL_EN = R.LEVEL_EN;
 
   /* ---------- workspace-chrome translations ---------- */
   var UI = {
@@ -57,7 +57,7 @@
       tSubmitted: "Coverage submitted for approval", tApproved: "Approved and sent to the writer",
       tRevision: "Sent back to the reader for revision",
       approving: "Approving…", requesting: "Sending…", reviewFail: "Couldn't complete the action.",
-      pl: { title: "Title", writer: "Writer", email: "Email", ref: "Reference", format: "Format", genre: "Genre", length: "Length", draft: "Draft", ip: "IP registered", file: "Script file", logline: "Logline", vision: "Writer's vision" },
+      pl: { title: "Title", writer: "Writer", level: "Writer's level", email: "Email", ref: "Reference", format: "Format", genre: "Genre", length: "Length", draft: "Draft", ip: "IP registered", file: "Script file", logline: "Logline", vision: "Writer's vision" },
       ipYes: "Registered", ipNo: "Not registered", dl: "Download script", untitled: "Untitled", dash: "—", pagesUnit: "pages",
       fileLocked: "Locked", fileLockedTip: "Another reader is assigned to this script.",
       saving: "Saving…", saved: "Saved", saveFailed: "Save failed", loaded: "Loaded", newCov: "New coverage", viewOnly: "View only",
@@ -108,7 +108,7 @@
       tSubmitted: "تم إرسال التغطية للاعتماد", tApproved: "تم الاعتماد والإرسال إلى الكاتب",
       tRevision: "أُعيدت إلى القارئ للتعديل",
       approving: "جارٍ الاعتماد…", requesting: "جارٍ الإرسال…", reviewFail: "تعذّر إكمال الإجراء.",
-      pl: { title: "عنوان السيناريو", writer: "اسم الكاتب", email: "البريد الإلكتروني", ref: "الرقم المرجعي", format: "نوع العمل", genre: "التصنيف", length: "عدد الصفحات/المدة", draft: "نسخة السيناريو", ip: "تسجيل الملكية الفكرية", file: "ملف السيناريو", logline: "الملخص المختصر", vision: "رؤية الكاتب" },
+      pl: { title: "عنوان السيناريو", writer: "اسم الكاتب", level: "مستوى الكاتب", email: "البريد الإلكتروني", ref: "الرقم المرجعي", format: "نوع العمل", genre: "التصنيف", length: "عدد الصفحات/المدة", draft: "نسخة السيناريو", ip: "تسجيل الملكية الفكرية", file: "ملف السيناريو", logline: "الملخص المختصر", vision: "رؤية الكاتب" },
       ipYes: "مسجل", ipNo: "غير مسجل", dl: "تحميل النص", untitled: "بدون عنوان", dash: "—", pagesUnit: "صفحة",
       fileLocked: "مقفل", fileLockedTip: "هذا النص مُسند إلى قارئ آخر.",
       saving: "جارٍ الحفظ…", saved: "تم الحفظ", saveFailed: "فشل الحفظ", loaded: "تم التحميل", newCov: "تقييم جديد", viewOnly: "عرض فقط",
@@ -206,7 +206,7 @@
     var ev = {}; EVAL.forEach(function (n) { ev[n] = { score: null, text: "" }; });
     var mk = {}; MARKET.forEach(function (m) { mk[m.k] = ""; });
     return {
-      submission: { titleEn: "", titleAr: "", writer: "", email: "", format: "Short film", genre: "", length: "", draft: "Final draft", logline: "", vision: "", ip: false, file: "", filePath: "", ref: "" },
+      submission: { titleEn: "", titleAr: "", writer: "", level: "", email: "", format: "Short film", genre: "", length: "", draft: "Final draft", logline: "", vision: "", ip: false, file: "", filePath: "", ref: "" },
       coverage: {
         reader: "Scene One Reader", date: today(), glance: {},
         synopsis: "", eval: ev, market: mk, overall: { strengths: "", toDevelop: "" }, score10: "",
@@ -289,6 +289,7 @@
     var rows = [
       [pl.title, title, true],
       [pl.writer, esc(s.writer || dash)],
+      [pl.level, esc(pulledVal("lvl", s.level, dash))],
       [pl.email, '<span dir="ltr">' + esc(s.email || dash) + "</span>"],
       [pl.ref, esc(s.ref || dash)],
       [pl.format, esc(pulledVal("fmt", s.format, dash))],
@@ -648,6 +649,9 @@
       format: FORMAT_EN[r.film_type] || "Short film",
       genre: GENRE_EN[r.genre] || r.genre || "",
       length: r.duration || "",
+      // Blank (not a default) when the row predates the field — the panel shows a
+      // dash rather than inventing a level for the writer.
+      level: LEVEL_EN[r.writer_level] || "",
       pages: (r.pages != null && r.pages > 0) ? r.pages : null,
       draft: DRAFT_EN[r.draft] || "Final draft",
       logline: r.logline || "",

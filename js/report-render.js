@@ -38,7 +38,7 @@
       market_l: { audience: "Audience", genreDemand: "Genre and demand", pathBuyers: "Path and buyers", budgetCeiling: "Budget and ceiling", regional: "Regional potential", net: "Net" },
       glance_l: { "Premise & Theme": "Premise & Theme", "Hook": "Hook", "Stakes & Plot": "Stakes & Plot", "Character": "Character", "Structure & Pace": "Structure & Pace", "Producibility": "Producibility", "Overall presentation": "Overall presentation" },
       decision: { Recommend: "Recommend", Consider: "Consider", Pass: "Pass" },
-      fmt: {}, drf: {}, genreMap: {}, lenMap: {}, writerMap: {}, months: {}
+      fmt: {}, drf: {}, genreMap: {}, lenMap: {}, writerMap: {}, months: {}, lvl: {}
     },
     ar: {
       coverage: "تقييم النص", tagline: "حيث تبدأ رحلة النص",
@@ -55,7 +55,10 @@
       drf: { "First draft": "المسودة الأولى", "Second draft": "المسودة الثانية", "Revised draft": "المسودة الثانية", "Final draft": "النسخة النهائية" },
       months: { January: "يناير", February: "فبراير", March: "مارس", April: "أبريل", May: "مايو", June: "يونيو", July: "يوليو", August: "أغسطس", September: "سبتمبر", October: "أكتوبر", November: "نوفمبر", December: "ديسمبر" },
       genreMap: { "Drama": "دراما", "Comedy": "كوميديا", "Thriller": "إثارة", "Horror": "رعب", "Action": "أكشن", "Sci-Fi": "خيال علمي", "Romance": "رومانسي", "Animation": "رسوم متحركة", "Documentary": "وثائقي", "Other": "أخرى" },
-      lenMap: {}, writerMap: {}
+      lenMap: {}, writerMap: {},
+      // Writer's self-declared experience. Reader-facing only — this is used by
+      // the coverage workspace's pulled panel, never by the writer's report.
+      lvl: { "New writer": "كاتب جديد", "Emerging writer": "كاتب ناشئ", "Professional writer": "كاتب محترف", "Veteran writer": "كاتب متمرّس" }
     }
   };
 
@@ -76,6 +79,9 @@
   var GENRE_EN = { drama: "Drama", comedy: "Comedy", thriller: "Thriller", horror: "Horror", action: "Action", documentary: "Documentary", other: "Other" };
   var FORMAT_EN = { feature: "Feature", short: "Short film" };
   var DRAFT_EN = { first: "First draft", revised: "Revised draft", final: "Final draft" };
+  // `submissions.writer_level` → the canonical English the workspace stores and
+  // the `lvl` map translates. Keys match WRITER_LEVELS in api/submissions.js.
+  var LEVEL_EN = { new: "New writer", emerging: "Emerging writer", professional: "Professional writer", veteran: "Veteran writer" };
 
   // A raw `submissions` row → the shape the report renderer consumes.
   function mapSubmission(r) {
@@ -191,7 +197,7 @@
 
   window.SOReport = {
     T: T, GLANCE: GLANCE, GLANCE_OPTS: GLANCE_OPTS, REC_OPTS: REC_OPTS, EVAL: EVAL, MARKET: MARKET,
-    GENRE_EN: GENRE_EN, FORMAT_EN: FORMAT_EN, DRAFT_EN: DRAFT_EN, LOGO: LOGO,
+    GENRE_EN: GENRE_EN, FORMAT_EN: FORMAT_EN, DRAFT_EN: DRAFT_EN, LEVEL_EN: LEVEL_EN, LOGO: LOGO,
     esc: esc, val: val, mapSubmission: mapSubmission, mergeCoverage: mergeCoverage,
     autoScore: autoScore, finalScore: finalScore, render: render
   };
