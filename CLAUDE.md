@@ -840,9 +840,17 @@ privileged reads/writes.
 - **Env vars (Vercel project settings):** `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`,
   `RESEND_API_KEY`, `MOYASAR_SECRET_KEY`, `MOYASAR_WEBHOOK_SECRET`. Resend sender
   domain `sceneone.info` is verified; notifications go to `sceneone.info@gmail.com`.
-- **Moyasar** keeps **test and live completely separate** — separate keys *and*
-  separate webhooks. A `sk_test_` key in Vercel with only a live webhook registered
-  means payments succeed but nothing is ever marked paid. The webhook is registered at
+- **Moyasar keys are per-environment, but the WEBHOOK REGISTRY IS ACCOUNT-WIDE.**
+  Verified 2026-08-04: a `sk_live_` key listed webhook `356c6eea`, which had been
+  created with the `sk_test_` key. An earlier note here claimed test and live keep
+  separate webhooks — that was wrong and it is a dangerous thing to get wrong. It
+  means **every registered webhook receives events from both environments**, so a
+  webhook pointing at a preview URL will be sent real, live payment notifications.
+  Distinguish them by the `live` boolean in the webhook payload, not by which
+  webhook received it. Practical rule: **only one webhook should be registered at a
+  time**, pointing wherever payments are currently being taken. Re-point it (delete +
+  create, there is no update endpoint) when moving between the sandbox and
+  production — do not leave both registered. The webhook is registered at
   `https://sceneone.info/api/payment-webhook` (POST) and its Secret Token must equal
   `MOYASAR_WEBHOOK_SECRET` exactly, or every delivery 401s.
 - **`MOYASAR_SECRET_KEY` is split by Vercel environment** (set 2026-07-28): **Preview**
