@@ -140,6 +140,10 @@ alter table public.submissions
 --                        told once per script; later reassignments send nothing)
 alter table public.submissions
   add column if not exists assigned_at timestamptz,
+  -- DEAD as of 2026-08-04: held the Resend id of the pre-scheduled writer notice,
+  -- back when claiming queued the email and releasing cancelled it. The notice is
+  -- now a sweep over still-assigned scripts (lib/assignment-notices.js), so nothing
+  -- writes this. Kept so existing rows aren't disturbed; safe to drop later.
   add column if not exists notice_email_id text,
   add column if not exists writer_notified_at timestamptz;
 

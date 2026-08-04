@@ -6,5 +6,11 @@
       "maxDuration": 30,
       "includeFiles": "node_modules/@sparticuz/chromium/**"
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/send-notices",
+      "schedule": "0 6 * * *"
+    }
+  ]
 }

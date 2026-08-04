@@ -33,10 +33,12 @@ writers. Actively iterating on UX polish and workflow features.
   writer sees the report only once **approved**. See the Business Rules for the full
   state machine, `/api/review-coverage`, and the DB triggers.
 - **Assignment notice window** — claiming a script shows a confirm ("writer notified
-  after 2h"), starts a release window, and schedules the writer's "work started" email
-  via **Resend scheduled sending**. Readers are told **2h** but the real window is
-  **3h** (intentional buffer). No one-active-assignment limit — readers claim freely.
-  All claims/releases/reassigns go through `/api/claim-script`.
+  after 2h") and starts a release window. The writer's "work started" email is sent by
+  a **sweep over scripts still assigned past the window** (`lib/assignment-notices.js`),
+  never scheduled ahead — so releasing simply stops it qualifying. Readers are told
+  **2h** but the real window is **3h** (intentional buffer). No one-active-assignment
+  limit — readers claim freely. All claims/releases/reassigns go through
+  `/api/claim-script`, which also runs the sweep.
 - **Staff dashboard = kanban** (In review / Awaiting approval) with a **reassign**
   picker; readers keep the detailed table (with a "what I'm working on" filter). Staff
   also get **All submissions** + **Deliveries** full-detail tabs (grouped by month,
@@ -319,11 +321,34 @@ must be in the `supabase_realtime` publication for live updates to fire.
   the two — the mismatch is intentional.** When the window closes the writer is
   emailed that work has started **and that the submission can no longer be cancelled
   or refunded**, and the assignment is locked — staff may hand it to a **different**
-  reader, but it can never return to unassigned. Implemented with **Resend scheduled
-  sending** (`scheduled_at` at claim time, `POST /emails/:id/cancel` on release)
-  rather than a cron job, because Vercel Hobby only runs cron once a day. The writer
-  is notified **once per script**: `writer_notified_at` is stamped when the window
-  lapses, and a later reassignment sends nothing. All primary claims/releases go
+  reader, but it can never return to unassigned.
+  **Implemented as a SWEEP, not a scheduled email** (`lib/assignment-notices.js`):
+  nothing is queued at claim time and nothing is cancelled on release. The sweep
+  emails scripts that are *still assigned* once `assigned_at` is older than the
+  window, claiming each row with an UPDATE filtered on `writer_notified_at is null`
+  **and** `assigned_to is not null` **and** the cutoff — so a reader who releases
+  between the SELECT and the UPDATE loses the row and no email goes out.
+  `writer_notified_at` is stamped immediately **before** sending, so two concurrent
+  sweeps can't double-email; the trade is that a Resend failure after a successful
+  stamp drops that one notice instead of retrying, which is the safer way round.
+  It is **not** inferred from elapsed time anywhere — doing that would mark a script
+  notified and make the sweep skip it, so the writer would never hear anything.
+  **This replaced Resend scheduled sending** (`scheduled_at` at claim, `POST
+  /emails/:id/cancel` on release), which shipped a real bug: the cancel was
+  best-effort and its failure only logged, so a release could leave the email queued
+  and the writer would be told work had begun — and their refund window closed — for
+  a script sitting back in the pool. A reassign followed by a release orphaned it the
+  same way.
+  **Triggers:** `/api/claim-script` runs the sweep on every claim/release/reassign
+  (readers hit it constantly, so notices land within minutes of falling due), plus
+  `/api/send-notices` daily via Vercel Cron as a backstop for quiet stretches.
+  **Vercel Hobby caps cron at once per day — a more frequent expression fails
+  deployment** — which is why the piggyback exists at all; on Pro the cron could be
+  the sole trigger. Sending *late* is harmless (the reader's cancellation window only
+  widens); sending *early* would be damaging and is impossible, since the cutoff is
+  enforced in both the query and the claiming UPDATE. The writer is notified **once
+  per script** — a later reassignment leaves `assigned_at` alone, so the notice still
+  fires at the original window's end and never twice. All primary claims/releases go
   through `/api/claim-script`; `enforce_assignment_lock()` rejects client-side claims
   outright (`ASSIGNMENT_VIA_API_ONLY`) so the notice can never be skipped, and rejects
   any release once locked (`ASSIGNMENT_LOCKED`). **Co-reader slots have no window and
@@ -479,6 +504,12 @@ must be in the `supabase_realtime` publication for live updates to fire.
 
 ## Current TODOs
 
+- **⚠️ SET `CRON_SECRET` IN VERCEL (Production) before the notice sweep ships.**
+  `/api/send-notices` returns 500 without it, so the daily backstop silently never
+  runs — the piggyback in `/api/claim-script` would still work, which is exactly why
+  this would go unnoticed. Any random value: `openssl rand -hex 24`. Vercel Cron sends
+  it automatically as `Authorization: Bearer`. **Env vars are baked in at build time,
+  so redeploy after setting it.**
 - **⚠️ TEST THE REFUND PATH — owed since 2026-08-04.** Everything else in the payment
   gate has now run for real; `handleRefunded` has **never executed outside a stubbed
   harness**, in test or live. The smoke-test submission
@@ -886,7 +917,10 @@ privileged reads/writes.
 
 - **Vercel**, `vercel.json` sets `cleanUrls` (so `/admin` serves `admin.html`, etc.).
 - **Env vars (Vercel project settings):** `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`,
-  `RESEND_API_KEY`, `MOYASAR_SECRET_KEY`, `MOYASAR_WEBHOOK_SECRET`. Resend sender
+  `RESEND_API_KEY`, `MOYASAR_SECRET_KEY`, `MOYASAR_WEBHOOK_SECRET`, **`CRON_SECRET`**
+  (Vercel Cron sends it as `Authorization: Bearer`; `/api/send-notices` fails closed
+  without it — an open endpoint there would let anyone force notices out early and
+  close writers' refund windows). Resend sender
   domain `sceneone.info` is verified; notifications go to `sceneone.info@gmail.com`.
 - **Moyasar keys are per-environment, but the WEBHOOK REGISTRY IS ACCOUNT-WIDE.**
   Verified 2026-08-04: a `sk_live_` key listed webhook `356c6eea`, which had been

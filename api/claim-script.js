@@ -4,12 +4,14 @@
 //
 // Claiming starts a 2-hour notice window. At the end of it the writer is emailed
 // that work has begun and the submission can no longer be cancelled or refunded;
-// releasing within the window cancels that email and frees the script.
+// releasing within the window frees the script and the notice never goes out.
 //
-// The delay is implemented with Resend's SCHEDULED SENDING (`scheduled_at`, up to
-// 30 days out) rather than a cron job — Vercel Hobby only runs cron once a day,
-// which can't express "in 2 hours". Claiming schedules the email and stores its
-// id; releasing cancels it via POST /emails/:id/cancel. Nothing has to poll.
+// NOTHING IS SCHEDULED OR CANCELLED HERE. The notice is sent by a sweep over
+// scripts still assigned past the window (lib/assignment-notices.js), which this
+// endpoint runs on every request. The previous design scheduled the email with
+// Resend at claim time and cancelled it on release — but the cancel was
+// best-effort and its failure was only logged, so a writer could be told work had
+// begun, and their refund window closed, for a script that was back in the pool.
 //
 // This runs with the service-role key, so it re-checks the rules the DB triggers
 // would normally apply to a signed-in caller (service role bypasses auth.uid()
@@ -17,21 +19,14 @@
 //
 // Required env vars: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY.
 
-const NOTIFY_FROM = "Scene One <no-reply@sceneone.info>";
-const NOTIFY_TO = "sceneone.info@gmail.com";
-// The REAL notice/lock window. Readers are TOLD 2 hours (see claimConfirm in the
-// dashboard) but actually get 3 — a deliberate hidden buffer. Keep in sync with
-// the enforce_assignment_lock() trigger's interval and admin.js. Not a bug.
-const ASSIGNMENT_WINDOW_MS = 3 * 60 * 60 * 1000;
+// ASSIGNMENT_WINDOW_MS is the REAL notice/lock window and lives with the sweep
+// that acts on it. Readers are TOLD 2 hours (see claimConfirm in the dashboard)
+// but actually get 3 — a deliberate hidden buffer. Keep in sync with the
+// enforce_assignment_lock() trigger's interval and admin.js. Not a bug.
+const { sweepAssignmentNotices, ASSIGNMENT_WINDOW_MS } = require("../lib/assignment-notices");
 
 function svc() {
   return { url: process.env.SUPABASE_URL, key: process.env.SUPABASE_SERVICE_ROLE_KEY };
-}
-
-function escapeHtml(v) {
-  return String(v == null ? "" : v)
-    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
 
 // Resolve the caller from their bearer token and return their admins row.
@@ -53,59 +48,6 @@ async function requireAdmin(req) {
   const rows = roleResp.ok ? await roleResp.json() : [];
   if (!rows.length) return { error: 403, message: "غير مصرّح" };
   return { me: rows[0] };
-}
-
-// Bilingual "work has started on your script" notice. Same shell as the other
-// writer emails so the whole sequence looks like one brand.
-function noticeEmail(sub) {
-  var esc = escapeHtml;
-  var title = sub.title_ar || sub.title_en || "";
-  var name = (sub.writer || "").toString().trim();
-  var arHi = name ? "مرحبًا " + esc(name) + "،" : "مرحبًا،";
-  var enHi = name ? "Hello " + esc(name) + "," : "Hello,";
-  var titleLine = title
-    ? '<p style="margin:0 0 24px;color:#8a8178;font-size:13px;">العنوان: ' +
-      '<strong style="color:#15110f;">' + esc(title) + "</strong></p>"
-    : "";
-  var bodyStyle = "margin:0 auto;max-width:440px;font-size:15px;line-height:1.9;color:#4a453f;";
-  var noteStyle = "margin:22px auto 0;max-width:440px;font-size:13.5px;line-height:1.8;color:#15110f;background:#f5f1e9;border-radius:12px;padding:14px 18px;";
-
-  return "" +
-    '<div style="background:#f5f1e9;padding:34px 14px;font-family:Arial,Helvetica,sans-serif;">' +
-      '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f5f1e9;"><tr><td align="center">' +
-        '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:20px;">' +
-          '<tr><td style="padding:46px 44px;text-align:center;">' +
-
-            '<div style="font-weight:700;letter-spacing:5px;font-size:20px;color:#15110f;margin:0 0 30px;">SCENE&nbsp;<span style="color:#cd2e07;">ONE</span></div>' +
-
-            '<h1 style="margin:0 0 14px;font-size:25px;line-height:1.3;color:#15110f;font-weight:700;">بدأ العمل على نصك</h1>' +
-
-            titleLine +
-
-            '<p dir="rtl" style="' + bodyStyle + '">' +
-              arHi +
-              "<br>تم إسناد نصك إلى أحد قرّائنا وبدأ العمل على تقييمه. سنوافيك بالتقرير عبر بريدك الإلكتروني فور اكتماله واعتماده." +
-            "</p>" +
-            '<p dir="rtl" style="' + noteStyle + '">' +
-              "لأن العمل على النص قد بدأ فعليًا، لم يعد بالإمكان إلغاء الطلب أو استرداد المبلغ في هذه المرحلة." +
-            "</p>" +
-
-            '<hr style="border:0;border-top:1px solid #ece7df;width:78%;margin:26px auto;">' +
-
-            '<p dir="ltr" style="' + bodyStyle + '">' +
-              enHi +
-              "<br>Your script has been assigned to one of our readers and work has now begun. We'll email you the coverage report as soon as it's complete and approved." +
-            "</p>" +
-            '<p dir="ltr" style="' + noteStyle + '">' +
-              "Because work on your script has now started, the submission can no longer be cancelled or refunded." +
-            "</p>" +
-
-            '<p style="margin:30px 0 0;color:#a49b90;font-size:12.5px;"> The Scene One team</p>' +
-
-          "</td></tr>" +
-        "</table>" +
-      "</td></tr></table>" +
-    "</div>";
 }
 
 module.exports = async (req, res) => {
@@ -134,9 +76,21 @@ module.exports = async (req, res) => {
   const headers = { apikey: key, Authorization: "Bearer " + key };
   const jsonHeaders = Object.assign({}, headers, { "Content-Type": "application/json" });
 
+  // Send any notices that have fallen due. Piggybacked here because readers hit
+  // this endpoint constantly and Vercel Hobby caps cron at once a day; the daily
+  // /api/send-notices run is only a backstop for a quiet stretch. Never throws,
+  // and a slow or failing sweep must not block the reader's actual request — so
+  // the result is logged, not awaited into the response.
+  try {
+    const sent = await sweepAssignmentNotices(url, jsonHeaders);
+    if (sent) console.log("claim-script: sent " + sent + " assignment notice(s)");
+  } catch (err) {
+    console.error("claim-script: notice sweep error:", err);
+  }
+
   const subResp = await fetch(
     url + "/rest/v1/submissions?id=eq." + encodeURIComponent(subId) +
-    "&select=id,title_ar,title_en,writer,email,status,assigned_to,co_reader_id,assigned_at,notice_email_id,writer_notified_at",
+    "&select=id,title_ar,title_en,writer,email,status,assigned_to,co_reader_id,assigned_at,writer_notified_at",
     { headers }
   );
   const subs = subResp.ok ? await subResp.json() : [];
@@ -146,24 +100,19 @@ module.exports = async (req, res) => {
   const now = Date.now();
   const startedAt = sub.assigned_at ? new Date(sub.assigned_at).getTime() : null;
   const windowOpen = startedAt != null && now < startedAt + ASSIGNMENT_WINDOW_MS;
-  // The notice has gone out if it was scheduled, never cancelled, and its send
-  // time has passed. Persist that so a later reassignment doesn't re-notify.
-  let notified = !!sub.writer_notified_at;
-  if (!notified && sub.notice_email_id && startedAt != null && !windowOpen) {
-    notified = true;
-    await fetch(url + "/rest/v1/submissions?id=eq." + encodeURIComponent(subId), {
-      method: "PATCH",
-      headers: Object.assign({}, jsonHeaders, { Prefer: "return=minimal" }),
-      body: JSON.stringify({ writer_notified_at: new Date(startedAt + ASSIGNMENT_WINDOW_MS).toISOString() }),
-    });
-  }
+  // `writer_notified_at` is now stamped ONLY by the sweep, and only immediately
+  // before the email actually goes out — so it means "the writer has been told",
+  // not "we assume they have by now". Nothing infers it from elapsed time: doing
+  // that would mark a script notified and then make the sweep skip it, so the
+  // writer would never hear anything.
+  const notified = !!sub.writer_notified_at;
 
   // --------------------------- REASSIGN ----------------------------
   // Staff hand a claimed script to a DIFFERENT reader. Deliberately never sets
   // assigned_to back to null: once claimed, a script always has someone
-  // responsible. The window and the scheduled notice are left untouched — "work
-  // started on your script" stays true under a new reader, so the writer isn't
-  // re-notified and the clock isn't restarted.
+  // responsible. `assigned_at` is left untouched, so the clock isn't restarted and
+  // the sweep still notifies at the ORIGINAL window's end — "work started on your
+  // script" stays true under a new reader, and they're never notified twice.
   if (action === "reassign") {
     if (me.role !== "admin" && me.role !== "super_admin") {
       return res.status(403).json({ message: "إعادة الإسناد مخصصة للمشرفين" });
@@ -205,27 +154,14 @@ module.exports = async (req, res) => {
     if (notified || !windowOpen) {
       return res.status(409).json({ message: "انتهت مهلة الإلغاء، لم يعد بالإمكان إلغاء الإسناد" });
     }
-    // Cancel the pending writer notice before freeing the script.
-    if (sub.notice_email_id) {
-      try {
-        const apiKey = process.env.RESEND_API_KEY;
-        if (apiKey) {
-          const c = await fetch("https://api.resend.com/emails/" + encodeURIComponent(sub.notice_email_id) + "/cancel", {
-            method: "POST",
-            headers: { Authorization: "Bearer " + apiKey },
-          });
-          if (!c.ok) console.error("claim-script: cancel failed:", c.status, await c.text());
-        }
-      } catch (err) {
-        console.error("claim-script: cancel error:", err);
-      }
-    }
+    // No email to cancel: clearing `assigned_to` is what stops the notice, because
+    // the sweep only ever picks up scripts that are still assigned.
     const patch = await fetch(url + "/rest/v1/submissions?id=eq." + encodeURIComponent(subId), {
       method: "PATCH",
       headers: Object.assign({}, jsonHeaders, { Prefer: "return=minimal" }),
       // Back into the pool — the script stays paid for, so it returns to
       // `unassigned`, never to `pending_payment`.
-      body: JSON.stringify({ status: "unassigned", assigned_to: null, co_reader_id: null, assigned_at: null, notice_email_id: null }),
+      body: JSON.stringify({ status: "unassigned", assigned_to: null, co_reader_id: null, assigned_at: null }),
     });
     if (!patch.ok) {
       console.error("claim-script release failed:", patch.status, await patch.text());
@@ -246,36 +182,10 @@ module.exports = async (req, res) => {
   }
 
   const claimedAt = new Date();
-  let noticeId = null;
 
-  // Schedule the writer notice for the end of the window — unless they've already
-  // been told (a previous reader took it past the window).
-  if (!notified && sub.email) {
-    const apiKey = process.env.RESEND_API_KEY;
-    if (apiKey) {
-      try {
-        const sendAt = new Date(claimedAt.getTime() + ASSIGNMENT_WINDOW_MS).toISOString();
-        const r = await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: { Authorization: "Bearer " + apiKey, "Content-Type": "application/json" },
-          body: JSON.stringify({
-            from: NOTIFY_FROM,
-            to: [sub.email],
-            reply_to: NOTIFY_TO,
-            subject: "بدأ العمل على نصك - Scene One",
-            html: noticeEmail(sub),
-            scheduled_at: sendAt,
-          }),
-        });
-        const data = await r.json().catch(function () { return {}; });
-        if (r.ok && data && data.id) noticeId = data.id;
-        else console.error("claim-script: schedule failed:", r.status, JSON.stringify(data));
-      } catch (err) {
-        console.error("claim-script: schedule error:", err);
-      }
-    }
-  }
-
+  // Nothing is sent or scheduled here. `assigned_at` IS the schedule: the sweep
+  // notifies the writer once it is older than the window and the script is still
+  // held. A claim that fails to land therefore leaves nothing to clean up.
   const patch = await fetch(url + "/rest/v1/submissions?id=eq." + encodeURIComponent(subId), {
     method: "PATCH",
     headers: Object.assign({}, jsonHeaders, { Prefer: "return=minimal" }),
@@ -283,20 +193,10 @@ module.exports = async (req, res) => {
       status: "in_review",
       assigned_to: me.id,
       assigned_at: claimedAt.toISOString(),
-      notice_email_id: noticeId,
     }),
   });
   if (!patch.ok) {
     console.error("claim-script claim failed:", patch.status, await patch.text());
-    // Don't leave a scheduled email for a claim that didn't land.
-    if (noticeId) {
-      try {
-        await fetch("https://api.resend.com/emails/" + encodeURIComponent(noticeId) + "/cancel", {
-          method: "POST",
-          headers: { Authorization: "Bearer " + process.env.RESEND_API_KEY },
-        });
-      } catch (err) { /* best effort */ }
-    }
     return res.status(502).json({ message: "تعذّر إسناد النص" });
   }
 
