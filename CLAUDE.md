@@ -649,11 +649,25 @@ must be in the `supabase_realtime` publication for live updates to fire.
   `'new'` forever — invisible to the pool and unclaimable (`claim-script` requires
   `unassigned`), with no error anywhere. There is no status check constraint on
   `submissions` to catch it. Apply the SQL, then push, in that order and close together.
-- **Payment gate is VALIDATED IN THE SANDBOX, NOT DEPLOYED** (2026-07-28). The work sits
-  on `main` locally and on the pushed `payment-gate` branch; `origin/main` is untouched,
-  so production still runs the old, unpaid flow. The **payment-gate SQL has been applied**
-  to the (single, shared) production database — see the shared-database decision above,
-  and the backfill that must be re-run *after* the eventual `main` push.
+- **Payment gate and writer level are DEPLOYED** (2026-08-04, `main` at `1fddb9d`).
+  Moyasar onboarding was approved the same morning; live key and live webhook
+  `8353cb62-d412-4120-b6be-0cfcae7b863e` (→ `https://sceneone.info/api/payment-webhook`)
+  are registered, `MOYASAR_SECRET_KEY` + `MOYASAR_WEBHOOK_SECRET` are set at
+  **Production** scope, both migrations are applied, and the post-push backfill has
+  been run. Post-deploy checks: the webhook route answers **401** to a bad token —
+  which also proves the Production env vars are visible, since a missing one returns
+  500 — and `/submit`, `/payment-status`, `/` all serve 200.
+- **NOT YET EXERCISED IN PRODUCTION:** a real payment, and **refunds anywhere**.
+  `handleRefunded` has never run outside the stubbed harness in either environment.
+  The first live refund is the first real execution — watch the staff alert and the
+  terminal `refunded` status, and read Webhooks Attempts in the Moyasar dashboard if
+  anything stalls.
+- **The sandbox is retired.** Webhook `356c6eea` (→ preview) was deleted when the live
+  one was created, because the registry is account-wide (see above) and leaving it
+  registered would have sent real payment events to a preview sitting behind Vercel
+  Authentication. To test in the preview again: turn Vercel Authentication off, delete
+  the production webhook, create one pointing at the branch alias — and put it back
+  afterwards. Never leave both registered.
 - **What the sandbox run actually proved (2026-07-28).** Two test submissions paid with
   `4111 1111 1111 1111` on the preview: invoice created and `payment_invoice_id` /
   `payment_amount` stored; Moyasar delivered `payment_paid` unaided; the row moved
