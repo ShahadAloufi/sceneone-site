@@ -916,6 +916,14 @@ html[data-theme="dark"] .adm-login__submit { background: #ffffff; color: #111418
 .adm-theme { padding: 8px 12px; line-height: 0; display: inline-flex; align-items: center; justify-content: center; }
 
 .adm-error { background: var(--adm-error-bg); color: var(--adm-error-text); border-radius: 8px; padding: 9px 12px; font-size: 13px; margin: 0 0 14px; }
+/* Success counterpart to .adm-error — "recovery link sent", where a red box would
+   read as a failure. */
+.adm-ok { background: rgba(47,157,94,.14); color: #2f9d5e; border-radius: 8px; padding: 9px 12px; font-size: 13px; margin: 0 0 14px; line-height: 1.7; }
+/* Quiet text button under the sign-in submit (forgot password). Not .adm-btn: it
+   must not compete with the primary action. */
+.adm-linkbtn { display: block; width: 100%; margin: 12px 0 0; padding: 4px; background: none; border: 0; color: var(--adm-muted); font: inherit; font-size: 13px; cursor: pointer; text-align: center; }
+.adm-linkbtn:hover { color: var(--adm-text); text-decoration: underline; }
+.adm-login__hint { margin: 0 0 18px; font-size: 13.5px; line-height: 1.7; color: var(--adm-muted); text-align: center; }
 .adm-success { background: var(--adm-success-bg); color: var(--adm-success-text); border-radius: 8px; padding: 9px 12px; font-size: 13px; margin: 0 0 14px; }
 
 .adm {

@@ -504,6 +504,12 @@ must be in the `supabase_realtime` publication for live updates to fire.
 
 ## Current TODOs
 
+- **⚠️ SET THE SUPABASE SITE URL** — Authentication → URL Configuration → Site URL =
+  `https://sceneone.info`, and add `https://sceneone.info/**` to the Redirect URLs
+  allow-list. It is still on the default `http://localhost:3000`, so **every password
+  recovery, invite and confirmation email currently links to localhost** and is
+  unusable. The new reset page cannot work until this is changed — it is a Supabase
+  dashboard setting, not code, so no deploy fixes it.
 - **⚠️ SET `CRON_SECRET` IN VERCEL (Production) before the notice sweep ships.**
   `/api/send-notices` returns 500 without it, so the daily backstop silently never
   runs — the piggyback in `/api/claim-script` would still work, which is exactly why
@@ -900,6 +906,25 @@ privileged reads/writes.
 - Server verifies the token via `/auth/v1/user`, then checks the `admins` table for
   role. Authorization is **always** re-checked server-side (never trust the frontend).
 - Admin pages/routes are role-gated; RLS enforces row access at the DB layer too.
+- **Password reset (self-service, added 2026-08-04).** "Forgot your password?" under the
+  sign-in button calls `resetPasswordForEmail` with the email already typed in the form
+  (no second prompt), `redirectTo: <origin>/admin`. The reply is **identical whether or
+  not the address has an account** — a different message would let anyone enumerate who
+  holds a reader account. Supabase mails a link back to `admin.html` carrying a recovery
+  token; supabase-js exchanges it for a **real session**, which is why `boot()` checks
+  for recovery **before** deciding what to render: otherwise the link would silently
+  sign the reader in and never offer them a password, defeating the email. Recovery is
+  detected two ways — the `type=recovery` marker read off `location.hash` at script
+  start (supabase-js consumes the hash once it exchanges the token) and the
+  `PASSWORD_RECOVERY` auth event. A recovery URL with no valid session means an expired
+  or already-used link, and says so rather than showing a form that cannot work. On
+  success the existing session carries straight into the dashboard — no second sign-in
+  with the password just chosen.
+- **This depends on Supabase → Authentication → URL Configuration.** Site URL must be
+  `https://sceneone.info` and the allow-list must include `https://sceneone.info/**`.
+  On the default (`http://localhost:3000`) **every auth email is dead on arrival** —
+  recovery, invite and confirmation links all build from that setting, which is how a
+  reader ended up with a recovery link pointing at localhost.
 
 ---
 

@@ -104,6 +104,20 @@
       // dynamic
       signingIn: "جارٍ الدخول...", badLogin: "بيانات الدخول غير صحيحة.",
       notAdmin: "هذا الحساب ليس لديه صلاحية دخول لوحة التحكم.",
+      forgotPw: "نسيت كلمة المرور؟",
+      forgotNeedEmail: "أدخل بريدك الإلكتروني أولًا.",
+      // Deliberately the same message whether or not the address has an account —
+      // otherwise this becomes a way to discover who has a reader account.
+      forgotSent: "إذا كان هناك حساب بهذا البريد، فقد أُرسل إليه رابط تعيين كلمة المرور. تحقّق من بريدك (ومجلد الرسائل غير المرغوب فيها).",
+      resetTitle: "اختر كلمة مرور جديدة",
+      resetHint: "اختر كلمة مرور جديدة لحسابك.",
+      fNewPassword: "كلمة المرور الجديدة", fConfirmPassword: "تأكيد كلمة المرور",
+      newPwPh: "٨ أحرف على الأقل", confirmPwPh: "أعد إدخال كلمة المرور",
+      resetSubmit: "حفظ كلمة المرور", resetSaving: "جارٍ الحفظ...",
+      resetShort: "كلمة المرور يجب أن تكون ٨ أحرف على الأقل.",
+      resetMismatch: "كلمتا المرور غير متطابقتين.",
+      resetFail: "تعذّر تغيير كلمة المرور. قد يكون الرابط منتهي الصلاحية — اطلب رابطًا جديدًا.",
+      resetExpired: "انتهت صلاحية رابط التعيين. اطلب رابطًا جديدًا من \"نسيت كلمة المرور؟\".",
       loadFail: "تعذّر تحميل النصوص.", loadingSubs: "جارٍ تحميل النصوص…", download: "تحميل", assignMe: "أسند إليّ",
       adminFallback: "مشرف", cancel: "إلغاء", viewReport: "عرض التقرير", continueEval: "متابعة التقييم",
       inReview: "قيد التقييم", awaitingAssign: "بانتظار الإسناد",
@@ -168,6 +182,18 @@
       phName: "Admin name", phPassword: "At least 8 characters",
       signingIn: "Signing in...", badLogin: "Invalid login credentials.",
       notAdmin: "This account is not authorized to access the dashboard.",
+      forgotPw: "Forgot your password?",
+      forgotNeedEmail: "Enter your email first.",
+      forgotSent: "If an account exists for that address, a password reset link has been sent. Check your inbox (and your spam folder).",
+      resetTitle: "Choose a new password",
+      resetHint: "Pick a new password for your account.",
+      fNewPassword: "New password", fConfirmPassword: "Confirm password",
+      newPwPh: "At least 8 characters", confirmPwPh: "Re-enter the password",
+      resetSubmit: "Save password", resetSaving: "Saving...",
+      resetShort: "Password must be at least 8 characters.",
+      resetMismatch: "The two passwords don't match.",
+      resetFail: "Couldn't change the password. The link may have expired — request a new one.",
+      resetExpired: "That reset link has expired. Request a new one from \"Forgot your password?\".",
       loadFail: "Failed to load submissions.", loadingSubs: "Loading submissions…", download: "Download", assignMe: "Assign to me",
       adminFallback: "Admin", cancel: "Unassign", viewReport: "View report", continueEval: "Continue coverage",
       inReview: "In review", awaitingAssign: "Awaiting assignment",
@@ -219,6 +245,12 @@
   var $ = function (id) { return document.getElementById(id); };
   var loginView = $("adminLogin");
   var dashView = $("adminDash");
+
+  // Read the recovery marker off the URL immediately: supabase-js consumes the
+  // hash when it exchanges the token for a session, so by the time boot() runs it
+  // may be gone. The auth event below is the second signal, in case this one is
+  // missed; either is enough.
+  var recoveryMode = /type=recovery/.test(location.hash || "");
   var me = null; // { id, email, name, role }
   var adminsById = {};
   var adminRoleById = {};
@@ -300,6 +332,19 @@
     } catch (e) {
       console.error("[boot] session check failed", e);
       me = null;
+    }
+    // A recovery link must never land straight in the dashboard: the session it
+    // creates is valid, so without this check the reader would be signed in and
+    // still not know their password.
+    if (recoveryMode) {
+      showResetForm();
+      // No session means the link was already used or has expired — say so instead
+      // of showing a form that can't work.
+      if (!me) {
+        hide($("adminResetForm")); show($("adminLoginForm"));
+        $("loginError").textContent = t("resetExpired"); show($("loginError"));
+      }
+      return;
     }
     if (me) {
       // Keep the boot loader up until the submissions have actually loaded, so a
@@ -423,6 +468,88 @@
       }
     }
     btn.disabled = false; btn.textContent = t("loginSubmit");
+  });
+
+  // ---------- PASSWORD RESET ----------
+  // Supabase mails a link back to this page carrying a recovery token in the URL
+  // hash; supabase-js turns it into a session on load. That session is enough to
+  // reach the dashboard, so the recovery flag has to be read BEFORE boot() decides
+  // what to show — otherwise the link would silently sign the reader in and never
+  // offer them a password, which is the whole point of the email.
+  //
+  // Requires Supabase → Authentication → URL Configuration → Site URL to be the
+  // live origin. On the default (localhost:3000) every one of these links is dead.
+  function showResetForm() {
+    hide(dashView);
+    show(loginView);
+    hide($("adminLoginForm"));
+    show($("adminResetForm"));
+    hide($("admBoot"));
+  }
+
+  // "Forgot your password?" — reuses the email already typed into the sign-in form
+  // rather than a second prompt.
+  $("forgotBtn").addEventListener("click", async function () {
+    var err = $("loginError"), notice = $("loginNotice");
+    hide(err); hide(notice);
+    var email = $("loginEmail").value.trim();
+    if (!email) { err.textContent = t("forgotNeedEmail"); show(err); $("loginEmail").focus(); return; }
+    var btn = this; btn.disabled = true;
+    try {
+      // redirectTo must be in Supabase's allow-list, or the link silently falls
+      // back to the Site URL.
+      await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + "/admin" });
+    } catch (e) {
+      console.error("[reset] send failed", e);
+    }
+    // Always the same message: a different reply for unknown addresses would turn
+    // this into a way to enumerate who has an account.
+    notice.textContent = t("forgotSent"); show(notice);
+    btn.disabled = false;
+  });
+
+  $("adminResetForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    var err = $("resetError"); hide(err); err.textContent = "";
+    var pw = $("resetPassword").value, pw2 = $("resetPassword2").value;
+    if (pw.length < 8) { err.textContent = t("resetShort"); show(err); return; }
+    if (pw !== pw2) { err.textContent = t("resetMismatch"); show(err); return; }
+
+    var btn = $("resetBtn"); btn.disabled = true; btn.textContent = t("resetSaving");
+    var out = await sb.auth.updateUser({ password: pw });
+    if (out.error) {
+      console.error("[reset] update failed", out.error);
+      err.textContent = t("resetFail"); show(err);
+      btn.disabled = false; btn.textContent = t("resetSubmit");
+      return;
+    }
+    // The recovery session is already a real session, so go straight in rather than
+    // making them type the password they just chose.
+    me = await loadMe();
+    if (me) {
+      hide($("adminResetForm")); show($("adminLoginForm"));
+      enterDashboard();
+    } else {
+      // Authenticated but not on the admins table — same rule as sign-in.
+      await sb.auth.signOut();
+      hide($("adminResetForm")); show($("adminLoginForm"));
+      $("loginError").textContent = t("notAdmin"); show($("loginError"));
+    }
+    btn.disabled = false; btn.textContent = t("resetSubmit");
+  });
+
+  $("resetPwToggle").addEventListener("click", function () {
+    var i = $("resetPassword");
+    i.type = i.type === "password" ? "text" : "password";
+  });
+
+  // Second signal: supabase-js fires this once it recognises a recovery token,
+  // which covers the case where it consumed the hash before we read it.
+  sb.auth.onAuthStateChange(function (event) {
+    if (event === "PASSWORD_RECOVERY") {
+      recoveryMode = true;
+      showResetForm();
+    }
   });
 
   // Logout

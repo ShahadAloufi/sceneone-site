@@ -79,10 +79,45 @@
       </label>
 
       <p class="adm-error" id="loginError" hidden></p>
+      <p class="adm-ok" id="loginNotice" hidden></p>
 
       <button type="submit" class="adm-btn adm-login__submit" id="loginBtn" data-i18n="loginSubmit">Sign in</button>
 
+      <button type="button" class="adm-linkbtn" id="forgotBtn" data-i18n="forgotPw">Forgot your password?</button>
+
       <div class="adm-login__divider"></div>
+    </form>
+
+    <!-- Shown instead of the sign-in form when the page is opened from a password
+         recovery email (Supabase turns the link's token into a session, and this is
+         where the new password is actually chosen). -->
+    <form class="adm-login__form" id="adminResetForm" novalidate hidden>
+      <div class="adm-login__brandwrap">
+        <span class="adm-login__logo" role="img" aria-label="Scene One"></span>
+      </div>
+      <h1 class="adm-login__title" data-i18n="resetTitle">Choose a new password</h1>
+      <p class="adm-login__hint" data-i18n="resetHint">Pick a new password for your account.</p>
+
+      <div class="adm-field">
+        <label data-i18n="fNewPassword">New password</label>
+        <div class="adm-pass">
+          <input type="password" id="resetPassword" data-i18n-ph="newPwPh" placeholder="At least 8 characters" autocomplete="new-password">
+          <button type="button" class="adm-pass__eye" id="resetPwToggle" data-i18n-title="showPw" aria-label="Show password" title="Show password">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="adm-field">
+        <label data-i18n="fConfirmPassword">Confirm password</label>
+        <input type="password" id="resetPassword2" data-i18n-ph="confirmPwPh" placeholder="Re-enter the password" autocomplete="new-password">
+      </div>
+
+      <p class="adm-error" id="resetError" hidden></p>
+
+      <button type="submit" class="adm-btn adm-login__submit" id="resetBtn" data-i18n="resetSubmit">Save password</button>
     </form>
 
     <p class="adm-login__foot" data-i18n="footerRights">جميع الحقوق محفوظة لـ Scene One © 2026</p>
