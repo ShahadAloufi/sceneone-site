@@ -479,6 +479,23 @@ must be in the `supabase_realtime` publication for live updates to fire.
 
 ## Current TODOs
 
+- **⚠️ TEST THE REFUND PATH — owed since 2026-08-04.** Everything else in the payment
+  gate has now run for real; `handleRefunded` has **never executed outside a stubbed
+  harness**, in test or live. The smoke-test submission
+  `9ad52050-ace3-4ea2-a36e-133b9bdd5b9d` is paid and sitting unclaimed with a **1 SAR**
+  payment against invoice `4cd494d9-6601-4609-80a3-db621bfff9c6` — refund it in full
+  from the Moyasar dashboard and check:
+  - status goes terminal **`refunded`** and `refunded_at` is stamped
+  - the staff alert arrives titled **"Refunded - script pulled from the queue"** (the
+    "ACTION NEEDED" variant is only for a script a reader already holds)
+  - it leaves the reader pool, and All submissions shows **refunded** in Payment
+  - Moyasar → **Webhooks Attempts** shows `payment_refunded` delivered with a 200
+  If it misbehaves, the risk is real money: a refund on a claimed script that fails to
+  alert means a reader keeps working on a script the writer was paid back for.
+- **Clean up the smoke test afterwards** — delete row `9ad52050…`, the orphan rows from
+  the failed submissions (`where payment_invoice_id is null`), and their Storage files
+  in the `scripts` bucket. The unpaid 750 SAR invoice `a0d263e8…` can be left; it
+  expires on its own.
 - **Run these once in the Supabase SQL Editor** (required by the latest features):
   ```sql
   -- The whole block is idempotent: safe to paste and run in full, any number of
@@ -657,11 +674,28 @@ must be in the `supabase_realtime` publication for live updates to fire.
   been run. Post-deploy checks: the webhook route answers **401** to a bad token —
   which also proves the Production env vars are visible, since a missing one returns
   500 — and `/submit`, `/payment-status`, `/` all serve 200.
-- **NOT YET EXERCISED IN PRODUCTION:** a real payment, and **refunds anywhere**.
-  `handleRefunded` has never run outside the stubbed harness in either environment.
-  The first live refund is the first real execution — watch the staff alert and the
-  terminal `refunded` status, and read Webhooks Attempts in the Moyasar dashboard if
-  anything stalls.
+- **A real payment has now run end to end in production (2026-08-04).** A live
+  submission, paid with a real card, moved `pending_payment → paid → unassigned` with
+  `paid_at` and `confirmation_sent_at` stamped, and both emails arrived. **Refunds
+  remain the one path never executed for real** — see Current TODOs.
+- **Testing with a smaller amount, without touching `PRICES`.** Editing the price
+  constants would mis-charge any real writer who submits during the window. Instead:
+  submit normally, create a 1 SAR invoice by hand
+  (`POST /v1/invoices` with `callback_url` set to the production `/payment-status`),
+  then repoint the row — **both** `payment_invoice_id` and `payment_amount`, or the
+  webhook's amount guard rejects the payment as a mismatch. Everything downstream then
+  runs exactly as it would for a real writer.
+- **Deploy-day lesson: three stacked env-var faults, each masking the next** (all on
+  2026-08-04, all surfaced from Vercel's runtime **Logs**, none guessable from the
+  writer-facing error): (1) the Production `MOYASAR_SECRET_KEY` held a key that had
+  since been regenerated — every regeneration invalidates the last, so **regenerate
+  once and update Vercel immediately**; (2) a remove-then-add landed the variable on
+  the wrong scope, so it was absent entirely (`MOYASAR_SECRET_KEY is not configured`
+  rather than a 401 — the two errors distinguish *missing* from *wrong*); (3) the
+  pasted value didn't match what worked in curl. Transfer with
+  `printf '%s' 'KEY' | pbcopy` and paste, never retype. **Every fix needs a redeploy**
+  — env vars are baked in at build time. Symptom throughout: the submission form
+  returns `تعذّر بدء عملية الدفع` and inserts an orphan `pending_payment` row.
 - **The sandbox is retired.** Webhook `356c6eea` (→ preview) was deleted when the live
   one was created, because the registry is account-wide (see above) and leaving it
   registered would have sent real payment events to a preview sitting behind Vercel
