@@ -504,12 +504,9 @@ must be in the `supabase_realtime` publication for live updates to fire.
 
 ## Current TODOs
 
-- **⚠️ SET THE SUPABASE SITE URL** — Authentication → URL Configuration → Site URL =
-  `https://sceneone.info`, and add `https://sceneone.info/**` to the Redirect URLs
-  allow-list. It is still on the default `http://localhost:3000`, so **every password
-  recovery, invite and confirmation email currently links to localhost** and is
-  unusable. The new reset page cannot work until this is changed — it is a Supabase
-  dashboard setting, not code, so no deploy fixes it.
+- ~~Set the Supabase Site URL / redirect allow-list~~ and ~~configure custom SMTP~~ —
+  **both done 2026-08-04.** See the auth notes below; left here only as a pointer,
+  since together they were why no reader could ever reset a password.
 - **⚠️ SET `CRON_SECRET` IN VERCEL (Production) before the notice sweep ships.**
   `/api/send-notices` returns 500 without it, so the daily backstop silently never
   runs — the piggyback in `/api/claim-script` would still work, which is exactly why
@@ -920,11 +917,23 @@ privileged reads/writes.
   or already-used link, and says so rather than showing a form that cannot work. On
   success the existing session carries straight into the dashboard — no second sign-in
   with the password just chosen.
-- **This depends on Supabase → Authentication → URL Configuration.** Site URL must be
-  `https://sceneone.info` and the allow-list must include `https://sceneone.info/**`.
-  On the default (`http://localhost:3000`) **every auth email is dead on arrival** —
-  recovery, invite and confirmation links all build from that setting, which is how a
-  reader ended up with a recovery link pointing at localhost.
+- **Two Supabase dashboard settings this depends on — both were wrong, and together
+  they meant no reader could ever reset a password. Fixed 2026-08-04.**
+  1. **Authentication → URL Configuration.** Site URL must be `https://sceneone.info`,
+     with `https://sceneone.info/**` in the Redirect URLs allow-list. It sat on the
+     default `http://localhost:3000`, so **every auth email was dead on arrival** —
+     recovery, invite and confirmation links all build from that setting. That is how
+     a reader got a recovery link pointing at localhost.
+  2. **Authentication → Emails → SMTP Settings** (NOT Project Settings, and not under
+     Add-ons). Supabase's built-in mailer **only delivers to members of the Supabase
+     project** and is capped at ~2/hour — so a reader who isn't in the Supabase org
+     never receives anything, with no bounce and no error anywhere. Now on **Resend
+     SMTP**: `smtp.resend.com:465`, username `resend`, password = a Resend API key
+     (a separate key from the one in Vercel, so rotating either doesn't silently break
+     the other), sender `no-reply@sceneone.info`. Custom SMTP also raises the cap to
+     30/hour, adjustable under Authentication → Rate Limits.
+  **If an invited reader ever says they got no email, check these two first** — the
+  symptom is silence, not an error.
 
 ---
 
