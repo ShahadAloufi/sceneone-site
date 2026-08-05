@@ -64,6 +64,9 @@
   .rep-title .ar{font-family:'IBM Plex Sans Arabic',sans-serif;color:var(--ink)}
   .logline{background:var(--soft);border-radius:10px;padding:16px 18px;margin:6px 0 30px}
   .logline .k{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--label);font-weight:600;margin-bottom:5px}
+  /* The value carried no size of its own, so it inherited the page base and towered
+     over the report body. Matches .rep-item p — the logline is body copy, not a lede. */
+  .logline > div:not(.k){font-size:13.5px;line-height:1.62}
   .glance{margin:0 0 30px}
   .glance h3,.rep-sec h3{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);font-weight:600;margin:0 0 12px}
   table.gl{width:100%;border-collapse:collapse;font-size:13px}
