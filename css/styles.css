@@ -339,7 +339,9 @@ a, button {
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin-bottom: 4px;
+  /* Was 4px with a "شامل الضريبة" line beneath supplying the rest. That line is
+     gone (not VAT-registered), so the price carries the full gap itself. */
+  margin-bottom: 26px;
 }
 .price-div h1 {
   font-family: var(--font-head);
@@ -353,12 +355,6 @@ a, button {
   width: 34px;
   height: auto;
   display: block;
-}
-.price-tax {
-  text-align: center;
-  font-size: 13px;
-  color: rgba(255,255,255,.55);
-  margin: 0 0 22px;
 }
 .ctype-card__desc {
   font-size: 16px;
