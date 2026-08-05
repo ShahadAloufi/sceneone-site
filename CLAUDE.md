@@ -241,16 +241,18 @@ must be in the `supabase_realtime` publication for live updates to fire.
   in halalas) and must match the homepage: feature 1200 SAR / short 750 SAR.
 - **Writer level (`writer_level`)** — required select on the submission form, four
   values ordered least → most experienced: `new` / `emerging` / `professional` /
-  `veteran`. Deliberately **evidence-based** ("لم يُنتج لي عمل بعد", "أفلام قصيرة أو
-  نصوص مكتملة لم تُنتج", "عمل منتج أو مشارك في مهرجانات", "أعمال طويلة أو جوائز")
-  rather than a bare مبتدئ/متوسط/محترف self-rating, so two writers choosing the same
-  level mean roughly the same thing and a reader can actually calibrate on it.
+  `veteran`. Deliberately **evidence-based** ("لم يُنتج لي عمل بعد", "أفلام قصيرة
+  منتجة", "عمل منتج أو مشارك في مهرجانات", "أعمال طويلة أو جوائز") rather than a bare
+  مبتدئ/متوسط/محترف self-rating, so two writers choosing the same level mean roughly
+  the same thing and a reader can actually calibrate on it.
   `emerging` originally read "أفلام قصيرة أو **ورش كتابة**" — changed 2026-08-04
   because attending a workshop is something anyone can sign up for, so it sat oddly
   beside a produced short and let two very different writers pick the same level.
-  The tier is now about **finished work**, which is also what a reader actually needs:
-  a completed unproduced feature says more about the notes they'll write than a
-  five-minute produced short does. It exists to set
+  **Every tier is now a production credit**, which makes the ladder read cleanly:
+  nothing produced → shorts produced → produced or festival work → features or
+  awards. Known trade-off, accepted deliberately: a writer with a finished but
+  unproduced feature has to choose `new`. If that starts reading as dismissive, the
+  fix is the wording of `new`, not adding a non-credit back into `emerging`. It exists to set
   the coverage's **depth and tone** — it is **not** a quality score, does **not**
   affect price, and does **not** gate acceptance; the form says so under the field.
   That is also why the dashboard badge uses a neutral palette instead of the

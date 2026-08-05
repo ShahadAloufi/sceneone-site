@@ -36,13 +36,13 @@
   var LEVEL_TIP = {
     ar: {
       new: "لم يُنتج له عمل بعد",
-      emerging: "أفلام قصيرة أو نصوص مكتملة لم تُنتج",
+      emerging: "أفلام قصيرة منتجة",
       professional: "عمل منتج أو مشارك في مهرجانات",
       veteran: "أعمال طويلة أو جوائز"
     },
     en: {
       new: "No produced work yet",
-      emerging: "Short films or completed unproduced scripts",
+      emerging: "Produced short films",
       professional: "Produced work or festival selections",
       veteran: "Features or awards"
     }
