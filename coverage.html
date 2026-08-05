@@ -189,9 +189,11 @@
   .seg button.on.bad{background:var(--bad)}
 
   /* ---------- "pulled from submission" panel ---------- */
-  /* Thin orange edge all the way round, matching .cov-reviewbar — replaces a grey
-     border with a heavy 3px orange top, which read as a banner rather than a panel. */
-  .pulled{background:var(--card);border:1px solid rgba(205,46,7,.4);
+  /* Orange edge all the way round — replaces a grey border with a heavy 3px orange
+     top, which read as a banner rather than a panel. 2px at .55 rather than the
+     .cov-reviewbar hairline: this panel is the reader's constant reference while
+     they write, so it earns a little more presence. */
+  .pulled{background:var(--card);border:2px solid rgba(205,46,7,.55);
           border-radius:18px;padding:20px 22px;margin-bottom:22px}
   .pulled .tag{display:inline-flex;align-items:center;gap:7px;font-size:13px;letter-spacing:.14em;
                text-transform:uppercase;color:var(--orange);font-weight:600;margin-bottom:14px}
