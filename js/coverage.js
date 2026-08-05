@@ -298,11 +298,15 @@
       [pl.draft, esc(pulledVal("drf", s.draft, dash))],
       [pl.ip, s.ip ? '<span style="color:var(--good);font-weight:600">' + u.ipYes + "</span>" : u.ipNo],
       [pl.file, fileCell],
-      [pl.logline, '<span dir="auto">' + esc(s.logline || dash) + "</span>", true],
-      [pl.vision, '<span dir="auto">' + esc(s.vision || dash) + "</span>", true]
+      // 4th flag = prose: full-width AND long-form, so it's set at reading size rather
+      // than the larger size the short scannable fields use. The title is full-width
+      // too but is not prose, which is why this is a separate flag.
+      [pl.logline, '<span dir="auto">' + esc(s.logline || dash) + "</span>", true, true],
+      [pl.vision, '<span dir="auto">' + esc(s.vision || dash) + "</span>", true, true]
     ];
     $("pulledGrid").innerHTML = rows.map(function (r) {
-      return '<div class="' + (r[2] ? "full" : "") + '"><div class="k">' + r[0] + '</div><div class="v">' + r[1] + "</div></div>";
+      var cls = (r[2] ? "full" : "") + (r[3] ? " prose" : "");
+      return '<div class="' + cls + '"><div class="k">' + r[0] + '</div><div class="v">' + r[1] + "</div></div>";
     }).join("");
     var dl = $("dlLink");
     if (dl) dl.addEventListener("click", function (e) { e.preventDefault(); downloadFile(s.filePath, dl); });

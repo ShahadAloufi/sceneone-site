@@ -189,8 +189,10 @@
   .seg button.on.bad{background:var(--bad)}
 
   /* ---------- "pulled from submission" panel ---------- */
-  .pulled{background:var(--card);border:1px solid var(--line);
-          border-top:3px solid var(--orange);border-radius:18px;padding:20px 22px;margin-bottom:22px}
+  /* Thin orange edge all the way round, matching .cov-reviewbar — replaces a grey
+     border with a heavy 3px orange top, which read as a banner rather than a panel. */
+  .pulled{background:var(--card);border:1px solid rgba(205,46,7,.4);
+          border-radius:18px;padding:20px 22px;margin-bottom:22px}
   .pulled .tag{display:inline-flex;align-items:center;gap:7px;font-size:13px;letter-spacing:.14em;
                text-transform:uppercase;color:var(--orange);font-weight:600;margin-bottom:14px}
   .pulled .tag .lock{font-size:12px}
@@ -198,6 +200,10 @@
   @media(max-width:620px){.meta-grid{grid-template-columns:1fr 1fr}}
   .meta-grid .k{font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--label);font-weight:600}
   .meta-grid .v{font-size:20px;margin-top:3px}
+  /* The prose rows (الملخص المختصر / رؤية الكاتب) are paragraphs, not the short
+     scannable fields around them — at 20px they dominated the panel. Keyed on .prose,
+     not .full: the title is full-width too and must keep its size. */
+  .meta-grid .prose .v{font-size:15px;line-height:1.75}
   .meta-grid .v a{color:var(--orange);text-decoration:none}
   .meta-grid .v a:hover{text-decoration:underline}
   .meta-grid .full{grid-column:1/-1}
