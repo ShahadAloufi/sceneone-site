@@ -83,6 +83,10 @@
   .rep-item .ih .t{font-weight:600;font-size:13.5px}
   .rep-item .ih .sc{font-size:12px;color:var(--orange);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;direction:ltr}
   .rep-item p{margin:0;color:#3f3a35;font-size:13.5px;line-height:1.62;white-space:pre-wrap}
+  /* The synopsis (§01) and the verdict text are bare <p>s, not .rep-item — they were
+     inheriting the page base and rendering larger than every other paragraph in the
+     report. Same treatment as .rep-item p. Keep in step with coverage.html. */
+  .rep-sec > p,.verdict > p{color:#3f3a35;font-size:13.5px;line-height:1.62;white-space:pre-wrap}
   .verdict{border:1px solid var(--line);border-radius:12px;padding:22px 24px;background:var(--soft);margin-top:8px}
   .verdict .vh{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);font-weight:600;margin-bottom:8px}
   .verdict .vd{font-size:18px;font-weight:600;margin-bottom:8px}
