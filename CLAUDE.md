@@ -521,19 +521,16 @@ must be in the `supabase_realtime` publication for live updates to fire.
   this would go unnoticed. Any random value: `openssl rand -hex 24`. Vercel Cron sends
   it automatically as `Authorization: Bearer`. **Env vars are baked in at build time,
   so redeploy after setting it.**
-- **⚠️ TEST THE REFUND PATH — owed since 2026-08-04.** Everything else in the payment
-  gate has now run for real; `handleRefunded` has **never executed outside a stubbed
-  harness**, in test or live. The smoke-test submission
-  `9ad52050-ace3-4ea2-a36e-133b9bdd5b9d` is paid and sitting unclaimed with a **1 SAR**
-  payment against invoice `4cd494d9-6601-4609-80a3-db621bfff9c6` — refund it in full
-  from the Moyasar dashboard and check:
-  - status goes terminal **`refunded`** and `refunded_at` is stamped
-  - the staff alert arrives titled **"Refunded - script pulled from the queue"** (the
-    "ACTION NEEDED" variant is only for a script a reader already holds)
-  - it leaves the reader pool, and All submissions shows **refunded** in Payment
-  - Moyasar → **Webhooks Attempts** shows `payment_refunded` delivered with a 200
-  If it misbehaves, the risk is real money: a refund on a claimed script that fails to
-  alert means a reader keeps working on a script the writer was paid back for.
+- ~~Test the refund path~~ — **done 2026-08-05, on live Moyasar.** A full refund of the
+  1 SAR payment on `9ad52050-…` took the `pulled` branch exactly as designed: status →
+  terminal **`refunded`**, `refunded_at` stamped, `paid_at` preserved, and the staff
+  alert **"Refunded - script pulled from the queue"** arrived. **Every path in the
+  payment gate has now executed for real.**
+  **Still never exercised:** a refund on a script a reader has already CLAIMED — the
+  branch that leaves the assignment untouched and sends the "ACTION NEEDED" alert
+  instead. That is the expensive case (a reader keeps drafting a script the writer was
+  paid back for), and testing it needs a claimed script, so it will realistically only
+  be proven the first time it happens. Watch for that email.
 - **Clean up the smoke test afterwards** — delete row `9ad52050…`, the orphan rows from
   the failed submissions (`where payment_invoice_id is null`), and their Storage files
   in the `scripts` bucket. The unpaid 750 SAR invoice `a0d263e8…` can be left; it
@@ -716,10 +713,12 @@ must be in the `supabase_realtime` publication for live updates to fire.
   been run. Post-deploy checks: the webhook route answers **401** to a bad token —
   which also proves the Production env vars are visible, since a missing one returns
   500 — and `/submit`, `/payment-status`, `/` all serve 200.
-- **A real payment has now run end to end in production (2026-08-04).** A live
-  submission, paid with a real card, moved `pending_payment → paid → unassigned` with
-  `paid_at` and `confirmation_sent_at` stamped, and both emails arrived. **Refunds
-  remain the one path never executed for real** — see Current TODOs.
+- **The payment gate is fully proven on live Moyasar (2026-08-04/05).** A real card
+  payment moved `pending_payment → paid → unassigned` with `paid_at` and
+  `confirmation_sent_at` stamped and both emails delivered; a full refund the next day
+  moved it to terminal `refunded` with `refunded_at` stamped and the staff alert
+  delivered. The **one branch still unexercised** is a refund on a script a reader has
+  already claimed — see Current TODOs.
 - **Testing with a smaller amount, without touching `PRICES`.** Editing the price
   constants would mis-charge any real writer who submits during the window. Instead:
   submit normally, create a 1 SAR invoice by hand
