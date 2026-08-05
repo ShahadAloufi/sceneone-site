@@ -242,9 +242,15 @@ must be in the `supabase_realtime` publication for live updates to fire.
 - **Writer level (`writer_level`)** — required select on the submission form, four
   values ordered least → most experienced: `new` / `emerging` / `professional` /
   `veteran`. Deliberately **evidence-based** ("لم يُنتج لي عمل بعد", "أفلام قصيرة أو
-  ورش كتابة", "عمل منتج أو مشارك في مهرجانات", "أعمال طويلة أو جوائز") rather than a
-  bare مبتدئ/متوسط/محترف self-rating, so two writers choosing the same level mean
-  roughly the same thing and a reader can actually calibrate on it. It exists to set
+  نصوص مكتملة لم تُنتج", "عمل منتج أو مشارك في مهرجانات", "أعمال طويلة أو جوائز")
+  rather than a bare مبتدئ/متوسط/محترف self-rating, so two writers choosing the same
+  level mean roughly the same thing and a reader can actually calibrate on it.
+  `emerging` originally read "أفلام قصيرة أو **ورش كتابة**" — changed 2026-08-04
+  because attending a workshop is something anyone can sign up for, so it sat oddly
+  beside a produced short and let two very different writers pick the same level.
+  The tier is now about **finished work**, which is also what a reader actually needs:
+  a completed unproduced feature says more about the notes they'll write than a
+  five-minute produced short does. It exists to set
   the coverage's **depth and tone** — it is **not** a quality score, does **not**
   affect price, and does **not** gate acceptance; the form says so under the field.
   That is also why the dashboard badge uses a neutral palette instead of the
