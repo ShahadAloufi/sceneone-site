@@ -1296,13 +1296,17 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 }
 @media (max-width: 768px) {
   .submit-page { padding: 96px 28px 56px; }
-  .sub-card__body { padding: 26px 20px 30px; }
+  /* .sub-card__body's narrow-screen padding is NOT here — this block sits above the
+     base rule, so an equal-specificity declaration here loses to it regardless of the
+     media query. It lives directly after .sub-card__body instead. */
 }
 .submit-page .nav { align-items: center; }
 
 .sub-wrap {
   position: relative;
-  max-width: 760px;
+  /* 760px made the two-column grid cramped — Arabic labels plus a long hint under
+     the level select were wrapping to three lines in a column barely 340px wide. */
+  max-width: 940px;
   margin: 0 auto;
 }
 
@@ -1347,7 +1351,12 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 .sub-card__body {
   background: #f5f4f1;
   color: #1a1a1a;
-  padding: 28px 24px 32px;
+  /* Side padding grows with the card, or the fields run to the edge at 940px. */
+  padding: 32px 34px 36px;
+}
+/* Must come AFTER the rule above — same specificity, so source order decides. */
+@media (max-width: 768px) {
+  .sub-card__body { padding: 26px 20px 30px; }
 }
 
 .sub-grid {
