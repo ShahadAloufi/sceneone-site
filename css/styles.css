@@ -1543,7 +1543,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
      (no stretch). Centred now that the photo is 16:9 (1672x941) rather than the
      old near-square 2200x1916 — at 80vh only ~11% is cropped, so there is no
      longer a part of the image worth favouring. */
-  background: #050505 url('../assets/aboutus-hero.jpg') center center / cover no-repeat;
+  background: #050505 url('../assets/aboutus-hero-v2.jpg') center center / cover no-repeat;
 }
 .au-hero__shade {
   position: absolute; inset: 0;
@@ -1601,11 +1601,16 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   /* the main screen panel is ~38% of the hero width; the mark sits comfortably
      inside it rather than spanning edge to edge */
   width: clamp(220px, 24vw, 460px); height: auto;
-  /* No blend mode: the PNG carries real transparency. The source's black background
-     was opaque, and `mix-blend-mode: screen` washed the letters out — screen lifts
-     blacks toward white, and it sits on the brightest part of the photo. The black
-     was instead keyed out by flood-filling from the image border, so the clapperboard's
-     dark detail INSIDE the letters survives while the surround went transparent. */
+  /* Faded so it sits IN the screen rather than on top of it. Deliberately not
+     `mix-blend-mode: screen` — that was the first attempt and it washed the letters
+     out, because screen lifts blacks toward white and this sits on the brightest part
+     of the photo. The PNG's opaque black was keyed out instead (flood-filled from the
+     border, so the clapperboard detail inside the letters survives), leaving plain
+     alpha that opacity can then soften predictably.
+     `multiply` at ~.85 is the alternative: it picks up the screen's own shading and
+     falls off toward its darker edges, reading as projected light rather than an
+     evenly faded overlay. */
+  opacity: .6;
   pointer-events: none;
 }
 
@@ -1685,7 +1690,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
      colliding. 4:3 crops the sides (the main screen stays in frame) and buys height,
      restoring the separation the old near-square photo used to provide. */
   .au-hero__photo { order: 1; display: block; width: 100%; aspect-ratio: 4 / 3;
-    background: #050505 url('../assets/aboutus-hero.jpg') center center / cover no-repeat; }
+    background: #050505 url('../assets/aboutus-hero-v2.jpg') center center / cover no-repeat; }
   /* title sits in the dark chandelier band, above the lit screens */
   .au-hero__title {
     position: absolute; top: 52px; right: 24px; left: auto; width: max-content;
