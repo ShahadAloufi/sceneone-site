@@ -69,14 +69,13 @@ a, button {
 .nav.center { align-items: center; }
 .nav__logo { height: 56px; width: auto; }
 
-/* ---- inline nav links (landing page) ----
+/* ---- inline nav links (every page) ----
    Hidden by default: below the breakpoint the hamburger's overlay carries the same
-   six destinations, so this is additive rather than a replacement. Scoped to
-   .landing because the other pages still use the logo + hamburger bar. */
+   six destinations, so this is additive rather than a replacement. */
 .nav__links { display: none; }
 @media (min-width: 1000px) {
-  .landing .nav { align-items: center; }
-  .landing .nav__links {
+  .nav { align-items: center; }
+  .nav__links {
     display: flex; align-items: center; gap: 30px;
     list-style: none; padding: 0;
     /* `auto` on the left pushes the group to the right, beside the hamburger. The
@@ -86,20 +85,20 @@ a, button {
     margin: 0 40px 0 auto;
     direction: rtl; /* the bar is LTR so the logo stays left; the Arabic reads RTL */
   }
-  .landing .nav__links a {
+  .nav__links a {
     position: relative; display: block; padding: 6px 0;
     color: rgba(255,255,255,.82); font-size: 14px; font-weight: 500;
     text-decoration: none; white-space: nowrap;
     transition: color .2s ease;
     /* no letter-spacing: Arabic is cursive and it pulls joined letters apart */
   }
-  .landing .nav__links a:hover { color: #fff; }
+  .nav__links a:hover { color: #fff; }
   /* underline grows from the centre on hover, matching the bar's understated feel */
-  .landing .nav__links a::after {
+  .nav__links a::after {
     content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
     background: currentColor; transform: scaleX(0); transition: transform .22s ease;
   }
-  .landing .nav__links a:hover::after { transform: scaleX(1); }
+  .nav__links a:hover::after { transform: scaleX(1); }
 }
 .menu-btn {
   display: flex;
