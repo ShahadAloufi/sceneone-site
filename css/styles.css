@@ -1702,7 +1702,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
      lit screen runs from ~35% to ~66% of the photo and the audience silhouettes start
      at ~66% — at 54vw/58% the mark's bottom edge landed right on their heads. 40vw
      centred at 50% keeps it inside the clear part of the screen. */
-  .au-hero__mark { left: 50%; top: 50%; width: 40vw; }
+  .au-hero__mark { left: 43%; top: 50%; width: 40vw; }
   .au-hero__quote { order: 2; position: static; margin: 24px 24px 0; max-width: none; }
   .au-hero__rule { order: 3; position: static; margin: 32px 24px 0; }
   .au-about, .au-team { padding-left: 24px; padding-right: 24px; }
