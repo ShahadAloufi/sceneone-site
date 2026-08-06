@@ -1529,7 +1529,14 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 .au .nav.scrolled { background: var(--bg); box-shadow: 0 6px 20px rgba(0, 0, 0, .35); }
 
 /* ── HERO ── */
-.au-hero { position: relative; width: 100%; height: 55vh; min-height: 400px; overflow: hidden; display: flex; }
+/* Height governs how much of the photo survives, not just how tall the band is:
+   the source is 2200x1916 (~1.15:1) in a full-width band, so `cover` crops the rest.
+   At 55vh only ~39% of the image showed — the screen alone, with the lighting truss
+   clipped and the audience gone entirely. 80vh shows ~57%, enough for the truss and
+   the audience silhouettes, while keeping the quote and divider above the fold.
+   Showing the whole photo would need ~139vh, which is why no amount of
+   background-position tuning ever fixed this. */
+.au-hero { position: relative; width: 100%; height: 80vh; min-height: 400px; overflow: hidden; display: flex; }
 .au-hero__bg {
   position: absolute; inset: 0;
   /* fill the viewport as a full-bleed hero; "cover" preserves the image
