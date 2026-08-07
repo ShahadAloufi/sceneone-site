@@ -25,7 +25,22 @@ Two audiences:
 
 Core product is live in production: submission intake, admin dashboard, reader
 coverage workspace + report, role-based access, deadlines, and report delivery to
-writers. Actively iterating on UX polish and workflow features.
+writers. **The payment gate is live and has taken real money** (see below).
+Actively iterating on UX polish and workflow features.
+
+**Recently shipped (2026-08-04 → 08-07):**
+- **Payment gate LIVE on Moyasar.** A real card payment and a real full refund have
+  both run end to end in production. See "the payment gate is fully proven" below and
+  the Business Rules for the state machine.
+- **Writer level** — required select on the submission form (`writer_level`), shown as
+  a **المستوى / Level** column in the readers' table, All submissions and Deliveries,
+  and in the coverage workspace's pulled panel.
+- **Self-service password reset** for readers/staff on `/admin`, plus the two Supabase
+  settings that had made *every* auth email undeliverable (Site URL, custom SMTP).
+- **Assignment notice rewritten as a sweep**, fixing a bug where releasing a script
+  could still tell the writer work had begun.
+- **Site chrome** — inline nav on every page, readers hero rebuilt with a new photo and
+  an overlaid wordmark, landing CTAs opened up, VAT line removed from pricing.
 
 **Recently shipped (2026-07):**
 - **Quality-control coverage flow** — reader **Submits for approval** → staff
@@ -180,6 +195,72 @@ bottom of `css/styles.css`; markup is `readers.html`.
   rule** (mirrors the landing page's scroll-to-solid nav) — it was briefly
   `position:absolute` with no `.scrolled` style, which made it scroll away
   and never turn solid; don't reintroduce that.
+
+### The hero (rebuilt 2026-08-06)
+
+- **Photo: `assets/aboutus-hero-v2.jpg`** — 1672×941 (16:9). It replaced a
+  2200×1916 near-square image. **The shape is the whole story:** in a
+  full-width band, `cover` decides how much survives by height alone, so the
+  old photo showed only ~39% at 55vh with the lighting truss clipped and the
+  audience gone. Fourteen commits on 2026-07-27 tried to fix that by moving
+  `background-position` — they were redistributing the same 39%. The 16:9
+  photo at **80vh** loses only ~11%. Showing the old one whole would have
+  needed ~139vh.
+- **`.au-hero__mark` is the SCENE ONE wordmark as an overlay**, not baked into
+  the photo (the previous hero had it burned in, which is why cropping hurt).
+  It stays crisp at any size and the crop can never cut it.
+  - **Placement is derived from the image, not eyeballed.** `cover` centres
+    the photo, so the image's centre always lands on the hero's centre; the
+    screen's centre sits at 45.5%/54.7% of the image. The crop is width-driven
+    at these proportions, so the displayed height is 0.563 × the hero width —
+    hence `left: 45.5%` and `top: calc(50% + 2.6vw)`. **Only change these if
+    the photo changes.**
+  - **`opacity: .6`**, so it reads as projected onto the screen.
+    `mix-blend-mode: multiply` at ~.85 is the noted alternative — it picks up
+    the screen's shading instead of fading evenly.
+  - **Do NOT use `mix-blend-mode: screen`.** It was the first attempt at
+    removing the source PNG's black background and it washed the letters out:
+    screen lifts blacks toward white, and the mark sits on the brightest part
+    of the photo. The black was **keyed out** instead by flood-filling from the
+    image border, so the clapperboard detail *inside* the letters survives
+    while the surround became transparent.
+- **Mobile uses a 4:3 crop, deliberately not the source's 16:9.** Full width at
+  16:9 gives a ~210px strip where the title and the wordmark collide; 4:3 trades
+  some sides for the height the old near-square photo used to provide. The mark
+  is placed against the photo box directly there (`left: 43%; top: 50%; width:
+  40vw`) because the mobile crop is height-driven, unlike desktop's.
+
+---
+
+## Site Chrome: Nav & Landing CTAs (2026-08-06/07)
+
+- **Inline nav links in the bar on every page** (`.nav__links`), replacing a
+  site where every destination was hidden behind the hamburger. Six items:
+  الرئيسية · Scene One · من يقرأ نصك؟ · رحلة النص · دليل المنصة · تواصل معنا.
+- **Breakpoint is 1000px.** Above it the links show and **the hamburger is
+  hidden** — every destination is already in the bar, so it would only open an
+  overlay of the same six. Below it the links hide and the overlay carries them.
+  The overlay's list is kept **in step with the bar's**; changing one without
+  the other means phone and desktop visitors see different menus.
+- **The group is right-aligned, beside where the hamburger was** — not next to
+  the logo as the reference design had it. The reference is an English LTR site,
+  where links beside the logo are where the reader's eye starts; in Arabic the
+  eye starts on the right, so the equivalent gesture is the opposite side.
+  Hugging the logo also strands «الرئيسية» mid-bar with a dead gap.
+- **No letter-spacing on the links.** Arabic is cursive and it pulls joined
+  letters apart; applying it to «Scene One» alone would leave that one item
+  looking unlike its neighbours.
+- **Hrefs differ by page on purpose:** `index.html` uses in-page anchors
+  (`#about`), every other page uses the root-prefixed form (`/#about`) so the
+  links work from anywhere.
+- **`.landing section[id] { scroll-margin-top: 112px }`** — the bar is fixed at
+  104px, so without it any in-page jump lands with the section heading tucked
+  underneath. `scroll-behavior: smooth` is already global on `<html>`; no JS.
+- **Landing hero buttons:** «عرض التغطيات» → `#coverage-types` (was «سجل
+  اهتمامك» opening the registration modal), and «دليل المنصة» → `/about-coverage`.
+  **Registration is no longer in the hero or any menu** — it survives only via
+  the `#register` banner further down and `/?register`. Deliberate, but it is a
+  real drop in prominence; revisit if sign-ups fall.
 
 ---
 
@@ -501,6 +582,32 @@ must be in the `supabase_realtime` publication for live updates to fire.
   a completed coverage.
 - **coverage.html / report.html are intentionally self-contained** (own styles +
   no-flash theme/lang script) to avoid a flash of unstyled/wrong-language content.
+- **⚠️ THE TWO REPORT PAGES SET DIFFERENT BASE FONT SIZES** — `report.html` is
+  **16px**, `coverage.html` is **21px** — while `report-render.js` emits the *same*
+  markup into both. So **any element the report CSS doesn't give an explicit
+  `font-size` renders at two different scales**, and looks wrong in at least one.
+  This produced three separate "the text is too big" reports on 2026-08-05, all the
+  same root cause: the logline (`.logline > div`), the synopsis (`.rep-sec > p`, §01)
+  and the verdict text (`.verdict > p`) were all bare elements inheriting the page
+  base. Every paragraph the renderer emits now has an explicit size (13.5px/1.62,
+  matching `.rep-item p`) **in both files** — the rules are duplicated, so keep them
+  in step. **If you add markup to `report-render.js`, give it a size.**
+- **The coverage workspace's pulled panel distinguishes prose from fields.**
+  `.meta-grid .v` is 20px for the short scannable values; the two long-form rows
+  (الملخص المختصر / رؤية الكاتب) carry a `prose` flag from `renderPulled` and drop to
+  15px. Keyed on `.prose`, **not `.full`** — the script title is full-width too and
+  must keep its size.
+- **Recurring CSS pitfall: a media query above a base rule loses to it.** Equal
+  specificity means source order decides, so `@media (max-width: 768px) { .x { … } }`
+  placed *before* `.x { … }` never applies. Hit twice on 2026-08-05/06 — the
+  submission card's narrow-screen padding had been silently dead (mobile was using
+  desktop padding), and the desktop `.menu-btn { display: none }` didn't take. Both
+  now sit **after** their base rules with a comment saying why.
+- **Renaming an asset is the only reliable way to retire a cached one.** The readers
+  hero photo was first replaced in place, so returning visitors kept serving the old
+  cached file — which still had SCENE ONE burned in — *underneath* the new overlay,
+  showing the wordmark twice. Caught locally before it shipped. Hence
+  `aboutus-hero-v2.jpg`. Same applies to any image whose content changes.
 - **Writers have no accounts** — all writer interaction is the public form + email.
 - **Deadline is derived** from `created_at` (no stored deadline column) so it can't
   drift.
@@ -515,12 +622,24 @@ must be in the `supabase_realtime` publication for live updates to fire.
 - ~~Set the Supabase Site URL / redirect allow-list~~ and ~~configure custom SMTP~~ —
   **both done 2026-08-04.** See the auth notes below; left here only as a pointer,
   since together they were why no reader could ever reset a password.
-- **⚠️ SET `CRON_SECRET` IN VERCEL (Production) before the notice sweep ships.**
-  `/api/send-notices` returns 500 without it, so the daily backstop silently never
-  runs — the piggyback in `/api/claim-script` would still work, which is exactly why
-  this would go unnoticed. Any random value: `openssl rand -hex 24`. Vercel Cron sends
-  it automatically as `Authorization: Bearer`. **Env vars are baked in at build time,
-  so redeploy after setting it.**
+- ~~Set `CRON_SECRET`~~ — **done 2026-08-04**, confirmed by `/api/send-notices`
+  answering 401 rather than 500 to an unauthenticated call. **Still worth one glance:**
+  check a Vercel log around 06:00 (Hobby cron has ±59 min precision) shows
+  `{"ok":true,"sent":N}` and not a 401. If it 401s the daily backstop is silently dead
+  and nobody would notice, because the piggyback in `/api/claim-script` keeps working.
+- **Hero photo resolution.** `assets/aboutus-hero-v2.jpg` is 1672×941 — a **1.72×
+  upscale** on a Retina screen at 1440 wide, so it renders soft. If a larger export
+  turns up (~2880 wide) it is a drop-in swap; only the mobile `aspect-ratio` needs a
+  look if the shape differs. Rename it again (`-v3`) rather than replacing in place.
+- **13 internal links still use the `.html` form** and take a 308 redirect each:
+  `privacy.html` ×6, `terms.html` ×6, `about-coverage.html` ×1. `cleanUrls` is on, so
+  the canonical paths are `/privacy`, `/terms`, `/about-coverage`. All the `readers`
+  links were normalised on 2026-08-06; these were left alone.
+- **The "work started" notice is now Arabic-only.** Its English half was dropped with
+  the 2026-08-06 rewrite. The payment confirmation and the coverage report are still
+  bilingual, so that email is the odd one out — decide which way they should all go.
+- **Registration lost prominence 2026-08-07.** It is no longer in the hero or any menu;
+  only the `#register` banner and `/?register` remain. Watch sign-ups.
 - ~~Test the refund path~~ — **done 2026-08-05, on live Moyasar.** A full refund of the
   1 SAR payment on `9ad52050-…` took the `pulled` branch exactly as designed: status →
   terminal **`refunded`**, `refunded_at` stamped, `paid_at` preserved, and the staff
@@ -531,10 +650,21 @@ must be in the `supabase_realtime` publication for live updates to fire.
   instead. That is the expensive case (a reader keeps drafting a script the writer was
   paid back for), and testing it needs a claimed script, so it will realistically only
   be proven the first time it happens. Watch for that email.
-- **Clean up the smoke test afterwards** — delete row `9ad52050…`, the orphan rows from
-  the failed submissions (`where payment_invoice_id is null`), and their Storage files
-  in the `scripts` bucket. The unpaid 750 SAR invoice `a0d263e8…` can be left; it
-  expires on its own.
+- ~~Clean up the smoke test~~ — **done 2026-08-05.** `submissions` and `coverages` were
+  emptied and the `scripts` bucket cleared, so **the next row to appear is a real
+  writer**. Note `delete from submissions` does NOT remove the uploaded file: Storage is
+  a separate system and `file_path` is just text, so deleting rows orphans the PDFs.
+  Find orphans with:
+  ```sql
+  select o.name, o.created_at from storage.objects o
+  where o.bucket_id = 'scripts'
+    and not exists (select 1 from public.submissions s where s.file_path = o.name);
+  ```
+  Delete those through the **Storage UI**, not SQL — removing rows from
+  `storage.objects` can leave the file in the backing store.
+- **Clear Haifa's `access_log` rows** if the "⚠ 4 IPs" badge is still showing. The flag
+  was accurate — her account was being shared — but she has her own password now, so
+  the history is noise. Nothing gates on it; it is a dashboard badge only.
 - **Run these once in the Supabase SQL Editor** (required by the latest features):
   ```sql
   -- The whole block is idempotent: safe to paste and run in full, any number of
@@ -1075,3 +1205,19 @@ privileged reads/writes.
    verification accordingly.
 8. Match existing code style (ES5-ish browser JS), escape user content, and reuse
    existing helpers and CSS classes.
+9. **Real money is live.** The payment gate takes real cards. Never test with `PRICES`
+   edited — that mis-charges any writer who submits during the window. Test by
+   submitting normally, creating a 1 SAR invoice by hand, then repointing the row's
+   **`payment_invoice_id` AND `payment_amount`** (both, or the webhook's amount guard
+   rejects it as a mismatch). See the note under Deployment & Environment.
+10. **When CSS "doesn't apply", check source order before specificity.** Media queries
+   at equal specificity lose to base rules that come later in the file. This has cost
+   time twice.
+11. **When something renders at the wrong size in the report or workspace**, suspect the
+   two different page base font sizes (16px vs 21px) before anything else — see
+   Important Design Decisions.
+12. **Verify by measuring, not by eye.** The browser preview's screenshots capture at an
+   inconsistent scale and its programmatic scrolling is throttled; `getBoundingClientRect`
+   and `getComputedStyle` are reliable when a screenshot looks wrong. Also bust caches
+   explicitly (`?v=` on the stylesheet, and on `background-image` URLs) — a stale CSS or
+   image file has repeatedly looked like a broken change.
