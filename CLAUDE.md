@@ -538,6 +538,17 @@ must be in the `supabase_realtime` publication for live updates to fire.
 - Escape user content in all HTML string building (`esc()`/`escapeHtml()`).
 - Bilingual: all user-facing text goes through the i18n dictionaries (see below) —
   never hardcode a single language in the UI.
+- **Internal links use the clean, root-relative path — never `.html`, never relative.**
+  `cleanUrls` means `/privacy.html` 308-redirects to `/privacy`, so the `.html` form
+  costs an extra round trip on every click. Relative links (`readers.html`) work only
+  from whichever directory the linking page happens to sit in. So:
+  - `/privacy` · `/terms` · `/about-coverage` · `/readers` · `/submit` · `/admin`
+  - with a query string too: `/coverage?id=…` · `/report?t=…`
+  - the writer's report link is built server-side as `SITE_URL + "/report?t=…"`
+    (`api/review-coverage.js`) — keep it that way; it is the one link that reaches
+    paying customers.
+  All 17 remaining `.html` links were converted on 2026-08-07: 12 footer links across
+  the six public pages, and 5 in `js/admin.js`.
 
 ---
 
@@ -631,10 +642,8 @@ must be in the `supabase_realtime` publication for live updates to fire.
   upscale** on a Retina screen at 1440 wide, so it renders soft. If a larger export
   turns up (~2880 wide) it is a drop-in swap; only the mobile `aspect-ratio` needs a
   look if the shape differs. Rename it again (`-v3`) rather than replacing in place.
-- **13 internal links still use the `.html` form** and take a 308 redirect each:
-  `privacy.html` ×6, `terms.html` ×6, `about-coverage.html` ×1. `cleanUrls` is on, so
-  the canonical paths are `/privacy`, `/terms`, `/about-coverage`. All the `readers`
-  links were normalised on 2026-08-06; these were left alone.
+- ~~Internal links using the `.html` form~~ — **all converted 2026-08-07.** See the
+  clean-URL rule under Coding Standards.
 - **The "work started" notice is now Arabic-only.** Its English half was dropped with
   the 2026-08-06 rewrite. The payment confirmation and the coverage report are still
   bilingual, so that email is the odd one out — decide which way they should all go.
@@ -1087,6 +1096,9 @@ privileged reads/writes.
 ## Deployment & Environment
 
 - **Vercel**, `vercel.json` sets `cleanUrls` (so `/admin` serves `admin.html`, etc.).
+  **The `.html` form still resolves, but via a 308 redirect** — so linking it costs
+  every visitor an extra round trip. Every internal link was converted on 2026-08-07;
+  see the rule under Coding Standards.
 - **Env vars (Vercel project settings):** `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`,
   `RESEND_API_KEY`, `MOYASAR_SECRET_KEY`, `MOYASAR_WEBHOOK_SECRET`, **`CRON_SECRET`**
   (Vercel Cron sends it as `Authorization: Bearer`; `/api/send-notices` fails closed
