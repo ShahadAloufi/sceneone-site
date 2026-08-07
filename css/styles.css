@@ -69,6 +69,12 @@ a, button {
 .nav.center { align-items: center; }
 .nav__logo { height: 56px; width: auto; }
 
+/* The bar is fixed, so an in-page jump would otherwise land with the section's
+   heading tucked underneath it. Applies to every linked section on the landing page
+   — the hero's "عرض التغطيات" and the nav's #about / #journey / #contact all rely
+   on it. `scroll-behavior: smooth` is already set globally on <html>. */
+.landing section[id] { scroll-margin-top: 112px; }
+
 /* ---- inline nav links (every page) ----
    Hidden by default: below the breakpoint the hamburger's overlay carries the same
    six destinations, so this is additive rather than a replacement. */
