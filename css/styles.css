@@ -722,9 +722,9 @@ a, button {
 @media (min-width: 640px) { .footer--doc { flex-direction: row; padding: 24px 40px; } }
 
 /* ====================== ABOUT-COVERAGE PAGE ====================== */
-.cov { min-height: 100vh; background: #000; color: #fff; direction: rtl; font-family: var(--font-head); }
-.cov .nav { background: #000; }
-.cov-hero { background: #000; }
+.cov { min-height: 100vh; background: var(--bg); color: #fff; direction: rtl; font-family: var(--font-head); }
+.cov .nav { background: var(--bg); }
+.cov-hero { background: var(--bg); }
 .cov-hero__head { padding: 128px 24px 48px; text-align: right; }
 .cov-hero__title { font-family: var(--font-head); font-size: 32px; font-weight: 700; color: #fff; line-height: 1.3; }
 .cov-hero__sub { margin-top: 16px; font-family: var(--font-body); font-size: 18px; color: #c6c6c6; letter-spacing: .02em; }
