@@ -6,6 +6,38 @@
 (function () {
   "use strict";
 
+  /* ---------- SLOW/SMOOTH SCROLL HELPER ---------- */
+  function easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+  function smoothScrollTo(targetY, duration) {
+    var startY = window.pageYOffset;
+    var diff = targetY - startY;
+    var startTime = null;
+    function step(timestamp) {
+      if (startTime === null) startTime = timestamp;
+      var elapsed = timestamp - startTime;
+      var progress = Math.min(elapsed / duration, 1);
+      window.scrollTo(0, startY + diff * easeInOutCubic(progress));
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  /* ---------- IN-PAGE ANCHOR LINKS: SLOWER, SMOOTHER SCROLL ---------- */
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    var id = a.getAttribute("href").slice(1);
+    if (!id) return;
+    var target = document.getElementById(id);
+    if (!target) return;
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      var y = target.getBoundingClientRect().top + window.pageYOffset - 100;
+      smoothScrollTo(y, 1400);
+      history.pushState(null, "", "#" + id);
+    });
+  });
+
   /* ---------- MENU OVERLAY ---------- */
   var menu = document.getElementById("menu");
   function openMenu() { if (menu) { menu.classList.add("open"); document.body.style.overflow = "hidden"; } }
