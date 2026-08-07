@@ -884,7 +884,7 @@
     function covLink(label, cls) {
       var link = document.createElement("a");
       link.className = cls;
-      link.href = "coverage.html?id=" + encodeURIComponent(s.id);
+      link.href = "/coverage?id=" + encodeURIComponent(s.id);
       link.textContent = label;
       cell.appendChild(link);
     }
@@ -1126,11 +1126,11 @@
     // Action: staff review a submitted coverage; open (read-only) one in review.
     if (bucket === "app") {
       var a = document.createElement("a"); a.className = "adm-link adm-link--gold";
-      a.href = "coverage.html?id=" + encodeURIComponent(s.id); a.textContent = t("reviewCov");
+      a.href = "/coverage?id=" + encodeURIComponent(s.id); a.textContent = t("reviewCov");
       right.appendChild(a);
     } else if (bucket === "rev") {
       var o = document.createElement("a"); o.className = "adm-link";
-      o.href = "coverage.html?id=" + encodeURIComponent(s.id);
+      o.href = "/coverage?id=" + encodeURIComponent(s.id);
       o.textContent = st === "revision_requested" ? t("revisionCov") : t("openCov");
       right.appendChild(o);
     }
@@ -1237,7 +1237,7 @@
       var covCell = tr.querySelector(".adm-cov");
       if (st === "approved" || delivered) {
         var link = document.createElement("a");
-        link.className = "adm-link"; link.href = "report.html?t=" + encodeURIComponent(s.report_token);
+        link.className = "adm-link"; link.href = "/report?t=" + encodeURIComponent(s.report_token);
         link.target = "_blank"; link.rel = "noopener"; link.textContent = t("viewReport");
         covCell.appendChild(link);
       } else {
@@ -1387,7 +1387,7 @@
     // editable workspace.
     var link = document.createElement("a");
     link.className = "adm-link";
-    link.href = "report.html?t=" + encodeURIComponent(s.report_token);
+    link.href = "/report?t=" + encodeURIComponent(s.report_token);
     link.target = "_blank"; link.rel = "noopener";
     link.textContent = t("viewReport");
     tr.querySelector(".adm-report").appendChild(link);
