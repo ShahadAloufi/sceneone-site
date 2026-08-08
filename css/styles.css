@@ -752,6 +752,12 @@ a, button {
 .cov-report { margin-top: 56px; display: flex; flex-direction: column; align-items: center; }
 .cov-report img { width: 100%; max-width: 560px; border-radius: 12px; border: 1px solid rgba(255,255,255,.1); }
 .cov-report span { margin-top: 16px; font-family: var(--font-body); font-size: 14px; color: rgba(255,255,255,.55); }
+.cov-report__btn {
+  margin-top: 24px; display: inline-block; font-family: var(--font-body); font-size: 15px; font-weight: 500;
+  color: #fff; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.35);
+  border-radius: 9999px; padding: 12px 32px; transition: background-color .2s ease, border-color .2s ease;
+}
+.cov-report__btn:hover { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.5); }
 
 /* TOC */
 .toc { display: none; }
