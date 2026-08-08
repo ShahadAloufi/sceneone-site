@@ -1581,7 +1581,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
    the glyphs) bleeding across the bottom where the wash turns black. Both
    assets are pre-built to sit on this exact gradient — see readers-hero-*.svg. */
 .au-hero {
-  position: relative; width: 100%; height: 650px; overflow: hidden;
+  position: relative; width: 100%; height: 700px; overflow: hidden;
   background: linear-gradient(180deg, #CD2E07 0%, #CD2E07 32%, var(--bg) 82%);
   padding: clamp(40px, 5vw, 72px) 0 0;
 }
