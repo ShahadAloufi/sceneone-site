@@ -768,7 +768,7 @@ a, button {
   .toc li.active button { color: #fff; font-weight: 500; }
 }
 @media (min-width: 1024px) {
-  .cov-wrap { padding: 64px 40px; gap: 64px; }
+  .cov-wrap { padding: 64px 80px; gap: 64px; }
   .cov-hero__head { padding: 128px 64px 48px; }
   .cov-hero__title { font-size: 48px; }
   .cov-section h2 { font-size: 36px; }
