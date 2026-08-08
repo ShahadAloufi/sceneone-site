@@ -1605,7 +1605,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
    the row above it (left+right, not a fixed width) so both "SCENE" and
    "ONE" stay fully visible instead of being cropped or shrunk to a corner. */
 .au-hero__wordmark {
-  position: absolute; z-index: 1; right: clamp(24px, 6vw, 80px);
+  position: absolute; z-index: 1; left: 50%; transform: translateX(-50%);
   width: 1047px; aspect-ratio: 1047 / 250; max-width: calc(100% - clamp(48px, 12vw, 160px));
   bottom: clamp(16px, 3vw, 32px);
 }
@@ -1682,6 +1682,6 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   .au-hero__title { font-size: 34px; }
   /* back in normal flow, stacked right after the title, instead of the
      desktop's absolute bottom-pin (there's no tall row height to escape here) */
-  .au-hero__wordmark { position: static; right: auto; bottom: auto; width: 82%; margin: 8px 0 0; }
+  .au-hero__wordmark { position: static; left: auto; right: auto; bottom: auto; transform: none; width: 82%; margin: 8px auto 0; }
   .au-about, .au-team { padding-left: 24px; padding-right: 24px; }
 }
