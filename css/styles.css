@@ -1591,7 +1591,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   direction: ltr; /* flex-end = physical right, matching the light in the bg photo (left) */
 }
 .au-hero__title {
-  margin-top: clamp(12px, 3vw, 36px); direction: rtl; text-align: right;
+  margin-top: clamp(44px, 7vw, 88px); direction: rtl; text-align: right;
   font-family: var(--font-head); font-weight: 700; color: #fff;
   font-size: clamp(30px, 4.5vw, 60px); line-height: 1.05;
 }
