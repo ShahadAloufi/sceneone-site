@@ -1583,7 +1583,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 .au-hero {
   position: relative; width: 100%; overflow: hidden;
   background: linear-gradient(180deg, #CD2E07 0%, #CD2E07 32%, var(--bg) 82%);
-  padding: clamp(48px, 7vw, 96px) 0 clamp(160px, 22vw, 340px);
+  padding: clamp(48px, 7vw, 96px) 0 clamp(170px, 24vw, 380px);
 }
 .au-hero__row {
   position: relative; z-index: 2; display: flex; justify-content: space-between;
@@ -1607,7 +1607,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 .au-hero__wordmark {
   position: absolute; z-index: 1; left: 50%; transform: translateX(-50%);
   width: 1047px; aspect-ratio: 1047 / 250; max-width: calc(100% - clamp(48px, 12vw, 160px));
-  bottom: clamp(56px, 8vw, 100px);
+  bottom: clamp(64px, 9vw, 130px);
 }
 .au-hero__wordmark img { width: 100%; height: 100%; display: block; }
 /* normal block below the hero (not inside it, since .au-hero has
