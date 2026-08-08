@@ -1576,89 +1576,35 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 .au .nav.scrolled { background: var(--bg); box-shadow: 0 6px 20px rgba(0, 0, 0, .35); }
 
 /* ── HERO ── */
-/* Height governs how much of the photo survives, not just how tall the band is:
-   the source is 2200x1916 (~1.15:1) in a full-width band, so `cover` crops the rest.
-   At 55vh only ~39% of the image showed — the screen alone, with the lighting truss
-   clipped and the audience gone entirely. 80vh shows ~57%, enough for the truss and
-   the audience silhouettes, while keeping the quote and divider above the fold.
-   Showing the whole photo would need ~139vh, which is why no amount of
-   background-position tuning ever fixed this. */
-.au-hero { position: relative; width: 100%; height: 80vh; min-height: 400px; overflow: hidden; display: flex; }
-.au-hero__bg {
-  position: absolute; inset: 0;
-  /* fill the viewport as a full-bleed hero; "cover" preserves the image aspect
-     (no stretch). Centred now that the photo is 16:9 (1672x941) rather than the
-     old near-square 2200x1916 — at 80vh only ~11% is cropped, so there is no
-     longer a part of the image worth favouring. */
-  background: #050505 url('../assets/aboutus-hero-v2.jpg') center center / cover no-repeat;
+/* Studio-light photo (top-left) + a red-to-black wash, with the "SCENE ONE"
+   wordmark (its letters filled by a clapperboard photo, transparent outside
+   the glyphs) bleeding across the bottom where the wash turns black. Both
+   assets are pre-built to sit on this exact gradient — see readers-hero-*.svg. */
+.au-hero {
+  position: relative; width: 100%; overflow: hidden;
+  background: linear-gradient(180deg, #CD2E07 0%, #CD2E07 32%, var(--bg) 82%);
+  padding-top: clamp(64px, 11vw, 132px);
 }
-.au-hero__shade {
-  position: absolute; inset: 0;
-  /* same dark-top / clear-middle / fade-to-bg transition as the landing
-     page's hero, for a consistent look between the two hero sections;
-     bottom stop is a partial-opacity version of --bg (not fully solid)
-     so the photo still shows through a little in that band */
-  background: linear-gradient(to bottom, rgba(0,0,0,.3), transparent, rgba(14,2,2,.88));
+.au-hero__row {
+  position: relative; z-index: 2; display: flex; justify-content: space-between;
+  align-items: flex-start; gap: 24px; padding: 0 clamp(24px, 6vw, 80px);
+  direction: ltr; /* physical order: light on the left, title on the right */
 }
+.au-hero__light { flex: 0 0 auto; width: clamp(150px, 24vw, 380px); margin-top: -8px; }
+.au-hero__light img { width: 100%; height: auto; display: block; }
+.au-hero__title {
+  margin-top: clamp(28px, 7vw, 96px); direction: rtl; text-align: right;
+  font-family: var(--font-head); font-weight: 700; color: #fff;
+  font-size: clamp(38px, 6.5vw, 92px); line-height: 1.05;
+}
+.au-hero__wordmark {
+  position: relative; z-index: 1; width: 100%; margin: clamp(8px, 3vw, 32px) 0 0;
+}
+.au-hero__wordmark img { width: 100%; height: auto; display: block; }
 /* normal block below the hero (not inside it, since .au-hero has
    overflow:hidden and would clip anything pushed past its bottom edge) */
 .au-hero__rule {
   margin: 24px clamp(24px, 7vw, 140px) 0; height: 1px; background: rgba(255,255,255,.22);
-}
-.au-hero__photo { display: none; }
-.au-hero__inner {
-  position: relative; z-index: 2; width: 100%;
-  max-width: none; margin: 0; padding: 96px 56px 64px;
-  display: grid; grid-template-columns: 1fr 1fr; align-items: start;
-  direction: ltr; /* physical columns: col 1 = left, col 2 = right */
-}
-.au-hero__title {
-  grid-column: 2; justify-self: end; direction: rtl; text-align: right;
-  font-family: var(--font-body); font-weight: 700; color: #fff;
-  font-size: clamp(34px, 5vw, 56px); line-height: .98; letter-spacing: -0.01em;
-}
-/* normal block below the hero (sibling of .au-hero__rule below it), not
-   an overlay -- sits naturally just above the divider line */
-.au-hero__quote {
-  margin: 24px clamp(24px, 7vw, 140px) 0; max-width: 320px; direction: rtl; text-align: right;
-}
-.au-hero__quote blockquote {
-  font-family: var(--font-body); font-size: 15px; line-height: 1.9; color: rgba(255,255,255,.85);
-}
-.au-hero__quote figcaption {
-  font-family: var(--font-body); font-size: 13px; color: rgba(255,255,255,.5); margin-top: 10px;
-}
-/* Sits on the auditorium's main screen. Absolutely positioned rather than part of
-   .au-hero__inner's grid so it tracks the PHOTO, not the text layout — the screen is
-   a fixed feature of the image, so the mark has to move with it. The main panel's
-   centre is slightly left of the frame's centre, hence 47%.
-   `screen` blending is what removes the wordmark's black background: the source PNG
-   has an alpha channel but its black is opaque, so as a plain image it would paint a
-   black slab over the photo. Screen also lets the bright screen behind lift the
-   letters, which reads as projection rather than a sticker. */
-.au-hero__mark {
-  position: absolute; z-index: 3;
-  /* Anchored to the PHOTO, not the band. `cover` centres the image, so the image's
-     centre always lands on the hero's centre; the screen's centre sits at 45.5%/54.7%
-     of the image, i.e. 4.5% left and 4.7% down from that. Since the crop is
-     width-driven at these proportions, the displayed image height is 0.563 x the hero
-     width — so the vertical offset is 4.7% x 0.563 = 2.6vw, which holds as the band
-     height changes. Change these only if the PHOTO changes. */
-  left: 45.5%; top: calc(50% + 2.6vw); transform: translate(-50%, -50%);
-  /* the main screen panel is ~38% of the hero width; the mark sits comfortably
-     inside it rather than spanning edge to edge */
-  width: clamp(220px, 24vw, 460px); height: auto;
-  /* Faded so it sits IN the screen rather than on top of it. Deliberately not
-     `mix-blend-mode: screen` — that was the first attempt and it washed the letters
-     out, because screen lifts blacks toward white and this sits on the brightest part
-     of the photo. The PNG's opaque black was keyed out instead (flood-filled from the
-     border, so the clapperboard detail inside the letters survives), leaving plain
-     alpha that opacity can then soften predictably.
-     `multiply` at ~.85 is the alternative: it picks up the screen's own shading and
-     falls off toward its darker edges, reading as projected light rather than an
-     evenly faded overlay. */
-  opacity: .6;
-  pointer-events: none;
 }
 
 /* ── ABOUT / STORY ── */
@@ -1712,7 +1658,6 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
-  .au-hero__inner { padding: 120px 32px 48px; }
   .au-about { padding-left: 32px; padding-right: 32px; }
   .au-team { padding-left: 32px; padding-right: 32px; }
   .au-about__inner { grid-template-columns: 1fr; gap: 20px; }
@@ -1721,36 +1666,11 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   .au-cards { grid-template-columns: 1fr; max-width: 460px; gap: 48px; }
 }
 @media (max-width: 640px) {
-  /* the hero was forced to 100vh even though the image (and text above
-     it) don't need that much room, leaving a big empty gap before the
-     divider. Stack image -> title -> quote -> rule in normal flow, sized
-     to content, so the photo starts immediately below the nav instead of
-     being pushed down by the title. .au-hero becomes a flex column and
-     .au-hero__inner dissolves (display:contents) so the title/quote it
-     wraps can be reordered independently. */
-  .au-hero { display: flex; flex-direction: column; height: auto; min-height: 0; }
-  .au-hero__bg { display: none; }
-  .au-hero__shade { display: none; }
-  .au-hero__inner { display: contents; }
-  /* Deliberately NOT the source's 16:9 — at full width that gives a ~210px strip,
-     too short to hold the chandeliers, the title and the wordmark without them
-     colliding. 4:3 crops the sides (the main screen stays in frame) and buys height,
-     restoring the separation the old near-square photo used to provide. */
-  .au-hero__photo { order: 1; display: block; width: 100%; aspect-ratio: 4 / 3;
-    background: #050505 url('../assets/aboutus-hero-v2.jpg') center center / cover no-repeat; }
-  /* title sits in the dark chandelier band, above the lit screens */
-  .au-hero__title {
-    position: absolute; top: 52px; right: 24px; left: auto; width: max-content;
-    max-width: calc(100% - 160px); text-align: right;
-    font-size: 26px; line-height: 1.15; text-shadow: 0 2px 14px rgba(0,0,0,.65); z-index: 5;
-  }
-  /* The desktop anchor assumes a width-driven crop; the mobile crop is height-driven,
-     so the mark is placed against the photo box directly. In the 4:3 mobile crop the
-     lit screen runs from ~35% to ~66% of the photo and the audience silhouettes start
-     at ~66% — at 54vw/58% the mark's bottom edge landed right on their heads. 40vw
-     centred at 50% keeps it inside the clear part of the screen. */
-  .au-hero__mark { left: 43%; top: 50%; width: 40vw; }
-  .au-hero__quote { order: 2; position: static; margin: 24px 24px 0; max-width: none; }
-  .au-hero__rule { order: 3; position: static; margin: 32px 24px 0; }
+  .au-hero { padding-top: 88px; }
+  .au-hero__row { flex-direction: column; align-items: flex-start; gap: 0; padding: 0 24px; }
+  .au-hero__light { width: 46vw; }
+  .au-hero__title { margin-top: 20px; align-self: flex-end; }
+  .au-hero__title { font-size: 40px; }
+  .au-hero__wordmark { width: 100%; margin: 12px 0 0; }
   .au-about, .au-team { padding-left: 24px; padding-right: 24px; }
 }
