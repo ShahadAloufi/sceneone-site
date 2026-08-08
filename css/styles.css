@@ -1674,7 +1674,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 @media (max-width: 640px) {
   .au-hero { height: 640px; background-image: url('../assets/readers-hero-bg-mobile.jpg'); padding: 72px 0 0; }
   .au-hero__row { padding: 0 24px; }
-  .au-hero__title { margin-top: 16px; font-size: 34px; }
+  .au-hero__title { margin-top: 48px; font-size: 34px; }
   /* the light sits mid-photo on the mobile crop, so the wordmark stays
      pinned to the bottom (like desktop) instead of flowing in-place —
      static flow would land it right on top of the light fixture */
