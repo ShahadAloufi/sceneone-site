@@ -143,7 +143,7 @@
     var old = btn.textContent;
     btn.textContent = "جارٍ الإرسال…";
 
-    fetch("/api/ask-question", {
+    fetch("/api/questions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ t: token, question: text }),

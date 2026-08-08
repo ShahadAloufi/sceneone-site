@@ -1067,18 +1067,20 @@ privileged reads/writes.
   `puppeteer-core`) and returns it as a download. Needs the `vercel.json`
   `includeFiles` glob, `engines.node` = 20, and `AWS_LAMBDA_JS_RUNTIME=nodejs20.x` set
   before the require — see the comment atop `api/report-pdf.js`.
-- **`POST /api/ask-question`** — **public** (`{ t: <report_token>, question }`); the
-  writer's follow-up question about their delivered report. Same gate as
-  `/api/report` (approved coverage only), capped at 10 questions per submission.
-  Inserts a `report_questions` row and emails the assigned reader (+ co-reader, +
-  the Scene One inbox) a link to `/answer?q=<answer_token>`.
-- **`GET /api/question?q=<answer_token>`** — **public** (the token is the auth); the
-  question + answer for the reader's reply page. Returns the title only — never the
-  writer's email.
-- **`POST /api/answer-question`** — **public** (`{ q: <answer_token>, answer }`); the
-  reader's reply. **One-shot**: the PATCH is conditioned on `answer=is.null`, so a
-  double-submit or a forwarded link can't overwrite a sent reply or email the writer
-  twice. Emails the answer to the writer (cc the Scene One inbox).
+- **`/api/questions`** — **public** (tokens are the auth); the whole post-delivery
+  Q&A. Three behaviours in **one function** — see the function-count note below.
+  - `GET ?q=<answer_token>` — the thread for the reader's reply page. Returns the
+    title only, never the writer's email.
+  - `POST { t: <report_token>, question }` — the writer asks. Same gate as
+    `/api/report` (approved coverage only), capped at 10 per submission. Inserts a
+    `report_questions` row and emails the assigned reader (+ co-reader, + the Scene
+    One inbox) a link to `/answer?q=<answer_token>`.
+  - `POST { q: <answer_token>, answer }` — the reader replies. **One-shot**: the
+    PATCH is conditioned on `answer=is.null`, so a double-submit or a forwarded link
+    can't overwrite a sent reply or email the writer twice. Emails the answer to the
+    writer (cc the Scene One inbox).
+  - The POST branch is chosen by which token is present; sending both is a 400
+    rather than a guess.
 - **`POST /api/log-access`** — any signed-in admin/reader; records their dashboard
   visit with the **server-read client IP** (`x-forwarded-for`) to `access_log`.
   Fire-and-forget from the client on sign-in; never blocks the UI.
@@ -1145,6 +1147,15 @@ privileged reads/writes.
   **The `.html` form still resolves, but via a 308 redirect** — so linking it costs
   every visitor an extra round trip. Every internal link was converted on 2026-08-07;
   see the rule under Coding Standards.
+- **⚠️ HARD CAP: 12 Serverless Functions per deployment (Hobby plan).** Every `.js`
+  file under `/api` is one function — **the count, not the traffic, is what fails the
+  build**, with `No more than 12 Serverless Functions can be added to a Deployment on
+  the Hobby plan`. The project sits at **11** (2026-08-08), so there is **one slot
+  left**. Adding a feature that needs several endpoints means **folding them into one
+  handler** that branches on method/payload, the way `api/questions.js` carries the
+  whole writer↔reader Q&A (GET thread + POST ask + POST answer). This bit once: the
+  Q&A shipped as three files, hit 13, and failed the production build. Check
+  `find api -name '*.js' | wc -l` before adding to `/api`.
 - **Env vars (Vercel project settings):** `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`,
   `RESEND_API_KEY`, `MOYASAR_SECRET_KEY`, `MOYASAR_WEBHOOK_SECRET`, **`CRON_SECRET`**
   (Vercel Cron sends it as `Authorization: Bearer`; `/api/send-notices` fails closed
