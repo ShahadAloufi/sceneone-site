@@ -1583,7 +1583,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 .au-hero {
   position: relative; width: 100%; overflow: hidden;
   background: linear-gradient(180deg, #CD2E07 0%, #CD2E07 32%, var(--bg) 82%);
-  padding-top: clamp(48px, 7vw, 96px);
+  padding: clamp(48px, 7vw, 96px) 0 clamp(96px, 11vw, 160px);
 }
 .au-hero__row {
   position: relative; z-index: 2; display: flex; justify-content: space-between;
@@ -1597,8 +1597,14 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   font-family: var(--font-head); font-weight: 700; color: #fff;
   font-size: clamp(32px, 5vw, 68px); line-height: 1.05;
 }
+/* Pinned to the hero's bottom edge — always the solid, fully-opaque end of the
+   gradient (the last color stop fills any remaining space) — rather than
+   flowing after .au-hero__row, whose height varies with the light photo's
+   tall intrinsic aspect ratio and could otherwise leave the wordmark
+   stranded mid-gradient on short/wide viewports. */
 .au-hero__wordmark {
-  position: relative; z-index: 1; width: clamp(260px, 44vw, 600px); margin: clamp(4px, 2vw, 20px) 0 0;
+  position: absolute; z-index: 1; right: 0; bottom: clamp(16px, 3vw, 32px);
+  width: clamp(240px, 32vw, 480px);
 }
 .au-hero__wordmark img { width: 100%; height: auto; display: block; }
 /* normal block below the hero (not inside it, since .au-hero has
@@ -1666,11 +1672,13 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   .au-cards { grid-template-columns: 1fr; max-width: 460px; gap: 48px; }
 }
 @media (max-width: 640px) {
-  .au-hero { padding-top: 72px; }
+  .au-hero { padding: 72px 0 24px; }
   .au-hero__row { flex-direction: column; align-items: flex-start; gap: 0; padding: 0 24px; }
   .au-hero__light { width: 32vw; }
   .au-hero__title { margin-top: 16px; align-self: flex-end; }
   .au-hero__title { font-size: 34px; }
-  .au-hero__wordmark { width: 82%; margin: 8px 0 0; }
+  /* back in normal flow, stacked right after the title, instead of the
+     desktop's absolute bottom-pin (there's no tall row height to escape here) */
+  .au-hero__wordmark { position: static; right: auto; bottom: auto; width: 82%; margin: 8px 0 0; }
   .au-about, .au-team { padding-left: 24px; padding-right: 24px; }
 }
