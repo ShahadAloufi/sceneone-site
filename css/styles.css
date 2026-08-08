@@ -1583,7 +1583,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 .au-hero {
   position: relative; width: 100%; overflow: hidden;
   background: linear-gradient(180deg, #CD2E07 0%, #CD2E07 32%, var(--bg) 82%);
-  padding: clamp(48px, 7vw, 96px) 0 clamp(48px, 6vw, 96px);
+  padding: clamp(48px, 7vw, 96px) 0 clamp(120px, 18vw, 290px);
 }
 .au-hero__row {
   position: relative; z-index: 2; display: flex; justify-content: space-between;
@@ -1605,10 +1605,11 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
    the row above it (left+right, not a fixed width) so both "SCENE" and
    "ONE" stay fully visible instead of being cropped or shrunk to a corner. */
 .au-hero__wordmark {
-  position: absolute; z-index: 1; right: clamp(24px, 6vw, 80px); height: 50px;
+  position: absolute; z-index: 1; right: clamp(24px, 6vw, 80px);
+  width: 1047px; aspect-ratio: 1047 / 250; max-width: calc(100% - clamp(48px, 12vw, 160px));
   bottom: clamp(16px, 3vw, 32px);
 }
-.au-hero__wordmark img { height: 100%; width: auto; display: block; }
+.au-hero__wordmark img { width: 100%; height: 100%; display: block; }
 /* normal block below the hero (not inside it, since .au-hero has
    overflow:hidden and would clip anything pushed past its bottom edge) */
 .au-hero__rule {
