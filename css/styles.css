@@ -1583,7 +1583,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 .au-hero {
   position: relative; width: 100%; overflow: hidden;
   background: linear-gradient(180deg, #CD2E07 0%, #CD2E07 32%, var(--bg) 82%);
-  padding: clamp(48px, 7vw, 96px) 0 clamp(96px, 11vw, 160px);
+  padding: clamp(48px, 7vw, 96px) 0 clamp(120px, 16vw, 260px);
 }
 .au-hero__row {
   position: relative; z-index: 2; display: flex; justify-content: space-between;
@@ -1601,10 +1601,12 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
    gradient (the last color stop fills any remaining space) — rather than
    flowing after .au-hero__row, whose height varies with the light photo's
    tall intrinsic aspect ratio and could otherwise leave the wordmark
-   stranded mid-gradient on short/wide viewports. */
+   stranded mid-gradient on short/wide viewports. Spans the same gutter as
+   the row above it (left+right, not a fixed width) so both "SCENE" and
+   "ONE" stay fully visible instead of being cropped or shrunk to a corner. */
 .au-hero__wordmark {
-  position: absolute; z-index: 1; right: 0; bottom: clamp(16px, 3vw, 32px);
-  width: clamp(240px, 32vw, 480px);
+  position: absolute; z-index: 1; left: clamp(24px, 6vw, 80px); right: clamp(24px, 6vw, 80px);
+  bottom: clamp(16px, 3vw, 32px);
 }
 .au-hero__wordmark img { width: 100%; height: auto; display: block; }
 /* normal block below the hero (not inside it, since .au-hero has
