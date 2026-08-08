@@ -1576,38 +1576,30 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 .au .nav.scrolled { background: var(--bg); box-shadow: 0 6px 20px rgba(0, 0, 0, .35); }
 
 /* ── HERO ── */
-/* Studio-light photo (top-left) + a red-to-black wash, with the "SCENE ONE"
-   wordmark (its letters filled by a clapperboard photo, transparent outside
-   the glyphs) bleeding across the bottom where the wash turns black. Both
-   assets are pre-built to sit on this exact gradient — see readers-hero-*.svg. */
+/* Photographed studio-light-on-red-to-black background (pre-built as a
+   finished photo, not a CSS gradient) — see readers-hero-bg-*.jpg, one crop
+   per breakpoint. The "SCENE ONE" wordmark (its letters filled by a
+   clapperboard photo) bleeds across the bottom where the photo turns black. */
 .au-hero {
   position: relative; width: 100%; height: 700px; overflow: hidden;
-  background: linear-gradient(180deg, #CD2E07 0%, #CD2E07 32%, var(--bg) 82%);
+  background: #1a0503 url('../assets/readers-hero-bg-desktop.jpg') center center / cover no-repeat;
   padding: clamp(40px, 5vw, 72px) 0 0;
 }
 .au-hero__row {
-  position: relative; z-index: 2; display: flex; justify-content: space-between;
+  position: relative; z-index: 2; display: flex; justify-content: flex-end;
   align-items: flex-start; gap: 24px; padding: 0 clamp(24px, 6vw, 80px);
-  direction: ltr; /* physical order: light on the left, title on the right */
+  direction: ltr; /* flex-end = physical right, matching the light in the bg photo (left) */
 }
-/* Sized by HEIGHT, not width: the source is very tall/narrow (523x1160), so
-   capping only its width let it render up to ~750px tall and became the
-   main driver of an oversized hero. Height + width:auto keeps the row compact
-   regardless of the photo's intrinsic aspect ratio. */
-.au-hero__light { flex: 0 0 auto; height: clamp(120px, 15vw, 220px); margin-top: -8px; }
-.au-hero__light img { height: 100%; width: auto; display: block; }
 .au-hero__title {
   margin-top: clamp(12px, 3vw, 36px); direction: rtl; text-align: right;
   font-family: var(--font-head); font-weight: 700; color: #fff;
   font-size: clamp(30px, 4.5vw, 60px); line-height: 1.05;
 }
-/* Pinned to the hero's bottom edge — always the solid, fully-opaque end of the
-   gradient (the last color stop fills any remaining space) — rather than
-   flowing after .au-hero__row, whose height varies with the light photo's
-   tall intrinsic aspect ratio and could otherwise leave the wordmark
-   stranded mid-gradient on short/wide viewports. Spans the same gutter as
-   the row above it (left+right, not a fixed width) so both "SCENE" and
-   "ONE" stay fully visible instead of being cropped or shrunk to a corner. */
+/* Pinned to the hero's bottom edge, over the photo's black portion, rather
+   than flowing in normal layout — keeps it anchored there regardless of
+   .au-hero__row's height. Spans the same gutter as the row above it
+   (left+right, not a fixed width) so both "SCENE" and "ONE" stay fully
+   visible instead of being cropped or shrunk to a corner. */
 .au-hero__wordmark {
   position: absolute; z-index: 1; left: 50%; transform: translateX(-50%);
   width: 820px; aspect-ratio: 1047 / 250; max-width: calc(100% - clamp(48px, 12vw, 160px));
@@ -1671,6 +1663,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
+  .au-hero { height: 650px; background-image: url('../assets/readers-hero-bg-tablet.jpg'); }
   .au-about { padding-left: 32px; padding-right: 32px; }
   .au-team { padding-left: 32px; padding-right: 32px; }
   .au-about__inner { grid-template-columns: 1fr; gap: 20px; }
@@ -1679,13 +1672,12 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   .au-cards { grid-template-columns: 1fr; max-width: 460px; gap: 48px; }
 }
 @media (max-width: 640px) {
-  .au-hero { height: auto; padding: 72px 0 24px; }
-  .au-hero__row { flex-direction: column; align-items: flex-start; gap: 0; padding: 0 24px; }
-  .au-hero__light { height: 34vw; }
-  .au-hero__title { margin-top: 16px; align-self: flex-end; }
-  .au-hero__title { font-size: 34px; }
-  /* back in normal flow, stacked right after the title, instead of the
-     desktop's absolute bottom-pin (there's no tall row height to escape here) */
-  .au-hero__wordmark { position: static; left: auto; right: auto; bottom: auto; transform: none; width: 82%; margin: 8px auto 0; }
+  .au-hero { height: 640px; background-image: url('../assets/readers-hero-bg-mobile.jpg'); padding: 72px 0 0; }
+  .au-hero__row { padding: 0 24px; }
+  .au-hero__title { margin-top: 16px; font-size: 34px; }
+  /* the light sits mid-photo on the mobile crop, so the wordmark stays
+     pinned to the bottom (like desktop) instead of flowing in-place —
+     static flow would land it right on top of the light fixture */
+  .au-hero__wordmark { width: 86%; }
   .au-about, .au-team { padding-left: 24px; padding-right: 24px; }
 }
