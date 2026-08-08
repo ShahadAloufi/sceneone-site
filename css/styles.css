@@ -1587,7 +1587,8 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 }
 .au-hero__row {
   position: relative; z-index: 2; display: flex; justify-content: flex-end;
-  align-items: flex-start; gap: 24px; padding: 0 clamp(24px, 6vw, 80px);
+  align-items: flex-start; gap: 24px;
+  padding-left: clamp(24px, 6vw, 80px); padding-right: clamp(16px, 3vw, 40px);
   direction: ltr; /* flex-end = physical right, matching the light in the bg photo (left) */
 }
 .au-hero__title {
