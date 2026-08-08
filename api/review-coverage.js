@@ -58,8 +58,9 @@ async function requireStaff(req) {
   return { user };
 }
 
-// Bilingual email inviting the writer to open their (now approved) report.
-function reportEmail(sub, link) {
+// Bilingual email inviting the writer to open their (now approved) report, and
+// to ask the reader a follow-up question about it (/ask, same report token).
+function reportEmail(sub, link, askLink) {
   var esc = escapeHtml;
   var title = sub.title_ar || sub.title_en || "";
   var name = (sub.writer || "").toString().trim();
@@ -91,10 +92,22 @@ function reportEmail(sub, link) {
               "<br> يمكنك عرض التقرير والإطلاع على تفاصيله من خلال الضغط على الزر أدناه" +
             "</p>" +
 
-            '<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:28px auto;"><tr>' +
+            '<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:28px auto 12px;"><tr>' +
               '<td style="border-radius:12px;background:#111111;">' +
                 '<a href="' + esc(link) + '" style="display:inline-block;padding:16px 40px;color:#ffffff;text-decoration:none;font-size:15px;font-weight:700;border-radius:12px;">عرض التقرير</a>' +
               "</td></tr></table>" +
+
+            // Secondary action: routes the writer's question to the assigned
+            // reader. Outlined rather than filled so it reads as the lesser of
+            // the two CTAs (Outlook ignores border-radius here; that's fine).
+            '<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto 6px;"><tr>' +
+              '<td style="border-radius:12px;border:1px solid #d7d0c6;">' +
+                '<a href="' + esc(askLink) + '" style="display:inline-block;padding:14px 32px;color:#15110f;text-decoration:none;font-size:14px;font-weight:600;border-radius:12px;">طلب توضيح/ استفسار حول التقرير</a>' +
+              "</td></tr></table>" +
+
+            '<p style="margin:0 auto;max-width:420px;color:#a49b90;font-size:12.5px;line-height:1.7;">' +
+              "سيصل استفسارك إلى القارئ الذي أعدّ تقريرك، وسيصلك ردّه على بريدك الإلكتروني." +
+            "</p>" +
 
             '<hr style="border:0;border-top:1px solid #ece7df;width:78%;margin:26px auto;">' +
 
@@ -209,7 +222,8 @@ module.exports = async (req, res) => {
   const filmLabel = FILM_EN[sub.film_type];
   const subject = "Scene One " + (filmLabel ? filmLabel + " " : "") + "Coverage Report";
   const link = SITE_URL + "/report?t=" + encodeURIComponent(sub.report_token);
-  const html = reportEmail(sub, link);
+  const askLink = SITE_URL + "/ask?t=" + encodeURIComponent(sub.report_token);
+  const html = reportEmail(sub, link, askLink);
 
   try {
     const r = await fetch("https://api.resend.com/emails", {

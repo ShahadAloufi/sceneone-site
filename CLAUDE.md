@@ -500,6 +500,15 @@ must be in the `supabase_realtime` publication for live updates to fire.
   only the active pipeline: unassigned / in review / submitted-awaiting-approval) and
   appears in those delivery tabs instead. The move happens live (realtime + on
   return to the dashboard).
+- **Post-delivery Q&A:** the report email's second button ("طلب توضيح/ استفسار حول
+  التقرير") sends the writer to `/ask?t=<report_token>`. Submitting stores a
+  `report_questions` row and emails the **assigned reader** (+ co-reader, + the Scene
+  One inbox) a link to `/answer?q=<answer_token>`, where the reader types the reply;
+  saving emails it to the writer. Both ends are **token-gated, no sign-in** — the same
+  model as the report itself. `answer_token` is deliberately separate from
+  `report_token` so forwarding a reply link never exposes the report. Answering is
+  **one-shot** (see `/api/answer-question`); a link that's already been answered
+  renders the thread read-only instead of a fresh form.
 - **PDF page count:** counted in the browser at upload (pdf.js); the coverage panel
   shows **page count − 1** (skips the title page). Non-PDF files keep the manual
   duration.
@@ -713,6 +722,31 @@ must be in the `supabase_realtime` publication for live updates to fire.
     to authenticated using ( public.is_super_admin(auth.uid()) );
   grant select on public.access_log to authenticated;
   grant all on public.access_log to service_role;
+
+  -- Post-delivery Q&A between the writer and the assigned reader.
+  -- Also in supabase/schema.sql §6.
+  create table if not exists public.report_questions (
+    id uuid primary key default gen_random_uuid(),
+    submission_id uuid not null references public.submissions(id) on delete cascade,
+    reader_id uuid references public.admins(id) on delete set null,
+    answer_token uuid not null unique default gen_random_uuid(),
+    question text not null,
+    answer text,
+    created_at timestamptz not null default now(),
+    answered_at timestamptz
+  );
+  create index if not exists report_questions_submission_idx
+    on public.report_questions (submission_id, created_at desc);
+  create index if not exists report_questions_answer_token_idx
+    on public.report_questions (answer_token);
+  alter table public.report_questions enable row level security;
+  drop policy if exists "staff+assigned read report questions" on public.report_questions;
+  create policy "staff+assigned read report questions" on public.report_questions for select
+    to authenticated using (
+      public.is_staff(auth.uid()) or public.is_assigned(auth.uid(), submission_id)
+    );
+  grant select on public.report_questions to authenticated;
+  grant all on public.report_questions to service_role;
 
   -- "Delivered by me": stamp the coverage when its report is sent to the writer.
   alter table public.coverages add column if not exists delivered_at timestamptz;
@@ -1033,6 +1067,18 @@ privileged reads/writes.
   `puppeteer-core`) and returns it as a download. Needs the `vercel.json`
   `includeFiles` glob, `engines.node` = 20, and `AWS_LAMBDA_JS_RUNTIME=nodejs20.x` set
   before the require — see the comment atop `api/report-pdf.js`.
+- **`POST /api/ask-question`** — **public** (`{ t: <report_token>, question }`); the
+  writer's follow-up question about their delivered report. Same gate as
+  `/api/report` (approved coverage only), capped at 10 questions per submission.
+  Inserts a `report_questions` row and emails the assigned reader (+ co-reader, +
+  the Scene One inbox) a link to `/answer?q=<answer_token>`.
+- **`GET /api/question?q=<answer_token>`** — **public** (the token is the auth); the
+  question + answer for the reader's reply page. Returns the title only — never the
+  writer's email.
+- **`POST /api/answer-question`** — **public** (`{ q: <answer_token>, answer }`); the
+  reader's reply. **One-shot**: the PATCH is conditioned on `answer=is.null`, so a
+  double-submit or a forwarded link can't overwrite a sent reply or email the writer
+  twice. Emails the answer to the writer (cc the Scene One inbox).
 - **`POST /api/log-access`** — any signed-in admin/reader; records their dashboard
   visit with the **server-read client IP** (`x-forwarded-for`) to `access_log`.
   Fire-and-forget from the client on sign-in; never blocks the UI.

@@ -1,0 +1,209 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Scene One — الرد على استفسار الكاتب</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+  document.documentElement.setAttribute('lang','ar');
+  document.documentElement.setAttribute('dir','rtl');
+</script>
+<style>
+  /* Same shell as report.html / ask.html — the reader arrives here from the
+     question email, so it should read as part of the same flow. */
+  :root{
+    --ink:#15110f; --orange:#CD2E07; --line:#e7e2da; --line2:#efebe3;
+    --muted:#8a8178; --label:#6f665e; --soft:#f3efe8;
+    --page:#efeae2;
+    --font:'IBM Plex Sans Arabic','IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--page);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+
+  .bar{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:14px;
+       padding:12px 20px;background:rgba(14,14,14,.96);border-bottom:2px solid var(--orange)}
+  .bar .wm{color:#fff;letter-spacing:.2em;font-weight:700;font-size:15px}
+  .bar .wm span{color:var(--orange)}
+
+  main{padding:28px 16px 60px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;max-width:640px;margin:0 auto;
+        box-shadow:0 18px 50px rgba(0,0,0,.12);padding:40px 44px}
+  @media(max-width:620px){.card{padding:28px 20px}}
+
+  h1{font-size:23px;font-weight:600;margin:0 0 10px;line-height:1.4}
+  .title{font-size:14px;color:var(--muted);margin:0 0 26px}
+  .title strong{color:var(--ink);font-weight:600}
+
+  .quote{background:var(--soft);border-radius:12px;padding:18px 20px;margin:0 0 26px}
+  .quote .k{font-size:10px;letter-spacing:.06em;color:var(--label);font-weight:600;margin-bottom:8px}
+  .quote .v{font-size:14.5px;line-height:1.8;white-space:pre-wrap}
+
+  .reply{border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:0 0 4px}
+  .reply .k{font-size:10px;letter-spacing:.06em;color:var(--orange);font-weight:600;margin-bottom:8px}
+  .reply .v{font-size:14.5px;line-height:1.8;white-space:pre-wrap}
+
+  label{display:block;font-size:10px;letter-spacing:.06em;text-transform:uppercase;
+        color:var(--label);font-weight:600;margin:0 0 8px}
+  textarea{width:100%;min-height:180px;resize:vertical;font-family:inherit;font-size:14.5px;line-height:1.8;
+           color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  textarea:focus{outline:none;border-color:var(--orange)}
+  .count{font-size:12px;color:var(--muted);margin-top:8px;text-align:left;direction:ltr}
+
+  .btn{margin-top:22px;width:100%;border:0;background:#111;color:#fff;font-family:inherit;
+       font-size:15px;font-weight:600;padding:15px 20px;border-radius:12px;cursor:pointer;transition:.15s}
+  .btn:hover:not(:disabled){background:#000}
+  .btn:disabled{opacity:.55;cursor:default}
+
+  .msg{margin-top:16px;font-size:14px;line-height:1.7;border-radius:10px;padding:12px 14px;display:none}
+  .msg.err{display:block;background:#fdecea;color:#8f2213}
+
+  .state{max-width:520px;margin:80px auto;text-align:center;padding:0 20px;color:var(--label)}
+  .state h2{color:var(--ink);font-size:20px;margin:0 0 8px}
+  [hidden]{display:none!important}
+
+  .done{text-align:center}
+  .done .tick{width:52px;height:52px;border-radius:50%;background:var(--soft);color:var(--orange);
+              display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 18px}
+  .done h2{font-size:21px;margin:0 0 10px}
+  .done p{font-size:14.5px;color:var(--label);margin:0}
+</style>
+
+<div class="bar">
+  <div class="wm">SCENE&nbsp;<span>ONE</span></div>
+</div>
+
+<main>
+  <div class="state" id="loading"><h2>جارٍ التحميل…</h2></div>
+
+  <div class="state" id="errorBox" hidden>
+    <h2>الرابط غير متاح</h2>
+    <p>قد يكون الرابط غير صحيح أو منتهي الصلاحية.</p>
+  </div>
+
+  <div class="card" id="form" hidden>
+    <h1>الرد على استفسار الكاتب</h1>
+    <p class="title" id="titleLine"></p>
+
+    <div class="quote">
+      <div class="k">استفسار الكاتب</div>
+      <div class="v" id="qText"></div>
+    </div>
+
+    <label for="a">اكتب ردّك على استفسار الكاتب</label>
+    <textarea id="a" maxlength="5000" placeholder="اكتب ردّك هنا…"></textarea>
+    <div class="count"><span id="count">0</span> / 5000</div>
+
+    <button class="btn" id="send">إرسال الرد إلى الكاتب</button>
+    <div class="msg" id="msg"></div>
+  </div>
+
+  <!-- Already answered: show the thread read-only rather than a form. -->
+  <div class="card" id="answered" hidden>
+    <h1>تم الرد على هذا الاستفسار</h1>
+    <p class="title" id="titleLine2"></p>
+    <div class="quote">
+      <div class="k">استفسار الكاتب</div>
+      <div class="v" id="qText2"></div>
+    </div>
+    <div class="reply">
+      <div class="k">ردّك</div>
+      <div class="v" id="aText"></div>
+    </div>
+  </div>
+
+  <div class="card done" id="done" hidden>
+    <div class="tick">✓</div>
+    <h2>تم إرسال ردّك</h2>
+    <p>وصل ردّك إلى الكاتب على بريده الإلكتروني.</p>
+  </div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  function $(id) { return document.getElementById(id); }
+
+  var token = new URLSearchParams(location.search).get("q") || "";
+  var UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+  function showError() {
+    $("loading").hidden = true; $("form").hidden = true; $("errorBox").hidden = false;
+  }
+
+  if (!UUID_RE.test(token)) { showError(); return; }
+
+  function titleOf(s) { return (s && (s.title_ar || s.title_en)) || ""; }
+  function setTitle(el, t) {
+    if (!t) return;
+    el.textContent = "";
+    el.appendChild(document.createTextNode("العنوان: "));
+    var strong = document.createElement("strong");
+    strong.textContent = t;
+    el.appendChild(strong);
+  }
+
+  fetch("/api/question?q=" + encodeURIComponent(token))
+    .then(function (r) { if (!r.ok) throw new Error("unavailable"); return r.json(); })
+    .then(function (d) {
+      var t = titleOf(d.submission);
+      $("loading").hidden = true;
+
+      if (d.answer) {
+        setTitle($("titleLine2"), t);
+        $("qText2").textContent = d.question || "";
+        $("aText").textContent = d.answer;
+        $("answered").hidden = false;
+        return;
+      }
+
+      setTitle($("titleLine"), t);
+      $("qText").textContent = d.question || "";
+      $("form").hidden = false;
+    })
+    .catch(showError);
+
+  var a = $("a");
+  a.addEventListener("input", function () { $("count").textContent = a.value.length; });
+
+  $("send").addEventListener("click", function () {
+    var btn = this;
+    var text = a.value.trim();
+    var msg = $("msg");
+    msg.className = "msg";
+
+    if (!text) {
+      msg.className = "msg err";
+      msg.textContent = "الرجاء كتابة الرد قبل الإرسال.";
+      return;
+    }
+
+    btn.disabled = true;
+    var old = btn.textContent;
+    btn.textContent = "جارٍ الإرسال…";
+
+    fetch("/api/answer-question", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ q: token, answer: text }),
+    })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) {
+        if (!res.ok) throw new Error((res.d && res.d.message) || "failed");
+        $("form").hidden = true;
+        $("done").hidden = false;
+      })
+      .catch(function (e) {
+        msg.className = "msg err";
+        msg.textContent = e.message && e.message !== "failed"
+          ? e.message
+          : "تعذّر إرسال الرد، حاول مرة أخرى.";
+        btn.disabled = false;
+        btn.textContent = old;
+      });
+  });
+})();
+</script>

@@ -569,3 +569,53 @@ create policy "super admins read access log"
 -- No client INSERT policy: rows are written only by the service role.
 grant select on public.access_log to authenticated;
 grant all on public.access_log to service_role;
+
+-- ------------------------------------------------------------
+-- 6) REPORT QUESTIONS — the writer's follow-up questions about a delivered
+-- report, and the assigned reader's replies.
+--
+-- Flow: the report email gives the writer a "طلب توضيح/استفسار" button →
+-- /ask?t=<report_token>. Submitting inserts a row here and emails the assigned
+-- reader a link to /answer?q=<answer_token>, where they type the reply; saving
+-- it emails the answer back to the writer.
+--
+-- Both links are unguessable-token-gated, matching the report itself: neither
+-- the writer nor the reader signs in. `answer_token` is separate from the
+-- submission's `report_token` so that forwarding a reply link never exposes the
+-- report (and vice versa).
+-- ------------------------------------------------------------
+create table if not exists public.report_questions (
+  id            uuid primary key default gen_random_uuid(),
+  submission_id uuid not null references public.submissions(id) on delete cascade,
+  -- Reader the question was routed to (the submission's assignee at ask time).
+  -- Kept even if that admin is later removed, so the thread stays readable.
+  reader_id     uuid references public.admins(id) on delete set null,
+  answer_token  uuid not null unique default gen_random_uuid(),
+  question      text not null,
+  answer        text,
+  created_at    timestamptz not null default now(),
+  answered_at   timestamptz
+);
+create index if not exists report_questions_submission_idx
+  on public.report_questions (submission_id, created_at desc);
+create index if not exists report_questions_answer_token_idx
+  on public.report_questions (answer_token);
+
+alter table public.report_questions enable row level security;
+
+-- Staff read everything; readers read threads on scripts they're assigned to.
+-- (Writers and readers reach their own thread through the token-gated API with
+--  the service-role key, not through RLS.)
+drop policy if exists "staff+assigned read report questions" on public.report_questions;
+create policy "staff+assigned read report questions"
+  on public.report_questions for select
+  to authenticated
+  using (
+    public.is_staff(auth.uid())
+    or public.is_assigned(auth.uid(), submission_id)
+  );
+
+-- No client INSERT/UPDATE policies: rows are written only by the service role
+-- (/api/ask-question, /api/answer-question), which gates on the tokens.
+grant select on public.report_questions to authenticated;
+grant all on public.report_questions to service_role;
