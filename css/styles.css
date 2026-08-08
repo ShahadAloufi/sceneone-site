@@ -1675,7 +1675,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
-  .au-hero { height: 650px; background-image: url('../assets/readers-hero-bg-tablet.jpg'); }
+  .au-hero { height: 900px; background-image: url('../assets/readers-hero-bg-tablet.jpg'); }
   .au-about { padding-left: 32px; padding-right: 32px; }
   .au-team { padding-left: 32px; padding-right: 32px; }
   .au-about__inner { grid-template-columns: 1fr; gap: 20px; }
