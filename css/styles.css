@@ -1581,9 +1581,9 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
    the glyphs) bleeding across the bottom where the wash turns black. Both
    assets are pre-built to sit on this exact gradient — see readers-hero-*.svg. */
 .au-hero {
-  position: relative; width: 100%; overflow: hidden;
+  position: relative; width: 100%; height: 600px; overflow: hidden;
   background: linear-gradient(180deg, #CD2E07 0%, #CD2E07 32%, var(--bg) 82%);
-  padding: clamp(40px, 5vw, 72px) 0 clamp(140px, 17vw, 300px);
+  padding: clamp(40px, 5vw, 72px) 0 0;
 }
 .au-hero__row {
   position: relative; z-index: 2; display: flex; justify-content: space-between;
@@ -1679,7 +1679,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   .au-cards { grid-template-columns: 1fr; max-width: 460px; gap: 48px; }
 }
 @media (max-width: 640px) {
-  .au-hero { padding: 72px 0 24px; }
+  .au-hero { height: auto; padding: 72px 0 24px; }
   .au-hero__row { flex-direction: column; align-items: flex-start; gap: 0; padding: 0 24px; }
   .au-hero__light { height: 34vw; }
   .au-hero__title { margin-top: 16px; align-self: flex-end; }
