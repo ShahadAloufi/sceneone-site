@@ -34,6 +34,7 @@ const crypto = require("crypto");
 const { fetchPayment } = require("../lib/moyasar");
 const {
   sendNotification, sendConfirmation, sendRefundAlert, sendUnreconciledAlert,
+  sendReaderNotice,
 } = require("../lib/submission-emails");
 
 // Statuses a refund may pull out of the pipeline on its own. These are exactly
@@ -278,11 +279,13 @@ module.exports = async (req, res) => {
     return res.status(200).json({ ok: true, duplicate: true });
   }
 
-  // Now that the money has cleared, tell the writer and the team. Neither send
-  // throws — both swallow and log their own failures — so a Resend outage can't
-  // turn into a 502 that replays the whole webhook.
+  // Now that the money has cleared, tell the writer, the team, and every reader
+  // (the script just landed in the claimable pool). None of the three throws —
+  // each swallows and logs its own failures — so a Resend outage can't turn
+  // into a 502 that replays the whole webhook.
   await sendConfirmation(updated[0]);
   await sendNotification(updated[0]);
+  await sendReaderNotice(supabaseUrl, serviceKey);
 
   return res.status(200).json({ ok: true, submission: updated[0].id });
 };

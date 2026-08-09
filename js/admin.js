@@ -97,7 +97,8 @@
       fName: "الاسم", fRole: "الدور", roleAdmin: "مشرف", roleSuper: "مشرف أعلى", createBtn: "إنشاء المشرف",
       roleSeniorReader: "قارئ أول", roleJuniorReader: "قارئ مبتدئ", assignCo: "إضافة قارئ مشارك",
       assignTwice: "لا يمكنك إسناد نفسك مرتين",
-      assignBlocked: "أرسل تغطيتك الحالية للاعتماد قبل إسناد نص جديد.",
+      assignBlocked: "لا يمكنك قبول تكليف جديد حتى يُعتمد تقرير تكليفك الحالي ويُرسل إلى الكاتب.",
+      claimBlockedLevel: "هذا النص لكاتب محترف أو متمرّس، وهو مخصص لقارئ أول.",
       claimConfirm: "سيتم إشعار الكاتب ببدء العمل على نصه بعد ساعتين. يمكنك إلغاء الإسناد خلال هذه المدة. هل تريد المتابعة؟",
       covLocked: "أسند نفسك أولاً", covDenied: "لا يمكنك عرض هذا التقييم إلا بعد إسناد نفسك للنص.",
       phName: "اسم المشرف", phPassword: "8 أحرف على الأقل",
@@ -176,7 +177,8 @@
       fName: "Name", fRole: "Role", roleAdmin: "Admin", roleSuper: "Super admin", createBtn: "Create admin",
       roleSeniorReader: "Senior Reader", roleJuniorReader: "Junior Reader", assignCo: "Add co-reader",
       assignTwice: "You cannot assign yourself twice",
-      assignBlocked: "Submit your current coverage for approval before taking a new one.",
+      assignBlocked: "You can't take a new assignment until your current report is approved and sent to the writer.",
+      claimBlockedLevel: "This script is from a professional or veteran writer — reserved for senior readers.",
       claimConfirm: "The writer will be notified that you started working on their script after 2 hours. You can release it before then. Continue?",
       covLocked: "Assign yourself first", covDenied: "You can only view this coverage after assigning yourself to the script.",
       phName: "Admin name", phPassword: "At least 8 characters",
@@ -787,6 +789,29 @@
   // True when the signed-in user is assigned to a submission (primary or co-reader).
   function amAssignedTo(s) { return !!me && (s.assigned_to === me.id || s.co_reader_id === me.id); }
 
+  // ---- Claim eligibility (mirrors the server rules in /api/claim-script) ----
+  // These only decide whether the "+" is offered and what the tooltip says. The
+  // server re-checks both and is the real gate — this exists so a reader isn't
+  // invited to click something that will be refused.
+
+  // Writer levels a junior reader may not take. Keep in sync with
+  // RESTRICTED_LEVELS in api/claim-script.js.
+  var JUNIOR_BLOCKED_LEVELS = ["professional", "veteran"];
+  function juniorBlockedFrom(s) {
+    return !!me && me.role === "junior_reader" &&
+           JUNIOR_BLOCKED_LEVELS.indexOf(s.writer_level) !== -1;
+  }
+
+  // One active assignment per reader. `currentRows` is already the active
+  // pipeline (renderSubmissionsTable drops delivered scripts), so anything in it
+  // that is mine counts as active. The server is stricter — it also counts
+  // assigned-but-refunded scripts, which never reach this list — so a rare
+  // false-negative here still fails safely at the API with assignBlocked.
+  function hasActiveAssignment() {
+    if (!me || !isReader(me.role)) return false;
+    return currentRows.some(amAssignedTo);
+  }
+
   // Release window. A reader can release a script they just claimed until the
   // writer is notified, after which the claim is locked. IMPORTANT: readers are
   // TOLD 2 hours, but the real window is 3 (a hidden buffer). This constant is the
@@ -811,12 +836,16 @@
   }
 
   // The circular "+" icon used to claim a slot (primary or co-reader).
-  function addSlotBtn(cell, s, which) {
-    var label = which === "co" ? t("assignCo") : t("assignMe");
+  // `blockedReason` (optional) renders it disabled with that explanation as the
+  // tooltip, for a script this reader isn't allowed to take.
+  function addSlotBtn(cell, s, which, blockedReason) {
+    var label = blockedReason || (which === "co" ? t("assignCo") : t("assignMe"));
     var add = document.createElement("button");
-    add.className = "adm-av adm-av--add" + (which === "co" ? " adm-av--co" : "");
+    add.className = "adm-av adm-av--add" + (which === "co" ? " adm-av--co" : "") +
+                    (blockedReason ? " adm-av--static" : "");
     add.title = label;
     add.setAttribute("aria-label", label);
+    if (blockedReason) add.disabled = true;
     add.innerHTML =
       '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
       '<path d="M14 19a6 6 0 0 0-12 0"/><circle cx="8" cy="9" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>';
@@ -860,8 +889,14 @@
     var row = document.createElement("div");
     row.className = "adm-assignee__row";
     if (!s.assigned_to) {
-      // Readers may claim freely — there is no one-active-assignment limit.
-      row.appendChild(addSlotBtn(cell, s, "primary"));
+      // Staff assign without restriction; readers are gated by the same two
+      // rules /api/claim-script enforces (see claim eligibility helpers above).
+      var blocked = null;
+      if (me && isReader(me.role)) {
+        if (juniorBlockedFrom(s)) blocked = t("claimBlockedLevel");
+        else if (hasActiveAssignment()) blocked = t("assignBlocked");
+      }
+      row.appendChild(addSlotBtn(cell, s, "primary", blocked));
     } else {
       row.appendChild(slotAvatar(s.assigned_to, cell, s, "primary"));
       if (isJunior(s.assigned_to)) {
@@ -982,7 +1017,12 @@
       refreshCoverageCell(cell, s);
       updateKpis(currentRows, currentCov);
       var msg = out.message || "";
-      alert(/READER_HAS_ACTIVE_ASSIGNMENT/.test(msg) ? t("assignBlocked") : (msg || t("assignFail")));
+      // Markers set by /api/claim-script so the copy shown is localised here
+      // rather than echoing the server's Arabic fallback.
+      var friendly = /READER_HAS_ACTIVE_ASSIGNMENT/.test(msg) ? t("assignBlocked")
+                   : /JUNIOR_LEVEL_RESTRICTED/.test(msg) ? t("claimBlockedLevel")
+                   : (msg || t("assignFail"));
+      alert(friendly);
       return;
     }
     // Keep the claim timestamp so the release window is judged correctly without

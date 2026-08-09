@@ -90,7 +90,7 @@ module.exports = async (req, res) => {
 
   const subResp = await fetch(
     url + "/rest/v1/submissions?id=eq." + encodeURIComponent(subId) +
-    "&select=id,title_ar,title_en,writer,email,status,assigned_to,co_reader_id,assigned_at,writer_notified_at",
+    "&select=id,title_ar,title_en,writer,email,status,assigned_to,co_reader_id,assigned_at,writer_notified_at,writer_level",
     { headers }
   );
   const subs = subResp.ok ? await subResp.json() : [];
@@ -171,7 +171,6 @@ module.exports = async (req, res) => {
   }
 
   // ----------------------------- CLAIM -----------------------------
-  // Readers may claim freely — there is no one-active-assignment limit.
   if (sub.assigned_to) {
     return res.status(409).json({ message: "هذا النص مُسند بالفعل" });
   }
@@ -179,6 +178,46 @@ module.exports = async (req, res) => {
   // pool, and /api/payment-webhook is the only thing that puts it there.
   if (sub.status !== "unassigned") {
     return res.status(409).json({ message: "لم يكتمل دفع رسوم هذا النص" });
+  }
+
+  // Junior readers are kept off experienced writers: the script's self-declared
+  // writer_level gates the claim, not the reader's own track record with it.
+  const RESTRICTED_LEVELS = ["professional", "veteran"];
+  if (me.role === "junior_reader" && RESTRICTED_LEVELS.indexOf(sub.writer_level) !== -1) {
+    // Leading marker (like READER_HAS_ACTIVE_ASSIGNMENT below) so js/admin.js can
+    // swap in its own localised copy instead of echoing this Arabic fallback.
+    return res.status(403).json({
+      message: "JUNIOR_LEVEL_RESTRICTED: هذا النص لكاتب محترف أو متمرّس، وهو مخصص لقارئ أول",
+    });
+  }
+
+  // One-active-assignment limit: every reader (junior or senior) may hold only
+  // one undelivered script at a time, as primary OR co-reader. "Undelivered"
+  // mirrors the dashboard's own delivered_at check (see admin.js) — a script
+  // whose coverage has been approved has left the reader's active queue even if
+  // assigned_to still points at them, so it must not count here.
+  const activeResp = await fetch(
+    url + "/rest/v1/submissions?select=id,coverages(delivered_at)" +
+    "&or=(assigned_to.eq." + encodeURIComponent(me.id) + ",co_reader_id.eq." + encodeURIComponent(me.id) + ")",
+    { headers }
+  );
+  if (!activeResp.ok) {
+    console.error("claim-script active-check failed:", activeResp.status, await activeResp.text());
+    return res.status(502).json({ message: "تعذّر التحقق من التكليفات الحالية" });
+  }
+  const activeRows = await activeResp.json();
+  const hasActive = activeRows.some(function (row) {
+    var cov = row.coverages;
+    if (Array.isArray(cov)) cov = cov[0];
+    return !cov || !cov.delivered_at;
+  });
+  if (hasActive) {
+    // The literal marker (not just the Arabic text) is what js/admin.js's
+    // assign() regex-matches to show the friendlier assignBlocked copy instead
+    // of this raw fallback — keep both in sync if either changes.
+    return res.status(409).json({
+      message: "READER_HAS_ACTIVE_ASSIGNMENT: لديك تكليف نشط بالفعل، أكمل تسليمه قبل قبول تكليف جديد",
+    });
   }
 
   const claimedAt = new Date();

@@ -1308,6 +1308,12 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   border: 1.5px dashed var(--adm-outline-line);
 }
 .adm-av--add:hover { color: #C9A24B; border-color: #C9A24B; box-shadow: none; transform: none; }
+/* Claim slot the signed-in reader isn't eligible for (junior vs. writer level, or
+   they already hold an active assignment — see renderAssignee in js/admin.js).
+   Shown rather than hidden so the reason is discoverable via the tooltip; the
+   :hover override is required because :hover still matches a disabled button. */
+.adm-av--add:disabled { opacity: .38; cursor: not-allowed; }
+.adm-av--add:disabled:hover { color: var(--adm-muted); border-color: var(--adm-outline-line); }
 /* Primary + co-reader avatars sit side by side, slightly overlapped. */
 .adm-assignee__row { display: inline-flex; align-items: center; gap: 6px; }
 

@@ -51,9 +51,15 @@ Actively iterating on UX polish and workflow features.
   after 2h") and starts a release window. The writer's "work started" email is sent by
   a **sweep over scripts still assigned past the window** (`lib/assignment-notices.js`),
   never scheduled ahead — so releasing simply stops it qualifying. Readers are told
-  **2h** but the real window is **3h** (intentional buffer). No one-active-assignment
-  limit — readers claim freely. All claims/releases/reassigns go through
-  `/api/claim-script`, which also runs the sweep.
+  **2h** but the real window is **3h** (intentional buffer). All
+  claims/releases/reassigns go through `/api/claim-script`, which also runs the sweep.
+- **Claim eligibility (readers only; staff are exempt)** — two rules, both enforced in
+  `/api/claim-script` and mirrored in the dashboard so the "+" is disabled with a
+  reason rather than failing on click: (1) **junior readers cannot claim
+  `professional` / `veteran` writers**; (2) **one active assignment per reader** —
+  blocked while they hold any submission (primary *or* co-reader) whose coverage
+  isn't `delivered_at`. Submitting for approval does **not** free them; staff approval
+  does.
 - **Staff dashboard = kanban** (In review / Awaiting approval) with a **reassign**
   picker; readers keep the detailed table (with a "what I'm working on" filter). Staff
   also get **All submissions** + **Deliveries** full-detail tabs (grouped by month,
@@ -133,8 +139,12 @@ Do NOT introduce Next.js/React/a compiler/npm build. Keep it buildless.
 - **Server modules (`/lib`):** shared server-side code, deliberately **outside
   `/api`** because Vercel turns every file under `/api` into a public route.
   `moyasar.js` (invoice creation + payment lookup), `submission-emails.js` (the
-  writer confirmation + team alert + refund alert + unreconciled-payment alert,
-  all sent from the payment webhook; the payment prompt from `/api/submissions`).
+  writer confirmation + team alert + **reader "new assignment available" broadcast**
+  + refund alert + unreconciled-payment alert, all sent from the payment webhook;
+  the payment prompt from `/api/submissions`). The reader broadcast
+  (`sendReaderNotice`) BCCs every `senior_reader`/`junior_reader` once the script
+  reaches the pool, and deliberately names neither the script nor the writer —
+  eligibility is decided in the dashboard, not the inbox.
 - **Schema:** `supabase/schema.sql` is the source of record; **schema changes are
   run manually in the Supabase SQL Editor** (the file is not auto-applied).
 
@@ -441,8 +451,23 @@ must be in the `supabase_realtime` publication for live updates to fire.
   through `/api/claim-script`; `enforce_assignment_lock()` rejects client-side claims
   outright (`ASSIGNMENT_VIA_API_ONLY`) so the notice can never be skipped, and rejects
   any release once locked (`ASSIGNMENT_LOCKED`). **Co-reader slots have no window and
-  no notice.** **No one-active-assignment limit** — readers may claim as many scripts
-  as they like.
+  no notice.**
+- **Claim eligibility** is enforced **in `/api/claim-script`, not the DB.** That is
+  sufficient for PRIMARY claims precisely because `enforce_assignment_lock()` already
+  rejects client-side ones (`ASSIGNMENT_VIA_API_ONLY`), so the API is the only way in.
+  Two rules, readers only (staff exempt):
+  - **Junior readers cannot claim `professional` / `veteran` writers**
+    (`RESTRICTED_LEVELS` in claim-script.js; mirrored as `JUNIOR_BLOCKED_LEVELS` in
+    admin.js). Rejects 403 `JUNIOR_LEVEL_RESTRICTED:`.
+  - **One active assignment per reader** — any submission where they are
+    `assigned_to` **or** `co_reader_id` and the coverage has no `delivered_at`.
+    Rejects 409 `READER_HAS_ACTIVE_ASSIGNMENT:`. Both messages carry that leading
+    marker so `js/admin.js` swaps in localised copy instead of echoing the Arabic.
+  - ⚠️ **Co-reader claims bypass both rules**: `assignCo()` writes `co_reader_id`
+    straight through the Supabase client, never touching `/api/claim-script`. Holding
+    a co-reader slot *counts against* the limit but taking one is not itself gated.
+    Deliberate for now — gating it could deadlock the junior-mentorship pairing when
+    every senior is busy.
 - **Staff reassignment:** staff (admin/super_admin) get a reader picker on each
   kanban card (`action: "reassign"`). It is the only way to move a locked
   assignment, and deliberately offers **no "unassign"** — once claimed, a script
@@ -836,7 +861,11 @@ must be in the `supabase_realtime` publication for live updates to fire.
     before update on public.submissions
     for each row execute function public.enforce_assignment_lock();
 
-  -- No one-active-assignment limit: readers may claim freely. Drop the old trigger.
+  -- The one-active-assignment limit is NOT a DB trigger. It was one, was dropped,
+  -- and is now enforced in /api/claim-script instead (safe because
+  -- enforce_assignment_lock() already blocks client-side primary claims). Keep
+  -- these drops: re-creating the trigger would double-enforce and break the
+  -- co-reader path, which is intentionally ungated.
   drop trigger if exists trg_single_active_assignment on public.submissions;
   drop function if exists public.enforce_single_active_assignment();
 
