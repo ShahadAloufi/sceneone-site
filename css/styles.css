@@ -1583,8 +1583,12 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
    About Us / Readers page (readers.html) — dark theme
    =========================================================== */
 .au { background: var(--bg); color: #fff; min-height: 100vh; }
-.au .nav { background: transparent; box-shadow: none; position: fixed; top: 0; left: 0; right: 0; z-index: 20; }
-.au .nav.scrolled { background: var(--bg); box-shadow: 0 6px 20px rgba(0, 0, 0, .35); }
+/* Solid from first paint, not just once `.scrolled` lands (js/main.js) — the
+   hero's red starts immediately under the nav, so a transparent bar would
+   otherwise read as part of the artwork until the reader scrolls. The
+   `.scrolled` state still adds the shadow on scroll. */
+.au .nav { background: var(--bg); box-shadow: none; position: fixed; top: 0; left: 0; right: 0; z-index: 20; }
+.au .nav.scrolled { box-shadow: 0 6px 20px rgba(0, 0, 0, .35); }
 
 /* ── HERO ── */
 /* Photographed studio-light-on-red-to-black background (pre-built as a
