@@ -1621,7 +1621,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 /* normal block below the hero (not inside it, since .au-hero has
    overflow:hidden and would clip anything pushed past its bottom edge) */
 .au-hero__rule {
-  margin: 24px clamp(24px, 7vw, 140px) 0; height: 3px; background: rgba(255,255,255,.22);
+  margin: 24px clamp(24px, 7vw, 140px) 0; height: 2px; background: rgba(255,255,255,.22);
 }
 
 /* ── ABOUT / STORY ── */
