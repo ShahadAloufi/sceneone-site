@@ -196,21 +196,35 @@ module.exports = async (req, res) => {
   // mirrors the dashboard's own delivered_at check (see admin.js) — a script
   // whose coverage has been approved has left the reader's active queue even if
   // assigned_to still points at them, so it must not count here.
-  const activeResp = await fetch(
-    url + "/rest/v1/submissions?select=id,coverages(delivered_at)" +
-    "&or=(assigned_to.eq." + encodeURIComponent(me.id) + ",co_reader_id.eq." + encodeURIComponent(me.id) + ")",
-    { headers }
-  );
-  if (!activeResp.ok) {
-    console.error("claim-script active-check failed:", activeResp.status, await activeResp.text());
-    return res.status(502).json({ message: "تعذّر التحقق من التكليفات الحالية" });
+  //
+  // FAILS OPEN, deliberately. This is a workload rule, not a security boundary,
+  // and it is the only thing standing between a reader and any claim at all. If
+  // the query breaks — bad embed, PostgREST hiccup, Supabase blip — failing
+  // closed would stop EVERY reader claiming EVERY script until someone noticed,
+  // whereas failing open costs at most one reader holding a second script, which
+  // is visible on the dashboard and reversible by staff reassignment. Loud
+  // console.error so it still surfaces in the Vercel logs.
+  let hasActive = false;
+  try {
+    const activeResp = await fetch(
+      url + "/rest/v1/submissions?select=id,coverages(delivered_at)" +
+      "&or=(assigned_to.eq." + encodeURIComponent(me.id) + ",co_reader_id.eq." + encodeURIComponent(me.id) + ")",
+      { headers }
+    );
+    if (activeResp.ok) {
+      const activeRows = await activeResp.json();
+      hasActive = activeRows.some(function (row) {
+        var cov = row.coverages;
+        if (Array.isArray(cov)) cov = cov[0];
+        return !cov || !cov.delivered_at;
+      });
+    } else {
+      console.error("claim-script active-check FAILED (allowing claim):",
+                    activeResp.status, await activeResp.text());
+    }
+  } catch (err) {
+    console.error("claim-script active-check ERROR (allowing claim):", err);
   }
-  const activeRows = await activeResp.json();
-  const hasActive = activeRows.some(function (row) {
-    var cov = row.coverages;
-    if (Array.isArray(cov)) cov = cov[0];
-    return !cov || !cov.delivered_at;
-  });
   if (hasActive) {
     // The literal marker (not just the Arabic text) is what js/admin.js's
     // assign() regex-matches to show the friendlier assignBlocked copy instead
