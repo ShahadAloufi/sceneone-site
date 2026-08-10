@@ -56,6 +56,11 @@
       reviewPrompt: "This coverage is awaiting your approval.",
       tSubmitted: "Coverage submitted for approval", tApproved: "Approved and sent to the writer",
       tRevision: "Sent back to the reader for revision",
+      // Shown as a blocking alert, not a toast: approval succeeded but the writer
+      // was NOT emailed, and only a human can put that right.
+      approvedNoEmail: "Approved — but the email to the writer FAILED to send.\n\n" +
+        "The report is live and the coverage is approved, but the writer has not been " +
+        "told. Re-approving will not resend it. Please send them this link yourself:",
       approving: "Approving…", requesting: "Sending…", reviewFail: "Couldn't complete the action.",
       pl: { title: "Title", writer: "Writer", level: "Writer's level", email: "Email", ref: "Reference", format: "Format", genre: "Genre", length: "Length", draft: "Draft", ip: "IP registered", file: "Script file", logline: "Logline", vision: "Writer's vision" },
       ipYes: "Registered", ipNo: "Not registered", dl: "Download script", untitled: "Untitled", dash: "—", pagesUnit: "pages",
@@ -107,6 +112,9 @@
       reviewPrompt: "هذه التغطية بانتظار اعتمادك.",
       tSubmitted: "تم إرسال التغطية للاعتماد", tApproved: "تم الاعتماد والإرسال إلى الكاتب",
       tRevision: "أُعيدت إلى القارئ للتعديل",
+      approvedNoEmail: "تم الاعتماد — لكن تعذّر إرسال البريد إلى الكاتب.\n\n" +
+        "التقرير جاهز والتغطية معتمدة، لكن الكاتب لم يُبلَّغ. إعادة الاعتماد لن تُعيد " +
+        "الإرسال. يرجى إرسال هذا الرابط إليه يدويًا:",
       approving: "جارٍ الاعتماد…", requesting: "جارٍ الإرسال…", reviewFail: "تعذّر إكمال الإجراء.",
       pl: { title: "عنوان السيناريو", writer: "اسم الكاتب", level: "مستوى الكاتب", email: "البريد الإلكتروني", ref: "الرقم المرجعي", format: "نوع العمل", genre: "التصنيف", length: "عدد الصفحات/المدة", draft: "نسخة السيناريو", ip: "تسجيل الملكية الفكرية", file: "ملف السيناريو", logline: "الملخص المختصر", vision: "رؤية الكاتب" },
       ipYes: "مسجل", ipNo: "غير مسجل", dl: "تحميل النص", untitled: "بدون عنوان", dash: "—", pagesUnit: "صفحة",
@@ -614,7 +622,16 @@
       covStatus = data.status || (action === "approve" ? "approved" : "revision_requested");
       if (action === "request_revision") reviewNote = note;
       configureWorkspaceState();
-      toast(action === "approve" ? UI[UILANG].tApproved : UI[UILANG].tRevision);
+      // The approve path can succeed while the writer's email fails — the server
+      // says so with `emailed: false`. That needs a blocking alert, not a 2.2s
+      // toast: the coverage is approved and drops off the active board, so a
+      // missed warning means a paying writer silently never gets their report,
+      // and there is no re-send action to fall back on.
+      if (action === "approve" && data.emailed === false) {
+        alert(UI[UILANG].approvedNoEmail + (data.reportUrl ? "\n\n" + data.reportUrl : ""));
+      } else {
+        toast(action === "approve" ? UI[UILANG].tApproved : UI[UILANG].tRevision);
+      }
     } catch (e) {
       ap.disabled = false; rv.disabled = false; btn.textContent = prevText;
       toast(e.message || UI[UILANG].reviewFail);

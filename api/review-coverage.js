@@ -241,12 +241,15 @@ module.exports = async (req, res) => {
       const detail = await r.text();
       console.error("Resend review-coverage send failed:", r.status, detail);
       // The coverage is approved and live; surface a soft warning so the reviewer
-      // knows the email itself didn't go out (the writer can still be re-notified).
-      return res.status(200).json({ ok: true, status: "approved", emailed: false });
+      // knows the email itself didn't go out. `reportUrl` is returned ONLY on this
+      // path so the reviewer can send the link by hand — re-approving can't
+      // re-trigger the email (the status gate above now rejects it), and there is
+      // no re-send action, so without this the only recovery is a DB lookup.
+      return res.status(200).json({ ok: true, status: "approved", emailed: false, reportUrl: link });
     }
   } catch (err) {
     console.error("review-coverage email error:", err);
-    return res.status(200).json({ ok: true, status: "approved", emailed: false });
+    return res.status(200).json({ ok: true, status: "approved", emailed: false, reportUrl: link });
   }
 
   return res.status(200).json({ ok: true, status: "approved", emailed: true });
