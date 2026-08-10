@@ -5,3 +5,4 @@
 # ever run in this directory. Never commit them; rotating a leaked key is the
 # only cleanup once it is in git history.
 .env*
+.vercel

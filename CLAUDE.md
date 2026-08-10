@@ -145,6 +145,13 @@ Do NOT introduce Next.js/React/a compiler/npm build. Keep it buildless.
   (`sendReaderNotice`) BCCs every `senior_reader`/`junior_reader` once the script
   reaches the pool, and deliberately names neither the script nor the writer —
   eligibility is decided in the dashboard, not the inbox.
+- **`READER_NOTICE_TEST_TO` — sandbox-only override.** When set, the reader
+  broadcast goes to that single address with **no bcc** (the real list is dropped,
+  not hidden) and a `[TEST]` subject prefix. The reader lookup still runs and logs
+  its count, so a sandbox payment still proves the query finds the right people
+  without emailing them. **Preview scope ONLY — never set it on Production:** with
+  it set, real readers silently stop being told about new scripts, and the only
+  trace is a `console.warn` in the function logs.
 - **Schema:** `supabase/schema.sql` is the source of record; **schema changes are
   run manually in the Supabase SQL Editor** (the file is not auto-applied).
 
