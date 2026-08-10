@@ -82,6 +82,10 @@
       thAssignee2: "المُكلَّف",
       thDeadline: "الموعد النهائي",
       dueOver: "متأخّر", dueDone: "تم التسليم", dueToday: "ينتهي اليوم",
+      // Shown until the assignment is confirmed (the writer's "work started"
+      // email has gone out) — before that the delivery count hasn't begun.
+      dueNotStarted: "لم تبدأ بعد",
+      dueNotStartedTip: "تبدأ مدة التسليم بعد تأكيد الإسناد وإشعار الكاتب",
       dueDays: function (n) { return "متبقٍّ " + n + " يوم"; },
       thCoverage: "التقييم", subEmpty: "لا توجد نصوص مقدَّمة بعد.",
       thPayment: "الدفع",
@@ -162,6 +166,8 @@
       thAssignee2: "Assignee",
       thDeadline: "Deadline",
       dueOver: "Overdue", dueDone: "Delivered", dueToday: "Due today",
+      dueNotStarted: "Not started",
+      dueNotStartedTip: "The delivery window starts once the assignment is confirmed and the writer is notified",
       dueDays: function (n) { return n + (n === 1 ? " day left" : " days left"); },
       thCoverage: "Coverage", subEmpty: "No submissions yet.",
       thPayment: "Payment",
@@ -273,44 +279,64 @@
     } catch (e) { return s; }
   }
   // Every submission gets a 2-week window from the day it was submitted.
-  // Deadline = created_at + the max turnaround for the script's type (matches the
-  // landing page: features 15 days, shorts 10). Derived, never stored.
-  // Mirrors the turnaround promised on the landing-page cards: features up to
-  // 4 weeks, shorts 10–15 days (we track the outer bound). Keep in sync with
-  // index.html — "Overdue" should mean the public commitment was missed.
+  // Turnaround allowance for the script's type. Mirrors the promise on the
+  // landing-page cards: features up to 4 weeks, shorts 10–15 days (we track the
+  // outer bound). Keep in sync with index.html — "Overdue" should mean the
+  // public commitment was missed.
   function deadlineDays(filmType) { return filmType === "feature" ? 28 : 15; }
-  function deadlineCell(createdAt, filmType, completed) {
-    var due = new Date(createdAt);
-    due.setDate(due.getDate() + deadlineDays(filmType));
-    var dateStr = esc(fmtDate(due.toISOString()));
-    var badge, cls;
-    if (completed) {
-      badge = t("dueDone"); cls = "adm-due--done";
-    } else {
-      // Whole days between today (midnight) and the due date (midnight).
-      var d0 = new Date(); d0.setHours(0, 0, 0, 0);
-      var d1 = new Date(due); d1.setHours(0, 0, 0, 0);
-      var daysLeft = Math.round((d1 - d0) / 86400000);
-      if (daysLeft < 0) { badge = t("dueOver"); cls = "adm-due--over"; }
-      else if (daysLeft === 0) { badge = t("dueToday"); cls = "adm-due--soon"; }
-      else { badge = t("dueDays")(daysLeft); cls = daysLeft <= 3 ? "adm-due--soon" : "adm-due--ok"; }
+
+  // THE CLOCK STARTS AT ASSIGNMENT CONFIRMATION, NOT AT SUBMISSION.
+  // `writer_notified_at` is stamped only when the "work has started" email
+  // actually goes out — i.e. after the release window closes and the reader is
+  // locked in (see lib/assignment-notices.js). That is exactly the moment the
+  // landing-page cards promise the count begins: "سيتم احتساب مدة التسليم بعد
+  // اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد".
+  //
+  // Deliberately NOT created_at, and NOT assigned_at: inside the release window
+  // a reader can still drop the script back into the pool, so there is no
+  // commitment to miss yet. Charging that time to the reader would also punish
+  // them for however long a script sat unclaimed in the pool.
+  // Derived, never stored.
+  function deadlineDue(s) {
+    if (!s || !s.writer_notified_at) return null; // clock hasn't started
+    var due = new Date(s.writer_notified_at);
+    due.setDate(due.getDate() + deadlineDays(s.film_type));
+    return due;
+  }
+
+  // Single source of truth for both renderers below (they used to duplicate this).
+  function deadlineParts(s, completed) {
+    var due = deadlineDue(s);
+    var dateStr = due ? esc(fmtDate(due.toISOString())) : "—";
+    if (completed) return { dateStr: dateStr, cls: "adm-due--done", badge: t("dueDone") };
+    // Claimed but still inside the release window, or not claimed at all.
+    if (!due) {
+      return { dateStr: "—", cls: "adm-due--idle", badge: t("dueNotStarted"), tip: t("dueNotStartedTip") };
     }
-    return "<td class='adm-due'>" + deadlineInner(dateStr, cls, badge) + "</td>";
-  }
-  function deadlineInner(dateStr, cls, badge) {
-    return "<div>" + dateStr + "</div><span class='adm-due__badge " + cls + "'>" + esc(badge) + "</span>";
-  }
-  // The deadline badge markup (date + coloured days-left pill) without the <td>,
-  // for use inside kanban cards. Mirrors deadlineCell's computation.
-  function deadlineBadge(createdAt, filmType) {
-    var due = new Date(createdAt); due.setDate(due.getDate() + deadlineDays(filmType));
+    // Whole days between today (midnight) and the due date (midnight).
     var d0 = new Date(); d0.setHours(0, 0, 0, 0);
     var d1 = new Date(due); d1.setHours(0, 0, 0, 0);
-    var daysLeft = Math.round((d1 - d0) / 86400000), badge, cls;
-    if (daysLeft < 0) { badge = t("dueOver"); cls = "adm-due--over"; }
-    else if (daysLeft === 0) { badge = t("dueToday"); cls = "adm-due--soon"; }
-    else { badge = t("dueDays")(daysLeft); cls = daysLeft <= 3 ? "adm-due--soon" : "adm-due--ok"; }
-    return "<span class='adm-due'>" + deadlineInner(esc(fmtDate(due.toISOString())), cls, badge) + "</span>";
+    var daysLeft = Math.round((d1 - d0) / 86400000);
+    if (daysLeft < 0) return { dateStr: dateStr, cls: "adm-due--over", badge: t("dueOver") };
+    if (daysLeft === 0) return { dateStr: dateStr, cls: "adm-due--soon", badge: t("dueToday") };
+    return {
+      dateStr: dateStr,
+      cls: daysLeft <= 3 ? "adm-due--soon" : "adm-due--ok",
+      badge: t("dueDays")(daysLeft)
+    };
+  }
+
+  function deadlineCell(s, completed) {
+    var p = deadlineParts(s, completed);
+    return "<td class='adm-due'>" + deadlineInner(p) + "</td>";
+  }
+  function deadlineInner(p) {
+    return "<div>" + p.dateStr + "</div><span class='adm-due__badge " + p.cls + "'" +
+           (p.tip ? " title='" + esc(p.tip) + "'" : "") + ">" + esc(p.badge) + "</span>";
+  }
+  // Same badge without the <td>, for kanban cards.
+  function deadlineBadge(s) {
+    return "<span class='adm-due'>" + deadlineInner(deadlineParts(s, false)) + "</span>";
   }
   function show(el) { if (el) el.hidden = false; }
   function hide(el) { if (el) el.hidden = true; }
@@ -715,7 +741,7 @@
       tr.innerHTML =
         "<td>" + esc(fmtDate(s.created_at)) + "</td>" +
         // Rows here are never delivered (delivered ones move to the delivery tabs).
-        deadlineCell(s.created_at, s.film_type, false) +
+        deadlineCell(s, false) +
         "<td><strong>" + esc(s.title_ar) + "</strong><br><span class='adm-muted' dir='ltr'>" + esc(s.title_en) + "</span></td>" +
         "<td>" + esc(s.writer) + "</td>" +
         levelCell(s) +
@@ -1148,7 +1174,7 @@
     // Single meta row: deadline on one side, assignee + action on the other, so a
     // card stays two lines tall instead of stacking each piece.
     var row = document.createElement("div"); row.className = "adm-card__row";
-    var dl = document.createElement("span"); dl.innerHTML = deadlineBadge(s.created_at, s.film_type);
+    var dl = document.createElement("span"); dl.innerHTML = deadlineBadge(s);
     row.appendChild(dl);
 
     var right = document.createElement("span"); right.className = "adm-card__right";
@@ -1247,7 +1273,7 @@
       var tr = document.createElement("tr");
       tr.innerHTML =
         "<td>" + esc(fmtDate(s.created_at)) + "</td>" +
-        deadlineCell(s.created_at, s.film_type, delivered) +
+        deadlineCell(s, delivered) +
         "<td><strong>" + esc(s.title_ar) + "</strong><br><span class='adm-muted' dir='ltr'>" + esc(s.title_en) + "</span></td>" +
         "<td>" + esc(s.writer) + "</td>" +
         levelCell(s) +

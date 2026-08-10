@@ -1154,6 +1154,15 @@ html[dir="rtl"] .adm-tablefilter select { background-position: left 16px center;
 .adm-due--soon { color: #c9962e; background: rgba(201,150,46,.16); }
 .adm-due--over { color: #d9584a; background: rgba(217,88,74,.16); }
 .adm-due--done { color: var(--adm-muted); background: var(--adm-surface-2); }
+/* Delivery clock hasn't started: the assignment isn't confirmed yet (no
+   writer_notified_at). Deliberately neutral — this is not a warning state, so it
+   must not compete with the amber/red pills for attention. The dashed border is
+   what separates it from the solid `--done` pill, which shares its colours;
+   dimming it with opacity instead made it genuinely hard to read. */
+.adm-due--idle {
+  color: var(--adm-muted); background: transparent;
+  border: 1px dashed var(--adm-outline-line);
+}
 /* Payment state (All submissions tab). Same badge geometry as the deadline, and
    the same colour language: green = settled, amber = waiting, red = wrong. */
 .adm-pay__badge { display: inline-flex; align-items: center; justify-content: center; text-align: center; font-size: 12px; font-weight: 800; padding: 4px 11px; border-radius: 8px; white-space: nowrap; }
