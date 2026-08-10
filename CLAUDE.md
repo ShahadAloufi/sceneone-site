@@ -1212,11 +1212,20 @@ privileged reads/writes.
   `https://sceneone.info/api/payment-webhook` (POST) and its Secret Token must equal
   `MOYASAR_WEBHOOK_SECRET` exactly, or every delivery 401s.
 - **`MOYASAR_SECRET_KEY` is split by Vercel environment** (set 2026-07-28): **Preview**
-  holds the `sk_test_` key, **Production** holds `sk_live_`. Production is deliberately
-  **unset** until deploy day — nothing deployed reads it yet, and a test key scoped to
+  holds the `sk_test_` key, **Production** holds `sk_live_`. A test key scoped to
   Production would point live checkouts at test Moyasar, where no real money moves. The
   split is also the only realistic way to exercise the payment gate at all, since it
   can't run locally: deploy a preview and it talks to test Moyasar end to end.
+  **Production key CONFIRMED LIVE 2026-08-10** (launch day). It was set 2026-08-04 and
+  could not be read back to check (Sensitive vars are write-only in Vercel — both the
+  dashboard and `vercel env pull` return the literal `[SENSITIVE]`). Verified
+  **behaviourally instead**: submitted a script through production `/submit`, stopped at
+  checkout without paying, and the invoice (`4af117e67cec`, SAR 1,200, description
+  `Scene One coverage — …`) appeared in Moyasar's **Live** invoice list. A `sk_test_`
+  key cannot create a Live invoice, so that is conclusive. **Re-use this check after any
+  key rotation** — it is the only way to confirm a Sensitive key's environment, and the
+  failure it catches is silent: with a test key everything looks normal end to end
+  (checkout, webhook, emails) while no money ever arrives.
 - **Test-environment webhook** (recreated 2026-07-28): id
   `356c6eea-128f-40b8-8608-ba96a3953bbe`, POST to
   `https://sceneone-site-git-payment-gate-scene-one.vercel.app/api/payment-webhook`,
@@ -1224,8 +1233,18 @@ privileged reads/writes.
   `MOYASAR_WEBHOOK_SECRET`, **Preview** scope. It replaced `47fa5798-…`, which pointed
   at **production** — wrong for a sandbox run, since the test key is Preview-scoped and
   production still runs the pre-gate code. Before it, `7901eb37-…` (all 16 events,
-  screenshot-exposed secret). **Whether live has a webhook at all is still unknown** —
-  every check so far ran with a `sk_test_` key.
+  screenshot-exposed secret).
+- **LIVE webhook CONFIRMED 2026-08-10** (launch day), replacing the earlier "whether
+  live has a webhook at all is still unknown". Moyasar → Settings → Webhooks with the
+  **Live Environment** toggle ON shows **exactly one** (`Showing 1 of 1`): POST to
+  `https://sceneone.info/api/payment-webhook`, events `payment_paid` +
+  `payment_refunded`, created 2026-08-04 — the same day `MOYASAR_WEBHOOK_SECRET` was
+  added at Production scope, which is why deliveries authenticate rather than 401. The
+  old preview-alias webhook is gone from the Live list. **This is the single most
+  destructive thing to get wrong:** pointed anywhere else, a writer pays, sees "تم
+  استلام الدفع", and nothing else ever happens — no confirmation, and not even an
+  `unreconciled` alert, because the function never runs. Nothing sweeps stuck
+  `pending_payment` rows, so it is invisible on both sides. Re-check after any change.
 - **The sandbox rig (validated end to end 2026-07-28).** Branch `payment-gate` → Vercel
   **Preview**, reached at the stable branch alias
   `sceneone-site-git-payment-gate-scene-one.vercel.app` (pattern:
