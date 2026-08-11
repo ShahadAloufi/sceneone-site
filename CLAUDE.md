@@ -1216,12 +1216,28 @@ privileged reads/writes.
   means **every registered webhook receives events from both environments**, so a
   webhook pointing at a preview URL will be sent real, live payment notifications.
   Distinguish them by the `live` boolean in the webhook payload, not by which
-  webhook received it. Practical rule: **only one webhook should be registered at a
-  time**, pointing wherever payments are currently being taken. Re-point it (delete +
-  create, there is no update endpoint) when moving between the sandbox and
-  production — do not leave both registered. The webhook is registered at
+  webhook received it. **Re-confirmed 2026-08-10**, more directly: the Live and Test
+  dashboard views list the *same single webhook* — identical URL and identical
+  `created_at`, both "Showing 1 of 1". **The Live/Test toggle does not filter
+  webhooks at all**; it only filters the data views (Invoices, Payments,
+  Settlements). So it makes no difference which toggle position you are in when you
+  add one. The webhook for production is registered at
   `https://sceneone.info/api/payment-webhook` (POST) and its Secret Token must equal
   `MOYASAR_WEBHOOK_SECRET` exactly, or every delivery 401s.
+- **Cross-environment deliveries are handled in code, so BOTH webhooks may safely be
+  registered at once** (added 2026-08-10, replacing the old "only one webhook at a
+  time" rule — that rule pre-dated production taking real money, and following it now
+  would mean *deleting the production webhook to run a sandbox test*, which strands
+  every real payment made during the test window).
+  `api/payment-webhook.js` compares the re-fetched `payment.live` against what its own
+  `MOYASAR_SECRET_KEY` implies (`sk_live_` prefix) and returns **200
+  `ignored: wrong_environment`** on a mismatch — 200 rather than an error so Moyasar
+  stops retrying; a wrong-environment event is not a failure, it is simply not ours.
+  **Why this is more than log hygiene:** production and preview share ONE Supabase. If
+  production could read a test payment it would match the invoice, mark the submission
+  paid, release it to the pool and email the REAL readers — and `READER_NOTICE_TEST_TO`
+  is Preview-scoped, so it would not protect them. Guarded with `typeof` so an absent
+  `live` flag never blocks a genuine payment (**fails open**).
 - **`MOYASAR_SECRET_KEY` is split by Vercel environment** (set 2026-07-28): **Preview**
   holds the `sk_test_` key, **Production** holds `sk_live_`. A test key scoped to
   Production would point live checkouts at test Moyasar, where no real money moves. The

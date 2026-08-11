@@ -108,6 +108,31 @@ module.exports = async (req, res) => {
     return res.status(502).json({ message: "Lookup failed" }); // let Moyasar retry
   }
 
+  // ENVIRONMENT GUARD. Moyasar's webhook registry is ACCOUNT-WIDE (confirmed
+  // 2026-08-10: the Live and Test dashboard views list the same single webhook),
+  // so every registered URL receives BOTH live and test events. Without this,
+  // a sandbox payment is also delivered to production and a live payment is also
+  // delivered to any preview webhook.
+  //
+  // Read off `payment.live` from the re-fetched payment — never the posted body —
+  // and compare it to what this deployment's own key implies. Returns 200 so
+  // Moyasar stops retrying: a wrong-environment event is not a failure to retry,
+  // it is simply not ours.
+  //
+  // Why it matters beyond log noise: production and preview share ONE Supabase.
+  // If production could read a test payment it would match the invoice, mark the
+  // submission paid, release it to the pool and email the REAL readers — and
+  // READER_NOTICE_TEST_TO is Preview-scoped, so it would not protect them.
+  //
+  // `typeof` check so an absent flag never blocks a genuine payment (fails open).
+  const expectLive = String(process.env.MOYASAR_SECRET_KEY || "").startsWith("sk_live_");
+  if (typeof payment.live === "boolean" && payment.live !== expectLive) {
+    console.log("payment-webhook: ignoring " + (payment.live ? "LIVE" : "TEST") +
+                " payment " + payment.id + " — this deployment handles " +
+                (expectLive ? "live" : "test") + " only");
+    return res.status(200).json({ ok: true, ignored: "wrong_environment" });
+  }
+
   if (String(payment.status || "").toLowerCase() !== expectedStatus) {
     return unreconciled(res, "status_mismatch", {
       eventType: eventType + " (expected " + expectedStatus + ")",
