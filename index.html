@@ -168,6 +168,40 @@
     </div>
   </section>
 
+  <!-- ── STRATEGIC PARTNERSHIP ──
+       Full-bleed band over the auditorium photo, sitting immediately before the
+       pricing cards so the members' discount is read on the way into them.
+       The heading block (eyebrow rule / title / ornament) is built from markup
+       rather than dropped in as the source SVG: that keeps it crisp at any size,
+       lets it wrap on narrow screens, and keeps the Arabic selectable. -->
+  <section class="partnership" id="partnership">
+    <div class="partnership__bg" aria-hidden="true">
+      <img src="assets/partnership-bg.jpg" alt="">
+    </div>
+    <div class="partnership__content">
+      <p class="partnership__eyebrow"><span>Strategic Partnership</span></p>
+      <h2 class="partnership__title">شراكة استراتيجية</h2>
+      <div class="partnership__ornament" aria-hidden="true">
+        <i class="partnership__rule"></i><i class="partnership__pip"></i>
+        <i class="partnership__rule partnership__rule--mid"></i>
+        <i class="partnership__pip"></i><i class="partnership__rule"></i>
+      </div>
+
+      <!-- Association first so RTL lays it out on the right and Scene One on the
+           left, matching the approved artwork. Order here is presentational —
+           flipping it flips the logos. -->
+      <div class="partnership__logos">
+        <img class="partnership__logo partnership__logo--assoc" src="assets/partner-cinema-association-v2.png" alt="جمعية السينما — Cinema Association">
+        <i class="partnership__pip partnership__pip--sep" aria-hidden="true"></i>
+        <img class="partnership__logo" src="assets/scene-one-logo.svg" alt="Scene One">
+      </div>
+
+      <p class="partnership__body">نؤمن بدعم مجتمع صناعة السينما السعودية، لذلك نقدّم لأعضاء الجمعية مزايا حصرية على جميع خدمات تغطية النصوص</p>
+      <p class="partnership__offer">خصم 15% لأعضاء ومنسوبي الجمعية</p>
+      <p class="partnership__note">يُشترط إبراز بطاقة العضوية السارية عند الطلب</p>
+    </div>
+  </section>
+
   <!-- ── COVERAGE TYPES ── -->
   <section class="ctypes" id="coverage-types">
     <div class="ctypes__grid">
