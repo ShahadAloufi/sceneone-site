@@ -152,6 +152,10 @@ Do NOT introduce Next.js/React/a compiler/npm build. Keep it buildless.
   without emailing them. **Preview scope ONLY — never set it on Production:** with
   it set, real readers silently stop being told about new scripts, and the only
   trace is a `console.warn` in the function logs.
+  **Proven in the 2026-08-11 sandbox run:** a full test payment produced
+  `[TEST] تكليف جديد متاح` at the single override address, with the real readers
+  suppressed — the first time the broadcast had ever run against real data. Remove the
+  variable when the run finishes.
 - **Schema:** `supabase/schema.sql` is the source of record; **schema changes are
   run manually in the Supabase SQL Editor** (the file is not auto-applied).
 
@@ -1237,7 +1241,10 @@ privileged reads/writes.
   production could read a test payment it would match the invoice, mark the submission
   paid, release it to the pool and email the REAL readers — and `READER_NOTICE_TEST_TO`
   is Preview-scoped, so it would not protect them. Guarded with `typeof` so an absent
-  `live` flag never blocks a genuine payment (**fails open**).
+  `live` flag never blocks a genuine payment (**fails open**). **Exercised for real on
+  2026-08-11:** production received the sandbox payment event alongside the preview and
+  ignored it, so both webhooks could stay registered throughout and real payments were
+  never at risk.
 - **`MOYASAR_SECRET_KEY` is split by Vercel environment** (set 2026-07-28): **Preview**
   holds the `sk_test_` key, **Production** holds `sk_live_`. A test key scoped to
   Production would point live checkouts at test Moyasar, where no real money moves. The
@@ -1295,6 +1302,32 @@ privileged reads/writes.
   Redeploy via `git commit --allow-empty && git push` on the branch — the dashboard's
   Redeploy dialog offers the deployments of whichever branch you opened it from, which is
   `main` by default and silently gives you a preview of the pre-gate code.
+- **Re-validated end to end 2026-08-11**, this time with production live and taking real
+  money. Full run: preview `/submit` → test card → webhook → `paid` → `unassigned` →
+  all four emails. Additions and corrections from that run:
+  - **`payment-gate` is now just a pointer, fast-forwarded from `main` per run.** Do NOT
+    roll it back to the "known good" July commit: you would be testing code that is not
+    in production, and `READER_NOTICE_TEST_TO` would not exist, so the broadcast would
+    hit every real reader. Fast-forward, run, done.
+  - **Register BOTH webhooks — never re-point the production one.** The old "one webhook
+    at a time" rule is obsolete (see the account-wide entry above); deleting the live
+    webhook to run a sandbox strands every real payment made during the window.
+  - **`READER_NOTICE_TEST_TO` at Preview scope is mandatory**, or the sandbox payment
+    emails every real reader about a fake script.
+  - **`vercel ls` after pushing — pushed is not deployed.** A push to `main` produced no
+    Production build at all: `payment-gate` pointed at the identical SHA and had already
+    built as a Preview, and Vercel appears to have de-duplicated. Production silently
+    stayed on the previous commit. Caught by checking what production was actually
+    serving, fixed with an empty commit. **Always verify the deployment, not the push.**
+  - **The protection toggle has a separate Save button**, and the browser will lie to you
+    about whether it took (you are logged into Vercel, so the preview loads either way).
+    Verify from outside:
+    `curl -s -o /dev/null -w "%{http_code}\n" https://sceneone-site-git-payment-gate-scene-one.vercel.app/`
+    — **200** = off, **302** = on.
+  - **Deployment Protection Exceptions** would be the clean fix (exempt just the preview
+    alias, leave everything else protected) but it is **Pro + $150/month**. Password
+    Protection does not help — Moyasar cannot type a password either. The OPTIONS
+    allowlist is irrelevant; the webhook is a POST.
 - **Replaying a webhook by hand** (the fastest way to isolate handler bugs from delivery
   bugs — the endpoint re-reads the payment from Moyasar, so a hand-made POST is
   equivalent to a real one):
