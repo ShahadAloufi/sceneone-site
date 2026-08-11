@@ -201,9 +201,11 @@ bottom of `css/styles.css`; markup is `readers.html`.
     for visual consistency between the two heroes — the bottom stop is a
     *partial-opacity* version of `--bg`, not the bare variable, so the photo
     still shows through slightly; don't make it fully opaque again.
-  - The landing page's own readers-section photo (`.readers__bg` on
-    `index.html`) got the same top-to-bottom gradient treatment layered onto
-    its existing radial/horizontal vignette, for consistency across the site.
+  - The landing page once carried its own "من يقرأ نصك؟" section with a matching
+    gradient over `.readers__bg`. **That section was removed 2026-08-11** —
+    markup, `.readers*` CSS and `assets/readers-printer.jpg` all went with it.
+    The nav's «من يقرأ نصك؟» has always pointed at `/readers`, so the page is
+    still reachable; nothing on the landing page links to it now.
 - **Assets:** `assets/aboutus-hero.jpg` (cinema/wordmark photo), `assets/reader-1.png`
   (فجر), `assets/reader-2.png` (هيفاء) — both grayscale via CSS filter, sized
   with `object-fit: contain` (not `cover` — an earlier `cover` crop zoomed too
