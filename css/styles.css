@@ -622,11 +622,6 @@ a, button {
   font-family: var(--font-body); font-size: 14px; line-height: 1.8;
   color: rgba(255,255,255,.72); text-align: right; margin: 0;
 }
-.partner__text a {
-  color: #fff; text-decoration: underline; text-underline-offset: 4px;
-  margin-inline-start: 8px;
-}
-.partner__text a:hover { color: var(--gold, #d2af50); }
 @media (max-width: 640px) {
   .partner { margin-top: 72px; }
   .partner__logo img { height: 44px; }
