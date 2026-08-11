@@ -272,12 +272,11 @@ a, button {
 .hero__nda { font-family: var(--font-body); font-size: 13px; line-height: 1.7; color: rgba(255,255,255,.5); margin-top: 24px; max-width: 520px; }
 
 @media (min-width: 640px) {
-  /* Bottom padding was 386px when the hero ended at the NDA line — it reserved
-     the empty band of photo beneath the copy. The accreditation badge now
-     occupies that band, so this only has to clear it. Tuned together with
-     .partner's margin-top; changing either moves the badge relative to
-     .quote__rule. */
-  .hero__content { padding: 128px 40px 40px; margin-right: 40px; }
+  /* No bottom padding: the badge is meant to sit right above .quote__rule, so
+     the whole gap is spent on .partner's margin-top (96px) plus .quote's
+     top padding (32px). Changing any of the three moves the badge relative to
+     the rule — re-check them together. */
+  .hero__content { padding: 128px 40px 0; margin-right: 40px; }
   .hero__title { font-size: 36px; }
   .hero__sub { font-size: 22px; }
   .hero__nda { font-size: 14px; }
@@ -312,7 +311,7 @@ a, button {
   margin-left: auto;
 }
 @media (min-width: 640px) {
-  .quote { padding: 80px 40px 0; }
+  .quote { padding: 32px 40px 0; }
   .quote p { font-size: 20px; }
   .quote__rule { max-width: 680px; }
 }
@@ -596,11 +595,12 @@ a, button {
 /* Lives INSIDE .hero__content (see index.html), so it inherits the hero's RTL
    direction and right gutter and sits over the hero photo, just above
    .quote__rule. No background of its own — the hero's image and shade show
-   through. The large bottom padding on .hero__content is what reserves this
-   band, so the two are tuned together: change one and re-check the other. */
+   through. The margin-top below is what pushes it down the photo to the rule,
+   so it's tuned together with .hero__content's bottom padding and .quote's
+   top padding. */
 .partner {
   display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
-  margin-top: 40px;
+  margin-top: 96px;
 }
 /* The mark is solid black line art, so it needs its own white plate to be
    legible over the photo — hence the light card rather than a bare <img>. */
