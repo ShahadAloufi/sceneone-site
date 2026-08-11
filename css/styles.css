@@ -255,7 +255,10 @@ a, button {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 128px 24px 64px;
+  /* No bottom padding, same reasoning as the ≥640px override below: the whole
+     gap down to .quote__rule is spent on .partner's margin-top plus .quote's
+     top padding, so the badge lands just above the rule. */
+  padding: 128px 24px 0;
   max-width: 768px;
   margin-left: auto;
   text-align: right;
@@ -298,7 +301,7 @@ a, button {
 
 /* QUOTE */
 .quote {
-  padding: 56px 24px 0;
+  padding: 32px 24px 0;
   text-align: right;
 }
 .quote__rule { width: 100%; max-width: 560px; height: 1px; background: rgba(255,255,255,.3); margin: 0 0 24px auto; }
@@ -622,7 +625,9 @@ a, button {
 }
 .partner__text a:hover { color: var(--gold, #d2af50); }
 @media (max-width: 640px) {
-  .partner { margin-top: 32px; gap: 16px; }
+  /* Stacked, not side by side: at 375px the mark and the sentence together
+     overflow the gutter and the text wraps to two ragged lines beside it. */
+  .partner { flex-direction: column; align-items: flex-start; margin-top: 72px; gap: 12px; }
   .partner__logo img { height: 44px; }
   .partner__text { font-size: 13px; }
 }
