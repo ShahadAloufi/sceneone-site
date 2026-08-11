@@ -272,7 +272,12 @@ a, button {
 .hero__nda { font-family: var(--font-body); font-size: 13px; line-height: 1.7; color: rgba(255,255,255,.5); margin-top: 24px; max-width: 520px; }
 
 @media (min-width: 640px) {
-  .hero__content { padding: 128px 40px 386px; margin-right: 40px; }
+  /* Bottom padding was 386px when the hero ended at the NDA line — it reserved
+     the empty band of photo beneath the copy. The accreditation badge now
+     occupies that band, so this only has to clear it. Tuned together with
+     .partner's margin-top; changing either moves the badge relative to
+     .quote__rule. */
+  .hero__content { padding: 128px 40px 40px; margin-right: 40px; }
   .hero__title { font-size: 36px; }
   .hero__sub { font-size: 22px; }
   .hero__nda { font-size: 14px; }
@@ -585,6 +590,41 @@ a, button {
 .cta__btn:hover { background: var(--gold); color: #000; }
 @media (min-width: 640px) {
   .cta__h { font-size: 36px; }
+}
+
+/* ================= PARTNER / ACCREDITATION ================= */
+/* Lives INSIDE .hero__content (see index.html), so it inherits the hero's RTL
+   direction and right gutter and sits over the hero photo, just above
+   .quote__rule. No background of its own — the hero's image and shade show
+   through. The large bottom padding on .hero__content is what reserves this
+   band, so the two are tuned together: change one and re-check the other. */
+.partner {
+  display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+  margin-top: 40px;
+}
+/* The mark is solid black line art, so it needs its own white plate to be
+   legible over the photo — hence the light card rather than a bare <img>. */
+.partner__logo {
+  flex: 0 0 auto; display: block; background: #fff; border-radius: 12px;
+  padding: 14px 20px; line-height: 0;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.partner__logo img { display: block; height: 46px; width: auto; }
+.partner__logo:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,.45); }
+.partner__text {
+  font-family: var(--font-body); font-size: 14px; line-height: 1.8;
+  color: rgba(255,255,255,.72); text-align: right; margin: 0;
+}
+.partner__text a {
+  color: #fff; text-decoration: underline; text-underline-offset: 4px;
+  margin-inline-start: 8px;
+}
+.partner__text a:hover { color: var(--gold, #d2af50); }
+@media (max-width: 640px) {
+  .partner { margin-top: 32px; gap: 16px; }
+  .partner__logo { padding: 12px 18px; }
+  .partner__logo img { height: 38px; }
+  .partner__text { font-size: 13px; }
 }
 
 /* ====================== FOOTER ====================== */
