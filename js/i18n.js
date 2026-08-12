@@ -134,7 +134,7 @@
       covAspectsHeading: "أهم جوانب التقييم والتحليل",
       covAspect1Html: "<strong>1. جانب تطويري:</strong> يركّز على تحسين المسودة وتحديد أولويات التعديل.",
       covAspect2Html: "<strong>2. جانب تجهيزي:</strong> معرفة ما إذا كان النص مناسبًا للتقديم إلى جهات الإنتاج، المسابقات، المعامل أو صناديق الدعم.",
-      covAspect3Html: "<strong>3. جانب إنتاجي:</strong> النظر إلى حجم التنفيذ والتحديات الإنتاجية.",
+      covAspect3Html: "<strong>3. منظور الإنتاج:</strong> يقيّم نطاق التنفيذ، الميزانية، والتحديات الإنتاجية المحتملة.",
       covAspect4Html: "<strong>4. جانب سوقي:</strong> تحديد الجمهور، النوع، ومدى ملاءمته للسوق السعودي.",
       covGradesTitle: "درجات التقييم في التغطية السينمائية", covGradesSub: "قراءة ما وراء الأرقام والتوصيات",
       covGradesP1: "التغطية السينمائية تجمع بين التقييم الموضوعي والانطباع الشخصي للقارئ. يمكن النظر إلى التقييم على أنه انعكاس لمدى استجابة القارئ للنص؛ أحيانًا يكون إشادة بنقاط قوته، وأحيانًا أخرى دعوة لتطوير بعض جوانبه. لذلك نادرًا ما تكون نتائج التقييم حاسمة أو مطلقة، بل تقع غالبًا في مساحة أوسع من التدرّج والتفسير.",
@@ -154,7 +154,7 @@
       overlayContact: "Contact", overlaySocial: "Follow Us",
 
       heroTitle: "Where Your Script's Journey Begins",
-      heroSub: "Professional screenplay coverage and development notes, delivered by experienced writers and film professionals.",
+      heroSub: "Professional screenplay coverage and development notes, delivered by experienced writers and filmmakers.",
       btnViewCoverage: "View Coverages", btnGuide: "Platform Guide",
       heroNda: "All submissions are protected under non-disclosure agreements (NDA) and are only accessed by the assigned reader.",
       partnerBadge: "Accredited partner of the Cinema Association",
@@ -164,7 +164,7 @@
 
       aboutTitle: "From Idea to Script",
       aboutP1: "Many writers have promising ideas and scripts with real potential. But developing a screenplay takes more than writing alone.",
-      aboutP2: "At different stages, writers often need professional, critical feedback — the kind that helps them see their work from a new perspective, identify strengths, and uncover opportunities for improvement before moving forward.",
+      aboutP2: "At different stages, writers often need professional, critical feedback, the kind that helps them see their work from a new perspective, identify strengths, and uncover opportunities for improvement before moving forward.",
       aboutP3: "That's why Scene One exists. We provide specialized evaluations and detailed reports designed to help writers refine their scripts and make more confident, informed decisions throughout their creative journey.",
 
       cardWritersAlt: "For Writers", cardProducersAlt: "Industry Partners", cardCinemaAlt: "Saudi Cinema",
@@ -255,7 +255,7 @@
       covAspectsHeading: "Key Areas of Evaluation & Analysis",
       covAspect1Html: "<strong>1. Developmental Perspective:</strong> Focuses on improving the draft and identifying revision priorities.",
       covAspect2Html: "<strong>2. Readiness Perspective:</strong> Evaluates whether the script is ready for submission to production companies, labs, competitions, or funding opportunities.",
-      covAspect3Html: "<strong>3. Production Perspective:</strong> Considers scope of execution and potential production challenges.",
+      covAspect3Html: "<strong>3. Production Perspective:</strong> Considers scope of execution, budget feasibility, and potential production challenges.",
       covAspect4Html: "<strong>4. Market Perspective:</strong> Identifies the target audience, genre positioning, and suitability for the Saudi market.",
       covGradesTitle: "Coverage Scoring System", covGradesSub: "A closer look beyond the numbers and recommendations",
       covGradesP1: "Screenplay coverage combines objective evaluation with the reader's personal response. The rating reflects how the script resonates with the reader, sometimes highlighting its strengths, and other times pointing to areas that need further development. For this reason, ratings are rarely absolute or definitive, and typically exist within a broader spectrum of interpretation and judgment.",

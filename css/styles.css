@@ -1,6 +1,10 @@
 /* ===========================================================
    Scene One — vanilla HTML/CSS/JS recreation
-   Fonts: Tajawal (body) + IBM Plex Sans Arabic (headings)
+   Fonts: one per language, site-wide (2026-08-12) — Arabic is always
+   Tajawal, English is always IBM Plex Sans. --font-body/--font-head both
+   resolve the same way; the split only ever existed to give Arabic a
+   different display face for headings, not to vary by language, so
+   English no longer needs its own body/head distinction here.
    Palette: bg #0e0202 / gold #d2af50 / red #cd2e07
    =========================================================== */
 
@@ -11,7 +15,14 @@
   --gold: #d2af50;
   --red: #cd2e07;
   --font-body: 'Tajawal', sans-serif;
-  --font-head: 'IBM Plex Sans Arabic', sans-serif;
+  --font-head: 'Tajawal', sans-serif;
+}
+/* English: swap both to IBM Plex Sans. Lives on <html> so every page that
+   sets dir="ltr" (via js/i18n.js on the pages that have it, or statically)
+   picks it up without needing its own override. */
+html[dir="ltr"] {
+  --font-body: 'IBM Plex Sans', sans-serif;
+  --font-head: 'IBM Plex Sans', sans-serif;
 }
 
 html {
@@ -652,11 +663,13 @@ a, button {
    through. The margin-top below is what pushes it down the photo to the rule,
    so it's tuned together with .hero__content's bottom padding and .quote's
    top padding. */
-/* Stacked at every width — mark first, sentence beneath it. Side by side the
-   two read as one horizontal strip competing with the CTAs above; stacked, the
-   mark leads and the sentence is plainly its caption. */
+/* Stacked at every width — mark first, sentence beneath it, both centered on
+   each other so the mark reads as sitting directly above its caption rather
+   than hugging whichever edge the surrounding RTL/LTR flow happens to favor.
+   Side by side the two read as one horizontal strip competing with the CTAs
+   above; stacked, the mark leads and the sentence is plainly its caption. */
 .partner {
-  display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
   margin-top: 96px;
 }
 /* The mark is white line art on transparency, so it sits directly on the photo
@@ -671,7 +684,7 @@ a, button {
 .partner__logo:hover { transform: translateY(-2px); opacity: .8; }
 .partner__text {
   font-family: var(--font-body); font-size: 14px; line-height: 1.8;
-  color: rgba(255,255,255,.72); text-align: right; margin: 0;
+  color: rgba(255,255,255,.72); text-align: center; margin: 0;
 }
 @media (max-width: 640px) {
   .partner { margin-top: 72px; }
@@ -1720,9 +1733,9 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   direction: ltr; /* flex-end = physical right, matching the light in the bg photo (left) */
 }
 .au-hero__title {
-  margin-top: clamp(16px, 3vw, 40px); direction: rtl; text-align: right;
+  margin-top: clamp(32px, 5vw, 64px); direction: rtl; text-align: right;
   font-family: var(--font-head); font-weight: 700; color: #fff;
-  font-size: clamp(36px, 5.6vw, 76px); line-height: 1.05;
+  font-size: clamp(40px, 6.2vw, 84px); line-height: 1.05;
 }
 /* Pinned to the hero's bottom edge, over the photo's black portion, rather
    than flowing in normal layout — keeps it anchored there regardless of
@@ -1803,7 +1816,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 @media (max-width: 640px) {
   .au-hero { height: 640px; background-image: url('../assets/readers-hero-bg-mobile.jpg'); padding: 72px 0 0; }
   .au-hero__row { padding: 0 24px; }
-  .au-hero__title { margin-top: 24px; font-size: 40px; }
+  .au-hero__title { margin-top: 36px; font-size: 44px; }
   /* the light sits mid-photo on the mobile crop, so the wordmark stays
      pinned to the bottom (like desktop) instead of flowing in-place —
      static flow would land it right on top of the light fixture */
@@ -1835,7 +1848,8 @@ html[dir="ltr"] .hero__content { direction: ltr; text-align: left; margin-left: 
 @media (min-width: 640px) {
   html[dir="ltr"] .hero__content { margin-right: 0; margin-left: 40px; }
 }
-html[dir="ltr"] .partner__text { text-align: left; }
+/* .partner is centered regardless of language now (see base rule) — no
+   override needed here. */
 
 html[dir="ltr"] .quote { text-align: left; }
 html[dir="ltr"] .quote__rule { margin: 0 auto 24px 0; }

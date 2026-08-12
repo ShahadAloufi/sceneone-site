@@ -5,7 +5,7 @@
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script>
   document.documentElement.setAttribute('lang','ar');
   document.documentElement.setAttribute('dir','rtl');
@@ -18,6 +18,11 @@
     --muted:#8a8178; --label:#6f665e; --soft:#f3efe8;
     --page:#efeae2;
     --font:'Tajawal',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  }
+  /* English: swap to IBM Plex Sans, same split as the marketing pages'
+     css/styles.css (this page is self-contained, so it needs its own copy). */
+  html[dir="ltr"]{
+    --font:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   }
   *{box-sizing:border-box}
   html,body{margin:0}
@@ -82,7 +87,7 @@
     <p class="title" id="titleLine"></p>
 
     <label for="q">اكتب استفسارك حول التقرير للقارئ</label>
-    <textarea id="q" maxlength="2000" placeholder="مثال: ذكرت في قسم البناء الدرامي أن المنتصف يحتمل اختصارًا — هل يمكن توضيح المشاهد التي تقصدها تحديدًا؟"></textarea>
+    <textarea id="q" maxlength="2000" placeholder="مثال: ذكرت في قسم البناء الدرامي أن المنتصف يحتمل اختصارًا، هل يمكن توضيح المشاهد التي تقصدها تحديدًا؟"></textarea>
     <div class="count"><span id="count">0</span> / 2000</div>
 
     <button class="btn" id="send">إرسال الاستفسار</button>

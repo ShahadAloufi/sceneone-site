@@ -5,12 +5,21 @@
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#15110f; --orange:#CD2E07; --line:#e7e2da; --muted:#8a8178;
     --page:#f5f1e9;
     --font:'Tajawal',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  }
+  /* Both languages render at once here (#ar-body + #en-body), not a
+     html[dir] toggle like the other self-contained pages — so the English
+     font has to be set directly on the dir="ltr" element itself. Custom
+     properties re-resolve wherever var() is used, but font-family's
+     inherited (already-computed) value doesn't, so redeclaring --font on
+     an ancestor wouldn't reach into #en-body's inherited font-family. */
+  [dir="ltr"]{
+    font-family:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   }
   *{box-sizing:border-box}
   html,body{margin:0}

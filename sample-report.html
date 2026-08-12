@@ -5,7 +5,7 @@
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script>
   (function(){try{var l=localStorage.getItem('sceneone-report-lang');l=(l==='en'||l==='ar')?l:'ar';
     document.documentElement.setAttribute('lang',l);document.documentElement.setAttribute('dir',l==='ar'?'rtl':'ltr');}
@@ -17,6 +17,11 @@
     --muted:#8a8178; --label:#6f665e; --soft:#f3efe8;
     --page:#efeae2;
     --font:'Tajawal',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  }
+  /* English: swap to IBM Plex Sans, same split as the marketing pages'
+     css/styles.css (this page is self-contained, so it needs its own copy). */
+  html[dir="ltr"]{
+    --font:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   }
   *{box-sizing:border-box}
   html,body{margin:0}
@@ -46,7 +51,7 @@
   .rep-wm{color:#fff;letter-spacing:.18em;font-weight:700;font-size:23px;line-height:1}
   .rep-wm span{color:var(--orange)}
   .rep-cov{color:#9a938b;letter-spacing:.3em;font-size:10px;text-transform:uppercase;margin-top:10px;font-weight:500}
-  #reportBody.ar{font-family:'IBM Plex Sans Arabic','IBM Plex Sans',sans-serif}
+  #reportBody.ar{font-family:'Tajawal',sans-serif}
   #reportBody.ar .rep-sec h2 .no{margin-right:0;margin-left:8px}
   #reportBody.ar table.gl td.cat{text-align:right}
   #reportBody.ar .rep-top{direction:rtl}
@@ -57,7 +62,7 @@
   .rep-top .k{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--label);font-weight:600}
   .rep-top .v{font-size:14px;margin-top:3px}
   .rep-title{font-size:22px;font-weight:600;margin:2px 0 0}
-  .rep-title .ar{font-family:'IBM Plex Sans Arabic',sans-serif;color:var(--ink)}
+  .rep-title .ar{font-family:'Tajawal',sans-serif;color:var(--ink)}
   .logline{background:var(--soft);border-radius:10px;padding:16px 18px;margin:6px 0 30px}
   .logline .k{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--label);font-weight:600;margin-bottom:5px}
   .logline > div:not(.k){font-size:13.5px;line-height:1.62}
@@ -143,7 +148,14 @@
   var BADGE = { ar: "نموذج تقرير", en: "Sample report" };
   var TITLE = { ar: "Scene One — نموذج تقرير التغطية", en: "Scene One — Sample coverage report" };
 
-  var sampleSubmission = {
+  /* Sample submission/coverage is bilingual: everything below is real free
+     text a reader would write (logline, synopsis, evaluation notes), which
+     report-render.js only translates for its own labels/field names, not
+     for reader-authored content (a real coverage is written in one language
+     by the reader). Since this is a static demo rather than a real
+     submission, it carries a full AR and EN version and applyLang() below
+     picks between them — keep the two in step if either changes. */
+  var sampleSubmission_AR = {
     titleEn: "The Darkroom",
     titleAr: "الغرفة المظلمة",
     writer: "",
@@ -153,8 +165,18 @@
     draft: "Final draft",
     logline: "حين تجلب شابة بكرة فيلم لم تُحمّض تركتها جدتها الراحلة إلى آخر محل تصوير في مدينة ساحلية، يطوّرها المصوّر المسنّ الذي يدير المحل، وجهاً لوجه أمام فصل مدفون من ماضيه."
   };
+  var sampleSubmission_EN = {
+    titleEn: "The Darkroom",
+    titleAr: "الغرفة المظلمة",
+    writer: "",
+    format: "Short film",
+    genre: "Drama",
+    length: "About 18 pages",
+    draft: "Final draft",
+    logline: "When a young woman brings an undeveloped film roll left behind by her late grandmother to the last photo studio in a coastal town, the elderly photographer who runs it is forced to confront a buried chapter of his past."
+  };
 
-  var sampleCoverage = {
+  var sampleCoverage_AR = {
     reader: "Scene One Reader",
     date: "",
     glance: {
@@ -195,6 +217,47 @@
       text: "فيلم قصير يمتلك صوتًا واثقًا وهوية ثقافية واضحة، يقوم على فكرة آسرة تمنحه فرصة قوية في المهرجانات وبرامج الدعم. ومع بعض الاختصار وإحكام البناء، سيكون أكثر جاهزية للتقديم والمنافسة. أما أبرز قرار إبداعي فيتعلق بمدى فاعلية الشخصية الرئيسية في توجيه مسار الأحداث، وبالدرجة التي ينبغي أن تظل فيها النهاية مفتوحة."
     }
   };
+  var sampleCoverage_EN = {
+    reader: "Scene One Reader",
+    date: "",
+    glance: {
+      "Premise & Theme": "Excellent",
+      "Hook": "Good",
+      "Stakes & Plot": "Good",
+      "Character": "Excellent",
+      "Structure & Pace": "Good",
+      "Producibility": "Excellent",
+      "Overall presentation": "Good"
+    },
+    synopsis: "In a small coastal town slowly losing its identity to modern development, Saeed, an elderly photographer, runs the last remaining film processing shop. One day, Reem, a woman in her twenties, walks in carrying an old film roll she found among her late grandmother’s belongings and asks him to develop it.\n\nOver the course of a single day, as the images emerge one by one in the darkroom, hidden chapters of the grandmother’s life begin to surface, stories Reem had never known. Unexpectedly, they intersect with Saeed’s own past. The photographs lead him to confront a decision he made forty years ago, and a loss he had never fully carried.\n\nIn the end, Reem leaves with a newfound understanding of her grandmother, while Saeed remains alone, facing a single photograph, finally ready to turn a long-awaited page.",
+    eval: {
+      "Premise & Theme": { score: 5, text: "The central concept is both clever and economical: a developing film roll becomes a dramatic engine that reveals the past layer by layer. The darkroom is not merely a setting, but a precise metaphor for memory, for the slow development of truth. The theme, how we come to terms with what is human and transient, is deeply affecting." },
+      "Hook": { score: 4, text: "The script opens with a striking image: a trembling hand submerges a blank sheet into liquid, and the features of a face begin to emerge. This opening immediately establishes the film’s tone, quiet, visual, and charged. The only note is that the introductory sequence before Reem’s entrance runs slightly long; tightening it would allow the hook to grab the audience more quickly." },
+      "Stakes & Plot": { score: 4, text: "The stakes are inherently internal, yet clear and steadily escalating: each photograph reveals a fragment, tightening the pressure on Saeed. The narrative relies on progression rather than a singular major event, a fitting choice for a short film. The ending remains open; while some viewers may desire a clearer indication of what will unfold within Saeed, it ultimately feels intentional and earned." },
+      "Character": { score: 5, text: "Saeed is a carefully drawn character. His silence speaks louder than words, and his past is revealed through small actions rather than direct exposition. Reem is not merely a device to move the story forward. She carries her own curiosity and a quiet ache that make her present. The contrast between two generations, one that develops photographs by hand and another that has only known the screen, serves the theme without being stated outright." },
+      "Structure & Pace": { score: 4, text: "The structure is tight, unfolding over a single day in a single location, with a controlled escalation driven by the successive images. The pacing is deliberate and suits the material, though the middle section could benefit from slight tightening in the waiting moments between developing one photograph and the next, where the rhythm nearly slackens before picking up again." },
+      "Producibility": { score: 5, text: "Highly producible and well-suited for festivals: a single central location, the shop and the darkroom, a small cast, and visual requirements that can be achieved on a modest budget. The primary challenge lies in casting an actor capable of carrying extended stretches of convincing silence, along with careful artistic attention to the darkroom lighting, on which much of the film’s visual beauty depends." },
+      "Presentation": { score: 4, text: "The script is written in clean cinematic language and is, for the most part, properly formatted. There are two minor notes: some scene descriptions run slightly long and lean more toward literary prose than necessary, and certain directorial instructions could be removed to leave more space for the director. This does not affect readability, but tightening it would enhance its professionalism in front of funders and festivals." }
+    },
+    market: {
+      audience: "It appeals to audiences drawn to human drama, with a particular resonance for Gulf and Arab viewers familiar with these changing coastal cities. Its themes of memory and loss also give it international reach.",
+      genreDemand: "A short character- and memory-driven drama, a type that is strongly present in festival programs, particularly those that value contemplative cinema.",
+      pathBuyers: "As a short film, its value lies more in festival presence, grants, and exposure for the filmmaker’s trajectory than in direct commercial sales. The realistic path includes regional and international festivals, such as those around the Red Sea, and funding bodies that support auteur cinema and emerging talent.",
+      budgetCeiling: "Low budget, which is a strength in this market. Highly fundable.",
+      regional: "Its specificity is its strongest commercial asset. The uniqueness of the coastal city and the craft of analog development give it strong presence in front of festivals and regional funders.",
+      net: "A strong festival and grants market. For the short film category, the commercial market is naturally limited, but this film is well positioned within the festival and funding ecosystem."
+    },
+    overall: {
+      strengths: "A confident, controlled voice; a central idea that is economical yet rich in meaning; two carefully drawn characters; spatial and cultural specificity; and a visually compelling approach. A strong calling card for the filmmaker. A producible, fundable project.",
+      toDevelop: "Trim the opening scene and the waiting sequence in the middle.\nGive Saeed an additional emotional beat before the ending so that the emotional weight does not rest solely on the final moment.\nClarify the degree of emotional resolution desired in the ending.\nFurther refine the visual descriptions and directorial cues."
+    },
+    score10: 8.9,
+    verdict: {
+      decision: "Recommend",
+      context: "in the context of short films and festivals",
+      text: "A short film with a confident voice and a clear cultural identity. It is built around a restrained, controlled concept that gives it strong potential in festivals and support programs. With some tightening and stronger structural precision, it will be even more ready for submission and competition. The most notable creative choice lies in the central character’s agency in guiding the progression of events, and in keeping the ending open to the extent that it feels intentional and earned."
+    }
+  };
 
   function $(id) { return document.getElementById(id); }
   function lang() { try { var l = localStorage.getItem(LANG_KEY); return (l === "en" || l === "ar") ? l : "ar"; } catch (e) { return "ar"; } }
@@ -208,7 +271,9 @@
     $("sampleBadge").textContent = BADGE[l];
     $("langSeg").querySelectorAll("button").forEach(function (b) { b.classList.toggle("on", b.dataset.l === l); });
     var rb = $("reportBody");
-    rb.innerHTML = window.SOReport.render(sampleSubmission, sampleCoverage, l);
+    var sub = l === "ar" ? sampleSubmission_AR : sampleSubmission_EN;
+    var cov = l === "ar" ? sampleCoverage_AR : sampleCoverage_EN;
+    rb.innerHTML = window.SOReport.render(sub, cov, l);
     rb.setAttribute("dir", l === "ar" ? "rtl" : "ltr");
     rb.classList.toggle("ar", l === "ar");
   }

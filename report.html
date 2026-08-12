@@ -5,7 +5,7 @@
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script>
   (function(){try{var l=localStorage.getItem('sceneone-report-lang');l=(l==='en'||l==='ar')?l:'ar';
     document.documentElement.setAttribute('lang',l);document.documentElement.setAttribute('dir',l==='ar'?'rtl':'ltr');}
@@ -17,6 +17,11 @@
     --muted:#8a8178; --label:#6f665e; --soft:#f3efe8;
     --page:#efeae2;
     --font:'Tajawal',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  }
+  /* English: swap to IBM Plex Sans, same split as the marketing pages'
+     css/styles.css (this page is self-contained, so it needs its own copy). */
+  html[dir="ltr"]{
+    --font:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   }
   *{box-sizing:border-box}
   html,body{margin:0}
@@ -50,7 +55,7 @@
   .rep-wm{color:#fff;letter-spacing:.18em;font-weight:700;font-size:23px;line-height:1}
   .rep-wm span{color:var(--orange)}
   .rep-cov{color:#9a938b;letter-spacing:.3em;font-size:10px;text-transform:uppercase;margin-top:10px;font-weight:500}
-  #reportBody.ar{font-family:'IBM Plex Sans Arabic','IBM Plex Sans',sans-serif}
+  #reportBody.ar{font-family:'Tajawal',sans-serif}
   #reportBody.ar .rep-sec h2 .no{margin-right:0;margin-left:8px}
   #reportBody.ar table.gl td.cat{text-align:right}
   #reportBody.ar .rep-top{direction:rtl}
@@ -61,7 +66,7 @@
   .rep-top .k{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--label);font-weight:600}
   .rep-top .v{font-size:14px;margin-top:3px}
   .rep-title{font-size:22px;font-weight:600;margin:2px 0 0}
-  .rep-title .ar{font-family:'IBM Plex Sans Arabic',sans-serif;color:var(--ink)}
+  .rep-title .ar{font-family:'Tajawal',sans-serif;color:var(--ink)}
   .logline{background:var(--soft);border-radius:10px;padding:16px 18px;margin:6px 0 30px}
   .logline .k{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--label);font-weight:600;margin-bottom:5px}
   /* The value carried no size of its own, so it inherited the page base and towered
