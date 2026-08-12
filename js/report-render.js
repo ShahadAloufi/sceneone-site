@@ -11,7 +11,9 @@
 
   // Vector SVG: the report renders natively (never via html2canvas anymore), so
   // the SVG stays crisp at any size — a downscaled PNG washed the thin strokes out.
-  var LOGO = "assets/scene-one-logo.svg";
+  // Icon-only mark (no "Scene One" wordmark baked in) — the report header
+  // already carries the SCENE ONE watermark text right below it via .rep-wm.
+  var LOGO = "assets/scene-one-mark.svg";
 
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>]/g, function (c) {
