@@ -287,7 +287,7 @@
       heroSub: "Professional screenplay coverage and development notes, delivered by experienced writers and filmmakers.",
       btnViewCoverage: "View Coverages", btnGuide: "Platform Guide",
       heroNda: "All submissions are protected under non-disclosure agreements (NDA) and are only accessed by the assigned reader.",
-      partnerBadge: "Accredited partner of the Cinema Association",
+      partnerBadge: "Accredited partner",
 
       quoteHtml: "Every story deserves a real chance to evolve.<br>" +
         "Scene One gives you a professional perspective on your script through specialized coverage and detailed reports, helping you identify strengths, address weaknesses, and move forward with clarity and confidence.",
