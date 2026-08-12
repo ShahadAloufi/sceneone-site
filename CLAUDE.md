@@ -126,7 +126,8 @@ Do NOT introduce Next.js/React/a compiler/npm build. Keep it buildless.
     its **own inline `<style>` block and no-flash theme/lang script**, and does NOT
     link `css/styles.css`. Shared pieces are duplicated there.
 - **Client JS (`/js`):** `config.js` (client-safe Supabase url/anonKey/bucket),
-  `theme.js`, `main.js` (landing), `submit.js` (submission form + PDF page count),
+  `theme.js`, `i18n.js` (public-site AR/EN, landing page only so far — see
+  "Public-site i18n" below), `main.js` (landing), `submit.js` (submission form + PDF page count),
   `admin.js` (login/dashboard/realtime), `coverage.js` (workspace/report),
   `report.js` (public report page), `report-render.js` (**shared** bilingual report
   renderer used by BOTH `coverage.js` and `report.js` — single source of truth for
@@ -284,6 +285,67 @@ bottom of `css/styles.css`; markup is `readers.html`.
   **Registration is no longer in the hero or any menu** — it survives only via
   the `#register` banner further down and `/?register`. Deliberate, but it is a
   real drop in prominence; revisit if sign-ups fall.
+
+---
+
+## Public-site i18n (landing page, 2026-08-11)
+
+The public site was Arabic-only until now. `js/i18n.js` adds English, following
+the same dict + `data-i18n` + `applyLang()` pattern already used by
+`js/admin.js`/`js/coverage.js`, but with its **own storage key**
+(`sceneone-lang`) so a visitor's language choice never collides with a staff
+member's admin-panel language pref (`sceneone-admin-lang`).
+
+- **Landing page (`index.html`) only, so far.** `submit`, `about-coverage`,
+  `readers`, `privacy`, `terms` are still Arabic-only — same dict/attribute
+  pattern, just not done yet. Don't assume the toggle exists site-wide.
+- **`data-i18n`** swaps `textContent`; **`data-i18n-html`** swaps `innerHTML`
+  (for the handful of strings carrying a `<br>` or `<strong>` — the dict values
+  are hardcoded translator-authored copy, never user input, so this is safe);
+  **`data-i18n-alt`**/**`data-i18n-ph`**/**`data-i18n-aria`** cover `alt`,
+  `placeholder`, `aria-label`; **`data-i18n-src`** swaps the whole `src`.
+  All five are read from `T.ar`/`T.en` in `js/i18n.js` and applied by the
+  same `applyLang()`.
+- **The three "cards" images have their headline + paragraph baked into the
+  PNG** (photo composited with rendered text at design time), not HTML
+  overlay — so translating them means swapping the whole file via
+  `data-i18n-src`, not swapping text. Each has an `-en` twin at the same
+  crop/size: `card_writers.png` ↔ `card_writers-en.png`, same for
+  `_producers`/`_cinema`. If the Arabic photo/crop/copy ever changes, the
+  English asset has to be regenerated to match — nothing enforces the two
+  staying in sync.
+- **`html[dir="ltr"]` CSS mirror block** at the very end of `css/styles.css`.
+  The Arabic layout hardcodes `direction: rtl` / `text-align: right` per
+  section (never inherited from `<html dir>`), so flipping the language
+  needed an explicit override for every one of those declarations — nav
+  links, hero, quote, about, partnership, coverage cards, journey timeline,
+  banner, FAQ, footer links, modal, toast, and the overlay menu's info/links
+  columns. The `[dir="ltr"]` attribute selector outranks the plain class it
+  overrides, so unlike the rest of this file, source order doesn't matter for
+  this block — but keep it as one block so the two directions stay diffable.
+  **Deliberately not mirrored:** the hero's photo gutter and the red banner's
+  clapperboard image position — those are composition choices, not reading
+  direction, and swapping them is a bigger visual redesign out of scope for
+  this first pass.
+- **`main.js` has its own small `MSG` dict** (`ar`/`en`) for the five strings
+  it generates at runtime — the submit button's "Sending…" state and the two
+  registration toasts — because those never exist as DOM text for
+  `data-i18n` to find until JS builds them. Reads the current language off
+  `document.documentElement.lang`, which `i18n.js` keeps in sync.
+- **`.footer__copy` keeps its inline `dir="rtl"`** in the Arabic markup
+  (explained in its own HTML comment: `.footer__row` is LTR, which would
+  otherwise scramble the Arabic around the Latin "SCENE ONE"). `applyLang()`
+  flips that one element's `dir` attribute directly — CSS can't reach it,
+  since it's a hardcoded attribute, not a class.
+- **Email/phone inputs in the register modal** used to be inline
+  `style="text-align:right"` — inline styles beat any CSS override, so
+  language-switching couldn't reach them. Replaced with a
+  `.field__input--email` class (still right-aligned by default) that the
+  `[dir="ltr"]` block flips to left for English.
+- **Toggle UI:** a `.lang-toggle` pill in the nav (desktop + mobile) and a
+  second copy in the hamburger overlay (`.lang-toggle--overlay`), both wired
+  by the same `js/i18n.js` click handler. Button text is the language you'd
+  switch **to** (shows "EN" in Arabic, "AR" in English), not the current one.
 
 ---
 
@@ -688,6 +750,12 @@ must be in the `supabase_realtime` publication for live updates to fire.
 
 ## Current TODOs
 
+- **Public-site i18n only covers `index.html` so far** (2026-08-11). `submit`,
+  `about-coverage`, `readers`, `privacy`, `terms` need the same `data-i18n` +
+  `[dir="ltr"]` treatment — see "Public-site i18n" above for the pattern.
+  ~~The three coverage-type card images have their body copy baked into the
+  PNG~~ — **done 2026-08-11**, English exports (`card_*-en.png`) swapped in
+  via `data-i18n-src`.
 - ~~Set the Supabase Site URL / redirect allow-list~~ and ~~configure custom SMTP~~ —
   **both done 2026-08-04.** See the auth notes below; left here only as a pointer,
   since together they were why no reader could ever reset a password.

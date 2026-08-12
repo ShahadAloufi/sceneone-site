@@ -29,16 +29,20 @@
     <!-- Inline links on desktop; below the breakpoint they collapse and the
          hamburger's overlay carries the same six destinations. -->
     <ul class="nav__links">
-      <li><a href="/">الرئيسية</a></li>
-      <li><a href="#about">Scene One</a></li>
-      <li><a href="/readers">من يقرأ نصك؟</a></li>
-      <li><a href="#journey">رحلة النص</a></li>
-      <li><a href="/about-coverage">دليل المنصة</a></li>
-      <li><a href="#contact">تواصل معنا</a></li>
+      <li><a href="/" data-i18n="navHome">الرئيسية</a></li>
+      <li><a href="#about" data-i18n="navAbout">Scene One</a></li>
+      <li><a href="/readers" data-i18n="navReaders">من يقرأ نصك؟</a></li>
+      <li><a href="#journey" data-i18n="navJourney">رحلة النص</a></li>
+      <li><a href="/about-coverage" data-i18n="navGuide">دليل المنصة</a></li>
+      <li><a href="#contact" data-i18n="navContact">تواصل معنا</a></li>
     </ul>
-    <button class="menu-btn" data-menu-open aria-label="القائمة">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="nav__end">
+      <!-- Text is set by js/i18n.js (shows the language you'd switch TO). -->
+      <button class="lang-toggle" type="button" aria-label="Switch language">EN</button>
+      <button class="menu-btn" data-menu-open data-i18n-aria="menuLabel" aria-label="القائمة">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </nav>
 
   <!-- ── MENU OVERLAY ── -->
@@ -51,34 +55,35 @@
     </div>
     <div class="overlay__top">
       <img src="assets/scene-one-logo.svg" alt="Scene One">
-      <button class="overlay__close" data-menu-close aria-label="إغلاق">
+      <button class="overlay__close" data-menu-close data-i18n-aria="closeLabel" aria-label="إغلاق">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
     </div>
     <div class="overlay__body">
       <div class="overlay__info">
         <div>
-          <p class="overlay__muted">Scene One / 2026</p>
-          <p style="margin-top:4px">منصة متخصصة في تقييم النصوص السينمائية وتقديم ملاحظات احترافية تساعد الكتّاب على تطوير أعمالهم وصقلها قبل خطوتهم التالية.</p>
+          <p class="overlay__muted" data-i18n="overlayTag">Scene One / 2026</p>
+          <p style="margin-top:4px" data-i18n="overlayBlurb">منصة متخصصة في تقييم النصوص السينمائية وتقديم ملاحظات احترافية تساعد الكتّاب على تطوير أعمالهم وصقلها قبل خطوتهم التالية.</p>
         </div>
         <div class="overlay__group">
-          <p class="overlay__muted" style="margin-bottom:4px">تواصل</p>
+          <p class="overlay__muted" style="margin-bottom:4px" data-i18n="overlayContact">تواصل</p>
           <p>sceneone.info@gmail.com</p>
         </div>
         <div class="overlay__group">
-          <p class="overlay__muted" style="margin-bottom:4px">حساباتنا</p>
+          <p class="overlay__muted" style="margin-bottom:4px" data-i18n="overlaySocial">حساباتنا</p>
           <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
           <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X / Twitter</a>
           <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </div>
+        <button class="lang-toggle lang-toggle--overlay" type="button" aria-label="Switch language">EN</button>
       </div>
       <div class="overlay__links">
-        <a href="/" data-menu-close>الرئيسية</a>
-        <a href="#about" data-menu-close>Scene One</a>
-        <a href="/readers" data-menu-close>من يقرأ نصك؟</a>
-        <a href="#journey" data-menu-close>رحلة النص</a>
-        <a href="/about-coverage" data-menu-close>دليل المنصة</a>
-        <a href="#contact" data-menu-close>تواصل معنا</a>
+        <a href="/" data-menu-close data-i18n="navHome">الرئيسية</a>
+        <a href="#about" data-menu-close data-i18n="navAbout">Scene One</a>
+        <a href="/readers" data-menu-close data-i18n="navReaders">من يقرأ نصك؟</a>
+        <a href="#journey" data-menu-close data-i18n="navJourney">رحلة النص</a>
+        <a href="/about-coverage" data-menu-close data-i18n="navGuide">دليل المنصة</a>
+        <a href="#contact" data-menu-close data-i18n="navContact">تواصل معنا</a>
       </div>
     </div>
   </div>
@@ -88,13 +93,13 @@
     <img class="hero__bg" src="assets/hero_bg.jpg" alt="">
     <div class="hero__shade"></div>
     <div class="hero__content">
-      <h1 class="hero__title">حيث تبدأ رحلة النص</h1>
-      <p class="hero__sub">تغطية سينمائية احترافية وملاحظات تطويرية يقدّمها كتّاب ومطوّرو نصوص وصنّاع أفلام.</p>
+      <h1 class="hero__title" data-i18n="heroTitle">حيث تبدأ رحلة النص</h1>
+      <p class="hero__sub" data-i18n="heroSub">تغطية سينمائية احترافية وملاحظات تطويرية يقدّمها كتّاب ومطوّرو نصوص وصنّاع أفلام.</p>
       <div class="btn-row">
-        <a class="btn btn--white" href="#coverage-types">عرض التغطيات</a>
-        <a class="btn btn--ghost" href="/about-coverage">دليل المنصة</a>
+        <a class="btn btn--white" href="#coverage-types" data-i18n="btnViewCoverage">عرض التغطيات</a>
+        <a class="btn btn--ghost" href="/about-coverage" data-i18n="btnGuide">دليل المنصة</a>
       </div>
-      <p class="hero__nda">جميع النصوص تخضع لاتفاقيات عدم إفصاح (NDA)، ولا يطّلع عليها سوى القارئ المكلّف بتقييمها.</p>
+      <p class="hero__nda" data-i18n="heroNda">جميع النصوص تخضع لاتفاقيات عدم إفصاح (NDA)، ولا يطّلع عليها سوى القارئ المكلّف بتقييمها.</p>
 
       <!-- Accreditation badge. Lives inside .hero__content so it inherits the
            hero's right gutter and sits over the photo, just above .quote__rule.
@@ -104,7 +109,7 @@
         <a class="partner__logo" href="https://www.cinemaassoc.com" target="_blank" rel="noopener noreferrer">
           <img src="assets/partner-cinema-association-v2.png" alt="جمعية السينما — Cinema Association">
         </a>
-        <p class="partner__text">شريك معتمد لدى جمعية السينما</p>
+        <p class="partner__text" data-i18n="partnerBadge">شريك معتمد لدى جمعية السينما</p>
       </div>
     </div>
   </section>
@@ -112,7 +117,7 @@
   <!-- ── QUOTE ── -->
   <section class="quote">
     <div class="quote__rule"></div>
-    <p dir="auto">
+    <p dir="auto" data-i18n-html="quoteHtml">
       لأن كل قصة تستحق أن تُمنح فرصة حقيقية للتطور،<br>
       تمنحك Scene One منظورًا احترافيًا لنصك من خلال قراءات نقدية متخصصة وتقارير مفصلة تساعدك على اكتشاف نقاط القوة ومعالجة مواطن الضعف، لتتمكن من تطوير مشروعك بثقة ووضوح.
     </p>
@@ -125,45 +130,50 @@
 
   <!-- ── ABOUT ── -->
   <section class="about" id="about">
-    <h2 class="about__title">من الفكرة للنص.</h2>
+    <h2 class="about__title" data-i18n="aboutTitle">من الفكرة للنص.</h2>
     <div class="about__body">
-      <p>يمتلك الكثير من الكتّاب أفكارًا واعدة ونصوصًا تحمل إمكانات حقيقية، لكن تطوير النص السينمائي لا يعتمد على الكتابة وحدها.</p>
-      <p>في كثير من الأحيان، يحتاج الكاتب إلى قراءة نقدية احترافية تساعده على رؤية عمله من منظور مختلف، واكتشاف نقاط القوة وفرص التحسين قبل الانتقال إلى المرحلة التالية.</p>
-      <p>لهذا وُجدت Scene One؛ لتوفير تقييمات متخصصة وتقارير مفصلة تساعد الكتّاب على تطوير نصوصهم واتخاذ قرارات أكثر وضوحًا في رحلتهم الإبداعية.</p>
+      <p data-i18n="aboutP1">يمتلك الكثير من الكتّاب أفكارًا واعدة ونصوصًا تحمل إمكانات حقيقية، لكن تطوير النص السينمائي لا يعتمد على الكتابة وحدها.</p>
+      <p data-i18n="aboutP2">في كثير من الأحيان، يحتاج الكاتب إلى قراءة نقدية احترافية تساعده على رؤية عمله من منظور مختلف، واكتشاف نقاط القوة وفرص التحسين قبل الانتقال إلى المرحلة التالية.</p>
+      <p data-i18n="aboutP3">لهذا وُجدت Scene One؛ لتوفير تقييمات متخصصة وتقارير مفصلة تساعد الكتّاب على تطوير نصوصهم واتخاذ قرارات أكثر وضوحًا في رحلتهم الإبداعية.</p>
     </div>
   </section>
 
   <!-- ── THREE CARDS ── -->
   <section class="cards">
     <div class="cards__row" id="cards">
-      <div class="cards__item" data-card="0"><img src="assets/card_writers.png" alt="للكُتّاب"></div>
-      <div class="cards__item" data-card="1"><img src="assets/card_producers.png" alt="شركاء الصناعة"></div>
-      <div class="cards__item" data-card="2"><img src="assets/card_cinema.png" alt="السينما السعودية"></div>
+      <!-- The title + paragraph inside each of these three photos are baked into
+           the PNG itself (photo composited with rendered text), not HTML overlay —
+           so translating them means swapping the whole image, not the text. Each
+           has an -en twin at the same crop/size; js/i18n.js swaps data-i18n-src
+           the same way it swaps data-i18n-alt. -->
+      <div class="cards__item" data-card="0"><img src="assets/card_writers.png" data-i18n-src="cardWritersImg" data-i18n-alt="cardWritersAlt" alt="للكُتّاب"></div>
+      <div class="cards__item" data-card="1"><img src="assets/card_producers.png" data-i18n-src="cardProducersImg" data-i18n-alt="cardProducersAlt" alt="شركاء الصناعة"></div>
+      <div class="cards__item" data-card="2"><img src="assets/card_cinema.png" data-i18n-src="cardCinemaImg" data-i18n-alt="cardCinemaAlt" alt="السينما السعودية"></div>
     </div>
   </section>
 
   <!-- ── JOURNEY TIMELINE ── -->
   <section class="journey" id="journey">
-    <h2 class="journey__title">رحلة النص</h2>
+    <h2 class="journey__title" data-i18n="journeyTitle">رحلة النص</h2>
     <div class="timeline">
       <div class="timeline__line"></div>
 
       <!-- MOBILE -->
       <div class="timeline__mobile">
-        <div class="tl-step"><p class="tl-step__title">01 — تقديم النص</p><p class="tl-step__body">يقوم الكاتب برفع النص السينمائي وإدخال المعلومات الأساسية الخاصة بالمشروع.</p></div>
-        <div class="tl-step"><p class="tl-step__title">02 — المراجعة الأولية</p><p class="tl-step__body">يتم التحقق من اكتمال الملف واستيفائه لمتطلبات التقديم.</p></div>
-        <div class="tl-step"><p class="tl-step__title">03 — القراءة والتقييم</p><p class="tl-step__body">يتولى قارئ ناقد متخصص قراءة النص وإعداد تقييم احترافي يتناول عناصره الأساسية.</p></div>
-        <div class="tl-step"><p class="tl-step__title">04 — إعداد التقرير</p><p class="tl-step__body">يتم إعداد تقرير مفصل يتضمن نقاط القوة وفرص التطوير والملاحظات العملية.</p></div>
-        <div class="tl-step"><p class="tl-step__title">05 — استلام النتائج</p><p class="tl-step__body">يتلقى الكاتب تقريره ويبدأ رحلة تطوير النص بناءً على الملاحظات والتوصيات المقدمة.</p></div>
+        <div class="tl-step"><p class="tl-step__title" data-i18n="step1T">01 — تقديم النص</p><p class="tl-step__body" data-i18n="step1B">يقوم الكاتب برفع النص السينمائي وإدخال المعلومات الأساسية الخاصة بالمشروع.</p></div>
+        <div class="tl-step"><p class="tl-step__title" data-i18n="step2T">02 — المراجعة الأولية</p><p class="tl-step__body" data-i18n="step2B">يتم التحقق من اكتمال الملف واستيفائه لمتطلبات التقديم.</p></div>
+        <div class="tl-step"><p class="tl-step__title" data-i18n="step3T">03 — القراءة والتقييم</p><p class="tl-step__body" data-i18n="step3B">يتولى قارئ ناقد متخصص قراءة النص وإعداد تقييم احترافي يتناول عناصره الأساسية.</p></div>
+        <div class="tl-step"><p class="tl-step__title" data-i18n="step4T">04 — إعداد التقرير</p><p class="tl-step__body" data-i18n="step4B">يتم إعداد تقرير مفصل يتضمن نقاط القوة وفرص التطوير والملاحظات العملية.</p></div>
+        <div class="tl-step"><p class="tl-step__title" data-i18n="step5T">05 — استلام النتائج</p><p class="tl-step__body" data-i18n="step5B">يتلقى الكاتب تقريره ويبدأ رحلة تطوير النص بناءً على الملاحظات والتوصيات المقدمة.</p></div>
       </div>
 
       <!-- DESKTOP -->
       <div class="timeline__desktop">
-        <div class="tl-row"><div class="tl-half tl-half--left"></div><div class="tl-half tl-half--right"><div class="tl-block"><p class="tl-step__title">01 — تقديم النص</p><p class="tl-step__body">يقوم الكاتب برفع النص السينمائي وإدخال المعلومات الأساسية الخاصة بالمشروع.</p></div></div></div>
-        <div class="tl-row"><div class="tl-half tl-half--left"><div class="tl-block"><p class="tl-step__title">02 — المراجعة الأولية</p><p class="tl-step__body">يتم التحقق من اكتمال الملف واستيفائه لمتطلبات التقديم.</p></div></div><div class="tl-half tl-half--right"></div></div>
-        <div class="tl-row"><div class="tl-half tl-half--left"></div><div class="tl-half tl-half--right"><div class="tl-block"><p class="tl-step__title">03 — القراءة والتقييم</p><p class="tl-step__body">يتولى قارئ ناقد متخصص قراءة النص وإعداد تقييم احترافي يتناول عناصره الأساسية.</p></div></div></div>
-        <div class="tl-row"><div class="tl-half tl-half--left"><div class="tl-block"><p class="tl-step__title">04 — إعداد التقرير</p><p class="tl-step__body">يتم إعداد تقرير مفصل يتضمن نقاط القوة وفرص التطوير والملاحظات العملية.</p></div></div><div class="tl-half tl-half--right"></div></div>
-        <div class="tl-row"><div class="tl-half tl-half--left"></div><div class="tl-half tl-half--right"><div class="tl-block"><p class="tl-step__title">05 — استلام النتائج</p><p class="tl-step__body">يتلقى الكاتب تقريره ويبدأ رحلة تطوير النص بناءً على الملاحظات والتوصيات المقدمة.</p></div></div></div>
+        <div class="tl-row"><div class="tl-half tl-half--left"></div><div class="tl-half tl-half--right"><div class="tl-block"><p class="tl-step__title" data-i18n="step1T">01 — تقديم النص</p><p class="tl-step__body" data-i18n="step1B">يقوم الكاتب برفع النص السينمائي وإدخال المعلومات الأساسية الخاصة بالمشروع.</p></div></div></div>
+        <div class="tl-row"><div class="tl-half tl-half--left"><div class="tl-block"><p class="tl-step__title" data-i18n="step2T">02 — المراجعة الأولية</p><p class="tl-step__body" data-i18n="step2B">يتم التحقق من اكتمال الملف واستيفائه لمتطلبات التقديم.</p></div></div><div class="tl-half tl-half--right"></div></div>
+        <div class="tl-row"><div class="tl-half tl-half--left"></div><div class="tl-half tl-half--right"><div class="tl-block"><p class="tl-step__title" data-i18n="step3T">03 — القراءة والتقييم</p><p class="tl-step__body" data-i18n="step3B">يتولى قارئ ناقد متخصص قراءة النص وإعداد تقييم احترافي يتناول عناصره الأساسية.</p></div></div></div>
+        <div class="tl-row"><div class="tl-half tl-half--left"><div class="tl-block"><p class="tl-step__title" data-i18n="step4T">04 — إعداد التقرير</p><p class="tl-step__body" data-i18n="step4B">يتم إعداد تقرير مفصل يتضمن نقاط القوة وفرص التطوير والملاحظات العملية.</p></div></div><div class="tl-half tl-half--right"></div></div>
+        <div class="tl-row"><div class="tl-half tl-half--left"></div><div class="tl-half tl-half--right"><div class="tl-block"><p class="tl-step__title" data-i18n="step5T">05 — استلام النتائج</p><p class="tl-step__body" data-i18n="step5B">يتلقى الكاتب تقريره ويبدأ رحلة تطوير النص بناءً على الملاحظات والتوصيات المقدمة.</p></div></div></div>
       </div>
     </div>
   </section>
@@ -179,8 +189,8 @@
       <img src="assets/partnership-bg.jpg" alt="">
     </div>
     <div class="partnership__content">
-      <p class="partnership__eyebrow"><span>Strategic Partnership</span></p>
-      <h2 class="partnership__title">شراكة استراتيجية</h2>
+      <p class="partnership__eyebrow"><span data-i18n="partnershipEyebrow">Strategic Partnership</span></p>
+      <h2 class="partnership__title" data-i18n="partnershipTitle">شراكة استراتيجية</h2>
       <div class="partnership__ornament" aria-hidden="true">
         <i class="partnership__rule"></i><i class="partnership__pip"></i>
         <i class="partnership__rule partnership__rule--mid"></i>
@@ -196,9 +206,9 @@
         <img class="partnership__logo" src="assets/scene-one-logo.svg" alt="Scene One">
       </div>
 
-      <p class="partnership__body">نؤمن بدعم مجتمع صناعة السينما السعودية، لذلك نقدّم لأعضاء الجمعية مزايا حصرية على جميع خدمات تغطية النصوص</p>
-      <p class="partnership__offer">خصم 15% لأعضاء ومنسوبي الجمعية</p>
-      <p class="partnership__note">يُشترط إبراز بطاقة العضوية السارية عند الطلب</p>
+      <p class="partnership__body" data-i18n="partnershipBody">نؤمن بدعم مجتمع صناعة السينما السعودية، لذلك نقدّم لأعضاء الجمعية مزايا حصرية على جميع خدمات تغطية النصوص</p>
+      <p class="partnership__offer" data-i18n="partnershipOffer">خصم 15% لأعضاء ومنسوبي الجمعية</p>
+      <p class="partnership__note" data-i18n="partnershipNote">يُشترط إبراز بطاقة العضوية السارية عند الطلب</p>
     </div>
   </section>
 
@@ -208,46 +218,46 @@
 
       <article class="ctype-card">
         <div class="ctype-card__head">
-          <h3 class="ctype-card__title">تغطية النصوص السينمائية الطويلة</h3>
+          <h3 class="ctype-card__title" data-i18n="featureTitle">تغطية النصوص السينمائية الطويلة</h3>
           <div class="price-div">
             <img class="riyal-icon" src="assets/riyal.svg" alt="ريال">
             <h1>1200</h1>
           </div>
-          <p class="ctype-card__desc">يقدم هذا التقرير ملاحظات تفصيلية على الفيلم الطويل (حتى 120 صفحة). يشمل ذلك تقييمًا وملاحظات حول: <strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، بالإضافة إلى التقييم العام.</strong></p>
+          <p class="ctype-card__desc" data-i18n-html="featureDescHtml">يقدم هذا التقرير ملاحظات تفصيلية على الفيلم الطويل (حتى 120 صفحة). يشمل ذلك تقييمًا وملاحظات حول: <strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، بالإضافة إلى التقييم العام.</strong></p>
         </div>
         <div class="ctype-card__foot">
           <ul class="ctype-card__list">
-            <li>مدة التسليم: حتى 4 أسابيع <span class="ctype-card__note">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span></li>
-            <li>تقييمات وفق معايير الصناعة: Pass / Consider / Recommend</li>
-            <li>ملاحظات تفصيلية تتضمن اقتراحات عملية لتحسين النص السينمائي</li>
-            <li>منح النصوص السينمائية ذات التقييمات العالية فرصة إضافية للظهور والوصول إلى جهات في الصناعة</li>
+            <li data-i18n-html="featureLi1Html">مدة التسليم: حتى 4 أسابيع <span class="ctype-card__note">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span></li>
+            <li data-i18n="li2">تقييمات وفق معايير الصناعة: Pass / Consider / Recommend</li>
+            <li data-i18n="li3">ملاحظات تفصيلية تتضمن اقتراحات عملية لتحسين النص السينمائي</li>
+            <li data-i18n="li4">منح النصوص السينمائية ذات التقييمات العالية فرصة إضافية للظهور والوصول إلى جهات في الصناعة</li>
           </ul>
           <div class="ctype-card__btns">
-            <a class="btn btn--white" href="/submit">اطلب التغطية</a>
-            <a class="btn btn--ghost" href="sample-report.html" target="_blank" rel="noopener">إطلع على نموذج التقرير</a>
+            <a class="btn btn--white" href="/submit" data-i18n="btnRequest">اطلب التغطية</a>
+            <a class="btn btn--ghost" href="sample-report.html" target="_blank" rel="noopener" data-i18n="btnSample">إطلع على نموذج التقرير</a>
           </div>
         </div>
       </article>
 
       <article class="ctype-card">
         <div class="ctype-card__head">
-          <h3 class="ctype-card__title">تغطية النصوص السينمائية القصيرة</h3>
+          <h3 class="ctype-card__title" data-i18n="shortTitle">تغطية النصوص السينمائية القصيرة</h3>
           <div class="price-div">
             <img class="riyal-icon" src="assets/riyal.svg" alt="ريال">
             <h1>750</h1>
           </div>
-          <p class="ctype-card__desc">يقدم هذا التقرير ملاحظات تفصيلية على الفيلم القصير (حتى 50 صفحة). يشمل ذلك تقييمًا وملاحظات حول: <strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، بالإضافة إلى التقييم العام.</strong></p>
+          <p class="ctype-card__desc" data-i18n-html="shortDescHtml">يقدم هذا التقرير ملاحظات تفصيلية على الفيلم القصير (حتى 50 صفحة). يشمل ذلك تقييمًا وملاحظات حول: <strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، بالإضافة إلى التقييم العام.</strong></p>
         </div>
         <div class="ctype-card__foot">
           <ul class="ctype-card__list">
-            <li>مدة التسليم: عادةً من 10 إلى 15 يومًا <span class="ctype-card__note">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span></li>
-            <li>تقييمات وفق معايير الصناعة: Pass / Consider / Recommend</li>
-            <li>ملاحظات تفصيلية تتضمن اقتراحات عملية لتحسين النص السينمائي</li>
-            <li>منح النصوص السينمائية ذات التقييمات العالية فرصة إضافية للظهور والوصول إلى جهات في الصناعة</li>
+            <li data-i18n-html="shortLi1Html">مدة التسليم: عادةً من 10 إلى 15 يومًا <span class="ctype-card__note">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span></li>
+            <li data-i18n="li2">تقييمات وفق معايير الصناعة: Pass / Consider / Recommend</li>
+            <li data-i18n="li3">ملاحظات تفصيلية تتضمن اقتراحات عملية لتحسين النص السينمائي</li>
+            <li data-i18n="li4">منح النصوص السينمائية ذات التقييمات العالية فرصة إضافية للظهور والوصول إلى جهات في الصناعة</li>
           </ul>
           <div class="ctype-card__btns">
-            <a class="btn btn--white" href="/submit">اطلب التغطية</a>
-            <a class="btn btn--ghost" href="sample-report.html" target="_blank" rel="noopener">إطلع على نموذج التقرير</a>
+            <a class="btn btn--white" href="/submit" data-i18n="btnRequest">اطلب التغطية</a>
+            <a class="btn btn--ghost" href="sample-report.html" target="_blank" rel="noopener" data-i18n="btnSample">إطلع على نموذج التقرير</a>
           </div>
         </div>
       </article>
@@ -259,9 +269,9 @@
   <section class="banner" id="register">
     <div class="banner__inner">
       <div class="banner__text">
-        <p class="banner__h">كل قصة تبدأ بمشهد أول<br>ونحن نبحث عن الكتّاب والقرّاء النقاد الذين يؤمنون بأن النصوص القوية هي أساس السينما.</p>
-        <p class="banner__p">سجّل اهتمامك اليوم لتكون من أوائل المهتمين بمنصة Scene One عند إطلاقها.</p>
-        <button class="btn btn--white" data-register>سجل اهتمامك</button>
+        <p class="banner__h" data-i18n-html="bannerHtml">كل قصة تبدأ بمشهد أول<br>ونحن نبحث عن الكتّاب والقرّاء النقاد الذين يؤمنون بأن النصوص القوية هي أساس السينما.</p>
+        <p class="banner__p" data-i18n="bannerP">سجّل اهتمامك اليوم لتكون من أوائل المهتمين بمنصة Scene One عند إطلاقها.</p>
+        <button class="btn btn--white" data-register data-i18n="bannerBtn">سجل اهتمامك</button>
       </div>
     </div>
     <div class="banner__clapper">
@@ -272,35 +282,35 @@
   <!-- ── FAQ ── -->
   <section class="faq" id="faq">
     <div class="faq__wrap">
-      <h2 class="faq__title">الأسئلة الشائعة</h2>
+      <h2 class="faq__title" data-i18n="faqTitle">الأسئلة الشائعة</h2>
       <div class="faq__list" id="faqList">
         <div class="faq-item">
           <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q">ما هي تغطية النصوص السينمائية؟</span>
+            <span class="faq-item__q" data-i18n="faqQ1">ما هي تغطية النصوص السينمائية؟</span>
             <svg class="faq-item__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a">تغطية النصوص السينمائية (Script Coverage) هي تحليل مفصّل يقدّمه قارئ/ناقد مختص لعمل الكاتب. نشأت هذه الخدمة في الاستوديوهات حيث كان يُوظَّف قرّاء لقراءة عدد كبير من السيناريوهات نيابةً عن المنتجين. لكن خدمتنا في التغطية النقدية تختلف عن ذلك؛ فهدفنا الأساسي هو مساعدة الكتّاب على تطوير نصوصهم والوصول بها إلى مرحلة تجعلها جاهزة للإرسال إلى شركاء الصناعة، مع تقييم صريح لما ينجح وما لا ينجح وأسباب واضحة لكل رأي.</p></div></div>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA1">تغطية النصوص السينمائية (Script Coverage) هي تحليل مفصّل يقدّمه قارئ/ناقد مختص لعمل الكاتب. نشأت هذه الخدمة في الاستوديوهات حيث كان يُوظَّف قرّاء لقراءة عدد كبير من السيناريوهات نيابةً عن المنتجين. لكن خدمتنا في التغطية النقدية تختلف عن ذلك؛ فهدفنا الأساسي هو مساعدة الكتّاب على تطوير نصوصهم والوصول بها إلى مرحلة تجعلها جاهزة للإرسال إلى شركاء الصناعة، مع تقييم صريح لما ينجح وما لا ينجح وأسباب واضحة لكل رأي.</p></div></div>
         </div>
         <div class="faq-item">
           <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q">ما هي خدمات التغطية التي نقدمها؟</span>
+            <span class="faq-item__q" data-i18n="faqQ2">ما هي خدمات التغطية التي نقدمها؟</span>
             <svg class="faq-item__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a">نقدّم حاليًا نوعين من الملاحظات النقدية: تغطية النصوص السينمائية، حيث يدوّن الناقد ملاحظات بنّاءة تشمل الفكرة والموضوع (Premise & Theme)، عنصر الجذب (Hook)، المخاطر وتطور الحبكة (Stakes & Plot)، الشخصيات، البنية والإيقاع (Structure & Pace)، قابلية الإنتاج (Producibility)، والعرض العام، مع خاتمة تلخّص أبرز نقاط القوة والجوانب التي تحتاج إلى تحسين. وتغطية المعالجات (Treatments)، حيث يدوّن الناقد ملاحظات تمتد إلى صفحتين تشمل المحتوى، والـ logline، وبنية القصة، وأدوار الشخصيات، واقتراحات لتحسين عرضك التقديمي (Pitch).</p></div></div>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA2">نقدّم حاليًا نوعين من الملاحظات النقدية: تغطية النصوص السينمائية، حيث يدوّن الناقد ملاحظات بنّاءة تشمل الفكرة والموضوع (Premise & Theme)، عنصر الجذب (Hook)، المخاطر وتطور الحبكة (Stakes & Plot)، الشخصيات، البنية والإيقاع (Structure & Pace)، قابلية الإنتاج (Producibility)، والعرض العام، مع خاتمة تلخّص أبرز نقاط القوة والجوانب التي تحتاج إلى تحسين. وتغطية المعالجات (Treatments)، حيث يدوّن الناقد ملاحظات تمتد إلى صفحتين تشمل المحتوى، والـ logline، وبنية القصة، وأدوار الشخصيات، واقتراحات لتحسين عرضك التقديمي (Pitch).</p></div></div>
         </div>
         <div class="faq-item">
           <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q">لماذا أحتاج إلى خدمة التغطية (Coverage)؟</span>
+            <span class="faq-item__q" data-i18n="faqQ3">لماذا أحتاج إلى خدمة التغطية (Coverage)؟</span>
             <svg class="faq-item__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a">من الصعب النظر إلى عملك بموضوعية تامة عندما تكون أنت المؤلف، لذلك توفّر خدمة التغطية نظرة موضوعية من شخص يفهم متطلبات الصناعة. وعند إرسال نصّك إلى استوديو أو وكيل أو منتج، فلن تتمكّن من الاطلاع على ملاحظات القارئ، مما يعني أنك لن تحصل على فرصة لمعالجة نقاط الضعف — أما من خلال هذه الخدمة فستحصل على هذه الفرصة.</p></div></div>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA3">من الصعب النظر إلى عملك بموضوعية تامة عندما تكون أنت المؤلف، لذلك توفّر خدمة التغطية نظرة موضوعية من شخص يفهم متطلبات الصناعة. وعند إرسال نصّك إلى استوديو أو وكيل أو منتج، فلن تتمكّن من الاطلاع على ملاحظات القارئ، مما يعني أنك لن تحصل على فرصة لمعالجة نقاط الضعف — أما من خلال هذه الخدمة فستحصل على هذه الفرصة.</p></div></div>
         </div>
         <div class="faq-item">
           <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q">من هم Scene One؟</span>
+            <span class="faq-item__q" data-i18n="faqQ4">من هم Scene One؟</span>
             <svg class="faq-item__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a">تأسست Scene One بهدف مساعدة كتّاب السيناريو الصاعدين على دخول صناعة الأفلام.</p></div></div>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA4">تأسست Scene One بهدف مساعدة كتّاب السيناريو الصاعدين على دخول صناعة الأفلام.</p></div></div>
         </div>
       </div>
     </div>
@@ -311,8 +321,8 @@
     <img class="cta__bg" src="assets/cta_script.jpg" alt="">
     <div class="cta__shade"></div>
     <div class="cta__content">
-      <h2 class="cta__h">تواصل معنا</h2>
-      <p class="cta__sub">للإستفسارات والأسئلة المتعلقة بالخدمة</p>
+      <h2 class="cta__h" data-i18n="ctaH">تواصل معنا</h2>
+      <p class="cta__sub" data-i18n="ctaSub">للإستفسارات والأسئلة المتعلقة بالخدمة</p>
       <a class="cta__btn" href="mailto:sceneone.info@gmail.com" dir="ltr">
         <span>→</span><span>sceneone.info@gmail.com</span>
       </a>
@@ -324,10 +334,10 @@
     <div class="footer__row">
       <!-- dir="rtl": .footer__row is LTR, which would otherwise reorder the
            Arabic around the Latin "SCENE ONE". -->
-      <p class="footer__copy" dir="rtl">© 2026 جميع الحقوق محفوظة لـSCENE ONE.<br><span class="footer__cr">الرقم الموحد: 7054791293</span></p>
+      <p class="footer__copy" dir="rtl" data-i18n-html="footerCopyHtml">© 2026 جميع الحقوق محفوظة لـSCENE ONE.<br><span class="footer__cr">الرقم الموحد: 7054791293</span></p>
       <div class="footer__links">
-        <a href="/privacy">سياسة الخصوصية</a>
-        <a href="/terms">الشروط والأحكام</a>
+        <a href="/privacy" data-i18n="footerPrivacy">سياسة الخصوصية</a>
+        <a href="/terms" data-i18n="footerTerms">الشروط والأحكام</a>
       </div>
       <div class="footer__social">
         <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer"><img src="assets/icon_x.png" alt="X"></a>
@@ -341,48 +351,49 @@
 <!-- ── REGISTER MODAL ── -->
 <div class="modal-backdrop" id="registerModal">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="regTitle">
-    <button class="modal__close" data-register-close aria-label="إغلاق">
+    <button class="modal__close" data-register-close data-i18n-aria="closeLabel" aria-label="إغلاق">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
-    <h2 class="modal__title head" id="regTitle">سجّل اهتمامك</h2>
-    <p class="modal__desc">كن من أوائل المهتمين بمنصة Scene One عند إطلاقها.</p>
+    <h2 class="modal__title head" id="regTitle" data-i18n="regTitle">سجّل اهتمامك</h2>
+    <p class="modal__desc" data-i18n="regDesc">كن من أوائل المهتمين بمنصة Scene One عند إطلاقها.</p>
     <form id="registerForm" novalidate>
       <div class="field" data-field="name">
-        <label>الاسم الكامل</label>
-        <input type="text" name="name" placeholder="اكتب اسمك">
-        <p class="err">الاسم مطلوب</p>
+        <label data-i18n="fName">الاسم الكامل</label>
+        <input type="text" name="name" data-i18n-ph="fNamePh" placeholder="اكتب اسمك">
+        <p class="err" data-i18n="errName">الاسم مطلوب</p>
       </div>
       <div class="field" data-field="email">
-        <label>البريد الإلكتروني</label>
-        <input type="email" name="email" dir="ltr" placeholder="name@example.com" style="text-align:right">
-        <p class="err">البريد الإلكتروني غير صحيح</p>
+        <label data-i18n="fEmail">البريد الإلكتروني</label>
+        <input type="email" name="email" dir="ltr" placeholder="name@example.com" class="field__input--email">
+        <p class="err" data-i18n="errEmail">البريد الإلكتروني غير صحيح</p>
       </div>
       <div class="field" data-field="phone">
-        <label>رقم الجوال <span class="opt">(اختياري)</span></label>
-        <input type="text" name="phone" dir="ltr" placeholder="05xxxxxxxx" style="text-align:right">
+        <label><span data-i18n="fPhone">رقم الجوال</span> <span class="opt" data-i18n="optWord">(اختياري)</span></label>
+        <input type="text" name="phone" dir="ltr" placeholder="05xxxxxxxx" class="field__input--email">
       </div>
       <div class="field" data-field="type">
-        <label>نوع الاهتمام</label>
+        <label data-i18n="fType">نوع الاهتمام</label>
         <select name="type">
-          <option value="" disabled selected>اختر نوع الاهتمام</option>
-          <option value="كاتب">كاتب</option>
-          <option value="قارئ ناقد">قارئ ناقد</option>
-          <option value="شريك صناعة">شريك صناعة</option>
-          <option value="أخرى">أخرى</option>
+          <option value="" disabled selected data-i18n="typeSelectPh">اختر نوع الاهتمام</option>
+          <option value="كاتب" data-i18n="typeWriter">كاتب</option>
+          <option value="قارئ ناقد" data-i18n="typeReader">قارئ ناقد</option>
+          <option value="شريك صناعة" data-i18n="typePartner">شريك صناعة</option>
+          <option value="أخرى" data-i18n="typeOther">أخرى</option>
         </select>
-        <p class="err">اختر نوع الاهتمام</p>
+        <p class="err" data-i18n="errType">اختر نوع الاهتمام</p>
       </div>
       <div class="field" data-field="notes">
-        <label>ملاحظات <span class="opt">(اختياري)</span></label>
-        <textarea name="notes" placeholder="أخبرنا المزيد عن اهتمامك"></textarea>
+        <label><span data-i18n="fNotes">ملاحظات</span> <span class="opt" data-i18n="optWord">(اختياري)</span></label>
+        <textarea name="notes" data-i18n-ph="fNotesPh" placeholder="أخبرنا المزيد عن اهتمامك"></textarea>
       </div>
-      <button type="submit" class="modal__submit">إرسال</button>
+      <button type="submit" class="modal__submit" data-i18n="submitBtn">إرسال</button>
     </form>
   </div>
 </div>
 
 <div class="toast-wrap" id="toasts"></div>
 
+<script src="js/i18n.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

@@ -89,7 +89,7 @@ a, button {
        starts on the right, so the equivalent gesture is the opposite side — and it
        closes the dead gap that hugging the logo leaves. No right margin: with the
        hamburger gone the group sits on the nav's own padding. */
-    margin: 0 0 0 auto;
+    margin: 0 24px 0 auto;
     direction: rtl; /* the bar is LTR so the logo stays left; the Arabic reads RTL */
   }
   .nav__links a {
@@ -107,6 +107,22 @@ a, button {
   }
   .nav__links a:hover::after { transform: scaleX(1); }
 }
+.nav__end { display: flex; align-items: center; gap: 16px; }
+/* Small pill, text set by js/i18n.js to whichever language you'd switch TO. */
+.lang-toggle {
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: #fff;
+  background: transparent;
+}
+.lang-toggle:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.6); }
+.lang-toggle--overlay { align-self: flex-start; margin-top: 4px; }
+
 .menu-btn {
   display: flex;
   flex-direction: column;
@@ -719,6 +735,12 @@ a, button {
   font-family: inherit;
   font-size: 15px;
 }
+/* Email/phone fields are dir="ltr" regardless of UI language (an email or
+   phone number is always LTR content), but in the Arabic UI they still sit
+   right-aligned like every other field in the form — hence a class instead
+   of the dir attribute, which browsers use to align text. The [dir="ltr"]
+   override block near the end of this file flips it left for the English UI. */
+.field__input--email { text-align: right; }
 .field input::placeholder, .field textarea::placeholder { color: rgba(255,255,255,.3); }
 .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: rgba(255,255,255,.4); }
 .field textarea { min-height: 80px; resize: vertical; }
@@ -1783,3 +1805,62 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   .au-hero__wordmark { width: 86%; }
   .au-about, .au-team { padding-left: 24px; padding-right: 24px; }
 }
+
+/* ===========================================================
+   LANDING PAGE — ENGLISH (LTR) MIRROR
+   The Arabic landing page hardcodes `direction: rtl` and `text-align: right`
+   per-section rather than inheriting from <html dir>, so switching the
+   language (js/i18n.js sets <html dir="ltr">) doesn't flip these on its own.
+   Every rule below targets exactly the RTL-specific declaration it mirrors —
+   see the base rule earlier in this file for context on each one. Kept as one
+   block (rather than interleaved) so the two directions stay easy to diff.
+   The [dir="ltr"] attribute selector outranks the plain class it overrides,
+   so — unlike the rest of this file — source order doesn't matter here.
+   Not extended to nav/footer/photo asymmetry that's driven by composition
+   (hero photo gutter, banner clapperboard) rather than reading direction;
+   mirroring those is a bigger visual redesign, deliberately out of scope
+   for this first pass at bilingual support.
+   =========================================================== */
+html[dir="ltr"] .nav__links { direction: ltr; }
+html[dir="ltr"] .overlay__info { direction: ltr; }
+html[dir="ltr"] .overlay__links { direction: ltr; }
+
+html[dir="ltr"] .hero__content { direction: ltr; text-align: left; margin-left: 0; margin-right: auto; }
+@media (min-width: 640px) {
+  html[dir="ltr"] .hero__content { margin-right: 0; margin-left: 40px; }
+}
+html[dir="ltr"] .partner__text { text-align: left; }
+
+html[dir="ltr"] .quote { text-align: left; }
+html[dir="ltr"] .quote__rule { margin: 0 auto 24px 0; }
+html[dir="ltr"] .quote p { margin-left: 0; margin-right: auto; }
+
+html[dir="ltr"] .about__body { text-align: left; }
+
+html[dir="ltr"] .partnership { direction: ltr; }
+
+html[dir="ltr"] .ctypes { direction: ltr; }
+html[dir="ltr"] .ctype-card__desc { text-align: left; }
+html[dir="ltr"] .ctype-card__list li { text-align: left; padding-right: 0; padding-left: 28px; }
+html[dir="ltr"] .ctype-card__list li::before { right: auto; left: 0; }
+
+html[dir="ltr"] .journey { direction: ltr; }
+html[dir="ltr"] .timeline__mobile { direction: ltr; }
+html[dir="ltr"] .tl-step { text-align: left; direction: ltr; }
+/* .tl-row stays direction:ltr regardless of language (it's what makes the
+   alternating left/right layout work); only the block's own text needs to
+   flip, independent of which half it lands in. */
+html[dir="ltr"] .tl-block { text-align: left; direction: ltr; }
+
+html[dir="ltr"] .banner__text { text-align: left; direction: ltr; }
+
+html[dir="ltr"] .faq { direction: ltr; }
+html[dir="ltr"] .faq-item__btn { text-align: left; }
+
+html[dir="ltr"] .footer__links { direction: ltr; }
+
+html[dir="ltr"] .modal { direction: ltr; }
+html[dir="ltr"] .modal__title, html[dir="ltr"] .modal__desc { text-align: left; }
+html[dir="ltr"] .field__input--email { text-align: left; }
+
+html[dir="ltr"] .toast { direction: ltr; text-align: left; }

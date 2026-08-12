@@ -6,6 +6,25 @@
 (function () {
   "use strict";
 
+  /* ---------- i18n-aware strings for JS-generated content ----------
+     Static markup translates via data-i18n (js/i18n.js); these five strings
+     are built at runtime (submit button state, toasts) so they read the
+     current language straight off <html lang>, which js/i18n.js keeps in
+     sync with the visitor's choice. */
+  var MSG = {
+    ar: {
+      sending: "جارٍ الإرسال...", submit: "إرسال",
+      okTitle: "تم تسجيل اهتمامك بنجاح", okDesc: "سنتواصل معك عند إطلاق المنصة.",
+      errTitle: "حدث خطأ", errDesc: "تعذّر إرسال التسجيل، حاول مرة أخرى."
+    },
+    en: {
+      sending: "Sending...", submit: "Submit",
+      okTitle: "Your interest has been registered", okDesc: "We'll reach out when the platform launches.",
+      errTitle: "Something went wrong", errDesc: "Couldn't send your registration — please try again."
+    }
+  };
+  function msg() { return document.documentElement.getAttribute("lang") === "en" ? MSG.en : MSG.ar; }
+
   /* ---------- SLOW/SMOOTH SCROLL HELPER ---------- */
   function easeInOutCubic(t) {
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -211,16 +230,16 @@
 
       var submitBtn = form.querySelector(".modal__submit");
       submitBtn.disabled = true;
-      submitBtn.textContent = "جارٍ الإرسال...";
+      submitBtn.textContent = msg().sending;
 
       submitRegistration(values).then(function () {
-        toast("تم تسجيل اهتمامك بنجاح", "سنتواصل معك عند إطلاق المنصة.");
+        toast(msg().okTitle, msg().okDesc);
         closeModal();
       }).catch(function () {
-        toast("حدث خطأ", "تعذّر إرسال التسجيل، حاول مرة أخرى.", "error");
+        toast(msg().errTitle, msg().errDesc, "error");
       }).then(function () {
         submitBtn.disabled = false;
-        submitBtn.textContent = "إرسال";
+        submitBtn.textContent = msg().submit;
       });
     });
   }
