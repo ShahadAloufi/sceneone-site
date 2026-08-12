@@ -106,20 +106,27 @@ a, button {
   .nav__links a:hover::after { transform: scaleX(1); }
 }
 .nav__end { display: flex; align-items: center; gap: 16px; }
-/* Small pill, text set by js/i18n.js to whichever language you'd switch TO. */
-.lang-toggle {
+/* Both languages shown at once; js/i18n.js toggles .active on whichever
+   .lang-btn matches the current language rather than swapping text. */
+.lang-toggle-group {
+  display: inline-flex; align-items: center; gap: 2px;
   border: 1px solid rgba(255,255,255,.35);
   border-radius: 999px;
-  padding: 6px 14px;
+  padding: 3px;
+}
+.lang-btn {
+  border-radius: 999px;
+  padding: 5px 12px;
   font-family: var(--font-body);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: .04em;
-  color: #fff;
+  color: rgba(255,255,255,.6);
   background: transparent;
 }
-.lang-toggle:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.6); }
-.lang-toggle--overlay { align-self: flex-start; margin-top: 4px; }
+.lang-btn:hover { color: #fff; }
+.lang-btn.active { background: #fff; color: #000; }
+.lang-toggle-group--overlay { align-self: flex-start; margin-top: 28px; }
 
 .menu-btn {
   display: flex;

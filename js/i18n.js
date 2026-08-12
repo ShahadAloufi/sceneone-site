@@ -313,14 +313,15 @@
       el.setAttribute("dir", LANG === "ar" ? "rtl" : "ltr");
     });
 
-    document.querySelectorAll(".lang-toggle").forEach(function (btn) {
-      btn.textContent = LANG === "ar" ? "EN" : "AR";
-      btn.setAttribute("aria-label", LANG === "ar" ? "Switch to English" : "التبديل إلى العربية");
+    // Both languages are always shown (.lang-btn[data-lang]); mark whichever
+    // matches the current one active rather than swapping button text.
+    document.querySelectorAll(".lang-btn").forEach(function (btn) {
+      btn.classList.toggle("active", btn.getAttribute("data-lang") === LANG);
     });
   }
 
-  document.querySelectorAll(".lang-toggle").forEach(function (btn) {
-    btn.addEventListener("click", function () { applyLang(LANG === "ar" ? "en" : "ar"); });
+  document.querySelectorAll(".lang-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () { applyLang(btn.getAttribute("data-lang")); });
   });
 
   applyLang(LANG);

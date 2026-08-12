@@ -354,10 +354,15 @@ member's admin-panel language pref (`sceneone-admin-lang`).
   language-switching couldn't reach them. Replaced with a
   `.field__input--email` class (still right-aligned by default) that the
   `[dir="ltr"]` block flips to left for English.
-- **Toggle UI:** a `.lang-toggle` pill in the nav (desktop + mobile) and a
-  second copy in the hamburger overlay (`.lang-toggle--overlay`), both wired
-  by the same `js/i18n.js` click handler. Button text is the language you'd
-  switch **to** (shows "EN" in Arabic, "AR" in English), not the current one.
+- **Toggle UI:** a `.lang-toggle-group` pill in the nav (desktop + mobile) and
+  a second copy in the hamburger overlay (`.lang-toggle-group--overlay`),
+  each holding two static `.lang-btn[data-lang="en"|"ar"]` buttons. **Changed
+  2026-08-12 from a single button that swapped its own text** to both
+  languages always visible, the current one highlighted via `.active` — a
+  visitor shouldn't have to infer what "EN" on the button actually means
+  (the language it's in, or the language it switches to). Each button's own
+  click handler calls `applyLang(this.dataset.lang)` directly; `applyLang()`
+  just toggles which one carries `.active`, it doesn't touch their text.
 - **`readers.html` reuses the shared nav/overlay/footer dict keys** (`navHome`,
   `overlayTag`, `footerCopyHtml`, etc. — same ones `index.html` uses) and adds
   its own page-only keys for the hero, the "About SCENE ONE" story, and the
