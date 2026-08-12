@@ -580,8 +580,35 @@ must be in the `supabase_realtime` publication for live updates to fire.
   data and answers the only question staff actually had ("who hasn't paid?"). Revisit
   if abandoned rows pile up enough to clutter All submissions. Do **not** add an expiry
   sweep on the assumption it was simply missed.
-- **Roles:** `admin`, `super_admin`, `senior_reader`, `junior_reader`. Staff =
-  admin/super_admin; readers = senior/junior.
+- **Roles:** `admin`, `super_admin`, `lead_reader`, `senior_reader`, `junior_reader`.
+  Staff = admin/super_admin; readers = lead/senior/junior.
+- **Lead Reader (`lead_reader`) — a reader with ONE extra power, not a junior admin.**
+  It is deliberately **absent from `is_staff()`**, and must stay that way: `is_staff`
+  is what opens "All submissions", "Deliveries", the kanban board, admin management,
+  reassignment, and unrestricted coverage/script access. A lead gets none of those.
+  What they get instead:
+  - **Quality review.** They approve or bounce coverages written by *other* readers,
+    which is the same `/api/review-coverage` path staff use (same writer email, same
+    `delivered_by` stamp). Admins keep the action too — a lead **replaces** them in
+    routine QA rather than locking them out.
+  - **Their own coverages**, claimed from the same pool as any reader, with the same
+    one-active-assignment limit. They are **senior-equivalent** for claiming: no
+    special case exists anywhere in `api/claim-script.js`, because only
+    `junior_reader` is level-restricted or opens a co-reader slot.
+  The whole boundary is **`can_qa_review(uid, sub_id)`**: true only when the caller is
+  a lead, is **not** that script's assignee, and the coverage is in **`submitted`**.
+  It gates both the coverage body and the script file (`can_read_script`), so a lead's
+  view of another reader's script **opens when they submit and closes on approval** —
+  there is no standing window. `js/admin.js` filters the QA queue the same way, but
+  that is UI convenience; RLS is the real gate.
+  - **A lead's own coverage skips QA entirely and is delivered by them.** Their submit
+    button reads "Send Coverage to Writer" and calls `review-coverage` directly
+    (`selfDeliver` branch), so it never enters `submitted` and never appears in
+    anyone's queue. **This is the one delivery path with no second pair of eyes** —
+    a deliberate trust decision (2026-08-12), not an oversight. A lead can never
+    QA-review their own work either way: `can_qa_review` excludes assignees, and the
+    API refuses `request_revision` on the self-deliver path. If this ever needs
+    reversing, make `selfDeliver` set `submitted` instead and let staff approve it.
 - **Assignment:** a reader claims a script (primary assignee). If the primary is a
   **junior** reader, a **co-reader** slot opens for a second reader.
 - **Assignment notice window (told 2h, actually 3h):** claiming a script pops a
@@ -1131,6 +1158,46 @@ must be in the `supabase_realtime` publication for live updates to fire.
   -- Pre-gate rows are grandfathered into the pool; new rows start behind the gate.
   update public.submissions set status = 'unassigned' where status = 'new';
   alter table public.submissions alter column status set default 'pending_payment';
+
+  -- Lead Reader role: a READER with one extra power (quality review). Deliberately
+  -- NOT added to is_staff() — every staff-gated policy must keep excluding it.
+  alter table public.admins drop constraint if exists admins_role_check;
+  alter table public.admins add constraint admins_role_check
+    check (role in ('admin','super_admin','lead_reader','senior_reader','junior_reader'));
+
+  create or replace function public.is_lead_reader(uid uuid)
+  returns boolean language sql security definer stable set search_path = public as $$
+    select exists (select 1 from public.admins where id = uid and role = 'lead_reader');
+  $$;
+
+  -- The whole Lead security boundary: read access to a coverage (and its script
+  -- file) opens only while that coverage is 'submitted' — i.e. actually awaiting
+  -- review — and never for the lead's own assignment.
+  create or replace function public.can_qa_review(uid uuid, sub_id uuid)
+  returns boolean language sql security definer stable set search_path = public as $$
+    select public.is_lead_reader(uid)
+       and not public.is_assigned(uid, sub_id)
+       and exists (select 1 from public.coverages
+                   where submission_id = sub_id and status = 'submitted');
+  $$;
+
+  drop policy if exists "staff+assigned read, everyone reads approved" on public.coverages;
+  create policy "staff+assigned read, everyone reads approved" on public.coverages for select
+    to authenticated using (
+      public.is_staff(auth.uid())
+      or public.is_assigned(auth.uid(), submission_id)
+      or public.can_qa_review(auth.uid(), submission_id)
+      or status = 'approved');
+
+  create or replace function public.can_read_script(uid uuid, object_name text)
+  returns boolean language sql stable security definer set search_path = public as $$
+    select exists (
+      select 1 from public.submissions s
+      where s.file_path = object_name
+        and (s.assigned_to is null or s.assigned_to = uid or s.co_reader_id = uid
+             or public.can_qa_review(uid, s.id))
+    );
+  $$;
   ```
   ⚠️ **Run this WITH the deploy, not before it.** The currently-deployed
   `api/submissions.js` inserts `status: 'new'` explicitly, so the new default never

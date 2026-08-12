@@ -1,21 +1,31 @@
-// Vercel serverless function — STAFF quality-control review of a submitted
-// coverage. This is the ONLY path that can approve a coverage (making it visible
-// to the writer) or bounce it back for revision — readers can never do either.
+// Vercel serverless function — quality-control review of a coverage. This is the
+// ONLY path that can approve a coverage (making it visible to the writer) or
+// bounce it back for revision — ordinary readers can never do either.
 //
 //   POST /api/review-coverage
 //     { submission_id, action: "approve" }
 //     { submission_id, action: "request_revision", note: "<why>" }
 //
 // The caller must send their Supabase session token as `Authorization: Bearer
-// <token>`; we verify it maps to a STAFF row (admin | super_admin). All reads and
-// writes use the service-role key (bypasses RLS), so the state transition and
-// delivery stamping are trusted.
+// <token>`; we verify it maps to a REVIEWER row (admin | super_admin |
+// lead_reader). All reads and writes use the service-role key (bypasses RLS), so
+// the state transition and delivery stamping are trusted.
 //
 // - approve:          status → 'approved', stamp delivered_at/by, email the
 //                     writer a private link to their (now visible) report.
 // - request_revision: status → 'revision_requested', store the required note; the
 //                     reader reopens, revises, and resubmits. Nothing is emailed
 //                     to the writer.
+//
+// TWO CALLERS, TWO PATHS (see requireReviewer + the assignment check below):
+//   1. QA review — staff, or a lead_reader who is NOT the assignee, acting on a
+//      coverage in 'submitted'. The normal flow.
+//   2. Self-delivery — a lead_reader approving their OWN coverage. Lead-authored
+//      coverage is trusted and skips quality review entirely, so it goes straight
+//      to the writer. Deliberate policy decision: this is the one delivery path
+//      with no second pair of eyes. A lead can only ever do this to their own
+//      work, and can never QA-review it (can_qa_review() excludes assignees).
+//      request_revision is meaningless here and is refused.
 //
 // Required env vars: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY.
 
@@ -33,9 +43,13 @@ function escapeHtml(v) {
     .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
 
-// Resolve the caller from their bearer token, then confirm they are STAFF
-// (admin or super_admin) — readers must not reach the review actions.
-async function requireStaff(req) {
+// Resolve the caller from their bearer token, then confirm they may review at
+// all: staff (admin / super_admin) or a lead_reader. Ordinary readers
+// (senior/junior) must never reach the review actions. WHICH coverages the
+// caller may act on is decided separately, from the assignment — see the handler.
+const REVIEWER_ROLES = ["admin", "super_admin", "lead_reader"];
+
+async function requireReviewer(req) {
   const { url, key } = svc();
   const auth = req.headers.authorization || "";
   const token = auth.replace(/^Bearer\s+/i, "").trim();
@@ -52,10 +66,10 @@ async function requireStaff(req) {
   );
   const rows = roleResp.ok ? await roleResp.json() : [];
   const row = rows[0];
-  if (!row || (row.role !== "admin" && row.role !== "super_admin")) {
+  if (!row || REVIEWER_ROLES.indexOf(row.role) === -1) {
     return { error: 403, message: "هذا الإجراء مخصص لفريق الجودة فقط" };
   }
-  return { user };
+  return { user, role: row.role };
 }
 
 // Bilingual email inviting the writer to open their (now approved) report, and
@@ -140,7 +154,7 @@ module.exports = async (req, res) => {
     return res.status(500).json({ message: "الخادم غير مهيأ" });
   }
 
-  const gate = await requireStaff(req);
+  const gate = await requireReviewer(req);
   if (gate.error) return res.status(gate.error).json({ message: gate.message });
 
   const b = req.body || {};
@@ -153,14 +167,46 @@ module.exports = async (req, res) => {
 
   const headers = { apikey: key, Authorization: "Bearer " + key };
 
-  // The coverage must currently be awaiting review.
+  // Who holds this script decides WHICH of the two paths the caller is on, so it
+  // has to be resolved before the status gate (the two paths accept different
+  // statuses). Mirrors is_assigned() in the database.
+  const asgResp = await fetch(
+    url + "/rest/v1/submissions?id=eq." + encodeURIComponent(subId) +
+    "&select=assigned_to,co_reader_id",
+    { headers }
+  );
+  const asgRows = asgResp.ok ? await asgResp.json() : [];
+  if (!asgRows.length) return res.status(404).json({ message: "النص غير موجود" });
+  const isAssignee = asgRows[0].assigned_to === gate.user.id ||
+                     asgRows[0].co_reader_id === gate.user.id;
+
+  // Path 2 — a lead approving their OWN coverage. Lead-authored work is trusted
+  // and skips quality review, so it is delivered straight to the writer without
+  // anyone else seeing it first. Only ever reachable for the caller's own script.
+  const selfDeliver = gate.role === "lead_reader" && isAssignee;
+
   const covResp = await fetch(
     url + "/rest/v1/coverages?submission_id=eq." + encodeURIComponent(subId) + "&select=status",
     { headers }
   );
   const covs = covResp.ok ? await covResp.json() : [];
   if (!covs.length) return res.status(404).json({ message: "لا توجد تغطية لهذا النص" });
-  if (covs[0].status !== "submitted") {
+  const covStatus = covs[0].status;
+
+  if (selfDeliver) {
+    // Bouncing your own draft back to yourself is meaningless — the lead just
+    // keeps editing it.
+    if (action === "request_revision") {
+      return res.status(400).json({ message: "لا يمكن طلب تعديل على تغطيتك الخاصة" });
+    }
+    // Anything but an already-delivered coverage may be sent; re-approving is
+    // refused so the writer can never be emailed the same report twice.
+    if (covStatus === "approved") {
+      return res.status(409).json({ message: "تم اعتماد هذه التغطية وتسليمها بالفعل" });
+    }
+  } else if (covStatus !== "submitted") {
+    // Path 1 — quality review. Only a coverage actually awaiting review can be
+    // acted on, which is the same window can_qa_review() opens in the database.
     return res.status(409).json({ message: "هذه التغطية ليست بانتظار المراجعة" });
   }
 

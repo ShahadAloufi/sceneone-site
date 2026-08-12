@@ -142,6 +142,10 @@
         <svg class="adm-navitem__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h18v4H3z"/><path d="M3 10h18v4H3z"/><path d="M3 17h18v4H3z"/></svg>
         <span class="adm-navitem__txt" data-i18n="navAll">جميع النصوص</span>
       </button>
+      <button class="adm-navitem" data-tab="qa" id="qaTabBtn" hidden>
+        <svg class="adm-navitem__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l2 2 4-4"/><path d="M12 3l7 4v5c0 4.5-3 8.5-7 9.5-4-1-7-5-7-9.5V7z"/></svg>
+        <span class="adm-navitem__txt" data-i18n="navQa">مراجعة الجودة</span>
+      </button>
       <button class="adm-navitem" data-tab="delivered" id="deliveredTabBtn" hidden>
         <svg class="adm-navitem__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>
         <span class="adm-navitem__txt" data-i18n="navDelivered">المُسلّمة مني</span>
@@ -309,6 +313,36 @@
     </div>
   </section>
 
+  <!-- Quality-review queue (lead readers + staff). Lists only coverages sitting in
+       'submitted'; a lead's read access to these scripts opens and closes with
+       that status (can_qa_review() in the database). -->
+  <section class="adm-panel" id="tab-qa" hidden>
+    <div class="adm-panel__head">
+      <div class="adm-panel__title">
+        <h2 data-i18n="qaTitle">مراجعة الجودة</h2>
+        <p class="adm-panel__sub" data-i18n="qaSub">التغطيات المُرسلة من القرّاء بانتظار الاعتماد قبل تسليمها للكاتب</p>
+      </div>
+    </div>
+    <div class="adm-tablehead">
+      <h3><span data-i18n="qaListTitle">بانتظار الاعتماد</span> <span class="adm-count" id="qaCount">0</span></h3>
+    </div>
+    <div class="adm-tablewrap">
+      <table class="adm-table">
+        <thead><tr>
+          <th data-i18n="thDate">التاريخ</th>
+          <th data-i18n="thTitle">العنوان</th>
+          <th data-i18n="thLevel">المستوى</th>
+          <th data-i18n="thFilmType">نوع الفيلم</th>
+          <th data-i18n="thPages">الصفحات</th>
+          <th data-i18n="thAssignee2">المُكلَّف</th>
+          <th data-i18n="thCoverage">التقييم</th>
+        </tr></thead>
+        <tbody id="qaBody"></tbody>
+      </table>
+      <p class="adm-empty" id="qaEmpty" hidden data-i18n="qaEmpty">لا توجد تغطيات بانتظار المراجعة.</p>
+    </div>
+  </section>
+
   <!-- Delivered-by-me tab (readers only) -->
   <section class="adm-panel" id="tab-delivered" hidden>
     <div class="adm-panel__head">
@@ -385,6 +419,7 @@
           <select id="newRole">
             <option value="admin" data-i18n="roleAdmin">مشرف</option>
             <option value="super_admin" data-i18n="roleSuper">مشرف أعلى</option>
+            <option value="lead_reader" data-i18n="roleLeadReader">قارئ رئيسي</option>
             <option value="senior_reader" data-i18n="roleSeniorReader">قارئ أول</option>
             <option value="junior_reader" data-i18n="roleJuniorReader">قارئ مبتدئ</option>
           </select>

@@ -99,6 +99,7 @@
       thAccess: "الدخول (٣٠ يوم)", accessNone: "لا يوجد", accessIps: function (n) { return n + " عنوان IP"; },
       accessFlagTip: "عدد كبير من عناوين IP — قد يكون الحساب مُشاركًا", accessMore: "…والمزيد",
       fName: "الاسم", fRole: "الدور", roleAdmin: "مشرف", roleSuper: "مشرف أعلى", createBtn: "إنشاء المشرف",
+      roleLeadReader: "قارئ رئيسي",
       roleSeniorReader: "قارئ أول", roleJuniorReader: "قارئ مبتدئ", assignCo: "إضافة قارئ مشارك",
       assignTwice: "لا يمكنك إسناد نفسك مرتين",
       assignBlocked: "لا يمكنك قبول تكليف جديد حتى يُعتمد تقرير تكليفك الحالي ويُرسل إلى الكاتب.",
@@ -128,6 +129,10 @@
       inReview: "قيد التقييم", awaitingAssign: "بانتظار الإسناد",
       reviewCov: "مراجعة التغطية", awaitingApproval: "بانتظار الاعتماد", revisionCov: "مطلوب تعديل", reviseCov: "تعديل التغطية",
       kpiApproval: "بانتظار الاعتماد", openCov: "فتح",
+      navQa: "مراجعة الجودة", qaTitle: "مراجعة الجودة",
+      qaSub: "التغطيات المُرسلة من القرّاء بانتظار الاعتماد قبل تسليمها للكاتب",
+      qaListTitle: "بانتظار الاعتماد", qaEmpty: "لا توجد تغطيات بانتظار المراجعة.",
+      qaMine: "تغطيتك",
       navAll: "جميع النصوص", allTitle: "جميع النصوص", allSub: "أرشيف كامل بكل تفاصيل النصوص المُستلمة",
       allListTitle: "جميع النصوص",
       kanUnassigned: "بانتظار الإسناد", kanReview: "قيد التقييم", kanApproval: "بانتظار الاعتماد",
@@ -181,6 +186,7 @@
       thAccess: "Logins (30d)", accessNone: "None", accessIps: function (n) { return n + (n === 1 ? " IP" : " IPs"); },
       accessFlagTip: "Many distinct IPs — the account may be shared", accessMore: "…and more",
       fName: "Name", fRole: "Role", roleAdmin: "Admin", roleSuper: "Super admin", createBtn: "Create admin",
+      roleLeadReader: "Lead Reader",
       roleSeniorReader: "Senior Reader", roleJuniorReader: "Junior Reader", assignCo: "Add co-reader",
       assignTwice: "You cannot assign yourself twice",
       assignBlocked: "You can't take a new assignment until your current report is approved and sent to the writer.",
@@ -207,6 +213,10 @@
       inReview: "In review", awaitingAssign: "Awaiting assignment",
       reviewCov: "Review coverage", awaitingApproval: "Awaiting approval", revisionCov: "Revision requested", reviseCov: "Revise coverage",
       kpiApproval: "Awaiting approval", openCov: "Open",
+      navQa: "Quality review", qaTitle: "Quality review",
+      qaSub: "Coverages submitted by readers, awaiting approval before they reach the writer",
+      qaListTitle: "Awaiting approval", qaEmpty: "No coverages are awaiting review.",
+      qaMine: "Your coverage",
       navAll: "All submissions", allTitle: "All submissions", allSub: "Full archive of every script received, with all details",
       allListTitle: "All submissions",
       kanUnassigned: "Awaiting assignment", kanReview: "In review", kanApproval: "Awaiting approval",
@@ -226,6 +236,7 @@
   function t(k) { return T[ULANG][k]; }
   function roleLabel(role) {
     if (role === "super_admin") return t("roleSuper");
+    if (role === "lead_reader") return t("roleLeadReader");
     if (role === "senior_reader") return t("roleSeniorReader");
     if (role === "junior_reader") return t("roleJuniorReader");
     return t("roleAdmin");
@@ -400,6 +411,10 @@
     $("allTabBtn").hidden = !isStaff(me.role);
     $("deliveriesTabBtn").hidden = !isStaff(me.role);
     $("deliveredTabBtn").hidden = !isReader(me.role);
+    // Quality review: lead readers AND staff. For a lead this is the ONLY window
+    // onto anyone else's script, and it closes the moment a coverage leaves
+    // 'submitted' — the database enforces that independently (can_qa_review()).
+    $("qaTabBtn").hidden = !isReviewer(me.role);
     // Main dashboard: kanban for staff, the detailed reader table otherwise.
     var staff = isStaff(me.role);
     $("kanbanBoard").hidden = !staff;
@@ -430,6 +445,7 @@
   function reloadOpenSecondaryTab() {
     if (!$("tab-admins").hidden) loadAdmins();
     if (!$("tab-all").hidden) loadAll();
+    if (!$("tab-qa").hidden) loadQa();
     if (!$("tab-delivered").hidden) loadDelivered();
     if (!$("tab-deliveries").hidden) loadDeliveries();
   }
@@ -606,11 +622,13 @@
       t.classList.add("is-active");
       $("tab-submissions").hidden = name !== "submissions";
       $("tab-all").hidden = name !== "all";
+      $("tab-qa").hidden = name !== "qa";
       $("tab-delivered").hidden = name !== "delivered";
       $("tab-deliveries").hidden = name !== "deliveries";
       $("tab-admins").hidden = name !== "admins";
       if (name === "admins") loadAdmins();
       if (name === "all") loadAll();
+      if (name === "qa") loadQa();
       if (name === "delivered") loadDelivered();
       if (name === "deliveries") loadDeliveries();
     });
@@ -802,15 +820,29 @@
   }
 
   function isJunior(id) { return adminRoleById[id] === "junior_reader"; }
-  function isReader(role) { return role === "senior_reader" || role === "junior_reader"; }
+  // A lead_reader IS a reader — it gets the reader dashboard, claims from the same
+  // pool, and is deliberately absent from isStaff(), which is the flag that opens
+  // "All submissions", "Deliveries", the kanban board and admin management. The
+  // lead's one extra power is quality review, granted by isReviewer() alone.
+  function isReader(role) {
+    return role === "lead_reader" || role === "senior_reader" || role === "junior_reader";
+  }
   function isStaff(role) { return role === "admin" || role === "super_admin"; }
+  function isLead(role) { return role === "lead_reader"; }
+  function isReviewer(role) { return isStaff(role) || isLead(role); }
   // Script files are IP-protected. Staff may open any; a reader may open one only
   // if it's unassigned (preview before claiming) or assigned to them. Mirrors the
   // Storage RLS policy "staff read all scripts, readers read unassigned or their own".
-  function canReadScript(s) {
+  // `covStatus` is optional and only matters for a lead reader: it lets them open
+  // the script behind a coverage they are quality-reviewing, and ONLY while that
+  // coverage sits in 'submitted'. Mirrors can_read_script()/can_qa_review() in the
+  // database, which is the real gate — this just decides whether to offer the
+  // button rather than a padlock.
+  function canReadScript(s, covStatus) {
     if (!me) return false;
     if (isStaff(me.role)) return true;
-    return !s.assigned_to || s.assigned_to === me.id || s.co_reader_id === me.id;
+    if (!s.assigned_to || s.assigned_to === me.id || s.co_reader_id === me.id) return true;
+    return isLead(me.role) && covStatus === "submitted";
   }
   // True when the signed-in user is assigned to a submission (primary or co-reader).
   function amAssignedTo(s) { return !!me && (s.assigned_to === me.id || s.co_reader_id === me.id); }
@@ -968,10 +1000,12 @@
     // everyone; a reader must assign themselves before coverage can begin).
     if (!s.assigned_to) { covBtn(t("awaitingAssign"), gold); return; }
 
-    // Submitted for approval → staff open it to review (Approve / Request Revision
-    // inside the workspace); everyone else sees a disabled "Awaiting approval".
+    // Submitted for approval → reviewers open it to review (Approve / Request
+    // Revision inside the workspace); everyone else sees a disabled "Awaiting
+    // approval". A lead reader is a reviewer for everyone's work but their own —
+    // on their own script they fall through to the assigned-reader branch below.
     if (status === "submitted") {
-      if (staff) covLink(t("reviewCov"), gold);
+      if (staff || (isLead(me && me.role) && !assigned)) covLink(t("reviewCov"), gold);
       else covBtn(t("awaitingApproval"), gold);
       return;
     }
@@ -1333,6 +1367,53 @@
     if (!subs.length) { show($("allEmpty")); $("allBody").innerHTML = ""; return; }
     hide($("allEmpty"));
     renderDetailRows($("allBody"), subs, covBySub, deliveredBySub, null, true);
+  }
+
+  // ---------- QUALITY REVIEW QUEUE (lead readers + staff) ----------
+  // Every coverage sitting in 'submitted', i.e. finished by its reader and waiting
+  // for a reviewer before it reaches the writer. For a LEAD this list is the only
+  // place another reader's script is reachable at all, and their own assignments
+  // are filtered out — a lead never quality-reviews themselves (their own coverage
+  // is delivered straight to the writer instead). Staff see the whole queue.
+  // The filtering here is a UI convenience; RLS (can_qa_review) is the real gate,
+  // so a lead who bypassed this list would still read nothing.
+  async function loadQa() {
+    var results = await Promise.all([
+      sb.from("submissions").select("*").order("created_at", { ascending: false }),
+      sb.from("coverages").select("submission_id,status")
+    ]);
+    var subs = (results[0].data) || [];
+    var submittedIds = {};
+    ((results[1].data) || []).forEach(function (c) {
+      if (c.status === "submitted") submittedIds[c.submission_id] = true;
+    });
+    var lead = isLead(me && me.role);
+    var rows = subs.filter(function (s) {
+      if (!submittedIds[s.id]) return false;
+      return lead ? !amAssignedTo(s) : true;
+    });
+    $("qaCount").textContent = rows.length;
+    var body = $("qaBody");
+    body.innerHTML = "";
+    if (!rows.length) { show($("qaEmpty")); return; }
+    hide($("qaEmpty"));
+    rows.forEach(function (s) {
+      var tr = document.createElement("tr");
+      tr.innerHTML =
+        "<td>" + esc(fmtDate(s.created_at)) + "</td>" +
+        "<td><strong>" + esc(s.title_ar) + "</strong><br><span class='adm-muted' dir='ltr'>" + esc(s.title_en) + "</span></td>" +
+        levelCell(s) +
+        "<td>" + esc(FILM[ULANG][s.film_type] || s.film_type) + "</td>" +
+        "<td>" + esc(pagesCount(s)) + "</td>" +
+        "<td class='adm-assignee2'>" + esc(adminsById[s.assigned_to] || "—") + "</td>" +
+        "<td class='adm-cov'></td>";
+      var link = document.createElement("a");
+      link.className = "adm-link adm-link--gold";
+      link.href = "/coverage?id=" + encodeURIComponent(s.id);
+      link.textContent = t("reviewCov");
+      tr.querySelector(".adm-cov").appendChild(link);
+      body.appendChild(tr);
+    });
   }
 
   // ---------- DELIVERED BY ME (readers) ----------

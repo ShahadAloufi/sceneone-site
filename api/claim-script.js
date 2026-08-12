@@ -182,6 +182,10 @@ module.exports = async (req, res) => {
 
   // Junior readers are kept off experienced writers: the script's self-declared
   // writer_level gates the claim, not the reader's own track record with it.
+  // A lead_reader needs no special case anywhere in this file — it is
+  // senior-equivalent by construction: only `junior_reader` is level-restricted
+  // (here) or opens a co-reader slot (in reassign above), and reassignment is
+  // already admin/super_admin-only, so a lead can never move someone else's script.
   const RESTRICTED_LEVELS = ["professional", "veteran"];
   if (me.role === "junior_reader" && RESTRICTED_LEVELS.indexOf(sub.writer_level) !== -1) {
     // Leading marker (like READER_HAS_ACTIVE_ASSIGNMENT below) so js/admin.js can

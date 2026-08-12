@@ -14,18 +14,20 @@ create table if not exists public.admins (
   id         uuid primary key references auth.users(id) on delete cascade,
   email      text not null,
   name       text not null,
-  role       text not null default 'admin' check (role in ('admin', 'super_admin', 'senior_reader', 'junior_reader')),
+  role       text not null default 'admin' check (role in ('admin', 'super_admin', 'lead_reader', 'senior_reader', 'junior_reader')),
   created_at timestamptz not null default now()
 );
 
 -- Widen the role allowlist if the table pre-existed with the old two-role check.
--- Readers (senior_reader / junior_reader) currently share the same access as
--- admins via is_admin(); payment-gating will restrict them to paid submissions
--- later. junior readers get a co-reader on each submission they claim.
+-- Readers (lead_reader / senior_reader / junior_reader) currently share the same
+-- access as admins via is_admin(); payment-gating will restrict them to paid
+-- submissions later. junior readers get a co-reader on each submission they claim.
+-- lead_reader is a READER with one extra power (quality review) — it is
+-- deliberately NOT part of is_staff(); see can_qa_review() below.
 alter table public.admins drop constraint if exists admins_role_check;
 alter table public.admins
   add constraint admins_role_check
-  check (role in ('admin', 'super_admin', 'senior_reader', 'junior_reader'));
+  check (role in ('admin', 'super_admin', 'lead_reader', 'senior_reader', 'junior_reader'));
 
 -- Helper functions (SECURITY DEFINER so they bypass RLS on `admins` and avoid
 -- infinite recursion when referenced inside `admins` policies).
@@ -61,6 +63,37 @@ set search_path = public as $$
     select 1 from public.submissions
     where id = sub_id and (assigned_to = uid or co_reader_id = uid)
   );
+$$;
+
+create or replace function public.is_lead_reader(uid uuid)
+returns boolean language sql security definer stable
+set search_path = public as $$
+  select exists (select 1 from public.admins where id = uid and role = 'lead_reader');
+$$;
+
+-- The Lead Reader's ONE extra power, and the whole security boundary for it.
+--
+-- A lead_reader is a reader: is_staff() is false for them, so every staff-gated
+-- policy (all submissions, all coverages, all script files) still excludes them.
+-- This function opens a narrow, self-closing window instead: a lead may read a
+-- coverage — and its script file — ONLY while that coverage sits in 'submitted',
+-- i.e. while it is genuinely awaiting quality review. Access appears the moment a
+-- reader submits and disappears the moment it is approved or bounced back.
+--
+-- The `not is_assigned` clause keeps a lead out of the QA path for their own
+-- work. A lead's own coverage never reaches 'submitted' anyway (it is delivered
+-- straight to the writer by api/review-coverage.js — leads are trusted to
+-- self-deliver), so this is belt-and-braces: it means no arrangement of statuses
+-- can ever let a lead quality-review themselves.
+create or replace function public.can_qa_review(uid uuid, sub_id uuid)
+returns boolean language sql security definer stable
+set search_path = public as $$
+  select public.is_lead_reader(uid)
+     and not public.is_assigned(uid, sub_id)
+     and exists (
+       select 1 from public.coverages
+       where submission_id = sub_id and status = 'submitted'
+     );
 $$;
 
 alter table public.admins enable row level security;
@@ -356,7 +389,13 @@ as $$
   select exists (
     select 1 from public.submissions s
     where s.file_path = object_name
-      and (s.assigned_to is null or s.assigned_to = uid or s.co_reader_id = uid)
+      and (
+        s.assigned_to is null or s.assigned_to = uid or s.co_reader_id = uid
+        -- A lead reader must be able to open the script itself to quality-review
+        -- a coverage written against it. Same self-closing window as the coverage
+        -- body: only while that coverage is 'submitted'.
+        or public.can_qa_review(uid, s.id)
+      )
   );
 $$;
 
@@ -422,7 +461,8 @@ alter table public.coverages enable row level security;
 -- Coverage access. Staff (admin / super_admin) can read every coverage.
 -- Readers are limited to coverages for scripts they're assigned to (primary or
 -- co-reader), PLUS any coverage that has been APPROVED — an approved report is
--- the writer-visible, finished product and any reader may view it. Older
+-- the writer-visible, finished product and any reader may view it. A lead reader
+-- additionally reads coverages awaiting quality review (can_qa_review). Older
 -- policies are dropped first.
 drop policy if exists "admins can read coverages" on public.coverages;
 drop policy if exists "staff read all, readers read assigned coverages" on public.coverages;
@@ -434,6 +474,7 @@ create policy "staff+assigned read, everyone reads approved"
   using (
     public.is_staff(auth.uid())
     or public.is_assigned(auth.uid(), submission_id)
+    or public.can_qa_review(auth.uid(), submission_id)
     or status = 'approved'
   );
 

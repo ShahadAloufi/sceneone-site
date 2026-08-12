@@ -54,6 +54,9 @@
       revisionBanner: "Revision requested by the quality team:",
       approvedBanner: "Approved and sent to the writer.",
       reviewPrompt: "This coverage is awaiting your approval.",
+      // Lead readers deliver their own coverage themselves — it skips quality review.
+      leadDeliver: "Send Coverage to Writer",
+      leadDeliverConfirm: "Send this coverage to the writer now? As a lead reader your coverage isn't reviewed by anyone else, and this can't be undone.",
       tSubmitted: "Coverage submitted for approval", tApproved: "Approved and sent to the writer",
       tRevision: "Sent back to the reader for revision",
       // Shown as a blocking alert, not a toast: approval succeeded but the writer
@@ -110,6 +113,9 @@
       revisionBanner: "طلب فريق الجودة إجراء تعديل:",
       approvedBanner: "تم الاعتماد والإرسال إلى الكاتب.",
       reviewPrompt: "هذه التغطية بانتظار اعتمادك.",
+      // Lead readers deliver their own coverage themselves — it skips quality review.
+      leadDeliver: "إرسال التغطية إلى الكاتب",
+      leadDeliverConfirm: "إرسال هذه التغطية إلى الكاتب الآن؟ بصفتك قارئًا رئيسيًا لا تخضع تغطيتك لمراجعة أحد، ولا يمكن التراجع عن هذا الإجراء.",
       tSubmitted: "تم إرسال التغطية للاعتماد", tApproved: "تم الاعتماد والإرسال إلى الكاتب",
       tRevision: "أُعيدت إلى القارئ للتعديل",
       approvedNoEmail: "تم الاعتماد — لكن تعذّر إرسال البريد إلى الكاتب.\n\n" +
@@ -231,6 +237,8 @@
   var covStatus = "in_progress"; // 'in_progress' | 'submitted' | 'revision_requested' | 'approved'
   var reviewNote = "";           // staff's revision note (shown to the reader)
   var isStaff = false;           // admin / super_admin — the quality reviewer
+  var isLead = false;            // lead_reader — reviews others' work, self-delivers their own
+  var canReview = false;         // may I approve / bounce THIS coverage?
   var assignedToMe = false;      // I'm the primary assignee or co-reader of this script
   var scriptReadable = false;    // may I open the writer's script file? (staff / assigned / unclaimed)
   var readOnly = false;          // true for staff viewing a coverage they aren't assigned to
@@ -547,7 +555,11 @@
     var u = UI[UILANG];
     var editable = readerCanEdit();
     readOnly = !editable;
-    var showReview = isStaff && covStatus === "submitted";
+    // Recomputed here (not just at load) so it can't go stale across a transition.
+    canReview = (isStaff || (isLead && !assignedToMe)) && covStatus === "submitted";
+    var showReview = canReview;
+    // A lead delivers their own coverage straight to the writer — no review step.
+    var leadSelfDeliver = isLead && assignedToMe;
 
     // Banner (top of the review view).
     if (showReview) setBanner("await", u.reviewPrompt);
@@ -556,9 +568,14 @@
     else if (reviewNote) setBanner("revision", u.revisionBanner + " " + reviewNote);
     else setBanner("", "");
 
-    // Reader's "Submit Coverage for Approval" — shown only while editable.
+    // Reader's "Submit Coverage for Approval" — shown only while editable. For a
+    // lead it reads "Send Coverage to Writer", because that is literally what it
+    // does: there is no reviewer between them and the writer.
     var submit = $("finalizeBtn");
-    if (submit) { submit.hidden = !editable; submit.textContent = u.submitApproval; }
+    if (submit) {
+      submit.hidden = !editable;
+      submit.textContent = leadSelfDeliver ? u.leadDeliver : u.submitApproval;
+    }
 
     // Staff quality-review bar — only when the coverage is awaiting review.
     var bar = $("reviewBar"); if (bar) bar.hidden = !showReview;
@@ -582,6 +599,20 @@
   finalizeBtn.onclick = async function () {
     if (!readerCanEdit()) return;
     if (!isEvalComplete()) { toast(UI[UILANG].finalizeHint); return; }
+
+    // A lead reader's coverage is not reviewed by anyone: this button delivers it
+    // to the writer. Save the latest edits first (the API reads the stored row,
+    // not the DOM), then hand off to /api/review-coverage, which is the only
+    // thing that may stamp delivery and email the writer. Confirmed first,
+    // because it emails a real writer and cannot be taken back.
+    if (isLead && assignedToMe) {
+      if (!confirm(UI[UILANG].leadDeliverConfirm)) return;
+      await save();
+      if (currentSaveKey === "saveFailed") { toast(UI[UILANG].saveFailed); return; }
+      await callReview("approve", null, finalizeBtn, UI[UILANG].approving);
+      return;
+    }
+
     var prev = covStatus;
     covStatus = "submitted";
     await save();
@@ -755,10 +786,17 @@
     //  • Approved coverage → the writer-visible report, viewable read-only by any.
     //  • Otherwise an unassigned non-staff reader has no access → block.
     isStaff = me.role === "admin" || me.role === "super_admin";
+    isLead = me.role === "lead_reader";
     assignedToMe = subRes.data.assigned_to === me.id || subRes.data.co_reader_id === me.id;
-    // A reader may open the script only when it's theirs or still unclaimed.
-    scriptReadable = isStaff || assignedToMe || !subRes.data.assigned_to;
-    if (!assignedToMe && !isStaff && covStatus !== "approved") {
+    // Who may approve / bounce THIS coverage. Staff may review anything awaiting
+    // review; a lead may review anyone's work but their own (they self-deliver
+    // instead). Mirrors can_qa_review() + api/review-coverage.js, both of which
+    // re-check independently — this only decides what the UI offers.
+    canReview = (isStaff || (isLead && !assignedToMe)) && covStatus === "submitted";
+    // A reader may open the script when it's theirs, still unclaimed, or — for a
+    // lead — while they are quality-reviewing the coverage written against it.
+    scriptReadable = isStaff || assignedToMe || !subRes.data.assigned_to || canReview;
+    if (!assignedToMe && !isStaff && !canReview && covStatus !== "approved") {
       guardState(G.assignT, G.assignM, true);
       return;
     }
