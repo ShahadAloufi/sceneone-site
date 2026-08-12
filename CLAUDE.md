@@ -765,6 +765,27 @@ must be in the `supabase_realtime` publication for live updates to fire.
   a completed coverage.
 - **coverage.html / report.html are intentionally self-contained** (own styles +
   no-flash theme/lang script) to avoid a flash of unstyled/wrong-language content.
+- **Font is Tajawal site-wide, unified 2026-08-12.** The six self-contained
+  pages (`coverage`, `report`, `sample-report`, `ask`, `answer`,
+  `payment-status`) used to request `IBM Plex Sans` in their `--font` var and
+  Google Fonts link, but it never actually rendered anything: their stack put
+  `'IBM Plex Sans Arabic'` first, which already covers Latin glyphs fully, so
+  every browser matched English text there too and `'IBM Plex Sans'` sat dead
+  in the fallback chain (confirmed by comparing rendered glyph widths, not
+  just reading the CSS). That made these six pages' *actual* rendered font
+  (IBM Plex Sans Arabic for everything) diverge from the marketing pages'
+  (Tajawal for body, IBM Plex Sans Arabic only for headings) — a real,
+  if invisible-in-devtools-at-a-glance, inconsistency. Fixed by swapping
+  `'IBM Plex Sans Arabic','IBM Plex Sans'` for `'Tajawal'` in the `--font` var
+  and the Google Fonts request (`IBM+Plex+Sans` → `Tajawal:wght@400;500;600;700`
+  — Tajawal is variable on Google Fonts, so 600 renders as real Tajawal
+  SemiBold rather than a synthesized/mismatched weight).
+  **Deliberately left untouched:** the `.ar`-scoped rules (`#reportBody.ar`,
+  `.rep-title .ar`, `.rep-tag`) in `coverage.html`/`report.html`/
+  `sample-report.html`, which explicitly force `'IBM Plex Sans Arabic'` for
+  the Arabic report *content* specifically — a narrower, deliberate
+  reading-typography choice for long-form Arabic report text, separate from
+  the page's general UI font and outside the scope of this fix.
 - **⚠️ THE TWO REPORT PAGES SET DIFFERENT BASE FONT SIZES** — `report.html` is
   **16px**, `coverage.html` is **21px** — while `report-render.js` emits the *same*
   markup into both. So **any element the report CSS doesn't give an explicit
