@@ -1784,8 +1784,8 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   font-size: clamp(34px, 5vw, 56px); margin: 0 0 clamp(48px, 7vw, 88px);
 }
 .au-cards {
-  max-width: 1040px; margin: 0 0 0 auto;
-  display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(24px, 4vw, 64px);
+  max-width: 1440px; margin: 0 0 0 auto;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 4vw, 64px);
 }
 .au-card__photo {
   aspect-ratio: 3 / 4; overflow: hidden; background: transparent; margin: 0 0 24px auto;
@@ -1806,6 +1806,9 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 }
 
 /* ── RESPONSIVE ── */
+@media (max-width: 1200px) {
+  .au-cards { grid-template-columns: repeat(2, 1fr); max-width: 1040px; }
+}
 @media (max-width: 900px) {
   .au-hero { height: 900px; background-image: url('../assets/readers-hero-bg-tablet.jpg'); }
   .au-about { padding-left: 32px; padding-right: 32px; }
