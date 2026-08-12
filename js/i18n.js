@@ -208,7 +208,7 @@
       faqQ2: "What coverage services do we offer?",
       faqA2: "We currently offer two types of critical feedback: Script Coverage, where the reader provides constructive notes on premise and theme, hook, stakes and plot, characters, structure and pace, producibility, and an overall assessment, with a closing summary of the key strengths and areas that need improvement. And Treatment Coverage, where the reader provides notes spanning two pages, covering content, logline, story structure, character roles, and suggestions for strengthening your pitch.",
       faqQ3: "Why do I need coverage?",
-      faqA3: "It's difficult to look at your own work with complete objectivity as the author, so coverage offers an objective view from someone who understands what the industry expects. When you submit your script to a studio, agent, or producer, you won't see the reader's notes — meaning you won't get the chance to address any weaknesses. This service gives you that chance.",
+      faqA3: "It's difficult to look at your own work with complete objectivity as the author, so coverage offers an objective view from someone who understands what the industry expects. When you submit your script to a studio, agent, or producer, you won't see the reader's notes, meaning you won't get the chance to address any weaknesses. This service gives you that chance.",
       faqQ4: "Who is Scene One?",
       faqA4: "Scene One was founded to help emerging screenwriters break into the film industry.",
 
