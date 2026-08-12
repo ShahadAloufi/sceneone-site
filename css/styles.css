@@ -1763,9 +1763,11 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   display: grid; grid-template-columns: 1fr auto; gap: 64px; align-items: start;
   direction: ltr; /* physical columns: col 1 = left (body), col 2 = right (label) */
 }
+/* Two lines on purpose (a <br> in the markup between the two spans) — the
+   word and "SCENE ONE" stack rather than sharing one nowrap line. */
 .au-about__label {
   grid-column: 2; grid-row: 1; direction: rtl; font-family: var(--font-head); font-weight: 600;
-  font-size: clamp(34px, 5vw, 56px); line-height: 1.15; letter-spacing: .05em; color: rgba(255,255,255,.9); white-space: nowrap;
+  font-size: clamp(34px, 5vw, 56px); line-height: 1.15; letter-spacing: .05em; color: rgba(255,255,255,.9);
 }
 .au-about__label span { color: rgba(255,255,255,.9); }
 .au-about__body { grid-column: 1; grid-row: 1; direction: rtl; }
