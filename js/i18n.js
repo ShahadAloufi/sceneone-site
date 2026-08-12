@@ -116,7 +116,33 @@
       haifaName: "هيفاء السيد", haifaRole: "قارئة نصوص ومستشارة تطوير",
       haifaBio: "كاتبة سيناريو متخصصة في الدراما النفسية والاجتماعية. تضم أعمالها مشاريع حائزة على جوائز وعُرضت في مهرجانات ومنصات دولية، مع خبرة في تطوير أفلام ومسلسلات ترتكز على الشخصيات والعمق الإنساني.",
       fajrName: "فجر الفرحان", fajrRole: "قارئة نصوص سينمائية",
-      fajrBio: "متخصصة في السينما والفنون الأدائية، بخبرة في كتابة السيناريو والإنتاج الإبداعي والسرد البصري. تركّز في قراءاتها على بناء القصة، واللغة البصرية، والأثر العاطفي للنص."
+      fajrBio: "متخصصة في السينما والفنون الأدائية، بخبرة في كتابة السيناريو والإنتاج الإبداعي والسرد البصري. تركّز في قراءاتها على بناء القصة، واللغة البصرية، والأثر العاطفي للنص.",
+
+      // ---- about-coverage.html ----
+      docTitleCoverage: "عن تغطية النصوص السينمائية — Scene One",
+      covHeroTitle: "عن تغطية النصوص السينمائية", covHeroSub: "دليل واضح للكتّاب والمبدعين",
+      covTag1: "للكتّاب والمخرجين وصنّاع الأفلام", covTag2: "وقت القراءة: ٩ دقائق", covTag3: "تطوير النصوص السينمائية",
+      covWhatTitle: "ما هي تغطية النصوص السينمائية؟",
+      covWhatP1: "الكتابة رحلة طويلة يقضي خلالها الكاتب وقتًا مع شخصياته وأفكاره، محاولًا أن يحوّل ما يشعر به إلى قصة تصل للآخرين. لكن يبقى السؤال الأهم: هل نجح النص في إيصال فكرته وأثره إلى القارئ؟",
+      covWhatP2: "هنا يأتي دور تغطية النص. وهي قراءة مهنية للنص السينمائي، يقدّمها قارئ مختص من خلال تقرير يوضّح نقاط القوة، والجوانب التي تحتاج إلى تطوير، وما قد لا يصل للقارئ بالشكل المقصود.",
+      covReaderTitle: "من هو القارئ في منصة SCENE ONE",
+      covReaderP1: "من يقف وراء هذه الملاحظات والتحليلات؟ غالبًا ما يكونون مجموعةً من المحترفين ذوي الخبرة والمواهب الصاعدة في صناعة السينما. هؤلاء هم قرّاء النصوص أو مستشارو السيناريو. وفي أفضل الحالات، يكونون كتّابًا أو صنّاع أفلام لديهم خبرة فعلية في مشاريع أُنتجت أو نُشرت، ما يمنحهم معرفة عميقة تساعدهم على تقديم ملاحظات دقيقة وقادرة على تطوير النص بشكل ملموس.",
+      covReaderP2: "لكن الأمر لا يقتصر على أصحاب الخبرات الطويلة فقط. فهناك أيضًا أصوات جديدة في المجال، مثل المشاركين في برامج الإرشاد والتدريب أو الكتّاب الطموحين الذين ما زالوا في بداية مسيرتهم. هؤلاء يقدّمون وجهات نظر جديدة ومختلفة، ويخوضون بدورهم رحلة التعلّم نحو الاحتراف.",
+      covReaderP3: "صحيح أن الخبرة تلعب دورًا مهمًا في عمق الملاحظات وجودتها، إلا أن وجود هذه المواهب الصاعدة ضروري للحفاظ على حيوية الصناعة وتنوّعها. سواء كان القارئ خبيرًا أمضى سنوات طويلة في المجال أو موهبة واعدة في بداياتها، فإن لكلٍّ منهم دورًا فريدًا في المساهمة بصناعة القصص التي نحبها.",
+      covReportTitle: "ماذا يحتوي التقرير؟",
+      covReportP1: "تخيّل التغطية السينمائية كخريطة تفصيلية لنصك، تُسلّط الضوء على عناصره المختلفة مثل الأصالة، والحبكة، والشخصيات، والإيقاع، والثيم، والنبرة، إلى جانب عناصر أساسية أخرى كمنطق الأحداث وجودة التنفيذ. يُقيّم كل عنصر على حدة، لكن قيمته الحقيقية تظهر عند النظر إلى كيفية تفاعله مع بقية العناصر، لتكوين صورة متكاملة عن نقاط قوة النص وإمكاناته وفرص تطويره.",
+      covAspectsHeading: "أهم جوانب التقييم والتحليل",
+      covAspect1Html: "<strong>1. جانب تطويري:</strong> يركّز على تحسين المسودة وتحديد أولويات التعديل.",
+      covAspect2Html: "<strong>2. جانب تجهيزي:</strong> معرفة ما إذا كان النص مناسبًا للتقديم إلى جهات الإنتاج، المسابقات، المعامل أو صناديق الدعم.",
+      covAspect3Html: "<strong>3. جانب إنتاجي:</strong> النظر إلى حجم التنفيذ والتحديات الإنتاجية.",
+      covAspect4Html: "<strong>4. جانب سوقي:</strong> تحديد الجمهور، النوع، ومدى ملاءمته للسوق السعودي.",
+      covGradesTitle: "درجات التقييم في التغطية السينمائية", covGradesSub: "قراءة ما وراء الأرقام والتوصيات",
+      covGradesP1: "التغطية السينمائية تجمع بين التقييم الموضوعي والانطباع الشخصي للقارئ. يمكن النظر إلى التقييم على أنه انعكاس لمدى استجابة القارئ للنص؛ أحيانًا يكون إشادة بنقاط قوته، وأحيانًا أخرى دعوة لتطوير بعض جوانبه. لذلك نادرًا ما تكون نتائج التقييم حاسمة أو مطلقة، بل تقع غالبًا في مساحة أوسع من التدرّج والتفسير.",
+      covGradePass: "يشير هذا التقييم إلى أن النص يحتاج إلى مزيد من التطوير قبل أن يصبح جاهزًا. غالبًا ما تتعلق الملاحظات بعناصر مثل الحبكة، أو الشخصيات، أو الأصالة.",
+      covGradeConsider: "يعني أن النص يحتوي على عناصر واعدة تستحق الاهتمام، لكنه لا يزال بحاجة إلى بعض التحسينات للوصول إلى إمكاناته الكاملة.",
+      covGradeRecommend: "أعلى درجات التقييم، ويُمنح للنصوص التي تتميز بقصة قوية وتنفيذ متقن. ومع ذلك، يظل هناك دائمًا مجال للتطوير والتحسين.",
+      covReportImgAlt: "نموذج تقرير التغطية السينمائية من Scene One", covReportCaption: "مثال بصري يوضح شكل التقرير",
+      covTocLabel: "في هذه الصفحة", covTocGrades: "درجات التقييم"
     },
     en: {
       navHome: "Home", navAbout: "Scene One", navReaders: "Who Reads Your Script?",
@@ -211,7 +237,33 @@
       haifaName: "Haifa Alsaeed", haifaRole: "Script Reader & Development Consultant",
       haifaBio: "Screenwriter specializing in psychological and social narratives. Her work has been featured in festivals and international platforms, with experience in developing both films and series. Her approach focuses on character depth and human-driven storytelling.",
       fajrName: "Fajr Alfarhan", fajrRole: "Script Reader",
-      fajrBio: "Specialized in film and performing arts, with experience in screenwriting, creative production, and visual storytelling. Her analysis focuses on story structure, visual language, and the emotional impact of the script."
+      fajrBio: "Specialized in film and performing arts, with experience in screenwriting, creative production, and visual storytelling. Her analysis focuses on story structure, visual language, and the emotional impact of the script.",
+
+      // ---- about-coverage.html ----
+      docTitleCoverage: "About Screenplay Coverage — Scene One",
+      covHeroTitle: "About Screenplay Coverage", covHeroSub: "A clear guide for writers and creatives",
+      covTag1: "For writers, directors, and filmmakers", covTag2: "Reading time: 9 minutes", covTag3: "Developing screenplays",
+      covWhatTitle: "What is Screenplay Coverage?",
+      covWhatP1: "Writing is a long journey. A writer lives with their characters and ideas, trying to turn what they feel into a story that reaches others. But the key question remains: has the script succeeded in delivering its idea and emotional impact to the reader?",
+      covWhatP2: "This is where screenplay coverage comes in. It is a professional evaluation of a script by a specialized reader, presented in a report that highlights strengths, identifies areas for improvement, and points out what may not be clearly reaching the audience.",
+      covReaderTitle: "Who is the Reader at Scene One?",
+      covReaderP1: "Who stands behind these notes and evaluations? They are typically professionals with experience and emerging talent in the film industry — script readers, screenwriters, or development consultants. In many cases, they are writers or filmmakers with hands-on experience in projects that have been produced or published, giving them the depth needed to provide precise, actionable feedback that helps improve a script in a tangible way.",
+      covReaderP2: "However, it's not limited to highly experienced professionals. There are also emerging voices in the field — participants in mentorship programs or aspiring writers at the beginning of their journey. They bring fresh perspectives and evolving viewpoints as they grow into the craft.",
+      covReaderP3: "Experience certainly plays a key role in the depth and quality of feedback. At the same time, supporting emerging talent is essential to sustaining the industry's growth. Whether a reader is highly experienced or an emerging voice, each contributes in a meaningful way to shaping the stories that move forward.",
+      covReportTitle: "What Does the Report Include?",
+      covReportP1: "Screenplay coverage acts as a detailed map of your script. It highlights key elements such as originality, plot, characters, pacing, tone, and structure, along with aspects like narrative logic and execution quality. Each element is evaluated individually, but its true value comes from how it interacts with the rest, creating a complete picture of the script's strengths, potential, and areas for development.",
+      covAspectsHeading: "Key Areas of Evaluation & Analysis",
+      covAspect1Html: "<strong>1. Developmental Perspective:</strong> Focuses on improving the draft and identifying revision priorities.",
+      covAspect2Html: "<strong>2. Readiness Perspective:</strong> Evaluates whether the script is ready for submission to production companies, labs, competitions, or funding opportunities.",
+      covAspect3Html: "<strong>3. Production Perspective:</strong> Considers scope of execution and potential production challenges.",
+      covAspect4Html: "<strong>4. Market Perspective:</strong> Identifies the target audience, genre positioning, and suitability for the Saudi market.",
+      covGradesTitle: "Coverage Scoring System", covGradesSub: "A closer look beyond the numbers and recommendations",
+      covGradesP1: "Screenplay coverage combines objective evaluation with the reader's personal response. The rating reflects how the script resonates with the reader, sometimes highlighting its strengths, and other times pointing to areas that need further development. For this reason, ratings are rarely absolute or definitive — they typically exist within a broader spectrum of interpretation and judgment.",
+      covGradePass: "This indicates that the script requires further development before it is ready. Feedback often focuses on elements such as plot, characters, or originality.",
+      covGradeConsider: "This means the script shows promise and contains compelling elements, but still needs refinement to reach its full potential.",
+      covGradeRecommend: "The highest rating. Given to scripts with a strong concept and solid execution. Even at this level, there is always room for further development and enhancement.",
+      covReportImgAlt: "Sample screenplay coverage report from Scene One", covReportCaption: "A visual example of the report format",
+      covTocLabel: "On this page", covTocGrades: "Ratings"
     }
   };
 

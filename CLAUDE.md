@@ -266,11 +266,15 @@ bottom of `css/styles.css`; markup is `readers.html`.
   overlay of the same six. Below it the links hide and the overlay carries them.
   The overlay's list is kept **in step with the bar's**; changing one without
   the other means phone and desktop visitors see different menus.
-- **The group is right-aligned, beside where the hamburger was** — not next to
-  the logo as the reference design had it. The reference is an English LTR site,
-  where links beside the logo are where the reader's eye starts; in Arabic the
-  eye starts on the right, so the equivalent gesture is the opposite side.
-  Hugging the logo also strands «الرئيسية» mid-bar with a dead gap.
+- **The group sits beside the hamburger/lang-toggle end of the bar, not next
+  to the logo** — hugging the logo strands «الرئيسية» mid-bar with a dead gap.
+  ~~The reference design's logo always stayed physically left~~ — **changed
+  2026-08-11**: `.nav` itself now mirrors with the language (`direction: rtl`
+  by default, `html[dir="ltr"] .nav { direction: ltr }`), so the *whole bar*
+  reads right-to-left in Arabic — logo on the right, links flowing from
+  there, the lang toggle + hamburger on the far left — and left-to-right in
+  English, logo included. Not just the links text; the earlier version kept
+  the logo pinned left in both languages, which is what this replaced.
 - **No letter-spacing on the links.** Arabic is cursive and it pulls joined
   letters apart; applying it to «Scene One» alone would leave that one item
   looking unlike its neighbours.
@@ -296,7 +300,7 @@ the same dict + `data-i18n` + `applyLang()` pattern already used by
 (`sceneone-lang`) so a visitor's language choice never collides with a staff
 member's admin-panel language pref (`sceneone-admin-lang`).
 
-- **`index.html` and `readers.html` done; `submit`, `about-coverage`,
+- **`index.html`, `readers.html`, `about-coverage.html` done; `submit`,
   `privacy`, `terms` still Arabic-only** — same dict/attribute pattern, just
   not done yet. Don't assume the toggle exists on every page.
 - **`data-i18n-doctitle` on `<title>`** names the dict key for that page's
@@ -361,11 +365,34 @@ member's admin-panel language pref (`sceneone-admin-lang`).
   `haifaName`/`haifaRole`/`haifaBio`, `fajrName`/`fajrRole`/`fajrBio`). Its own
   `html[dir="ltr"]` mirror block sits right after the landing page's, covering
   `.au-hero__title`, `.au-about__label`/`__body`, `.au-team__title`, and the
-  card text — **not** `.au-hero__row`'s or `.au-about__inner`'s own fixed
-  `direction: ltr`, which map a photo/label against a physical composition
-  point (the hero photo's light source, the label's position next to the
-  story) rather than reading direction, same policy as the landing page's
-  hero gutter.
+  card text. `.au-about__inner`'s grid-column layout is left alone — the
+  label stays next to its body, a composition choice independent of reading
+  direction (same policy as the landing page's hero gutter and the red
+  banner's clapperboard). **`.au-hero__row` is the exception, changed
+  2026-08-11 on explicit request:** it used to stay `flex-end` (pinned right)
+  in both languages, matching the background photo's light source regardless
+  of text direction. Now `html[dir="ltr"] .au-hero__row` flips it to
+  `flex-start` and mirrors the left/right padding with it, so the whole title
+  block — not just its text — moves to the left in English. The photo and
+  wordmark underneath don't move; only the title block does.
+- **`about-coverage.html` also reuses the shared nav/overlay/footer keys**,
+  plus its own for the hero tags, all four content sections, the four
+  "aspects" (`covAspect1Html`–`4Html`, each `<strong>N. Label:</strong> body`
+  via `data-i18n-html`), the three PASS/CONSIDER/RECOMMEND grade bodies (the
+  labels themselves — "PASS" etc — are never translated, same in both
+  languages by design), and the TOC. Its footer previously built the
+  Arabic-only-reasoning `dir="rtl"` and the `.footer__links` row from inline
+  `style` attributes rather than the shared classes `index.html`/`readers.html`
+  use — switched to the `footer__copy` class and dropped the inline
+  `direction:rtl` so both are reachable by the same generic handler and CSS
+  mirror instead of a page-specific one.
+  **`.cov`'s single `direction: rtl → ltr` flip is enough to swap the
+  main-content/TOC column order** — `.cov-wrap` is an unordered flexbox, and
+  flexbox resolves its main axis from `direction`. What that flip does
+  *not* reach: the TOC's own physical `border-right`/`padding-right`/`right`
+  offset (its active-item bar and rule), fixed regardless of direction, so
+  after the column swap they'd sit on the wrong edge unless mirrored
+  explicitly — see the `.toc` rules in the `[dir="ltr"]` block.
 
 ---
 
@@ -770,10 +797,11 @@ must be in the `supabase_realtime` publication for live updates to fire.
 
 ## Current TODOs
 
-- **Public-site i18n covers `index.html` and `readers.html`; `submit`,
-  `about-coverage`, `privacy`, `terms` still need it** (2026-08-11) — same
-  `data-i18n` + `[dir="ltr"]` treatment, see "Public-site i18n" above for
-  the pattern and pitfalls (especially the `dict()`-before-use ordering bug).
+- **Public-site i18n covers `index.html`, `readers.html`, and
+  `about-coverage.html`; `submit`, `privacy`, `terms` still need it**
+  (2026-08-11) — same `data-i18n` + `[dir="ltr"]` treatment, see
+  "Public-site i18n" above for the pattern and pitfalls (especially the
+  `dict()`-before-use ordering bug).
   ~~The three coverage-type card images have their body copy baked into the
   PNG~~ — **done 2026-08-11**, English exports (`card_*-en.png`) swapped in
   via `data-i18n-src`.

@@ -52,7 +52,7 @@ a, button {
   align-items: flex-start;
   justify-content: space-between;
   padding: 20px 24px;
-  direction: ltr;
+  direction: rtl;
   background: var(--bg);
   box-shadow: 0 6px 20px rgba(0, 0, 0, .35);
   transition: background .3s ease, box-shadow .3s ease;
@@ -84,13 +84,11 @@ a, button {
   .nav__links {
     display: flex; align-items: center; gap: 30px;
     list-style: none; padding: 0;
-    /* `auto` on the left pushes the group to the right. The reference puts its links
-       next to the logo, but that is where an English reader starts; in Arabic the eye
-       starts on the right, so the equivalent gesture is the opposite side — and it
-       closes the dead gap that hugging the logo leaves. No right margin: with the
-       hamburger gone the group sits on the nav's own padding. */
+    /* `auto` on the left pushes the group toward the nav__end group (lang toggle +
+       hamburger), which the [dir="ltr"] override mirrors to the other side —
+       see the note there for why the margin itself doesn't need to flip. */
     margin: 0 24px 0 auto;
-    direction: rtl; /* the bar is LTR so the logo stays left; the Arabic reads RTL */
+    direction: rtl;
   }
   .nav__links a {
     position: relative; display: block; padding: 6px 0;
@@ -1821,7 +1819,8 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
    mirroring those is a bigger visual redesign, deliberately out of scope
    for this first pass at bilingual support.
    =========================================================== */
-html[dir="ltr"] .nav__links { direction: ltr; }
+html[dir="ltr"] .nav { direction: ltr; }
+html[dir="ltr"] .nav__links { direction: ltr; margin: 0 auto 0 24px; }
 html[dir="ltr"] .overlay__info { direction: ltr; }
 html[dir="ltr"] .overlay__links { direction: ltr; }
 
@@ -1868,13 +1867,17 @@ html[dir="ltr"] .toast { direction: ltr; text-align: left; }
 /* ===========================================================
    READERS PAGE (readers.html) — ENGLISH (LTR) MIRROR
    Same reasoning as the landing-page block above: this page's RTL is
-   hardcoded per-section, not inherited from <html dir>. `.au-hero__row`'s
-   own `direction: ltr` and `.au-about__inner`'s grid-column layout are left
-   alone — those map the hero text against the photo's light source and the
-   about section's label against its body, composition choices independent
-   of reading direction (same policy as the landing page's hero gutter).
-   Only the text inside those structures flips.
+   hardcoded per-section, not inherited from <html dir>.
+   `.au-about__inner`'s grid-column layout is left alone — the about
+   section's label stays next to its body, a composition choice independent
+   of reading direction (same policy as the landing page's hero gutter). The
+   hero title's own position, by contrast, moves with the language per
+   explicit request (2026-08-11): flex-end/flex-start on `.au-hero__row`,
+   mirroring the padding gutter with it. The wordmark image underneath and
+   the background photo's light source stay put either way — only the title
+   block and its own text move.
    =========================================================== */
+html[dir="ltr"] .au-hero__row { justify-content: flex-start; padding-left: clamp(16px, 3vw, 40px); padding-right: clamp(24px, 6vw, 80px); }
 html[dir="ltr"] .au-hero__title { direction: ltr; text-align: left; }
 html[dir="ltr"] .au-about__label { direction: ltr; }
 html[dir="ltr"] .au-about__body { direction: ltr; }
@@ -1884,3 +1887,18 @@ html[dir="ltr"] .au-card__photo { margin: 0 auto 24px 0; }
 html[dir="ltr"] .au-card__role,
 html[dir="ltr"] .au-card__name,
 html[dir="ltr"] .au-card__bio { text-align: left; }
+
+/* ===========================================================
+   ABOUT-COVERAGE PAGE (about-coverage.html) — ENGLISH (LTR) MIRROR
+   `.cov`'s direction flip cascades through the flex two-column layout
+   (`.cov-wrap`) automatically — flexbox respects `direction` for its main
+   axis, so main/TOC swap sides on their own. What doesn't auto-flip: the
+   physical border/padding/offset on the TOC's own decorations, fixed
+   regardless of direction, which need an explicit mirror or they'd end up
+   facing the wrong edge after the column swap.
+   =========================================================== */
+html[dir="ltr"] .cov { direction: ltr; }
+html[dir="ltr"] .cov-hero__head { text-align: left; }
+html[dir="ltr"] .toc ul { border-right: 0; border-left: 1px solid rgba(255,255,255,.1); padding-right: 0; padding-left: 20px; }
+html[dir="ltr"] .toc__bar { right: auto; left: -20px; }
+html[dir="ltr"] .toc button { text-align: left; }
