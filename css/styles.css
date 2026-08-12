@@ -1713,7 +1713,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   direction: ltr; /* flex-end = physical right, matching the light in the bg photo (left) */
 }
 .au-hero__title {
-  margin-top: clamp(80px, 11vw, 150px); direction: rtl; text-align: right;
+  margin-top: clamp(16px, 3vw, 40px); direction: rtl; text-align: right;
   font-family: var(--font-head); font-weight: 700; color: #fff;
   font-size: clamp(36px, 5.6vw, 76px); line-height: 1.05;
 }
@@ -1796,7 +1796,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 @media (max-width: 640px) {
   .au-hero { height: 640px; background-image: url('../assets/readers-hero-bg-mobile.jpg'); padding: 72px 0 0; }
   .au-hero__row { padding: 0 24px; }
-  .au-hero__title { margin-top: 80px; font-size: 40px; }
+  .au-hero__title { margin-top: 24px; font-size: 40px; }
   /* the light sits mid-photo on the mobile crop, so the wordmark stays
      pinned to the bottom (like desktop) instead of flowing in-place —
      static flow would land it right on top of the light fixture */
@@ -1879,10 +1879,12 @@ html[dir="ltr"] .toast { direction: ltr; text-align: left; }
    =========================================================== */
 html[dir="ltr"] .au-hero__row { justify-content: flex-start; padding-left: clamp(16px, 3vw, 40px); padding-right: clamp(24px, 6vw, 80px); }
 html[dir="ltr"] .au-hero__title { direction: ltr; text-align: left; }
+html[dir="ltr"] .au-about__inner { margin: 0 auto 0 0; }
 html[dir="ltr"] .au-about__label { direction: ltr; }
 html[dir="ltr"] .au-about__body { direction: ltr; }
 html[dir="ltr"] .au-about__body p { text-align: left; }
 html[dir="ltr"] .au-team__title { text-align: left; }
+html[dir="ltr"] .au-cards { margin: 0 auto 0 0; }
 html[dir="ltr"] .au-card__photo { margin: 0 auto 24px 0; }
 html[dir="ltr"] .au-card__role,
 html[dir="ltr"] .au-card__name,
