@@ -142,7 +142,137 @@
       covGradeConsider: "يعني أن النص يحتوي على عناصر واعدة تستحق الاهتمام، لكنه لا يزال بحاجة إلى بعض التحسينات للوصول إلى إمكاناته الكاملة.",
       covGradeRecommend: "أعلى درجات التقييم، ويُمنح للنصوص التي تتميز بقصة قوية وتنفيذ متقن. ومع ذلك، يظل هناك دائمًا مجال للتطوير والتحسين.",
       covReportImgAlt: "نموذج تقرير التغطية السينمائية من Scene One", covReportCaption: "مثال بصري يوضح شكل التقرير",
-      covTocLabel: "في هذه الصفحة", covTocGrades: "درجات التقييم"
+      covTocLabel: "في هذه الصفحة", covTocGrades: "درجات التقييم",
+
+      // ---- terms.html ----
+      docTitleTerms: "الشروط والأحكام — Scene One",
+      termsHeroTitle: "الشروط والأحكام",
+      termsDefsTitle: "التعريفات",
+      termsDefsHtml: "<li>الخدمة | المنصّة: منصّة (Scene One) الإلكترونية المعنيّة بتقييم النصوص السينمائية وربط الكتّاب بفرص التطوير والإنتاج.</li>" +
+        "<li>المستخدم / الكاتب: أي شخص يقوم بإنشاء حساب أو تقديم نصّ عبر المنصّة.</li>" +
+        "<li>القارئ الناقد: المختصّ الذي تعتمده الخدمة لقراءة النصوص وتقييمها.</li>" +
+        "<li>التقرير: الوثيقة الكتابية التي يصدرها القارئ الناقد بعد قراءة النص.</li>" +
+        "<li>النص: أي عمل سينمائي مكتوب يُقدَّم للخدمة (سيناريو فيلم قصير أو روائي طويل).</li>" +
+        "<li>الشريك الإنتاجي: جهة إنتاجية متعاقدة مع (Scene One) لاستلام النصوص المرشَّحة.</li>",
+      termsUseTitle: "شروط الاستخدام",
+      termsUseHtml: "<li>باستخدامك لمنصّة (Scene One) أو تقديم نصّك عبرها، فإنك تُقرّ بأنك قرأت هذه الشروط وفهمتها ووافقت عليها بالكامل. إذا كنت لا توافق على أيّ بند من بنودها، يُرجى عدم استخدام الخدمة.</li>" +
+        "<li>يجب أن يكون عمر المستخدم ثمانية عشر عاماً فأكثر، أو أن يحصل على موافقة وليّه القانوني قبل استخدام الخدمة.</li>" +
+        "<li>تحتفظ (Scene One) بحقّ تعديل هذه الشروط في أيّ وقت، وستُبلّغ التعديلات عبر البريد الإلكتروني أو عبر إشعار داخل المنصّة قبل سريانها بمدّة معقولة.</li>" +
+        "<li>بإرسالك أي محتوى أو سيناريو عبر منصة (Scene One)، فإنك تقرّ بالتزامك بجميع الأنظمة واللوائح المعمول بها في المملكة العربية السعودية، بما في ذلك نظام الإعلام المرئي والمسموع، وتتحمّل كامل المسؤولية عن توافق المحتوى المقدم مع هذه الأنظمة. للاطلاع على النظام <a href=\"https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/ed5fdbc0-c183-4a8a-a8b7-a9ed004b5900/1?utm_source\" target=\"_blank\" rel=\"noopener noreferrer\">انقر هنا</a></li>",
+      termsServiceTitle: "تعريف الخدمة",
+      termsServiceLead: "تقدّم (Scene One) خدمة قراءة احترافية ونقدية للنصوص السينمائية، تشمل:",
+      termsServiceHtml: "<li>قراءة كاملة للنصّ من قِبَل قارئ ناقد مؤهَّل.</li>" +
+        "<li>إصدار تقرير تقييم تفصيلي يشمل الفكرة والحبكة والشخصيات والحوار والإيقاع والإمكانية الإنتاجية.</li>" +
+        "<li>تصنيف صريح للنصّ ضمن إحدى الفئات الثلاث: <strong>موصى به</strong>، <strong>معتبر</strong>، أو <strong>بحاجة الى تطوير</strong>.</li>" +
+        "<li>ترشيح النصوص الحاصلة على توصية قوية إلى الشركاء الإنتاجيين، بعد موافقة الكاتب الصريحة.</li>",
+      termsServiceNote: "<strong>الخدمة لا تشمل</strong>: إعادة كتابة النصّ، أو تطويره، أو تحريره، أو ضمان قبوله من قبل أيّ جهة إنتاجية. Scene One تقدّم قراءة نقدية احترافية فقط.",
+      termsIpTitle: "الملكية الفكرية",
+      termsIpLead: "بند جوهري: الكاتب هو المالك الكامل والوحيد لجميع حقوق الملكية الفكرية للنصّ الذي يقدّمه. لا تدّعي Scene One أيّ ملكية على النصّ في أيّ مرحلة من مراحل الخدمة. عند تقديم النصّ، يمنح الكاتب Scene One ترخيصاً محدوداً وغير حصري، يقتصر استخدامه على:",
+      termsIpHtml: "<li>قراءة النصّ وتقييمه من قبل القارئ الناقد المعتمَد.</li>" +
+        "<li>تخزينه بصورة آمنة على خوادم الخدمة طوال مدّة الاشتراك أو حتى يطلب الكاتب حذفه.</li>" +
+        "<li>مشاركة النصّ مع الشركاء الإنتاجيين فقط بعد موافقة الكاتب الكتابية الصريحة، وذلك في حال حصوله على توصية ودخوله مرحلة الترشيح.</li>",
+      termsIpNote1: "لا يحقّ لمقدم الخدمة استخدام النصّ لأيّ غرض آخر، ولا نشره، ولا توزيعه، ولا اقتباس أيّ جزء منه دون إذن صريح ومسبق من الكاتب.",
+      termsIpNote2: "يُنصح الكاتب بشدّة بتسجيل نصّه لدى الهيئة السعودية للملكية الفكرية (SAIP) قبل تقديمه لأيّ جهة كانت.",
+      termsConfTitle: "سرية النصوص والمواد المقدمة",
+      termsConfHtml: "<p>تُدرك Scene One أن النصوص المقدمة عبر المنصة قد تتضمن أعمالًا أصلية وأفكارًا إبداعية تتمتع بالحماية بموجب أنظمة الملكية الفكرية المعمول بها. وعليه، تلتزم المنصة باتخاذ الإجراءات المعقولة للحفاظ على سرية النصوص وعدم إتاحتها إلا للأشخاص المخولين بالاطلاع عليها لغرض تقديم الخدمة.</p>" +
+        "<p>كما يلتزم جميع القرّاء النقاد والمتعاونين المعتمدين من قبل Scene One بالحفاظ على سرية النصوص والمواد المقدمة، وعدم نسخها أو تداولها أو نشرها أو الإفصاح عنها أو إتاحتها لأي طرف ثالث خارج نطاق التقييم أو تقديم الخدمة.</p>" +
+        "<p>وفي حال قيام أي قارئ ناقد أو متعاون بالإفصاح عن النص أو تسريبه أو استغلاله أو استخدامه أو مشاركته بأي صورة غير مصرح بها، فإنه يتحمل المسؤولية القانونية الكاملة تجاه صاحب النص عن أي أضرار أو مطالبات أو حقوق قد تنشأ نتيجة لذلك، دون الإخلال بحق Scene One في اتخاذ الإجراءات المناسبة، بما في ذلك إنهاء التعاون معه أو منعه من استخدام المنصة مستقبلاً.</p>" +
+        "<p>ولا يُفسر تمكين القارئ الناقد أو المتعاون من الاطلاع على النص على أنه نقل أو تنازل أو ترخيص بأي حق من حقوق الملكية الفكرية المتعلقة به، والتي تبقى مملوكة بالكامل لصاحب النص.</p>",
+      termsAiTitle: "استخدام أدوات الذكاء الاصطناعي",
+      termsAiHtml: "<p>يلتزم القارئ الناقد بعدم إدخال النصوص أو أي جزء منها في أي أداة أو خدمة تعتمد على الذكاء الاصطناعي أو معالجة المحتوى الآلية، سواء لأغراض التقييم أو التلخيص أو التحليل أو إعادة الصياغة أو لأي غرض آخر، ما لم يحصل على موافقة كتابية مسبقة من Scene One.</p>" +
+        "<p>ويهدف هذا الالتزام إلى حماية سرية النصوص والحقوق الفكرية الخاصة بأصحابها، وضمان أن تستند التقييمات المقدمة من خلال المنصة إلى القراءة والتحليل المهني المباشر للقارئ الناقد.</p>" +
+        "<p>ويُعد أي استخدام غير مصرح به لأدوات الذكاء الاصطناعي فيما يتعلق بالنصوص المقدمة عبر المنصة مخالفة جوهرية لهذه الشروط، ويمنح Scene One الحق في إنهاء التعاون مع القارئ الناقد واتخاذ الإجراءات المناسبة وفق الأنظمة المعمول بها.</p>",
+      termsFeesTitle: "الرسوم والدفع",
+      termsFeesLead: "تعمل (Scene One) وفق النموذج التالي:",
+      termsFeesHtml: "<li>تُحدَّد رسوم القراءة بحسب نوع النصّ (قصير / روائي) وتُعلَن بوضوح على المنصّة قبل تقديم النصّ.</li>" +
+        "<li>تُدفع الرسوم عبر وسائل الدفع المعتمَدة في المملكة العربية السعودية، وتُصدر فواتير نظامية لكلّ عملية.</li>" +
+        "<li><strong>سياسة الاسترداد:</strong> لا يحقّ للكاتب طلب استرداد الرسوم بعد البدء الفعلي في قراءة نصّه. أمّا إذا تعذّر تنفيذ الخدمة لأسباب تخصّ المنصّة، فيتمّ ردّ المبلغ كاملاً خلال أربعة عشر يوم عمل.</li>",
+      termsDeliveryTitle: "مدة التسليم",
+      termsDeliveryHtml: "<p>تلتزم (Scene One) بتسليم التقرير خلال المدّة الزمنية المُعلَنة عند التقديم، وتتراوح عادةً بين أسبوع إلى ثلاثة أسابيع بحسب نوع النصّ وحجمه.</p>" +
+        "<p>في حال تأخّر التسليم لأيّ سبب، يُبلَّغ الكاتب فوراً عبر البريد الإلكتروني مع توضيح الأسباب والمدّة المتوقّعة الجديدة.</p>",
+      termsWriterTitle: "التزامات الكاتب",
+      termsWriterLead: "عند استخدام (Scene One)، يلتزم الكاتب بما يلي:",
+      termsWriterHtml: "<li>أن يكون النصّ المُقدَّم من تأليفه الأصلي، وأن يكون مالكاً لجميع حقوقه.</li>" +
+        "<li>أن لا يحتوي النصّ على أيّ محتوى مخالف للأنظمة السعودية، أو محرّض على الكراهية، أو يخالف الذوق العام، أو ينتهك حقوق الغير.</li>" +
+        "<li>أن يقدّم معلومات صحيحة عن نفسه عند إنشاء الحساب.</li>" +
+        "<li>أن لا يحاول التحايل على الخدمة أو إساءة استخدامها بأيّ صورة.</li>",
+      termsWriterNote: "تتحمّل (Scene One) مسؤولية القراءة المهنية فقط، ولا تتحمّل أيّ مسؤولية عن مدى أصالة النصّ أو خلوّه من المخالفات. هذه مسؤولية الكاتب وحده.",
+      termsProviderTitle: "التزامات مقدم الخدمة",
+      termsProviderLead: "تلتزم (Scene One) تجاه المستخدم بما يلي:",
+      termsProviderHtml: "<li>قراءة النصّ بعناية ومهنية من قِبَل قارئ مؤهّل.</li>" +
+        "<li>إصدار تقرير تقييم نزيه وصادق ومفصَّل.</li>" +
+        "<li>حفظ سرّية النصّ التامّة، وعدم مشاركته مع أيّ طرف خارجي إلّا بإذن الكاتب الصريح.</li>" +
+        "<li>حماية البيانات الشخصية للمستخدم وفقاً لسياسة الخصوصية.</li>" +
+        "<li>الالتزام بالمدّة الزمنية المُعلَنة لتسليم التقرير.</li>",
+      termsLiabilityTitle: "المسؤوليات",
+      termsLiabilityLead: "التقرير الصادر من (Scene One) يعبّر عن الرأي المهني للقارئ الناقد فقط، ولا يعتبر ضماناً لجودة النصّ، ولا تعهّداً بقبوله من قِبَل أيّ جهة إنتاجية أو مهرجان أو مسابقة. لا تتحمّل Scene One أيّ مسؤولية عن:",
+      termsLiabilityHtml: "<li>قرارات الكاتب المبنية على التقرير.</li>" +
+        "<li>عدم اهتمام شركات الإنتاج بالنصّ بعد ترشيحه.</li>" +
+        "<li>أيّ نزاعات قد تنشأ بين الكاتب والشركاء الإنتاجيين.</li>" +
+        "<li>أيّ ضرر غير مباشر أو فقدان أرباح ناتج عن استخدام الخدمة.</li>",
+      termsLawTitle: "القانون المختص",
+      termsLawHtml: "<p>تخضع هذه الشروط لأنظمة المملكة العربية السعودية وتُفسَّر وفقاً لها. تختصّ المحاكم السعودية بالنظر في أيّ نزاع قد ينشأ عن استخدام الخدمة.</p>" +
+        "<p>نسعى دائماً لحلّ أيّ خلاف ودّياً قبل اللجوء إلى القضاء، ويُشجَّع المستخدم على التواصل معنا مباشرة عند وجود أيّ ملاحظة أو نزاع.</p>",
+
+      // ---- privacy.html ----
+      docTitlePrivacy: "سياسة الخصوصية — Scene One",
+      privHeroTitle: "سياسة الخصوصية",
+      privIntroTitle: "المقدمة",
+      privIntroHtml: "<p>توضح سياسة الخصوصية هذه كيفية قيام منصة (Scene One) بجمع البيانات الشخصية ومعالجتها وتخزينها وحمايتها عند استخدامك للمنصة والخدمات المرتبطة بها، بما في ذلك خدمات قراءة النصوص السينمائية وتقييمها وربطها بفرص الإنتاج.</p>" +
+        "<p>باستخدامك للمنصة، فإنك توافق على الممارسات الواردة في هذه السياسة. إذا كنت لا توافق على أي بند منها، يُرجى عدم استخدام الخدمة.</p>" +
+        "<p>تسري هذه السياسة على جميع المستخدمين، بمن فيهم الكتّاب المقدّمون للنصوص، والمنتجون الشركاء، وزوار المنصة.</p>",
+      privCommitTitle: "التزامنا تجاهك",
+      privCommitHtml: "<p>نحن في (Scene One) نعتبر خصوصيتك أمانة. هذه السياسة توضّح كيف نجمع بياناتك، وكيف نستخدمها، ومتى نشاركها، وكيف نحميها، وما هي حقوقك تجاهها.</p>" +
+        "<p>نلتزم بأحكام نظام حماية البيانات الشخصية الصادر في المملكة العربية السعودية، وبأفضل الممارسات الدولية في حماية البيانات.</p>",
+      privDataTitle: "البيانات التي نجمعها",
+      privDataHtml: "<p><span class=\"gold\" style=\"font-weight:500\">بيانات تقدّمها أنت مباشرة: </span>الاسم، البريد الإلكتروني، رقم الجوال، والنصّ السينمائي الذي تقدّمه، إضافةً إلى أيّ معلومات إضافية تختار مشاركتها معنا في الملف الشخصي أو عبر التواصل.</p>" +
+        "<p><span class=\"gold\" style=\"font-weight:500\">بيانات تُجمَع تلقائياً: </span>عنوان IP، نوع الجهاز والمتصفّح، وقت الزيارة، الصفحات التي اطّلعت عليها، وذلك لأغراض تحسين تجربة الاستخدام والأمن السيبراني فقط.</p>",
+      privUseTitle: "كيف نستخدم بياناتك",
+      privUseLead: "نستخدم بياناتك للأغراض التالية فقط:",
+      privUseHtml: "<li>تقديم الخدمة لك وقراءة نصّك وإصدار تقريرك.</li>" +
+        "<li>التواصل معك بشأن طلبك، التقرير، أو أيّ تحديث يتعلّق بحسابك.</li>" +
+        "<li>تحسين الخدمة وتطوير ميزات جديدة بناءً على سلوك الاستخدام المُجمَّع (دون كشف هويتك).</li>" +
+        "<li>حماية الخدمة والمستخدمين من إساءة الاستخدام والاحتيال.</li>" +
+        "<li>الالتزام بأيّ متطلّبات قانونية في المملكة العربية السعودية.</li>",
+      privNotTitle: "نحن لا نقوم بـ",
+      privNotHtml: "<li>لا نبيع بياناتك.</li><li>لا نشاركها مع جهات تسويقية.</li><li>لا نستخدم نصّك لتدريب أنظمة ذكاء اصطناعي.</li>",
+      privNotNote: "<span class=\"gold\" style=\"font-weight:500\">نصّك </span>هو ملكٌ لك. نتعامل معه كما نتعامل مع أيّ وثيقة سرّية، ولا يطّلع عليه إلّا الفريق المعنيّ بقراءته فقط.",
+      privProtectTitle: "حماية نصّك",
+      privProtectHead: "أهمّ من كلّ شيء",
+      privProtectLead1: "نصّك هو ملكٌ لك. نتعامل معه كما نتعامل مع أيّ وثيقة سرّية، ولا يطّلع عليه إلّا الفريق المعنيّ بقراءته فقط.",
+      privProtectLead2: "الإجراءات التي نتبعها لحماية نصّك:",
+      privProtectHtml: "<li><strong>تشفير كامل:</strong> النصّ مُشفَّر أثناء الإرسال والتخزين.</li>" +
+        "<li><strong>وصول محدود:</strong> القارئ الناقد المعنيّ بنصّك هو الشخص الوحيد الذي يطّلع عليه، إضافةً إلى مسؤول مراجعة محدَّد.</li>" +
+        "<li><strong>اتفاقيات سرّية:</strong> جميع القرّاء يوقّعون اتفاقيات سرّية ملزِمة قبل العمل مع (Scene One).</li>" +
+        "<li><strong>حذف عند الطلب:</strong> يمكنك طلب حذف نصّك ومرفقاته من خوادمنا في أيّ وقت.</li>" +
+        "<li><strong>مشاركة بإذن فقط:</strong> النصّ لا يُشارَك مع أيّ شريك إنتاجي إلّا بعد موافقتك الكتابية الصريحة.</li>",
+      privStorageTitle: "مكان تخزين بياناتك",
+      privStorageHtml: "<p>جميع بياناتك ونصوصك تُخزَّن على خوادم آمنة داخل المملكة العربية السعودية أو على بنية تحتية سحابية معتمَدة تلتزم بأنظمة حماية البيانات السعودية والمعايير الدولية.</p>" +
+        "<p>في حال تطلّب الأمر استخدام خوادم خارجية لأسباب تقنية، نضمن أن تكون هذه الخوادم في دول توفّر مستوى حماية مكافئ، ولا تتمّ أيّ مشاركة دون اتخاذ كافّة الاحتياطات اللازمة.</p>",
+      privRightsTitle: "حقوقك الكاملة",
+      privRightsHtml: "<li>الاطّلاع على البيانات التي نحتفظ بها عنك.</li>" +
+        "<li>تصحيح أيّ بيانات غير دقيقة.</li>" +
+        "<li>طلب حذف بياناتك ونصوصك بالكامل.</li>" +
+        "<li>سحب موافقتك على مشاركة نصّك مع الشركاء الإنتاجيين في أيّ وقت قبل إتمام الترشيح.</li>" +
+        "<li>طلب نسخة من بياناتك بصيغة قابلة للاستخدام.</li>" +
+        "<li>تقديم شكوى إلى الجهة المختصّة بحماية البيانات في المملكة العربية السعودية.</li>",
+      privRightsContact: "لممارسة أيّ من هذه الحقوق، تواصل معنا على: <a href=\"mailto:sceneone.info@gmail.com\">sceneone.info@gmail.com</a>",
+      privRetentionTitle: "مدة الاحتفاظ",
+      privRetentionLead1: "نحتفظ ببياناتك ونصوصك طوال المدّة التي يكون فيها حسابك فعّالاً، أو طالما كان ذلك ضرورياً لتقديم الخدمة لك.",
+      privRetentionLead2: "عند طلبك حذف حسابك:",
+      privRetentionHtml: "<li>تُحذَف بياناتك الشخصية ونصوصك من خوادمنا الفعّالة خلال ثلاثين يوماً.</li>" +
+        "<li>قد نحتفظ ببعض البيانات لمدّة أطول إذا اقتضت ذلك متطلّبات قانونية أو محاسبية.</li>" +
+        "<li>التقارير الصادرة قد تُحفَظ بصيغة مجهَّلة لأغراض تطوير الخدمة فقط، دون أيّ معلومات تربطها بك.</li>",
+      privCookiesTitle: "ملفّات تعريف الارتباط",
+      privCookiesHtml: "<li>نستخدم ملفّات Cookies بحدّها الأدنى لتسهيل تجربة الاستخدام وحفظ تفضيلاتك. لا نستخدم Cookies لأغراض تسويقية أو لتتبّعك عبر مواقع أخرى.</li>" +
+        "<li>يمكنك تعطيل ملفّات Cookies من إعدادات متصفّحك، مع العلم أن ذلك قد يؤثّر على بعض ميزات الخدمة.</li>",
+      privUpdatesTitle: "تعديل هذه السياسة",
+      privUpdatesHtml: "<p>قد نُحدّث هذه السياسة من وقت لآخر بما يتوافق مع تطوّر الخدمة أو متطلّبات الأنظمة. سنُخطرك بأيّ تعديل جوهري عبر البريد الإلكتروني أو عبر إشعار داخل المنصّة، قبل سريانه بمدّة معقولة.</p>" +
+        "<p>استمرارك في استخدام الخدمة بعد التعديل يعني موافقتك على النسخة الجديدة.</p>",
+      privContactTitle: "تواصل معنا",
+      privContactLead: "لأيّ استفسار يتعلّق بخصوصيتك أو ببياناتك أو بهذه السياسة، تواصل معنا عبر:",
+      privContactEmail: "البريد الإلكتروني: <a href=\"mailto:sceneone.info@gmail.com\">sceneone.info@gmail.com</a>",
+      privContactClosing: "نلتزم بالردّ على أيّ استفسار خلال مدّة معقولة، ونرحّب بأيّ ملاحظة تساعدنا على تحسين حماية بيانات مستخدمينا."
     },
     en: {
       navHome: "Home", navAbout: "Scene One", navReaders: "Who Reads Your Script?",
@@ -263,7 +393,137 @@
       covGradeConsider: "This means the script shows promise and contains compelling elements, but still needs refinement to reach its full potential.",
       covGradeRecommend: "The highest rating. Given to scripts with a strong concept and solid execution. Even at this level, there is always room for further development and enhancement.",
       covReportImgAlt: "Sample screenplay coverage report from Scene One", covReportCaption: "A visual example of the report format",
-      covTocLabel: "On this page", covTocGrades: "Ratings"
+      covTocLabel: "On this page", covTocGrades: "Ratings",
+
+      // ---- terms.html ----
+      docTitleTerms: "Terms & Conditions — Scene One",
+      termsHeroTitle: "Terms and Conditions",
+      termsDefsTitle: "Definitions",
+      termsDefsHtml: "<li><strong>Service / Platform:</strong> The electronic platform Scene One, which is concerned with the evaluation of screenplays and connecting writers with development and production opportunities.</li>" +
+        "<li><strong>User / Writer:</strong> Any individual who creates an account or submits a script through the Platform.</li>" +
+        "<li><strong>Reader (Script Analyst):</strong> A professional accredited by the Service to read and evaluate submitted scripts.</li>" +
+        "<li><strong>Report:</strong> The written document issued by the Reader after reviewing the script.</li>" +
+        "<li><strong>Script:</strong> Any written cinematic work submitted to the Service (short film screenplay or feature-length screenplay).</li>" +
+        "<li><strong>Production Partner:</strong> A production entity contracted with Scene One to receive shortlisted scripts.</li>",
+      termsUseTitle: "Terms of Use",
+      termsUseHtml: "<li>By using the Scene One Platform or submitting your script through it, you acknowledge that you have read, understood, and fully agreed to these Terms. If you do not agree to any provision herein, you must refrain from using the Service.</li>" +
+        "<li>The User must be at least eighteen (18) years of age or have obtained the consent of a legal guardian prior to using the Service.</li>" +
+        "<li>Scene One reserves the right to amend these Terms at any time. Any amendments will be communicated via email or through a notice on the Platform within a reasonable period prior to taking effect.</li>" +
+        "<li>By submitting any content or screenplay through the Platform, you confirm your compliance with all applicable laws and regulations in the Kingdom of Saudi Arabia, including the Audiovisual Media Law, and you bear full responsibility for ensuring that the submitted content complies with such laws. <a href=\"https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/ed5fdbc0-c183-4a8a-a8b7-a9ed004b5900/1?utm_source\" target=\"_blank\" rel=\"noopener noreferrer\">Click here</a> to view the law.</li>",
+      termsServiceTitle: "Service Description",
+      termsServiceLead: "Scene One provides a professional script reading and evaluation service, including:",
+      termsServiceHtml: "<li>A full reading of the script by a qualified Reader.</li>" +
+        "<li>A detailed evaluation report covering concept, plot, characters, dialogue, pacing, and production potential.</li>" +
+        "<li>A clear classification of the script into one of three categories: <strong>Recommended</strong>, <strong>Consider</strong>, or <strong>Needs Development</strong>.</li>" +
+        "<li>Submission of strongly recommended scripts to Production Partners, subject to the Writer's explicit consent.</li>",
+      termsServiceNote: "<strong>The Service does not include</strong> rewriting, editing, development, or any guarantee of acceptance by production companies. Scene One provides professional critical evaluation only.",
+      termsIpTitle: "Intellectual Property",
+      termsIpLead: "Fundamental Clause: The Writer remains the sole and exclusive owner of all intellectual property rights in the submitted script. Scene One does not claim ownership of the script at any stage of the Service. Upon submission, the Writer grants Scene One a limited, non-exclusive license solely for the purposes of:",
+      termsIpHtml: "<li>Reading and evaluating the script by an accredited Reader.</li>" +
+        "<li>Securely storing the script on the Platform's servers for the duration of the subscription or until deletion is requested by the Writer.</li>" +
+        "<li>Sharing the script with Production Partners only upon the Writer's explicit written consent, and only if the script is recommended and enters the nomination stage.</li>",
+      termsIpNote1: "Scene One shall not use, publish, distribute, or adapt any part of the script for any other purpose without the Writer's prior explicit consent.",
+      termsIpNote2: "Writers are strongly advised to register their scripts with the Saudi Authority for Intellectual Property (SAIP) prior to submission.",
+      termsConfTitle: "Confidentiality of Submitted Materials",
+      termsConfHtml: "<p>Scene One recognizes that submitted scripts may contain original creative works protected under applicable intellectual property laws. Accordingly, the Platform undertakes reasonable measures to maintain the confidentiality of such materials and restrict access solely to authorized individuals for the purpose of delivering the Service.</p>" +
+        "<p>All Readers and approved collaborators are contractually obligated to maintain strict confidentiality and are prohibited from copying, distributing, publishing, disclosing, or sharing any submitted materials with third parties outside the scope of evaluation.</p>" +
+        "<p>In the event that any Reader or collaborator discloses, misuses, exploits, or shares the script without authorization, such individual shall bear full legal responsibility toward the Writer for any resulting damages, without prejudice to Scene One's right to take appropriate action, including termination of engagement or banning from the Platform.</p>" +
+        "<p>Granting access to a Reader or collaborator shall not be construed as a transfer, assignment, or license of any intellectual property rights, which remain fully owned by the Writer.</p>",
+      termsAiTitle: "Use of Artificial Intelligence Tools",
+      termsAiHtml: "<p>Readers are strictly prohibited from inputting scripts or any part thereof into any artificial intelligence tools or automated content processing systems for purposes including, but not limited to, evaluation, summarization, analysis, rewriting, or any other use, unless prior written consent is obtained from Scene One.</p>" +
+        "<p>This requirement is intended to protect the confidentiality and intellectual property rights of Writers and to ensure that evaluations are based on direct professional reading and analysis.</p>" +
+        "<p>Any unauthorized use of artificial intelligence tools in relation to submitted scripts constitutes a material breach of these Terms and entitles Scene One to terminate the Reader's engagement and take appropriate legal action.</p>",
+      termsFeesTitle: "Fees and Payment",
+      termsFeesLead: "Scene One operates under the following model:",
+      termsFeesHtml: "<li>Reading fees are determined based on the type of script (short or feature) and are clearly displayed on the Platform prior to submission.</li>" +
+        "<li>Payments are processed through approved payment methods within the Kingdom of Saudi Arabia, and official invoices are issued for each transaction.</li>" +
+        "<li><strong>Refund Policy:</strong> No refund shall be granted once the reading of the script has commenced. If the Service cannot be delivered due to reasons attributable to the Platform, a full refund shall be issued within fourteen (14) business days.</li>",
+      termsDeliveryTitle: "Delivery Timeframe",
+      termsDeliveryHtml: "<p>Scene One undertakes to deliver the evaluation report within the timeframe communicated at submission, typically ranging from one (1) to three (3) weeks depending on the type and length of the script.</p>" +
+        "<p>In the event of any delay, the Writer will be promptly notified via email with an explanation and an updated expected delivery date.</p>",
+      termsWriterTitle: "Writer Obligations",
+      termsWriterLead: "By using Scene One, the Writer agrees to:",
+      termsWriterHtml: "<li>Submit only original work and confirm ownership of all rights therein.</li>" +
+        "<li>Ensure that the script does not contain content that violates Saudi laws, promotes hate, offends public morals, or infringes upon the rights of others.</li>" +
+        "<li>Provide accurate personal information when creating an account.</li>" +
+        "<li>Refrain from attempting to misuse or exploit the Service in any manner.</li>",
+      termsWriterNote: "Scene One is responsible solely for professional evaluation and assumes no responsibility for the originality or legal compliance of submitted scripts, which remains the sole responsibility of the Writer.",
+      termsProviderTitle: "Service Provider Obligations",
+      termsProviderLead: "Scene One commits to:",
+      termsProviderHtml: "<li>Conducting a professional and thorough reading by a qualified Reader.</li>" +
+        "<li>Delivering a fair, honest, and detailed evaluation report.</li>" +
+        "<li>Maintaining strict confidentiality of the script and not sharing it without explicit consent from the Writer.</li>" +
+        "<li>Protecting user data in accordance with its Privacy Policy.</li>" +
+        "<li>Adhering to the stated delivery timelines.</li>",
+      termsLiabilityTitle: "Liability",
+      termsLiabilityLead: "The evaluation report reflects the professional opinion of the Reader only and does not constitute a guarantee of the script's quality or acceptance by any production company, festival, or competition. Scene One shall not be liable for:",
+      termsLiabilityHtml: "<li>Decisions made by the Writer based on the report.</li>" +
+        "<li>Lack of interest from production companies after submission.</li>" +
+        "<li>Any disputes arising between the Writer and Production Partners.</li>" +
+        "<li>Any indirect damages or loss of profits resulting from use of the Service.</li>",
+      termsLawTitle: "Governing Law",
+      termsLawHtml: "<p>These Terms shall be governed by and construed in accordance with the laws and regulations of the Kingdom of Saudi Arabia. The competent courts of Saudi Arabia shall have exclusive jurisdiction over any disputes arising from the use of the Service.</p>" +
+        "<p>Scene One aims to resolve disputes amicably wherever possible, and Users are encouraged to contact the Platform directly in the event of any concerns or disagreements.</p>",
+
+      // ---- privacy.html ----
+      docTitlePrivacy: "Privacy Policy — Scene One",
+      privHeroTitle: "Privacy Policy",
+      privIntroTitle: "Introduction",
+      privIntroHtml: "<p>This Privacy Policy explains how the Scene One platform collects, processes, stores, and protects personal data when you use the platform and its related services, including screenplay reading, evaluation, and connecting scripts with production opportunities.</p>" +
+        "<p>By using the platform, you agree to the practices described in this Policy. If you do not agree with any part of it, you should refrain from using the Service.</p>" +
+        "<p>This Policy applies to all users, including submitting writers, production partners, and platform visitors.</p>",
+      privCommitTitle: "Our Commitment to You",
+      privCommitHtml: "<p>At Scene One, we treat your privacy as a responsibility. This Policy explains what data we collect, how we use it, when we share it, how we protect it, and your rights in relation to it.</p>" +
+        "<p>We comply with the Personal Data Protection Law of the Kingdom of Saudi Arabia and follow international best practices in data protection, including guidance from the Saudi Data and Artificial Intelligence Authority.</p>",
+      privDataTitle: "Data We Collect",
+      privDataHtml: "<p><span class=\"gold\" style=\"font-weight:500\">Data you provide directly: </span>Your name, email address, mobile number, the screenplay you submit, and any additional information you choose to share in your profile or through communications with us.</p>" +
+        "<p><span class=\"gold\" style=\"font-weight:500\">Data collected automatically: </span>IP address, device and browser type, access time, and pages visited, strictly for improving user experience and ensuring cybersecurity.</p>",
+      privUseTitle: "How We Use Your Data",
+      privUseLead: "We use your data solely for the following purposes:",
+      privUseHtml: "<li>Providing the Service, including reading your script and issuing your report.</li>" +
+        "<li>Communicating with you regarding your submission, report, or account updates.</li>" +
+        "<li>Improving the Service and developing new features based on aggregated, non-identifiable usage data.</li>" +
+        "<li>Protecting the Service and users from misuse and fraud.</li>" +
+        "<li>Complying with applicable legal obligations in the Kingdom of Saudi Arabia.</li>",
+      privNotTitle: "What We Do Not Do",
+      privNotHtml: "<li>We do not sell your data.</li><li>We do not share your data with marketing entities.</li><li>We do not use your script to train artificial intelligence systems.</li>",
+      privNotNote: "<span class=\"gold\" style=\"font-weight:500\">Your script </span>remains your property. We treat it as a confidential document and restrict access strictly to the relevant evaluation team.",
+      privProtectTitle: "Protection of Your Script",
+      privProtectHead: "Above all else",
+      privProtectLead1: "Your script is your property. It is treated as a confidential document and accessed only by the assigned evaluation team.",
+      privProtectLead2: "Security measures include:",
+      privProtectHtml: "<li><strong>Full Encryption:</strong> Scripts are encrypted during transmission and storage.</li>" +
+        "<li><strong>Restricted Access:</strong> Only the assigned Reader and a designated reviewer may access your script.</li>" +
+        "<li><strong>Confidentiality Agreements:</strong> All Readers sign binding confidentiality agreements before working with Scene One.</li>" +
+        "<li><strong>Deletion Upon Request:</strong> You may request deletion of your script and attachments at any time.</li>" +
+        "<li><strong>Consent-Based Sharing:</strong> Scripts are shared with production partners only upon your explicit written consent.</li>",
+      privStorageTitle: "Data Storage Location",
+      privStorageHtml: "<p>All your data and scripts are stored on secure servers within the Kingdom of Saudi Arabia or on approved cloud infrastructure compliant with Saudi data protection laws and international standards.</p>" +
+        "<p>If external servers are required for technical reasons, we ensure they are located in jurisdictions providing an equivalent level of protection, and no transfer occurs without appropriate safeguards.</p>",
+      privRightsTitle: "Your Rights",
+      privRightsHtml: "<li>Access the personal data we hold about you.</li>" +
+        "<li>Correct inaccurate or incomplete data.</li>" +
+        "<li>Request deletion of your data and scripts.</li>" +
+        "<li>Withdraw your consent to share your script with production partners at any time prior to nomination.</li>" +
+        "<li>Request a copy of your data in a usable format.</li>" +
+        "<li>File a complaint with the competent data protection authority in Saudi Arabia.</li>",
+      privRightsContact: "To exercise any of these rights, please contact us at: <a href=\"mailto:sceneone.info@gmail.com\">sceneone.info@gmail.com</a>",
+      privRetentionTitle: "Data Retention",
+      privRetentionLead1: "We retain your data and scripts for as long as your account remains active or as necessary to provide the Service.",
+      privRetentionLead2: "Upon your request to delete your account:",
+      privRetentionHtml: "<li>Your personal data and scripts will be deleted from active systems within thirty (30) days.</li>" +
+        "<li>Certain data may be retained longer if required for legal or accounting purposes.</li>" +
+        "<li>Issued reports may be retained in anonymized form solely for service improvement, without any identifiable link to you.</li>",
+      privCookiesTitle: "Cookies",
+      privCookiesHtml: "<li>We use cookies minimally to enhance user experience and remember your preferences. We do not use cookies for marketing or cross-site tracking.</li>" +
+        "<li>You may disable cookies through your browser settings; however, doing so may affect certain features of the Service.</li>",
+      privUpdatesTitle: "Updates to This Policy",
+      privUpdatesHtml: "<p>We may update this Policy from time to time in line with service developments or legal requirements. Any material changes will be communicated via email or through a notice on the platform prior to taking effect.</p>" +
+        "<p>Your continued use of the Service after such updates constitutes your acceptance of the revised Policy.</p>",
+      privContactTitle: "Contact Us",
+      privContactLead: "For any inquiries regarding your privacy, your data, or this Policy, please contact us at:",
+      privContactEmail: "Email: <a href=\"mailto:sceneone.info@gmail.com\">sceneone.info@gmail.com</a>",
+      privContactClosing: "We are committed to responding within a reasonable timeframe and welcome any feedback that helps us improve the protection of our users' data."
     }
   };
 

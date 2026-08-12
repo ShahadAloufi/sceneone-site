@@ -802,16 +802,16 @@ a, button {
 @keyframes toastIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 
 /* ====================== CONTENT PAGES (privacy/terms) ====================== */
-.docpage { min-height: 100vh; background: #000; color: #fff; direction: rtl; font-family: var(--font-head); }
+.docpage { min-height: 100vh; background: var(--bg); color: #fff; font-family: var(--font-head); }
 .doc-hero { position: relative; height: 55vh; min-height: 400px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
 .doc-hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .4; pointer-events: none; }
-.doc-hero__shade { position: absolute; inset-inline: 0; bottom: 0; height: 50%; background: linear-gradient(to top, #000, transparent); }
+.doc-hero__shade { position: absolute; inset-inline: 0; bottom: 0; height: 50%; background: linear-gradient(to top, var(--bg), transparent); }
 .doc-hero h1 { position: relative; z-index: 10; font-family: var(--font-head); font-size: 36px; font-weight: 700; text-align: center; color: #fff; }
 .doc-body { max-width: 780px; padding: 64px 24px; display: flex; flex-direction: column; gap: 56px; }
 .doc-body h2 { font-size: 28px; font-weight: 500; color: var(--gold); line-height: 1.75; margin-bottom: 16px; }
 .doc-body p { font-size: 16px; line-height: 1.75; color: rgba(255,255,255,.9); margin-bottom: 12px; }
 .doc-body p:last-child { margin-bottom: 0; }
-.doc-body ol { list-style: decimal; list-style-position: inside; padding-right: 16px; display: flex; flex-direction: column; gap: 8px; }
+.doc-body ol { list-style: decimal; list-style-position: inside; padding-inline-start: 16px; display: flex; flex-direction: column; gap: 8px; }
 .doc-body ol li { font-size: 16px; line-height: 1.75; color: rgba(255,255,255,.9); }
 .doc-body a { color: var(--gold); }
 .doc-body a:hover { text-decoration: underline; }

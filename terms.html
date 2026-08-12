@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-  <title>الشروط والأحكام — Scene One</title>
+  <title data-i18n-doctitle="docTitleTerms">الشروط والأحكام — Scene One</title>
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="alternate icon" type="image/png" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,14 +22,17 @@
     <!-- Inline links on desktop; below the breakpoint they collapse and the
          hamburger's overlay carries the same six destinations. -->
     <ul class="nav__links">
-      <li><a href="/">الرئيسية</a></li>
-      <li><a href="/#about">Scene One</a></li>
-      <li><a href="/readers">من يقرأ نصك؟</a></li>
-      <li><a href="/#journey">رحلة النص</a></li>
-      <li><a href="/about-coverage">دليل المنصة</a></li>
-      <li><a href="/#contact">تواصل معنا</a></li>
+      <li><a href="/" data-i18n="navHome">الرئيسية</a></li>
+      <li><a href="/#about" data-i18n="navAbout">Scene One</a></li>
+      <li><a href="/readers" data-i18n="navReaders">من يقرأ نصك؟</a></li>
+      <li><a href="/#journey" data-i18n="navJourney">رحلة النص</a></li>
+      <li><a href="/about-coverage" data-i18n="navGuide">دليل المنصة</a></li>
+      <li><a href="/#contact" data-i18n="navContact">تواصل معنا</a></li>
     </ul>
-    <button class="menu-btn" data-menu-open aria-label="القائمة"><span></span><span></span><span></span></button>
+    <div class="nav__end">
+      <div class="lang-toggle-group" role="group" aria-label="Language"><button class="lang-btn" type="button" data-lang="en">EN</button><button class="lang-btn" type="button" data-lang="ar">AR</button></div>
+      <button class="menu-btn" data-menu-open data-i18n-aria="menuLabel" aria-label="القائمة"><span></span><span></span><span></span></button>
+    </div>
   </nav>
 
   <!-- ── MENU OVERLAY ── -->
@@ -42,34 +45,34 @@
     </div>
     <div class="overlay__top">
       <img src="assets/scene-one-logo.svg" alt="Scene One">
-      <button class="overlay__close" data-menu-close aria-label="إغلاق">
+      <button class="overlay__close" data-menu-close data-i18n-aria="closeLabel" aria-label="إغلاق">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
     </div>
     <div class="overlay__body">
       <div class="overlay__info">
         <div>
-          <p class="overlay__muted">Scene One / 2026</p>
-          <p style="margin-top:4px">منصة متخصصة في تقييم النصوص السينمائية وتقديم ملاحظات احترافية تساعد الكتّاب على تطوير أعمالهم وصقلها قبل خطوتهم التالية.</p>
+          <p class="overlay__muted" data-i18n="overlayTag">Scene One / 2026</p>
+          <p style="margin-top:4px" data-i18n="overlayBlurb">منصة متخصصة في تقييم النصوص السينمائية وتقديم ملاحظات احترافية تساعد الكتّاب على تطوير أعمالهم وصقلها قبل خطوتهم التالية.</p>
         </div>
         <div class="overlay__group">
-          <p class="overlay__muted" style="margin-bottom:4px">تواصل</p>
+          <p class="overlay__muted" style="margin-bottom:4px" data-i18n="overlayContact">تواصل</p>
           <p>sceneone.info@gmail.com</p>
         </div>
         <div class="overlay__group">
-          <p class="overlay__muted" style="margin-bottom:4px">حساباتنا</p>
+          <p class="overlay__muted" style="margin-bottom:4px" data-i18n="overlaySocial">حساباتنا</p>
           <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
           <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X / Twitter</a>
           <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </div>
       </div>
       <div class="overlay__links">
-        <a href="/" data-menu-close>الرئيسية</a>
-        <a href="/#about" data-menu-close>Scene One</a>
-        <a href="/readers" data-menu-close>من يقرأ نصك؟</a>
-        <a href="/#journey" data-menu-close>رحلة النص</a>
-        <a href="/about-coverage" data-menu-close>دليل المنصة</a>
-        <a href="/#contact" data-menu-close>تواصل معنا</a>
+        <a href="/" data-menu-close data-i18n="navHome">الرئيسية</a>
+        <a href="/#about" data-menu-close data-i18n="navAbout">Scene One</a>
+        <a href="/readers" data-menu-close data-i18n="navReaders">من يقرأ نصك؟</a>
+        <a href="/#journey" data-menu-close data-i18n="navJourney">رحلة النص</a>
+        <a href="/about-coverage" data-menu-close data-i18n="navGuide">دليل المنصة</a>
+        <a href="/#contact" data-menu-close data-i18n="navContact">تواصل معنا</a>
       </div>
     </div>
   </div>
@@ -78,15 +81,15 @@
   <div class="doc-hero">
     <img src="assets/terms_hero_bg.jpg" alt="">
     <div class="doc-hero__shade"></div>
-    <h1>الشروط والأحكام</h1>
+    <h1 data-i18n="termsHeroTitle">الشروط والأحكام</h1>
   </div>
 
   <!-- ── CONTENT ── -->
   <div class="doc-body">
 
     <section>
-      <h2>التعريفات</h2>
-      <ol>
+      <h2 data-i18n="termsDefsTitle">التعريفات</h2>
+      <ol data-i18n-html="termsDefsHtml">
         <li>الخدمة | المنصّة: منصّة (Scene One) الإلكترونية المعنيّة بتقييم النصوص السينمائية وربط الكتّاب بفرص التطوير والإنتاج.</li>
         <li>المستخدم / الكاتب: أي شخص يقوم بإنشاء حساب أو تقديم نصّ عبر المنصّة.</li>
         <li>القارئ الناقد: المختصّ الذي تعتمده الخدمة لقراءة النصوص وتقييمها.</li>
@@ -97,8 +100,8 @@
     </section>
 
     <section>
-      <h2>شروط الاستخدام</h2>
-      <ol>
+      <h2 data-i18n="termsUseTitle">شروط الاستخدام</h2>
+      <ol data-i18n-html="termsUseHtml">
         <li>باستخدامك لمنصّة (Scene One) أو تقديم نصّك عبرها، فإنك تُقرّ بأنك قرأت هذه الشروط وفهمتها ووافقت عليها بالكامل. إذا كنت لا توافق على أيّ بند من بنودها، يُرجى عدم استخدام الخدمة.</li>
         <li>يجب أن يكون عمر المستخدم ثمانية عشر عاماً فأكثر، أو أن يحصل على موافقة وليّه القانوني قبل استخدام الخدمة.</li>
         <li>تحتفظ (Scene One) بحقّ تعديل هذه الشروط في أيّ وقت، وستُبلّغ التعديلات عبر البريد الإلكتروني أو عبر إشعار داخل المنصّة قبل سريانها بمدّة معقولة.</li>
@@ -107,48 +110,52 @@
     </section>
 
     <section>
-      <h2>تعريف الخدمة</h2>
-      <p class="lead">تقدّم (Scene One) خدمة قراءة احترافية ونقدية للنصوص السينمائية، تشمل:</p>
-      <ol>
+      <h2 data-i18n="termsServiceTitle">تعريف الخدمة</h2>
+      <p class="lead" data-i18n="termsServiceLead">تقدّم (Scene One) خدمة قراءة احترافية ونقدية للنصوص السينمائية، تشمل:</p>
+      <ol data-i18n-html="termsServiceHtml">
         <li>قراءة كاملة للنصّ من قِبَل قارئ ناقد مؤهَّل.</li>
         <li>إصدار تقرير تقييم تفصيلي يشمل الفكرة والحبكة والشخصيات والحوار والإيقاع والإمكانية الإنتاجية.</li>
         <li>تصنيف صريح للنصّ ضمن إحدى الفئات الثلاث: <strong>موصى به</strong>، <strong>معتبر</strong>، أو <strong>بحاجة الى تطوير</strong>.</li>
         <li>ترشيح النصوص الحاصلة على توصية قوية إلى الشركاء الإنتاجيين، بعد موافقة الكاتب الصريحة.</li>
       </ol>
-      <p style="margin-top:16px"><strong>الخدمة لا تشمل</strong>: إعادة كتابة النصّ، أو تطويره، أو تحريره، أو ضمان قبوله من قبل أيّ جهة إنتاجية. Scene One تقدّم قراءة نقدية احترافية فقط.</p>
+      <p style="margin-top:16px" data-i18n-html="termsServiceNote"><strong>الخدمة لا تشمل</strong>: إعادة كتابة النصّ، أو تطويره، أو تحريره، أو ضمان قبوله من قبل أيّ جهة إنتاجية. Scene One تقدّم قراءة نقدية احترافية فقط.</p>
     </section>
 
     <section>
-      <h2>الملكية الفكرية</h2>
-      <p class="lead light">بند جوهري: الكاتب هو المالك الكامل والوحيد لجميع حقوق الملكية الفكرية للنصّ الذي يقدّمه. لا تدّعي Scene One أيّ ملكية على النصّ في أيّ مرحلة من مراحل الخدمة. عند تقديم النصّ، يمنح الكاتب Scene One ترخيصاً محدوداً وغير حصري، يقتصر استخدامه على:</p>
-      <ol>
+      <h2 data-i18n="termsIpTitle">الملكية الفكرية</h2>
+      <p class="lead light" data-i18n-html="termsIpLead">بند جوهري: الكاتب هو المالك الكامل والوحيد لجميع حقوق الملكية الفكرية للنصّ الذي يقدّمه. لا تدّعي Scene One أيّ ملكية على النصّ في أيّ مرحلة من مراحل الخدمة. عند تقديم النصّ، يمنح الكاتب Scene One ترخيصاً محدوداً وغير حصري، يقتصر استخدامه على:</p>
+      <ol data-i18n-html="termsIpHtml">
         <li>قراءة النصّ وتقييمه من قبل القارئ الناقد المعتمَد.</li>
         <li>تخزينه بصورة آمنة على خوادم الخدمة طوال مدّة الاشتراك أو حتى يطلب الكاتب حذفه.</li>
         <li>مشاركة النصّ مع الشركاء الإنتاجيين فقط بعد موافقة الكاتب الكتابية الصريحة، وذلك في حال حصوله على توصية ودخوله مرحلة الترشيح.</li>
       </ol>
-      <p style="margin-top:16px;font-weight:700;color:#fff">لا يحقّ لمقدم الخدمة استخدام النصّ لأيّ غرض آخر، ولا نشره، ولا توزيعه، ولا اقتباس أيّ جزء منه دون إذن صريح ومسبق من الكاتب.</p>
-      <p style="font-weight:700;color:#fff">يُنصح الكاتب بشدّة بتسجيل نصّه لدى الهيئة السعودية للملكية الفكرية (SAIP) قبل تقديمه لأيّ جهة كانت.</p>
+      <p style="margin-top:16px;font-weight:700;color:#fff" data-i18n="termsIpNote1">لا يحقّ لمقدم الخدمة استخدام النصّ لأيّ غرض آخر، ولا نشره، ولا توزيعه، ولا اقتباس أيّ جزء منه دون إذن صريح ومسبق من الكاتب.</p>
+      <p style="font-weight:700;color:#fff" data-i18n="termsIpNote2">يُنصح الكاتب بشدّة بتسجيل نصّه لدى الهيئة السعودية للملكية الفكرية (SAIP) قبل تقديمه لأيّ جهة كانت.</p>
     </section>
 
     <section>
-      <h2>سرية النصوص والمواد المقدمة</h2>
-      <p>تُدرك Scene One أن النصوص المقدمة عبر المنصة قد تتضمن أعمالًا أصلية وأفكارًا إبداعية تتمتع بالحماية بموجب أنظمة الملكية الفكرية المعمول بها. وعليه، تلتزم المنصة باتخاذ الإجراءات المعقولة للحفاظ على سرية النصوص وعدم إتاحتها إلا للأشخاص المخولين بالاطلاع عليها لغرض تقديم الخدمة.</p>
-      <p>كما يلتزم جميع القرّاء النقاد والمتعاونين المعتمدين من قبل Scene One بالحفاظ على سرية النصوص والمواد المقدمة، وعدم نسخها أو تداولها أو نشرها أو الإفصاح عنها أو إتاحتها لأي طرف ثالث خارج نطاق التقييم أو تقديم الخدمة.</p>
-      <p>وفي حال قيام أي قارئ ناقد أو متعاون بالإفصاح عن النص أو تسريبه أو استغلاله أو استخدامه أو مشاركته بأي صورة غير مصرح بها، فإنه يتحمل المسؤولية القانونية الكاملة تجاه صاحب النص عن أي أضرار أو مطالبات أو حقوق قد تنشأ نتيجة لذلك، دون الإخلال بحق Scene One في اتخاذ الإجراءات المناسبة، بما في ذلك إنهاء التعاون معه أو منعه من استخدام المنصة مستقبلاً.</p>
-      <p>ولا يُفسر تمكين القارئ الناقد أو المتعاون من الاطلاع على النص على أنه نقل أو تنازل أو ترخيص بأي حق من حقوق الملكية الفكرية المتعلقة به، والتي تبقى مملوكة بالكامل لصاحب النص.</p>
+      <h2 data-i18n="termsConfTitle">سرية النصوص والمواد المقدمة</h2>
+      <div data-i18n-html="termsConfHtml">
+        <p>تُدرك Scene One أن النصوص المقدمة عبر المنصة قد تتضمن أعمالًا أصلية وأفكارًا إبداعية تتمتع بالحماية بموجب أنظمة الملكية الفكرية المعمول بها. وعليه، تلتزم المنصة باتخاذ الإجراءات المعقولة للحفاظ على سرية النصوص وعدم إتاحتها إلا للأشخاص المخولين بالاطلاع عليها لغرض تقديم الخدمة.</p>
+        <p>كما يلتزم جميع القرّاء النقاد والمتعاونين المعتمدين من قبل Scene One بالحفاظ على سرية النصوص والمواد المقدمة، وعدم نسخها أو تداولها أو نشرها أو الإفصاح عنها أو إتاحتها لأي طرف ثالث خارج نطاق التقييم أو تقديم الخدمة.</p>
+        <p>وفي حال قيام أي قارئ ناقد أو متعاون بالإفصاح عن النص أو تسريبه أو استغلاله أو استخدامه أو مشاركته بأي صورة غير مصرح بها، فإنه يتحمل المسؤولية القانونية الكاملة تجاه صاحب النص عن أي أضرار أو مطالبات أو حقوق قد تنشأ نتيجة لذلك، دون الإخلال بحق Scene One في اتخاذ الإجراءات المناسبة، بما في ذلك إنهاء التعاون معه أو منعه من استخدام المنصة مستقبلاً.</p>
+        <p>ولا يُفسر تمكين القارئ الناقد أو المتعاون من الاطلاع على النص على أنه نقل أو تنازل أو ترخيص بأي حق من حقوق الملكية الفكرية المتعلقة به، والتي تبقى مملوكة بالكامل لصاحب النص.</p>
+      </div>
     </section>
 
     <section>
-      <h2>استخدام أدوات الذكاء الاصطناعي</h2>
-      <p>يلتزم القارئ الناقد بعدم إدخال النصوص أو أي جزء منها في أي أداة أو خدمة تعتمد على الذكاء الاصطناعي أو معالجة المحتوى الآلية، سواء لأغراض التقييم أو التلخيص أو التحليل أو إعادة الصياغة أو لأي غرض آخر، ما لم يحصل على موافقة كتابية مسبقة من Scene One.</p>
-      <p>ويهدف هذا الالتزام إلى حماية سرية النصوص والحقوق الفكرية الخاصة بأصحابها، وضمان أن تستند التقييمات المقدمة من خلال المنصة إلى القراءة والتحليل المهني المباشر للقارئ الناقد.</p>
-      <p>ويُعد أي استخدام غير مصرح به لأدوات الذكاء الاصطناعي فيما يتعلق بالنصوص المقدمة عبر المنصة مخالفة جوهرية لهذه الشروط، ويمنح Scene One الحق في إنهاء التعاون مع القارئ الناقد واتخاذ الإجراءات المناسبة وفق الأنظمة المعمول بها.</p>
+      <h2 data-i18n="termsAiTitle">استخدام أدوات الذكاء الاصطناعي</h2>
+      <div data-i18n-html="termsAiHtml">
+        <p>يلتزم القارئ الناقد بعدم إدخال النصوص أو أي جزء منها في أي أداة أو خدمة تعتمد على الذكاء الاصطناعي أو معالجة المحتوى الآلية، سواء لأغراض التقييم أو التلخيص أو التحليل أو إعادة الصياغة أو لأي غرض آخر، ما لم يحصل على موافقة كتابية مسبقة من Scene One.</p>
+        <p>ويهدف هذا الالتزام إلى حماية سرية النصوص والحقوق الفكرية الخاصة بأصحابها، وضمان أن تستند التقييمات المقدمة من خلال المنصة إلى القراءة والتحليل المهني المباشر للقارئ الناقد.</p>
+        <p>ويُعد أي استخدام غير مصرح به لأدوات الذكاء الاصطناعي فيما يتعلق بالنصوص المقدمة عبر المنصة مخالفة جوهرية لهذه الشروط، ويمنح Scene One الحق في إنهاء التعاون مع القارئ الناقد واتخاذ الإجراءات المناسبة وفق الأنظمة المعمول بها.</p>
+      </div>
     </section>
 
     <section>
-      <h2>الرسوم والدفع</h2>
-      <p class="lead light">تعمل (Scene One) وفق النموذج التالي:</p>
-      <ol>
+      <h2 data-i18n="termsFeesTitle">الرسوم والدفع</h2>
+      <p class="lead light" data-i18n="termsFeesLead">تعمل (Scene One) وفق النموذج التالي:</p>
+      <ol data-i18n-html="termsFeesHtml">
         <li>تُحدَّد رسوم القراءة بحسب نوع النصّ (قصير / روائي) وتُعلَن بوضوح على المنصّة قبل تقديم النصّ.</li>
         <li>تُدفع الرسوم عبر وسائل الدفع المعتمَدة في المملكة العربية السعودية، وتُصدر فواتير نظامية لكلّ عملية.</li>
         <li><strong>سياسة الاسترداد:</strong> لا يحقّ للكاتب طلب استرداد الرسوم بعد البدء الفعلي في قراءة نصّه. أمّا إذا تعذّر تنفيذ الخدمة لأسباب تخصّ المنصّة، فيتمّ ردّ المبلغ كاملاً خلال أربعة عشر يوم عمل.</li>
@@ -156,27 +163,29 @@
     </section>
 
     <section>
-      <h2>مدة التسليم</h2>
-      <p>تلتزم (Scene One) بتسليم التقرير خلال المدّة الزمنية المُعلَنة عند التقديم، وتتراوح عادةً بين أسبوع إلى ثلاثة أسابيع بحسب نوع النصّ وحجمه.</p>
-      <p>في حال تأخّر التسليم لأيّ سبب، يُبلَّغ الكاتب فوراً عبر البريد الإلكتروني مع توضيح الأسباب والمدّة المتوقّعة الجديدة.</p>
+      <h2 data-i18n="termsDeliveryTitle">مدة التسليم</h2>
+      <div data-i18n-html="termsDeliveryHtml">
+        <p>تلتزم (Scene One) بتسليم التقرير خلال المدّة الزمنية المُعلَنة عند التقديم، وتتراوح عادةً بين أسبوع إلى ثلاثة أسابيع بحسب نوع النصّ وحجمه.</p>
+        <p>في حال تأخّر التسليم لأيّ سبب، يُبلَّغ الكاتب فوراً عبر البريد الإلكتروني مع توضيح الأسباب والمدّة المتوقّعة الجديدة.</p>
+      </div>
     </section>
 
     <section>
-      <h2>التزامات الكاتب</h2>
-      <p class="lead light">عند استخدام (Scene One)، يلتزم الكاتب بما يلي:</p>
-      <ol>
+      <h2 data-i18n="termsWriterTitle">التزامات الكاتب</h2>
+      <p class="lead light" data-i18n="termsWriterLead">عند استخدام (Scene One)، يلتزم الكاتب بما يلي:</p>
+      <ol data-i18n-html="termsWriterHtml">
         <li>أن يكون النصّ المُقدَّم من تأليفه الأصلي، وأن يكون مالكاً لجميع حقوقه.</li>
         <li>أن لا يحتوي النصّ على أيّ محتوى مخالف للأنظمة السعودية، أو محرّض على الكراهية، أو يخالف الذوق العام، أو ينتهك حقوق الغير.</li>
         <li>أن يقدّم معلومات صحيحة عن نفسه عند إنشاء الحساب.</li>
         <li>أن لا يحاول التحايل على الخدمة أو إساءة استخدامها بأيّ صورة.</li>
       </ol>
-      <p style="margin-top:16px;font-weight:600;color:#fff">تتحمّل (Scene One) مسؤولية القراءة المهنية فقط، ولا تتحمّل أيّ مسؤولية عن مدى أصالة النصّ أو خلوّه من المخالفات. هذه مسؤولية الكاتب وحده.</p>
+      <p style="margin-top:16px;font-weight:600;color:#fff" data-i18n="termsWriterNote">تتحمّل (Scene One) مسؤولية القراءة المهنية فقط، ولا تتحمّل أيّ مسؤولية عن مدى أصالة النصّ أو خلوّه من المخالفات. هذه مسؤولية الكاتب وحده.</p>
     </section>
 
     <section>
-      <h2>التزامات مقدم الخدمة</h2>
-      <p class="lead light">تلتزم (Scene One) تجاه المستخدم بما يلي:</p>
-      <ol>
+      <h2 data-i18n="termsProviderTitle">التزامات مقدم الخدمة</h2>
+      <p class="lead light" data-i18n="termsProviderLead">تلتزم (Scene One) تجاه المستخدم بما يلي:</p>
+      <ol data-i18n-html="termsProviderHtml">
         <li>قراءة النصّ بعناية ومهنية من قِبَل قارئ مؤهّل.</li>
         <li>إصدار تقرير تقييم نزيه وصادق ومفصَّل.</li>
         <li>حفظ سرّية النصّ التامّة، وعدم مشاركته مع أيّ طرف خارجي إلّا بإذن الكاتب الصريح.</li>
@@ -186,9 +195,9 @@
     </section>
 
     <section>
-      <h2>المسؤوليات</h2>
-      <p class="lead light">التقرير الصادر من (Scene One) يعبّر عن الرأي المهني للقارئ الناقد فقط، ولا يعتبر ضماناً لجودة النصّ، ولا تعهّداً بقبوله من قِبَل أيّ جهة إنتاجية أو مهرجان أو مسابقة. لا تتحمّل Scene One أيّ مسؤولية عن:</p>
-      <ol>
+      <h2 data-i18n="termsLiabilityTitle">المسؤوليات</h2>
+      <p class="lead light" data-i18n="termsLiabilityLead">التقرير الصادر من (Scene One) يعبّر عن الرأي المهني للقارئ الناقد فقط، ولا يعتبر ضماناً لجودة النصّ، ولا تعهّداً بقبوله من قِبَل أيّ جهة إنتاجية أو مهرجان أو مسابقة. لا تتحمّل Scene One أيّ مسؤولية عن:</p>
+      <ol data-i18n-html="termsLiabilityHtml">
         <li>قرارات الكاتب المبنية على التقرير.</li>
         <li>عدم اهتمام شركات الإنتاج بالنصّ بعد ترشيحه.</li>
         <li>أيّ نزاعات قد تنشأ بين الكاتب والشركاء الإنتاجيين.</li>
@@ -197,19 +206,21 @@
     </section>
 
     <section>
-      <h2>القانون المختص</h2>
-      <p>تخضع هذه الشروط لأنظمة المملكة العربية السعودية وتُفسَّر وفقاً لها. تختصّ المحاكم السعودية بالنظر في أيّ نزاع قد ينشأ عن استخدام الخدمة.</p>
-      <p>نسعى دائماً لحلّ أيّ خلاف ودّياً قبل اللجوء إلى القضاء، ويُشجَّع المستخدم على التواصل معنا مباشرة عند وجود أيّ ملاحظة أو نزاع.</p>
+      <h2 data-i18n="termsLawTitle">القانون المختص</h2>
+      <div data-i18n-html="termsLawHtml">
+        <p>تخضع هذه الشروط لأنظمة المملكة العربية السعودية وتُفسَّر وفقاً لها. تختصّ المحاكم السعودية بالنظر في أيّ نزاع قد ينشأ عن استخدام الخدمة.</p>
+        <p>نسعى دائماً لحلّ أيّ خلاف ودّياً قبل اللجوء إلى القضاء، ويُشجَّع المستخدم على التواصل معنا مباشرة عند وجود أيّ ملاحظة أو نزاع.</p>
+      </div>
     </section>
 
   </div>
 
   <!-- ── FOOTER ── -->
   <footer class="footer--doc">
-    <p dir="rtl" style="text-align:center">© 2026 جميع الحقوق محفوظة لـSCENE ONE.<br><span class="footer__cr">الرقم الموحد: 7054791293</span></p>
-    <div class="footer__links" style="direction:rtl;display:flex;align-items:center;gap:24px">
-      <a href="/privacy">سياسة الخصوصية</a>
-      <a href="/terms">الشروط والأحكام</a>
+    <p class="footer__copy" dir="rtl" style="text-align:center" data-i18n-html="footerCopyHtml">© 2026 جميع الحقوق محفوظة لـSCENE ONE.<br><span class="footer__cr">الرقم الموحد: 7054791293</span></p>
+    <div class="footer__links" style="display:flex;align-items:center;gap:24px">
+      <a href="/privacy" data-i18n="footerPrivacy">سياسة الخصوصية</a>
+      <a href="/terms" data-i18n="footerTerms">الشروط والأحكام</a>
     </div>
     <div class="footer__social" style="display:flex;align-items:center;gap:16px">
       <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer"><img src="assets/icon_x.png" alt="X"></a>
@@ -219,6 +230,7 @@
   </footer>
 </div>
 
+<script src="js/i18n.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
