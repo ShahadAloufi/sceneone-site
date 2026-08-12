@@ -28,6 +28,31 @@ coverage workspace + report, role-based access, deadlines, and report delivery t
 writers. **The payment gate is live and has taken real money** (see below).
 Actively iterating on UX polish and workflow features.
 
+**Recently shipped (2026-08-11 → 08-12):**
+- **Public-site English support** — `index.html`, `readers.html`, and
+  `about-coverage.html` are now fully bilingual (`js/i18n.js`), plus
+  `sample-report.html`'s report content (previously Arabic-only regardless
+  of its own toggle). `submit`, `privacy`, `terms` still need it. Full
+  detail in the "Public-site i18n" section below — read it before touching
+  translated copy or the `[dir="ltr"]` CSS mirror.
+- **One font per language, site-wide:** Arabic is always Tajawal, English is
+  always IBM Plex Sans. `IBM Plex Sans Arabic` is fully removed from the
+  codebase after two passes the same day (first unified everything to
+  Tajawal, then split it back out once English-reading visitors found
+  Tajawal's Latin rendering harder to read). See "Important Design
+  Decisions" for the mechanics — it's not just a Google Fonts swap, the six
+  self-contained pages and `payment-status.html`'s simultaneous-bilingual
+  layout each needed their own fix.
+- **Nav bar mirrors fully with the language, logo included** — it used to
+  stay LTR always (logo pinned left even in Arabic); now the whole bar
+  flips, and the six nav links were reordered (دليل المنصة moved up before
+  من يقرأ نصك؟). See "Site Chrome" below.
+- A long tail of copy/layout fixes from direct user feedback: em dashes
+  removed from several English strings (the site's copy style avoids them),
+  the landing hero's partner-association logo now centers over its caption,
+  the readers-page hero headline was removed outright, "About SCENE ONE"
+  stacks onto two lines and matches "Readers Profile"'s heading size/weight.
+
 **Recently shipped (2026-08-04 → 08-07):**
 - **Payment gate LIVE on Moyasar.** A real card payment and a real full refund have
   both run end to end in production. See "the payment gate is fully proven" below and
@@ -126,8 +151,9 @@ Do NOT introduce Next.js/React/a compiler/npm build. Keep it buildless.
     its **own inline `<style>` block and no-flash theme/lang script**, and does NOT
     link `css/styles.css`. Shared pieces are duplicated there.
 - **Client JS (`/js`):** `config.js` (client-safe Supabase url/anonKey/bucket),
-  `theme.js`, `i18n.js` (public-site AR/EN, landing page only so far — see
-  "Public-site i18n" below), `main.js` (landing), `submit.js` (submission form + PDF page count),
+  `theme.js`, `i18n.js` (public-site AR/EN — `index`, `readers`, `about-coverage`;
+  `submit`/`privacy`/`terms` still Arabic-only; see "Public-site i18n" below),
+  `main.js` (landing), `submit.js` (submission form + PDF page count),
   `admin.js` (login/dashboard/realtime), `coverage.js` (workspace/report),
   `report.js` (public report page), `report-render.js` (**shared** bilingual report
   renderer used by BOTH `coverage.js` and `report.js` — single source of truth for
@@ -259,8 +285,12 @@ bottom of `css/styles.css`; markup is `readers.html`.
 ## Site Chrome: Nav & Landing CTAs (2026-08-06/07)
 
 - **Inline nav links in the bar on every page** (`.nav__links`), replacing a
-  site where every destination was hidden behind the hamburger. Six items:
-  الرئيسية · Scene One · من يقرأ نصك؟ · رحلة النص · دليل المنصة · تواصل معنا.
+  site where every destination was hidden behind the hamburger. Six items, in
+  this order (**reordered 2026-08-12**, دليل المنصة moved up before من يقرأ
+  نصك؟): الرئيسية · Scene One · دليل المنصة · من يقرأ نصك؟ · رحلة النص ·
+  تواصل معنا. The bar (`.nav__links`) and the hamburger's overlay
+  (`.overlay__links`) list the same six in the same order on every page that
+  has this nav — keep them in step if the order ever changes again.
 - **Breakpoint is 1000px.** Above it the links show and **the hamburger is
   hidden** — every destination is already in the bar, so it would only open an
   overlay of the same six. Below it the links hide and the overlay carries them.
@@ -292,7 +322,7 @@ bottom of `css/styles.css`; markup is `readers.html`.
 
 ---
 
-## Public-site i18n (landing page, 2026-08-11)
+## Public-site i18n (2026-08-11 → 08-12)
 
 The public site was Arabic-only until now. `js/i18n.js` adds English, following
 the same dict + `data-i18n` + `applyLang()` pattern already used by
@@ -365,21 +395,39 @@ member's admin-panel language pref (`sceneone-admin-lang`).
   just toggles which one carries `.active`, it doesn't touch their text.
 - **`readers.html` reuses the shared nav/overlay/footer dict keys** (`navHome`,
   `overlayTag`, `footerCopyHtml`, etc. — same ones `index.html` uses) and adds
-  its own page-only keys for the hero, the "About SCENE ONE" story, and the
-  two reader bios (`auHeroTitleHtml`, `auAboutP1`–`P3`, `auTeamTitle`,
-  `haifaName`/`haifaRole`/`haifaBio`, `fajrName`/`fajrRole`/`fajrBio`). Its own
+  its own page-only keys for the "About SCENE ONE" story and the two reader
+  bios (`auAboutLabelWord`, `auAboutP1`–`P3`, `auTeamTitle`, `haifaName`/
+  `haifaRole`/`haifaBio`, `fajrName`/`fajrRole`/`fajrBio`). Its own
   `html[dir="ltr"]` mirror block sits right after the landing page's, covering
-  `.au-hero__title`, `.au-about__label`/`__body`, `.au-team__title`, and the
-  card text. `.au-about__inner`'s grid-column layout is left alone — the
-  label stays next to its body, a composition choice independent of reading
-  direction (same policy as the landing page's hero gutter and the red
-  banner's clapperboard). **`.au-hero__row` is the exception, changed
-  2026-08-11 on explicit request:** it used to stay `flex-end` (pinned right)
-  in both languages, matching the background photo's light source regardless
-  of text direction. Now `html[dir="ltr"] .au-hero__row` flips it to
-  `flex-start` and mirrors the left/right padding with it, so the whole title
-  block — not just its text — moves to the left in English. The photo and
-  wordmark underneath don't move; only the title block does.
+  `.au-about__label`/`__body`, `.au-team__title`, and the card text.
+  `.au-about__inner`'s grid-column layout is left alone — the label stays
+  next to its body, a composition choice independent of reading direction
+  (same policy as the landing page's hero gutter and the red banner's
+  clapperboard). **`.au-about__inner`/`.au-cards` themselves DO get an
+  English margin override** (`margin: 0 auto 0 0`), added 2026-08-12 — both
+  blocks were still pinned to the *right edge of the page* in English (only
+  their own internal text had flipped), which read as backwards even with
+  the label-next-to-body composition preserved.
+  **The hero title (`.au-hero__title` / `auHeroTitleHtml`) is gone —
+  removed 2026-08-12 on request.** `.au-hero__row` is now an empty spacer
+  div; the hero is just the background photo and the SCENE ONE wordmark.
+  Don't resurrect the old `.au-hero__row` flex-end/flex-start mirroring notes
+  from earlier in this file's history — they described a title that no
+  longer exists.
+  **`.au-about__label` picked up three more changes, all 2026-08-12:**
+  stacked onto two lines (a literal `<br>` between the word span and "SCENE
+  ONE" span in the markup, not a CSS trick — `data-i18n` only replaces the
+  first span's `textContent`, so the `<br>` survives language swaps), sized
+  to match `.au-team__title`'s `clamp(34px, 5vw, 56px)` instead of a flat
+  25px, and set to `font-weight: 700`. Also fixed a real bug the same day:
+  the mobile stacked layout (`max-width: 900px`) sets
+  `text-align: right` on the label unconditionally with no `[dir="ltr"]`
+  counterpart, so English stayed right-aligned below 900px even after the
+  desktop fix landed — the desktop-only text-align override was never
+  ported to `.au-about__label` itself (only `.au-about__body p` got one).
+  Fixed by adding `text-align: left` to the existing
+  `html[dir="ltr"] .au-about__label` rule instead of leaving it
+  direction-only.
 - **`about-coverage.html` also reuses the shared nav/overlay/footer keys**,
   plus its own for the hero tags, all four content sections, the four
   "aspects" (`covAspect1Html`–`4Html`, each `<strong>N. Label:</strong> body`
@@ -834,12 +882,20 @@ must be in the `supabase_realtime` publication for live updates to fire.
 
 - **Public-site i18n covers `index.html`, `readers.html`, and
   `about-coverage.html`; `submit`, `privacy`, `terms` still need it**
-  (2026-08-11) — same `data-i18n` + `[dir="ltr"]` treatment, see
+  (2026-08-11/12) — same `data-i18n` + `[dir="ltr"]` treatment, see
   "Public-site i18n" above for the pattern and pitfalls (especially the
   `dict()`-before-use ordering bug).
   ~~The three coverage-type card images have their body copy baked into the
   PNG~~ — **done 2026-08-11**, English exports (`card_*-en.png`) swapped in
   via `data-i18n-src`.
+  ~~`sample-report.html`'s report content was Arabic-only regardless of its
+  toggle~~ — **done 2026-08-12**: `sampleSubmission_AR/EN` and
+  `sampleCoverage_AR/EN` now carry a full parallel translation (logline,
+  synopsis, all seven evaluation notes, market analysis, strengths/to-develop,
+  verdict), and `applyLang()` picks the matching pair. This page has its own
+  toggle (`sceneone-report-lang` in localStorage, a `.langseg` control) —
+  separate from `js/i18n.js` and `sceneone-lang`, since it's one of the
+  self-contained pages.
 - ~~Set the Supabase Site URL / redirect allow-list~~ and ~~configure custom SMTP~~ —
   **both done 2026-08-04.** See the auth notes below; left here only as a pointer,
   since together they were why no reader could ever reset a password.
