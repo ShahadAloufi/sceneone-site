@@ -1772,7 +1772,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 .au-about__label span { color: rgba(255,255,255,.9); }
 .au-about__body { grid-column: 1; grid-row: 1; direction: rtl; }
 .au-about__body p {
-  font-family: var(--font-body); font-size: 17px; line-height: 2; color: rgba(255,255,255,.72);
+  font-family: var(--font-body); font-size: 20px; line-height: 2; color: rgba(255,255,255,.72);
   text-align: right; margin-bottom: 22px;
 }
 .au-about__body p:last-child { margin-bottom: 0; }
