@@ -296,9 +296,17 @@ the same dict + `data-i18n` + `applyLang()` pattern already used by
 (`sceneone-lang`) so a visitor's language choice never collides with a staff
 member's admin-panel language pref (`sceneone-admin-lang`).
 
-- **Landing page (`index.html`) only, so far.** `submit`, `about-coverage`,
-  `readers`, `privacy`, `terms` are still Arabic-only — same dict/attribute
-  pattern, just not done yet. Don't assume the toggle exists site-wide.
+- **`index.html` and `readers.html` done; `submit`, `about-coverage`,
+  `privacy`, `terms` still Arabic-only** — same dict/attribute pattern, just
+  not done yet. Don't assume the toggle exists on every page.
+- **`data-i18n-doctitle` on `<title>`** names the dict key for that page's
+  translated `<title>` (e.g. `readers.html` uses `docTitleReaders`); pages
+  that don't opt in keep the landing page's title as a fallback. **Read
+  `d` (the dict) via `dict()` before this line, not after** — an earlier
+  version referenced `d` before its `var d = dict();` line, which threw and
+  silently aborted the rest of `applyLang()` (dir flipped, nothing else did)
+  on any page with the attribute set. Caught testing `readers.html`, fixed
+  2026-08-11.
 - **`data-i18n`** swaps `textContent`; **`data-i18n-html`** swaps `innerHTML`
   (for the handful of strings carrying a `<br>` or `<strong>` — the dict values
   are hardcoded translator-authored copy, never user input, so this is safe);
@@ -346,6 +354,18 @@ member's admin-panel language pref (`sceneone-admin-lang`).
   second copy in the hamburger overlay (`.lang-toggle--overlay`), both wired
   by the same `js/i18n.js` click handler. Button text is the language you'd
   switch **to** (shows "EN" in Arabic, "AR" in English), not the current one.
+- **`readers.html` reuses the shared nav/overlay/footer dict keys** (`navHome`,
+  `overlayTag`, `footerCopyHtml`, etc. — same ones `index.html` uses) and adds
+  its own page-only keys for the hero, the "About SCENE ONE" story, and the
+  two reader bios (`auHeroTitleHtml`, `auAboutP1`–`P3`, `auTeamTitle`,
+  `haifaName`/`haifaRole`/`haifaBio`, `fajrName`/`fajrRole`/`fajrBio`). Its own
+  `html[dir="ltr"]` mirror block sits right after the landing page's, covering
+  `.au-hero__title`, `.au-about__label`/`__body`, `.au-team__title`, and the
+  card text — **not** `.au-hero__row`'s or `.au-about__inner`'s own fixed
+  `direction: ltr`, which map a photo/label against a physical composition
+  point (the hero photo's light source, the label's position next to the
+  story) rather than reading direction, same policy as the landing page's
+  hero gutter.
 
 ---
 
@@ -750,9 +770,10 @@ must be in the `supabase_realtime` publication for live updates to fire.
 
 ## Current TODOs
 
-- **Public-site i18n only covers `index.html` so far** (2026-08-11). `submit`,
-  `about-coverage`, `readers`, `privacy`, `terms` need the same `data-i18n` +
-  `[dir="ltr"]` treatment — see "Public-site i18n" above for the pattern.
+- **Public-site i18n covers `index.html` and `readers.html`; `submit`,
+  `about-coverage`, `privacy`, `terms` still need it** (2026-08-11) — same
+  `data-i18n` + `[dir="ltr"]` treatment, see "Public-site i18n" above for
+  the pattern and pitfalls (especially the `dict()`-before-use ordering bug).
   ~~The three coverage-type card images have their body copy baked into the
   PNG~~ — **done 2026-08-11**, English exports (`card_*-en.png`) swapped in
   via `data-i18n-src`.

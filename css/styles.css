@@ -1864,3 +1864,23 @@ html[dir="ltr"] .modal__title, html[dir="ltr"] .modal__desc { text-align: left; 
 html[dir="ltr"] .field__input--email { text-align: left; }
 
 html[dir="ltr"] .toast { direction: ltr; text-align: left; }
+
+/* ===========================================================
+   READERS PAGE (readers.html) — ENGLISH (LTR) MIRROR
+   Same reasoning as the landing-page block above: this page's RTL is
+   hardcoded per-section, not inherited from <html dir>. `.au-hero__row`'s
+   own `direction: ltr` and `.au-about__inner`'s grid-column layout are left
+   alone — those map the hero text against the photo's light source and the
+   about section's label against its body, composition choices independent
+   of reading direction (same policy as the landing page's hero gutter).
+   Only the text inside those structures flips.
+   =========================================================== */
+html[dir="ltr"] .au-hero__title { direction: ltr; text-align: left; }
+html[dir="ltr"] .au-about__label { direction: ltr; }
+html[dir="ltr"] .au-about__body { direction: ltr; }
+html[dir="ltr"] .au-about__body p { text-align: left; }
+html[dir="ltr"] .au-team__title { text-align: left; }
+html[dir="ltr"] .au-card__photo { margin: 0 auto 24px 0; }
+html[dir="ltr"] .au-card__role,
+html[dir="ltr"] .au-card__name,
+html[dir="ltr"] .au-card__bio { text-align: left; }

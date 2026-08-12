@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-  <title>تعرّف على قصتنا — Scene One</title>
+  <title data-i18n-doctitle="docTitleReaders">تعرّف على قصتنا — Scene One</title>
   <meta name="description" content="قصة Scene One وفريق القرّاء الذين يقفون وراء كل تقرير تغطية سينمائية.">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="alternate icon" type="image/png" href="assets/favicon.png">
@@ -23,16 +23,19 @@
     <!-- Inline links on desktop; below the breakpoint they collapse and the
          hamburger's overlay carries the same six destinations. -->
     <ul class="nav__links">
-      <li><a href="/">الرئيسية</a></li>
-      <li><a href="/#about">Scene One</a></li>
-      <li><a href="/readers">من يقرأ نصك؟</a></li>
-      <li><a href="/#journey">رحلة النص</a></li>
-      <li><a href="/about-coverage">دليل المنصة</a></li>
-      <li><a href="/#contact">تواصل معنا</a></li>
+      <li><a href="/" data-i18n="navHome">الرئيسية</a></li>
+      <li><a href="/#about" data-i18n="navAbout">Scene One</a></li>
+      <li><a href="/readers" data-i18n="navReaders">من يقرأ نصك؟</a></li>
+      <li><a href="/#journey" data-i18n="navJourney">رحلة النص</a></li>
+      <li><a href="/about-coverage" data-i18n="navGuide">دليل المنصة</a></li>
+      <li><a href="/#contact" data-i18n="navContact">تواصل معنا</a></li>
     </ul>
-    <button class="menu-btn" data-menu-open aria-label="القائمة">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="nav__end">
+      <button class="lang-toggle" type="button" aria-label="Switch language">EN</button>
+      <button class="menu-btn" data-menu-open data-i18n-aria="menuLabel" aria-label="القائمة">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </nav>
 
   <!-- ── MENU OVERLAY ── -->
@@ -45,34 +48,35 @@
     </div>
     <div class="overlay__top">
       <img src="assets/scene-one-logo.svg" alt="Scene One">
-      <button class="overlay__close" data-menu-close aria-label="إغلاق">
+      <button class="overlay__close" data-menu-close data-i18n-aria="closeLabel" aria-label="إغلاق">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
     </div>
     <div class="overlay__body">
       <div class="overlay__info">
         <div>
-          <p class="overlay__muted">Scene One / 2026</p>
-          <p style="margin-top:4px">منصة متخصصة في تقييم النصوص السينمائية وتقديم ملاحظات احترافية تساعد الكتّاب على تطوير أعمالهم وصقلها قبل خطوتهم التالية.</p>
+          <p class="overlay__muted" data-i18n="overlayTag">Scene One / 2026</p>
+          <p style="margin-top:4px" data-i18n="overlayBlurb">منصة متخصصة في تقييم النصوص السينمائية وتقديم ملاحظات احترافية تساعد الكتّاب على تطوير أعمالهم وصقلها قبل خطوتهم التالية.</p>
         </div>
         <div class="overlay__group">
-          <p class="overlay__muted" style="margin-bottom:4px">تواصل</p>
+          <p class="overlay__muted" style="margin-bottom:4px" data-i18n="overlayContact">تواصل</p>
           <p>sceneone.info@gmail.com</p>
         </div>
         <div class="overlay__group">
-          <p class="overlay__muted" style="margin-bottom:4px">حساباتنا</p>
+          <p class="overlay__muted" style="margin-bottom:4px" data-i18n="overlaySocial">حساباتنا</p>
           <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
           <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X / Twitter</a>
           <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </div>
+        <button class="lang-toggle lang-toggle--overlay" type="button" aria-label="Switch language">EN</button>
       </div>
       <div class="overlay__links">
-        <a href="/" data-menu-close>الرئيسية</a>
-        <a href="/#about" data-menu-close>Scene One</a>
-        <a href="/readers" data-menu-close>من يقرأ نصك؟</a>
-        <a href="/#journey" data-menu-close>رحلة النص</a>
-        <a href="/about-coverage" data-menu-close>دليل المنصة</a>
-        <a href="/#contact" data-menu-close>تواصل معنا</a>
+        <a href="/" data-menu-close data-i18n="navHome">الرئيسية</a>
+        <a href="/#about" data-menu-close data-i18n="navAbout">Scene One</a>
+        <a href="/readers" data-menu-close data-i18n="navReaders">من يقرأ نصك؟</a>
+        <a href="/#journey" data-menu-close data-i18n="navJourney">رحلة النص</a>
+        <a href="/about-coverage" data-menu-close data-i18n="navGuide">دليل المنصة</a>
+        <a href="/#contact" data-menu-close data-i18n="navContact">تواصل معنا</a>
       </div>
     </div>
   </div>
@@ -80,7 +84,7 @@
   <!-- ── HERO ── -->
   <header class="au-hero">
     <div class="au-hero__row">
-      <h1 class="au-hero__title">تعرف على<br>قصتنا</h1>
+      <h1 class="au-hero__title" data-i18n-html="auHeroTitleHtml">تعرف على<br>قصتنا</h1>
     </div>
     <div class="au-hero__wordmark"><img src="assets/readers-hero-wordmark.svg" alt="Scene One"></div>
   </header>
@@ -89,37 +93,37 @@
   <!-- ── ABOUT / STORY ── -->
   <section class="au-about" id="about">
     <div class="au-about__inner">
-      <p class="au-about__label">عن <span>SCENE ONE</span></p>
+      <p class="au-about__label"><span data-i18n="auAboutLabelWord">عن</span> <span>SCENE ONE</span></p>
       <div class="au-about__body">
-        <p>تأسست Scene One عام 2026 إيمانًا بأن السينما السعودية تبدأ من النص. جاءت الفكرة من تجربة شخصية عاشها أحد مؤسسي المنصة، بعد سنوات من كتابة السيناريو ومحاولات إيصال النصوص إلى شركات الإنتاج والوكلاء. كانت تلك المحاولات تنتهي غالبًا بالصمت؛ فلا ملاحظات، ولا توجيه، ولا حتى فرصة لمعرفة ما إذا كان النص قد قُرِئ أصلًا.</p>
-        <p>لاحقًا، غيّرت تجربة الحصول على أول تقرير تغطية سينمائية احترافي نظرته إلى رحلة الكاتب بالكامل. للمرة الأولى، شعر أن هناك من فهم الفيلم الذي كان يحاول كتابته، ورأى ما بين السطور، وقدّم القارئ/الناقد ملاحظات ساعدته على التعبير عنه بصورة أوضح.</p>
-        <p>ومن هنا وُلدت Scene One؛ لتمنح الكتّاب ما كان ينقصهم في بداية رحلتهم: قارئًا محترفًا يفهم النص، ويقدّم تغطية وملاحظات تطويرية صادقة، تساعد الكاتب على الوصول إلى أفضل نسخة ممكنة من عمله، قبل أن يصل إلى المنتج أو جهة التمويل أو الشاشة.</p>
+        <p data-i18n="auAboutP1">تأسست Scene One عام 2026 إيمانًا بأن السينما السعودية تبدأ من النص. جاءت الفكرة من تجربة شخصية عاشها أحد مؤسسي المنصة، بعد سنوات من كتابة السيناريو ومحاولات إيصال النصوص إلى شركات الإنتاج والوكلاء. كانت تلك المحاولات تنتهي غالبًا بالصمت؛ فلا ملاحظات، ولا توجيه، ولا حتى فرصة لمعرفة ما إذا كان النص قد قُرِئ أصلًا.</p>
+        <p data-i18n="auAboutP2">لاحقًا، غيّرت تجربة الحصول على أول تقرير تغطية سينمائية احترافي نظرته إلى رحلة الكاتب بالكامل. للمرة الأولى، شعر أن هناك من فهم الفيلم الذي كان يحاول كتابته، ورأى ما بين السطور، وقدّم القارئ/الناقد ملاحظات ساعدته على التعبير عنه بصورة أوضح.</p>
+        <p data-i18n="auAboutP3">ومن هنا وُلدت Scene One؛ لتمنح الكتّاب ما كان ينقصهم في بداية رحلتهم: قارئًا محترفًا يفهم النص، ويقدّم تغطية وملاحظات تطويرية صادقة، تساعد الكاتب على الوصول إلى أفضل نسخة ممكنة من عمله، قبل أن يصل إلى المنتج أو جهة التمويل أو الشاشة.</p>
       </div>
     </div>
   </section>
 
   <!-- ── READERS TEAM ── -->
   <section class="au-team" id="team">
-    <h2 class="au-team__title">فريق القرّاء</h2>
+    <h2 class="au-team__title" data-i18n="auTeamTitle">فريق القرّاء</h2>
 
     <div class="au-cards">
 
       <article class="au-card">
         <div class="au-card__photo">
-          <img src="assets/reader-2.png" alt="هيفاء السيد">
+          <img src="assets/reader-2.png" data-i18n-alt="haifaName" alt="هيفاء السيد">
         </div>
-        <p class="au-card__role">قارئة نصوص ومستشارة تطوير</p>
-        <h3 class="au-card__name">هيفاء السيد</h3>
-        <p class="au-card__bio">كاتبة سيناريو متخصصة في الدراما النفسية والاجتماعية. تضم أعمالها مشاريع حائزة على جوائز وعُرضت في مهرجانات ومنصات دولية، مع خبرة في تطوير أفلام ومسلسلات ترتكز على الشخصيات والعمق الإنساني.</p>
+        <p class="au-card__role" data-i18n="haifaRole">قارئة نصوص ومستشارة تطوير</p>
+        <h3 class="au-card__name" data-i18n="haifaName">هيفاء السيد</h3>
+        <p class="au-card__bio" data-i18n="haifaBio">كاتبة سيناريو متخصصة في الدراما النفسية والاجتماعية. تضم أعمالها مشاريع حائزة على جوائز وعُرضت في مهرجانات ومنصات دولية، مع خبرة في تطوير أفلام ومسلسلات ترتكز على الشخصيات والعمق الإنساني.</p>
       </article>
 
       <article class="au-card">
         <div class="au-card__photo">
-          <img src="assets/reader-1.png" alt="فجر الفرحان">
+          <img src="assets/reader-1.png" data-i18n-alt="fajrName" alt="فجر الفرحان">
         </div>
-        <p class="au-card__role">قارئة نصوص سينمائية</p>
-        <h3 class="au-card__name">فجر الفرحان</h3>
-        <p class="au-card__bio">متخصصة في السينما والفنون الأدائية، بخبرة في كتابة السيناريو والإنتاج الإبداعي والسرد البصري. تركّز في قراءاتها على بناء القصة، واللغة البصرية، والأثر العاطفي للنص.</p>
+        <p class="au-card__role" data-i18n="fajrRole">قارئة نصوص سينمائية</p>
+        <h3 class="au-card__name" data-i18n="fajrName">فجر الفرحان</h3>
+        <p class="au-card__bio" data-i18n="fajrBio">متخصصة في السينما والفنون الأدائية، بخبرة في كتابة السيناريو والإنتاج الإبداعي والسرد البصري. تركّز في قراءاتها على بناء القصة، واللغة البصرية، والأثر العاطفي للنص.</p>
       </article>
 
     </div>
@@ -128,10 +132,10 @@
   <!-- ── FOOTER ── -->
   <footer class="footer">
     <div class="footer__row">
-      <p class="footer__copy" dir="rtl">© 2026 جميع الحقوق محفوظة لـSCENE ONE.<br><span class="footer__cr">الرقم الموحد: 7054791293</span></p>
+      <p class="footer__copy" dir="rtl" data-i18n-html="footerCopyHtml">© 2026 جميع الحقوق محفوظة لـSCENE ONE.<br><span class="footer__cr">الرقم الموحد: 7054791293</span></p>
       <div class="footer__links">
-        <a href="/privacy">سياسة الخصوصية</a>
-        <a href="/terms">الشروط والأحكام</a>
+        <a href="/privacy" data-i18n="footerPrivacy">سياسة الخصوصية</a>
+        <a href="/terms" data-i18n="footerTerms">الشروط والأحكام</a>
       </div>
       <div class="footer__social">
         <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer"><img src="assets/icon_x.png" alt="X"></a>
@@ -142,6 +146,7 @@
   </footer>
 </div>
 
+<script src="js/i18n.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

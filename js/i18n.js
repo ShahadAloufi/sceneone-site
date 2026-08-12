@@ -13,6 +13,10 @@
   var LANG = "ar";
   try { var stored = localStorage.getItem(LANG_KEY); if (stored === "ar" || stored === "en") LANG = stored; } catch (e) {}
 
+  // Per-page <title>. Keyed by a data-i18n-doctitle on the <title> element
+  // itself, so this file doesn't need to know which page it's running on —
+  // each page just names its own key (see T.ar/T.en "docTitle*" entries).
+  // Falls back to the landing page's title if a page doesn't opt in.
   var TITLES = {
     ar: "Scene One — حيث تبدأ رحلة النص",
     en: "Scene One — Where Your Script's Journey Begins"
@@ -99,7 +103,20 @@
       fType: "نوع الاهتمام", typeSelectPh: "اختر نوع الاهتمام", errType: "اختر نوع الاهتمام",
       typeWriter: "كاتب", typeReader: "قارئ ناقد", typePartner: "شريك صناعة", typeOther: "أخرى",
       fNotes: "ملاحظات", fNotesPh: "أخبرنا المزيد عن اهتمامك",
-      submitBtn: "إرسال"
+      submitBtn: "إرسال",
+
+      // ---- readers.html (About Us / Reader Team) ----
+      docTitleReaders: "تعرّف على قصتنا — Scene One",
+      auHeroTitleHtml: "تعرف على<br>قصتنا",
+      auAboutLabelWord: "عن",
+      auAboutP1: "تأسست Scene One عام 2026 إيمانًا بأن السينما السعودية تبدأ من النص. جاءت الفكرة من تجربة شخصية عاشها أحد مؤسسي المنصة، بعد سنوات من كتابة السيناريو ومحاولات إيصال النصوص إلى شركات الإنتاج والوكلاء. كانت تلك المحاولات تنتهي غالبًا بالصمت؛ فلا ملاحظات، ولا توجيه، ولا حتى فرصة لمعرفة ما إذا كان النص قد قُرِئ أصلًا.",
+      auAboutP2: "لاحقًا، غيّرت تجربة الحصول على أول تقرير تغطية سينمائية احترافي نظرته إلى رحلة الكاتب بالكامل. للمرة الأولى، شعر أن هناك من فهم الفيلم الذي كان يحاول كتابته، ورأى ما بين السطور، وقدّم القارئ/الناقد ملاحظات ساعدته على التعبير عنه بصورة أوضح.",
+      auAboutP3: "ومن هنا وُلدت Scene One؛ لتمنح الكتّاب ما كان ينقصهم في بداية رحلتهم: قارئًا محترفًا يفهم النص، ويقدّم تغطية وملاحظات تطويرية صادقة، تساعد الكاتب على الوصول إلى أفضل نسخة ممكنة من عمله، قبل أن يصل إلى المنتج أو جهة التمويل أو الشاشة.",
+      auTeamTitle: "فريق القرّاء",
+      haifaName: "هيفاء السيد", haifaRole: "قارئة نصوص ومستشارة تطوير",
+      haifaBio: "كاتبة سيناريو متخصصة في الدراما النفسية والاجتماعية. تضم أعمالها مشاريع حائزة على جوائز وعُرضت في مهرجانات ومنصات دولية، مع خبرة في تطوير أفلام ومسلسلات ترتكز على الشخصيات والعمق الإنساني.",
+      fajrName: "فجر الفرحان", fajrRole: "قارئة نصوص سينمائية",
+      fajrBio: "متخصصة في السينما والفنون الأدائية، بخبرة في كتابة السيناريو والإنتاج الإبداعي والسرد البصري. تركّز في قراءاتها على بناء القصة، واللغة البصرية، والأثر العاطفي للنص."
     },
     en: {
       navHome: "Home", navAbout: "Scene One", navReaders: "Who Reads Your Script?",
@@ -181,7 +198,20 @@
       fType: "Type of Interest", typeSelectPh: "Select interest type", errType: "Please select a type",
       typeWriter: "Writer", typeReader: "Script Reader", typePartner: "Industry Partner", typeOther: "Other",
       fNotes: "Notes", fNotesPh: "Tell us more about your interest",
-      submitBtn: "Submit"
+      submitBtn: "Submit",
+
+      // ---- readers.html (About Us / Reader Team) ----
+      docTitleReaders: "About Us — Scene One",
+      auHeroTitleHtml: "About Us",
+      auAboutLabelWord: "About",
+      auAboutP1: "Scene One was founded in 2026 on the belief that Saudi cinema begins with the script. The idea came from a personal experience of one of the founders, after years of writing screenplays and trying to get scripts into the hands of production companies and agencies. Most of those attempts ended in silence. No feedback. No guidance. No way of knowing whether the script had even been read.",
+      auAboutP2: "That changed after receiving a professional coverage report for the first time. It offered a clear, industry-level perspective on the script, revealing how others interpreted the work, and highlighting what was working and what needed improvement. It became easier to see the script more objectively, and to move forward with clarity. From that experience, Scene One was built.",
+      auAboutP3: "A platform designed to give writers — especially those at the beginning of their journey — access to professional readers who understand scripts and provide structured, honest development feedback. Helping writers reach the strongest possible version of their work before it moves toward production or funding.",
+      auTeamTitle: "Reader Profiles",
+      haifaName: "Haifa Alsaeed", haifaRole: "Script Reader & Development Consultant",
+      haifaBio: "Screenwriter specializing in psychological and social narratives. Her work has been featured in festivals and international platforms, with experience in developing both films and series. Her approach focuses on character depth and human-driven storytelling.",
+      fajrName: "Fajr Alfarhan", fajrRole: "Script Reader",
+      fajrBio: "Specialized in film and performing arts, with experience in screenwriting, creative production, and visual storytelling. Her analysis focuses on story structure, visual language, and the emotional impact of the script."
     }
   };
 
@@ -194,9 +224,9 @@
     var html = document.documentElement;
     html.setAttribute("lang", LANG);
     html.setAttribute("dir", LANG === "ar" ? "rtl" : "ltr");
-    document.title = TITLES[LANG];
-
     var d = dict();
+    var titleKey = document.querySelector("title").getAttribute("data-i18n-doctitle");
+    document.title = (titleKey && d[titleKey] != null) ? d[titleKey] : TITLES[LANG];
 
     document.querySelectorAll("[data-i18n]").forEach(function (el) {
       var k = el.getAttribute("data-i18n");
