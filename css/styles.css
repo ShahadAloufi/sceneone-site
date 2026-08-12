@@ -1903,7 +1903,7 @@ html[dir="ltr"] .toast { direction: ltr; text-align: left; }
 html[dir="ltr"] .au-hero__row { justify-content: flex-start; padding-left: clamp(16px, 3vw, 40px); padding-right: clamp(24px, 6vw, 80px); }
 html[dir="ltr"] .au-hero__title { direction: ltr; text-align: left; }
 html[dir="ltr"] .au-about__inner { margin: 0 auto 0 0; }
-html[dir="ltr"] .au-about__label { direction: ltr; }
+html[dir="ltr"] .au-about__label { direction: ltr; text-align: left; }
 html[dir="ltr"] .au-about__body { direction: ltr; }
 html[dir="ltr"] .au-about__body p { text-align: left; }
 /* The Arabic composition put the label in the grid's 2nd/"auto" column,
