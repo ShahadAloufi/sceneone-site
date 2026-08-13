@@ -1750,7 +1750,9 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   direction: ltr;
 }
 .au-hero__title {
-  margin-top: clamp(32px, 5vw, 64px); direction: rtl; text-align: right;
+  /* Sits just under the nav rather than floating mid-hero — .au-hero's own
+     padding-top already clears the overlaid nav, so this is only breathing room. */
+  margin-top: clamp(8px, 1vw, 16px); direction: rtl; text-align: right;
   font-family: var(--font-head); font-weight: 700; color: #fff;
   font-size: clamp(40px, 6.2vw, 84px); line-height: 1.05;
 }
