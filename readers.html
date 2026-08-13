@@ -87,7 +87,8 @@
        covers the gap before the first frame decodes, so the hero is never
        empty. The .mp4 is a web encode of the 4K master — see .gitignore. -->
   <header class="au-hero">
-    <video class="au-hero__bg" autoplay muted loop playsinline preload="metadata"
+    <video class="au-hero__bg" autoplay muted loop playsinline preload="auto"
+           disablepictureinpicture disableremoteplayback
            poster="assets/hero-reader-poster.jpg" aria-hidden="true" tabindex="-1">
       <source src="assets/hero-reader.mp4" type="video/mp4">
     </video>
@@ -167,5 +168,33 @@
 
 <script src="js/i18n.js"></script>
 <script src="js/main.js"></script>
+<script>
+/* Hero video autoplay fallback.
+   The markup already carries every attribute the autoplay policies ask for
+   (muted + playsinline + autoplay), but that is not a guarantee: Safari in Low
+   Power Mode refuses outright, and per-site "Auto-Play: Never" and some data
+   savers do the same. When the browser refuses, it paints the poster with a
+   PLAY BUTTON over it — which reads as a broken hero rather than a background.
+   So: re-assert muted as a property (the attribute alone isn't always enough),
+   ask to play, and if that is rejected, retry once on the first user gesture,
+   by which point the policy allows it. Never shows controls either way. */
+(function () {
+  var v = document.querySelector('.au-hero__bg');
+  if (!v) return;
+  function attempt() {
+    v.muted = true;               // property, not just the attribute
+    var p = v.play();
+    if (p && typeof p.catch === 'function') p.catch(function () { /* blocked; wait for a gesture */ });
+  }
+  attempt();
+  // One retry, on whichever gesture comes first, then unbind.
+  var events = ['pointerdown', 'touchstart', 'keydown', 'scroll'];
+  function retry() {
+    events.forEach(function (e) { window.removeEventListener(e, retry); });
+    attempt();
+  }
+  events.forEach(function (e) { window.addEventListener(e, retry, { once: true, passive: true }); });
+})();
+</script>
 </body>
 </html>

@@ -1738,11 +1738,16 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   position: absolute; inset: 0; z-index: 1;
   background: linear-gradient(to bottom, rgba(0,0,0,.25) 0%, transparent 45%, var(--bg) 100%);
 }
+/* `direction: ltr` here means flex-start/end are PHYSICAL left/right regardless
+   of the page language, so each language pins the title to its own reading side:
+   Arabic right (below), English left (in the html[dir="ltr"] block). The badge is
+   absolute and always takes the opposite side. Note space-between would NOT work
+   — the badge is out of flow, leaving one child, which lands at flex-start. */
 .au-hero__row {
-  position: relative; z-index: 2; display: flex; justify-content: space-between;
+  position: relative; z-index: 2; display: flex; justify-content: flex-end;
   align-items: flex-start; gap: 24px;
   padding-left: clamp(24px, 6vw, 80px); padding-right: clamp(16px, 3vw, 40px);
-  direction: ltr; /* physical sides, so the title stays clear of the reel (left of frame) */
+  direction: ltr;
 }
 .au-hero__title {
   margin-top: clamp(32px, 5vw, 64px); direction: rtl; text-align: right;
@@ -1751,11 +1756,13 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 }
 /* Absolutely positioned, so it is OUT of .au-hero__row's flex flow — the row
    is then effectively single-child and space-between leaves the title alone. */
+/* Sits opposite the title: LEFT in Arabic (title right), right in English.
+   Physical properties, not logical, because the row above is forced to ltr. */
 .au-hero__badge {
   position: absolute; z-index: 2;
   /* Absolute, so .au-hero's padding doesn't move it — it clears the nav itself. */
-  top: clamp(118px, 13.5vw, 160px); right: clamp(16px, 3vw, 40px);
-  direction: ltr; text-align: right; max-width: 170px;
+  top: clamp(118px, 13.5vw, 160px); left: clamp(16px, 3vw, 40px);
+  direction: rtl; text-align: left; max-width: 170px;
   font-family: var(--font-body); font-size: 11px; font-weight: 700;
   letter-spacing: .08em; line-height: 1.7; text-transform: uppercase;
   color: rgba(255,255,255,.65);
@@ -1922,6 +1929,8 @@ html[dir="ltr"] .toast { direction: ltr; text-align: left; }
    =========================================================== */
 html[dir="ltr"] .au-hero__row { justify-content: flex-start; padding-left: clamp(16px, 3vw, 40px); padding-right: clamp(24px, 6vw, 80px); }
 html[dir="ltr"] .au-hero__title { direction: ltr; text-align: left; }
+/* Badge mirrors the title: title left in English, so the badge moves to the right. */
+html[dir="ltr"] .au-hero__badge { left: auto; right: clamp(16px, 3vw, 40px); direction: ltr; text-align: right; }
 html[dir="ltr"] .au-about__inner { margin: 0 auto 0 0; }
 html[dir="ltr"] .au-about__label { direction: ltr; text-align: left; }
 html[dir="ltr"] .au-about__body { direction: ltr; }
