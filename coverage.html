@@ -224,6 +224,27 @@
                 font-family:inherit;font-size:16px;color:var(--label);cursor:pointer;font-variant-numeric:tabular-nums}
   .score button.on{background:var(--orange);border-color:var(--orange);color:#fff}
 
+  /* Per-point review note. Only the evaluation points carry one — the synopsis
+     and the verdict deliberately don't. Collapsed to a single link until the
+     reviewer asks for it, so an unused box never clutters the page. */
+  .eval-note{margin-top:10px}
+  .eval-note[hidden]{display:none}
+  .eval-note__add{background:none;border:0;padding:0;font:inherit;font-size:13px;
+                  color:var(--orange);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+  .eval-note__add[hidden]{display:none}
+  .eval-note__box{border:1px solid rgba(205,46,7,.45);background:rgba(205,46,7,.06);
+                  border-radius:10px;padding:10px 12px}
+  .eval-note__box[hidden]{display:none}
+  .eval-note__lbl{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+                  color:var(--orange);margin-bottom:6px}
+  .eval-note__box textarea{width:100%;resize:vertical;min-height:46px;font:inherit;font-size:15px;
+                  color:var(--ink);background:transparent;border:0;outline:none;padding:0;line-height:1.7}
+  /* Read-only: what the reader sees when the coverage comes back for revision. */
+  .eval-note__box textarea[readonly]{color:var(--ink);opacity:1}
+  .eval-note__del{background:none;border:0;padding:0;margin-top:6px;font:inherit;font-size:12px;
+                  color:var(--label);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+  .eval-note__del[hidden]{display:none}
+
   .stack > .field{margin-bottom:18px}
 
   /* ---------- report ---------- */

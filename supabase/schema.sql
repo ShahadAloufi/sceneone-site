@@ -446,6 +446,14 @@ alter table public.coverages add column if not exists delivered_by uuid referenc
 -- for revision. Set server-side on request_revision, shown to the reader.
 alter table public.coverages add column if not exists review_note text;
 
+-- Per-point review notes: { "<evaluation point>": "<note>" }, one per evaluation
+-- point the reviewer commented on (the synopsis and verdict never carry one).
+-- Written ONLY by /api/review-coverage (service role) with a revision request and
+-- cleared on approval — a reviewer is not the assignee, so RLS blocks them from
+-- writing this row themselves. Pinned in the trigger below like review_note, so
+-- the reader can't wipe or forge the notes when they resubmit.
+alter table public.coverages add column if not exists review_comments jsonb;
+
 -- Migrate the old two-state model (in_progress | completed) to the QC lifecycle:
 -- a completed coverage that was already delivered → approved; completed but never
 -- sent → submitted (awaiting the new quality review). Swap the CHECK constraint
@@ -509,7 +517,7 @@ create policy "only assigned readers update coverages"
 --   • a reader may only leave status in ('in_progress','submitted');
 --   • once 'submitted' or 'approved' the coverage is LOCKED to the reader until a
 --     staff reviewer sends it back ('revision_requested') or approves it;
---   • readers can never set delivered_at/by or review_note.
+--   • readers can never set delivered_at/by, review_note or review_comments.
 create or replace function public.enforce_coverage_reader_transitions()
 returns trigger
 language plpgsql
@@ -532,6 +540,9 @@ begin
   new.delivered_at := case when tg_op = 'UPDATE' then old.delivered_at else null end;
   new.delivered_by := case when tg_op = 'UPDATE' then old.delivered_by else null end;
   new.review_note  := case when tg_op = 'UPDATE' then old.review_note  else null end;
+  -- Same pinning as review_note: the reader resubmits through this trigger, so
+  -- without it they could blank the reviewer's per-point notes on their way past.
+  new.review_comments := case when tg_op = 'UPDATE' then old.review_comments else null end;
   return new;
 end;
 $$;

@@ -43,6 +43,33 @@ function escapeHtml(v) {
     .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
 
+// Per-point review notes arrive as { "<evaluation point>": "<note>" }. This is
+// browser-supplied and lands in a jsonb column that is later rendered back into
+// the reader's workspace, so it is bounded here rather than trusted: keys and
+// values are capped, blanks are dropped, and anything that isn't a plain string
+// is ignored. Escaping is still the renderer's job — this only limits the size
+// and shape of what can be stored.
+const MAX_COMMENTS = 20;
+const MAX_COMMENT_KEY = 80;
+const MAX_COMMENT_LEN = 2000;
+
+function sanitizeComments(raw) {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
+  const out = {};
+  let n = 0;
+  for (const key of Object.keys(raw)) {
+    if (n >= MAX_COMMENTS) break;
+    if (typeof key !== "string" || !key || key.length > MAX_COMMENT_KEY) continue;
+    const val = raw[key];
+    if (typeof val !== "string") continue;
+    const text = val.trim();
+    if (!text) continue;
+    out[key] = text.slice(0, MAX_COMMENT_LEN);
+    n++;
+  }
+  return Object.keys(out).length ? out : null;
+}
+
 // Resolve the caller from their bearer token, then confirm they may review at
 // all: staff (admin / super_admin) or a lead_reader. Ordinary readers
 // (senior/junior) must never reach the review actions. WHICH coverages the
@@ -219,7 +246,11 @@ module.exports = async (req, res) => {
       {
         method: "PATCH",
         headers: Object.assign({}, headers, { "Content-Type": "application/json", Prefer: "return=minimal" }),
-        body: JSON.stringify({ status: "revision_requested", review_note: note }),
+        body: JSON.stringify({
+          status: "revision_requested",
+          review_note: note,
+          review_comments: sanitizeComments(b.comments),
+        }),
       }
     );
     if (!patch.ok) {
@@ -256,6 +287,7 @@ module.exports = async (req, res) => {
         delivered_at: new Date().toISOString(),
         delivered_by: gate.user.id,
         review_note: null,
+        review_comments: null, // spent — the revision they described is done
       }),
     }
   );

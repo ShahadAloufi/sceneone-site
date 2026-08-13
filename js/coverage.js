@@ -54,6 +54,10 @@
       revisionBanner: "Revision requested by the quality team:",
       approvedBanner: "Approved and sent to the writer.",
       reviewPrompt: "This coverage is awaiting your approval.",
+      // Per-point review notes (evaluation points only — not synopsis or verdict).
+      addComment: "Add comment", removeComment: "Remove",
+      commentPh: "What needs work in this point?",
+      commentLblWrite: "Your note on this point", commentLblRead: "Review note",
       // Lead readers deliver their own coverage themselves — it skips quality review.
       leadDeliver: "Send Coverage to Writer",
       leadDeliverConfirm: "Send this coverage to the writer now? As a lead reader your coverage isn't reviewed by anyone else, and this can't be undone.",
@@ -113,6 +117,10 @@
       revisionBanner: "طلب فريق الجودة إجراء تعديل:",
       approvedBanner: "تم الاعتماد والإرسال إلى الكاتب.",
       reviewPrompt: "هذه التغطية بانتظار اعتمادك.",
+      // Per-point review notes (evaluation points only — not synopsis or verdict).
+      addComment: "إضافة ملاحظة", removeComment: "حذف",
+      commentPh: "ما الذي يحتاج إلى تعديل في هذه النقطة؟",
+      commentLblWrite: "ملاحظتك على هذه النقطة", commentLblRead: "ملاحظة المراجعة",
       // Lead readers deliver their own coverage themselves — it skips quality review.
       leadDeliver: "إرسال التغطية إلى الكاتب",
       leadDeliverConfirm: "إرسال هذه التغطية إلى الكاتب الآن؟ بصفتك قارئًا رئيسيًا لا تخضع تغطيتك لمراجعة أحد، ولا يمكن التراجع عن هذا الإجراء.",
@@ -236,6 +244,11 @@
   var me = null;                 // { id, email, name, role }
   var covStatus = "in_progress"; // 'in_progress' | 'submitted' | 'revision_requested' | 'approved'
   var reviewNote = "";           // staff's revision note (shown to the reader)
+  // Per-point review notes, keyed by evaluation-point name. Written by the
+  // reviewer while quality-reviewing, sent with "Request Revision", and shown
+  // back to the reader against the exact point each one is about.
+  var reviewComments = {};
+  var evalNoteEls = {};          // name → { wrap, add, box, lbl, ta, del }
   var isStaff = false;           // admin / super_admin — the quality reviewer
   var isLead = false;            // lead_reader — reviews others' work, self-delivers their own
   var canReview = false;         // may I approve / bounce THIS coverage?
@@ -407,6 +420,7 @@
     });
     // evaluation
     var ei = $("evalInputs"); ei.innerHTML = "";
+    evalNoteEls = {};
     EVAL.forEach(function (name) {
       var lbl = tl.eval[name] || name;
       var b = document.createElement("div"); b.className = "eval-block";
@@ -428,7 +442,9 @@
         };
       });
       refreshSc();
+      buildEvalNote(b, name);
     });
+    refreshEvalNotes();
     // market
     var mi = $("marketInputs"); mi.innerHTML = "";
     MARKET.forEach(function (m) {
@@ -438,6 +454,89 @@
       var ta = f.querySelector("textarea"); ta.value = state.coverage.market[m.k];
       ta.addEventListener("input", function () { state.coverage.market[m.k] = ta.value; scheduleSave(); });
       autoGrow(ta);
+    });
+  }
+
+  /* ---------- per-point review notes ----------
+     Attached to each EVALUATION point only. The synopsis and the verdict are
+     built elsewhere (covMap below) and deliberately get no note box: a revision
+     note there would have nothing specific to attach to.
+
+     Collapsed by default — the reviewer sees only an "Add comment" link until
+     they decide a point needs one. A note that already exists always shows,
+     expanded, whether it's the reviewer re-reading their own or the reader
+     seeing what came back.
+
+     The reviewer cannot save these directly: RLS ("only assigned readers update
+     coverages") blocks them, so nothing is persisted until they click Request
+     Revision, which sends the whole set through /api/review-coverage. */
+  function buildEvalNote(block, name) {
+    var wrap = document.createElement("div");
+    wrap.className = "eval-note";
+    wrap.innerHTML =
+      '<button type="button" class="eval-note__add"></button>' +
+      '<div class="eval-note__box" hidden>' +
+        '<span class="eval-note__lbl"></span>' +
+        "<textarea rows='2'></textarea>" +
+        '<button type="button" class="eval-note__del"></button>' +
+      "</div>";
+    block.appendChild(wrap);
+
+    var els = {
+      wrap: wrap,
+      add: wrap.querySelector(".eval-note__add"),
+      box: wrap.querySelector(".eval-note__box"),
+      lbl: wrap.querySelector(".eval-note__lbl"),
+      ta: wrap.querySelector("textarea"),
+      del: wrap.querySelector(".eval-note__del"),
+      open: !!(reviewComments[name] || "").trim()
+    };
+    evalNoteEls[name] = els;
+
+    els.add.addEventListener("click", function () {
+      els.open = true; refreshEvalNotes(); els.ta.focus();
+    });
+    els.del.addEventListener("click", function () {
+      delete reviewComments[name]; els.open = false; els.ta.value = ""; refreshEvalNotes();
+    });
+    els.ta.addEventListener("input", function () {
+      var v = els.ta.value;
+      if (v.trim()) reviewComments[name] = v; else delete reviewComments[name];
+      autoGrow(els.ta);
+    });
+    els.ta.value = reviewComments[name] || "";
+  }
+
+  // Single source of truth for what each note looks like right now. Re-run on
+  // load, on every language switch (which rebuilds the inputs) and after each
+  // status transition, so an approved coverage stops offering "Add comment".
+  function refreshEvalNotes() {
+    var u = UI[UILANG];
+    Object.keys(evalNoteEls).forEach(function (name) {
+      var els = evalNoteEls[name];
+      var text = (reviewComments[name] || "").trim();
+      var writable = canReview;           // only while THIS coverage awaits review
+      var open = writable ? (els.open || !!text) : !!text;
+
+      // Nothing to write and nothing written → the whole affordance disappears,
+      // which is what a reader sees on a coverage that came back clean.
+      els.wrap.hidden = !writable && !text;
+      els.add.hidden = !writable || open;
+      els.add.textContent = u.addComment;
+      els.box.hidden = !open;
+      els.lbl.textContent = writable ? u.commentLblWrite : u.commentLblRead;
+      els.del.hidden = !writable;
+      els.del.textContent = u.removeComment;
+      els.ta.value = reviewComments[name] || "";
+      els.ta.setAttribute("placeholder", u.commentPh);
+      // These live inside the read-only workspace, so applyReadOnly() has just
+      // disabled them wholesale — re-enable for the reviewer, exactly as the
+      // review bar's own controls are re-enabled.
+      els.ta.disabled = !writable;
+      els.ta.readOnly = !writable;
+      els.add.disabled = false;
+      els.del.disabled = false;
+      if (open) autoGrow(els.ta);
     });
   }
 
@@ -584,6 +683,8 @@
     // and (for staff) the live review controls, which live inside the locked view.
     if (readOnly) applyReadOnly();
     var gen = $("genReport"); if (gen) gen.disabled = false;
+    // Must run AFTER applyReadOnly(), which disables every control in the view.
+    refreshEvalNotes();
     if (showReview) {
       var ap = $("approveBtn"), rv = $("requestRevisionBtn"), note = $("revisionNote");
       if (ap) { ap.disabled = false; ap.textContent = u.approveSend; }
@@ -630,6 +731,10 @@
       var token = sess.data.session && sess.data.session.access_token;
       var body = { submission_id: submissionId, action: action };
       if (note != null) body.note = note;
+      // Per-point notes ride along with the revision request — this is the only
+      // moment they are persisted, since RLS blocks the reviewer writing the
+      // coverage row directly. Approving clears them server-side instead.
+      if (action === "request_revision") body.comments = reviewComments;
       // Approving does two Supabase round-trips and sends the writer's email, so
       // it can take a few seconds. Abort rather than leave the buttons stuck on
       // "Approving…" forever if the request never comes back.
@@ -652,6 +757,7 @@
       if (!resp.ok) throw new Error(data.message || UI[UILANG].reviewFail);
       covStatus = data.status || (action === "approve" ? "approved" : "revision_requested");
       if (action === "request_revision") reviewNote = note;
+      else reviewComments = {}; // approved — the notes are spent, mirroring the server
       configureWorkspaceState();
       // The approve path can succeed while the writer's email fails — the server
       // says so with `emailed: false`. That needs a blocking alert, not a 2.2s
@@ -773,6 +879,8 @@
       if (state.coverage.score10 == null) state.coverage.score10 = "";
       covStatus = covRow.status || "in_progress";
       reviewNote = covRow.review_note || "";
+      reviewComments = (covRow.review_comments && typeof covRow.review_comments === "object")
+        ? covRow.review_comments : {};
       setSaveState("loaded");
     } else {
       covStatus = "in_progress";

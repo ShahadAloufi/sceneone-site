@@ -1198,6 +1198,31 @@ must be in the `supabase_realtime` publication for live updates to fire.
              or public.can_qa_review(uid, s.id))
     );
   $$;
+
+  -- Per-point review notes: { "<evaluation point>": "<note>" }. Written ONLY by
+  -- /api/review-coverage (service role) with a revision request, and cleared on
+  -- approval — the reviewer can't write the row themselves (RLS restricts
+  -- coverage writes to the assigned reader).
+  alter table public.coverages add column if not exists review_comments jsonb;
+
+  -- Pin it in the reader trigger exactly like review_note, or the reader could
+  -- blank the reviewer's notes when they resubmit the revised coverage.
+  create or replace function public.enforce_coverage_reader_transitions()
+  returns trigger language plpgsql security definer set search_path = public as $$
+  begin
+    if auth.uid() is null then return new; end if; -- service role (review API) trusted
+    if tg_op = 'UPDATE' and old.status in ('submitted','approved') then
+      raise exception 'COVERAGE_LOCKED' using errcode = 'check_violation';
+    end if;
+    if new.status not in ('in_progress','submitted') then
+      raise exception 'COVERAGE_FORBIDDEN_STATUS' using errcode = 'check_violation';
+    end if;
+    new.delivered_at := case when tg_op = 'UPDATE' then old.delivered_at else null end;
+    new.delivered_by := case when tg_op = 'UPDATE' then old.delivered_by else null end;
+    new.review_note  := case when tg_op = 'UPDATE' then old.review_note  else null end;
+    new.review_comments := case when tg_op = 'UPDATE' then old.review_comments else null end;
+    return new;
+  end; $$;
   ```
   ⚠️ **Run this WITH the deploy, not before it.** The currently-deployed
   `api/submissions.js` inserts `status: 'new'` explicitly, so the new default never
