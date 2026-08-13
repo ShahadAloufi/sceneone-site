@@ -850,6 +850,20 @@ a, button {
 .cov-hero__img-shade { position: absolute; inset-inline: 0; bottom: 0; height: 50%; background: linear-gradient(to top, var(--bg), transparent); pointer-events: none; }
 .cov-hero__img-shade--top { top: 0; bottom: auto; height: 25%; background: linear-gradient(to bottom, var(--bg), transparent); }
 .cov-wrap { max-width: 1800px; margin: 0 auto; padding: 64px 24px; display: flex; gap: 40px; }
+/* about-coverage.html (Platform Guide) only — a reading page, so it's let run
+   edge-to-edge on wide screens. coverage.html's editing workspace and
+   report.html's writer-facing report share .cov-wrap too and deliberately
+   keep the 1800px cap: long lines hurt a form/reading UI in a way they don't
+   hurt a static guide. */
+.cov-page--guide .cov-wrap { max-width: none; }
+/* The wrap and its background stretch full-bleed, but the body copy itself
+   keeps a comfortable reading measure — otherwise sentences run 2000px+ wide
+   on a large monitor, which is a readability regression, not a design win.
+   flex:1 with no basis cap would fight this, so cov-main gets an explicit cap
+   instead of growing to fill the row; the row's own justify-content (from
+   .cov-wrap's direction, rtl or ltr) leaves the extra space on one side,
+   the same shape as any TOC + capped-column reading layout. */
+.cov-page--guide .cov-main { flex: 0 1 900px; }
 .cov-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 64px; }
 .cov-section { scroll-margin-top: 112px; }
 .cov-section h2 { font-size: 28px; font-weight: 700; color: #fff; line-height: 1.6; margin-bottom: 20px; }
