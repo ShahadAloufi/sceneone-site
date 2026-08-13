@@ -1727,13 +1727,21 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
    put everything at the bottom, which is why this never needed accounting for. */
 .au-hero {
   position: relative; width: 100%; height: 820px; overflow: hidden;
-  background: #1a0503; /* shows through until the first frame decodes */
+  /* The poster lives HERE, not on the <video>, so the hero is never empty and
+     never shows iOS's play glyph when autoplay is refused — see readers.html. */
+  background: #1a0503 url('../assets/hero-reader-poster.jpg') center center / cover no-repeat;
   padding: clamp(124px, 14vw, 168px) 0 0;
 }
+/* Transparent until it actually starts, then crossfades over the poster. If it
+   never starts, the poster simply stays and nothing looks broken.
+   pointer-events:none keeps a tap from ever reaching the element and summoning
+   native playback UI. */
 .au-hero__bg {
   position: absolute; inset: 0; z-index: 0;
   width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; transition: opacity .5s ease; pointer-events: none;
 }
+.au-hero__bg.is-playing { opacity: 1; }
 .au-hero__shade {
   position: absolute; inset: 0; z-index: 1;
   background: linear-gradient(to bottom, rgba(0,0,0,.25) 0%, transparent 45%, var(--bg) 100%);
@@ -1769,13 +1777,10 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   letter-spacing: .08em; line-height: 1.7; text-transform: uppercase;
   color: rgba(255,255,255,.65);
 }
-/* Motion is decorative here, so honour a reduced-motion preference by holding
-   the poster frame instead (the element keeps its box either way). */
+/* Motion is decorative here, so honour a reduced-motion preference by dropping
+   the video entirely — .au-hero's poster background is already the fallback. */
 @media (prefers-reduced-motion: reduce) {
   .au-hero__bg { display: none; }
-  .au-hero {
-    background: #1a0503 url('../assets/hero-reader-poster.jpg') center center / cover no-repeat;
-  }
 }
 /* normal block below the hero (not inside it, since .au-hero has
    overflow:hidden and would clip anything pushed past its bottom edge) */

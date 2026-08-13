@@ -87,9 +87,14 @@
        covers the gap before the first frame decodes, so the hero is never
        empty. The .mp4 is a web encode of the 4K master — see .gitignore. -->
   <header class="au-hero">
+    <!-- Deliberately NO `poster` attribute: on iOS a paused <video> with a poster
+         draws a native play glyph over it, so any autoplay refusal (Low Power
+         Mode is the usual one) left a play button sitting in the hero. The still
+         frame is a CSS background on .au-hero instead, and the video starts
+         transparent and only fades in once it is genuinely playing. -->
     <video class="au-hero__bg" autoplay muted loop playsinline preload="auto"
            disablepictureinpicture disableremoteplayback
-           poster="assets/hero-reader-poster.jpg" aria-hidden="true" tabindex="-1">
+           aria-hidden="true" tabindex="-1">
       <source src="assets/hero-reader.mp4" type="video/mp4">
     </video>
     <div class="au-hero__shade" aria-hidden="true"></div>
@@ -181,6 +186,12 @@
 (function () {
   var v = document.querySelector('.au-hero__bg');
   if (!v) return;
+  // Reveal ONLY once frames are actually running. Until then the element stays
+  // transparent and .au-hero's poster background is what the visitor sees, so a
+  // refusal degrades to a still image rather than a play button.
+  function reveal() { v.classList.add('is-playing'); }
+  v.addEventListener('playing', reveal);
+  if (!v.paused && v.currentTime > 0) reveal();   // already running before we bound
   function attempt() {
     v.muted = true;               // property, not just the attribute
     var p = v.play();
