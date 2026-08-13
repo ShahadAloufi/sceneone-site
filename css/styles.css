@@ -1793,7 +1793,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
    matches the hero, so every heading shares the same right edge */
 .au-about { padding: clamp(56px, 9vw, 112px) 56px; }
 .au-about__inner {
-  max-width: 1800px; margin: 0 0 0 auto;
+  margin: 0 0 0 auto;
   display: grid; grid-template-columns: 1fr auto; gap: 64px; align-items: start;
   direction: ltr; /* physical columns: col 1 = left (body), col 2 = right (label) */
 }
