@@ -116,7 +116,7 @@
       haifaName: "هيفاء السيد", haifaRole: "قارئة نصوص ومستشارة تطوير",
       haifaBio: "كاتبة سيناريو متخصصة في الدراما النفسية والاجتماعية. تضم أعمالها مشاريع حائزة على جوائز وعُرضت في مهرجانات ومنصات دولية، مع خبرة في تطوير أفلام ومسلسلات ترتكز على الشخصيات والعمق الإنساني.",
       widName: "ود القبلان", widRole: "قارئة رئيسية",
-      widBio: "تجلب ود القبلان فهمًا عمليًا للقصة إلى تقييم النصوص، تشكّل من خبرتها ككاتبة سيناريو، ومنتجة أعمال تلفزيونية (Showrunner)، ومنتجة تطوير. يمتد عملها كقارئة إلى أكثر من 200 مشروع قيّمتها بالتعاون مع مهرجانات سينمائية، وصناديق دعم أفلام، واستوديوهات كبرى، مدفوعة بشغفها بالسرد القصصي والتزامها بإثراء السينما السعودية.",
+      widBio: "كاتبة سيناريو، منتجة تطوير، وقائدة عمل (showrunner) تهتم بالمحتوى المرئي ومدى تأثيره عاطفيًا على الجمهور. بشغفها بالأفلام وفن صناعة القصص، تقرأ ود النصوص بعينٍ تبحث عما ينجح في القصة، وما يمكن تطويره، وأين تكمن قوتها سرديًا، إيمانًا منها بدور القصة الجيدة في إثراء السينما السعودية.",
       fajrName: "فجر الفرحان", fajrRole: "قارئة نصوص سينمائية",
       fajrBio: "متخصصة في السينما والفنون الأدائية، بخبرة في كتابة السيناريو والإنتاج الإبداعي والسرد البصري. تركّز في قراءاتها على بناء القصة، واللغة البصرية، والأثر العاطفي للنص.",
 
@@ -369,7 +369,7 @@
       haifaName: "Haifa Alsaeed", haifaRole: "Script Reader & Development Consultant",
       haifaBio: "Screenwriter specializing in psychological and social narratives. Her work has been featured in festivals and international platforms, with experience in developing both films and series. Her approach focuses on character depth and human-driven storytelling.",
       widName: "Wid AlQublan", widRole: "Lead Reader",
-      widBio: "Wid AlQublan brings a practitioner's understanding of story to script evaluation, shaped by her experience as a screenwriter, showrunner, and development producer. Her work as a reader spans 200+ projects evaluated in collaboration with film festivals, film funds, and major studios, driven by her passion for storytelling and commitment to enriching Saudi cinema.",
+      widBio: "A screenwriter, development producer, and showrunner who cares deeply for visual storytelling and its emotional influence on audience. Driven by her passion for film and the craft behind every story, Wid reads screenplays with an eye for what works, what could work better, and where its potential lies, all with the aim of enriching Saudi cinema.",
       fajrName: "Fajr Alfarhan", fajrRole: "Script Reader",
       fajrBio: "Specialized in film and performing arts, with experience in screenwriting, creative production, and visual storytelling. Her analysis focuses on story structure, visual language, and the emotional impact of the script.",
 
