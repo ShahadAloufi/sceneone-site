@@ -6,3 +6,8 @@
 # only cleanup once it is in git history.
 .env*
 .vercel
+
+# Source video masters. Only the web-encoded derivatives (hero-*.mp4 + poster)
+# belong in git — a 4K .mov is tens of MB and lives in history forever once
+# committed. Keep the originals backed up OUTSIDE this repo.
+*.mov

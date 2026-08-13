@@ -107,7 +107,11 @@
 
       // ---- readers.html (About Us / Reader Team) ----
       docTitleReaders: "تعرّف على قصتنا — Scene One",
+      // Video hero (2026-08-13). auHeroTitleHtml is the PREVIOUS title, kept
+      // because nothing references it now — delete it if the hero settles.
       auHeroTitleHtml: "تعرف على<br>قصتنا",
+      auHeroTitle: "هنا<br>Scene One",
+      auHeroBadge: "تغطية سينمائية احترافية<br>لكتّاب السيناريو",
       auAboutLabelWord: "عن",
       auAboutP1: "تأسست Scene One عام 2026 إيمانًا بأن السينما السعودية تبدأ من النص. جاءت الفكرة من تجربة شخصية عاشها أحد مؤسسي المنصة، بعد سنوات من كتابة السيناريو ومحاولات إيصال النصوص إلى شركات الإنتاج والوكلاء. كانت تلك المحاولات تنتهي غالبًا بالصمت؛ فلا ملاحظات، ولا توجيه، ولا حتى فرصة لمعرفة ما إذا كان النص قد قُرِئ أصلًا.",
       auAboutP2: "لاحقًا، غيّرت تجربة الحصول على أول تقرير تغطية سينمائية احترافي نظرته إلى رحلة الكاتب بالكامل. للمرة الأولى، شعر أن هناك من فهم الفيلم الذي كان يحاول كتابته، ورأى ما بين السطور، وقدّم القارئ/الناقد ملاحظات ساعدته على التعبير عنه بصورة أوضح.",
@@ -361,6 +365,8 @@
       // ---- readers.html (About Us / Reader Team) ----
       docTitleReaders: "About Us — Scene One",
       auHeroTitleHtml: "About Us",
+      auHeroTitle: "Here<br>Scene One",
+      auHeroBadge: "Professional script coverage<br>for screenwriters",
       auAboutLabelWord: "About",
       auAboutP1: "Scene One was founded in 2026 on the belief that Saudi cinema begins with the script. The idea came from a personal experience of one of the founders, after years of writing screenplays and trying to get scripts into the hands of production companies and agencies. Most of those attempts ended in silence. No feedback. No guidance. No way of knowing whether the script had even been read.",
       auAboutP2: "That changed after receiving a professional coverage report for the first time. It offered a clear, industry-level perspective on the script, revealing how others interpreted the work, and highlighting what was working and what needed improvement. It became easier to see the script more objectively, and to move forward with clarity. From that experience, Scene One was built.",

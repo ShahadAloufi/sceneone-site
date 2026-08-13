@@ -81,10 +81,22 @@
     </div>
   </div>
 
-  <!-- ── HERO ── -->
+  <!-- ── HERO ──
+       Background is a muted, looping video (autoplay needs BOTH `muted` and
+       `playsinline`, or iOS refuses and opens fullscreen instead). `poster`
+       covers the gap before the first frame decodes, so the hero is never
+       empty. The .mp4 is a web encode of the 4K master — see .gitignore. -->
   <header class="au-hero">
-    <div class="au-hero__row"></div>
-    <div class="au-hero__wordmark"><img src="assets/readers-hero-wordmark.svg" alt="Scene One"></div>
+    <video class="au-hero__bg" autoplay muted loop playsinline preload="metadata"
+           poster="assets/hero-reader-poster.jpg" aria-hidden="true" tabindex="-1">
+      <source src="assets/hero-reader.mp4" type="video/mp4">
+    </video>
+    <div class="au-hero__shade" aria-hidden="true"></div>
+
+    <div class="au-hero__row">
+      <p class="au-hero__badge" data-i18n-html="auHeroBadge">تغطية سينمائية احترافية<br>لكتّاب السيناريو</p>
+      <h1 class="au-hero__title" data-i18n-html="auHeroTitle">هنا<br>Scene One</h1>
+    </div>
   </header>
   <div class="au-hero__rule" aria-hidden="true"></div>
 

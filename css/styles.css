@@ -1717,37 +1717,57 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 .au .nav.scrolled { box-shadow: 0 6px 20px rgba(0, 0, 0, .35); }
 
 /* ── HERO ── */
-/* Photographed studio-light-on-red-to-black background (pre-built as a
-   finished photo, not a CSS gradient) — see readers-hero-bg-*.jpg, one crop
-   per breakpoint. The "SCENE ONE" wordmark (its letters filled by a
-   clapperboard photo) bleeds across the bottom where the photo turns black. */
+/* Looping video background (replaced the readers-hero-bg-*.jpg photo set and
+   the "SCENE ONE" wordmark on 2026-08-13). The video sits at z-index 0, a
+   gradient shade at 1, and all content at 2 — the shade is what keeps white
+   text legible over moving footage, and it fades to var(--bg) at the bottom so
+   the hero dissolves into the page instead of ending on a hard edge. */
+/* The site nav is overlaid on the hero (absolute, ~104px tall at desktop), so
+   the top padding has to clear it — the old hero had an EMPTY .au-hero__row and
+   put everything at the bottom, which is why this never needed accounting for. */
 .au-hero {
-  position: relative; width: 100%; height: 700px; overflow: hidden;
-  background: #1a0503 url('../assets/readers-hero-bg-desktop.jpg') center center / cover no-repeat;
-  padding: clamp(40px, 5vw, 72px) 0 0;
+  position: relative; width: 100%; height: 820px; overflow: hidden;
+  background: #1a0503; /* shows through until the first frame decodes */
+  padding: clamp(124px, 14vw, 168px) 0 0;
+}
+.au-hero__bg {
+  position: absolute; inset: 0; z-index: 0;
+  width: 100%; height: 100%; object-fit: cover;
+}
+.au-hero__shade {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(to bottom, rgba(0,0,0,.25) 0%, transparent 45%, var(--bg) 100%);
 }
 .au-hero__row {
-  position: relative; z-index: 2; display: flex; justify-content: flex-end;
+  position: relative; z-index: 2; display: flex; justify-content: space-between;
   align-items: flex-start; gap: 24px;
   padding-left: clamp(24px, 6vw, 80px); padding-right: clamp(16px, 3vw, 40px);
-  direction: ltr; /* flex-end = physical right, matching the light in the bg photo (left) */
+  direction: ltr; /* physical sides, so the title stays clear of the reel (left of frame) */
 }
 .au-hero__title {
   margin-top: clamp(32px, 5vw, 64px); direction: rtl; text-align: right;
   font-family: var(--font-head); font-weight: 700; color: #fff;
   font-size: clamp(40px, 6.2vw, 84px); line-height: 1.05;
 }
-/* Pinned to the hero's bottom edge, over the photo's black portion, rather
-   than flowing in normal layout — keeps it anchored there regardless of
-   .au-hero__row's height. Spans the same gutter as the row above it
-   (left+right, not a fixed width) so both "SCENE" and "ONE" stay fully
-   visible instead of being cropped or shrunk to a corner. */
-.au-hero__wordmark {
-  position: absolute; z-index: 1; left: 50%; transform: translateX(-50%);
-  width: 820px; aspect-ratio: 1047 / 250; max-width: calc(100% - clamp(48px, 12vw, 160px));
-  bottom: clamp(6px, 1.2vw, 20px);
+/* Absolutely positioned, so it is OUT of .au-hero__row's flex flow — the row
+   is then effectively single-child and space-between leaves the title alone. */
+.au-hero__badge {
+  position: absolute; z-index: 2;
+  /* Absolute, so .au-hero's padding doesn't move it — it clears the nav itself. */
+  top: clamp(118px, 13.5vw, 160px); right: clamp(16px, 3vw, 40px);
+  direction: ltr; text-align: right; max-width: 170px;
+  font-family: var(--font-body); font-size: 11px; font-weight: 700;
+  letter-spacing: .08em; line-height: 1.7; text-transform: uppercase;
+  color: rgba(255,255,255,.65);
 }
-.au-hero__wordmark img { width: 100%; height: 100%; display: block; }
+/* Motion is decorative here, so honour a reduced-motion preference by holding
+   the poster frame instead (the element keeps its box either way). */
+@media (prefers-reduced-motion: reduce) {
+  .au-hero__bg { display: none; }
+  .au-hero {
+    background: #1a0503 url('../assets/hero-reader-poster.jpg') center center / cover no-repeat;
+  }
+}
 /* normal block below the hero (not inside it, since .au-hero has
    overflow:hidden and would clip anything pushed past its bottom edge) */
 .au-hero__rule {
@@ -1810,7 +1830,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   .au-cards { grid-template-columns: repeat(2, 1fr); max-width: 1040px; }
 }
 @media (max-width: 900px) {
-  .au-hero { height: 900px; background-image: url('../assets/readers-hero-bg-tablet.jpg'); }
+  .au-hero { height: 1000px; }
   .au-about { padding-left: 32px; padding-right: 32px; }
   .au-team { padding-left: 32px; padding-right: 32px; }
   .au-about__inner { grid-template-columns: 1fr; gap: 20px; }
@@ -1819,13 +1839,10 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   .au-cards { grid-template-columns: 1fr; max-width: 460px; gap: 48px; }
 }
 @media (max-width: 640px) {
-  .au-hero { height: 640px; background-image: url('../assets/readers-hero-bg-mobile.jpg'); padding: 72px 0 0; }
+  .au-hero { height: 720px; padding: 112px 0 0; }
+  /* The badge is absolute at the top-right; keep the title clear of it. */
   .au-hero__row { padding: 0 24px; }
   .au-hero__title { margin-top: 36px; font-size: 44px; }
-  /* the light sits mid-photo on the mobile crop, so the wordmark stays
-     pinned to the bottom (like desktop) instead of flowing in-place —
-     static flow would land it right on top of the light fixture */
-  .au-hero__wordmark { width: 86%; }
   .au-about, .au-team { padding-left: 24px; padding-right: 24px; }
 }
 
