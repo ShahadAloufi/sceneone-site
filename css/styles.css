@@ -588,7 +588,7 @@ a, button {
 
 /* RED BANNER */
 .banner { position: relative; width: 100%; background: var(--red); overflow: hidden; padding: 80px 0; }
-.banner__inner { max-width: 1400px; margin: 0 auto; padding: 0 24px; direction: ltr; }
+.banner__inner { margin: 0 auto; padding: 0 24px; direction: ltr; }
 .banner__text { text-align: right; direction: rtl; }
 .banner__h { font-family: var(--font-head); font-size: 36px; font-weight: 700; color: #fff; line-height: 1.625; margin-bottom: 24px; }
 .banner__p { font-size: 24px; line-height: 1.625; color: rgba(255,255,255,.9); margin-bottom: 32px; }
@@ -598,7 +598,6 @@ a, button {
 @media (min-width: 1024px) {
   .banner { min-height: 560px; }
   .banner__inner { padding-right: 44%; }
-  .banner__text { max-width: 620px; }
   .banner__clapper {
     margin-top: 0;
     position: absolute;
