@@ -88,10 +88,16 @@ Actively iterating on UX polish and workflow features.
 - **Staff dashboard = kanban** (In review / Awaiting approval) with a **reassign**
   picker; readers keep the detailed table (with a "what I'm working on" filter). Staff
   also get **All submissions** + **Deliveries** full-detail tabs (grouped by month,
-  with a month filter). Report delivery is a hosted tokenized link + **server-generated
-  PDF** (`/api/report-pdf`, headless Chrome).
+  with a month filter), and share the **Quality review** tab with lead readers — that
+  one is gated on `isReviewer`, not `isStaff`. Report delivery is a hosted tokenized
+  link + **server-generated PDF** (`/api/report-pdf`, headless Chrome).
 - **Per-assignment script access** — a reader may download a script only if it's
-  unassigned or theirs (Storage RLS + `can_read_script`); staff download any.
+  unassigned or theirs (Storage RLS + `can_read_script`); staff download any; a
+  **lead reader** additionally reads a script while quality-reviewing its coverage,
+  and only while that coverage is `submitted` (`can_qa_review`).
+- **Lead Reader role + Quality review tab** (2026-08-13) — a reader who also does QA
+  for other readers' coverages, with per-point review notes on the evaluation. See
+  Business Rules for the full boundary; it is **not** part of `is_staff()`.
 - **Branded emails** (submission confirmation, team notification, report, notice all
   share one shell), **Vercel Web Analytics** on the public pages, turnaround updated
   (feature ≤4 weeks = 28d / short 10–15 = 15d), commercial registration in the footer.
@@ -108,11 +114,13 @@ Actively iterating on UX polish and workflow features.
   awaiting / abandoned after 48h / refunded) and a red "needs a decision" flag on
   refunded-but-still-assigned kanban cards.
 
-**Status:** everything above is committed but unpushed, and the payment-gate SQL has
-**not** been applied. The rest of the project is merged, deployed via Vercel, and its
-SQL applied. Auth/serverless/email flows are verifiable only on the deploy — and the
-payment gate not even there until Moyasar onboarding completes. See Current TODOs for
-the deploy sequence; the SQL must land in the same window as the push, SQL first.
+**Status (updated 2026-08-13): all of the above is live.** The payment gate shipped,
+its SQL was applied 2026-07-28, and the whole flow was re-validated end to end on
+2026-08-11 with production taking real money. Everything through the Lead Reader role
+and per-point review notes is pushed to `origin/main` and its SQL applied
+(2026-08-13). Auth/serverless/email flows remain verifiable **only on the deploy** —
+the local preview runs neither — so any new work touching them still lands with SQL
+first, then the push, in the same window.
 
 ---
 
@@ -199,9 +207,13 @@ nav overlay on every page as **"من يقرأ نصك؟"**, and from the landing 
 bottom of `css/styles.css`; markup is `readers.html`.
 
 - **Sections:** full-bleed hero (photo + right-aligned title + quote + thin
-  divider) → "عن SCENE ONE" story (3 paragraphs) → "فريق القرّاء" reader cards
-  (currently **فجر الفرحان** and **هيفاء السيد** only — a third card, دانيا
-  جابر, was removed early on; don't re-add without being asked).
+  divider) → "عن SCENE ONE" story (3 paragraphs) → "فريق القرّاء" reader cards.
+  **Three cards, in this order: ود القبلان (Lead Reader) → هيفاء السيد → فجر
+  الفرحان** (Wid added 2026-08-13). An earlier fourth card, دانيا جابر, was
+  removed long before that — don't re-add it without being asked.
+  The grid is **3 columns**, stepping to 2 below 1200px and 1 below 900px.
+  Wid's photo (`assets/reader-3.png`) is a **transparent-background PNG** so it
+  blends into the dark page; the other two are opaque crops.
 - **Hero structure is easy to get wrong — read this before touching it:**
   - `.au-hero` has `overflow: hidden`. Anything meant to sit *below* the hero
     (the divider `.au-hero__rule`, the quote `.au-hero__quote`) **must live
@@ -468,16 +480,24 @@ Tables (all with RLS enabled):
   `unassigned` when the payment gate landed.
 - **coverages** — `submission_id`, `data` (jsonb: the full coverage content),
   `status` (`in_progress` | `submitted` | `revision_requested` | `approved`),
-  `review_note` (staff revision note), `delivered_at`, `delivered_by` (set
-  server-side when the report is sent to the writer).
+  `review_note` (reviewer's overall revision note), `review_comments` (jsonb:
+  per-evaluation-point notes, `{ "<point>": "<note>" }`), `delivered_at`,
+  `delivered_by` (set server-side when the report is sent to the writer).
+  `review_note` and `review_comments` are both **pinned in the reader trigger** —
+  the reader's resubmit passes through it, so without that they could blank or
+  forge the reviewer's feedback.
 - **access_log** — `admin_id`, `ip`, `user_agent`, `created_at`. One row per
   dashboard sign-in (written by `/api/log-access`, service role); **super-admins
   only** may read it (RLS). Surfaces possible shared reader accounts.
 
 RLS uses `SECURITY DEFINER` helper functions: `is_admin(uid)` (in admins table),
 `is_staff(uid)` (admin/super_admin), `is_assigned(uid, submission_id)` (primary
-assignee or co_reader). Coverages: SELECT = staff OR assigned OR status='approved';
-INSERT/UPDATE = assigned only.
+assignee or co_reader), `is_lead_reader(uid)`, and `can_qa_review(uid, sub_id)`
+(lead, **not** the assignee, and the coverage is `submitted`). Coverages:
+SELECT = staff OR assigned OR can_qa_review OR status='approved';
+INSERT/UPDATE = assigned only — **a reviewer can never write the coverage row**,
+which is why every review action goes through `/api/review-coverage` on the
+service role.
 
 **Realtime:** the dashboard subscribes to `submissions` and `coverages`. These tables
 must be in the `supabase_realtime` publication for live updates to fire.
@@ -609,6 +629,25 @@ must be in the `supabase_realtime` publication for live updates to fire.
     QA-review their own work either way: `can_qa_review` excludes assignees, and the
     API refuses `request_revision` on the self-deliver path. If this ever needs
     reversing, make `selfDeliver` set `submitted` instead and let staff approve it.
+- **Per-point review notes (`coverages.review_comments`).** A reviewer can attach a
+  note to an individual **evaluation point** on top of the one overall `review_note`.
+  Each point shows a collapsed "Add comment" link; clicking it reveals a box for that
+  point alone. **The synopsis and the verdict deliberately have none** — the boxes are
+  built inside the `EVAL` loop in `js/coverage.js` and nowhere else, so there is no
+  second list to keep in sync. The reader sees each note read-only under the exact
+  point it is about when the coverage comes back.
+  Two things follow from RLS, and neither is optional:
+  - **Nothing is saved until "Request Revision" is clicked.** The reviewer is not the
+    assignee and the row is locked while `submitted`, so they cannot write it at all;
+    the whole set rides along with the revision request and the API persists it.
+    **Known cost:** notes typed and then abandoned are lost. Fixing that needs a
+    separate reviewer-scoped endpoint, deliberately not built.
+  - **Keyed by the canonical English point name** (`"Hook"`, not the Arabic label), so
+    a note written in Arabic still lands against the right point for a reader viewing
+    in English. Do not key these off the translated label.
+  Approving clears them (`null`), mirroring `review_note`. The payload is
+  browser-supplied and is rendered back into the reader's workspace, so
+  `sanitizeComments()` caps the count/key/body length and drops non-strings.
 - **Assignment:** a reader claims a script (primary assignee). If the primary is a
   **junior** reader, a **co-reader** slot opens for a second reader.
 - **Assignment notice window (told 2h, actually 3h):** claiming a script pops a
@@ -967,7 +1006,11 @@ must be in the `supabase_realtime` publication for live updates to fire.
 - **Clear Haifa's `access_log` rows** if the "⚠ 4 IPs" badge is still showing. The flag
   was accurate — her account was being shared — but she has her own password now, so
   the history is noise. Nothing gates on it; it is a dashboard badge only.
-- **Run these once in the Supabase SQL Editor** (required by the latest features):
+- ~~**Run these once in the Supabase SQL Editor**~~ — **all applied as of 2026-08-13**,
+  including the Lead Reader block and `review_comments` + its trigger. Kept here as the
+  canonical record of the schema: the block is idempotent, so re-run it whenever you
+  need to confirm a database matches the code (a fresh project, or after a restore).
+  Anything **new** still gets appended here and run before the deploy that needs it:
   ```sql
   -- The whole block is idempotent: safe to paste and run in full, any number of
   -- times, whatever has already been applied.
@@ -1706,4 +1749,20 @@ privileged reads/writes.
    inconsistent scale and its programmatic scrolling is throttled; `getBoundingClientRect`
    and `getComputedStyle` are reliable when a screenshot looks wrong. Also bust caches
    explicitly (`?v=` on the stylesheet, and on `background-image` URLs) — a stale CSS or
-   image file has repeatedly looked like a broken change.
+   image file has repeatedly looked like a broken change. **This bites `.js` too:** a
+   stale `js/i18n.js` / `js/coverage.js` made correct edits look like they hadn't
+   applied, twice on 2026-08-13. Confirm what the server actually holds with
+   `fetch(src, {cache:'reload'})` before debugging code that is already right.
+13. **`is_staff()` is the staff boundary — do not widen it.** `lead_reader` is a reader
+   with one scoped extra power and must keep failing `is_staff`. If a lead needs to see
+   something new, extend `can_qa_review()` (narrow, self-closing) or add a fresh
+   predicate; adding the role to `is_staff` would silently hand them All submissions,
+   Deliveries, the kanban, admin management and reassignment in one line.
+14. **A reviewer cannot write the coverage row.** RLS restricts coverage writes to the
+   assigned reader, and the row locks at `submitted`. Anything a reviewer needs to
+   persist (approval, revision note, per-point notes) goes through
+   `/api/review-coverage` on the service role — never by relaxing the policy.
+15. **The client-side role checks are conveniences, not the gate.** `js/admin.js` and
+   `js/coverage.js` decide what to *offer*; RLS and the API re-check independently and
+   are what actually protect anything. Keep them mirrored, but never move a decision
+   out of the server and into the browser.
