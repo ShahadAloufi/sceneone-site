@@ -18,8 +18,8 @@
   // each page just names its own key (see T.ar/T.en "docTitle*" entries).
   // Falls back to the landing page's title if a page doesn't opt in.
   var TITLES = {
-    ar: "Scene One — حيث تبدأ رحلة النص",
-    en: "Scene One — Where Your Script's Journey Begins"
+    ar: "Scene One | حيث تبدأ رحلة النص",
+    en: "Scene One | Where Your Script's Journey Begins"
   };
 
   var T = {
@@ -106,7 +106,7 @@
       submitBtn: "إرسال",
 
       // ---- readers.html (About Us / Reader Team) ----
-      docTitleReaders: "تعرّف على قصتنا — Scene One",
+      docTitleReaders: "تعرّف على قصتنا | Scene One",
       // Video hero (2026-08-13). auHeroTitleHtml is the PREVIOUS title, kept
       // because nothing references it now — delete it if the hero settles.
       auHeroTitleHtml: "تعرف على<br>قصتنا",
@@ -125,7 +125,7 @@
       fajrBio: "متخصصة في السينما والفنون الأدائية، بخبرة في كتابة السيناريو والإنتاج الإبداعي والسرد البصري. تركّز في قراءاتها على بناء القصة، واللغة البصرية، والأثر العاطفي للنص.",
 
       // ---- about-coverage.html ----
-      docTitleCoverage: "عن تغطية النصوص السينمائية — Scene One",
+      docTitleCoverage: "عن تغطية النصوص السينمائية | Scene One",
       covHeroTitle: "عن تغطية النصوص السينمائية", covHeroSub: "دليل واضح للكتّاب والمبدعين",
       covTag1: "للكتّاب والمخرجين وصنّاع الأفلام", covTag2: "وقت القراءة: ٩ دقائق", covTag3: "تطوير النصوص السينمائية",
       covWhatTitle: "ما هي تغطية النصوص السينمائية؟",
@@ -151,7 +151,7 @@
       covTocLabel: "في هذه الصفحة", covTocGrades: "درجات التقييم",
 
       // ---- terms.html ----
-      docTitleTerms: "الشروط والأحكام — Scene One",
+      docTitleTerms: "الشروط والأحكام | Scene One",
       termsHeroTitle: "الشروط والأحكام",
       termsDefsTitle: "التعريفات",
       termsDefsHtml: "<li>الخدمة | المنصّة: منصّة (Scene One) الإلكترونية المعنيّة بتقييم النصوص السينمائية وربط الكتّاب بفرص التطوير والإنتاج.</li>" +
@@ -221,7 +221,7 @@
         "<p>نسعى دائماً لحلّ أيّ خلاف ودّياً قبل اللجوء إلى القضاء، ويُشجَّع المستخدم على التواصل معنا مباشرة عند وجود أيّ ملاحظة أو نزاع.</p>",
 
       // ---- privacy.html ----
-      docTitlePrivacy: "سياسة الخصوصية — Scene One",
+      docTitlePrivacy: "سياسة الخصوصية | Scene One",
       privHeroTitle: "سياسة الخصوصية",
       privIntroTitle: "المقدمة",
       privIntroHtml: "<p>توضح سياسة الخصوصية هذه كيفية قيام منصة (Scene One) بجمع البيانات الشخصية ومعالجتها وتخزينها وحمايتها عند استخدامك للمنصة والخدمات المرتبطة بها، بما في ذلك خدمات قراءة النصوص السينمائية وتقييمها وربطها بفرص الإنتاج.</p>" +
@@ -363,7 +363,7 @@
       submitBtn: "Submit",
 
       // ---- readers.html (About Us / Reader Team) ----
-      docTitleReaders: "About Us — Scene One",
+      docTitleReaders: "About Us | Scene One",
       auHeroTitleHtml: "About Us",
       auHeroTitle: "Here<br>Scene One",
       auHeroBadge: "Professional script coverage<br>for screenwriters",
@@ -380,7 +380,7 @@
       fajrBio: "Specialized in film and performing arts, with experience in screenwriting, creative production, and visual storytelling. Her analysis focuses on story structure, visual language, and the emotional impact of the script.",
 
       // ---- about-coverage.html ----
-      docTitleCoverage: "About Screenplay Coverage — Scene One",
+      docTitleCoverage: "About Screenplay Coverage | Scene One",
       covHeroTitle: "About Screenplay Coverage", covHeroSub: "A clear guide for writers and creatives",
       covTag1: "For writers, directors, and filmmakers", covTag2: "Reading time: 9 minutes", covTag3: "Developing screenplays",
       covWhatTitle: "What is Screenplay Coverage?",
@@ -406,7 +406,7 @@
       covTocLabel: "On this page", covTocGrades: "Ratings",
 
       // ---- terms.html ----
-      docTitleTerms: "Terms & Conditions — Scene One",
+      docTitleTerms: "Terms & Conditions | Scene One",
       termsHeroTitle: "Terms and Conditions",
       termsDefsTitle: "Definitions",
       termsDefsHtml: "<li><strong>Service / Platform:</strong> The electronic platform Scene One, which is concerned with the evaluation of screenplays and connecting writers with development and production opportunities.</li>" +
@@ -476,7 +476,7 @@
         "<p>Scene One aims to resolve disputes amicably wherever possible, and Users are encouraged to contact the Platform directly in the event of any concerns or disagreements.</p>",
 
       // ---- privacy.html ----
-      docTitlePrivacy: "Privacy Policy — Scene One",
+      docTitlePrivacy: "Privacy Policy | Scene One",
       privHeroTitle: "Privacy Policy",
       privIntroTitle: "Introduction",
       privIntroHtml: "<p>This Privacy Policy explains how the Scene One platform collects, processes, stores, and protects personal data when you use the platform and its related services, including screenplay reading, evaluation, and connecting scripts with production opportunities.</p>" +
