@@ -305,6 +305,9 @@ a, button {
 }
 .hero__sub { font-family: var(--font-head); font-weight: 500; font-size: 18px; line-height: 1.6; color: rgba(255,255,255,.85); margin-bottom: 32px; max-width: 600px; }
 .hero__nda { font-family: var(--font-body); font-size: 13px; line-height: 1.7; color: rgba(255,255,255,.5); margin-top: 24px; max-width: 520px; }
+/* The selection line and the NDA line are two paragraphs of the same quiet note,
+   so they sit closer to each other than the note does to the CTA row above. */
+.hero__nda + .hero__nda { margin-top: 10px; }
 
 @media (min-width: 640px) {
   /* No bottom padding: the badge is meant to sit right above .quote__rule, so
