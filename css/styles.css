@@ -457,6 +457,17 @@ a, button {
 
 /* COVERAGE TYPES */
 .ctypes { padding: 120px 24px 200px; direction: rtl; }
+/* Quiet note above the pricing cards — deliberately smaller than the card copy,
+   centred over the grid rather than sitting inside either card. */
+.ctypes__note {
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(255,255,255,.55);
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 28px;
+}
 .ctypes__grid {
   display: flex;
   flex-wrap: wrap;

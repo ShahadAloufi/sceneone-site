@@ -62,6 +62,7 @@
       partnershipOffer: "خصم 15% لأعضاء ومنسوبي الجمعية",
       partnershipNote: "يُشترط إبراز بطاقة العضوية السارية عند الطلب",
 
+      ctypesNote: "يمكنك إعادة تقديم نسخة مطوّرة من نفس السيناريو (Draft 2) مجانًا بعد استلام التقييم الأولي، بشرط أن تكون نسخة محدثة لنفس العمل وليست مشروعًا جديدًا.",
       featureTitle: "تغطية النصوص السينمائية الطويلة",
       featureDescHtml: "يقدم هذا التقرير ملاحظات تفصيلية على الفيلم الطويل (حتى 120 صفحة). يشمل ذلك تقييمًا وملاحظات حول: " +
         "<strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، بالإضافة إلى التقييم العام.</strong>",
@@ -319,6 +320,7 @@
       partnershipOffer: "15% off for Association members and staff",
       partnershipNote: "A valid membership card must be presented when requesting coverage",
 
+      ctypesNote: "You can resubmit a revised version of the same screenplay (Draft 2) free of charge after receiving your initial coverage, provided it is an updated draft of the same work and not a new project.",
       featureTitle: "Feature Film Coverage",
       featureDescHtml: "Provides detailed feedback on feature-length scripts (up to 120 pages), including: " +
         "<strong>concept and premise, hook and originality, dramatic stakes and structure, characters, structure and pacing, production viability, and an overall assessment.</strong>",
