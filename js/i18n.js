@@ -290,7 +290,7 @@
       overlayContact: "Contact", overlaySocial: "Follow Us",
 
       heroTitle: "Where Your Script's Journey Begins",
-      heroSub: "Professional screenplay coverage and development notes, delivered by experienced writers and filmmakers, to discover promising screenwriters and launch their careers in the film industry.",
+      heroSub: "Professional screenplay coverage and development notes, delivered by experienced writers and filmmakers, to discover promising screenwriters and help them break into the film industry.",
       btnViewCoverage: "View Coverages", btnGuide: "Platform Guide",
       heroNda: "All submissions are protected under non-disclosure agreements (NDA) and are only accessed by the assigned reader.",
       partnerBadge: "Accredited partner",
