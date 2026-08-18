@@ -33,7 +33,7 @@
       overlayContact: "تواصل", overlaySocial: "حساباتنا",
 
       heroTitle: "حيث تبدأ رحلة النص",
-      heroSub: "تغطية سينمائية احترافية وملاحظات تطويرية يقدّمها كتّاب ومطوّرو نصوص وصنّاع أفلام.",
+      heroSub: "تغطية سينمائية احترافية وملاحظات تطويرية يقدّمها كتّاب ومطوّرو نصوص وصنّاع أفلام، لاكتشاف كتّاب السيناريو الواعدين وإطلاق مسيرتهم في صناعة السينما.",
       btnViewCoverage: "عرض التغطيات", btnGuide: "دليل المنصة",
       heroNda: "جميع النصوص تخضع لاتفاقيات عدم إفصاح (NDA)، ولا يطّلع عليها سوى القارئ المكلّف بتقييمها.",
       partnerBadge: "شريك معتمد",
@@ -290,7 +290,7 @@
       overlayContact: "Contact", overlaySocial: "Follow Us",
 
       heroTitle: "Where Your Script's Journey Begins",
-      heroSub: "Professional screenplay coverage and development notes, delivered by experienced writers and filmmakers.",
+      heroSub: "Professional screenplay coverage and development notes, delivered by experienced writers and filmmakers, to discover promising screenwriters and launch their careers in the film industry.",
       btnViewCoverage: "View Coverages", btnGuide: "Platform Guide",
       heroNda: "All submissions are protected under non-disclosure agreements (NDA) and are only accessed by the assigned reader.",
       partnerBadge: "Accredited partner",
