@@ -35,7 +35,6 @@
       heroTitle: "حيث تبدأ رحلة النص",
       heroSub: "تغطية سينمائية احترافية وملاحظات تطويرية يقدّمها كتّاب ومطوّرو نصوص وصنّاع أفلام، لاكتشاف كتّاب السيناريو الواعدين وإطلاق مسيرتهم في صناعة السينما.",
       btnViewCoverage: "عرض التغطيات", btnGuide: "دليل المنصة",
-      heroPipeline: "نقرأ كل نص بعناية ونختار عددًا محدودًا من النصوص التي تحصل على تقييمات عالية لتصل إلى شبكة من المنتجين وصنّاع الأفلام، مع إبراز كتّابها.",
       heroNda: "جميع النصوص تخضع لاتفاقيات عدم إفصاح (NDA)، ولا يطّلع عليها سوى القارئ المكلّف بتقييمها.",
       partnerBadge: "شريك معتمد",
 
@@ -293,7 +292,6 @@
       heroTitle: "Where Your Script's Journey Begins",
       heroSub: "Professional screenplay coverage and development notes, delivered by experienced writers and filmmakers, to discover promising screenwriters and launch their careers in the film industry.",
       btnViewCoverage: "View Coverages", btnGuide: "Platform Guide",
-      heroPipeline: "We read every script carefully and select a limited number of high-scoring scripts to reach a network of producers and filmmakers, with their writers credited.",
       heroNda: "All submissions are protected under non-disclosure agreements (NDA) and are only accessed by the assigned reader.",
       partnerBadge: "Accredited partner",
 
