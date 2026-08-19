@@ -563,6 +563,17 @@ must be in the `supabase_realtime` publication for live updates to fire.
   the script stays with its reader. `refunded_at` is stamped **either way** (filtered
   `is null`, which is what makes the handler idempotent). Refunds are issued in the
   **Moyasar dashboard** — there is no in-app refund button, on purpose.
+- **The published refund policy (`terms.html`, rewritten 2026-08-19)** — the writer-facing
+  contract, and it now states all three cases the code actually implements: a **full
+  refund before the script is assigned** to a reader, **no refund once it is assigned and
+  work has begun**, and a **full refund within 14 business days if the platform can't
+  deliver**. It replaced "no refund after the reading has commenced", which was silent on
+  the before-assignment case. **Keep it in step with two things:** the "work has started"
+  email (`lib/assignment-notices.js`), which is where the writer is actually told the
+  window has closed, and the webhook's full-refund-only assumption below. A **50%
+  post-assignment refund was drafted and dropped the same day** — it would have been a
+  partial refund, which the webhook drops as a `status_mismatch` and never reflects in
+  the DB, so the policy would have promised something the code cannot do.
 - **A Moyasar event the webhook can't act on emails the team** (`sendUnreconciledAlert`).
   Three paths reach it: the re-read payment's status contradicts the event
   (`status_mismatch`), the payment carries no invoice id or metadata and no row
@@ -574,7 +585,8 @@ must be in the `supabase_realtime` publication for live updates to fire.
   has paid but stays behind the gate. Resolve by hand in the Moyasar dashboard. A
   malformed event carrying no payment id at all is logged only — there is nothing to
   reconcile it against.
-- **Refunds are full or nothing — partial refunds are not part of the policy.** The
+- **Refunds are full or nothing — partial refunds are not part of the policy**, and the
+  published terms say so too (see the bullet above). The
   handler assumes a refund is for the whole amount: it pulls an unclaimed script to
   the terminal `refunded` status, which would be the wrong outcome for, say, a 100 SAR
   goodwill refund on a 1200 SAR feature — the script dies for a writer who paid almost
