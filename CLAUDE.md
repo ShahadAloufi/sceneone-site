@@ -28,11 +28,32 @@ coverage workspace + report, role-based access, deadlines, and report delivery t
 writers. **The payment gate is live and has taken real money** (see below).
 Actively iterating on UX polish and workflow features.
 
+**Recently shipped (2026-08-19) — public copy pass, no code paths touched:**
+- **Refund policy rewritten** in `terms.html` — full refund before assignment, none
+  after work begins, full within 14 business days on platform failure. See the
+  Business Rules bullet for what it replaced and why the 50% variant was dropped.
+- **Cookies section removed from `privacy.html`** — the site doesn't use cookies for
+  anything the section described. Keys deleted from **both** dicts, not just the page.
+  Note it still stores `sceneone-lang` and the theme pref in `localStorage`; the
+  policy is now silent on that, which was accepted rather than missed.
+- **Landing hero subheading extended** with «لاكتشاف كتّاب السيناريو الواعدين وإطلاق
+  مسيرتهم في صناعة السينما» (EN: "…help them break into the film industry"). A second
+  hero line about scripts reaching producers was added and **removed the same day** —
+  along with its dict keys and the `.hero__nda + .hero__nda` spacing rule. Don't
+  re-add it from an old diff.
+- **Free Draft 2 resubmission note above the pricing cards** — new `.ctypes__note`
+  (13px, `rgba(255,255,255,.55)`, centred over `.ctypes__grid`), keyed `ctypesNote`.
+- **«التقدير التقريبي للميزانية» added to both coverage card descriptions.** Feature
+  and short carry the *same* list on purpose — change one, change the other.
+- **`sample-report.html`'s Arabic polished** — logline, synopsis, and the Premise &
+  Theme note. Arabic only; the `_EN` sample objects were deliberately left alone.
+
 **Recently shipped (2026-08-11 → 08-12):**
 - **Public-site English support** — `index.html`, `readers.html`, and
   `about-coverage.html` are now fully bilingual (`js/i18n.js`), plus
   `sample-report.html`'s report content (previously Arabic-only regardless
-  of its own toggle). `submit`, `privacy`, `terms` still need it. Full
+  of its own toggle). `privacy` and `terms` followed on 2026-08-12; only
+  `submit` is still Arabic-only. Full
   detail in the "Public-site i18n" section below — read it before touching
   translated copy or the `[dir="ltr"]` CSS mirror.
 - **One font per language, site-wide:** Arabic is always Tajawal, English is
@@ -160,7 +181,7 @@ Do NOT introduce Next.js/React/a compiler/npm build. Keep it buildless.
     link `css/styles.css`. Shared pieces are duplicated there.
 - **Client JS (`/js`):** `config.js` (client-safe Supabase url/anonKey/bucket),
   `theme.js`, `i18n.js` (public-site AR/EN — `index`, `readers`, `about-coverage`;
-  `submit`/`privacy`/`terms` still Arabic-only; see "Public-site i18n" below),
+  `privacy`, `terms`; `submit` still Arabic-only; see "Public-site i18n" below),
   `main.js` (landing), `submit.js` (submission form + PDF page count),
   `admin.js` (login/dashboard/realtime), `coverage.js` (workspace/report),
   `report.js` (public report page), `report-render.js` (**shared** bilingual report
@@ -342,9 +363,10 @@ the same dict + `data-i18n` + `applyLang()` pattern already used by
 (`sceneone-lang`) so a visitor's language choice never collides with a staff
 member's admin-panel language pref (`sceneone-admin-lang`).
 
-- **`index.html`, `readers.html`, `about-coverage.html` done; `submit`,
-  `privacy`, `terms` still Arabic-only** — same dict/attribute pattern, just
-  not done yet. Don't assume the toggle exists on every page.
+- **`index.html`, `readers.html`, `about-coverage.html`, `privacy.html` and
+  `terms.html` done (the last two on 2026-08-12); `submit` still
+  Arabic-only** — same dict/attribute pattern, just not done there yet.
+  Don't assume the toggle exists on every page.
 - **`data-i18n-doctitle` on `<title>`** names the dict key for that page's
   translated `<title>` (e.g. `readers.html` uses `docTitleReaders`); pages
   that don't opt in keep the landing page's title as a fallback. **Read
@@ -958,9 +980,9 @@ must be in the `supabase_realtime` publication for live updates to fire.
 
 ## Current TODOs
 
-- **Public-site i18n covers `index.html`, `readers.html`, and
-  `about-coverage.html`; `submit`, `privacy`, `terms` still need it**
-  (2026-08-11/12) — same `data-i18n` + `[dir="ltr"]` treatment, see
+- **Public-site i18n covers every public page except `submit`**
+  (`index`, `readers`, `about-coverage` 2026-08-11/12; `privacy`, `terms`
+  2026-08-12) — same `data-i18n` + `[dir="ltr"]` treatment, see
   "Public-site i18n" above for the pattern and pitfalls (especially the
   `dict()`-before-use ordering bug).
   ~~The three coverage-type card images have their body copy baked into the
