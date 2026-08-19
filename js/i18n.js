@@ -270,9 +270,6 @@
       privRetentionHtml: "<li>تُحذَف بياناتك الشخصية ونصوصك من خوادمنا الفعّالة خلال ثلاثين يوماً.</li>" +
         "<li>قد نحتفظ ببعض البيانات لمدّة أطول إذا اقتضت ذلك متطلّبات قانونية أو محاسبية.</li>" +
         "<li>التقارير الصادرة قد تُحفَظ بصيغة مجهَّلة لأغراض تطوير الخدمة فقط، دون أيّ معلومات تربطها بك.</li>",
-      privCookiesTitle: "ملفّات تعريف الارتباط",
-      privCookiesHtml: "<li>نستخدم ملفّات Cookies بحدّها الأدنى لتسهيل تجربة الاستخدام وحفظ تفضيلاتك. لا نستخدم Cookies لأغراض تسويقية أو لتتبّعك عبر مواقع أخرى.</li>" +
-        "<li>يمكنك تعطيل ملفّات Cookies من إعدادات متصفّحك، مع العلم أن ذلك قد يؤثّر على بعض ميزات الخدمة.</li>",
       privUpdatesTitle: "تعديل هذه السياسة",
       privUpdatesHtml: "<p>قد نُحدّث هذه السياسة من وقت لآخر بما يتوافق مع تطوّر الخدمة أو متطلّبات الأنظمة. سنُخطرك بأيّ تعديل جوهري عبر البريد الإلكتروني أو عبر إشعار داخل المنصّة، قبل سريانه بمدّة معقولة.</p>" +
         "<p>استمرارك في استخدام الخدمة بعد التعديل يعني موافقتك على النسخة الجديدة.</p>",
@@ -526,9 +523,6 @@
       privRetentionHtml: "<li>Your personal data and scripts will be deleted from active systems within thirty (30) days.</li>" +
         "<li>Certain data may be retained longer if required for legal or accounting purposes.</li>" +
         "<li>Issued reports may be retained in anonymized form solely for service improvement, without any identifiable link to you.</li>",
-      privCookiesTitle: "Cookies",
-      privCookiesHtml: "<li>We use cookies minimally to enhance user experience and remember your preferences. We do not use cookies for marketing or cross-site tracking.</li>" +
-        "<li>You may disable cookies through your browser settings; however, doing so may affect certain features of the Service.</li>",
       privUpdatesTitle: "Updates to This Policy",
       privUpdatesHtml: "<p>We may update this Policy from time to time in line with service developments or legal requirements. Any material changes will be communicated via email or through a notice on the platform prior to taking effect.</p>" +
         "<p>Your continued use of the Service after such updates constitutes your acceptance of the revised Policy.</p>",
