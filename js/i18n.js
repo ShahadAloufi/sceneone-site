@@ -193,7 +193,7 @@
       termsFeesLead: "تعمل (Scene One) وفق النموذج التالي:",
       termsFeesHtml: "<li>تُحدَّد رسوم القراءة بحسب نوع النصّ (قصير / روائي) وتُعلَن بوضوح على المنصّة قبل تقديم النصّ.</li>" +
         "<li>تُدفع الرسوم عبر وسائل الدفع المعتمَدة في المملكة العربية السعودية، وتُصدر فواتير نظامية لكلّ عملية.</li>" +
-        "<li><strong>سياسة الاسترداد:</strong> يحقّ للكاتب طلب استرجاع كامل رسوم الخدمة قبل إسناد النصّ إلى أحد القرّاء. أمّا بعد إسناد النصّ وبدء العمل على تقييمه، فيحقّ له استرجاع 50٪ من الرسوم. وإذا تعذّر تنفيذ الخدمة لأسباب تخصّ المنصّة، فيتمّ ردّ المبلغ كاملاً خلال أربعة عشر يوم عمل.</li>",
+        "<li><strong>سياسة الاسترداد:</strong> يحقّ للكاتب طلب استرجاع كامل رسوم الخدمة قبل إسناد النصّ إلى أحد القرّاء. وإذا تعذّر تنفيذ الخدمة لأسباب تخصّ المنصّة، فيتمّ ردّ المبلغ كاملاً خلال أربعة عشر يوم عمل.</li>",
       termsDeliveryTitle: "مدة التسليم",
       termsDeliveryHtml: "<p>تلتزم (Scene One) بتسليم التقرير خلال المدّة الزمنية المُعلَنة عند التقديم، وتتراوح عادةً بين أسبوع إلى ثلاثة أسابيع بحسب نوع النصّ وحجمه.</p>" +
         "<p>في حال تأخّر التسليم لأيّ سبب، يُبلَّغ الكاتب فوراً عبر البريد الإلكتروني مع توضيح الأسباب والمدّة المتوقّعة الجديدة.</p>",
@@ -446,7 +446,7 @@
       termsFeesLead: "Scene One operates under the following model:",
       termsFeesHtml: "<li>Reading fees are determined based on the type of script (short or feature) and are clearly displayed on the Platform prior to submission.</li>" +
         "<li>Payments are processed through approved payment methods within the Kingdom of Saudi Arabia, and official invoices are issued for each transaction.</li>" +
-        "<li><strong>Refund Policy:</strong> The Writer may request a full refund of the service fee before the script is assigned to a reader. Once the script has been assigned and work on its evaluation has begun, the Writer may request a refund of 50% of the fee. If the Service cannot be delivered due to reasons attributable to the Platform, a full refund shall be issued within fourteen (14) business days.</li>",
+        "<li><strong>Refund Policy:</strong> The Writer may request a full refund of the service fee before the script is assigned to a reader. If the Service cannot be delivered due to reasons attributable to the Platform, a full refund shall be issued within fourteen (14) business days.</li>",
       termsDeliveryTitle: "Delivery Timeframe",
       termsDeliveryHtml: "<p>Scene One undertakes to deliver the evaluation report within the timeframe communicated at submission, typically ranging from one (1) to three (3) weeks depending on the type and length of the script.</p>" +
         "<p>In the event of any delay, the Writer will be promptly notified via email with an explanation and an updated expected delivery date.</p>",
