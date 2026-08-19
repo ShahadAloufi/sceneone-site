@@ -317,7 +317,7 @@
       partnershipOffer: "15% off for Association members and staff",
       partnershipNote: "A valid membership card must be presented when requesting coverage",
 
-      ctypesNote: "You can resubmit a revised version of the same screenplay (Draft 2) free of charge after receiving your initial coverage, provided it is an updated draft of the same work and not a new project.",
+      ctypesNote: "After receiving your initial coverage, you're welcome to resubmit an updated draft of the same screenplay (Draft 2) free of charge, as long as it remains the same project and not a new submission.",
       featureTitle: "Feature Film Coverage",
       featureDescHtml: "Provides detailed feedback on feature-length scripts (up to 120 pages), including: " +
         "<strong>concept and premise, hook and originality, dramatic stakes and structure, characters, structure and pacing, production viability, an approximate budget estimate, and an overall assessment.</strong>",
