@@ -72,7 +72,7 @@
       shortDescHtml: "يقدم هذا التقرير ملاحظات تفصيلية على الفيلم القصير (من 30 إلى 50 صفحة). يشمل ذلك تقييمًا وملاحظات حول: " +
         "<strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong>",
       shortMiniTitle: "تغطية النصوص السينمائية القصيرة",
-      shortMiniDescHtml: "يقدم هذا التقرير ملاحظات تفصيلية على الفيلم القصير (أقل من 30 صفحة). يشمل ذلك تقييمًا وملاحظات حول: " +
+      shortMiniDescHtml: "يقدم هذا التقرير ملاحظات تفصيلية على الفيلم القصير (<strong>أقل من 30 صفحة</strong>). يشمل ذلك تقييمًا وملاحظات حول: " +
         "<strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong>",
       shortLi1Html: "مدة التسليم: عادةً من 10 إلى 15 يومًا <span class=\"ctype-card__note\">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span>",
 
@@ -330,7 +330,7 @@
       shortDescHtml: "Provides detailed feedback on short film scripts (30 to 50 pages), including: " +
         "<strong>concept and premise, hook and originality, dramatic stakes and structure, characters, structure and pacing, production viability, an approximate budget estimate, and an overall assessment.</strong>",
       shortMiniTitle: "Short Film Coverage",
-      shortMiniDescHtml: "Provides detailed feedback on short film scripts (under 30 pages), including: " +
+      shortMiniDescHtml: "Provides detailed feedback on short film scripts (<strong>under 30 pages</strong>), including: " +
         "<strong>concept and premise, hook and originality, dramatic stakes and structure, characters, structure and pacing, production viability, an approximate budget estimate, and an overall assessment.</strong>",
       shortLi1Html: "Turnaround: typically 10–15 days <span class=\"ctype-card__note\">(the timeline begins once your script is assigned to a reader; you'll be notified by email when that happens)</span>",
 
