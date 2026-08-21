@@ -296,7 +296,7 @@ module.exports = async (req, res) => {
     return res.status(502).json({ message: "تعذّر اعتماد التغطية" });
   }
 
-  const FILM_EN = { feature: "Feature", short: "Short Film" };
+  const FILM_EN = { feature: "Feature", short: "Short Film", short_under_30: "Short Film" };
   const filmLabel = FILM_EN[sub.film_type];
   const subject = "Scene One " + (filmLabel ? filmLabel + " " : "") + "Coverage Report";
   const link = SITE_URL + "/report?t=" + encodeURIComponent(sub.report_token);

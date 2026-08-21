@@ -152,8 +152,12 @@
             <label>نوع الفيلم <span class="req">*</span></label>
             <select name="filmType">
               <option value="" disabled selected>اختر نوع الفيلم</option>
-              <option value="feature">فيلم طويل</option>
-              <option value="short">فيلم قصير</option>
+              <!-- Values are the film_type allowlist in api/submissions.js, and
+                   each one carries its own price (PRICES in lib/moyasar.js), so
+                   the page ranges here must match the landing page's cards. -->
+              <option value="feature">فيلم طويل (حتى 120 صفحة) — 1200 ريال</option>
+              <option value="short">فيلم قصير (من 30 إلى 50 صفحة) — 750 ريال</option>
+              <option value="short_under_30">فيلم قصير (أقل من 30 صفحة) — 350 ريال</option>
             </select>
             <p class="sub-err">اختر نوع الفيلم</p>
           </div>

@@ -28,7 +28,7 @@ coverage workspace + report, role-based access, deadlines, and report delivery t
 writers. **The payment gate is live and has taken real money** (see below).
 Actively iterating on UX polish and workflow features.
 
-**Recently shipped (2026-08-19) — public copy pass, no code paths touched:**
+**Recently shipped (2026-08-19) — public copy pass + the 350 SAR tier:**
 - **Refund policy rewritten** in `terms.html` — full refund before assignment, none
   after work begins, full within 14 business days on platform failure. See the
   Business Rules bullet for what it replaced and why the 50% variant was dropped.
@@ -43,8 +43,14 @@ Actively iterating on UX polish and workflow features.
   re-add it from an old diff.
 - **Free Draft 2 resubmission note above the pricing cards** — new `.ctypes__note`
   (13px, `rgba(255,255,255,.55)`, centred over `.ctypes__grid`), keyed `ctypesNote`.
-- **«التقدير التقريبي للميزانية» added to both coverage card descriptions.** Feature
-  and short carry the *same* list on purpose — change one, change the other.
+- **«التقدير التقريبي للميزانية» added to all three coverage card descriptions.** The
+  tiers carry the *same* list on purpose — change one, change the others.
+- **Third price tier shipped end to end: `short_under_30`, 350 SAR** (card first in
+  the grid, then 1200, then 750). Landing copy landed first and the payment plumbing
+  followed the same day — see the Business Rules bullet for the six places a tier
+  touches and why price is keyed on `film_type` rather than the page count. The 750
+  card's range was tightened from «حتى 50 صفحة» to «من 30 إلى 50 صفحة» so the two
+  short tiers stop overlapping, and each card's page range is now bold.
 - **`sample-report.html`'s Arabic polished** — logline, synopsis, and the Premise &
   Theme note. Arabic only; the `_EN` sample objects were deliberately left alone.
 
@@ -546,7 +552,27 @@ must be in the `supabase_realtime` publication for live updates to fire.
   payment" prompt**, which carries the stored `payment_url` so a writer who closes the
   checkout tab can get back to their invoice; it promises nothing about review. The
   writer confirmation and the team alert both fire from the webhook. Prices live in `lib/moyasar.js` (`PRICES`,
-  in halalas) and must match the homepage: feature 1200 SAR / short 750 SAR.
+  in halalas) and must match the homepage: **feature 1200 / short 750 / short_under_30
+  350 SAR**.
+- **Three price tiers, keyed on `film_type` (2026-08-19).** `feature` (up to 120pp,
+  1200), `short` (30–50pp, 750) and `short_under_30` (under 30pp, 350). Price is
+  derived from `film_type` **alone** — deliberately not from the page count, which is
+  optional (PDF uploads only) and computed in the **browser**, so it can neither be
+  relied on nor trusted. The writer picks the tier in the submission form, where each
+  option states its page range and price. `api/submissions.js` does bounce a
+  `short_under_30` whose count is plainly too long (`SHORT_UNDER_30_MAX_PAGES`, applied
+  to `pages - 1` because the count includes the title page), but that is a **UX guard,
+  not a security boundary**: a forged count still buys the cheap tier, and the real
+  check is a reader opening the script. The cap is **one page looser** than the
+  advertised "under 30" on purpose — the title-page convention makes the boundary fuzzy
+  by exactly one page. **Adding a tier means touching six places:** `FILM_TYPES`
+  (api/submissions.js), `PRICES` (lib/moyasar.js), the form's select (submit.html),
+  `FILM` (js/admin.js), `FORMAT_EN` (js/report-render.js), `FILM_EN`
+  (api/review-coverage.js) and `FILM_AR` (lib/submission-emails.js) — a missing entry
+  falls back to the raw key rather than failing, so it shows up as ugly UI, not an
+  error. `film_type` is plain `text` with **no CHECK constraint**, so a new tier needs
+  no SQL. `deadlineDays()` gives everything non-feature 15 days, which is why the new
+  tier inherits the short turnaround with no change.
 - **Writer level (`writer_level`)** — required select on the submission form, four
   values ordered least → most experienced: `new` / `emerging` / `professional` /
   `veteran`. Deliberately **evidence-based** ("لم يُنتج لي عمل بعد", "أفلام قصيرة

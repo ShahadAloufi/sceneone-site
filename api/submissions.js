@@ -27,7 +27,21 @@ const SITE_URL = process.env.SITE_URL || "https://sceneone.info";
 
 // --- Allowlists & limits (server is the source of truth; never trust client) ---
 const GENRES = ["drama", "comedy", "thriller", "horror", "action", "documentary", "other"];
-const FILM_TYPES = ["feature", "short"];
+// `short_under_30` is the cheaper short tier (350 SAR). It is a separate
+// film_type rather than a page-count branch on `short` because price is derived
+// from film_type alone (PRICES in lib/moyasar.js) and because the page count is
+// optional — it only exists for PDF uploads, and it comes from the browser.
+const FILM_TYPES = ["feature", "short", "short_under_30"];
+// Guard for the cheap tier: the page count pdf.js reports INCLUDES the title
+// page, so the script itself is `pages - 1` (same convention as the coverage
+// panel). Anything longer than this is refused rather than silently invoiced at
+// 350. The cap is 30, one page LOOSER than the advertised "under 30 pages", on
+// purpose — the title-page convention makes the boundary fuzzy by exactly one
+// page, and bouncing an honest 29-page script over that is worse than letting a
+// 30-page one through. It is also a UX guard, not a security boundary: the count
+// is client-supplied, so a forged one still buys the cheap tier for a long
+// script. The real check is a human opening it in the reader workspace.
+const SHORT_UNDER_30_MAX_PAGES = 30;
 const DRAFTS = ["first", "revised", "final"];
 // Writer's self-declared experience, shown to readers so they can pitch the
 // coverage's depth and tone. Ordered least → most experienced; the labels live
@@ -113,6 +127,16 @@ module.exports = async (req, res) => {
   // storage object-path format, and the file extension.
   const err = validate(row);
   if (err) return res.status(400).json({ message: err });
+
+  // The cheap short tier is priced on length, so a script that is plainly too
+  // long for it is bounced back to the form instead of being invoiced 350.
+  // Only when we actually have a count — non-PDF uploads have none.
+  if (row.film_type === "short_under_30" && row.pages &&
+      row.pages - 1 > SHORT_UNDER_30_MAX_PAGES) {
+    return res.status(400).json({
+      message: "عدد صفحات النص يتجاوز 30 صفحة. اختر «فيلم قصير (من 30 إلى 50 صفحة)» لهذا النص.",
+    });
+  }
 
   let submissionId;
   try {

@@ -18,8 +18,8 @@
     en: { drama: "Drama", comedy: "Comedy", thriller: "Thriller", horror: "Horror", action: "Action", documentary: "Documentary", other: "Other" }
   };
   var FILM = {
-    ar: { feature: "روائي طويل", short: "قصير" },
-    en: { feature: "Feature", short: "Short" }
+    ar: { feature: "روائي طويل", short: "قصير", short_under_30: "قصير (<30ص)" },
+    en: { feature: "Feature", short: "Short", short_under_30: "Short (<30p)" }
   };
   var DRAFT = {
     ar: { first: "الأولى", revised: "مُنقّحة", final: "نهائية" },
