@@ -67,9 +67,9 @@ Actively iterating on UX polish and workflow features.
   treatment: pdf/docx/txt). Add or drop a field on either form without touching JS.
   - **The treatment form's own fields:** `treatmentText` (the narrative summary,
     pasted), `characters` (main characters + motivation) and the optional `toneRef`
-    (reference films / mood). Three **new nullable columns** — `treatment_text`,
-    `characters`, `tone_ref` — script rows never set them. **SQL must be applied by
-    hand** (`supabase/schema.sql`, as always).
+    (reference films / mood). Three nullable columns — `treatment_text`,
+    `characters`, `tone_ref` — script rows never set them. **SQL applied 2026-08-19**;
+    the statements live in `supabase/schema.sql` as always.
   - **It has no `draft`** — a treatment has no draft stage. `api/submissions.js`
     requires `draft` for script types and requires it to be **absent** for treatment
     types, rather than storing a bogus value.
