@@ -687,6 +687,28 @@ must be in the `supabase_realtime` publication for live updates to fire.
   Moyasar's **embedded** form, which puts the card form on our own origin and
   changes our PCI position — deliberately not done; the hosted page is why card
   data never reaches our servers.
+- **Launch promotion — free grants (`is_promo`), 2026-08-19.** A handful of
+  submissions were given away at launch. They ride the **normal** pipeline
+  (`unassigned` → claimable → coverage → delivery) but were never invoiced, so:
+  `payment_amount = 0`, `paid_at` stamped, `is_promo = true`, and
+  **`confirmation_sent_at` stamped at grant time** — that last one is the real
+  safeguard, because the webhook claims that stamp before it emails anyone, so a
+  stray payment event on a promo row can never produce a payment confirmation.
+  `api/payment-webhook.js` also checks `is_promo` explicitly and skips
+  `sendConfirmation` (the team alert and reader broadcast still fire — neither
+  mentions money).
+  - **The grant runs from `scripts/promo-grant.js`**, not by hand in SQL, so the
+    status change and the writer's email happen together and are logged. It is
+    **dry-run by default**; `--apply` writes; `--test <email>` sends only the
+    email, touching no row. The PATCH is filtered on `status=eq.pending_payment`,
+    which makes it idempotent and stops it overwriting a submission that gets paid
+    for real in the same moment.
+  - **The writer gets `promoEmail`, never the payment confirmation** — it thanks
+    them for being selected and promises the report, and deliberately mentions no
+    price, invoice or refund.
+  - **Readers are NOT auto-notified** for a grant: the "new assignment available"
+    broadcast fires from the webhook, which a grant bypasses. The scripts appear in
+    the dashboard pool as normal; tell readers separately if they need a nudge.
 - **A Moyasar event the webhook can't act on emails the team** (`sendUnreconciledAlert`).
   Three paths reach it: the re-read payment's status contradicts the event
   (`status_mismatch`), the payment carries no invoice id or metadata and no row

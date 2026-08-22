@@ -308,7 +308,16 @@ module.exports = async (req, res) => {
   // (the script just landed in the claimable pool). None of the three throws —
   // each swallows and logs its own failures — so a Resend outage can't turn
   // into a 502 that replays the whole webhook.
-  await sendConfirmation(updated[0]);
+  // SAFEGUARD — promo grants must never receive payment wording. A row flagged
+  // `is_promo` was granted free at launch (see scripts/promo-grant.js), and its
+  // writer has already had the promotion welcome instead; telling them "تم تأكيد
+  // الدفع" would be false. The team alert and the reader broadcast still fire —
+  // neither mentions payment, and readers still need to know a script landed.
+  if (updated[0].is_promo) {
+    console.warn("payment-webhook: promo submission, skipping payment confirmation:", updated[0].id);
+  } else {
+    await sendConfirmation(updated[0]);
+  }
   await sendNotification(updated[0]);
   await sendReaderNotice(supabaseUrl, serviceKey);
 

@@ -236,6 +236,14 @@ alter table public.submissions
   add column if not exists tone_ref text,
   add column if not exists treatment_text text;
 
+-- Launch promotion (2026-08-19). A handful of submissions were granted free at
+-- launch: they follow the normal pipeline (paid → unassigned → claimable) but
+-- were never invoiced, so `payment_amount` is 0 and no payment email may ever be
+-- sent to them. `is_promo` is the flag every payment-shaped code path checks —
+-- see the guard in api/payment-webhook.js and scripts/promo-grant.js.
+alter table public.submissions
+  add column if not exists is_promo boolean not null default false;
+
 create index if not exists submissions_payment_invoice_id_idx
   on public.submissions (payment_invoice_id);
 
