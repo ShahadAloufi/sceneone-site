@@ -73,6 +73,10 @@ Actively iterating on UX polish and workflow features.
   - **It has no `draft`** — a treatment has no draft stage. `api/submissions.js`
     requires `draft` for script types and requires it to be **absent** for treatment
     types, rather than storing a bogus value.
+  - **It has no IP-registration question either** (removed 2026-08-19 on request).
+    The form simply posts no `ip`, and `ip_registered` lands `false` — the column's
+    default — so nothing downstream changes. Note this drops the SAIP prompt for
+    treatment writers; the NDA line under the form still covers confidentiality.
   - **Its Project Type dropdown offers only the two treatment tiers**, and the
     script form no longer offers them at all — each product now has one intake, and
     the landing cards link accordingly (`/treatment-submit` vs `/submit`).
