@@ -55,9 +55,10 @@ Actively iterating on UX polish and workflow features.
   its one extra rule, `.rep-list`). Generalising `report-render.js` to take a schema
   was deliberately deferred until treatment coverage actually exists in the workspace
   — until then there is no data model to share, and the live renderer serves real
-  writer reports. **Arabic only** (no English copy written yet), so its lang/dir are
-  pinned instead of reading the `sceneone-report-lang` toggle. Linked from both
-  treatment cards' «إطلع على نموذج التقرير».
+  writer reports. It carries its own miniature renderer plus full AR and EN content,
+  on its **own** language key **`sceneone-treatment-lang`** — so a visitor reading
+  this sample never flips the script sample, or a writer's real report, into the other
+  language. Linked from both treatment cards' «إطلع على نموذج التقرير».
 - **Two treatment-coverage cards added (70 SAR short / 150 SAR feature)** — a
   story-stage read, NOT the eight-point script coverage: own five-item list, own
   copy, no sample-report link (the sample is a script report and would mislead).

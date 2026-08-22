@@ -75,7 +75,10 @@
       treatLi2: "تحليل هيكل القصة العام",
       treatLi3: "مراجعة الشخصيات ودوافعها",
       treatLi4: "تحديد المسار العاطفي والموضوعي",
-      treatLi5: "توصية واضحة للتطوير أو التعديل أو إعادة التفكير",
+      treatLi5: "قابلية التطوير إلى سيناريو",
+      treatLi6: "ملاحظات السوق: الجمهور والمهرجانات وقابلية الإنتاج",
+      treatLi7: "نقاط القوة وما يحتاج إلى تطوير",
+      treatLi8: "توصية واضحة للتطوير أو التعديل أو إعادة التفكير",
       ctypesNote: "يمكنك إعادة تقديم نسخة مطوّرة من نفس السيناريو (Draft 2) مجانًا بعد استلام التقييم الأولي، بشرط أن تكون نسخة محدثة لنفس العمل وليست مشروعًا جديدًا.",
       featureTitle: "تغطية النصوص السينمائية الطويلة",
       featureDescHtml: "يقدم هذا التقرير ملاحظات تفصيلية على الفيلم الطويل (<strong>حتى 120 صفحة</strong>). يشمل ذلك تقييمًا وملاحظات حول: " +
@@ -344,7 +347,10 @@
       treatLi2: "Narrative structure overview (beginning, middle, end)",
       treatLi3: "Character strength & motivation review",
       treatLi4: "Emotional and thematic direction",
-      treatLi5: "Development readiness verdict (continue / revise / rethink)",
+      treatLi5: "Screenplay development potential",
+      treatLi6: "Market notes: audience, festivals and production viability",
+      treatLi7: "Key strengths and what needs development",
+      treatLi8: "Development readiness verdict (continue / revise / rethink)",
       ctypesNote: "After receiving your initial coverage, you're welcome to resubmit an updated draft of the same screenplay (Draft 2) free of charge, as long as it remains the same project and not a new submission.",
       featureTitle: "Feature Film Coverage",
       featureDescHtml: "Provides detailed feedback on feature-length scripts (<strong>up to 120 pages</strong>), including: " +
