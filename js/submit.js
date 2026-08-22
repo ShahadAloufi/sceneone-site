@@ -31,6 +31,20 @@
   }
   function hasField(name) { return !!document.querySelector('.sub-field[data-field="' + name + '"]'); }
 
+  // A pricing card can name the tier it is selling (…?type=treatment_short), so a
+  // writer who clicked the 70 SAR card does not have to pick short-vs-feature a
+  // second time — and cannot land on the wrong price by mistake. Only ever
+  // pre-selects an option the dropdown actually offers, and the writer can still
+  // change it: this is a default, not a lock.
+  (function preselectType() {
+    var want = new URLSearchParams(location.search).get("type");
+    if (!want) return;
+    var sel = document.querySelector('select[name="filmType"]');
+    if (!sel) return;
+    var match = Array.prototype.some.call(sel.options, function (o) { return o.value === want; });
+    if (match) sel.value = want;
+  })();
+
   /* ---------- MENU OVERLAY ---------- */
   var menu = document.getElementById("menu");
   function openMenu() { if (menu) { menu.classList.add("open"); document.body.style.overflow = "hidden"; } }

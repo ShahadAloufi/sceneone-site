@@ -80,10 +80,15 @@ Actively iterating on UX polish and workflow features.
   - **Its Project Type dropdown offers only the two treatment tiers**, and the
     script form no longer offers them at all — each product now has one intake, and
     the landing cards link accordingly (`/treatment-submit` vs `/submit`).
-  - ⚠️ **Both the pasted text and the file upload are required**, per the build
-    spec. That is redundant for a writer who uploads a PDF; if it costs
-    submissions, the fix is to make `treatmentText` optional (drop its `.req`
-    star — no JS change needed).
+  - **The upload is required; the pasted `treatmentText` is optional** (changed
+    2026-08-19). Requiring both meant a writer with a PDF had to paste the same
+    content again — friction on the last screen before payment. The upload is the
+    deliverable; the box is there for anyone who prefers to paste.
+  - **The pricing cards carry the tier in the link** (`?type=treatment_short` /
+    `?type=treatment_feature`) and the form pre-selects it. A default, not a lock —
+    the writer can still change it, and an unknown or missing value selects nothing.
+    Without this, someone who clicked the 70 SAR card could quietly land on the 150
+    SAR option and be invoiced for it.
 - **Treatment coverage is priced and purchasable, wired end to end**
   (2026-08-19): `treatment_short` 70 SAR / `treatment_feature` 150 SAR. A
   story-stage read, NOT the eight-point script coverage: its own eight-item card
