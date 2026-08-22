@@ -1,0 +1,246 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Scene One | نموذج تقرير تغطية المعالجة</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+  /* Arabic-only page (the treatment sample has no English copy yet), so lang and
+     dir are pinned here rather than read from the report-lang toggle key. */
+  document.documentElement.setAttribute("lang","ar");
+  document.documentElement.setAttribute("dir","rtl");
+</script>
+<style>
+  :root{
+    --ink:#15110f; --orange:#CD2E07; --line:#e7e2da; --line2:#efebe3;
+    --muted:#8a8178; --label:#6f665e; --soft:#f3efe8;
+    --page:#efeae2;
+    --font:'Tajawal',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  }
+  /* English: swap to IBM Plex Sans, same split as the marketing pages'
+     css/styles.css (this page is self-contained, so it needs its own copy). */
+  html[dir="ltr"]{
+    --font:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--page);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;
+       -webkit-print-color-adjust:exact;print-color-adjust:exact}
+
+  .bar{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:14px;
+       padding:12px 20px;background:rgba(14,14,14,.96);border-bottom:2px solid var(--orange)}
+  .bar .wm{color:#fff;letter-spacing:.2em;font-weight:700;font-size:15px}
+  .bar .wm span{color:var(--orange)}
+  .bar .spacer{margin-inline-start:auto}
+  .langseg{display:flex;gap:2px;background:rgba(255,255,255,.1);padding:3px;border-radius:9px}
+  .langseg button{border:0;background:transparent;font-family:inherit;font-size:13.5px;font-weight:500;
+                  color:#cfcac3;padding:6px 12px;border-radius:7px;cursor:pointer}
+  .langseg button.on{background:#fff;color:#15110f}
+  .badge{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.1);color:#fff;font-family:inherit;
+       font-size:13.5px;font-weight:600;padding:8px 16px;border-radius:9px}
+
+  main{padding:28px 16px 60px}
+  #reportWrap{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;max-width:800px;margin:0 auto;
+              box-shadow:0 18px 50px rgba(0,0,0,.12)}
+  .report{padding:46px 54px}
+  @media(max-width:620px){.report{padding:30px 22px}}
+  .rep-header{background:#0E0E0E;margin:-46px -54px 32px;padding:32px 24px 24px;text-align:center;border-bottom:3px solid var(--orange)}
+  @media(max-width:620px){.rep-header{margin:-30px -22px 26px}}
+  .rep-logo{height:48px;width:auto;display:inline-block;margin-bottom:14px}
+  .rep-wm{color:#fff;letter-spacing:.18em;font-weight:700;font-size:23px;line-height:1}
+  .rep-wm span{color:var(--orange)}
+  .rep-cov{color:#9a938b;letter-spacing:.3em;font-size:10px;text-transform:uppercase;margin-top:10px;font-weight:500}
+  #reportBody.ar{font-family:'Tajawal',sans-serif}
+  #reportBody.ar .rep-sec h2 .no{margin-right:0;margin-left:8px}
+  #reportBody.ar table.gl td.cat{text-align:right}
+  #reportBody.ar .rep-top{direction:rtl}
+  #reportBody.ar .rep-top .k,#reportBody.ar .rep-top .v{text-align:right}
+  #reportBody.ar .rep-foot{flex-direction:row-reverse}
+  .rep-top{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 26px;margin-bottom:30px}
+  @media(max-width:620px){.rep-top{grid-template-columns:1fr 1fr}}
+  .rep-top .k{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--label);font-weight:600}
+  .rep-top .v{font-size:14px;margin-top:3px}
+  .rep-title{font-size:22px;font-weight:600;margin:2px 0 0}
+  .rep-title .ar{font-family:'Tajawal',sans-serif;color:var(--ink)}
+  .logline{background:var(--soft);border-radius:10px;padding:16px 18px;margin:6px 0 30px}
+  .logline .k{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--label);font-weight:600;margin-bottom:5px}
+  .logline > div:not(.k){font-size:13.5px;line-height:1.62}
+  .glance{margin:0 0 30px}
+  .glance h3,.rep-sec h3{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);font-weight:600;margin:0 0 12px}
+  table.gl{width:100%;border-collapse:collapse;font-size:13px}
+  table.gl td{padding:7px 6px;border-bottom:1px solid var(--line2)}
+  table.gl .cat{color:var(--label);width:34%}
+  table.gl .mark{text-align:center}
+  table.gl .mark.hit{color:var(--ink);font-weight:600}
+  table.gl .mark.dim{color:#d8d2c8}
+  .rep-sec{margin:0 0 26px}
+  .rep-sec .no{color:var(--orange);font-weight:600;margin-right:8px;font-variant-numeric:tabular-nums}
+  .rep-sec h2{font-size:16px;font-weight:600;margin:0 0 14px;display:flex;align-items:baseline}
+  .rep-item{margin:0 0 16px}
+  .rep-item .ih{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:3px}
+  .rep-item .ih .t{font-weight:600;font-size:13.5px}
+  .rep-item .ih .sc{font-size:12px;color:var(--orange);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;direction:ltr}
+  .rep-item p{margin:0;color:#3f3a35;font-size:13.5px;line-height:1.62;white-space:pre-wrap}
+  .rep-sec > p,.verdict > p{color:#3f3a35;font-size:13.5px;line-height:1.62;white-space:pre-wrap}
+  .verdict{border:1px solid var(--line);border-radius:12px;padding:22px 24px;background:var(--soft);margin-top:8px}
+  .verdict .vh{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);font-weight:600;margin-bottom:8px}
+  .verdict .vd{font-size:18px;font-weight:600;margin-bottom:8px}
+  .verdict .vd .ctx{font-size:13px;font-weight:400;color:var(--label)}
+  .score10{font-weight:600;color:var(--orange);white-space:nowrap;font-variant-numeric:tabular-nums;font-size:16px;direction:ltr}
+  .score10 .n{font-size:30px}
+  .rep-foot{border-top:1px solid var(--line2);margin-top:34px;padding-top:14px;display:flex;justify-content:space-between;font-size:11px;color:var(--muted);letter-spacing:.04em}
+  .empty{color:#c9c2b6;font-style:italic}
+  html[lang="ar"] .rep-cov,html[lang="ar"] .rep-top .k,html[lang="ar"] .logline .k,
+  html[lang="ar"] .glance h3,html[lang="ar"] .rep-sec h3,html[lang="ar"] .verdict .vh{letter-spacing:normal}
+
+  .sample-tag{max-width:800px;margin:0 auto 14px;text-align:center;font-size:12.5px;color:var(--muted);letter-spacing:.02em}
+
+  @media print{
+    .bar{display:none!important}
+    .sample-tag{display:none!important}
+    body{background:#fff}
+    main{padding:0}
+    #reportWrap{border:0;border-radius:0;box-shadow:none;max-width:none}
+  }
+
+  @media(max-width:480px){
+    .bar{flex-wrap:wrap;gap:8px 10px;padding:10px 14px}
+    .bar .wm{font-size:14px;letter-spacing:.14em}
+    .bar .spacer{margin-inline-start:auto}
+    .langseg button{padding:6px 10px;font-size:13px}
+    main{padding:20px 12px 48px}
+    #reportWrap{border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.1)}
+    .report{padding:26px 18px}
+    .rep-header{margin:-26px -18px 24px;padding:26px 18px 20px}
+    .rep-wm{font-size:20px}
+    .rep-title{font-size:20px}
+    .rep-top{grid-template-columns:1fr 1fr;gap:16px 20px}
+    .verdict{padding:18px 18px}
+  }
+</style>
+<style>
+  /* The script sample renders every section as a paragraph; a treatment's
+     strengths / to-develop are lists, so they need the one rule report-render.js
+     has never had to provide. */
+  .rep-list{margin:0;padding-inline-start:18px;color:#3f3a35;font-size:13.5px;line-height:1.62}
+  .rep-list li{margin:0 0 5px}
+</style>
+
+<div class="bar">
+  <div class="wm">SCENE&nbsp;<span>ONE</span></div>
+  <div class="spacer"></div>
+  <span class="badge">نموذج تقرير معالجة</span>
+</div>
+
+<main>
+  <p class="sample-tag">هذا نموذج توضيحي لشكل تقرير تغطية المعالجة فقط، ولم يُكتب من قبل قُرّاؤنا المحترفين.</p>
+  <div id="reportWrap"><div class="report ar" id="reportBody" dir="rtl">
+
+    <div class="rep-header">
+      <img class="rep-logo" src="assets/scene-one-logo.svg" alt="Scene One">
+      <div class="rep-wm">SCENE&nbsp;<span>ONE</span></div>
+      <div class="rep-cov">تقييم المعالجة</div>
+    </div>
+
+    <div class="rep-top">
+        <div style="grid-column:1/-1"><div class="k">العنوان</div><div class="v" dir="auto"><span class="rep-title">The Darkroom <span class="ar">(الغرفة المظلمة)</span></span></div></div>
+        <div><div class="k">الكاتب</div><div class="v" dir="auto">—</div></div>
+        <div><div class="k">نوع العمل</div><div class="v" dir="auto">معالجة — فيلم قصير</div></div>
+        <div><div class="k">التصنيف</div><div class="v" dir="auto">دراما</div></div>
+        <div><div class="k">عدد الصفحات</div><div class="v" dir="auto">نحو 4 صفحات</div></div>
+        <div><div class="k">المرحلة</div><div class="v" dir="auto">معالجة (Treatment)</div></div>
+        <div><div class="k">القارئ</div><div class="v" dir="auto">احد قراء Scene One</div></div>
+        <div><div class="k">التاريخ</div><div class="v" dir="auto">—</div></div>
+    </div>
+
+    <div class="logline"><div class="k">الفكرة المختصرة</div>
+      <div dir="auto">تجلب شابة بكرة فيلم لم تُحمَّض ورثتها عن جدتها الراحلة إلى آخر محل تصوير في مدينة ساحلية، ليجد المصوّر المسنّ الذي يدير المحل نفسه وجهاً لوجه أمام فصلٍ مدفون من ماضيه.</div>
+    </div>
+
+    <div class="glance"><h3>التقييم العام</h3>
+      <table class="gl">
+        <tr><td></td><td class="mark">ممتاز</td><td class="mark">جيد</td><td class="mark">مقبول</td><td class="mark">ضعيف</td></tr>
+        <tr><td class="cat">الفكرة والموضوع</td><td class="mark hit">●</td><td class="mark dim">·</td><td class="mark dim">·</td><td class="mark dim">·</td></tr>
+        <tr><td class="cat">عنصر الجذب (Hook)</td><td class="mark hit">●</td><td class="mark dim">·</td><td class="mark dim">·</td><td class="mark dim">·</td></tr>
+        <tr><td class="cat">وضوح الرؤية السردية</td><td class="mark hit">●</td><td class="mark dim">·</td><td class="mark dim">·</td><td class="mark dim">·</td></tr>
+        <tr><td class="cat">الشخصيات (الأساسيات)</td><td class="mark hit">●</td><td class="mark dim">·</td><td class="mark dim">·</td><td class="mark dim">·</td></tr>
+        <tr><td class="cat">الرحلة العاطفية</td><td class="mark dim">·</td><td class="mark hit">●</td><td class="mark dim">·</td><td class="mark dim">·</td></tr>
+        <tr><td class="cat">البناء العام للقصة</td><td class="mark hit">●</td><td class="mark dim">·</td><td class="mark dim">·</td><td class="mark dim">·</td></tr>
+        <tr><td class="cat">قابلية التطوير لسيناريو</td><td class="mark hit">●</td><td class="mark dim">·</td><td class="mark dim">·</td><td class="mark dim">·</td></tr>
+        <tr><td class="cat">الجدوى السوقية</td><td class="mark dim">·</td><td class="mark hit">●</td><td class="mark dim">·</td><td class="mark dim">·</td></tr>
+        <tr><td class="cat">العرض العام</td><td class="mark hit">●</td><td class="mark dim">·</td><td class="mark dim">·</td><td class="mark dim">·</td></tr>
+      </table>
+    </div>
+
+    <div class="rep-sec"><h2><span class="no">01</span>الملخّص (Treatment Summary)</h2>
+      <p>تخسر مدينة ساحلية صغيرة ملامحها تدريجيًا أمام زحف العمران. يدير سعيد، مصوّر مسنّ، آخر محل لتحميض الأفلام. تدخل ريم، شابة في العشرينيات، حاملةً بكرة فيلم قديمة عثرت عليها بين أغراض جدتها الراحلة، وتطلب تحميضها.
+
+على مدار يوم واحد، ومع تَكشُّف الصور واحدةً تلو الأخرى في الغرفة المظلمة، تنكشف فصول من حياة الجدة لم تكن ريم تعرفها، وتتشابك على نحو غير متوقّع مع ماضي سعيد. تقوده تلك الصور إلى مواجهة قرار اتخذه قبل أربعين عامًا، وخسارة ظلّ يتجاهلها. في النهاية، تغادر ريم وقد رأت جدتها من زاوية جديدة، بينما يبقى سعيد وحيدًا أمام صورة، ليقرر أخيرًا طيّ صفحة طال انتظارها.</p>
+    </div>
+
+    <div class="rep-sec"><h2><span class="no">02</span>التقييم (Treatment Evaluation)</h2>
+      <div class="rep-item"><div class="ih"><span class="t">الفكرة والموضوع</span><span class="sc">5 / 5</span></div>
+        <p>فكرة تقوم على استخدام «بكرة فيلم» كأداة سردية لكشف الماضي تدريجيًا، ما يمنحها طابعًا بصريًا ورمزيًا قويًا. الموضوع يشتغل على الذاكرة والمصالحة مع الماضي بطريقة بسيطة وعميقة في الوقت نفسه، ويملك هوية واضحة قابلة للتحويل إلى فيلم مؤثر.</p></div>
+      <div class="rep-item"><div class="ih"><span class="t">عنصر الجذب (Hook)</span><span class="sc">5 / 5</span></div>
+        <p>البداية تعتمد على فكرة جذابة بصريًا: عملية تحميض تكشف وجوهًا وذكريات مدفونة. هذا النوع من الـ hook مناسب جدًا للسينما لأنه يقوم على «الفضول البصري». التوتر هنا ليس حدثيًا بل اكتشافي، وهو مناسب جدًا لفيلم يعتمد على الانكشاف التدريجي.</p></div>
+      <div class="rep-item"><div class="ih"><span class="t">وضوح الرؤية السردية</span><span class="sc">5 / 5</span></div>
+        <p>التريتمنت واضح في خطه الأساسي: حدث بسيط + كشف تدريجي + أثر عاطفي. هناك رؤية متماسكة تعتمد على «كشف الحقيقة عبر الصور»، ما يجعل المسار السردي مفهومًا وقابلًا للتطوير بسهولة إلى سيناريو.</p></div>
+      <div class="rep-item"><div class="ih"><span class="t">الشخصيات (الأساسيات)</span><span class="sc">5 / 5</span></div>
+        <p>الشخصيات الرئيسية واضحة وظيفيًا وعاطفيًا: سعيد يمثل الماضي المكبوت، وريم تمثل بوابة الكشف. العلاقة بينهما ليست مباشرة لكنها تتشكل عبر الصور، وهو اختيار يخدم الفكرة المركزية دون تعقيد زائد في هذه المرحلة.</p></div>
+      <div class="rep-item"><div class="ih"><span class="t">الرحلة العاطفية</span><span class="sc">4 / 5</span></div>
+        <p>الرحلة العاطفية موجودة وواضحة الاتجاه، لكنها تعتمد بشكل كبير على الاكتشاف التدريجي أكثر من التحولات الداخلية العميقة. تحتاج لاحقًا إلى تعزيز نقطة التحول العاطفي داخل سعيد بشكل أوضح.</p></div>
+      <div class="rep-item"><div class="ih"><span class="t">البناء العام للقصة</span><span class="sc">5 / 5</span></div>
+        <p>البناء بسيط وفعّال: بداية تعريفية ← حدث محفّز (الفيلم) ← كشف تدريجي ← ذروة عاطفية. هذا النوع من البناء مناسب جدًا للتريتمنت لأنه يثبت أن الفكرة قابلة للتطوير بدون تعقيد بنيوي زائد.</p></div>
+      <div class="rep-item"><div class="ih"><span class="t">قابلية التطوير لسيناريو</span><span class="sc">5 / 5</span></div>
+        <p>التريتمنت جاهز بشكل ممتاز للتحويل إلى سيناريو. يحتوي على نواة درامية قوية، ومكان محدود، وشخصيات قليلة، ما يجعله مثاليًا للتطوير الإنتاجي السريع.</p></div>
+      <div class="rep-item"><div class="ih"><span class="t">الجدوى السوقية</span><span class="sc">4 / 5</span></div>
+        <p>العمل مناسب جدًا للمهرجانات والأفلام القصيرة ذات الطابع الإنساني. قوته في بساطته البصرية وموضوعه العالمي، لكنه يبقى محدودًا تجاريًا كونه يعتمد على الدراما الهادئة أكثر من الأحداث الكبيرة.</p></div>
+      <div class="rep-item"><div class="ih"><span class="t">العرض العام</span><span class="sc">5 / 5</span></div>
+        <p>التريتمنت مكتوب بوضوح وبأسلوب سينمائي نظيف. اللغة قوية وسهلة التخيّل بصريًا، مع توازن جيد بين السرد والوصف دون إفراط.</p></div>
+    </div>
+
+    <div class="rep-sec"><h2><span class="no">03</span>السوق (Market Notes)</h2>
+      <div class="rep-item"><div class="ih"><span class="t">الجمهور المستهدف</span></div>
+        <p>جمهور يهتم بالدراما الإنسانية والقصص العاطفية البسيطة ذات العمق الرمزي. مناسب للمشاهد المحلي والخليجي، وقابل للتقدير في المهرجانات الدولية.</p></div>
+      <div class="rep-item"><div class="ih"><span class="t">النوع والطلب في السوق</span></div>
+        <p>دراما قصيرة تعتمد على الذاكرة والهوية. هذا النوع مطلوب في برامج المهرجانات وصناديق الدعم السينمائي.</p></div>
+      <div class="rep-item"><div class="ih"><span class="t">مسار المشروع والجهات المحتملة</span></div>
+        <p>مناسب للمنح والمهرجانات وبرامج دعم الأفلام القصيرة. قيمته الأساسية في العرض وليس التوزيع التجاري.</p></div>
+      <div class="rep-item"><div class="ih"><span class="t">الميزانية وسقف الإنتاج</span></div>
+        <p>منخفضة إلى متوسطة، مع قابلية إنتاج عالية بسبب محدودية المواقع والشخصيات.</p></div>
+      <div class="rep-item"><div class="ih"><span class="t">إمكانات الانتشار</span></div>
+        <p>قوي داخل دائرة المهرجانات، خصوصًا الأعمال التي تعتمد على الحرفة البصرية والذاكرة كموضوع.</p></div>
+    </div>
+
+    <div class="rep-sec"><h2><span class="no">04</span>ملاحظات عامة</h2>
+      <div class="rep-item"><div class="ih"><span class="t">نقاط القوة</span></div>
+        <ul class="rep-list">
+          <li>فكرة رمزية قوية وسهلة الترجمة بصريًا</li>
+          <li>وضوح في الخط السردي</li>
+          <li>شخصيات أساسية فعّالة</li>
+          <li>قابلية إنتاج عالية</li>
+          <li>هوية فنية واضحة</li>
+        </ul></div>
+      <div class="rep-item"><div class="ih"><span class="t">ما يحتاج إلى تطوير</span></div>
+        <ul class="rep-list">
+          <li>تعزيز التحول الداخلي لشخصية سعيد</li>
+          <li>إضافة طبقة عاطفية أعمق في الذروة</li>
+          <li>رفع «الرهان العاطفي» قليلًا ليكون أكثر تأثيرًا</li>
+          <li>تطوير الخلفية قبل وصول ريم (إن لزم لاحقًا في السيناريو)</li>
+        </ul></div>
+    </div>
+
+    <div class="verdict"><div class="vh">الحكم</div>
+      <div style="display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:8px">
+        <div class="vd" style="margin:0">Recommend <span class="ctx">· في سياق التطوير للأفلام القصيرة والمهرجانات</span></div>
+        <div class="score10"><span class="n">8.8</span> / 10</div>
+      </div>
+      <p style="margin:0;color:#3f3a35">تريتمنت قوي ومتماسك، يعتمد على فكرة بصرية ذكية وبنية بسيطة وفعّالة. مناسب جدًا للتطوير الفوري إلى سيناريو، مع فرصة عالية للقبول في برامج الدعم والمهرجانات. أبرز ما يميّزه هو قدرته على تحويل فكرة بسيطة إلى تجربة عاطفية مرئية، مع مساحة واضحة لتحسين العمق العاطفي في المرحلة القادمة.</p>
+    </div>
+
+    <div class="rep-foot"><span>Scene One · sceneone.info</span><span>سري — لا يُتداول خارج نطاق المرسل إليه</span></div>
+
+  </div></div>
+</main>

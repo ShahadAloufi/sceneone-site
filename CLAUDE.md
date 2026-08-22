@@ -45,6 +45,19 @@ Actively iterating on UX polish and workflow features.
   (13px, `rgba(255,255,255,.55)`, centred over `.ctypes__grid`), keyed `ctypesNote`.
 - **«التقدير التقريبي للميزانية» added to all three coverage card descriptions.** The
   tiers carry the *same* list on purpose — change one, change the others.
+- **`sample-treatment-report.html` — the treatment sample, and the ONE page that is
+  not renderer-driven.** `sample-report.html` calls `SOReport.render()`; this one is
+  **static markup** reusing the same copied CSS, because a treatment's structure is
+  not the script schema: **9 evaluation points** (الفكرة والموضوع · عنصر الجذب ·
+  وضوح الرؤية السردية · الشخصيات الأساسيات · الرحلة العاطفية · البناء العام للقصة ·
+  قابلية التطوير لسيناريو · الجدوى السوقية · العرض العام), **5** market notes instead
+  of 6, and strengths / to-develop as **bullet lists** rather than paragraphs (hence
+  its one extra rule, `.rep-list`). Generalising `report-render.js` to take a schema
+  was deliberately deferred until treatment coverage actually exists in the workspace
+  — until then there is no data model to share, and the live renderer serves real
+  writer reports. **Arabic only** (no English copy written yet), so its lang/dir are
+  pinned instead of reading the `sceneone-report-lang` toggle. Linked from both
+  treatment cards' «إطلع على نموذج التقرير».
 - **Two treatment-coverage cards added (70 SAR short / 150 SAR feature)** — a
   story-stage read, NOT the eight-point script coverage: own five-item list, own
   copy, no sample-report link (the sample is a script report and would mislead).
