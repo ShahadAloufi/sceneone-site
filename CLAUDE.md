@@ -687,7 +687,7 @@ must be in the `supabase_realtime` publication for live updates to fire.
   Moyasar's **embedded** form, which puts the card form on our own origin and
   changes our PCI position — deliberately not done; the hosted page is why card
   data never reaches our servers.
-- **Launch promotion — free grants (`is_promo`), 2026-08-19.** A handful of
+- **Launch promotion — free grants (`is_promo`), 2026-08-19; SQL applied.** A handful of
   submissions were given away at launch. They ride the **normal** pipeline
   (`unassigned` → claimable → coverage → delivery) but were never invoiced, so:
   `payment_amount = 0`, `paid_at` stamped, `is_promo = true`, and
