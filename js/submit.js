@@ -275,7 +275,7 @@
       }).catch(function (err) {
         toast("تعذّر إرسال النص", (err && err.message) ? err.message : "حاول مرة أخرى.", "error");
         submitBtn.disabled = false;
-        submitBtn.textContent = "إرسال النص";
+        submitBtn.textContent = "إرسال النص والدفع";
       });
     });
   }
