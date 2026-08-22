@@ -68,7 +68,7 @@
       fmt: { "Short film": "فيلم قصير", "Feature": "فيلم طويل", "Feature film": "فيلم طويل", "TV Pilot": "حلقة تجريبية", "Web Series": "مسلسل ويب", "Series": "مسلسل", "Other": "أخرى" },
       drf: { "First draft": "المسودة الأولى", "Second draft": "المسودة الثانية", "Revised draft": "المسودة الثانية", "Final draft": "النسخة النهائية" },
       months: { January: "يناير", February: "فبراير", March: "مارس", April: "أبريل", May: "مايو", June: "يونيو", July: "يوليو", August: "أغسطس", September: "سبتمبر", October: "أكتوبر", November: "نوفمبر", December: "ديسمبر" },
-      genreMap: { "Drama": "دراما", "Comedy": "كوميديا", "Thriller": "إثارة", "Horror": "رعب", "Action": "أكشن", "Sci-Fi": "خيال علمي", "Romance": "رومانسي", "Animation": "رسوم متحركة", "Documentary": "وثائقي", "Other": "أخرى" },
+      genreMap: { "Drama": "دراما", "Comedy": "كوميديا", "Crime": "جريمة", "Thriller": "إثارة", "Horror": "رعب", "Action": "أكشن", "Sci-Fi": "خيال علمي", "Romance": "رومانسي", "Animation": "رسوم متحركة", "Documentary": "وثائقي", "Other": "أخرى" },
       lenMap: {}, writerMap: {},
       // Writer's self-declared experience. Reader-facing only — this is used by
       // the coverage workspace's pulled panel, never by the writer's report.
@@ -141,7 +141,7 @@
   var MARKET = SCRIPT_SCHEMA.market;
 
   /* maps between the submission form's stored keys and the report's labels */
-  var GENRE_EN = { drama: "Drama", comedy: "Comedy", thriller: "Thriller", horror: "Horror", action: "Action", documentary: "Documentary", other: "Other" };
+  var GENRE_EN = { drama: "Drama", comedy: "Comedy", crime: "Crime", thriller: "Thriller", horror: "Horror", action: "Action", documentary: "Documentary", other: "Other" };
   var FORMAT_EN = { feature: "Feature", short: "Short film", short_under_30: "Short film",
                     treatment_feature: "Feature treatment", treatment_short: "Short film treatment" };
   var DRAFT_EN = { first: "First draft", revised: "Revised draft", final: "Final draft" };

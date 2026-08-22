@@ -14,8 +14,8 @@
   try { var stored = localStorage.getItem(LANG_KEY); if (stored === "ar" || stored === "en") ULANG = stored; } catch (e) {}
 
   var GENRES = {
-    ar: { drama: "دراما", comedy: "كوميديا", thriller: "إثارة / تشويق", horror: "رعب", action: "أكشن", documentary: "وثائقي", other: "أخرى" },
-    en: { drama: "Drama", comedy: "Comedy", thriller: "Thriller", horror: "Horror", action: "Action", documentary: "Documentary", other: "Other" }
+    ar: { drama: "دراما", comedy: "كوميديا", crime: "جريمة", thriller: "إثارة / تشويق", horror: "رعب", action: "أكشن", documentary: "وثائقي", other: "أخرى" },
+    en: { drama: "Drama", comedy: "Comedy", crime: "Crime", thriller: "Thriller", horror: "Horror", action: "Action", documentary: "Documentary", other: "Other" }
   };
   var FILM = {
     ar: { feature: "روائي طويل", short: "قصير", short_under_30: "قصير (<30ص)", treatment_feature: "معالجة — طويل", treatment_short: "معالجة — قصير" },
