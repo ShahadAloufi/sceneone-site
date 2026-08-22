@@ -217,6 +217,64 @@
     <p class="ctypes__note" data-i18n="ctypesNote">يمكنك إعادة تقديم نسخة مطوّرة من نفس السيناريو (Draft 2) مجانًا بعد استلام التقييم الأولي، بشرط أن تكون نسخة محدثة لنفس العمل وليست مشروعًا جديدًا.</p>
     <div class="ctypes__grid">
 
+      <!-- Treatment coverage: an early-stage read on the STORY, not the
+           eight-point script coverage below — hence its own short list and no
+           sample-report link (the sample is a script report and would mislead).
+           The CTA is disabled until a treatment tier exists in the submission
+           form and PRICES; today it would invoice the writer for a full script
+           coverage at 350 SAR or more. -->
+      <article class="ctype-card">
+        <div class="ctype-card__head">
+          <h3 class="ctype-card__title" data-i18n="treatTitle">تغطية المعالجة السينمائية</h3>
+          <div class="price-div">
+            <img class="riyal-icon" src="assets/riyal.svg" alt="ريال">
+            <h1>70</h1>
+          </div>
+          <p class="ctype-card__desc" data-i18n-html="treatShortDescHtml">تقييم مبكر لفكرة القصة يحدد مدى جاهزيتها للتحول إلى سيناريو سينمائي. للفيلم القصير (<strong>حتى 5 صفحات</strong>).</p>
+        </div>
+        <div class="ctype-card__foot">
+          <ul class="ctype-card__list">
+            <li data-i18n="treatLi1">تقييم الفكرة وأصالتها</li>
+            <li data-i18n="treatLi2">تحليل هيكل القصة العام</li>
+            <li data-i18n="treatLi3">مراجعة الشخصيات ودوافعها</li>
+            <li data-i18n="treatLi4">تحديد المسار العاطفي والموضوعي</li>
+            <li data-i18n="treatLi5">توصية واضحة للتطوير أو التعديل أو إعادة التفكير</li>
+          </ul>
+          <div class="ctype-card__btns">
+            <a class="btn btn--white btn--disabled" href="/submit" aria-disabled="true" data-i18n="btnRequest">اطلب التغطية</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Treatment coverage: an early-stage read on the STORY, not the
+           eight-point script coverage below — hence its own short list and no
+           sample-report link (the sample is a script report and would mislead).
+           The CTA is disabled until a treatment tier exists in the submission
+           form and PRICES; today it would invoice the writer for a full script
+           coverage at 350 SAR or more. -->
+      <article class="ctype-card">
+        <div class="ctype-card__head">
+          <h3 class="ctype-card__title" data-i18n="treatTitle">تغطية المعالجة السينمائية</h3>
+          <div class="price-div">
+            <img class="riyal-icon" src="assets/riyal.svg" alt="ريال">
+            <h1>150</h1>
+          </div>
+          <p class="ctype-card__desc" data-i18n-html="treatFeatureDescHtml">تقييم مبكر لفكرة القصة يحدد مدى جاهزيتها للتحول إلى سيناريو سينمائي. للفيلم الطويل (<strong>حتى 15 صفحة</strong>).</p>
+        </div>
+        <div class="ctype-card__foot">
+          <ul class="ctype-card__list">
+            <li data-i18n="treatLi1">تقييم الفكرة وأصالتها</li>
+            <li data-i18n="treatLi2">تحليل هيكل القصة العام</li>
+            <li data-i18n="treatLi3">مراجعة الشخصيات ودوافعها</li>
+            <li data-i18n="treatLi4">تحديد المسار العاطفي والموضوعي</li>
+            <li data-i18n="treatLi5">توصية واضحة للتطوير أو التعديل أو إعادة التفكير</li>
+          </ul>
+          <div class="ctype-card__btns">
+            <a class="btn btn--white btn--disabled" href="/submit" aria-disabled="true" data-i18n="btnRequest">اطلب التغطية</a>
+          </div>
+        </div>
+      </article>
+
       <!-- Entry tier: the same short-film coverage at a lower price for scripts
            under 30 pages. Copy only for now — the payment gate still prices off
            `film_type` alone (lib/moyasar.js), so a writer choosing «فيلم قصير»
@@ -246,16 +304,16 @@
 
       <article class="ctype-card">
         <div class="ctype-card__head">
-          <h3 class="ctype-card__title" data-i18n="featureTitle">تغطية النصوص السينمائية الطويلة</h3>
+          <h3 class="ctype-card__title" data-i18n="shortTitle">تغطية النصوص السينمائية القصيرة</h3>
           <div class="price-div">
             <img class="riyal-icon" src="assets/riyal.svg" alt="ريال">
-            <h1>1200</h1>
+            <h1>750</h1>
           </div>
-          <p class="ctype-card__desc" data-i18n-html="featureDescHtml">يقدم هذا التقرير ملاحظات تفصيلية على الفيلم الطويل (<strong>حتى 120 صفحة</strong>). يشمل ذلك تقييمًا وملاحظات حول: <strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والحوار، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong></p>
+          <p class="ctype-card__desc" data-i18n-html="shortDescHtml">يقدم هذا التقرير ملاحظات تفصيلية على الفيلم القصير (<strong>من 30 إلى 50 صفحة</strong>). يشمل ذلك تقييمًا وملاحظات حول: <strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والحوار، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong></p>
         </div>
         <div class="ctype-card__foot">
           <ul class="ctype-card__list">
-            <li data-i18n-html="featureLi1Html">مدة التسليم: حتى 4 أسابيع <span class="ctype-card__note">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span></li>
+            <li data-i18n-html="shortLi1Html">مدة التسليم: عادةً من 10 إلى 15 يومًا <span class="ctype-card__note">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span></li>
             <li data-i18n="li2">تقييمات وفق معايير الصناعة: Pass / Consider / Recommend</li>
             <li data-i18n="li3">ملاحظات تفصيلية تتضمن اقتراحات عملية لتحسين النص السينمائي</li>
             <li data-i18n="li4">منح النصوص السينمائية ذات التقييمات العالية فرصة إضافية للظهور والوصول إلى جهات في الصناعة</li>
@@ -269,16 +327,16 @@
 
       <article class="ctype-card">
         <div class="ctype-card__head">
-          <h3 class="ctype-card__title" data-i18n="shortTitle">تغطية النصوص السينمائية القصيرة</h3>
+          <h3 class="ctype-card__title" data-i18n="featureTitle">تغطية النصوص السينمائية الطويلة</h3>
           <div class="price-div">
             <img class="riyal-icon" src="assets/riyal.svg" alt="ريال">
-            <h1>750</h1>
+            <h1>1200</h1>
           </div>
-          <p class="ctype-card__desc" data-i18n-html="shortDescHtml">يقدم هذا التقرير ملاحظات تفصيلية على الفيلم القصير (<strong>من 30 إلى 50 صفحة</strong>). يشمل ذلك تقييمًا وملاحظات حول: <strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والحوار، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong></p>
+          <p class="ctype-card__desc" data-i18n-html="featureDescHtml">يقدم هذا التقرير ملاحظات تفصيلية على الفيلم الطويل (<strong>حتى 120 صفحة</strong>). يشمل ذلك تقييمًا وملاحظات حول: <strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والحوار، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong></p>
         </div>
         <div class="ctype-card__foot">
           <ul class="ctype-card__list">
-            <li data-i18n-html="shortLi1Html">مدة التسليم: عادةً من 10 إلى 15 يومًا <span class="ctype-card__note">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span></li>
+            <li data-i18n-html="featureLi1Html">مدة التسليم: حتى 4 أسابيع <span class="ctype-card__note">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span></li>
             <li data-i18n="li2">تقييمات وفق معايير الصناعة: Pass / Consider / Recommend</li>
             <li data-i18n="li3">ملاحظات تفصيلية تتضمن اقتراحات عملية لتحسين النص السينمائي</li>
             <li data-i18n="li4">منح النصوص السينمائية ذات التقييمات العالية فرصة إضافية للظهور والوصول إلى جهات في الصناعة</li>

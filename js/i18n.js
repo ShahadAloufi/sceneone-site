@@ -62,6 +62,17 @@
       partnershipOffer: "خصم 15% لأعضاء ومنسوبي الجمعية",
       partnershipNote: "يُشترط إبراز بطاقة العضوية السارية عند الطلب",
 
+      // Treatment coverage — a story-stage read, deliberately shorter than the
+      // script coverage below. Both treatment cards share every string except
+      // the film type and page cap in their description.
+      treatTitle: "تغطية المعالجة السينمائية",
+      treatShortDescHtml: "تقييم مبكر لفكرة القصة يحدد مدى جاهزيتها للتحول إلى سيناريو سينمائي. للفيلم القصير (<strong>حتى 5 صفحات</strong>).",
+      treatFeatureDescHtml: "تقييم مبكر لفكرة القصة يحدد مدى جاهزيتها للتحول إلى سيناريو سينمائي. للفيلم الطويل (<strong>حتى 15 صفحة</strong>).",
+      treatLi1: "تقييم الفكرة وأصالتها",
+      treatLi2: "تحليل هيكل القصة العام",
+      treatLi3: "مراجعة الشخصيات ودوافعها",
+      treatLi4: "تحديد المسار العاطفي والموضوعي",
+      treatLi5: "توصية واضحة للتطوير أو التعديل أو إعادة التفكير",
       ctypesNote: "يمكنك إعادة تقديم نسخة مطوّرة من نفس السيناريو (Draft 2) مجانًا بعد استلام التقييم الأولي، بشرط أن تكون نسخة محدثة لنفس العمل وليست مشروعًا جديدًا.",
       featureTitle: "تغطية النصوص السينمائية الطويلة",
       featureDescHtml: "يقدم هذا التقرير ملاحظات تفصيلية على الفيلم الطويل (<strong>حتى 120 صفحة</strong>). يشمل ذلك تقييمًا وملاحظات حول: " +
@@ -320,6 +331,14 @@
       partnershipOffer: "15% off for Association members and staff",
       partnershipNote: "A valid membership card must be presented when requesting coverage",
 
+      treatTitle: "Treatment Coverage",
+      treatShortDescHtml: "Early-stage story evaluation that tests whether your idea is strong enough to become a screenplay. For short films (<strong>up to 5 pages</strong>).",
+      treatFeatureDescHtml: "Early-stage story evaluation that tests whether your idea is strong enough to become a screenplay. For feature films (<strong>up to 15 pages</strong>).",
+      treatLi1: "Story concept & originality assessment",
+      treatLi2: "Narrative structure overview (beginning, middle, end)",
+      treatLi3: "Character strength & motivation review",
+      treatLi4: "Emotional and thematic direction",
+      treatLi5: "Development readiness verdict (continue / revise / rethink)",
       ctypesNote: "After receiving your initial coverage, you're welcome to resubmit an updated draft of the same screenplay (Draft 2) free of charge, as long as it remains the same project and not a new submission.",
       featureTitle: "Feature Film Coverage",
       featureDescHtml: "Provides detailed feedback on feature-length scripts (<strong>up to 120 pages</strong>), including: " +

@@ -45,6 +45,15 @@ Actively iterating on UX polish and workflow features.
   (13px, `rgba(255,255,255,.55)`, centred over `.ctypes__grid`), keyed `ctypesNote`.
 - **«التقدير التقريبي للميزانية» added to all three coverage card descriptions.** The
   tiers carry the *same* list on purpose — change one, change the others.
+- **Two treatment-coverage cards added (70 SAR short / 150 SAR feature)** — a
+  story-stage read, NOT the eight-point script coverage: own five-item list, own
+  copy, no sample-report link (the sample is a script report and would mislead).
+  **Their CTAs are `.btn--disabled` on purpose** — there is no treatment
+  `film_type` and no price for one, so a live button would invoice a treatment
+  writer 350 SAR or more for the wrong product. Re-enable only once the tier
+  exists in `FILM_TYPES` + `PRICES` **and** the deliverable question is settled:
+  the reader workspace produces the 8-point script report, which is not what a
+  treatment coverage is. Card order is now 70 · 150 · 350 · 750 · 1200.
 - **Third price tier shipped end to end: `short_under_30`, 350 SAR** (card first in
   the grid, then 1200, then 750). Landing copy landed first and the payment plumbing
   followed the same day — see the Business Rules bullet for the six places a tier
