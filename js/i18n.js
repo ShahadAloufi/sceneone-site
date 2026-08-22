@@ -65,9 +65,10 @@
       // Treatment coverage — a story-stage read, deliberately shorter than the
       // script coverage below. Both treatment cards share every string except
       // the film type and page cap in their description.
-      treatTitle: "تغطية المعالجة السينمائية",
-      treatShortDescHtml: "تقييم مبكر لفكرة القصة يحدد مدى جاهزيتها للتحول إلى سيناريو سينمائي. للفيلم القصير (<strong>حتى 5 صفحات</strong>).",
-      treatFeatureDescHtml: "تقييم مبكر لفكرة القصة يحدد مدى جاهزيتها للتحول إلى سيناريو سينمائي. للفيلم الطويل (<strong>حتى 15 صفحة</strong>).",
+      treatShortTitle: "تغطية المعالجة السينمائية للفيلم القصير",
+      treatFeatureTitle: "تغطية المعالجة السينمائية للفيلم الطويل",
+      treatShortDescHtml: "تقييم مبكر لفكرة القصة يحدد مدى جاهزيتها للتحول إلى سيناريو سينمائي (<strong>حتى 5 صفحات</strong>).",
+      treatFeatureDescHtml: "تقييم مبكر لفكرة القصة يحدد مدى جاهزيتها للتحول إلى سيناريو سينمائي (<strong>حتى 15 صفحة</strong>).",
       treatLi1: "تقييم الفكرة وأصالتها",
       treatLi2: "تحليل هيكل القصة العام",
       treatLi3: "مراجعة الشخصيات ودوافعها",
@@ -331,9 +332,10 @@
       partnershipOffer: "15% off for Association members and staff",
       partnershipNote: "A valid membership card must be presented when requesting coverage",
 
-      treatTitle: "Treatment Coverage",
-      treatShortDescHtml: "Early-stage story evaluation that tests whether your idea is strong enough to become a screenplay. For short films (<strong>up to 5 pages</strong>).",
-      treatFeatureDescHtml: "Early-stage story evaluation that tests whether your idea is strong enough to become a screenplay. For feature films (<strong>up to 15 pages</strong>).",
+      treatShortTitle: "Short Film Treatment Coverage",
+      treatFeatureTitle: "Feature Film Treatment Coverage",
+      treatShortDescHtml: "Early-stage story evaluation that tests whether your idea is strong enough to become a screenplay (<strong>up to 5 pages</strong>).",
+      treatFeatureDescHtml: "Early-stage story evaluation that tests whether your idea is strong enough to become a screenplay (<strong>up to 15 pages</strong>).",
       treatLi1: "Story concept & originality assessment",
       treatLi2: "Narrative structure overview (beginning, middle, end)",
       treatLi3: "Character strength & motivation review",
