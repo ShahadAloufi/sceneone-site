@@ -59,19 +59,20 @@ Actively iterating on UX polish and workflow features.
   on its **own** language key **`sceneone-treatment-lang`** — so a visitor reading
   this sample never flips the script sample, or a writer's real report, into the other
   language. Linked from both treatment cards' «إطلع على نموذج التقرير».
-- **Two treatment-coverage cards added (70 SAR short / 150 SAR feature)** — a
-  story-stage read, NOT the eight-point script coverage: own five-item list, own
-  copy, no sample-report link (the sample is a script report and would mislead).
-  **Their CTAs are `.btn--disabled` on purpose** — there is no treatment
-  `film_type` and no price for one, so a live button would invoice a treatment
-  writer 350 SAR or more for the wrong product. Re-enable only once the tier
-  exists in `FILM_TYPES` + `PRICES` **and** the deliverable question is settled:
-  the reader workspace produces the 8-point script report, which is not what a
-  treatment coverage is. Card order is now 70 · 150 · 350 · 750 · 1200.
-  **Turnaround promised: 1 week (short) / 10 days (feature)** — shorter than every
-  script tier, so wiring the payment side also means giving `deadlineDays()` a
-  treatment branch; today anything non-feature falls through to 15 days and the
-  badge would contradict the card.
+- **Treatment coverage is priced and purchasable, wired end to end**
+  (2026-08-19): `treatment_short` 70 SAR / `treatment_feature` 150 SAR. A
+  story-stage read, NOT the eight-point script coverage: its own eight-item card
+  list, its own sample (`sample-treatment-report.html`), page caps of 5 / 15, and
+  turnaround of **7 / 10 days** — quicker than every script tier, which is why
+  `deadlineDays()` in `js/admin.js` now reads a `TURNAROUND` map instead of a
+  feature/else ternary. Card order: 70 · 150 · 350 · 750 · 1200.
+  ⚠️ **The deliverable still does not exist.** The reader workspace produces the
+  script schema (8 evaluation points, 6 market notes, paragraph overall notes); a
+  treatment needs the 9-point schema the sample page shows. A treatment bought
+  today enters the normal pipeline and its reader is handed the wrong form. Staff
+  can see which product it is — the dashboard, the team email and the report all
+  label the treatment types — so the stopgap is human: hold delivery until the
+  workspace supports the treatment schema.
 - **Third price tier shipped end to end: `short_under_30`, 350 SAR** (card first in
   the grid, then 1200, then 750). Landing copy landed first and the payment plumbing
   followed the same day — see the Business Rules bullet for the six places a tier

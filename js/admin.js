@@ -18,8 +18,8 @@
     en: { drama: "Drama", comedy: "Comedy", thriller: "Thriller", horror: "Horror", action: "Action", documentary: "Documentary", other: "Other" }
   };
   var FILM = {
-    ar: { feature: "روائي طويل", short: "قصير", short_under_30: "قصير (<30ص)" },
-    en: { feature: "Feature", short: "Short", short_under_30: "Short (<30p)" }
+    ar: { feature: "روائي طويل", short: "قصير", short_under_30: "قصير (<30ص)", treatment_feature: "معالجة — طويل", treatment_short: "معالجة — قصير" },
+    en: { feature: "Feature", short: "Short", short_under_30: "Short (<30p)", treatment_feature: "Treatment — feature", treatment_short: "Treatment — short" }
   };
   var DRAFT = {
     ar: { first: "الأولى", revised: "مُنقّحة", final: "نهائية" },
@@ -292,7 +292,11 @@
   // landing-page cards: features up to 4 weeks, shorts 10–15 days (we track the
   // outer bound). Keep in sync with index.html — "Overdue" should mean the
   // public commitment was missed.
-  function deadlineDays(filmType) { return filmType === "feature" ? 28 : 15; }
+  // Days allowed per product, keyed on film_type — MUST match what index.html
+  // promises on each card, since "Overdue" means that public promise was missed.
+  // Treatments are quicker reads and promise less: 1 week / 10 days.
+  var TURNAROUND = { feature: 28, treatment_feature: 10, treatment_short: 7 };
+  function deadlineDays(filmType) { return TURNAROUND[filmType] || 15; }
 
   // THE CLOCK STARTS AT ASSIGNMENT CONFIRMATION, NOT AT SUBMISSION.
   // `writer_notified_at` is stamped only when the "work has started" email

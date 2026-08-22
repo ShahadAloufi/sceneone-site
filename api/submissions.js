@@ -27,21 +27,25 @@ const SITE_URL = process.env.SITE_URL || "https://sceneone.info";
 
 // --- Allowlists & limits (server is the source of truth; never trust client) ---
 const GENRES = ["drama", "comedy", "thriller", "horror", "action", "documentary", "other"];
-// `short_under_30` is the cheaper short tier (350 SAR). It is a separate
-// film_type rather than a page-count branch on `short` because price is derived
-// from film_type alone (PRICES in lib/moyasar.js) and because the page count is
-// optional — it only exists for PDF uploads, and it comes from the browser.
-const FILM_TYPES = ["feature", "short", "short_under_30"];
-// Guard for the cheap tier: the page count pdf.js reports INCLUDES the title
-// page, so the script itself is `pages - 1` (same convention as the coverage
-// panel). Anything longer than this is refused rather than silently invoiced at
-// 350. The cap is 30, one page LOOSER than the advertised "under 30 pages", on
-// purpose — the title-page convention makes the boundary fuzzy by exactly one
-// page, and bouncing an honest 29-page script over that is worse than letting a
-// 30-page one through. It is also a UX guard, not a security boundary: the count
-// is client-supplied, so a forged one still buys the cheap tier for a long
-// script. The real check is a human opening it in the reader workspace.
-const SHORT_UNDER_30_MAX_PAGES = 30;
+// Every priced product is its own `film_type`: price is derived from film_type
+// alone (PRICES in lib/moyasar.js), never from the page count, which is optional
+// (PDF uploads only) and computed in the browser. `short_under_30` is the cheaper
+// short tier; the two `treatment_*` types are a different product entirely — an
+// early-stage read on the story, not the eight-point script coverage.
+const FILM_TYPES = ["feature", "short", "short_under_30", "treatment_short", "treatment_feature"];
+// Length guard for the types sold on a page cap. The count pdf.js reports
+// INCLUDES the title page, so the work itself is `pages - 1` (same convention as
+// the coverage panel), and each cap here is one page LOOSER than the number
+// advertised on the card: the title-page convention makes the boundary fuzzy by
+// exactly one page, and bouncing an honest 29-page script is worse than letting a
+// 30-page one through. A UX guard, not a security boundary — the count is
+// client-supplied, so a forged one still buys the cheap tier for a long script.
+// The real check is a human opening it in the reader workspace.
+const PAGE_CAPS = {
+  short_under_30: 30,
+  treatment_short: 5,
+  treatment_feature: 15,
+};
 const DRAFTS = ["first", "revised", "final"];
 // Writer's self-declared experience, shown to readers so they can pitch the
 // coverage's depth and tone. Ordered least → most experienced; the labels live
@@ -128,13 +132,13 @@ module.exports = async (req, res) => {
   const err = validate(row);
   if (err) return res.status(400).json({ message: err });
 
-  // The cheap short tier is priced on length, so a script that is plainly too
-  // long for it is bounced back to the form instead of being invoiced 350.
-  // Only when we actually have a count — non-PDF uploads have none.
-  if (row.film_type === "short_under_30" && row.pages &&
-      row.pages - 1 > SHORT_UNDER_30_MAX_PAGES) {
+  // Tiers sold on a page cap bounce anything plainly too long, rather than
+  // invoicing the writer for the wrong product. Only when we actually have a
+  // count — non-PDF uploads have none.
+  const cap = PAGE_CAPS[row.film_type];
+  if (cap && row.pages && row.pages - 1 > cap) {
     return res.status(400).json({
-      message: "عدد صفحات النص يتجاوز 30 صفحة. اختر «فيلم قصير (من 30 إلى 50 صفحة)» لهذا النص.",
+      message: "عدد صفحات الملف يتجاوز " + cap + " صفحة، وهو أطول مما تغطيه الفئة المختارة. اختر الفئة المناسبة لعدد صفحات نصك.",
     });
   }
 
