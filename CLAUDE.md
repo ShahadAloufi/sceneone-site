@@ -53,6 +53,10 @@ Actively iterating on UX polish and workflow features.
   short tiers stop overlapping, and each card's page range is now bold.
 - **`sample-report.html`'s Arabic polished** — logline, synopsis, and the Premise &
   Theme note. Arabic only; the `_EN` sample objects were deliberately left alone.
+- **Dialogue («الحوار») added as an 8th evaluation point** — reader workspace, the
+  writer's report, the PDF and the public sample, from the one shared `EVAL`/`GLANCE`
+  list. Already-delivered reports are unaffected: a point with no score and no text
+  is dropped at render. See the Business Rules bullet before adding a ninth.
 
 **Recently shipped (2026-08-11 → 08-12):**
 - **Public-site English support** — `index.html`, `readers.html`, and
@@ -697,6 +701,19 @@ must be in the `supabase_realtime` publication for live updates to fire.
     QA-review their own work either way: `can_qa_review` excludes assignees, and the
     API refuses `request_revision` on the self-deliver path. If this ever needs
     reversing, make `selfDeliver` set `submitted` instead and let staff approve it.
+- **The 8 evaluation points live in `js/report-render.js` (`EVAL` / `GLANCE`)** — one
+  ordered list each, shared by the reader workspace, the writer's report and the PDF,
+  so a point added there appears in all three at once. **Dialogue («الحوار») was added
+  2026-08-19**, positioned after Character because the two are read together. Adding a
+  point means: the `EVAL` and `GLANCE` arrays, plus its label in **four** maps (`eval`
+  and `glance_l`, in both `T.en` and `T.ar`) — a missing label falls back to the raw
+  English key rather than failing. `GLANCE` carries one name `EVAL` does not:
+  **"Overall presentation" is the glance's name for the eval's "Presentation"**.
+  **Older coverages simply have no entry for a newer point**, and `mergeCoverage()`
+  fills it as `{score: null, text: ""}` — so `render()` **drops any point with neither
+  a score nor text** from both the glance table and the evaluation list. Without that,
+  every already-delivered report would grow an empty «الحوار» section. The rule is
+  general, not Dialogue-specific, so the next added point behaves the same way.
 - **Per-point review notes (`coverages.review_comments`).** A reviewer can attach a
   note to an individual **evaluation point** on top of the one overall `review_note`.
   Each point shows a collapsed "Add comment" link; clicking it reveals a box for that
@@ -812,7 +829,7 @@ must be in the `supabase_realtime` publication for live updates to fire.
   **All submissions** (every script, all columns, coverage→View report) and
   **Deliveries** (approved/delivered only). Readers keep **Delivered by me**;
   super-admins keep **Manage admins**.
-- **Report gating:** "Generate report" (preview) needs a 1–5 score on all 7 evaluation
+- **Report gating:** "Generate report" (preview) needs a 1–5 score on all 8 evaluation
   points; "Submit Coverage for Approval" additionally needs every written section filled.
 - **Deadline: the clock starts at `writer_notified_at`, NOT `created_at`** (changed
   2026-08-10). Deadline = `writer_notified_at` + the max turnaround for the type —
@@ -1025,7 +1042,7 @@ must be in the `supabase_realtime` publication for live updates to fire.
   ~~`sample-report.html`'s report content was Arabic-only regardless of its
   toggle~~ — **done 2026-08-12**: `sampleSubmission_AR/EN` and
   `sampleCoverage_AR/EN` now carry a full parallel translation (logline,
-  synopsis, all seven evaluation notes, market analysis, strengths/to-develop,
+  synopsis, every evaluation note, market analysis, strengths/to-develop,
   verdict), and `applyLang()` picks the matching pair. This page has its own
   toggle (`sceneone-report-lang` in localStorage, a `.langseg` control) —
   separate from `js/i18n.js` and `sceneone-lang`, since it's one of the

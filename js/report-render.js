@@ -36,9 +36,9 @@
       synopsis: "Synopsis", evaluation: "Evaluation", market: "The market", overall: "Overall comments",
       strengths: "Strengths", develop: "To develop", verdict: "Verdict", pending: "Pending", notwritten: "Not yet written.",
       outof: "/ 10", foot: "Script coverage",
-      eval: { "Premise & Theme": "Premise & Theme", "Hook": "Hook", "Stakes & Plot": "Stakes & Plot", "Character": "Character", "Structure & Pace": "Structure & Pace", "Producibility": "Producibility", "Presentation": "Presentation" },
+      eval: { "Premise & Theme": "Premise & Theme", "Hook": "Hook", "Stakes & Plot": "Stakes & Plot", "Character": "Character", "Dialogue": "Dialogue", "Structure & Pace": "Structure & Pace", "Producibility": "Producibility", "Presentation": "Presentation" },
       market_l: { audience: "Audience", genreDemand: "Genre and demand", pathBuyers: "Path and buyers", budgetCeiling: "Budget and ceiling", regional: "Regional potential", net: "Net" },
-      glance_l: { "Premise & Theme": "Premise & Theme", "Hook": "Hook", "Stakes & Plot": "Stakes & Plot", "Character": "Character", "Structure & Pace": "Structure & Pace", "Producibility": "Producibility", "Overall presentation": "Overall presentation" },
+      glance_l: { "Premise & Theme": "Premise & Theme", "Hook": "Hook", "Stakes & Plot": "Stakes & Plot", "Character": "Character", "Dialogue": "Dialogue", "Structure & Pace": "Structure & Pace", "Producibility": "Producibility", "Overall presentation": "Overall presentation" },
       decision: { Recommend: "Recommend", Consider: "Consider", Pass: "Pass" },
       fmt: {}, drf: {}, genreMap: {}, lenMap: {}, writerMap: {}, months: {}, lvl: {}
     },
@@ -49,9 +49,9 @@
       synopsis: "الملخّص", evaluation: "التقييم", market: "السوق", overall: "ملاحظات عامة",
       strengths: "نقاط القوة", develop: "ما يحتاج إلى تطوير", verdict: "الحكم", pending: "بانتظار التقييم", notwritten: "لم يُكتب بعد.",
       outof: "/ 10", foot: "تقييم النصوص",
-      eval: { "Premise & Theme": "الفكرة والموضوع", "Hook": "عنصر الجذب", "Stakes & Plot": "الرهانات الدرامية والحبكة", "Character": "الشخصيات", "Structure & Pace": "البناء الدرامي والإيقاع", "Producibility": "قابلية الإنتاج", "Presentation": "العرض والتنسيق" },
+      eval: { "Premise & Theme": "الفكرة والموضوع", "Hook": "عنصر الجذب", "Stakes & Plot": "الرهانات الدرامية والحبكة", "Character": "الشخصيات", "Dialogue": "الحوار", "Structure & Pace": "البناء الدرامي والإيقاع", "Producibility": "قابلية الإنتاج", "Presentation": "العرض والتنسيق" },
       market_l: { audience: "الجمهور المستهدف", genreDemand: "النوع والطلب في السوق", pathBuyers: "مسار المشروع والجهات المشترية", budgetCeiling: "الميزانية وسقف الإيرادات المتوقع", regional: "إمكانات الانتشار الإقليمي", net: "الخلاصة" },
-      glance_l: { "Premise & Theme": "الفكرة والموضوع", "Hook": "عنصر الجذب", "Stakes & Plot": "الرهانات الدرامية والحبكة", "Character": "الشخصيات", "Structure & Pace": "البناء الدرامي والإيقاع", "Producibility": "قابلية الإنتاج", "Overall presentation": "العرض العام" },
+      glance_l: { "Premise & Theme": "الفكرة والموضوع", "Hook": "عنصر الجذب", "Stakes & Plot": "الرهانات الدرامية والحبكة", "Character": "الشخصيات", "Dialogue": "الحوار", "Structure & Pace": "البناء الدرامي والإيقاع", "Producibility": "قابلية الإنتاج", "Overall presentation": "العرض العام" },
       decision: { Recommend: "يُوصى به", Consider: "يستحق الدراسة", Pass: "غير موصى به" },
       fmt: { "Short film": "فيلم قصير", "Feature": "فيلم طويل", "Feature film": "فيلم طويل", "TV Pilot": "حلقة تجريبية", "Web Series": "مسلسل ويب", "Series": "مسلسل", "Other": "أخرى" },
       drf: { "First draft": "المسودة الأولى", "Second draft": "المسودة الثانية", "Revised draft": "المسودة الثانية", "Final draft": "النسخة النهائية" },
@@ -64,10 +64,13 @@
     }
   };
 
-  var GLANCE = ["Premise & Theme", "Hook", "Stakes & Plot", "Character", "Structure & Pace", "Producibility", "Overall presentation"];
+  // Dialogue sits after Character on purpose — the two are read together, and a
+// coverage written before it existed simply has no entry for it (see the
+// legacy skip in render()).
+  var GLANCE = ["Premise & Theme", "Hook", "Stakes & Plot", "Character", "Dialogue", "Structure & Pace", "Producibility", "Overall presentation"];
   var GLANCE_OPTS = ["Excellent", "Good", "Fair", "Poor"];
   var REC_OPTS = ["Recommend", "Consider", "Pass"];
-  var EVAL = ["Premise & Theme", "Hook", "Stakes & Plot", "Character", "Structure & Pace", "Producibility", "Presentation"];
+  var EVAL = ["Premise & Theme", "Hook", "Stakes & Plot", "Character", "Dialogue", "Structure & Pace", "Producibility", "Presentation"];
   var MARKET = [
     { k: "audience", label: "Audience" },
     { k: "genreDemand", label: "Genre and demand" },
@@ -150,15 +153,28 @@
       [t.reader, esc(ar ? "احد قراء Scene One" : "Scene One Reader")], [t.date, lv("date", c.date)]];
     var topHtml = top.map(function (r) { return "<div" + (r[2] ? ' style="grid-column:1/-1"' : "") + '><div class="k">' + r[0] + '</div><div class="v" dir="auto">' + r[1] + "</div></div>"; }).join("");
 
+    // A coverage written before a point existed has nothing to say about it —
+    // no score, no text, no glance mark. Rendering it anyway would grow an empty
+    // section on reports that were already delivered to writers, so a point with
+    // nothing in it is dropped from both the glance table and the evaluation.
+    // `mergeCoverage` fills every point in EVAL, so absence is the only signal.
+    function written(name) {
+      var e = c.eval[name];
+      return !!(e && (e.score || String(e.text || "").trim()));
+    }
     var glOpts = [t.excellent, t.good, t.fair, t.poor];
     var glHead = "<tr><td></td>" + glOpts.map(function (o) { return '<td class="mark">' + o + "</td>"; }).join("") + "</tr>";
     var glHtml = GLANCE.map(function (cat) {
       var v = c.glance[cat];
+      // "Overall presentation" is the glance's name for the eval's "Presentation";
+      // every other glance row shares its name with an evaluation point.
+      if (!v && cat !== "Overall presentation" && !written(cat)) return "";
       var cells = GLANCE_OPTS.map(function (o) { return '<td class="mark ' + (v === o ? "hit" : "dim") + '">' + (v === o ? "●" : "·") + "</td>"; }).join("");
       return '<tr><td class="cat">' + t.glance_l[cat] + "</td>" + cells + "</tr>";
     }).join("");
     var evalHtml = EVAL.map(function (n) {
       var e = c.eval[n];
+      if (!written(n)) return "";
       return '<div class="rep-item"><div class="ih"><span class="t">' + t.eval[n] + "</span>" +
         (e.score ? '<span class="sc">' + e.score + " / 5</span>" : "") + "</div>" +
         "<p>" + val(e.text, nw) + "</p></div>";
