@@ -54,6 +54,10 @@ Actively iterating on UX polish and workflow features.
   exists in `FILM_TYPES` + `PRICES` **and** the deliverable question is settled:
   the reader workspace produces the 8-point script report, which is not what a
   treatment coverage is. Card order is now 70 · 150 · 350 · 750 · 1200.
+  **Turnaround promised: 1 week (short) / 10 days (feature)** — shorter than every
+  script tier, so wiring the payment side also means giving `deadlineDays()` a
+  treatment branch; today anything non-feature falls through to 15 days and the
+  badge would contradict the card.
 - **Third price tier shipped end to end: `short_under_30`, 350 SAR** (card first in
   the grid, then 1200, then 750). Landing copy landed first and the payment plumbing
   followed the same day — see the Business Rules bullet for the six places a tier
