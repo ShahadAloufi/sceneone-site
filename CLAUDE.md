@@ -59,6 +59,27 @@ Actively iterating on UX polish and workflow features.
   on its **own** language key **`sceneone-treatment-lang`** — so a visitor reading
   this sample never flips the script sample, or a writer's real report, into the other
   language. Linked from both treatment cards' «إطلع على نموذج التقرير».
+- **Two submission forms, one script (`js/submit.js`).** `submit.html` (script) and
+  `treatment-submit.html` (treatment) share every behaviour — dropzone, toasts, IP
+  toggle, upload, POST — because the script reads what differs **off the markup**:
+  required fields are `.sub-field[data-field]` carrying a `.req` star, and accepted
+  extensions come from the form's `data-accept` (script: pdf/fdx/fountain/docx/txt;
+  treatment: pdf/docx/txt). Add or drop a field on either form without touching JS.
+  - **The treatment form's own fields:** `treatmentText` (the narrative summary,
+    pasted), `characters` (main characters + motivation) and the optional `toneRef`
+    (reference films / mood). Three **new nullable columns** — `treatment_text`,
+    `characters`, `tone_ref` — script rows never set them. **SQL must be applied by
+    hand** (`supabase/schema.sql`, as always).
+  - **It has no `draft`** — a treatment has no draft stage. `api/submissions.js`
+    requires `draft` for script types and requires it to be **absent** for treatment
+    types, rather than storing a bogus value.
+  - **Its Project Type dropdown offers only the two treatment tiers**, and the
+    script form no longer offers them at all — each product now has one intake, and
+    the landing cards link accordingly (`/treatment-submit` vs `/submit`).
+  - ⚠️ **Both the pasted text and the file upload are required**, per the build
+    spec. That is redundant for a writer who uploads a PDF; if it costs
+    submissions, the fix is to make `treatmentText` optional (drop its `.req`
+    star — no JS change needed).
 - **Treatment coverage is priced and purchasable, wired end to end**
   (2026-08-19): `treatment_short` 70 SAR / `treatment_feature` 150 SAR. A
   story-stage read, NOT the eight-point script coverage: its own eight-item card

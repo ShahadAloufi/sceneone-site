@@ -1,5 +1,5 @@
 /* ===========================================================
-   Scene One — Script Submission page
+   Scene One — Submission pages (script AND treatment)
    Menu overlay · toasts · IP toggle · file dropzone · upload
 
    Flow: the browser uploads the script file DIRECTLY to the private
@@ -14,6 +14,22 @@
 
   var CFG = window.SCENEONE_SUPABASE || {};
   var BUCKET = CFG.bucket || "scripts";
+
+  // Both submission forms (script and treatment) run this file. What differs is
+  // WHICH fields exist, which are required, and which extensions are accepted —
+  // all read off the markup rather than branched on here, so a form can add or
+  // drop a field without touching this script:
+  //   • required  = any .sub-field[data-field] whose label carries a .req star
+  //   • accepted  = the form's data-accept list (falls back to the script set)
+  // The server re-validates everything regardless; these checks are UX only.
+  var formEl = document.getElementById("submitForm");
+  function requiredFields() {
+    return Array.prototype.filter.call(
+      document.querySelectorAll(".sub-field[data-field]"),
+      function (el) { return !!el.querySelector(".req"); }
+    ).map(function (el) { return el.getAttribute("data-field"); });
+  }
+  function hasField(name) { return !!document.querySelector('.sub-field[data-field="' + name + '"]'); }
 
   /* ---------- MENU OVERLAY ---------- */
   var menu = document.getElementById("menu");
@@ -60,7 +76,8 @@
   }
 
   /* ---------- CONSTANTS (mirror the server allowlists) ---------- */
-  var ALLOWED_EXT = ["pdf", "fdx", "fountain", "docx", "txt"];
+  var ALLOWED_EXT = ((formEl && formEl.getAttribute("data-accept")) || "pdf,fdx,fountain,docx,txt")
+    .split(",").map(function (x) { return x.trim().toLowerCase(); }).filter(Boolean);
   var MAX_BYTES = 25 * 1024 * 1024; // 25 MiB — matches the bucket's file_size_limit
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -163,6 +180,10 @@
       theme: (data.get("theme") || "").toString().trim(),
       logline: (data.get("logline") || "").toString().trim(),
       vision: (data.get("vision") || "").toString().trim(),
+      // Treatment-only; absent from the script form, hence "" rather than undefined.
+      characters: (data.get("characters") || "").toString().trim(),
+      toneRef: (data.get("toneRef") || "").toString().trim(),
+      treatmentText: (data.get("treatmentText") || "").toString().trim(),
       ip: (data.get("ip") || "no").toString()
     };
   }
@@ -177,15 +198,13 @@
       if (titleArErr) titleArErr.textContent = v.titleAr.length === 0 ? TITLE_AR_REQUIRED_MSG : TITLE_AR_ENGLISH_MSG;
       ok = false;
     }
-    req("titleEn", v.titleEn.length > 0);
-    req("email", EMAIL_RE.test(v.email));
-    req("writer", v.writer.length > 0);
-    req("writerLevel", v.writerLevel.length > 0);
-    req("genre", v.genre.length > 0);
-    req("filmType", v.filmType.length > 0);
-    req("draft", v.draft.length > 0);
-    req("vision", v.vision.length > 0);
-    req("file", !!file);
+    // Everything else is required iff the markup says so (a .req star).
+    requiredFields().forEach(function (name) {
+      if (name === "titleAr" || name === "file") return; // handled either side of this loop
+      if (name === "email") { req("email", EMAIL_RE.test(v.email)); return; }
+      req(name, String(v[name] == null ? "" : v[name]).length > 0);
+    });
+    if (requiredFields().indexOf("file") > -1 || file) req("file", !!file);
     if (file && ALLOWED_EXT.indexOf(fileExt(file.name)) === -1) {
       toast("صيغة الملف غير مدعومة", "استخدم صيغة PDF أو FDX أو Fountain أو DOCX أو TXT.", "error");
       markInvalid("file", true); ok = false;
@@ -257,6 +276,9 @@
               theme: v.theme,
               logline: v.logline,
               vision: v.vision,
+              characters: v.characters,
+              toneRef: v.toneRef,
+              treatmentText: v.treatmentText,
               ip: v.ip,
               filePath: filePath,
               fileName: file.name,

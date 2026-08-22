@@ -47,13 +47,17 @@ const PAGE_CAPS = {
   treatment_feature: 15,
 };
 const DRAFTS = ["first", "revised", "final"];
+function isTreatment(t) { return String(t || "").indexOf("treatment") === 0; }
 // Writer's self-declared experience, shown to readers so they can pitch the
 // coverage's depth and tone. Ordered least → most experienced; the labels live
 // in submit.html (writer-facing) and js/admin.js (reader-facing), keyed on these
 // values — add a level in all three or the table falls back to the raw key.
 const WRITER_LEVELS = ["new", "emerging", "professional", "veteran"];
 const ALLOWED_EXT = ["pdf", "fdx", "fountain", "docx", "txt"];
-const MAX = { title: 200, email: 254, writer: 120, duration: 60, theme: 200, logline: 1000, vision: 5000, path: 300, fileName: 255 };
+const MAX = { title: 200, email: 254, writer: 120, duration: 60, theme: 200, logline: 1000, vision: 5000, path: 300, fileName: 255,
+  // Treatment-only fields. `treatment_text` is the whole document when a writer
+  // pastes it instead of relying on the upload, so its cap is generous.
+  characters: 5000, toneRef: 500, treatmentText: 60000 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // Object path produced by the client: "<digits>-<base36>/<sanitized-name>".
@@ -74,10 +78,20 @@ function validate(row) {
   if (row.duration && row.duration.length > MAX.duration) return "بيانات غير صحيحة";
   if (row.theme && row.theme.length > MAX.theme) return "بيانات غير صحيحة";
   if (row.logline && row.logline.length > MAX.logline) return "بيانات غير صحيحة";
+  if (row.characters && row.characters.length > MAX.characters) return "بيانات غير صحيحة";
+  if (row.tone_ref && row.tone_ref.length > MAX.toneRef) return "بيانات غير صحيحة";
+  if (row.treatment_text && row.treatment_text.length > MAX.treatmentText) return "بيانات غير صحيحة";
   if (!row.email || row.email.length > MAX.email || !EMAIL_RE.test(row.email)) return "بريد إلكتروني غير صحيح";
   if (GENRES.indexOf(row.genre) === -1) return "بيانات غير صحيحة";
   if (FILM_TYPES.indexOf(row.film_type) === -1) return "بيانات غير صحيحة";
-  if (DRAFTS.indexOf(row.draft) === -1) return "بيانات غير صحيحة";
+  // `draft` is a script concept: the treatment form has no such field, so it is
+  // required for script types only and must be empty (never a bogus value) for
+  // a treatment.
+  if (isTreatment(row.film_type)) {
+    if (row.draft) return "بيانات غير صحيحة";
+  } else if (DRAFTS.indexOf(row.draft) === -1) {
+    return "بيانات غير صحيحة";
+  }
   if (WRITER_LEVELS.indexOf(row.writer_level) === -1) return "بيانات غير صحيحة";
   if (!row.file_path || row.file_path.length > MAX.path || !PATH_RE.test(row.file_path)) return "ملف النص مطلوب";
   if (!row.file_name || row.file_name.length > MAX.fileName) return "ملف النص مطلوب";
@@ -112,6 +126,10 @@ module.exports = async (req, res) => {
     theme: (b.theme || "").toString().trim(),
     logline: (b.logline || "").toString().trim(),
     vision: (b.vision || "").toString().trim(),
+    // Present only on the treatment form; null (not "") keeps script rows clean.
+    characters: (b.characters || "").toString().trim() || null,
+    tone_ref: (b.toneRef || "").toString().trim() || null,
+    treatment_text: (b.treatmentText || "").toString().trim() || null,
     ip_registered: b.ip === "yes" || b.ip === true,
     file_path: (b.filePath || "").toString().trim() || null,
     file_name: (b.fileName || "").toString().trim() || null,

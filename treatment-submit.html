@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-  <title>Scene One | تقديم النص</title>
-  <meta name="description" content="قدّم نصك السينمائي للحصول على تغطية نقدية احترافية من Scene One.">
+  <title>Scene One | تقديم المعالجة السينمائية</title>
+  <meta name="description" content="قدّم معالجتك السينمائية للحصول على تقييم مبكر من Scene One.">
   <meta name="robots" content="noindex, follow">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="alternate icon" type="image/png" href="assets/favicon.png">
@@ -87,10 +87,12 @@
       <img class="sub-decor-img sub-decor-camera"  src="assets/menu-camera.svg"  alt="">
     </div>
 
-    <form class="sub-card" id="submitForm" novalidate>
+    <!-- Same script as the script form: js/submit.js reads the required fields off
+     the .req stars and the accepted extensions off data-accept. -->
+    <form class="sub-card" id="submitForm" data-kind="treatment" data-accept="pdf,docx,txt" novalidate>
       <div class="sub-card__head">
-        <p class="sub-card__eyebrow">SCRIPT SUBMISSION</p>
-        <h1 class="sub-card__title">تقديم النص</h1>
+        <p class="sub-card__eyebrow">TREATMENT SUBMISSION</p>
+        <h1 class="sub-card__title">تقديم المعالجة السينمائية</h1>
       </div>
 
       <div class="sub-card__body">
@@ -133,6 +135,16 @@
             <p class="sub-err">اختر مستواك</p>
           </div>
 
+          <div class="sub-field" data-field="filmType">
+            <label>نوع المشروع <span class="req">*</span></label>
+            <select name="filmType">
+              <option value="" disabled selected>اختر نوع المشروع</option>
+              <option value="treatment_short">فيلم قصير (معالجة حتى 5 صفحات) — 70 ريال</option>
+              <option value="treatment_feature">فيلم طويل (معالجة حتى 15 صفحة) — 150 ريال</option>
+            </select>
+            <p class="sub-err">اختر نوع المشروع</p>
+          </div>
+
           <div class="sub-field" data-field="genre">
             <label>النوع <span class="req">*</span></label>
             <select name="genre">
@@ -150,34 +162,25 @@
             <p class="sub-err">اختر النوع</p>
           </div>
 
-          <div class="sub-field" data-field="filmType">
-            <label>نوع الفيلم <span class="req">*</span></label>
-            <select name="filmType">
-              <option value="" disabled selected>اختر نوع الفيلم</option>
-              <!-- Values are the film_type allowlist in api/submissions.js, and
-                   each one carries its own price (PRICES in lib/moyasar.js), so
-                   the page ranges here must match the landing page's cards. -->
-              <option value="feature">فيلم طويل (حتى 120 صفحة) — 1200 ريال</option>
-              <option value="short">فيلم قصير (من 30 إلى 50 صفحة) — 750 ريال</option>
-              <option value="short_under_30">فيلم قصير (أقل من 30 صفحة) — 350 ريال</option>
-            </select>
-            <p class="sub-err">اختر نوع الفيلم</p>
+          <div class="sub-field sub-field--full" data-field="treatmentText">
+            <label>نص المعالجة <span class="req">*</span></label>
+            <textarea name="treatmentText" placeholder="اكتب المعالجة هنا، أو ارفعها كملف في الأسفل."></textarea>
+            <p class="sub-hint">ملخّص سردي للقصة دون تقسيم مشهدي أو تنسيق سيناريو.</p>
+            <p class="sub-err">هذا الحقل مطلوب</p>
           </div>
 
-          <div class="sub-field" data-field="draft">
-            <label>المسودة <span class="req">*</span></label>
-            <select name="draft">
-              <option value="" disabled selected>اختر المسودة</option>
-              <option value="first">مسودة أولى</option>
-              <option value="revised">مسودة منقّحة</option>
-              <option value="final">مسودة نهائية</option>
-            </select>
-            <p class="sub-err">اختر المسودة</p>
+          <div class="sub-field sub-field--full" data-field="logline">
+            <label>الفكرة المختصرة/Logline <span class="req">*</span></label>
+            <textarea name="logline" placeholder="جملة واحدة تلخّص القصة."></textarea>
+            <p class="sub-hint">جملة واحدة فقط.</p>
+            <p class="sub-err">هذا الحقل مطلوب</p>
           </div>
 
-          <div class="sub-field" data-field="duration">
-            <label>المدة</label>
-            <input type="text" name="duration" placeholder="مثال: ٩ دقيقة / ٤٥ صفحة">
+          <div class="sub-field sub-field--full" data-field="characters">
+            <label>نبذة عن الشخصيات <span class="req">*</span></label>
+            <textarea name="characters" placeholder="وصف موجز للشخصيات الرئيسية: دورها ودافعها."></textarea>
+            <p class="sub-hint">وصف قصير لكل شخصية رئيسية (الدافع + الدور).</p>
+            <p class="sub-err">هذا الحقل مطلوب</p>
           </div>
 
           <div class="sub-field sub-field--full" data-field="theme">
@@ -185,9 +188,10 @@
             <input type="text" name="theme" placeholder="مثال: ثمن السعي وراء العدالة، خداع النفس">
           </div>
 
-          <div class="sub-field sub-field--full" data-field="logline">
-            <label>الفكرة المختصرة/Logline</label>
-            <textarea name="logline" placeholder="وصف موجز بجملة أو جملتين لنصك."></textarea>
+          <div class="sub-field sub-field--full" data-field="toneRef">
+            <label>النبرة والأسلوب</label>
+            <input type="text" name="toneRef" placeholder="مثال: أفلام مرجعية أو كلمات تصف الجو العام">
+            <p class="sub-hint">أفلام مرجعية أو كلمات مفتاحية تصف النبرة والمزاج.</p>
           </div>
 
           <div class="sub-field sub-field--full" data-field="vision">
@@ -218,31 +222,31 @@
           </div>
 
           <div class="sub-field sub-field--full" data-field="file">
-            <label>ملف النص <span class="req">*</span></label>
-            <div class="sub-drop" id="dropZone" tabindex="0" role="button" aria-label="أرفق ملف النص">
-              <input type="file" id="fileInput" name="file" accept=".pdf,.fdx,.fountain,.docx,.txt" hidden>
+            <label>ملف المعالجة <span class="req">*</span></label>
+            <div class="sub-drop" id="dropZone" tabindex="0" role="button" aria-label="أرفق ملف المعالجة">
+              <input type="file" id="fileInput" name="file" accept=".pdf,.docx,.txt" hidden>
               <svg class="sub-drop__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0 4 4m-4-4-4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
               <p class="sub-drop__text" id="dropText">اسحب ملفك هنا أو اضغط للاختيار</p>
-              <p class="sub-drop__hint">PDF · FDX · Fountain · DOCX · TXT — بحد أقصى 25MB</p>
+              <p class="sub-drop__hint">PDF · DOCX · TXT — بحد أقصى 25MB</p>
             </div>
-            <p class="sub-err">ملف النص مطلوب</p>
+            <p class="sub-err">ملف المعالجة مطلوب</p>
           </div>
 
         </div>
 
         <div class="sub-assure">
           <svg class="sub-assure__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3"/></svg>
-          <span>فقط القارئ المخصص لك سيتمكن من الوصول إلى نصك. لن يتم مشاركته مع أي شخص آخر.</span>
+          <span>فقط القارئ المخصص لك سيتمكن من الوصول إلى معالجتك. لن تتم مشاركتها مع أي شخص آخر.</span>
         </div>
 
-        <button type="submit" class="sub-submit">إرسال النص والدفع</button>
+        <button type="submit" class="sub-submit">إرسال المعالجة والدفع</button>
 
         <div class="sub-assure">
           <svg class="sub-assure__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span>نصك خاص ومحمي. لن نشارك عملك مع أي طرف ثالث دون موافقتك الصريحة.</span>
         </div>
 
-        <p class="sub-foot">بإرسالك النص فإنك توافق على معالجته وفق سياسة الخصوصية واتفاقية عدم الإفصاح.</p>
+        <p class="sub-foot">بإرسالك المعالجة فإنك توافق على معالجتها وفق سياسة الخصوصية واتفاقية عدم الإفصاح.</p>
       </div>
     </form>
   </main>

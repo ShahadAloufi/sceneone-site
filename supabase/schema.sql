@@ -226,6 +226,16 @@ alter table public.submissions
   add column if not exists refunded_at timestamptz,
   add column if not exists confirmation_sent_at timestamptz;
 
+-- Treatment submissions (2026-08-19). A treatment is a different intake from a
+-- script: it has no draft stage, and it carries a characters overview, an
+-- optional tone/style reference, and optionally the treatment text itself when
+-- the writer pastes it rather than relying on the upload. All nullable — script
+-- submissions never set them.
+alter table public.submissions
+  add column if not exists characters text,
+  add column if not exists tone_ref text,
+  add column if not exists treatment_text text;
+
 create index if not exists submissions_payment_invoice_id_idx
   on public.submissions (payment_invoice_id);
 
