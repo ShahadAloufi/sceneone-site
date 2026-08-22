@@ -622,6 +622,14 @@ must be in the `supabase_realtime` publication for live updates to fire.
   post-assignment refund was drafted and dropped the same day** — it would have been a
   partial refund, which the webhook drops as a `status_mismatch` and never reflects in
   the DB, so the policy would have promised something the code cannot do.
+- **The hosted checkout's only branding hook is `logo_url`** (optional
+  `MOYASAR_LOGO_URL`, sent by `lib/moyasar.js` only when non-blank — an empty
+  string would be a malformed URI and fail the whole invoice). Moyasar's invoice
+  API exposes **no background, colour, font or CSS parameter**, so the checkout
+  page cannot otherwise be styled. Branding it further would mean switching to
+  Moyasar's **embedded** form, which puts the card form on our own origin and
+  changes our PCI position — deliberately not done; the hosted page is why card
+  data never reaches our servers.
 - **A Moyasar event the webhook can't act on emails the team** (`sendUnreconciledAlert`).
   Three paths reach it: the re-read payment's status contradicts the event
   (`status_mismatch`), the payment carries no invoice id or metadata and no row
