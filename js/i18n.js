@@ -65,15 +65,15 @@
       ctypesNote: "يمكنك إعادة تقديم نسخة مطوّرة من نفس السيناريو (Draft 2) مجانًا بعد استلام التقييم الأولي، بشرط أن تكون نسخة محدثة لنفس العمل وليست مشروعًا جديدًا.",
       featureTitle: "تغطية النصوص السينمائية الطويلة",
       featureDescHtml: "يقدم هذا التقرير ملاحظات تفصيلية على الفيلم الطويل (<strong>حتى 120 صفحة</strong>). يشمل ذلك تقييمًا وملاحظات حول: " +
-        "<strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong>",
+        "<strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والحوار، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong>",
       featureLi1Html: "مدة التسليم: حتى 4 أسابيع <span class=\"ctype-card__note\">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span>",
 
       shortTitle: "تغطية النصوص السينمائية القصيرة",
       shortDescHtml: "يقدم هذا التقرير ملاحظات تفصيلية على الفيلم القصير (<strong>من 30 إلى 50 صفحة</strong>). يشمل ذلك تقييمًا وملاحظات حول: " +
-        "<strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong>",
+        "<strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والحوار، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong>",
       shortMiniTitle: "تغطية النصوص السينمائية القصيرة",
       shortMiniDescHtml: "يقدم هذا التقرير ملاحظات تفصيلية على الفيلم القصير (<strong>أقل من 30 صفحة</strong>). يشمل ذلك تقييمًا وملاحظات حول: " +
-        "<strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong>",
+        "<strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والحوار، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong>",
       shortLi1Html: "مدة التسليم: عادةً من 10 إلى 15 يومًا <span class=\"ctype-card__note\">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span>",
 
       li2: "تقييمات وفق معايير الصناعة: Pass / Consider / Recommend",
@@ -323,15 +323,15 @@
       ctypesNote: "After receiving your initial coverage, you're welcome to resubmit an updated draft of the same screenplay (Draft 2) free of charge, as long as it remains the same project and not a new submission.",
       featureTitle: "Feature Film Coverage",
       featureDescHtml: "Provides detailed feedback on feature-length scripts (<strong>up to 120 pages</strong>), including: " +
-        "<strong>concept and premise, hook and originality, dramatic stakes and structure, characters, structure and pacing, production viability, an approximate budget estimate, and an overall assessment.</strong>",
+        "<strong>concept and premise, hook and originality, dramatic stakes and structure, characters, dialogue, structure and pacing, production viability, an approximate budget estimate, and an overall assessment.</strong>",
       featureLi1Html: "Turnaround: up to 4 weeks <span class=\"ctype-card__note\">(the timeline begins once your script is assigned to a reader; you'll be notified by email when that happens)</span>",
 
       shortTitle: "Short Film Coverage",
       shortDescHtml: "Provides detailed feedback on short film scripts (<strong>30 to 50 pages</strong>), including: " +
-        "<strong>concept and premise, hook and originality, dramatic stakes and structure, characters, structure and pacing, production viability, an approximate budget estimate, and an overall assessment.</strong>",
+        "<strong>concept and premise, hook and originality, dramatic stakes and structure, characters, dialogue, structure and pacing, production viability, an approximate budget estimate, and an overall assessment.</strong>",
       shortMiniTitle: "Short Film Coverage",
       shortMiniDescHtml: "Provides detailed feedback on short film scripts (<strong>under 30 pages</strong>), including: " +
-        "<strong>concept and premise, hook and originality, dramatic stakes and structure, characters, structure and pacing, production viability, an approximate budget estimate, and an overall assessment.</strong>",
+        "<strong>concept and premise, hook and originality, dramatic stakes and structure, characters, dialogue, structure and pacing, production viability, an approximate budget estimate, and an overall assessment.</strong>",
       shortLi1Html: "Turnaround: typically 10–15 days <span class=\"ctype-card__note\">(the timeline begins once your script is assigned to a reader; you'll be notified by email when that happens)</span>",
 
       li2: "Industry-standard ratings: Pass / Consider / Recommend",
