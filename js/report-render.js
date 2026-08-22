@@ -141,7 +141,7 @@
   var MARKET = SCRIPT_SCHEMA.market;
 
   /* maps between the submission form's stored keys and the report's labels */
-  var GENRE_EN = { drama: "Drama", comedy: "Comedy", crime: "Crime", thriller: "Thriller", horror: "Horror", action: "Action", documentary: "Documentary", other: "Other" };
+  var GENRE_EN = { drama: "Drama", comedy: "Comedy", romance: "Romance", crime: "Crime", thriller: "Thriller", horror: "Horror", action: "Action", documentary: "Documentary", other: "Other" };
   var FORMAT_EN = { feature: "Feature", short: "Short film", short_under_30: "Short film",
                     treatment_feature: "Feature treatment", treatment_short: "Short film treatment" };
   var DRAFT_EN = { first: "First draft", revised: "Revised draft", final: "Final draft" };

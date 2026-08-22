@@ -26,7 +26,7 @@ const { sendPaymentPrompt } = require("../lib/submission-emails");
 const SITE_URL = process.env.SITE_URL || "https://sceneone.info";
 
 // --- Allowlists & limits (server is the source of truth; never trust client) ---
-const GENRES = ["drama", "comedy", "crime", "thriller", "horror", "action", "documentary", "other"];
+const GENRES = ["drama", "comedy", "romance", "crime", "thriller", "horror", "action", "documentary", "other"];
 // Every priced product is its own `film_type`: price is derived from film_type
 // alone (PRICES in lib/moyasar.js), never from the page count, which is optional
 // (PDF uploads only) and computed in the browser. `short_under_30` is the cheaper
