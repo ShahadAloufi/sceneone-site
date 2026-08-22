@@ -21,7 +21,18 @@
   // this workspace keeps referencing T / GLANCE / EVAL / … unchanged.
   var R = window.SOReport;
   var LOGO = R.LOGO, T = R.T;
-  var GLANCE = R.GLANCE, GLANCE_OPTS = R.GLANCE_OPTS, REC_OPTS = R.REC_OPTS, EVAL = R.EVAL, MARKET = R.MARKET;
+  var GLANCE_OPTS = R.GLANCE_OPTS, REC_OPTS = R.REC_OPTS;
+  // WHICH points this workspace asks for depends on what the writer bought: a
+  // script coverage and a treatment coverage are different documents (see the
+  // schemas in js/report-render.js). These three start on the script schema and
+  // are re-pointed by setSchema() once the submission is loaded and its
+  // film_type is known — every builder below reads them at call time, and all of
+  // those run after the load.
+  var SCHEMA = R.SCRIPT_SCHEMA;
+  var GLANCE = SCHEMA.glance, EVAL = SCHEMA.eval, MARKET = SCHEMA.market;
+  function setSchema(sc) {
+    SCHEMA = sc; GLANCE = sc.glance; EVAL = sc.eval; MARKET = sc.market;
+  }
   var GENRE_EN = R.GENRE_EN, FORMAT_EN = R.FORMAT_EN, DRAFT_EN = R.DRAFT_EN, LEVEL_EN = R.LEVEL_EN;
 
   /* ---------- workspace-chrome translations ---------- */
@@ -36,7 +47,7 @@
       synopsis: "Synopsis", synopsisPh: "Summarize the story in your own words.",
       evaluation: "Evaluation", market: "The market", overall: "Overall comments",
       strengths: "Strengths", develop: "To develop",
-      verdict: "Verdict", suggested: "Suggested · from the 8 scores",
+      verdict: "Verdict", suggested: "Suggested · from the scores",
       finalRating: "Final rating / 10", decision: "Decision",
       context: "Context (optional)", contextPh: "short-film and festival context", summary: "Summary",
       genReport: "Generate report", finalize: "Mark coverage complete", reopen: "Reopen coverage",
@@ -99,7 +110,7 @@
       synopsis: "الملخّص", synopsisPh: "لخّص القصة بأسلوبك.",
       evaluation: "التقييم", market: "السوق", overall: "ملاحظات عامة",
       strengths: "نقاط القوة", develop: "ما يحتاج إلى تطوير",
-      verdict: "الحكم", suggested: "مقترح · من الدرجات الثماني",
+      verdict: "الحكم", suggested: "مقترح · من الدرجات",
       finalRating: "التقييم النهائي / ١٠", decision: "القرار",
       context: "السياق (اختياري)", contextPh: "سياق الأفلام القصيرة والمهرجانات", summary: "الخلاصة",
       genReport: "إنشاء التقرير", finalize: "وضع علامة اكتمال التقييم", reopen: "إعادة فتح التقييم",
@@ -372,7 +383,7 @@
 
   /* overall /10: average of the set evaluation scores (1-5), scaled to 10 */
   function autoScore() {
-    var vals = EVAL.map(function (n) { return state.coverage.eval[n].score; }).filter(function (s) { return s; });
+    var vals = EVAL.map(function (n) { return state.coverage.eval[n] && state.coverage.eval[n].score; }).filter(function (s) { return s; });
     if (!vals.length) return null;
     var avg = vals.reduce(function (a, b) { return a + b; }, 0) / vals.length;
     return Math.round(avg * 2 * 10) / 10;
@@ -805,6 +816,8 @@
       writer: r.writer || "",
       email: r.email || "",
       format: FORMAT_EN[r.film_type] || "Short film",
+      // Raw type as well as its label: the report renderer picks its schema off this.
+      filmType: r.film_type || "",
       genre: GENRE_EN[r.genre] || r.genre || "",
       length: r.duration || "",
       // Blank (not a default) when the row predates the field — the panel shows a
@@ -859,6 +872,10 @@
       guardState(G.nfT, G.nfM, true);
       return;
     }
+    // The product decides the coverage's shape — do this before the skeleton or
+    // any UI is built from EVAL / GLANCE / MARKET.
+    setSchema(R.schemaFor(subRes.data.film_type));
+    state.coverage = blank().coverage;
     state.submission = mapSubmission(subRes.data);
 
     // Load an existing coverage (if any) BEFORE deciding access — a completed

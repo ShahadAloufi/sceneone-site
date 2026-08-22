@@ -87,9 +87,12 @@
   fetch("/api/report?t=" + encodeURIComponent(token))
     .then(function (r) { if (!r.ok) throw new Error("unavailable"); return r.json(); })
     .then(function (d) {
+      // The product decides the report's shape (script vs treatment coverage);
+      // mapSubmission carries film_type through, so render() needs no help.
+      var schema = window.SOReport.schemaFor((d.submission || {}).film_type);
       data = {
         submission: window.SOReport.mapSubmission(d.submission || {}),
-        coverage: window.SOReport.mergeCoverage(d.coverage || {})
+        coverage: window.SOReport.mergeCoverage(d.coverage || {}, schema)
       };
       ready();
       applyLang(lang());

@@ -66,13 +66,8 @@ Actively iterating on UX polish and workflow features.
   turnaround of **7 / 10 days** — quicker than every script tier, which is why
   `deadlineDays()` in `js/admin.js` now reads a `TURNAROUND` map instead of a
   feature/else ternary. Card order: 70 · 150 · 350 · 750 · 1200.
-  ⚠️ **The deliverable still does not exist.** The reader workspace produces the
-  script schema (8 evaluation points, 6 market notes, paragraph overall notes); a
-  treatment needs the 9-point schema the sample page shows. A treatment bought
-  today enters the normal pipeline and its reader is handed the wrong form. Staff
-  can see which product it is — the dashboard, the team email and the report all
-  label the treatment types — so the stopgap is human: hold delivery until the
-  workspace supports the treatment schema.
+  The reader workspace and the writer's report both follow the schema (below), so a
+  treatment reader is asked the treatment's own questions.
 - **Third price tier shipped end to end: `short_under_30`, 350 SAR** (card first in
   the grid, then 1200, then 750). Landing copy landed first and the payment plumbing
   followed the same day — see the Business Rules bullet for the six places a tier
@@ -729,19 +724,39 @@ must be in the `supabase_realtime` publication for live updates to fire.
     QA-review their own work either way: `can_qa_review` excludes assignees, and the
     API refuses `request_revision` on the self-deliver path. If this ever needs
     reversing, make `selfDeliver` set `submitted` instead and let staff approve it.
-- **The 8 evaluation points live in `js/report-render.js` (`EVAL` / `GLANCE`)** — one
-  ordered list each, shared by the reader workspace, the writer's report and the PDF,
-  so a point added there appears in all three at once. **Dialogue («الحوار») was added
-  2026-08-19**, positioned after Character because the two are read together. Adding a
-  point means: the `EVAL` and `GLANCE` arrays, plus its label in **four** maps (`eval`
-  and `glance_l`, in both `T.en` and `T.ar`) — a missing label falls back to the raw
-  English key rather than failing. `GLANCE` carries one name `EVAL` does not:
-  **"Overall presentation" is the glance's name for the eval's "Presentation"**.
-  **Older coverages simply have no entry for a newer point**, and `mergeCoverage()`
-  fills it as `{score: null, text: ""}` — so `render()` **drops any point with neither
-  a score nor text** from both the glance table and the evaluation list. Without that,
-  every already-delivered report would grow an empty «الحوار» section. The rule is
-  general, not Dialogue-specific, so the next added point behaves the same way.
+- **Coverage SCHEMAS live in `js/report-render.js` — one per product.**
+  `SCRIPT_SCHEMA` (8 evaluation points, 8 glance rows, 6 market notes) and
+  `TREATMENT_SCHEMA` (9 points, 9 glance rows, 5 market notes) each hold three
+  ordered lists: `glance`, `eval`, `market`. **`schemaFor(film_type)` picks between
+  them** — anything starting `treatment` is a treatment, everything else (including
+  an empty/unknown type, and every row that predates treatments) is a script
+  coverage. That one function is the whole switch: the reader workspace
+  (`js/coverage.js` calls `setSchema()` once the submission loads), the writer's
+  report, and the PDF (which just loads `/report`) all build from the lists.
+  - **Point names are canonical English KEYS stored in `coverages.data`**, never
+    the translated labels — same rule as `review_comments`. Labels for every key
+    live in `T.ar/T.en`'s `eval`, `glance_l` and `market_l`; a missing label falls
+    back to the raw key rather than failing.
+  - The two schemas **share keys where they ask the same question**
+    (`Premise & Theme`, `Hook`, `Overall presentation`, `audience`, `genreDemand`)
+    and diverge where they don't. Sharing a key means sharing a label — that is
+    the point, not an accident.
+  - **Dialogue («الحوار») was added to the script schema 2026-08-19**, after
+    Character because the two are read together.
+  - **Older coverages simply have no entry for a newer point**, and
+    `mergeCoverage()` fills it as `{score: null, text: ""}` — so `render()` **drops
+    any point with neither a score nor text** from both the glance table and the
+    evaluation list. Without that, every already-delivered report would grow an
+    empty section. The rule is general, so the next added point behaves the same.
+  - `mergeCoverage(stored, schema)`, `autoScore(c, schema)` and
+    `render(s, c, lang, schema)` all take an optional schema and **default to the
+    script one**; `render` will also read `submission.filmType`, which
+    `mapSubmission()` now carries, so most callers pass nothing.
+  - **`sample-treatment-report.html` still has its own miniature renderer** rather
+    than using these schemas — it predates them by a few hours and renders
+    strengths/to-develop as bullet lists, which the shared renderer does not do.
+    Worth folding into the shared path; until then, changing a treatment label
+    means changing it in both places.
 - **Per-point review notes (`coverages.review_comments`).** A reviewer can attach a
   note to an individual **evaluation point** on top of the one overall `review_note`.
   Each point shows a collapsed "Add comment" link; clicking it reveals a box for that
@@ -857,8 +872,8 @@ must be in the `supabase_realtime` publication for live updates to fire.
   **All submissions** (every script, all columns, coverage→View report) and
   **Deliveries** (approved/delivered only). Readers keep **Delivered by me**;
   super-admins keep **Manage admins**.
-- **Report gating:** "Generate report" (preview) needs a 1–5 score on all 8 evaluation
-  points; "Submit Coverage for Approval" additionally needs every written section filled.
+- **Report gating:** "Generate report" (preview) needs a 1–5 score on **every**
+  evaluation point in that coverage's schema (8 for a script, 9 for a treatment); "Submit Coverage for Approval" additionally needs every written section filled.
 - **Deadline: the clock starts at `writer_notified_at`, NOT `created_at`** (changed
   2026-08-10). Deadline = `writer_notified_at` + the max turnaround for the type —
   **features 28 days (up to 4 weeks), shorts 15 days (typically 10–15)** — shown as a
