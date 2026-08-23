@@ -59,16 +59,29 @@ Actively iterating on UX polish and workflow features.
   on its **own** language key **`sceneone-treatment-lang`** — so a visitor reading
   this sample never flips the script sample, or a writer's real report, into the other
   language. Linked from both treatment cards' «إطلع على نموذج التقرير».
-- **Treatments are PDF-only, and an unverifiable length is refused** (2026-08-19).
-  The tier is sold on a page cap (5 / 15), the page count exists only for PDFs
-  (pdf.js, in the browser), so `api/submissions.js` refuses a treatment that is
-  not a PDF **and** refuses one that arrives with no count at all. All three
-  checks — extension, missing count, over cap — run **before the insert and
-  before the Moyasar invoice**, so an over-length treatment never becomes a row,
-  never gets an invoice, and never appears in any dashboard. Script tiers keep
-  the wider extension list, where a missing count is normal and allowed.
-  The cap still carries **one page of slack** (a 5-page treatment plus a title
-  page passes); tighten `PAGE_CAPS` if that proves too generous.
+- **Every tier has a page cap, and the cheap ones are PDF-only** (2026-08-19).
+  `PAGE_CAPS`: feature 120 · short 50 · short_under_30 30 · treatment_feature 15 ·
+  treatment_short 5. Each carries **one page of slack** (a 5-page treatment plus a
+  title page passes), because the count includes the title page.
+  - **`PDF_ONLY_TYPES` = the tiers priced on being short** (`short_under_30` and
+    both treatments). For these, a non-PDF is refused **and so is a PDF whose count
+    never arrived** — the discount depends on a length nobody can otherwise verify.
+  - **feature / short keep the full format list** (FDX · Fountain · DOCX · TXT).
+    Their cap is an upper bound on what was bought rather than a discount to
+    defend, so an uncountable file is fine and the cap applies only when a count
+    exists. **This is deliberate:** pagination is not stored in FDX or Fountain at
+    all, and DOCX only caches a stale `docProps/app.xml` count — any number we
+    derived would be an estimate, which is no basis for a payment decision.
+  - All the checks run **before the insert and before the Moyasar invoice**, so an
+    over-length submission never becomes a row, never gets an invoice, and never
+    reaches a dashboard.
+  - **The writer is told on drop, not on submit** (`checkFileNow` in
+    `js/submit.js`): extension and page count are checked the moment the file
+    lands and again when the tier changes, naming the actual count and the cap.
+    The verdict is **ticketed** — a slow count for a file the writer already
+    replaced must not land on the new one.
+  - Per-tier rules live on the `<option>`s (`data-cap`, `data-accept`), so the
+    picker and its caption follow the selected tier and the JS stays generic.
 - **Two submission forms, one script (`js/submit.js`).** `submit.html` (script) and
   `treatment-submit.html` (treatment) share every behaviour — dropzone, toasts, IP
   toggle, upload, POST — because the script reads what differs **off the markup**:

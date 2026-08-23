@@ -157,9 +157,11 @@
               <!-- Values are the film_type allowlist in api/submissions.js, and
                    each one carries its own price (PRICES in lib/moyasar.js), so
                    the page ranges here must match the landing page's cards. -->
-              <option value="feature">فيلم طويل (حتى 120 صفحة) — 1200 ريال</option>
-              <option value="short">فيلم قصير (من 30 إلى 50 صفحة) — 750 ريال</option>
-              <option value="short_under_30">فيلم قصير (أقل من 30 صفحة) — 350 ريال</option>
+              <!-- data-cap = the page limit checked before payment; data-accept overrides the
+                 form-wide list for tiers priced on being short (see js/submit.js). -->
+              <option value="feature" data-cap="120">فيلم طويل (حتى 120 صفحة) — 1200 ريال</option>
+              <option value="short" data-cap="50">فيلم قصير (من 30 إلى 50 صفحة) — 750 ريال</option>
+              <option value="short_under_30" data-cap="30" data-accept="pdf">فيلم قصير (أقل من 30 صفحة) — 350 ريال (PDF فقط)</option>
             </select>
             <p class="sub-err">اختر نوع الفيلم</p>
           </div>

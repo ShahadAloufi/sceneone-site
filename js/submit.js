@@ -191,11 +191,28 @@
   var FILE_ERR_DEFAULT = fileErrEl ? fileErrEl.textContent : "";
   var typeSelect = document.querySelector('select[name="filmType"]');
 
+  function selectedOption() {
+    return typeSelect ? typeSelect.options[typeSelect.selectedIndex] : null;
+  }
   function selectedCap() {
-    if (!typeSelect) return null;
-    var opt = typeSelect.options[typeSelect.selectedIndex];
+    var opt = selectedOption();
     var cap = opt && opt.getAttribute("data-cap");
     return cap ? Number(cap) : null;
+  }
+  // Tiers priced on being short accept PDF only — a page count exists for nothing
+  // else — so an option may narrow the form's list. Everything else inherits it.
+  function acceptedExts() {
+    var opt = selectedOption();
+    var own = opt && opt.getAttribute("data-accept");
+    if (!own) return ALLOWED_EXT;
+    return own.split(",").map(function (x) { return x.trim().toLowerCase(); }).filter(Boolean);
+  }
+  // Keep the picker and its caption honest about what the chosen tier takes.
+  function syncAcceptUi() {
+    var exts = acceptedExts();
+    if (fileInput) fileInput.setAttribute("accept", exts.map(function (e) { return "." + e; }).join(","));
+    var hint = document.querySelector('.sub-field[data-field="file"] .sub-drop__hint');
+    if (hint) hint.textContent = exts.join(" · ").toUpperCase() + " — بحد أقصى 25MB";
   }
   function showFileError(msg) {
     if (fileErrEl) fileErrEl.textContent = msg || FILE_ERR_DEFAULT;
@@ -210,8 +227,9 @@
     var file = fileInput && fileInput.files ? fileInput.files[0] : null;
     if (!file) return showFileError(null);
 
-    if (ALLOWED_EXT.indexOf(fileExt(file.name)) === -1) {
-      return showFileError("صيغة غير مدعومة. المسموح: " + ALLOWED_EXT.join(" · ").toUpperCase() + ".");
+    var exts = acceptedExts();
+    if (exts.indexOf(fileExt(file.name)) === -1) {
+      return showFileError("صيغة غير مدعومة لهذه الفئة. المسموح: " + exts.join(" · ").toUpperCase() + ".");
     }
     if (file.size > MAX_BYTES) {
       return showFileError("حجم الملف يتجاوز 25 ميغابايت.");
@@ -232,7 +250,10 @@
       }
     });
   }
-  if (typeSelect) typeSelect.addEventListener("change", checkFileNow);
+  if (typeSelect) {
+    typeSelect.addEventListener("change", function () { syncAcceptUi(); checkFileNow(); });
+    syncAcceptUi();
+  }
 
   /* ---------- VALIDATION ---------- */
   var form = document.getElementById("submitForm");
@@ -282,8 +303,8 @@
       req(name, String(v[name] == null ? "" : v[name]).length > 0);
     });
     if (requiredFields().indexOf("file") > -1 || file) req("file", !!file);
-    if (file && ALLOWED_EXT.indexOf(fileExt(file.name)) === -1) {
-      toast("صيغة الملف غير مدعومة", "المسموح: " + ALLOWED_EXT.join(" · ").toUpperCase() + ".", "error");
+    if (file && acceptedExts().indexOf(fileExt(file.name)) === -1) {
+      toast("صيغة الملف غير مدعومة", "المسموح لهذه الفئة: " + acceptedExts().join(" · ").toUpperCase() + ".", "error");
       markInvalid("file", true); ok = false;
     }
     if (file && file.size > MAX_BYTES) {

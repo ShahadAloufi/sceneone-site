@@ -42,10 +42,19 @@ const FILM_TYPES = ["feature", "short", "short_under_30", "treatment_short", "tr
 // client-supplied, so a forged one still buys the cheap tier for a long script.
 // The real check is a human opening it in the reader workspace.
 const PAGE_CAPS = {
+  feature: 120,
+  short: 50,
   short_under_30: 30,
   treatment_short: 5,
   treatment_feature: 15,
 };
+// Tiers whose price DEPENDS on being short: these must arrive as PDF, because a
+// page count only exists for PDFs. The dearer tiers (feature / short) keep the
+// full format list — their cap is an upper bound on what was bought, not a
+// discount to defend, so an uncountable FDX or Fountain file is fine there and
+// the cap simply applies when a count happens to exist.
+const PDF_ONLY_TYPES = ["short_under_30", "treatment_short", "treatment_feature"];
+function needsPdf(t) { return PDF_ONLY_TYPES.indexOf(String(t || "")) !== -1; }
 const DRAFTS = ["first", "revised", "final"];
 function isTreatment(t) { return String(t || "").indexOf("treatment") === 0; }
 // Writer's self-declared experience, shown to readers so they can pitch the
@@ -54,12 +63,6 @@ function isTreatment(t) { return String(t || "").indexOf("treatment") === 0; }
 // values — add a level in all three or the table falls back to the raw key.
 const WRITER_LEVELS = ["new", "emerging", "professional", "veteran"];
 const ALLOWED_EXT = ["pdf", "fdx", "fountain", "docx", "txt"];
-// Treatments are PDF-ONLY, and that is a pricing rule rather than a preference:
-// the tier is sold on a page cap, and a page count only exists for PDFs (it is
-// computed by pdf.js in the browser — see js/submit.js). Allow .docx here and a
-// 30-page treatment would sail through on the 5-page tier with nothing to check
-// it against.
-const TREATMENT_EXT = ["pdf"];
 const MAX = { title: 200, email: 254, writer: 120, duration: 60, theme: 200, logline: 1000, vision: 5000, path: 300, fileName: 255,
   // Treatment-only fields. `treatment_text` is the whole document when a writer
   // pastes it instead of relying on the upload, so its cap is generous.
@@ -102,8 +105,12 @@ function validate(row) {
   if (!row.file_path || row.file_path.length > MAX.path || !PATH_RE.test(row.file_path)) return "ملف النص مطلوب";
   if (!row.file_name || row.file_name.length > MAX.fileName) return "ملف النص مطلوب";
   const ext = fileExt(row.file_name);
-  if (isTreatment(row.film_type)) {
-    if (TREATMENT_EXT.indexOf(ext) === -1) return "يجب رفع المعالجة بصيغة PDF ليتم التحقق من عدد الصفحات.";
+  if (needsPdf(row.film_type)) {
+    if (ext !== "pdf") {
+      return isTreatment(row.film_type)
+        ? "يجب رفع المعالجة بصيغة PDF ليتم التحقق من عدد الصفحات."
+        : "هذه الفئة تتطلب رفع النص بصيغة PDF ليتم التحقق من عدد الصفحات.";
+    }
   } else if (ALLOWED_EXT.indexOf(ext) === -1) {
     return "صيغة الملف غير مدعومة";
   }
@@ -169,7 +176,7 @@ module.exports = async (req, res) => {
   // rather than trusted. In practice this only fires if the count never reached
   // us (a PDF pdf.js could not read, or a hand-made request): the form itself
   // accepts nothing but PDFs for these tiers.
-  if (cap && isTreatment(row.film_type) && !row.pages) {
+  if (cap && needsPdf(row.film_type) && !row.pages) {
     return res.status(400).json({
       message: "تعذّر قراءة عدد صفحات الملف. تأكد من رفع ملف PDF سليم.",
     });
