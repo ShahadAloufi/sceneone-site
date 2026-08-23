@@ -710,7 +710,10 @@ must be in the `supabase_realtime` publication for live updates to fire.
   Moyasar's **embedded** form, which puts the card form on our own origin and
   changes our PCI position — deliberately not done; the hosted page is why card
   data never reaches our servers.
-- **Launch promotion — free grants (`is_promo`), 2026-08-19; SQL applied.** A handful of
+- **Free / comped coverages (`is_promo`) — a STANDING workflow, not a one-off.**
+  First used for the launch promotion (2026-08-19, five writers; SQL applied), and
+  kept for any future exceptional case where someone receives a coverage without
+  paying. A handful of
   submissions were given away at launch. They ride the **normal** pipeline
   (`unassigned` → claimable → coverage → delivery) but were never invoiced, so:
   `payment_amount = 0`, `paid_at` stamped, `is_promo = true`, and
@@ -721,7 +724,10 @@ must be in the `supabase_realtime` publication for live updates to fire.
   `sendConfirmation` (the team alert and reader broadcast still fire — neither
   mentions money).
   - **The grant runs from `scripts/promo-grant.js`**, not by hand in SQL, so the
-    status change and the writer's email happen together and are logged. It is
+    status change and the writer's email happen together and are logged. It needs
+    `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY` + `RESEND_API_KEY` in the shell;
+    Vercel's copies are **write-only** (marked Sensitive), and Resend never shows a
+    key twice, so a **separate sending-only Resend key** is kept for running it. It is
     **dry-run by default**; `--apply` writes; `--test <email>` sends only the
     email, touching no row. The PATCH is filtered on `status=eq.pending_payment`,
     which makes it idempotent and stops it overwriting a submission that gets paid
