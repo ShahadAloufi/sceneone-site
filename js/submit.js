@@ -166,10 +166,73 @@
       if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
         fileInput.files = e.dataTransfer.files;
         setFileLabel();
+        checkFileNow();
       }
     });
-    fileInput.addEventListener("change", setFileLabel);
+    fileInput.addEventListener("change", function () { setFileLabel(); checkFileNow(); });
   }
+
+  /* ---------- IMMEDIATE FILE FEEDBACK ----------
+     Tell the writer the moment the file lands, not after they have filled the
+     rest of the form and pressed submit. Two things are checked here, and both
+     are re-checked server-side — this is only about WHEN the writer finds out.
+
+       • the extension, against the form's own data-accept list
+       • the page count, against the cap on the selected tier (data-cap on the
+         <option>), for the products sold by length
+
+     The count is read with pdf.js, the same routine the submission uses, so the
+     number shown here is the number the server will judge. Re-runs when the tier
+     changes too: picking the file first and the tier second is just as likely. */
+  var fileErrEl = (function () {
+    var f = document.querySelector('.sub-field[data-field="file"]');
+    return f ? f.querySelector(".sub-err") : null;
+  })();
+  var FILE_ERR_DEFAULT = fileErrEl ? fileErrEl.textContent : "";
+  var typeSelect = document.querySelector('select[name="filmType"]');
+
+  function selectedCap() {
+    if (!typeSelect) return null;
+    var opt = typeSelect.options[typeSelect.selectedIndex];
+    var cap = opt && opt.getAttribute("data-cap");
+    return cap ? Number(cap) : null;
+  }
+  function showFileError(msg) {
+    if (fileErrEl) fileErrEl.textContent = msg || FILE_ERR_DEFAULT;
+    markInvalid("file", !!msg);
+  }
+  // Counting a PDF is async, so a slow verdict for a file the writer has already
+  // replaced must not land on the new one. Every check takes a ticket; only the
+  // newest ticket may write to the UI.
+  var checkTicket = 0;
+  function checkFileNow() {
+    var ticket = ++checkTicket;
+    var file = fileInput && fileInput.files ? fileInput.files[0] : null;
+    if (!file) return showFileError(null);
+
+    if (ALLOWED_EXT.indexOf(fileExt(file.name)) === -1) {
+      return showFileError("صيغة غير مدعومة. المسموح: " + ALLOWED_EXT.join(" · ").toUpperCase() + ".");
+    }
+    if (file.size > MAX_BYTES) {
+      return showFileError("حجم الملف يتجاوز 25 ميغابايت.");
+    }
+    showFileError(null);
+
+    var cap = selectedCap();
+    if (!cap) return;                       // this tier is not sold by length
+    countPdfPages(file).then(function (pages) {
+      if (ticket !== checkTicket) return;   // a newer file is being checked
+      // Same arithmetic as the server: the count includes a title page.
+      if (!pages) return;
+      if (pages - 1 > cap) {
+        showFileError("هذا الملف " + pages + " صفحة، ويتجاوز حد الفئة المختارة (" + cap +
+          " صفحات). اختر فئة أطول أو ارفع ملفًا أقصر.");
+      } else {
+        showFileError(null);
+      }
+    });
+  }
+  if (typeSelect) typeSelect.addEventListener("change", checkFileNow);
 
   /* ---------- VALIDATION ---------- */
   var form = document.getElementById("submitForm");
@@ -220,7 +283,7 @@
     });
     if (requiredFields().indexOf("file") > -1 || file) req("file", !!file);
     if (file && ALLOWED_EXT.indexOf(fileExt(file.name)) === -1) {
-      toast("صيغة الملف غير مدعومة", "استخدم صيغة PDF أو FDX أو Fountain أو DOCX أو TXT.", "error");
+      toast("صيغة الملف غير مدعومة", "المسموح: " + ALLOWED_EXT.join(" · ").toUpperCase() + ".", "error");
       markInvalid("file", true); ok = false;
     }
     if (file && file.size > MAX_BYTES) {
