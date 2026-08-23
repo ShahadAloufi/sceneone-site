@@ -54,6 +54,12 @@ function isTreatment(t) { return String(t || "").indexOf("treatment") === 0; }
 // values — add a level in all three or the table falls back to the raw key.
 const WRITER_LEVELS = ["new", "emerging", "professional", "veteran"];
 const ALLOWED_EXT = ["pdf", "fdx", "fountain", "docx", "txt"];
+// Treatments are PDF-ONLY, and that is a pricing rule rather than a preference:
+// the tier is sold on a page cap, and a page count only exists for PDFs (it is
+// computed by pdf.js in the browser — see js/submit.js). Allow .docx here and a
+// 30-page treatment would sail through on the 5-page tier with nothing to check
+// it against.
+const TREATMENT_EXT = ["pdf"];
 const MAX = { title: 200, email: 254, writer: 120, duration: 60, theme: 200, logline: 1000, vision: 5000, path: 300, fileName: 255,
   // Treatment-only fields. `treatment_text` is the whole document when a writer
   // pastes it instead of relying on the upload, so its cap is generous.
@@ -95,7 +101,12 @@ function validate(row) {
   if (WRITER_LEVELS.indexOf(row.writer_level) === -1) return "بيانات غير صحيحة";
   if (!row.file_path || row.file_path.length > MAX.path || !PATH_RE.test(row.file_path)) return "ملف النص مطلوب";
   if (!row.file_name || row.file_name.length > MAX.fileName) return "ملف النص مطلوب";
-  if (ALLOWED_EXT.indexOf(fileExt(row.file_name)) === -1) return "صيغة الملف غير مدعومة";
+  const ext = fileExt(row.file_name);
+  if (isTreatment(row.film_type)) {
+    if (TREATMENT_EXT.indexOf(ext) === -1) return "يجب رفع المعالجة بصيغة PDF ليتم التحقق من عدد الصفحات.";
+  } else if (ALLOWED_EXT.indexOf(ext) === -1) {
+    return "صيغة الملف غير مدعومة";
+  }
   return null;
 }
 
@@ -154,6 +165,15 @@ module.exports = async (req, res) => {
   // invoicing the writer for the wrong product. Only when we actually have a
   // count — non-PDF uploads have none.
   const cap = PAGE_CAPS[row.film_type];
+  // A treatment is priced on its length, so an unverifiable length is refused
+  // rather than trusted. In practice this only fires if the count never reached
+  // us (a PDF pdf.js could not read, or a hand-made request): the form itself
+  // accepts nothing but PDFs for these tiers.
+  if (cap && isTreatment(row.film_type) && !row.pages) {
+    return res.status(400).json({
+      message: "تعذّر قراءة عدد صفحات الملف. تأكد من رفع ملف PDF سليم.",
+    });
+  }
   if (cap && row.pages && row.pages - 1 > cap) {
     return res.status(400).json({
       message: "عدد صفحات الملف يتجاوز " + cap + " صفحة، وهو أطول مما تغطيه الفئة المختارة. اختر الفئة المناسبة لعدد صفحات نصك.",

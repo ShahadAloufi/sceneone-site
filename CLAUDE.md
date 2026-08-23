@@ -59,6 +59,16 @@ Actively iterating on UX polish and workflow features.
   on its **own** language key **`sceneone-treatment-lang`** — so a visitor reading
   this sample never flips the script sample, or a writer's real report, into the other
   language. Linked from both treatment cards' «إطلع على نموذج التقرير».
+- **Treatments are PDF-only, and an unverifiable length is refused** (2026-08-19).
+  The tier is sold on a page cap (5 / 15), the page count exists only for PDFs
+  (pdf.js, in the browser), so `api/submissions.js` refuses a treatment that is
+  not a PDF **and** refuses one that arrives with no count at all. All three
+  checks — extension, missing count, over cap — run **before the insert and
+  before the Moyasar invoice**, so an over-length treatment never becomes a row,
+  never gets an invoice, and never appears in any dashboard. Script tiers keep
+  the wider extension list, where a missing count is normal and allowed.
+  The cap still carries **one page of slack** (a 5-page treatment plus a title
+  page passes); tighten `PAGE_CAPS` if that proves too generous.
 - **Two submission forms, one script (`js/submit.js`).** `submit.html` (script) and
   `treatment-submit.html` (treatment) share every behaviour — dropzone, toasts, IP
   toggle, upload, POST — because the script reads what differs **off the markup**:

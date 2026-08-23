@@ -89,7 +89,7 @@
 
     <!-- Same script as the script form: js/submit.js reads the required fields off
      the .req stars and the accepted extensions off data-accept. -->
-    <form class="sub-card" id="submitForm" data-kind="treatment" data-accept="pdf,docx,txt" novalidate>
+    <form class="sub-card" id="submitForm" data-kind="treatment" data-accept="pdf" novalidate>
       <div class="sub-card__head">
         <p class="sub-card__eyebrow">TREATMENT SUBMISSION</p>
         <h1 class="sub-card__title">تقديم المعالجة السينمائية</h1>
@@ -203,11 +203,12 @@
           <div class="sub-field sub-field--full" data-field="file">
             <label>ملف المعالجة <span class="req">*</span></label>
             <div class="sub-drop" id="dropZone" tabindex="0" role="button" aria-label="أرفق ملف المعالجة">
-              <input type="file" id="fileInput" name="file" accept=".pdf,.docx,.txt" hidden>
+              <input type="file" id="fileInput" name="file" accept=".pdf" hidden>
               <svg class="sub-drop__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0 4 4m-4-4-4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
               <p class="sub-drop__text" id="dropText">اسحب ملفك هنا أو اضغط للاختيار</p>
-              <p class="sub-drop__hint">PDF · DOCX · TXT — بحد أقصى 25MB</p>
+              <p class="sub-drop__hint">PDF فقط — بحد أقصى 25MB</p>
             </div>
+            <p class="sub-hint">يجب أن يكون عدد صفحات المعالجة ضمن حدود الفئة المختارة (5 صفحات للفيلم القصير، 15 للفيلم الطويل)، ويُتحقق من ذلك تلقائيًا قبل الدفع.</p>
             <p class="sub-err">ملف المعالجة مطلوب</p>
           </div>
 
