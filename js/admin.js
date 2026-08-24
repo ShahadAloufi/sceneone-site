@@ -855,10 +855,13 @@
   // invited to click something that will be refused.
 
   // Writer levels a junior reader may not take. Keep in sync with
-  // RESTRICTED_LEVELS in api/claim-script.js.
+  // RESTRICTED_LEVELS in api/claim-script.js. Treatments are exempt there (a
+  // treatment coverage always goes through QA review regardless of who claimed
+  // it), so the "+" must not be disabled for one — mirrored here too.
   var JUNIOR_BLOCKED_LEVELS = ["professional", "veteran"];
   function juniorBlockedFrom(s) {
-    return !!me && me.role === "junior_reader" &&
+    var isTreatment = String(s.film_type || "").indexOf("treatment") === 0;
+    return !!me && me.role === "junior_reader" && !isTreatment &&
            JUNIOR_BLOCKED_LEVELS.indexOf(s.writer_level) !== -1;
   }
 

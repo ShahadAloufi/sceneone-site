@@ -909,6 +909,14 @@ must be in the `supabase_realtime` publication for live updates to fire.
   - **Junior readers cannot claim `professional` / `veteran` writers**
     (`RESTRICTED_LEVELS` in claim-script.js; mirrored as `JUNIOR_BLOCKED_LEVELS` in
     admin.js). Rejects 403 `JUNIOR_LEVEL_RESTRICTED:`.
+    **Exempt: treatment submissions** (`film_type` starting `treatment`, checked
+    2026-08-19 in both files) — a junior may claim a treatment from any writer
+    level. The reasoning: a treatment coverage always goes through the normal
+    submit → QA review path regardless of who claimed it (see Coverage lifecycle
+    below), so that review is the safety net instead of the level gate. The gate
+    still applies to script coverage. **`film_type` had to be added to
+    claim-script.js's submission `select=`** — it wasn't fetched before this
+    change, so the exemption would otherwise silently never fire.
   - **One active assignment per reader** — any submission where they are
     `assigned_to` **or** `co_reader_id` and the coverage has no `delivered_at`.
     Rejects 409 `READER_HAS_ACTIVE_ASSIGNMENT:`. Both messages carry that leading

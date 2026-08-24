@@ -90,7 +90,7 @@ module.exports = async (req, res) => {
 
   const subResp = await fetch(
     url + "/rest/v1/submissions?id=eq." + encodeURIComponent(subId) +
-    "&select=id,title_ar,title_en,writer,email,status,assigned_to,co_reader_id,assigned_at,writer_notified_at,writer_level",
+    "&select=id,title_ar,title_en,writer,email,status,assigned_to,co_reader_id,assigned_at,writer_notified_at,writer_level,film_type",
     { headers }
   );
   const subs = subResp.ok ? await subResp.json() : [];
@@ -186,8 +186,16 @@ module.exports = async (req, res) => {
   // senior-equivalent by construction: only `junior_reader` is level-restricted
   // (here) or opens a co-reader slot (in reassign above), and reassignment is
   // already admin/super_admin-only, so a lead can never move someone else's script.
+  //
+  // Treatment submissions are EXEMPT (2026-08-19): a treatment coverage always
+  // goes through the normal submit → QA review path before it reaches the
+  // writer (js/coverage.js gates "Submits for approval" the same way regardless
+  // of who claimed it), so that review is the safety net here instead of the
+  // level gate. The gate stays for script coverage, where a junior's draft can
+  // otherwise reach a writer with only their own eyes on it.
   const RESTRICTED_LEVELS = ["professional", "veteran"];
-  if (me.role === "junior_reader" && RESTRICTED_LEVELS.indexOf(sub.writer_level) !== -1) {
+  const isTreatment = String(sub.film_type || "").indexOf("treatment") === 0;
+  if (me.role === "junior_reader" && !isTreatment && RESTRICTED_LEVELS.indexOf(sub.writer_level) !== -1) {
     // Leading marker (like READER_HAS_ACTIVE_ASSIGNMENT below) so js/admin.js can
     // swap in its own localised copy instead of echoing this Arabic fallback.
     return res.status(403).json({
