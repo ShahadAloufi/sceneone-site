@@ -11,3 +11,8 @@
 # belong in git — a 4K .mov is tens of MB and lives in history forever once
 # committed. Keep the originals backed up OUTSIDE this repo.
 *.mov
+
+# Installed by Vercel at build time from package.json (the two Chromium deps for
+# the PDF renderer, plus pdf-lib for counting a submission's pages). Never
+# committed — the frontend stays buildless, this is serverless-only.
+node_modules/

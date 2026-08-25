@@ -19,41 +19,33 @@
 // Optional:
 //   RESEND_API_KEY              — without it the payment prompt is skipped
 
-const { createPayment } = require("../lib/moyasar");
+const { createPayment, perPageRule } = require("../lib/moyasar");
+const { countPagesInStorage } = require("../lib/pdf-pages");
 const { sendPaymentPrompt } = require("../lib/submission-emails");
 
 // Where Moyasar returns the writer after checkout.
 const SITE_URL = process.env.SITE_URL || "https://sceneone.info";
+// The private Storage bucket the browser uploaded into. Must match `bucket` in
+// js/config.js — the server reads the file back from here to count its pages.
+const BUCKET = "scripts";
 
 // --- Allowlists & limits (server is the source of truth; never trust client) ---
 const GENRES = ["drama", "comedy", "romance", "crime", "thriller", "horror", "action", "documentary", "other"];
-// Every priced product is its own `film_type`: price is derived from film_type
-// alone (PRICES in lib/moyasar.js), never from the page count, which is optional
-// (PDF uploads only) and computed in the browser. `short_under_30` is the cheaper
-// short tier; the two `treatment_*` types are a different product entirely — an
-// early-stage read on the story, not the eight-point script coverage.
-const FILM_TYPES = ["feature", "short", "short_under_30", "treatment_short", "treatment_feature"];
-// Length guard for the types sold on a page cap. The count pdf.js reports
-// INCLUDES the title page, so the work itself is `pages - 1` (same convention as
-// the coverage panel), and each cap here is one page LOOSER than the number
-// advertised on the card: the title-page convention makes the boundary fuzzy by
-// exactly one page, and bouncing an honest 29-page script is worse than letting a
-// 30-page one through. A UX guard, not a security boundary — the count is
-// client-supplied, so a forged one still buys the cheap tier for a long script.
-// The real check is a human opening it in the reader workspace.
+// Every product is its own `film_type`. Feature and the two treatments are
+// fixed-price; SHORT is priced per page (10 SAR each, 10–40 pages), so its amount
+// comes from the file itself — see priceFor() in lib/moyasar.js.
+const FILM_TYPES = ["feature", "short", "treatment_short", "treatment_feature"];
+// Upper bound per product, in BILLABLE pages (title page excluded). `short` is
+// absent because its bounds are part of its price — 10 to 40 pages, enforced by
+// priceFor() in lib/moyasar.js, so the limit and the amount can never disagree.
 const PAGE_CAPS = {
   feature: 120,
-  short: 50,
-  short_under_30: 30,
   treatment_short: 5,
   treatment_feature: 15,
 };
-// Tiers whose price DEPENDS on being short: these must arrive as PDF, because a
-// page count only exists for PDFs. The dearer tiers (feature / short) keep the
-// full format list — their cap is an upper bound on what was bought, not a
-// discount to defend, so an uncountable FDX or Fountain file is fine there and
-// the cap simply applies when a count happens to exist.
-const PDF_ONLY_TYPES = ["short_under_30", "treatment_short", "treatment_feature"];
+// Products whose price or discount depends on a length we must be able to read.
+// `short` is priced per page, so it is the strictest case of all.
+const PDF_ONLY_TYPES = ["short", "treatment_short", "treatment_feature"];
 function needsPdf(t) { return PDF_ONLY_TYPES.indexOf(String(t || "")) !== -1; }
 const DRAFTS = ["first", "revised", "final"];
 function isTreatment(t) { return String(t || "").indexOf("treatment") === 0; }
@@ -109,7 +101,7 @@ function validate(row) {
     if (ext !== "pdf") {
       return isTreatment(row.film_type)
         ? "يجب رفع المعالجة بصيغة PDF ليتم التحقق من عدد الصفحات."
-        : "هذه الفئة تتطلب رفع النص بصيغة PDF ليتم التحقق من عدد الصفحات.";
+        : "يجب رفع النص بصيغة PDF ليتم احتساب عدد الصفحات والسعر.";
     }
   } else if (ALLOWED_EXT.indexOf(ext) === -1) {
     return "صيغة الملف غير مدعومة";
@@ -156,10 +148,15 @@ module.exports = async (req, res) => {
     status: "pending_payment",
   };
 
-  // Optional PDF page count computed in the browser (title page included).
-  const pageCount = Number(b.pages);
-  if (Number.isInteger(pageCount) && pageCount > 0 && pageCount <= 3000) {
-    row.pages = pageCount;
+  // The browser also counts the pages (pdf.js) so it can quote a price while the
+  // writer fills the form, but that number is NOT used here: it arrives in a
+  // request body anyone can edit, and for a per-page product it would be the
+  // invoice. Kept only as a fallback for formats the server cannot read (FDX,
+  // Fountain, DOCX — feature submissions), where it is a display value and
+  // nothing more.
+  const clientCount = Number(b.pages);
+  if (Number.isInteger(clientCount) && clientCount > 0 && clientCount <= 3000) {
+    row.pages = clientCount;
   }
 
   // Server-side validation (the server is the source of truth; the client
@@ -168,23 +165,56 @@ module.exports = async (req, res) => {
   const err = validate(row);
   if (err) return res.status(400).json({ message: err });
 
-  // Tiers sold on a page cap bounce anything plainly too long, rather than
-  // invoicing the writer for the wrong product. Only when we actually have a
-  // count — non-PDF uploads have none.
-  const cap = PAGE_CAPS[row.film_type];
-  // A treatment is priced on its length, so an unverifiable length is refused
-  // rather than trusted. In practice this only fires if the count never reached
-  // us (a PDF pdf.js could not read, or a hand-made request): the form itself
-  // accepts nothing but PDFs for these tiers.
-  if (cap && needsPdf(row.film_type) && !row.pages) {
-    return res.status(400).json({
-      message: "تعذّر قراءة عدد صفحات الملف. تأكد من رفع ملف PDF سليم.",
-    });
+  // ---- Length, counted from the FILE (never from the request body) ----------
+  // Anything whose price or discount depends on being short is re-counted here,
+  // by reading the upload back out of Storage. This is what the invoice is built
+  // from, so a forged `pages` in the request buys nothing.
+  const rule = perPageRule(row.film_type);
+  let billablePages = null;
+  if (needsPdf(row.film_type)) {
+    try {
+      const counted = await countPagesInStorage(supabaseUrl, serviceKey, BUCKET, row.file_path);
+      billablePages = counted.billable;
+      row.pages = counted.raw;          // stored raw; every display subtracts the title page
+    } catch (err) {
+      console.error("submissions: page count failed:", err);
+      return res.status(400).json({
+        message: "تعذّر قراءة عدد صفحات الملف. تأكد من رفع ملف PDF سليم غير محمي بكلمة مرور.",
+      });
+    }
   }
-  if (cap && row.pages && row.pages - 1 > cap) {
-    return res.status(400).json({
-      message: "عدد صفحات الملف يتجاوز " + cap + " صفحة، وهو أطول مما تغطيه الفئة المختارة. اختر الفئة المناسبة لعدد صفحات نصك.",
-    });
+
+  // Per-page products: the count IS the price, so its bounds are refused here
+  // rather than quietly clamped.
+  if (rule) {
+    if (billablePages < rule.min) {
+      return res.status(400).json({
+        message: "الحد الأدنى " + rule.min + " صفحات. ملفك " + billablePages + " صفحة.",
+      });
+    }
+    if (billablePages > rule.max) {
+      return res.status(400).json({
+        message: "الحد الأقصى للفيلم القصير " + rule.max + " صفحة. ملفك " + billablePages +
+                 " صفحة — اختر تغطية الفيلم الطويل.",
+      });
+    }
+  }
+
+  // Fixed-price products keep a simple upper bound, applied to whatever count we
+  // have (the server's for PDFs, the browser's for FDX/Fountain/DOCX).
+  const cap = PAGE_CAPS[row.film_type];
+  if (cap) {
+    const measured = billablePages != null ? billablePages : (row.pages ? row.pages - 1 : null);
+    if (needsPdf(row.film_type) && measured == null) {
+      return res.status(400).json({
+        message: "تعذّر قراءة عدد صفحات الملف. تأكد من رفع ملف PDF سليم.",
+      });
+    }
+    if (measured != null && measured > cap) {
+      return res.status(400).json({
+        message: "عدد صفحات الملف يتجاوز " + cap + " صفحة، وهو أطول مما تغطيه الفئة المختارة. اختر الفئة المناسبة لعدد صفحات نصك.",
+      });
+    }
   }
 
   let submissionId;
@@ -225,6 +255,8 @@ module.exports = async (req, res) => {
     payment = await createPayment({
       submissionId: submissionId,
       filmType: row.film_type,
+      // Per-page products price off this; fixed ones ignore it.
+      pages: billablePages,
       titleAr: row.title_ar,
       callbackUrl: SITE_URL + "/payment-status",
     });

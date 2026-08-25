@@ -160,8 +160,9 @@
               <!-- data-cap = the page limit checked before payment; data-accept overrides the
                  form-wide list for tiers priced on being short (see js/submit.js). -->
               <option value="feature" data-cap="120">فيلم طويل (حتى 120 صفحة) — 1200 ريال</option>
-              <option value="short" data-cap="50">فيلم قصير (من 30 إلى 50 صفحة) — 750 ريال</option>
-              <option value="short_under_30" data-cap="30" data-accept="pdf">فيلم قصير (أقل من 30 صفحة) — 350 ريال (PDF فقط)</option>
+              <!-- Priced per page: data-rate/min/max drive the live quote in
+                   js/submit.js, and must match PER_PAGE in lib/moyasar.js. -->
+              <option value="short" data-accept="pdf" data-rate="10" data-min="10" data-max="40">فيلم قصير (من 10 إلى 40 صفحة) — 10 ريال للصفحة</option>
             </select>
             <p class="sub-err">اختر نوع الفيلم</p>
           </div>
@@ -227,6 +228,7 @@
               <p class="sub-drop__text" id="dropText">اسحب ملفك هنا أو اضغط للاختيار</p>
               <p class="sub-drop__hint">PDF · FDX · Fountain · DOCX · TXT — بحد أقصى 25MB</p>
             </div>
+            <p class="sub-quote" id="priceQuote" hidden></p>
             <p class="sub-err">ملف النص مطلوب</p>
           </div>
 

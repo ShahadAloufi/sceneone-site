@@ -199,6 +199,24 @@
     var cap = opt && opt.getAttribute("data-cap");
     return cap ? Number(cap) : null;
   }
+  // Per-page products carry their rate and bounds on the <option> — the same
+  // numbers as PER_PAGE in lib/moyasar.js. The server re-counts the file and
+  // re-prices it, so this is a quote, not the invoice.
+  function selectedRate() {
+    var opt = selectedOption();
+    if (!opt || !opt.getAttribute("data-rate")) return null;
+    return {
+      rate: Number(opt.getAttribute("data-rate")),
+      min: Number(opt.getAttribute("data-min")),
+      max: Number(opt.getAttribute("data-max"))
+    };
+  }
+  var quoteEl = document.getElementById("priceQuote");
+  function showQuote(msg) {
+    if (!quoteEl) return;
+    quoteEl.textContent = msg || "";
+    quoteEl.hidden = !msg;
+  }
   // Tiers priced on being short accept PDF only — a page count exists for nothing
   // else — so an option may narrow the form's list. Everything else inherits it.
   function acceptedExts() {
@@ -225,7 +243,7 @@
   function checkFileNow() {
     var ticket = ++checkTicket;
     var file = fileInput && fileInput.files ? fileInput.files[0] : null;
-    if (!file) return showFileError(null);
+    if (!file) { showQuote(null); return showFileError(null); }
 
     var exts = acceptedExts();
     if (exts.indexOf(fileExt(file.name)) === -1) {
@@ -237,12 +255,32 @@
     showFileError(null);
 
     var cap = selectedCap();
-    if (!cap) return;                       // this tier is not sold by length
+    var perPage = selectedRate();
+    if (!cap && !perPage) { showQuote(null); return; }   // not sold by length
     countPdfPages(file).then(function (pages) {
       if (ticket !== checkTicket) return;   // a newer file is being checked
+      if (!pages) { showQuote(null); return; }
       // Same arithmetic as the server: the count includes a title page.
-      if (!pages) return;
-      if (pages - 1 > cap) {
+      var billable = pages > 1 ? pages - 1 : pages;
+
+      if (perPage) {
+        if (billable < perPage.min) {
+          showQuote(null);
+          return showFileError("نصك " + billable + " صفحة. الحد الأدنى " + perPage.min + " صفحات.");
+        }
+        if (billable > perPage.max) {
+          showQuote(null);
+          return showFileError("نصك " + billable + " صفحة، والحد الأقصى للفيلم القصير " +
+            perPage.max + " صفحة. اختر تغطية الفيلم الطويل.");
+        }
+        showFileError(null);
+        // The number the writer is about to pay, shown before they commit.
+        return showQuote("نصك " + billable + " صفحة × " + perPage.rate + " ريال = " +
+          (billable * perPage.rate) + " ريال");
+      }
+
+      showQuote(null);
+      if (billable > cap) {
         showFileError("هذا الملف " + pages + " صفحة، ويتجاوز حد الفئة المختارة (" + cap +
           " صفحات). اختر فئة أطول أو ارفع ملفًا أقصر.");
       } else {

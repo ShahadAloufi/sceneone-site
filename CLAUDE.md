@@ -59,6 +59,28 @@ Actively iterating on UX polish and workflow features.
   on its **own** language key **`sceneone-treatment-lang`** — so a visitor reading
   this sample never flips the script sample, or a writer's real report, into the other
   language. Linked from both treatment cards' «إطلع على نموذج التقرير».
+- **Short film coverage is priced PER PAGE (2026-08-25): 10 SAR a page, 10–40
+  pages, so 100–400 SAR.** It replaced the two fixed short tiers — `short` at 750
+  (30–50pp) and `short_under_30` at 350 — which are **retired**: one card now, its
+  price shown as a range, and `short_under_30` is gone from `FILM_TYPES` (its entry
+  stays in `PRICES` and the label maps only so old rows still render).
+  - **The count comes from the FILE, on the server** (`lib/pdf-pages.js`, pdf-lib —
+    the first non-Chromium serverless dependency). The browser still counts with
+    pdf.js to quote a price while the writer fills the form, but that number is a
+    display value: when the count IS the invoice, a request body anyone can edit
+    cannot be the source. Verified — posting `pages: 11` with a 41-page PDF still
+    invoices 400.
+  - **`priceFor(filmType, pages)` in `lib/moyasar.js` is the single pricing
+    authority**, and its bounds ARE the length limits: a per-page product has no
+    entry in `PAGE_CAPS`, so the price and the limit cannot drift apart. Outside
+    10–40 it throws rather than clamping, and the API refuses the submission before
+    any row or invoice exists.
+  - **Billable pages = raw − 1** (`billablePages()`), the title-page convention the
+    whole app already displays. A 41-page PDF is a 40-page script at 400 SAR.
+  - The form shows the quote the moment the file lands — «نصك 25 صفحة × 10 ريال =
+    250 ريال» — from the same arithmetic, so the writer sees the amount before
+    committing. Rate and bounds live on the `<option>` (`data-rate`/`min`/`max`)
+    and must match `PER_PAGE`.
 - **Every tier has a page cap, and the cheap ones are PDF-only** (2026-08-19).
   `PAGE_CAPS`: feature 120 · short 50 · short_under_30 30 · treatment_feature 15 ·
   treatment_short 5. Each carries **one page of slack** (a 5-page treatment plus a

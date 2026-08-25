@@ -523,6 +523,18 @@ a, button {
   height: auto;
   display: block;
 }
+/* A per-page product shows a RANGE, which is wider than a single figure — ease
+   it down a little so it doesn't crowd the card, and keep the digits LTR so
+   "100 - 400" never renders reversed inside the RTL card. */
+.price-div h1.price-range { font-size: 38px; direction: ltr; unicode-bidi: isolate; }
+/* The rule under the range: what a page costs and the accepted length. */
+.ctype-card__price-note {
+  margin: 2px 0 16px;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: rgba(255,255,255,.55);
+}
 .ctype-card__desc {
   font-size: 16px;
   line-height: 1.9;
@@ -1614,6 +1626,15 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 }
 .sub-field select option { background: #fff; color: #1a1a1a; }
 
+/* Live price quote under the file picker: what this upload will actually cost,
+   shown before the writer commits (per-page products only). */
+.sub-quote {
+  margin: 8px 0 0;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  color: #1d7a4c;
+}
 .sub-err { color: var(--red); font-size: 13px; margin-top: 6px; display: none; }
 .sub-field.invalid .sub-err { display: block; }
 .sub-field.invalid input,
