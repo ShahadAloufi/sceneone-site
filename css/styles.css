@@ -1631,11 +1631,14 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 /* Live price quote under the file picker: what this upload will actually cost,
    shown before the writer commits (per-page products only). */
 .sub-quote {
-  margin: 8px 0 0;
-  font-family: var(--font-body);
-  font-size: 14px;
-  font-weight: 600;
-  color: #1d7a4c;
+  margin: 10px 0 0;
+  font-family: var(--font-head);
+  /* This is the number the writer is about to be charged — the most consequential
+     line on the form, so it carries the weight of a heading rather than a hint,
+     and sits in the body copy's own black instead of a soft accent green. */
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
 }
 .sub-err { color: var(--red); font-size: 13px; margin-top: 6px; display: none; }
 .sub-field.invalid .sub-err { display: block; }
