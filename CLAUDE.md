@@ -80,6 +80,12 @@ Actively iterating on UX polish and workflow features.
     its range it throws rather than clamping, and the API refuses the submission
     before any row or invoice exists — a 121-page feature and a 41-page short are
     both turned away with the other tier suggested.
+  - **The invoice carries the arithmetic**, not just a total:
+    `invoiceDescription()` builds «تغطية فيلم قصير — 29 صفحة × 10 ريال — <العنوان>»,
+    so a writer looking at the charge weeks later can reconstruct it. Fixed-price
+    products (the treatments) just name themselves. `payment_amount` on the row is
+    the same figure the invoice carries, and the webhook compares the paid amount
+    against it — an `amount_mismatch` alert is what a disagreement produces.
   - **Billable pages = raw − 1** (`billablePages()`), the title-page convention the
     whole app already displays. A 41-page PDF is a 40-page script at 400 SAR.
   - The form shows the quote the moment the file lands — «نصك 25 صفحة × 10 ريال =
