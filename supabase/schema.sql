@@ -163,7 +163,7 @@ alter table public.submissions
   add column if not exists pages int;
 
 -- Assignment notice window. A reader who claims a script has ASSIGNMENT_WINDOW
--- (2 hours) to release it again. When the window closes the writer is emailed
+-- (1 hour) to release it again. When the window closes the writer is emailed
 -- that work has started and the submission can no longer be cancelled/refunded,
 -- after which the assignment is locked: staff may hand it to a DIFFERENT reader,
 -- but it can never go back to unassigned.
@@ -330,10 +330,11 @@ begin
     raise exception 'ASSIGNMENT_VIA_API_ONLY' using errcode = 'check_violation';
   end if;
 
-  -- 3 hours is the REAL window. Readers are told 2 (a hidden buffer); the extra
-  -- hour lives only in the dashboard copy, never here. Do not lower to 2h.
+  -- ONE HOUR (2026-08-25). Was 3h with readers told 2h; both the window and the
+  -- copy now say one hour. Keep in step with ASSIGNMENT_WINDOW_MS in
+  -- lib/assignment-notices.js and js/admin.js.
   window_closed := old.writer_notified_at is not null
-    or (old.assigned_at is not null and now() >= old.assigned_at + interval '3 hours');
+    or (old.assigned_at is not null and now() >= old.assigned_at + interval '1 hour');
 
   if window_closed then
     raise exception 'ASSIGNMENT_LOCKED' using errcode = 'check_violation';

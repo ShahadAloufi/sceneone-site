@@ -2,7 +2,7 @@
 //
 //   POST /api/claim-script  { submission_id, action: "claim" | "release" }
 //
-// Claiming starts a 2-hour notice window. At the end of it the writer is emailed
+// Claiming starts a 1-hour notice window. At the end of it the writer is emailed
 // that work has begun and the submission can no longer be cancelled or refunded;
 // releasing within the window frees the script and the notice never goes out.
 //
@@ -19,10 +19,10 @@
 //
 // Required env vars: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY.
 
-// ASSIGNMENT_WINDOW_MS is the REAL notice/lock window and lives with the sweep
-// that acts on it. Readers are TOLD 2 hours (see claimConfirm in the dashboard)
-// but actually get 3 — a deliberate hidden buffer. Keep in sync with the
-// enforce_assignment_lock() trigger's interval and admin.js. Not a bug.
+// ASSIGNMENT_WINDOW_MS is the notice/lock window and lives with the sweep that
+// acts on it. ONE HOUR since 2026-08-25, and the dashboard copy says the same —
+// the old 2h-told/3h-real buffer went with the change. Keep in sync with the
+// enforce_assignment_lock() trigger's interval and admin.js.
 const { sweepAssignmentNotices, ASSIGNMENT_WINDOW_MS } = require("../lib/assignment-notices");
 
 function svc() {

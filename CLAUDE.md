@@ -859,15 +859,18 @@ must be in the `supabase_realtime` publication for live updates to fire.
   `sanitizeComments()` caps the count/key/body length and drops non-strings.
 - **Assignment:** a reader claims a script (primary assignee). If the primary is a
   **junior** reader, a **co-reader** slot opens for a second reader.
-- **Assignment notice window (told 2h, actually 3h):** claiming a script pops a
-  confirm dialog — *"the writer will be notified that you started working after 2
-  hours; you can release it before then"* — and starts a grace period in which the
-  reader may still release it. **The reader is told 2 hours, but the real window is
-  3** — a deliberate hidden buffer. The "2h" figure lives **only** in user-facing
-  copy (`claimConfirm` / `releaseHint`); every enforcement point uses **3h**
-  (`ASSIGNMENT_WINDOW_MS` in `api/claim-script.js` and `js/admin.js`, and the
-  `enforce_assignment_lock()` trigger's `interval '3 hours'`). **Do not "reconcile"
-  the two — the mismatch is intentional.** When the window closes the writer is
+- **Assignment notice window: ONE HOUR** (changed 2026-08-25; was 3h real with
+  readers told 2h). Claiming a script pops a confirm dialog — *"the writer will be
+  notified that you started working after 1 hour; you can release it before then"* —
+  and starts a grace period in which the reader may still release it. **The copy and
+  the enforcement now state the same number**, in four places that must agree:
+  `ASSIGNMENT_WINDOW_MS` in `lib/assignment-notices.js` (the source, re-exported to
+  `api/claim-script.js`), `ASSIGNMENT_WINDOW_MS` in `js/admin.js`, the
+  `enforce_assignment_lock()` trigger's `interval '1 hour'`, and the `claimConfirm` /
+  `releaseHint` strings. **The old hidden buffer is deliberately gone** — over an
+  hour, a reader needs to know exactly how long they have; the cost is that a release
+  attempted at minute 59 can lose a race with the sweep and be refused. When the
+  window closes the writer is
   emailed that work has started **and that the submission can no longer be cancelled
   or refunded**, and the assignment is locked — staff may hand it to a **different**
   reader, but it can never return to unassigned.
@@ -888,9 +891,18 @@ must be in the `supabase_realtime` publication for live updates to fire.
   and the writer would be told work had begun — and their refund window closed — for
   a script sitting back in the pool. A reassign followed by a release orphaned it the
   same way.
-  **Triggers:** `/api/claim-script` runs the sweep on every claim/release/reassign
-  (readers hit it constantly, so notices land within minutes of falling due), plus
-  `/api/send-notices` daily via Vercel Cron as a backstop for quiet stretches.
+  **Triggers (three):** `/api/sweep-notices` on **every dashboard load**
+  (fire-and-forget from `js/admin.js`, any signed-in reader/staff — this is the one
+  that makes "one hour" mean one hour, since readers open the dashboard far more
+  often than they claim), `/api/claim-script` on every claim/release/reassign, and
+  `/api/send-notices` daily via Vercel Cron as a backstop.
+  **The dashboard trigger was added 2026-08-25 after two scripts sat 12h unnotified**
+  — claimed in the evening, nobody claimed anything else afterwards, and the daily
+  cron had already run before they fell due. Their readers' deadlines stayed blank
+  the whole time, because the deadline clock starts at `writer_notified_at`.
+  `/api/sweep-notices` requires a signed-in reader — not open like a public endpoint,
+  since forcing notices early closes writers' cancellation windows — but needs no
+  CRON_SECRET, because the sweep can only ever send what is already due.
   **Vercel Hobby caps cron at once per day — a more frequent expression fails
   deployment** — which is why the piggyback exists at all; on Pro the cron could be
   the sole trigger. Sending *late* is harmless (the reader's cancellation window only

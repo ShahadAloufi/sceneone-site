@@ -104,7 +104,7 @@
       assignTwice: "لا يمكنك إسناد نفسك مرتين",
       assignBlocked: "لا يمكنك قبول تكليف جديد حتى يُعتمد تقرير تكليفك الحالي ويُرسل إلى الكاتب.",
       claimBlockedLevel: "هذا النص لكاتب محترف أو متمرّس، وهو مخصص لقارئ أول.",
-      claimConfirm: "سيتم إشعار الكاتب ببدء العمل على نصه بعد ساعتين. يمكنك إلغاء الإسناد خلال هذه المدة. هل تريد المتابعة؟",
+      claimConfirm: "سيتم إشعار الكاتب ببدء العمل على نصه بعد ساعة واحدة. يمكنك إلغاء الإسناد خلال هذه المدة. هل تريد المتابعة؟",
       covLocked: "أسند نفسك أولاً", covDenied: "لا يمكنك عرض هذا التقييم إلا بعد إسناد نفسك للنص.",
       phName: "اسم المشرف", phPassword: "8 أحرف على الأقل",
       // dynamic
@@ -139,7 +139,7 @@
       kanEmptyApproval: "لا يوجد ما ينتظر اعتمادك.",
       fileLocked: "مقفل", fileLockedTip: "هذا النص مُسند إلى قارئ آخر.",
       reassignTip: "إعادة الإسناد إلى قارئ آخر",
-      releaseHint: "يمكنك إلغاء الإسناد خلال ساعتين من استلامه",
+      releaseHint: "يمكنك إلغاء الإسناد خلال ساعة واحدة من استلامه",
       lockedHint: "مقفل: أُبلغ الكاتب ببدء العمل، ولم يعد بالإمكان إلغاء الإسناد",
       navShow: "إظهار القائمة", navFold: "طيّ القائمة", themeToggle: "تبديل المظهر",
       startEval: "ابدأ التقييم", assignFail: "تعذّر تحديث الإسناد.", dlFail: "تعذّر إنشاء رابط التحميل.",
@@ -190,7 +190,7 @@
       assignTwice: "You cannot assign yourself twice",
       assignBlocked: "You can't take a new assignment until your current report is approved and sent to the writer.",
       claimBlockedLevel: "This script is from a professional or veteran writer — reserved for senior readers.",
-      claimConfirm: "The writer will be notified that you started working on their script after 2 hours. You can release it before then. Continue?",
+      claimConfirm: "The writer will be notified that you started working on their script after 1 hour. You can release it before then. Continue?",
       covLocked: "Assign yourself first", covDenied: "You can only view this coverage after assigning yourself to the script.",
       phName: "Admin name", phPassword: "At least 8 characters",
       signingIn: "Signing in...", badLogin: "Invalid login credentials.",
@@ -222,7 +222,7 @@
       kanEmptyApproval: "Nothing is waiting for your approval.",
       fileLocked: "Locked", fileLockedTip: "Another reader is assigned to this script.",
       reassignTip: "Reassign to another reader",
-      releaseHint: "you can still release this within 2 hours of claiming it",
+      releaseHint: "you can still release this within 1 hour of claiming it",
       lockedHint: "locked: the writer has been told work started, so this can no longer be released",
       navShow: "Show menu", navFold: "Collapse menu", themeToggle: "Toggle theme",
       startEval: "Start coverage", assignFail: "Failed to update assignment.", dlFail: "Failed to create download link.",
@@ -422,6 +422,10 @@
     $("kanbanBoard").hidden = !staff;
     $("subTableView").hidden = staff;
     logAccess();
+    // Clear any notices that fell due while nobody was using the app, then load.
+    // Deliberately not awaited: the table must not wait on an email sweep, and
+    // the realtime subscription below refreshes the row once a stamp lands.
+    sweepNotices();
     // Hide the boot loader only once the first submissions load settles (success
     // or failure), so the loader covers the empty-dashboard gap on refresh.
     loadSubmissions().finally(function () { hide($("admBoot")); });
@@ -436,6 +440,21 @@
       var token = sess.data.session && sess.data.session.access_token;
       if (!token) return;
       await fetch("/api/log-access", { method: "POST", headers: { Authorization: "Bearer " + token } });
+    } catch (e) {}
+  }
+
+  // Send any writer notices that have fallen due (release window = 1 hour).
+  // Readers open this dashboard far more often than they claim scripts, so this
+  // is what keeps the one-hour promise honest — without it a notice waits for the
+  // next claim or the daily cron, and the reader's deadline (which starts at
+  // `writer_notified_at`) stays blank meanwhile. Fire-and-forget: the sweep only
+  // ever sends what is already due, and a failure here must not disturb the load.
+  async function sweepNotices() {
+    try {
+      var sess = await sb.auth.getSession();
+      var token = sess.data.session && sess.data.session.access_token;
+      if (!token) return;
+      await fetch("/api/sweep-notices", { method: "POST", headers: { Authorization: "Bearer " + token } });
     } catch (e) {}
   }
 
@@ -876,13 +895,13 @@
   }
 
   // Release window. A reader can release a script they just claimed until the
-  // writer is notified, after which the claim is locked. IMPORTANT: readers are
-  // TOLD 2 hours, but the real window is 3 (a hidden buffer). This constant is the
-  // REAL window — it must match ASSIGNMENT_WINDOW in api/claim-script.js and the
-  // enforce_assignment_lock() trigger so the release control stays available for
-  // the full actual window. Only user-facing copy says "2 hours" (see
-  // claimConfirm / releaseHint). Do NOT "fix" this to 2h.
-  var ASSIGNMENT_WINDOW_MS = 3 * 60 * 60 * 1000;
+  // writer is notified, after which the claim is locked. ONE HOUR since
+  // 2026-08-25, and the copy now says the same thing — the old 2h-told/3h-real
+  // buffer was dropped with the change, because a window this short is only
+  // useful if the reader knows exactly how long they have. Must match
+  // ASSIGNMENT_WINDOW_MS in lib/assignment-notices.js and the
+  // enforce_assignment_lock() trigger.
+  var ASSIGNMENT_WINDOW_MS = 1 * 60 * 60 * 1000;
   function canRelease(s) {
     if (!me || s.assigned_to !== me.id) return false;
     if (s.writer_notified_at) return false;
