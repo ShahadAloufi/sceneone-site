@@ -145,7 +145,7 @@ Actively iterating on UX polish and workflow features.
   list, its own sample (`sample-treatment-report.html`), page caps of 5 / 15, and
   turnaround of **7 / 10 days** — quicker than every script tier, which is why
   `deadlineDays()` in `js/admin.js` now reads a `TURNAROUND` map instead of a
-  feature/else ternary. Card order: 70 · 150 · 350 · 750 · 1200.
+  feature/else ternary. Card order: script coverage first (short 100–400, feature 800–1200), treatments after (70, 150).
   The reader workspace and the writer's report both follow the schema (below), so a
   treatment reader is asked the treatment's own questions.
 - **Third price tier shipped end to end: `short_under_30`, 350 SAR** (card first in

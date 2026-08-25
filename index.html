@@ -217,6 +217,57 @@
     <p class="ctypes__note" data-i18n="ctypesNote">يمكنك إعادة تقديم نسخة مطوّرة من نفس السيناريو (Draft 2) مجانًا بعد استلام التقييم الأولي، بشرط أن تكون نسخة محدثة لنفس العمل وليست مشروعًا جديدًا.</p>
     <div class="ctypes__grid">
 
+      <!-- Short film coverage is priced PER PAGE (10 SAR each, 10–40 pages), so the
+           card advertises the range and the exact amount is quoted on the form
+           once the file is uploaded. See PER_PAGE in lib/moyasar.js. -->
+      <article class="ctype-card">
+        <div class="ctype-card__head">
+          <h3 class="ctype-card__title" data-i18n="shortTitle">تغطية النصوص السينمائية القصيرة</h3>
+          <div class="price-div">
+            <img class="riyal-icon" src="assets/riyal.svg" alt="ريال">
+            <h1 class="price-range">100 - 400</h1>
+          </div>
+          <p class="ctype-card__price-note" data-i18n="shortPriceNote">10 ريال لكل صفحة — من 10 إلى 40 صفحة</p>
+          <p class="ctype-card__desc" data-i18n-html="shortDescHtml">يقدم هذا التقرير ملاحظات تفصيلية على الفيلم القصير (<strong>من 10 إلى 40 صفحة</strong>). يشمل ذلك تقييمًا وملاحظات حول: <strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والحوار، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong></p>
+        </div>
+        <div class="ctype-card__foot">
+          <ul class="ctype-card__list">
+            <li data-i18n-html="shortLi1Html">مدة التسليم: عادةً من 10 إلى 15 يومًا <span class="ctype-card__note">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span></li>
+            <li data-i18n="li2">تقييمات وفق معايير الصناعة: Pass / Consider / Recommend</li>
+            <li data-i18n="li3">ملاحظات تفصيلية تتضمن اقتراحات عملية لتحسين النص السينمائي</li>
+            <li data-i18n="li4">منح النصوص السينمائية ذات التقييمات العالية فرصة إضافية للظهور والوصول إلى جهات في الصناعة</li>
+          </ul>
+          <div class="ctype-card__btns">
+            <a class="btn btn--white" href="/submit?type=short" data-i18n="btnRequest">اطلب التغطية</a>
+            <a class="btn btn--ghost" href="sample-report.html" target="_blank" rel="noopener" data-i18n="btnSample">إطلع على نموذج التقرير</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="ctype-card">
+        <div class="ctype-card__head">
+          <h3 class="ctype-card__title" data-i18n="featureTitle">تغطية النصوص السينمائية الطويلة</h3>
+          <div class="price-div">
+            <img class="riyal-icon" src="assets/riyal.svg" alt="ريال">
+            <h1 class="price-range">800 - 1200</h1>
+          </div>
+          <p class="ctype-card__price-note" data-i18n="featurePriceNote">10 ريال لكل صفحة — من 80 إلى 120 صفحة</p>
+          <p class="ctype-card__desc" data-i18n-html="featureDescHtml">يقدم هذا التقرير ملاحظات تفصيلية على الفيلم الطويل (<strong>من 80 إلى 120 صفحة</strong>). يشمل ذلك تقييمًا وملاحظات حول: <strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والحوار، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong></p>
+        </div>
+        <div class="ctype-card__foot">
+          <ul class="ctype-card__list">
+            <li data-i18n-html="featureLi1Html">مدة التسليم: حتى 4 أسابيع <span class="ctype-card__note">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span></li>
+            <li data-i18n="li2">تقييمات وفق معايير الصناعة: Pass / Consider / Recommend</li>
+            <li data-i18n="li3">ملاحظات تفصيلية تتضمن اقتراحات عملية لتحسين النص السينمائي</li>
+            <li data-i18n="li4">منح النصوص السينمائية ذات التقييمات العالية فرصة إضافية للظهور والوصول إلى جهات في الصناعة</li>
+          </ul>
+          <div class="ctype-card__btns">
+            <a class="btn btn--white" href="/submit?type=feature" data-i18n="btnRequest">اطلب التغطية</a>
+            <a class="btn btn--ghost" href="sample-report.html" target="_blank" rel="noopener" data-i18n="btnSample">إطلع على نموذج التقرير</a>
+          </div>
+        </div>
+      </article>
+
       <!-- Treatment coverage: an early-stage read on the STORY, not the
            eight-point script coverage below — hence its own short list and no
            sample-report link (the sample is a script report and would mislead).
@@ -279,57 +330,6 @@
           <div class="ctype-card__btns">
             <a class="btn btn--white" href="/treatment-submit?type=treatment_feature" data-i18n="btnRequest">اطلب التغطية</a>
             <a class="btn btn--ghost" href="sample-treatment-report.html" target="_blank" rel="noopener" data-i18n="btnSample">إطلع على نموذج التقرير</a>
-          </div>
-        </div>
-      </article>
-
-      <!-- Short film coverage is priced PER PAGE (10 SAR each, 10–40 pages), so the
-           card advertises the range and the exact amount is quoted on the form
-           once the file is uploaded. See PER_PAGE in lib/moyasar.js. -->
-      <article class="ctype-card">
-        <div class="ctype-card__head">
-          <h3 class="ctype-card__title" data-i18n="shortTitle">تغطية النصوص السينمائية القصيرة</h3>
-          <div class="price-div">
-            <img class="riyal-icon" src="assets/riyal.svg" alt="ريال">
-            <h1 class="price-range">100 - 400</h1>
-          </div>
-          <p class="ctype-card__price-note" data-i18n="shortPriceNote">10 ريال لكل صفحة — من 10 إلى 40 صفحة</p>
-          <p class="ctype-card__desc" data-i18n-html="shortDescHtml">يقدم هذا التقرير ملاحظات تفصيلية على الفيلم القصير (<strong>من 10 إلى 40 صفحة</strong>). يشمل ذلك تقييمًا وملاحظات حول: <strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والحوار، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong></p>
-        </div>
-        <div class="ctype-card__foot">
-          <ul class="ctype-card__list">
-            <li data-i18n-html="shortLi1Html">مدة التسليم: عادةً من 10 إلى 15 يومًا <span class="ctype-card__note">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span></li>
-            <li data-i18n="li2">تقييمات وفق معايير الصناعة: Pass / Consider / Recommend</li>
-            <li data-i18n="li3">ملاحظات تفصيلية تتضمن اقتراحات عملية لتحسين النص السينمائي</li>
-            <li data-i18n="li4">منح النصوص السينمائية ذات التقييمات العالية فرصة إضافية للظهور والوصول إلى جهات في الصناعة</li>
-          </ul>
-          <div class="ctype-card__btns">
-            <a class="btn btn--white" href="/submit?type=short" data-i18n="btnRequest">اطلب التغطية</a>
-            <a class="btn btn--ghost" href="sample-report.html" target="_blank" rel="noopener" data-i18n="btnSample">إطلع على نموذج التقرير</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="ctype-card">
-        <div class="ctype-card__head">
-          <h3 class="ctype-card__title" data-i18n="featureTitle">تغطية النصوص السينمائية الطويلة</h3>
-          <div class="price-div">
-            <img class="riyal-icon" src="assets/riyal.svg" alt="ريال">
-            <h1 class="price-range">800 - 1200</h1>
-          </div>
-          <p class="ctype-card__price-note" data-i18n="featurePriceNote">10 ريال لكل صفحة — من 80 إلى 120 صفحة</p>
-          <p class="ctype-card__desc" data-i18n-html="featureDescHtml">يقدم هذا التقرير ملاحظات تفصيلية على الفيلم الطويل (<strong>من 80 إلى 120 صفحة</strong>). يشمل ذلك تقييمًا وملاحظات حول: <strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والحوار، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong></p>
-        </div>
-        <div class="ctype-card__foot">
-          <ul class="ctype-card__list">
-            <li data-i18n-html="featureLi1Html">مدة التسليم: حتى 4 أسابيع <span class="ctype-card__note">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span></li>
-            <li data-i18n="li2">تقييمات وفق معايير الصناعة: Pass / Consider / Recommend</li>
-            <li data-i18n="li3">ملاحظات تفصيلية تتضمن اقتراحات عملية لتحسين النص السينمائي</li>
-            <li data-i18n="li4">منح النصوص السينمائية ذات التقييمات العالية فرصة إضافية للظهور والوصول إلى جهات في الصناعة</li>
-          </ul>
-          <div class="ctype-card__btns">
-            <a class="btn btn--white" href="/submit" data-i18n="btnRequest">اطلب التغطية</a>
-            <a class="btn btn--ghost" href="sample-report.html" target="_blank" rel="noopener" data-i18n="btnSample">إطلع على نموذج التقرير</a>
           </div>
         </div>
       </article>
