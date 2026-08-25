@@ -31,21 +31,24 @@ const BUCKET = "scripts";
 
 // --- Allowlists & limits (server is the source of truth; never trust client) ---
 const GENRES = ["drama", "comedy", "romance", "crime", "thriller", "horror", "action", "documentary", "other"];
-// Every product is its own `film_type`. Feature and the two treatments are
-// fixed-price; SHORT is priced per page (10 SAR each, 10–40 pages), so its amount
-// comes from the file itself — see priceFor() in lib/moyasar.js.
+// Every product is its own `film_type`. The two treatments are fixed-price; both
+// SCRIPT coverages are priced per page (10 SAR each — 10–40 pages for a short,
+// 80–120 for a feature), so their amount comes from the file itself — see
+// priceFor() in lib/moyasar.js.
 const FILM_TYPES = ["feature", "short", "treatment_short", "treatment_feature"];
-// Upper bound per product, in BILLABLE pages (title page excluded). `short` is
-// absent because its bounds are part of its price — 10 to 40 pages, enforced by
-// priceFor() in lib/moyasar.js, so the limit and the amount can never disagree.
+// Upper bound per product, in BILLABLE pages (title page excluded). The two
+// SCRIPT coverages are absent: their bounds are part of their price (10–40 and
+// 80–120 pages), enforced by priceFor() in lib/moyasar.js, so a limit and an
+// amount can never disagree. Only the fixed-price treatments need a cap here.
 const PAGE_CAPS = {
-  feature: 120,
   treatment_short: 5,
   treatment_feature: 15,
 };
-// Products whose price or discount depends on a length we must be able to read.
-// `short` is priced per page, so it is the strictest case of all.
-const PDF_ONLY_TYPES = ["short", "treatment_short", "treatment_feature"];
+// Products whose price or length limit depends on a count we must be able to
+// read — which, since both script coverages went per-page, is every product we
+// sell. Kept as a list rather than "always PDF" so a future product could accept
+// FDX/Fountain again without unpicking the check.
+const PDF_ONLY_TYPES = ["short", "feature", "treatment_short", "treatment_feature"];
 function needsPdf(t) { return PDF_ONLY_TYPES.indexOf(String(t || "")) !== -1; }
 const DRAFTS = ["first", "revised", "final"];
 function isTreatment(t) { return String(t || "").indexOf("treatment") === 0; }
@@ -189,13 +192,18 @@ module.exports = async (req, res) => {
   if (rule) {
     if (billablePages < rule.min) {
       return res.status(400).json({
-        message: "الحد الأدنى " + rule.min + " صفحات. ملفك " + billablePages + " صفحة.",
+        message: row.film_type === "feature"
+          ? "الحد الأدنى لتغطية الفيلم الطويل " + rule.min + " صفحة. ملفك " + billablePages +
+            " صفحة — اختر تغطية الفيلم القصير."
+          : "الحد الأدنى " + rule.min + " صفحات. ملفك " + billablePages + " صفحة.",
       });
     }
     if (billablePages > rule.max) {
       return res.status(400).json({
-        message: "الحد الأقصى للفيلم القصير " + rule.max + " صفحة. ملفك " + billablePages +
-                 " صفحة — اختر تغطية الفيلم الطويل.",
+        message: row.film_type === "short"
+          ? "الحد الأقصى للفيلم القصير " + rule.max + " صفحة. ملفك " + billablePages +
+            " صفحة — اختر تغطية الفيلم الطويل."
+          : "الحد الأقصى " + rule.max + " صفحة. ملفك " + billablePages + " صفحة.",
       });
     }
   }

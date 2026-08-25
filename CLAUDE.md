@@ -59,11 +59,15 @@ Actively iterating on UX polish and workflow features.
   on its **own** language key **`sceneone-treatment-lang`** — so a visitor reading
   this sample never flips the script sample, or a writer's real report, into the other
   language. Linked from both treatment cards' «إطلع على نموذج التقرير».
-- **Short film coverage is priced PER PAGE (2026-08-25): 10 SAR a page, 10–40
-  pages, so 100–400 SAR.** It replaced the two fixed short tiers — `short` at 750
-  (30–50pp) and `short_under_30` at 350 — which are **retired**: one card now, its
-  price shown as a range, and `short_under_30` is gone from `FILM_TYPES` (its entry
-  stays in `PRICES` and the label maps only so old rows still render).
+- **Both SCRIPT coverages are priced PER PAGE (2026-08-25): 10 SAR a page.**
+  Short 10–40 pages (100–400 SAR), feature 80–120 pages (800–1200 SAR) — one card
+  each, price shown as a range. This replaced every fixed script price: `short` at
+  750 (30–50pp), `short_under_30` at 350, and `feature` at a flat 1200.
+  `short_under_30` is **retired** from `FILM_TYPES` (its entry stays in `PRICES`
+  and the label maps only so old rows still render). The two treatments remain
+  fixed-price. A consequence worth knowing: **every product is now PDF-only**,
+  because no price can be computed without a count — FDX and Fountain are no
+  longer accepted anywhere, including the feature tier that used to take them.
   - **The count comes from the FILE, on the server** (`lib/pdf-pages.js`, pdf-lib —
     the first non-Chromium serverless dependency). The browser still counts with
     pdf.js to quote a price while the writer fills the form, but that number is a
@@ -73,8 +77,9 @@ Actively iterating on UX polish and workflow features.
   - **`priceFor(filmType, pages)` in `lib/moyasar.js` is the single pricing
     authority**, and its bounds ARE the length limits: a per-page product has no
     entry in `PAGE_CAPS`, so the price and the limit cannot drift apart. Outside
-    10–40 it throws rather than clamping, and the API refuses the submission before
-    any row or invoice exists.
+    its range it throws rather than clamping, and the API refuses the submission
+    before any row or invoice exists — a 121-page feature and a 41-page short are
+    both turned away with the other tier suggested.
   - **Billable pages = raw − 1** (`billablePages()`), the title-page convention the
     whole app already displays. A 41-page PDF is a 40-page script at 400 SAR.
   - The form shows the quote the moment the file lands — «نصك 25 صفحة × 10 ريال =

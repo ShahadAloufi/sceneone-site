@@ -159,10 +159,12 @@
                    the page ranges here must match the landing page's cards. -->
               <!-- data-cap = the page limit checked before payment; data-accept overrides the
                  form-wide list for tiers priced on being short (see js/submit.js). -->
-              <option value="feature" data-cap="120">فيلم طويل (حتى 120 صفحة) — 1200 ريال</option>
+              <option value="feature" data-accept="pdf" data-rate="10" data-min="80" data-max="120"
+                      data-under-hint="اختر تغطية الفيلم القصير.">فيلم طويل (من 80 إلى 120 صفحة) — 10 ريال للصفحة</option>
               <!-- Priced per page: data-rate/min/max drive the live quote in
                    js/submit.js, and must match PER_PAGE in lib/moyasar.js. -->
-              <option value="short" data-accept="pdf" data-rate="10" data-min="10" data-max="40">فيلم قصير (من 10 إلى 40 صفحة) — 10 ريال للصفحة</option>
+              <option value="short" data-accept="pdf" data-rate="10" data-min="10" data-max="40"
+                      data-over-hint="اختر تغطية الفيلم الطويل.">فيلم قصير (من 10 إلى 40 صفحة) — 10 ريال للصفحة</option>
             </select>
             <p class="sub-err">اختر نوع الفيلم</p>
           </div>

@@ -208,7 +208,11 @@
     return {
       rate: Number(opt.getAttribute("data-rate")),
       min: Number(opt.getAttribute("data-min")),
-      max: Number(opt.getAttribute("data-max"))
+      max: Number(opt.getAttribute("data-max")),
+      // What to suggest when the file misses the range — the other tier, named by
+      // the markup so this stays product-agnostic.
+      underHint: opt.getAttribute("data-under-hint") || "",
+      overHint: opt.getAttribute("data-over-hint") || ""
     };
   }
   var quoteEl = document.getElementById("priceQuote");
@@ -266,12 +270,13 @@
       if (perPage) {
         if (billable < perPage.min) {
           showQuote(null);
-          return showFileError("نصك " + billable + " صفحة. الحد الأدنى " + perPage.min + " صفحات.");
+          return showFileError(("نصك " + billable + " صفحة، والحد الأدنى لهذه الفئة " +
+            perPage.min + " صفحة. " + perPage.underHint).trim());
         }
         if (billable > perPage.max) {
           showQuote(null);
-          return showFileError("نصك " + billable + " صفحة، والحد الأقصى للفيلم القصير " +
-            perPage.max + " صفحة. اختر تغطية الفيلم الطويل.");
+          return showFileError(("نصك " + billable + " صفحة، والحد الأقصى لهذه الفئة " +
+            perPage.max + " صفحة. " + perPage.overHint).trim());
         }
         showFileError(null);
         // The number the writer is about to pay, shown before they commit.
