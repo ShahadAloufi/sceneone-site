@@ -523,10 +523,12 @@ a, button {
   height: auto;
   display: block;
 }
-/* A per-page product shows a RANGE, which is wider than a single figure — ease
-   it down a little so it doesn't crowd the card, and keep the digits LTR so
-   "100 - 400" never renders reversed inside the RTL card. */
-.price-div h1.price-range { font-size: 38px; direction: ltr; unicode-bidi: isolate; }
+/* A per-page product shows a RANGE, which is wider than a single figure — ease it
+   down so it doesn't crowd the card. Direction is INHERITED on purpose: in Arabic
+   the range reads right-to-left, so the low figure sits on the right where the
+   reader starts, and in English it flips back to 100 on the left. Do not force
+   `direction: ltr` here — that pins the low figure to the left in both languages. */
+.price-div h1.price-range { font-size: 38px; }
 /* The rule under the range: what a page costs and the accepted length. */
 .ctype-card__price-note {
   margin: 2px 0 16px;
