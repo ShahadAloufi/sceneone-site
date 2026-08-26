@@ -890,7 +890,7 @@ must be in the `supabase_realtime` publication for live updates to fire.
   - **Removing an attachment clears the reference, not the object.** A coverage
     already delivered may still link to it; an orphaned file is cheaper than a
     broken link in a writer's inbox.
-  - **Needs SQL** (`supabase/schema.sql`): the bucket plus its two policies.
+  - **SQL applied 2026-08-25** — the bucket and its two policies are live.
 - **Per-point review notes (`coverages.review_comments`).** A reviewer can attach a
   note to an individual **evaluation point** on top of the one overall `review_note`.
   Each point shows a collapsed "Add comment" link; clicking it reveals a box for that
