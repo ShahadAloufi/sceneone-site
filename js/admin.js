@@ -425,11 +425,11 @@
     var staff = isStaff(me.role);
     $("kanbanBoard").hidden = !staff;
     $("subTableView").hidden = staff;
+    // Also runs the assignment-notice sweep server-side, so a writer whose
+    // release window closed while nobody was using the app is emailed now and
+    // their reader's deadline appears. Not awaited: the table must not wait on an
+    // email sweep, and realtime refreshes the row once a stamp lands.
     logAccess();
-    // Clear any notices that fell due while nobody was using the app, then load.
-    // Deliberately not awaited: the table must not wait on an email sweep, and
-    // the realtime subscription below refreshes the row once a stamp lands.
-    sweepNotices();
     // Hide the boot loader only once the first submissions load settles (success
     // or failure), so the loader covers the empty-dashboard gap on refresh.
     loadSubmissions().finally(function () { hide($("admBoot")); });
@@ -437,28 +437,16 @@
   }
 
   // Record this dashboard visit (the server captures the real IP) so a super-admin
-  // can spot accounts used from many IPs. Fire-and-forget — never blocks the UI.
+  // can spot accounts used from many IPs — and, on the same request, let the
+  // server sweep any writer notices that have fallen due. Fire-and-forget: never
+  // blocks the UI, and a failure costs a log row and a few minutes' delay on a
+  // notice the daily cron would send anyway.
   async function logAccess() {
     try {
       var sess = await sb.auth.getSession();
       var token = sess.data.session && sess.data.session.access_token;
       if (!token) return;
       await fetch("/api/log-access", { method: "POST", headers: { Authorization: "Bearer " + token } });
-    } catch (e) {}
-  }
-
-  // Send any writer notices that have fallen due (release window = 1 hour).
-  // Readers open this dashboard far more often than they claim scripts, so this
-  // is what keeps the one-hour promise honest — without it a notice waits for the
-  // next claim or the daily cron, and the reader's deadline (which starts at
-  // `writer_notified_at`) stays blank meanwhile. Fire-and-forget: the sweep only
-  // ever sends what is already due, and a failure here must not disturb the load.
-  async function sweepNotices() {
-    try {
-      var sess = await sb.auth.getSession();
-      var token = sess.data.session && sess.data.session.access_token;
-      if (!token) return;
-      await fetch("/api/sweep-notices", { method: "POST", headers: { Authorization: "Bearer " + token } });
     } catch (e) {}
   }
 

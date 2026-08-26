@@ -1,6 +1,17 @@
-// Vercel serverless function — records a dashboard access event for the signed-in
-// admin/reader, so a super-admin can spot accounts used from many IPs (shared
-// access). Called by the client right after a successful sign-in.
+// Vercel serverless function — dashboard-load hook. Two jobs, both hanging off
+// the same authenticated call the dashboard already makes on every load:
+//
+//   1. Records the access event, so a super-admin can spot accounts used from
+//      many IPs (shared access).
+//   2. Runs the assignment-notice sweep, so a writer whose 1-hour release window
+//      has closed is emailed and their reader's deadline appears. Readers open
+//      this dashboard far more often than they claim scripts, which is what makes
+//      a one-hour window mean an hour in practice.
+//
+// The sweep lived at /api/sweep-notices until 2026-08-25 and was folded in here:
+// same trigger, same auth, same behaviour — but Vercel Hobby caps a project at 12
+// serverless functions, and a separate route for a second job on the same request
+// was the cheapest one to give back.
 //
 //   POST /api/log-access   (Authorization: Bearer <access_token>)
 //
@@ -8,7 +19,10 @@
 // the browser). The row is written with the service-role key; reads are gated by
 // RLS to super-admins only.
 //
-// Required env vars: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
+// Required env vars: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY
+// (the last only for the notice emails; without it the sweep simply sends none).
+
+const { sweepAssignmentNotices } = require("../lib/assignment-notices");
 
 function svc() {
   return { url: process.env.SUPABASE_URL, key: process.env.SUPABASE_SERVICE_ROLE_KEY };
@@ -81,5 +95,20 @@ module.exports = async (req, res) => {
     return res.status(200).json({ ok: false });
   }
 
-  return res.status(200).json({ ok: true });
+  // Notices that have fallen due. Deliberately AFTER the access row and wrapped
+  // on its own: a Resend outage or a slow sweep must not turn a dashboard load
+  // into an error, and the sweep only ever sends what is already due.
+  let sent = 0;
+  try {
+    sent = await sweepAssignmentNotices(url, {
+      apikey: key,
+      Authorization: "Bearer " + key,
+      "Content-Type": "application/json",
+    });
+    if (sent) console.log("log-access: sent " + sent + " assignment notice(s)");
+  } catch (err) {
+    console.error("log-access: notice sweep error:", err);
+  }
+
+  return res.status(200).json({ ok: true, sent: sent });
 };

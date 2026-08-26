@@ -924,11 +924,17 @@ must be in the `supabase_realtime` publication for live updates to fire.
   and the writer would be told work had begun — and their refund window closed — for
   a script sitting back in the pool. A reassign followed by a release orphaned it the
   same way.
-  **Triggers (three):** `/api/sweep-notices` on **every dashboard load**
-  (fire-and-forget from `js/admin.js`, any signed-in reader/staff — this is the one
-  that makes "one hour" mean one hour, since readers open the dashboard far more
-  often than they claim), `/api/claim-script` on every claim/release/reassign, and
+  **Triggers (three):** **`/api/log-access` on every dashboard load** — it records
+  the visit AND runs the sweep on the same authenticated request, which is what
+  makes "one hour" mean one hour, since readers open the dashboard far more often
+  than they claim — plus `/api/claim-script` on every claim/release/reassign, and
   `/api/send-notices` daily via Vercel Cron as a backstop.
+  ⚠️ **`/api/sweep-notices` existed for a day and was folded into `log-access`
+  (2026-08-25).** Not a design change — the same trigger, auth and behaviour — but
+  **Vercel Hobby caps a project at 12 serverless functions** and the repo had
+  reached 13, so a deploy would have failed outright. Anything new under `/api`
+  now needs an existing route to hang off, or a function retired in exchange.
+  Count them before adding one.
   **The dashboard trigger was added 2026-08-25 after two scripts sat 12h unnotified**
   — claimed in the evening, nobody claimed anything else afterwards, and the daily
   cron had already run before they fell due. Their readers' deadlines stayed blank
