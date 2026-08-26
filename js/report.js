@@ -94,6 +94,9 @@
         submission: window.SOReport.mapSubmission(d.submission || {}),
         coverage: window.SOReport.mergeCoverage(d.coverage || {}, schema)
       };
+      // Resource the reader attached for this writer. The URL is short-lived and
+      // minted per request by /api/report — reloading the page mints a new one.
+      if (d.attachment && d.attachment.url) data.coverage.attachmentLink = d.attachment;
       ready();
       applyLang(lang());
     })

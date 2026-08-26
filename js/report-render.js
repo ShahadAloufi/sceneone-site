@@ -35,7 +35,7 @@
       logline: "Logline", glance: "Assessment at a glance", excellent: "Excellent", good: "Good", fair: "Fair", poor: "Poor",
       synopsis: "Synopsis", evaluation: "Evaluation", market: "The market", overall: "Overall comments",
       coverageT: "Treatment coverage", synopsisT: "Treatment summary", evaluationT: "Treatment evaluation", marketT: "Market notes", footT: "Treatment coverage",
-      strengths: "Strengths", develop: "To develop", verdict: "Verdict", pending: "Pending", notwritten: "Not yet written.",
+      strengths: "Strengths", develop: "To develop", attachment: "Attached for you", verdict: "Verdict", pending: "Pending", notwritten: "Not yet written.",
       outof: "/ 10", foot: "Script coverage",
       eval: { "Premise & Theme": "Premise & Theme", "Hook": "Hook", "Stakes & Plot": "Stakes & Plot", "Character": "Character", "Dialogue": "Dialogue", "Structure & Pace": "Structure & Pace", "Producibility": "Producibility", "Presentation": "Presentation",
               "Narrative Clarity": "Narrative clarity", "Character Basics": "Character (fundamentals)", "Emotional Journey": "Emotional journey",
@@ -54,7 +54,7 @@
       logline: "الفكرة المختصرة", glance: "التقييم العام", excellent: "ممتاز", good: "جيد", fair: "مقبول", poor: "ضعيف",
       synopsis: "الملخّص", evaluation: "التقييم", market: "السوق", overall: "ملاحظات عامة",
       coverageT: "تقييم المعالجة", synopsisT: "الملخّص (Treatment Summary)", evaluationT: "التقييم (Treatment Evaluation)", marketT: "السوق (Market Notes)", footT: "تقييم المعالجة",
-      strengths: "نقاط القوة", develop: "ما يحتاج إلى تطوير", verdict: "الحكم", pending: "بانتظار التقييم", notwritten: "لم يُكتب بعد.",
+      strengths: "نقاط القوة", develop: "ما يحتاج إلى تطوير", attachment: "مرفق لك", verdict: "الحكم", pending: "بانتظار التقييم", notwritten: "لم يُكتب بعد.",
       outof: "/ 10", foot: "تقييم النصوص",
       eval: { "Premise & Theme": "الفكرة والموضوع", "Hook": "عنصر الجذب", "Stakes & Plot": "الرهانات الدرامية والحبكة", "Character": "الشخصيات", "Dialogue": "الحوار", "Structure & Pace": "البناء الدرامي والإيقاع", "Producibility": "قابلية الإنتاج", "Presentation": "العرض والتنسيق",
               "Narrative Clarity": "وضوح الرؤية السردية", "Character Basics": "الشخصيات (الأساسيات)", "Emotional Journey": "الرحلة العاطفية",
@@ -200,6 +200,20 @@
 
   // Build the report's inner HTML for #reportBody. Caller sets dir/lang + the
   // `.ar` class on the container.
+  // A resource the reader attached for the writer. Rendered only when the caller
+  // supplied a live link (the writer's report page gets one from /api/report);
+  // the workspace preview shows the name without a link, which is the honest
+  // representation there — the reader already has the file.
+  function attachmentHtml(c, t) {
+    var att = c.attachmentLink || c.attachment;
+    if (!att || !att.name) return "";
+    var label = att.url
+      ? '<a href="' + esc(att.url) + '" target="_blank" rel="noopener">' + esc(att.name) + "</a>"
+      : esc(att.name);
+    return '<div class="rep-item"><div class="ih"><span class="t">' + t.attachment + "</span></div>" +
+           '<p class="rep-attach">' + label + "</p></div>";
+  }
+
   function render(s, c, lang, schema) {
     var t = T[lang], ar = (lang === "ar"), nw = t.notwritten;
     // A submission carries its own film_type, so the caller can pass nothing and
@@ -272,7 +286,8 @@
       '<div class="rep-sec"><h2><span class="no">03</span>' + (isT ? t.marketT : t.market) + "</h2>" + marketHtml + "</div>" +
       '<div class="rep-sec"><h2><span class="no">04</span>' + t.overall + "</h2>" +
         '<div class="rep-item"><div class="ih"><span class="t">' + t.strengths + "</span></div><p>" + val(c.overall.strengths, nw) + "</p></div>" +
-        '<div class="rep-item"><div class="ih"><span class="t">' + t.develop + "</span></div><p>" + val(c.overall.toDevelop, nw) + "</p></div></div>" +
+        '<div class="rep-item"><div class="ih"><span class="t">' + t.develop + "</span></div><p>" + val(c.overall.toDevelop, nw) + "</p></div>" +
+        attachmentHtml(c, t) + "</div>" +
       '<div class="verdict"><div class="vh">' + t.verdict + "</div>" +
         '<div style="display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:8px">' +
           '<div class="vd" style="margin:0">' + dec + (c.verdict.context ? ' <span class="ctx">· ' + esc(c.verdict.context) + "</span>" : "") + "</div>" +

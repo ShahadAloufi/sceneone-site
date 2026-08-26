@@ -81,6 +81,10 @@
         "told. Re-approving will not resend it. Please send them this link yourself:",
       approving: "Approving…", requesting: "Sending…", reviewFail: "Couldn't complete the action.",
       pl: { title: "Title", writer: "Writer", level: "Writer's level", email: "Email", ref: "Reference", format: "Format", genre: "Genre", length: "Length", draft: "Draft", ip: "IP registered", file: "Script file", logline: "Logline", vision: "Writer's vision" },
+      attachment: "Attachment for the writer",
+      attachmentHint: "Optional — a guide or reference the writer can download with their report.",
+      attachAdd: "Add attachment", attachRemove: "Remove",
+      attachTooBig: "That file is over 10MB.", attachFailed: "Could not upload that file.",
       ipYes: "Registered", ipNo: "Not registered", dl: "Download script", untitled: "Untitled", dash: "—", pagesUnit: "pages",
       fileLocked: "Locked", fileLockedTip: "Another reader is assigned to this script.",
       saving: "Saving…", saved: "Saved", saveFailed: "Save failed", loaded: "Loaded", newCov: "New coverage", viewOnly: "View only",
@@ -142,6 +146,10 @@
         "الإرسال. يرجى إرسال هذا الرابط إليه يدويًا:",
       approving: "جارٍ الاعتماد…", requesting: "جارٍ الإرسال…", reviewFail: "تعذّر إكمال الإجراء.",
       pl: { title: "عنوان السيناريو", writer: "اسم الكاتب", level: "مستوى الكاتب", email: "البريد الإلكتروني", ref: "الرقم المرجعي", format: "نوع العمل", genre: "التصنيف", length: "عدد الصفحات/المدة", draft: "نسخة السيناريو", ip: "تسجيل الملكية الفكرية", file: "ملف السيناريو", logline: "الملخص المختصر", vision: "رؤية الكاتب" },
+      attachment: "مرفق للكاتب",
+      attachmentHint: "اختياري — دليل أو مرجع يمكن للكاتب تحميله مع تقريره.",
+      attachAdd: "إضافة مرفق", attachRemove: "إزالة",
+      attachTooBig: "حجم الملف يتجاوز 10 ميغابايت.", attachFailed: "تعذّر رفع الملف.",
       ipYes: "مسجل", ipNo: "غير مسجل", dl: "تحميل النص", untitled: "بدون عنوان", dash: "—", pagesUnit: "صفحة",
       fileLocked: "مقفل", fileLockedTip: "هذا النص مُسند إلى قارئ آخر.",
       saving: "جارٍ الحفظ…", saved: "تم الحفظ", saveFailed: "فشل الحفظ", loaded: "تم التحميل", newCov: "تقييم جديد", viewOnly: "عرض فقط",
@@ -352,9 +360,94 @@
     if (dl) dl.addEventListener("click", function (e) { e.preventDefault(); downloadFile(s.filePath, dl); });
   }
 
-  async function downloadFile(path, el) {
+  /* ---------- ATTACHMENT FOR THE WRITER ----------
+     A reader can attach one resource to the coverage — a screenwriting guide, a
+     formatting reference — which travels with the delivered report: named in the
+     writer's email and downloadable from their report page.
+
+     Stored in its OWN private bucket, never in `scripts`: that bucket holds the
+     writer's IP under per-assignment RLS, and a shared guide has neither the same
+     owner nor the same access rule. The writer has no account, so they never read
+     the bucket directly — /api/report mints a short-lived signed URL against
+     their report token.
+
+     The reference lives in `coverages.data.attachment` ({name, path}), so it
+     rides along with every existing save and needs no new column. */
+  var ATTACH_BUCKET = "attachments";
+  var ATTACH_MAX_BYTES = 10 * 1024 * 1024;
+
+  function attachEls() {
+    return {
+      field: $("attachField"), input: $("attachInput"), btn: $("attachBtn"),
+      name: $("attachName"), remove: $("attachRemove")
+    };
+  }
+
+  function renderAttachment() {
+    var e = attachEls();
+    if (!e.field) return;
+    var att = state.coverage && state.coverage.attachment;
+    var editable = !readOnly;
+    e.btn.hidden = !editable || !!att;
+    e.remove.hidden = !editable || !att;
+    e.name.hidden = !att;
+    if (att) {
+      e.name.textContent = att.name;
+      // Readers (and staff reviewing) can open what was attached; the writer's
+      // copy is served separately, through their report token.
+      e.name.onclick = function () { downloadFile(att.path, e.name, ATTACH_BUCKET); };
+    }
+  }
+
+  async function uploadAttachment(file) {
+    var e = attachEls();
+    if (!file) return;
+    if (file.size > ATTACH_MAX_BYTES) { toast(UI[UILANG].attachTooBig); return; }
+    e.btn.disabled = true;
+    var label = e.btn.textContent;
+    e.btn.textContent = "…";
+    // Namespaced by submission so one coverage's attachment can never collide
+    // with another's, and the file keeps a readable name for the writer.
+    var safe = file.name.replace(/[^A-Za-z0-9._-]+/g, "-").slice(-80);
+    var path = submissionId + "/" + Date.now().toString(36) + "-" + safe;
+    var up = await sb.storage.from(ATTACH_BUCKET).upload(path, file, {
+      contentType: file.type || "application/octet-stream", upsert: false
+    });
+    e.btn.disabled = false;
+    e.btn.textContent = label;
+    if (up.error) {
+      console.error("[attachment] upload failed:", up.error);
+      toast(UI[UILANG].attachFailed);
+      return;
+    }
+    state.coverage.attachment = { name: file.name, path: path };
+    renderAttachment();
+    scheduleSave();
+  }
+
+  function bindAttachment() {
+    var e = attachEls();
+    if (!e.field || e.field.dataset.bound) return;
+    e.field.dataset.bound = "1";
+    e.btn.addEventListener("click", function () { e.input.click(); });
+    e.input.addEventListener("change", function () {
+      var f = e.input.files && e.input.files[0];
+      e.input.value = "";                 // so the same file can be re-picked
+      uploadAttachment(f);
+    });
+    e.remove.addEventListener("click", function () {
+      // The stored object is deliberately left in place: a coverage already
+      // delivered may still link to it, and orphaned files are cheaper than a
+      // broken link in a writer's inbox.
+      state.coverage.attachment = null;
+      renderAttachment();
+      scheduleSave();
+    });
+  }
+
+  async function downloadFile(path, el, bucket) {
     var old = el.textContent; el.textContent = "…";
-    var res = await sb.storage.from(CFG.bucket).createSignedUrl(path, 120);
+    var res = await sb.storage.from(bucket || CFG.bucket).createSignedUrl(path, 120);
     el.textContent = old;
     if (res.error || !res.data) {
       console.error("[download] createSignedUrl failed for path:", path, res.error);
@@ -564,6 +657,8 @@
     });
     $("c-reader").value = (UILANG === "ar" ? "احد قراء Scene One" : "Scene One Reader");
     $("c-score10").value = (state.coverage.score10 != null ? state.coverage.score10 : "");
+    bindAttachment();
+    renderAttachment();
     updateRating();
     autoGrowSoon();
     refreshFinalizeState();

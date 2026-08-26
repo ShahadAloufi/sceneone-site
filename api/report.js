@@ -52,7 +52,43 @@ module.exports = async (req, res) => {
     return res.status(404).json({ message: "Report not found" });
   }
 
+  const coverage = covs[0].data || {};
+
+  // The reader may have attached a resource for the writer (a screenwriting
+  // guide, a formatting reference). The writer has no account, so the file is
+  // reached through THIS token and nothing else: a short-lived signed URL minted
+  // here with the service role. Ten minutes — long enough to click from a report
+  // they have open, short enough that a forwarded link is worthless.
+  //
+  // Never returns the storage path itself, only the temporary URL.
+  let attachment = null;
+  if (coverage.attachment && coverage.attachment.path) {
+    try {
+      const signResp = await fetch(
+        url + "/storage/v1/object/sign/attachments/" +
+        coverage.attachment.path.split("/").map(encodeURIComponent).join("/"),
+        {
+          method: "POST",
+          headers: Object.assign({ "Content-Type": "application/json" }, headers),
+          body: JSON.stringify({ expiresIn: 600 }),
+        }
+      );
+      if (signResp.ok) {
+        const signed = await signResp.json();
+        if (signed && signed.signedURL) {
+          attachment = { name: coverage.attachment.name || "attachment", url: url + "/storage/v1" + signed.signedURL };
+        }
+      } else {
+        console.error("report: attachment sign failed:", signResp.status, await signResp.text());
+      }
+    } catch (err) {
+      console.error("report: attachment sign error:", err);
+    }
+  }
+  // The path must not travel to the browser even when signing failed.
+  if (coverage.attachment) delete coverage.attachment.path;
+
   delete sub.id;
   res.setHeader("Cache-Control", "no-store");
-  return res.status(200).json({ submission: sub, coverage: covs[0].data || {} });
+  return res.status(200).json({ submission: sub, coverage: coverage, attachment: attachment });
 };

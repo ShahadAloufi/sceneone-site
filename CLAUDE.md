@@ -871,6 +871,26 @@ must be in the `supabase_realtime` publication for live updates to fire.
     strengths/to-develop as bullet lists, which the shared renderer does not do.
     Worth folding into the shared path; until then, changing a treatment label
     means changing it in both places.
+- **Reader attachment for the writer (2026-08-25).** A reader may attach ONE
+  resource to a coverage — a screenwriting guide, a formatting reference — from
+  section 04 of the workspace. It travels with the delivered report: **named in
+  the writer's approval email** and **downloadable from their report page**.
+  - **Stored in its own private `attachments` bucket**, never in `scripts`: that
+    one holds the writer's IP under per-assignment RLS, this holds Scene One's own
+    material with a different owner and rule. Readers/staff upload and read it via
+    RLS (`is_admin`); **the writer never touches the bucket** — `/api/report`
+    mints a **600s signed URL** against their report token and returns only that.
+    The storage **path is stripped from the API response** either way, so a
+    signing failure cannot leak it.
+  - **No new column:** the reference lives in `coverages.data.attachment`
+    (`{name, path}`), so it rides along with every existing save. `mergeCoverage()`
+    passes unknown keys through untouched, which is what makes that work.
+  - **The email names the file but never links to it** — a signed URL expires, so
+    emailing one would age into a dead link. It points at the report page instead.
+  - **Removing an attachment clears the reference, not the object.** A coverage
+    already delivered may still link to it; an orphaned file is cheaper than a
+    broken link in a writer's inbox.
+  - **Needs SQL** (`supabase/schema.sql`): the bucket plus its two policies.
 - **Per-point review notes (`coverages.review_comments`).** A reviewer can attach a
   note to an individual **evaluation point** on top of the one overall `review_note`.
   Each point shows a collapsed "Add comment" link; clicking it reveals a box for that

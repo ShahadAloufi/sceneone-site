@@ -127,6 +127,10 @@
   html[data-theme="dark"] input[type=number],html[data-theme="dark"] textarea{color-scheme:dark}
   textarea{resize:vertical;min-height:72px;line-height:1.5}
   .hint{font-size:14px;color:var(--muted)}
+  /* Reader's optional attachment for the writer (section 04). */
+  .attach-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:8px}
+  .attach-btn{font-size:14px;padding:9px 16px}
+  .attach-name{font-size:14px;font-weight:600;text-decoration:underline;cursor:pointer}
   .section-title{font-size:18px;font-weight:600;letter-spacing:.02em;margin:0 0 14px;
                  display:flex;align-items:center;gap:9px}
   .section-title .no{color:var(--orange);font-variant-numeric:tabular-nums}
@@ -546,6 +550,19 @@
       <div class="field">
         <label class="lbl" for="c-develop" data-i18n="develop">To develop</label>
         <textarea id="c-develop"></textarea>
+      </div>
+      <!-- Optional resource the reader attaches for the writer (a screenwriting
+           guide, formatting reference…). Delivered with the report: named in the
+           writer's email, downloadable from their report page. -->
+      <div class="field" id="attachField">
+        <label class="lbl" data-i18n="attachment">Attachment for the writer</label>
+        <p class="hint" data-i18n="attachmentHint">Optional — a guide or reference the writer can download with their report.</p>
+        <div class="attach-row">
+          <input type="file" id="attachInput" hidden accept=".pdf,.doc,.docx,.txt">
+          <button type="button" class="btn ghost attach-btn" id="attachBtn" data-i18n="attachAdd">Add attachment</button>
+          <span class="attach-name" id="attachName" hidden></span>
+          <button type="button" class="btn ghost attach-btn" id="attachRemove" hidden data-i18n="attachRemove">Remove</button>
+        </div>
       </div>
     </div>
 

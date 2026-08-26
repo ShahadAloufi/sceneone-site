@@ -101,7 +101,7 @@ async function requireReviewer(req) {
 
 // Bilingual email inviting the writer to open their (now approved) report, and
 // to ask the reader a follow-up question about it (/ask, same report token).
-function reportEmail(sub, link, askLink) {
+function reportEmail(sub, link, askLink, attachmentName) {
   var esc = escapeHtml;
   var title = sub.title_ar || sub.title_en || "";
   var name = (sub.writer || "").toString().trim();
@@ -145,6 +145,13 @@ function reportEmail(sub, link, askLink) {
               '<td style="border-radius:12px;border:1px solid #d7d0c6;">' +
                 '<a href="' + esc(askLink) + '" style="display:inline-block;padding:14px 32px;color:#15110f;text-decoration:none;font-size:14px;font-weight:600;border-radius:12px;">طلب توضيح/ استفسار حول التقرير</a>' +
               "</td></tr></table>" +
+
+            (attachmentName
+              ? '<p dir="rtl" style="margin:18px auto 0;max-width:440px;padding:14px 16px;background:#f5f1e9;border-radius:12px;color:#4a453f;font-size:13.5px;line-height:1.8;">' +
+                  "أرفق لك قارئك ملفًا مع التقرير: <strong style=\"color:#15110f;\">" + esc(attachmentName) + "</strong>" +
+                  "<br>يمكنك تحميله من صفحة التقرير." +
+                "</p>"
+              : "") +
 
             '<p style="margin:0 auto;max-width:420px;color:#a49b90;font-size:12.5px;line-height:1.7;">' +
               "سيصل استفسارك إلى القارئ الذي أعدّ تقريرك، وسيصلك ردّه على بريدك الإلكتروني." +
@@ -213,12 +220,18 @@ module.exports = async (req, res) => {
   const selfDeliver = gate.role === "lead_reader" && isAssignee;
 
   const covResp = await fetch(
-    url + "/rest/v1/coverages?submission_id=eq." + encodeURIComponent(subId) + "&select=status",
+    url + "/rest/v1/coverages?submission_id=eq." + encodeURIComponent(subId) + "&select=status,data",
     { headers }
   );
   const covs = covResp.ok ? await covResp.json() : [];
   if (!covs.length) return res.status(404).json({ message: "لا توجد تغطية لهذا النص" });
   const covStatus = covs[0].status;
+  // A resource the reader attached for this writer. The email NAMES it and sends
+  // them to the report page to open it — never a direct link, because the file
+  // is private and its signed URL is minted per view by /api/report.
+  const covData = covs[0].data || {};
+  const attachmentName = covData.attachment && covData.attachment.name
+    ? String(covData.attachment.name) : null;
 
   if (selfDeliver) {
     // Bouncing your own draft back to yourself is meaningless — the lead just
@@ -302,7 +315,7 @@ module.exports = async (req, res) => {
   const subject = "Scene One " + (filmLabel ? filmLabel + " " : "") + "Coverage Report";
   const link = SITE_URL + "/report?t=" + encodeURIComponent(sub.report_token);
   const askLink = SITE_URL + "/ask?t=" + encodeURIComponent(sub.report_token);
-  const html = reportEmail(sub, link, askLink);
+  const html = reportEmail(sub, link, askLink, attachmentName);
 
   try {
     const r = await fetch("https://api.resend.com/emails", {

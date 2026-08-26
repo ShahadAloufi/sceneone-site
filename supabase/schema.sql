@@ -386,6 +386,34 @@ on conflict (id) do update
       allowed_mime_types = excluded.allowed_mime_types;
 
 -- Anonymous visitors may UPLOAD (insert) into `scripts` only — no read/list.
+-- ── ATTACHMENTS BUCKET (2026-08-25) ────────────────────────────────────────
+-- A reader may attach ONE resource to a coverage for the writer — a screenwriting
+-- guide, a formatting reference. Its own bucket, deliberately not `scripts`:
+-- that one holds the writer's IP under per-assignment RLS, while this holds
+-- Scene One's own material with a different owner and a different access rule.
+--
+-- PRIVATE, like `scripts`. The writer has no account, so they never read the
+-- bucket: /api/report mints a short-lived signed URL against their report token.
+insert into storage.buckets (id, name, public)
+values ('attachments', 'attachments', false)
+on conflict (id) do nothing;
+
+-- Any signed-in reader/staff may attach a file...
+drop policy if exists "readers upload attachments" on storage.objects;
+create policy "readers upload attachments"
+  on storage.objects for insert
+  to authenticated
+  with check ( bucket_id = 'attachments' and public.is_admin(auth.uid()) );
+
+-- ...and read attachments back, so the reader who added one can re-open it and
+-- staff can check it during quality review. The writer's own access does NOT
+-- come from here — it is the signed URL minted by /api/report.
+drop policy if exists "readers read attachments" on storage.objects;
+create policy "readers read attachments"
+  on storage.objects for select
+  to authenticated
+  using ( bucket_id = 'attachments' and public.is_admin(auth.uid()) );
+
 drop policy if exists "anon can upload scripts" on storage.objects;
 create policy "anon can upload scripts"
   on storage.objects for insert
