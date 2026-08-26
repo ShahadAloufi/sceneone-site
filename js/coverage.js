@@ -415,8 +415,15 @@
     var label = e.btn.textContent;
     e.btn.textContent = "…";
     // Namespaced by submission so one coverage's attachment can never collide
-    // with another's, and the file keeps a readable name for the writer.
-    var safe = file.name.replace(/[^A-Za-z0-9._-]+/g, "-").slice(-80);
+    // with another's. Storage keys stay ASCII, which means an Arabic filename
+    // sanitises down to nothing useful — so fall back to a plain stem and keep
+    // the real name where it matters: `attachment.name`, which is what the writer
+    // sees, and what /api/report puts on the download itself.
+    var dot = file.name.lastIndexOf(".");
+    var ext = dot > 0 ? file.name.slice(dot + 1).replace(/[^A-Za-z0-9]+/g, "").slice(0, 8) : "";
+    var stem = file.name.slice(0, dot > 0 ? dot : undefined)
+      .replace(/[^A-Za-z0-9._-]+/g, "-").replace(/^-+|-+$/g, "").slice(-60);
+    var safe = (stem || "attachment") + (ext ? "." + ext : "");
     var path = submissionId + "/" + Date.now().toString(36) + "-" + safe;
     var up = await sb.storage.from(ATTACH_BUCKET).upload(path, file, {
       contentType: file.type || "application/octet-stream", upsert: false

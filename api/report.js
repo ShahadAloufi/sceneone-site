@@ -76,7 +76,15 @@ module.exports = async (req, res) => {
       if (signResp.ok) {
         const signed = await signResp.json();
         if (signed && signed.signedURL) {
-          attachment = { name: coverage.attachment.name || "attachment", url: url + "/storage/v1" + signed.signedURL };
+          const fileName = coverage.attachment.name || "attachment";
+          // `download` sets Content-Disposition, so the writer's browser saves the
+          // file under the name their reader gave it. Without it they would get
+          // the storage key, which is ASCII-only and says nothing (an Arabic
+          // filename sanitises away entirely — see uploadAttachment()).
+          attachment = {
+            name: fileName,
+            url: url + "/storage/v1" + signed.signedURL + "&download=" + encodeURIComponent(fileName),
+          };
         }
       } else {
         console.error("report: attachment sign failed:", signResp.status, await signResp.text());
