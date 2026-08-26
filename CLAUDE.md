@@ -882,6 +882,18 @@ must be in the `supabase_realtime` publication for live updates to fire.
     mints a **600s signed URL** against their report token and returns only that.
     The storage **path is stripped from the API response** either way, so a
     signing failure cannot leak it.
+  - **Who can attach: the assignee AND reviewers** (admin / super_admin /
+    lead_reader). Two different write paths, because RLS forbids anyone but the
+    assignee from touching the coverage row — the assignee's change rides their
+    normal autosave, a reviewer's goes through
+    **`/api/review-coverage` `action: "set_attachment"`** on the service role.
+    Attaching a shared resource is not editing the coverage being judged, which is
+    why the rule bends here and nowhere else. The endpoint **pins the path to that
+    submission's own folder** (and rejects traversal), so a reviewer cannot point
+    one coverage at another's file, and it **merges into `data`** rather than
+    replacing it. `applyReadOnly()` disables every button in the workspace, so the
+    two attachment controls are re-enabled after it explicitly — check that when
+    touching either.
   - **No new column:** the reference lives in `coverages.data.attachment`
     (`{name, path}`), so it rides along with every existing save. `mergeCoverage()`
     passes unknown keys through untouched, which is what makes that work.

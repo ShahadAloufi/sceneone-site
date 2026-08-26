@@ -195,11 +195,58 @@ module.exports = async (req, res) => {
   const subId = (b.submission_id || "").toString().trim();
   const action = (b.action || "").toString().trim();
   if (!subId) return res.status(400).json({ message: "معرّف النص مطلوب" });
-  if (action !== "approve" && action !== "request_revision") {
+  if (action !== "approve" && action !== "request_revision" && action !== "set_attachment") {
     return res.status(400).json({ message: "إجراء غير معروف" });
   }
 
   const headers = { apikey: key, Authorization: "Bearer " + key };
+
+  // ---- SET/CLEAR THE READER ATTACHMENT --------------------------------------
+  // The assigned reader manages their own attachment through the normal save
+  // path. A REVIEWER cannot: RLS forbids anyone but the assignee from writing the
+  // coverage row, which is what stops a reviewer editing the work they are
+  // judging. Attaching a shared resource is not editing the coverage, so it runs
+  // here on the service role — open to the same roles that may approve.
+  if (action === "set_attachment") {
+    const att = b.attachment;
+    let value = null;
+    if (att) {
+      const name = (att.name || "").toString().trim().slice(0, 200);
+      const path = (att.path || "").toString().trim();
+      // The workspace builds the path as "<submission id>/<file>". Pin it to THIS
+      // submission so a reviewer cannot point one coverage at another's file, and
+      // reject traversal or odd characters.
+      if (!name || !/^[A-Za-z0-9._/-]+$/.test(path) || path.indexOf("..") !== -1 ||
+          path.indexOf(subId + "/") !== 0) {
+        return res.status(400).json({ message: "مرفق غير صالح" });
+      }
+      value = { name: name, path: path };
+    }
+
+    const curResp = await fetch(
+      url + "/rest/v1/coverages?submission_id=eq." + encodeURIComponent(subId) + "&select=data",
+      { headers }
+    );
+    const curRows = curResp.ok ? await curResp.json() : [];
+    if (!curRows.length) return res.status(404).json({ message: "لا توجد تغطية لهذا النص" });
+
+    // Merge, never replace: `data` is the reader's whole coverage.
+    const data = Object.assign({}, curRows[0].data || {}, { attachment: value });
+    const attPatch = await fetch(
+      url + "/rest/v1/coverages?submission_id=eq." + encodeURIComponent(subId),
+      {
+        method: "PATCH",
+        headers: Object.assign({ "Content-Type": "application/json", Prefer: "return=minimal" }, headers),
+        body: JSON.stringify({ data: data }),
+      }
+    );
+    if (!attPatch.ok) {
+      console.error("set_attachment failed:", attPatch.status, await attPatch.text());
+      return res.status(502).json({ message: "تعذّر حفظ المرفق" });
+    }
+    console.log("set_attachment: " + subId + " " + (value ? value.name : "(cleared)") + " by " + gate.user.id);
+    return res.status(200).json({ ok: true, attachment: value });
+  }
 
   // Who holds this script decides WHICH of the two paths the caller is on, so it
   // has to be resolved before the status gate (the two paths accept different

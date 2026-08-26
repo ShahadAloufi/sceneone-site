@@ -383,11 +383,19 @@
     };
   }
 
+  // Who may attach. The assignee writes it through their own save; a reviewer
+  // (staff or a lead) cannot write the coverage row at all, so their change goes
+  // through /api/review-coverage on the service role. Anyone else — a reader
+  // looking at someone else's approved coverage — only sees what is there.
+  function canAttach() {
+    return readerCanEdit() || isStaff || isLead;
+  }
+
   function renderAttachment() {
     var e = attachEls();
     if (!e.field) return;
     var att = state.coverage && state.coverage.attachment;
-    var editable = !readOnly;
+    var editable = canAttach();
     e.btn.hidden = !editable || !!att;
     e.remove.hidden = !editable || !att;
     e.name.hidden = !att;
@@ -420,9 +428,36 @@
       toast(UI[UILANG].attachFailed);
       return;
     }
-    state.coverage.attachment = { name: file.name, path: path };
+    var value = { name: file.name, path: path };
+    if (!(await persistAttachment(value))) return;
+    state.coverage.attachment = value;
     renderAttachment();
-    scheduleSave();
+  }
+
+  // One place decides HOW the reference is stored. The assignee's own save path
+  // carries it (RLS lets them write the row); everyone else has to ask the
+  // server. Returns false when the change did not stick, so the UI can stay
+  // truthful rather than showing an attachment nobody saved.
+  async function persistAttachment(value) {
+    if (readerCanEdit()) { state.coverage.attachment = value; scheduleSave(); return true; }
+    try {
+      var sess = await sb.auth.getSession();
+      var token = sess.data.session && sess.data.session.access_token;
+      var resp = await fetch("/api/review-coverage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+        body: JSON.stringify({ submission_id: submissionId, action: "set_attachment", attachment: value })
+      });
+      if (!resp.ok) {
+        var out = await resp.json().catch(function () { return {}; });
+        toast(out.message || UI[UILANG].attachFailed);
+        return false;
+      }
+      return true;
+    } catch (e) {
+      toast(UI[UILANG].attachFailed);
+      return false;
+    }
   }
 
   function bindAttachment() {
@@ -435,13 +470,13 @@
       e.input.value = "";                 // so the same file can be re-picked
       uploadAttachment(f);
     });
-    e.remove.addEventListener("click", function () {
+    e.remove.addEventListener("click", async function () {
       // The stored object is deliberately left in place: a coverage already
       // delivered may still link to it, and orphaned files are cheaper than a
       // broken link in a writer's inbox.
+      if (!(await persistAttachment(null))) return;
       state.coverage.attachment = null;
       renderAttachment();
-      scheduleSave();
     });
   }
 
@@ -720,6 +755,14 @@
       root.querySelectorAll("button").forEach(function (b) {
         b.disabled = true; // lock every workspace button, incl. "Generate report"
       });
+      // …except the attachment controls. Attaching a shared resource for the
+      // writer is not editing the coverage, so a reviewer keeps it: their change
+      // goes through /api/review-coverage rather than the locked row.
+      if (canAttach()) {
+        ["attachBtn", "attachRemove"].forEach(function (id) {
+          var b = $(id); if (b) b.disabled = false;
+        });
+      }
     }
     // "Edit coverage" (in the report view) also edits — lock it. Printing/saving
     // the report stays available to everyone.
@@ -791,6 +834,9 @@
     var gen = $("genReport"); if (gen) gen.disabled = false;
     // Must run AFTER applyReadOnly(), which disables every control in the view.
     refreshEvalNotes();
+    // Same reason: the attachment row decides its own visibility and enabled
+    // state, and applyReadOnly() would otherwise have just switched it off.
+    renderAttachment();
     if (showReview) {
       var ap = $("approveBtn"), rv = $("requestRevisionBtn"), note = $("revisionNote");
       if (ap) { ap.disabled = false; ap.textContent = u.approveSend; }
