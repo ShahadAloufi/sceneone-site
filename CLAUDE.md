@@ -947,6 +947,25 @@ must be in the `supabase_realtime` publication for live updates to fire.
   outright (`ASSIGNMENT_VIA_API_ONLY`) so the notice can never be skipped, and rejects
   any release once locked (`ASSIGNMENT_LOCKED`). **Co-reader slots have no window and
   no notice.**
+- **Staff can correct a wrong film type** (`/api/change-film-type`, 2026-08-25).
+  Writers pick the product themselves and sometimes pick wrong — feature coverage
+  for a 12-page short, say — and the type drives the report header, the deadline
+  and the coverage schema, so a wrong one makes the delivered report describe the
+  work incorrectly. A `<select>` in the **All submissions** film-type column,
+  staff-only, going through the API rather than a direct table write.
+  - **Same family only.** script ↔ script and treatment ↔ treatment; the endpoint
+    **refuses 409 across the families**, because the coverage schema follows
+    `film_type` — a reader's saved 8-point evaluation would still be in the row
+    but would stop appearing under the 9-point treatment schema, silently. That
+    conversion is a data migration, not a dropdown.
+  - **`payment_amount` is never touched.** It records what was actually charged
+    and must keep matching the real Moyasar invoice; a correction describes the
+    work, it does not re-price it. Any refund or top-up is a human decision in the
+    Moyasar dashboard. The change is logged with both types and the actor.
+  - The PATCH is filtered on the type that was read, so two staff correcting the
+    same row cannot overwrite each other (the loser gets 409 and a reload prompt).
+  - Retired types (`short_under_30`) get **no picker at all** — no family, so the
+    cell stays a plain label.
 - **Claim eligibility** is enforced **in `/api/claim-script`, not the DB.** That is
   sufficient for PRIMARY claims precisely because `enforce_assignment_lock()` already
   rejects client-side ones (`ASSIGNMENT_VIA_API_ONLY`), so the API is the only way in.

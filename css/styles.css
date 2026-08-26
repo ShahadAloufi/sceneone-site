@@ -1314,6 +1314,19 @@ html[dir="rtl"] .adm-tablefilter select { background-position: left 16px center;
 }
 /* Payment state (All submissions tab). Same badge geometry as the deadline, and
    the same colour language: green = settled, amber = waiting, red = wrong. */
+/* Staff-only picker in the film-type column: it has to read as an editable field
+   without turning the table into a form — same size as the cell text it replaces. */
+.adm-filmtype__sel {
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--adm-text);
+  background: transparent;
+  border: 1px solid rgba(128,128,128,.35);
+  border-radius: 6px;
+  padding: 3px 6px;
+  max-width: 150px;
+}
+.adm-filmtype__sel:disabled { opacity: .5; }
 .adm-pay__badge { display: inline-flex; align-items: center; justify-content: center; text-align: center; font-size: 12px; font-weight: 800; padding: 4px 11px; border-radius: 8px; white-space: nowrap; }
 .adm-pay .adm-muted { margin-top: 4px; font-size: 11.5px; font-variant-numeric: tabular-nums; }
 .adm-pay--paid     { color: #2f9d5e; background: rgba(47,157,94,.14); }

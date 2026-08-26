@@ -125,6 +125,8 @@
       resetFail: "تعذّر تغيير كلمة المرور. قد يكون الرابط منتهي الصلاحية — اطلب رابطًا جديدًا.",
       resetExpired: "انتهت صلاحية رابط التعيين. اطلب رابطًا جديدًا من \"نسيت كلمة المرور؟\".",
       loadFail: "تعذّر تحميل النصوص.", loadingSubs: "جارٍ تحميل النصوص…", download: "تحميل", assignMe: "أسند إليّ",
+      filmTypeConfirm: "تغيير نوع العمل لهذا النص؟ سيتغيّر معه عنوان التقرير ومدة التسليم. المبلغ المفوتر لا يتغيّر.",
+      filmTypeFailed: "تعذّر تغيير نوع العمل",
       adminFallback: "مشرف", cancel: "إلغاء", viewReport: "عرض التقرير", continueEval: "متابعة التقييم",
       inReview: "قيد التقييم", awaitingAssign: "بانتظار الإسناد",
       reviewCov: "مراجعة التغطية", awaitingApproval: "بانتظار الاعتماد", revisionCov: "مطلوب تعديل", reviseCov: "تعديل التغطية",
@@ -208,6 +210,8 @@
       resetFail: "Couldn't change the password. The link may have expired — request a new one.",
       resetExpired: "That reset link has expired. Request a new one from \"Forgot your password?\".",
       loadFail: "Failed to load submissions.", loadingSubs: "Loading submissions…", download: "Download", assignMe: "Assign to me",
+      filmTypeConfirm: "Change this submission’s film type? The report header and the deadline follow it. The amount already invoiced is not changed.",
+      filmTypeFailed: "Could not change the film type",
       adminFallback: "Admin", cancel: "Unassign", viewReport: "View report", continueEval: "Continue coverage",
       inReview: "In review", awaitingAssign: "Awaiting assignment",
       reviewCov: "Review coverage", awaitingApproval: "Awaiting approval", revisionCov: "Revision requested", reviseCov: "Revise coverage",
@@ -1076,6 +1080,70 @@
     } catch (e) { return { ok: false }; }
   }
 
+  // Staff correct a writer's product choice (feature vs short, or the treatment
+  // pair). The server refuses cross-family changes and anything from a reader —
+  // this only decides whether the control is offered.
+  async function changeFilmTypeApi(id, to) {
+    try {
+      var sess = await sb.auth.getSession();
+      var token = sess.data.session && sess.data.session.access_token;
+      var resp = await fetch("/api/change-film-type", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+        body: JSON.stringify({ submission_id: id, to: to })
+      });
+      var out = await resp.json().catch(function () { return {}; });
+      out.ok = resp.ok;
+      return out;
+    } catch (e) { return { ok: false }; }
+  }
+
+  // The swaps the picker offers: same family only, matching the server's rule.
+  var FILM_FAMILY = {
+    short: ["short", "feature"],
+    feature: ["short", "feature"],
+    treatment_short: ["treatment_short", "treatment_feature"],
+    treatment_feature: ["treatment_short", "treatment_feature"]
+  };
+
+  // Film-type cell: a plain label for everyone, a <select> for staff. Changing it
+  // rewrites the report header, the coverage schema family and the deadline — but
+  // never the amount charged, which stays as invoiced.
+  function filmTypeCell(s) {
+    var label = esc(FILM[ULANG][s.film_type] || s.film_type);
+    var options = FILM_FAMILY[s.film_type];
+    if (!isStaff(me.role) || !options) return "<td>" + label + "</td>";
+    var opts = options.map(function (v) {
+      return "<option value='" + esc(v) + "'" + (v === s.film_type ? " selected" : "") + ">" +
+             esc(FILM[ULANG][v] || v) + "</option>";
+    }).join("");
+    return "<td class='adm-filmtype'><select class='adm-filmtype__sel' data-sub='" + esc(s.id) + "'>" +
+           opts + "</select></td>";
+  }
+
+  // Wire the pickers rendered by filmTypeCell within `bodyEl`.
+  function bindFilmTypePickers(bodyEl, onChanged) {
+    bodyEl.querySelectorAll(".adm-filmtype__sel").forEach(function (sel) {
+      var previous = sel.value;
+      sel.addEventListener("change", async function () {
+        var to = sel.value;
+        if (!window.confirm(t("filmTypeConfirm"))) { sel.value = previous; return; }
+        sel.disabled = true;
+        var out = await changeFilmTypeApi(sel.dataset.sub, to);
+        sel.disabled = false;
+        if (!out.ok) {
+          sel.value = previous;                    // leave the row telling the truth
+          // alert(), not a toast — this dashboard has no toast component, and a
+          // silent failure on a field that drives the report would be worse.
+          alert(out.message || t("filmTypeFailed"));
+          return;
+        }
+        previous = to;
+        if (onChanged) onChanged();                // deadline/label depend on it
+      });
+    });
+  }
+
   async function assign(id, toId, cell, s) {
     if (cell.dataset.busy) return; // ignore clicks while a request is in flight
     cell.dataset.busy = "1";
@@ -1337,7 +1405,7 @@
         levelCell(s) +
         "<td dir='ltr'>" + esc(s.email) + "</td>" +
         "<td>" + esc(GENRES[ULANG][s.genre] || s.genre) + "</td>" +
-        "<td>" + esc(FILM[ULANG][s.film_type] || s.film_type) + "</td>" +
+        filmTypeCell(s) +
         "<td>" + esc(DRAFT[ULANG][s.draft] || s.draft) + "</td>" +
         "<td>" + esc(pagesCount(s)) + "</td>" +
         "<td class='adm-file'></td>" +
@@ -1391,6 +1459,9 @@
     if (!subs.length) { show($("allEmpty")); $("allBody").innerHTML = ""; return; }
     hide($("allEmpty"));
     renderDetailRows($("allBody"), subs, covBySub, deliveredBySub, null, true);
+    // The type drives the deadline column and the report header, so a change
+    // reloads the tab rather than patching one cell.
+    bindFilmTypePickers($("allBody"), loadAll);
   }
 
   // ---------- QUALITY REVIEW QUEUE (lead readers + staff) ----------
