@@ -91,9 +91,11 @@ function validate(row) {
   if (row.theme && row.theme.length > MAX.theme) return "بيانات غير صحيحة";
   // Required on BOTH forms — a reader needs the one-line pitch to frame the read.
   if (!row.logline || row.logline.length > MAX.logline) return "بيانات غير صحيحة";
-  // Duration is a script-form field; the treatment form has none, so it is
-  // required only where it exists.
+  // Duration and theme are script-form fields. The treatment form has no
+  // duration at all and deliberately keeps its theme optional, so both are
+  // required only for script submissions.
   if (!isTreatment(row.film_type) && !row.duration) return "بيانات غير صحيحة";
+  if (!isTreatment(row.film_type) && !row.theme) return "بيانات غير صحيحة";
   if (row.characters && row.characters.length > MAX.characters) return "بيانات غير صحيحة";
   if (row.tone_ref && row.tone_ref.length > MAX.toneRef) return "بيانات غير صحيحة";
   if (row.treatment_text && row.treatment_text.length > MAX.treatmentText) return "بيانات غير صحيحة";
