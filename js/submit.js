@@ -136,6 +136,30 @@
     });
   }
 
+  /* ---------- ENGLISH-ONLY TITLE ---------- */
+  // The mirror of the rule above: the English title must contain no Arabic
+  // letters. Digits and punctuation stay allowed — plenty of titles carry them.
+  var titleEnInput = document.querySelector('input[name="titleEn"]');
+  var titleEnField = titleEnInput ? titleEnInput.closest('[data-field="titleEn"]') : null;
+  var titleEnErr = titleEnField ? titleEnField.querySelector(".sub-err") : null;
+  var TITLE_EN_REQUIRED_MSG = titleEnErr ? titleEnErr.textContent : "هذا الحقل مطلوب";
+  var TITLE_EN_ARABIC_MSG = "الرجاء إدخال العنوان بالإنجليزية فقط";
+  // The Arabic block plus its supplement and presentation forms — the ranges a
+  // pasted Arabic title actually lands in.
+  var ARABIC_RE = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+  function titleEnHasArabic() { return !!titleEnInput && ARABIC_RE.test(titleEnInput.value); }
+  if (titleEnInput && titleEnField) {
+    titleEnInput.addEventListener("input", function () {
+      if (titleEnHasArabic()) {
+        if (titleEnErr) titleEnErr.textContent = TITLE_EN_ARABIC_MSG;
+        titleEnField.classList.add("invalid");
+      } else {
+        titleEnField.classList.remove("invalid");
+        if (titleEnErr) titleEnErr.textContent = TITLE_EN_REQUIRED_MSG;
+      }
+    });
+  }
+
   /* ---------- FILE DROPZONE ---------- */
   var dropZone = document.getElementById("dropZone");
   var fileInput = document.getElementById("fileInput");
@@ -339,9 +363,17 @@
       if (titleArErr) titleArErr.textContent = v.titleAr.length === 0 ? TITLE_AR_REQUIRED_MSG : TITLE_AR_ENGLISH_MSG;
       ok = false;
     }
+    // English title: required AND no Arabic letters, with its own message.
+    var titleEnClean = v.titleEn.length > 0 && !ARABIC_RE.test(v.titleEn);
+    markInvalid("titleEn", !titleEnClean);
+    if (!titleEnClean) {
+      if (titleEnErr) titleEnErr.textContent = v.titleEn.length === 0 ? TITLE_EN_REQUIRED_MSG : TITLE_EN_ARABIC_MSG;
+      ok = false;
+    }
     // Everything else is required iff the markup says so (a .req star).
     requiredFields().forEach(function (name) {
-      if (name === "titleAr" || name === "file") return; // handled either side of this loop
+      // The two titles are handled above, the file below.
+      if (name === "titleAr" || name === "titleEn" || name === "file") return;
       if (name === "email") { req("email", EMAIL_RE.test(v.email)); return; }
       req(name, String(v[name] == null ? "" : v[name]).length > 0);
     });

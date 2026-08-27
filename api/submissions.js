@@ -64,6 +64,12 @@ const MAX = { title: 200, email: 254, writer: 120, duration: 60, theme: 200, log
   characters: 5000, toneRef: 500, treatmentText: 60000 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// Each title must be in its own script. The form says so as the writer types,
+// but that is UX — a title reaches the reader, the report header and the invoice
+// description, so the rule is enforced here too. Digits and punctuation are fine
+// in either; only the LETTERS are constrained.
+const LATIN_RE = /[A-Za-z]/;
+const ARABIC_RE = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
 // Object path produced by the client: "<digits>-<base36>/<sanitized-name>".
 // Reject anything else (path traversal, absolute paths, other buckets, etc.).
 const PATH_RE = /^[A-Za-z0-9]+-[A-Za-z0-9]+\/[A-Za-z0-9._-]+$/;
@@ -76,7 +82,9 @@ function fileExt(name) {
 // Returns an error string if the payload is invalid, or null if it's clean.
 function validate(row) {
   if (!row.title_ar || row.title_ar.length > MAX.title) return "بيانات غير صحيحة";
+  if (LATIN_RE.test(row.title_ar)) return "الرجاء إدخال العنوان بالعربية فقط";
   if (!row.title_en || row.title_en.length > MAX.title) return "بيانات غير صحيحة";
+  if (ARABIC_RE.test(row.title_en)) return "الرجاء إدخال العنوان بالإنجليزية فقط";
   if (!row.writer || row.writer.length > MAX.writer) return "بيانات غير صحيحة";
   if (!row.vision || row.vision.length > MAX.vision) return "بيانات غير صحيحة";
   if (row.duration && row.duration.length > MAX.duration) return "بيانات غير صحيحة";
