@@ -41,7 +41,7 @@
       // work. Required on the form since 2026-08, so this is only reachable by
       // rows that predate that.
       nologline: "The logline wasn't provided by the writer.",
-      outof: "/ 10", foot: "Script coverage",
+      outof: "/ 10", foot: "Script coverage", pagesUnit: "pages",
       eval: { "Premise & Theme": "Premise & Theme", "Hook": "Hook", "Stakes & Plot": "Stakes & Plot", "Character": "Character", "Dialogue": "Dialogue", "Structure & Pace": "Structure & Pace", "Producibility": "Producibility", "Presentation": "Presentation",
               "Narrative Clarity": "Narrative clarity", "Character Basics": "Character (fundamentals)", "Emotional Journey": "Emotional journey",
               "Story Structure": "Overall story structure", "Screenplay Potential": "Screenplay development potential", "Market Viability": "Market viability", "Overall presentation": "Overall presentation" },
@@ -61,7 +61,7 @@
       coverageT: "تقييم المعالجة", synopsisT: "الملخّص (Treatment Summary)", evaluationT: "التقييم (Treatment Evaluation)", marketT: "السوق (Market Notes)", footT: "تقييم المعالجة",
       strengths: "نقاط القوة", develop: "ما يحتاج إلى تطوير", attachment: "مرفق لك", verdict: "الحكم", pending: "بانتظار التقييم", notwritten: "لم يُكتب بعد.",
       nologline: "لم يزوّدنا الكاتب بالفكرة المختصرة.",
-      outof: "/ 10", foot: "تقييم النصوص",
+      outof: "/ 10", foot: "تقييم النصوص", pagesUnit: "صفحة",
       eval: { "Premise & Theme": "الفكرة والموضوع", "Hook": "عنصر الجذب", "Stakes & Plot": "الرهانات الدرامية والحبكة", "Character": "الشخصيات", "Dialogue": "الحوار", "Structure & Pace": "البناء الدرامي والإيقاع", "Producibility": "قابلية الإنتاج", "Presentation": "العرض والتنسيق",
               "Narrative Clarity": "وضوح الرؤية السردية", "Character Basics": "الشخصيات (الأساسيات)", "Emotional Journey": "الرحلة العاطفية",
               "Story Structure": "البناء العام للقصة", "Screenplay Potential": "قابلية التطوير لسيناريو", "Market Viability": "الجدوى السوقية", "Overall presentation": "العرض العام" },
@@ -166,6 +166,11 @@
       filmType: r.film_type || "",
       genre: GENRE_EN[r.genre] || r.genre || "",
       length: r.duration || "",
+      // Carried raw (title page included) so render() can localise the unit —
+      // the label is «عدد الصفحات/المدة», and for a row with no duration the
+      // count is the only thing that field can say. Blank, not zero, when the
+      // row has no count at all.
+      pages: (r.pages != null && r.pages > 0) ? r.pages : null,
       draft: DRAFT_EN[r.draft] || "Final draft",
       logline: r.logline || ""
     };
@@ -236,9 +241,21 @@
       if (map && map[x]) return esc(map[x]);
       return val(raw);
     }
+    // «عدد الصفحات/المدة» — the duration the writer typed, or, failing that, the
+    // page count. Both are the same fact about length, and a row that has one
+    // rarely has the other: duration is a form field the writer fills in, the
+    // count is measured from the file. Showing a dash while we hold a count was
+    // just a gap between the two.
+    function lengthCell() {
+      if (String(s.length || "").trim()) return lv("length", s.length);
+      if (!s.pages) return val("");
+      // Same title-page convention as everywhere else the count is displayed.
+      var n = s.pages > 1 ? s.pages - 1 : s.pages;
+      return esc(n + " " + t.pagesUnit);
+    }
     var top = [[t.title, '<span class="rep-title">' + esc(s.titleEn || "Untitled") + (s.titleAr ? ' <span class="ar">(' + esc(s.titleAr) + ")</span>" : "") + "</span>", true],
       [t.writer, lv("writer", s.writer)], [t.format, lv("format", s.format)], [t.genre, lv("genre", s.genre)],
-      [t.length, lv("length", s.length)], [t.draft, lv("draft", s.draft)],
+      [t.length, lengthCell()], [t.draft, lv("draft", s.draft)],
       [t.reader, esc(ar ? "احد قراء Scene One" : "Scene One Reader")], [t.date, lv("date", c.date)]];
     var topHtml = top.map(function (r) { return "<div" + (r[2] ? ' style="grid-column:1/-1"' : "") + '><div class="k">' + r[0] + '</div><div class="v" dir="auto">' + r[1] + "</div></div>"; }).join("");
 
