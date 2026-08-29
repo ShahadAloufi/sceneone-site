@@ -56,6 +56,15 @@
   #reportBody.ar table.gl td.cat{text-align:right}
   #reportBody.ar .rep-top{direction:rtl}
   #reportBody.ar .rep-top .k,#reportBody.ar .rep-top .v{text-align:right}
+  /* The mirror of the rule above, for the English report. Writer-supplied values
+     carry dir="auto" so bidi renders them correctly — which also makes an ARABIC
+     value align to its own right, and in an LTR report that reads as one field
+     shoved out of its column. Alignment follows the REPORT's language; the text
+     keeps its own direction. The logline needs it in both directions for the
+     same reason: it is the writer's words, in whichever script they wrote. */
+  #reportBody:not(.ar) .rep-top .k,#reportBody:not(.ar) .rep-top .v{text-align:left}
+  #reportBody:not(.ar) .logline > div:not(.k){text-align:left}
+  #reportBody.ar .logline > div:not(.k){text-align:right}
   #reportBody.ar .rep-foot{flex-direction:row-reverse}
   .rep-top{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 26px;margin-bottom:30px}
   @media(max-width:620px){.rep-top{grid-template-columns:1fr 1fr}}
