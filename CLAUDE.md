@@ -28,7 +28,41 @@ coverage workspace + report, role-based access, deadlines, and report delivery t
 writers. **The payment gate is live and has taken real money** (see below).
 Actively iterating on UX polish and workflow features.
 
-**Recently shipped (2026-08-19) — public copy pass + the 350 SAR tier:**
+**Recently shipped (2026-08-25 → 08-27):**
+- **Assignment notice window cut to ONE HOUR**, and the sweep now runs on **every
+  dashboard load** (folded into `/api/log-access`). Two scripts had sat 12 hours
+  unnotified with no deadline showing, because the only triggers were a claim and a
+  daily cron. The old 2h-told/3h-real buffer is gone — copy and enforcement now say
+  the same number, in four places that must agree. **DB trigger changed too**
+  (`interval '1 hour'`), applied.
+- **⚠️ Vercel Hobby caps the project at 12 serverless functions**, and we hit it.
+  `/api/sweep-notices` lived for a day before being folded into `log-access`. We are
+  **at 12** — anything new under `/api` must hang off an existing route, replace one,
+  or wait for Pro. Count before adding.
+- **Both script coverages are priced PER PAGE** (10 SAR; short 10–40 → 100–400,
+  feature 80–120 → 800–1200), replacing all three fixed script tiers. The count is
+  taken from the FILE on the server (`lib/pdf-pages.js`, pdf-lib — the first
+  non-Chromium dependency), because the amount is now the count and a browser-supplied
+  number would set the invoice. The form quotes the price as soon as the file lands,
+  and the **invoice description carries the arithmetic**. Full detail in the block
+  below.
+- **Staff can correct a wrong film type** (`/api/change-film-type`) — a picker in All
+  submissions, same-family only, `payment_amount` never touched.
+- **Readers AND reviewers can attach one resource for the writer** (a screenwriting
+  guide, a reference), from section 04 of the workspace. Named in the approval email,
+  downloadable from the writer's report page via a 600s signed URL. New private
+  `attachments` bucket; SQL applied.
+- **Junior readers may claim any TREATMENT**, regardless of writer level — a treatment
+  coverage always passes through QA review, so that review is the safety net instead
+  of the level gate. Unchanged for script coverage.
+- **More required fields, and both enforced server-side:** الثيم (both forms), المدة
+  and الفكرة المختصرة (script form; the treatment form already required its logline),
+  and the **English title must now be in English** — the mirror of the existing Arabic
+  rule, which turned out to be **browser-only** and is now checked on the server too.
+- Card order is script coverage first, then treatments; the price range reads from the
+  low figure in Arabic; the form's price quote is heading-sized and black.
+
+**Recently shipped (2026-08-19 → 08-25) — copy pass, the treatment product, per-page pricing:**
 - **Refund policy rewritten** in `terms.html` — full refund before assignment, none
   after work begins, full within 14 business days on platform failure. See the
   Business Rules bullet for what it replaced and why the 50% variant was dropped.
@@ -92,19 +126,21 @@ Actively iterating on UX polish and workflow features.
     250 ريال» — from the same arithmetic, so the writer sees the amount before
     committing. Rate and bounds live on the `<option>` (`data-rate`/`min`/`max`)
     and must match `PER_PAGE`.
-- **Every tier has a page cap, and the cheap ones are PDF-only** (2026-08-19).
-  `PAGE_CAPS`: feature 120 · short 50 · short_under_30 30 · treatment_feature 15 ·
-  treatment_short 5. Each carries **one page of slack** (a 5-page treatment plus a
-  title page passes), because the count includes the title page.
-  - **`PDF_ONLY_TYPES` = the tiers priced on being short** (`short_under_30` and
-    both treatments). For these, a non-PDF is refused **and so is a PDF whose count
-    never arrived** — the discount depends on a length nobody can otherwise verify.
-  - **feature / short keep the full format list** (FDX · Fountain · DOCX · TXT).
-    Their cap is an upper bound on what was bought rather than a discount to
-    defend, so an uncountable file is fine and the cap applies only when a count
-    exists. **This is deliberate:** pagination is not stored in FDX or Fountain at
-    all, and DOCX only caches a stale `docProps/app.xml` count — any number we
-    derived would be an estimate, which is no basis for a payment decision.
+- **Every product is PDF-only, and length is checked before anything is created**
+  (2026-08-19, revised 2026-08-25 when both script tiers went per-page).
+  - **`PDF_ONLY_TYPES` is now every `film_type` we sell.** No count, no price and no
+    length check — so FDX, Fountain, DOCX and TXT are refused everywhere, including
+    the feature tier that used to take them. Kept as a list rather than "always
+    PDF" so a future fixed-price product could accept them again. **This is
+    deliberate:** pagination is not stored in FDX or Fountain at all, and DOCX only
+    caches a stale `docProps/app.xml` count — any number derived from them would be
+    an estimate, which is no basis for a payment decision.
+  - **`PAGE_CAPS` now holds the TREATMENTS only** (`treatment_short` 5,
+    `treatment_feature` 15), each with **one page of slack** because the count
+    includes a title page. The two script tiers are absent on purpose: their bounds
+    live inside `priceFor()` (10–40 and 80–120), so a limit and an amount can never
+    drift apart.
+  - **A PDF whose count never arrived is refused**, not trusted.
   - All the checks run **before the insert and before the Moyasar invoice**, so an
     over-length submission never becomes a row, never gets an invoice, and never
     reaches a dashboard.
@@ -664,28 +700,25 @@ must be in the `supabase_realtime` publication for live updates to fire.
   "all submissions"). The only email sent before money clears is the **"complete your
   payment" prompt**, which carries the stored `payment_url` so a writer who closes the
   checkout tab can get back to their invoice; it promises nothing about review. The
-  writer confirmation and the team alert both fire from the webhook. Prices live in `lib/moyasar.js` (`PRICES`,
-  in halalas) and must match the homepage: **feature 1200 / short 750 / short_under_30
-  350 SAR**.
-- **Three price tiers, keyed on `film_type` (2026-08-19).** `feature` (up to 120pp,
-  1200), `short` (30–50pp, 750) and `short_under_30` (under 30pp, 350). Price is
-  derived from `film_type` **alone** — deliberately not from the page count, which is
-  optional (PDF uploads only) and computed in the **browser**, so it can neither be
-  relied on nor trusted. The writer picks the tier in the submission form, where each
-  option states its page range and price. `api/submissions.js` does bounce a
-  `short_under_30` whose count is plainly too long (`SHORT_UNDER_30_MAX_PAGES`, applied
-  to `pages - 1` because the count includes the title page), but that is a **UX guard,
-  not a security boundary**: a forged count still buys the cheap tier, and the real
-  check is a reader opening the script. The cap is **one page looser** than the
-  advertised "under 30" on purpose — the title-page convention makes the boundary fuzzy
-  by exactly one page. **Adding a tier means touching six places:** `FILM_TYPES`
-  (api/submissions.js), `PRICES` (lib/moyasar.js), the form's select (submit.html),
-  `FILM` (js/admin.js), `FORMAT_EN` (js/report-render.js), `FILM_EN`
-  (api/review-coverage.js) and `FILM_AR` (lib/submission-emails.js) — a missing entry
-  falls back to the raw key rather than failing, so it shows up as ugly UI, not an
-  error. `film_type` is plain `text` with **no CHECK constraint**, so a new tier needs
-  no SQL. `deadlineDays()` gives everything non-feature 15 days, which is why the new
-  tier inherits the short turnaround with no change.
+  writer confirmation and the team alert both fire from the webhook. Pricing lives in `lib/moyasar.js` and must match the
+  homepage: the two treatments are fixed (`PRICES`, in halalas), and both script
+  coverages are **per page** (`PER_PAGE`) — see the pricing bullet below.
+- **Four products, keyed on `film_type`.** Two fixed-price treatments
+  (`treatment_short` 70, `treatment_feature` 150) and two **per-page** script
+  coverages (`short` 10–40pp, `feature` 80–120pp, 10 SAR a page → 100–400 and
+  800–1200). `short_under_30` is **retired** — gone from `FILM_TYPES`, its price and
+  labels kept only so old rows still render.
+  **`priceFor(filmType, pages)` in `lib/moyasar.js` is the single pricing
+  authority**, and for a per-page product its bounds ARE the length limits.
+  **Adding a product means touching seven places:** `FILM_TYPES`
+  (api/submissions.js), `PRICES` or `PER_PAGE` (lib/moyasar.js), the form's select
+  (submit.html / treatment-submit.html), `FILM` (js/admin.js), `FORMAT_EN`
+  (js/report-render.js), `FILM_EN` (api/review-coverage.js) and `FILM_AR`
+  (lib/submission-emails.js) — a missing entry falls back to the raw key rather
+  than failing, so it shows up as ugly UI, not an error. `film_type` is plain
+  `text` with **no CHECK constraint**, so a new product needs no SQL. Turnaround
+  comes from `TURNAROUND` in `js/admin.js` (feature 28 · treatments 10 and 7 ·
+  everything else 15).
 - **Writer level (`writer_level`)** — required select on the submission form, four
   values ordered least → most experienced: `new` / `emerging` / `professional` /
   `veteran`. Deliberately **evidence-based** ("لم يُنتج لي عمل بعد", "أفلام قصيرة
@@ -1265,6 +1298,16 @@ must be in the `supabase_realtime` publication for live updates to fire.
 
 ## Current TODOs
 
+- **⚠️ Nothing accepts a script between 41 and 79 pages.** The short tier stops at
+  40 and the feature tier starts at 80, so a 55-page script is refused by both — and
+  each refusal points at the other tier, which will refuse it too. Known since the
+  per-page switch (2026-08-25) and left open deliberately, but a writer in that band
+  currently has no route in. Options when it matters: widen one range, add a
+  mid-tier, or word the refusal so it says "contact us" rather than naming a tier
+  that will also say no.
+- **The treatment coverage's own SQL, buckets and columns are all applied**, but no
+  treatment has been through the full pipeline in production yet — intake, payment,
+  claim, the 9-point workspace, delivery. Worth one real run.
 - **Public-site i18n covers every public page except `submit`**
   (`index`, `readers`, `about-coverage` 2026-08-11/12; `privacy`, `terms`
   2026-08-12) — same `data-i18n` + `[dir="ltr"]` treatment, see
