@@ -7,6 +7,12 @@
       "includeFiles": "node_modules/@sparticuz/chromium/**"
     }
   },
+  "rewrites": [
+    {
+      "source": "/download/:t",
+      "destination": "/api/report?t=:t&file=attachment"
+    }
+  ],
   "crons": [
     {
       "path": "/api/send-notices",

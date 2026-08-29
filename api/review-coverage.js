@@ -101,11 +101,16 @@ async function requireReviewer(req) {
 
 // Bilingual email inviting the writer to open their (now approved) report, and
 // to ask the reader a follow-up question about it (/ask, same report token).
-// `hasAttachment` is a flag, not a name: the stored filename is whatever the
-// file was called on the reader's machine ("WhatsApp Image ….jpeg"), which is
-// noise to the writer and leaks how the file reached us. The report page labels
-// it generically too — see attachmentFile in js/report-render.js.
-function reportEmail(sub, link, askLink, hasAttachment) {
+// `fileLink` is the /download/<token> route, or null when the reader attached
+// nothing — its presence is what decides whether the attachment block appears.
+// It is NOT a signed URL, deliberately: a signed URL lives ten minutes and an
+// email is read whenever the writer gets to it, so the link would usually be
+// dead on arrival. /download mints a fresh one at the moment of the click.
+//
+// The stored filename is never named here either — it is whatever the file was
+// called on the reader's machine ("WhatsApp Image ….jpeg"), which is noise to
+// the writer and leaks how the file reached us.
+function reportEmail(sub, link, askLink, fileLink) {
   var esc = escapeHtml;
   var title = sub.title_ar || sub.title_en || "";
   var name = (sub.writer || "").toString().trim();
@@ -150,10 +155,14 @@ function reportEmail(sub, link, askLink, hasAttachment) {
                 '<a href="' + esc(askLink) + '" style="display:inline-block;padding:14px 32px;color:#15110f;text-decoration:none;font-size:14px;font-weight:600;border-radius:12px;">طلب توضيح/ استفسار حول التقرير</a>' +
               "</td></tr></table>" +
 
-            (hasAttachment
-              ? '<p dir="rtl" style="margin:18px auto 0;max-width:440px;padding:14px 16px;background:#f5f1e9;border-radius:12px;color:#4a453f;font-size:13.5px;line-height:1.8;">' +
-                  "أرفق لك قارئك ملفًا مع التقرير، ويمكنك تحميله من صفحة التقرير." +
-                "</p>"
+            (fileLink
+              ? '<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:18px auto 0;max-width:440px;width:100%;"><tr>' +
+                  '<td dir="rtl" style="padding:16px;background:#f5f1e9;border-radius:12px;color:#4a453f;font-size:13.5px;line-height:1.8;text-align:center;">' +
+                    "أرفق لك قارئك ملفًا مع التقرير." +
+                    '<div style="margin-top:12px;">' +
+                      '<a href="' + esc(fileLink) + '" style="display:inline-block;padding:12px 28px;background:#ffffff;border:1px solid #d7d0c6;border-radius:12px;color:#15110f;text-decoration:none;font-size:14px;font-weight:600;">تحميل الملف</a>' +
+                    "</div>" +
+                  "</td></tr></table>"
               : "") +
 
             '<p style="margin:0 auto;max-width:420px;color:#a49b90;font-size:12.5px;line-height:1.7;">' +
@@ -364,7 +373,13 @@ module.exports = async (req, res) => {
   const subject = "Scene One " + (filmLabel ? filmLabel + " " : "") + "Coverage Report";
   const link = SITE_URL + "/report?t=" + encodeURIComponent(sub.report_token);
   const askLink = SITE_URL + "/ask?t=" + encodeURIComponent(sub.report_token);
-  const html = reportEmail(sub, link, askLink, hasAttachment);
+  // Rewritten to /api/report?…&file=attachment (vercel.json), which mints the
+  // signed URL on the click and 302s to it. Same token, same access rule as the
+  // report — the button just saves the writer opening the report and scrolling
+  // to the end to find the file.
+  const fileLink = hasAttachment
+    ? SITE_URL + "/download/" + encodeURIComponent(sub.report_token) : null;
+  const html = reportEmail(sub, link, askLink, fileLink);
 
   try {
     const r = await fetch("https://api.resend.com/emails", {

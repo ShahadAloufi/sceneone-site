@@ -1,6 +1,17 @@
 // Vercel serverless function — public, read-only report data for the writer.
 //
-//   GET /api/report?t=<report_token>
+//   GET /api/report?t=<report_token>                  → the report's JSON
+//   GET /api/report?t=<report_token>&file=attachment  → 302 to the attachment
+//
+// The second form is what the emailed "download" button hits, via the
+// /download/<token> rewrite in vercel.json. It exists so the EMAIL never has to
+// carry a signed URL: signed URLs live ten minutes, an email is read whenever
+// the writer gets to it, and a link that is dead on arrival is worse than no
+// link. The redirect mints a fresh one at the moment of the click.
+//
+// It is deliberately NOT a new serverless function — the project is at Vercel
+// Hobby's cap of 12 — and it needs no new authorization: the token in the URL is
+// the same one that authorizes the report itself.
 //
 // The unguessable per-submission token IS the authorization: no login. Returns
 // only the fields the report shows (never the writer's email, file path, etc.),
@@ -27,6 +38,7 @@ module.exports = async (req, res) => {
   }
 
   const token = ((req.query && req.query.t) || "").toString().trim();
+  const wantFile = ((req.query && req.query.file) || "").toString().trim();
   if (!UUID_RE.test(token)) return res.status(404).json({ message: "Report not found" });
 
   const headers = { apikey: key, Authorization: "Bearer " + key };
@@ -120,6 +132,18 @@ module.exports = async (req, res) => {
       console.error("report: attachment sign error:", err);
     }
   }
+  // The emailed download button lands here. Everything above has already run —
+  // the token resolved to a submission, and the coverage was confirmed approved —
+  // so this inherits the report's own access rule rather than inventing one.
+  if (wantFile === "attachment") {
+    if (!attachment) return res.status(404).json({ message: "Attachment not found" });
+    // The signed URL is single-use in spirit and short-lived in fact; a cached
+    // redirect would hand out a stale one.
+    res.setHeader("Cache-Control", "no-store");
+    res.setHeader("Location", attachment.url);
+    return res.status(302).end();
+  }
+
   // Neither the path nor the raw filename may travel to the browser, even when
   // signing failed. The renderer gates the attachment block on `name` being
   // present, so the name is REPLACED rather than removed.
