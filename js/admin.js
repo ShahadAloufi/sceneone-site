@@ -92,6 +92,14 @@
       payPaid: "مدفوع", payUnpaid: "بانتظار الدفع", payRefunded: "مُسترد",
       payStale: "متروك", payStaleTip: "لم يُكمل الكاتب الدفع منذ أكثر من ٤٨ ساعة",
       payRefundedFlag: "مُسترد — يحتاج قرارًا",
+      // Cinema Association membership claim. "غير مُتحقَّق" is the point of the
+      // column: the number is whatever the writer typed, so the card is the only
+      // evidence and someone has to open it.
+      thMember: "العضوية", memberNone: "—", memberCard: "عرض البطاقة",
+      memberUnverified: "خصم 15% مُطبَّق — غير مُتحقَّق",
+      memberUnverifiedTip: "طُبِّق الخصم عند الرفع دون تحقق. افتح البطاقة للتأكد — المبلغ مدفوع بالفعل ولا يمكن تصحيحه تلقائيًا.",
+      memberRepeat: "رقم مستخدم في طلب آخر",
+      memberCardFail: "تعذّر فتح البطاقة",
       payRefundedTip: "تم استرداد المبلغ والنص ما زال مُسندًا لقارئ. لم يُغيَّر الإسناد تلقائيًا.",
       showFilter: "عرض", filterAll: "كل النصوص", filterMine: "التي أعمل عليها", filterOpen: "متاحة للإسناد",
       subEmptyFilter: "لا توجد نصوص تطابق هذا العرض.",
@@ -180,6 +188,11 @@
       payPaid: "Paid", payUnpaid: "Awaiting payment", payRefunded: "Refunded",
       payStale: "Abandoned", payStaleTip: "The writer hasn't completed payment in over 48 hours",
       payRefundedFlag: "Refunded — needs a decision",
+      thMember: "Membership", memberNone: "—", memberCard: "View card",
+      memberUnverified: "15% applied — unverified",
+      memberUnverifiedTip: "The discount was applied on upload, unchecked. Open the card to verify — the amount is already charged and cannot be corrected automatically.",
+      memberRepeat: "Number also used on another submission",
+      memberCardFail: "Couldn't open the card",
       payRefundedTip: "This was refunded while still assigned to a reader. The assignment was deliberately left untouched.",
       showFilter: "Show", filterAll: "All scripts", filterMine: "What I'm working on", filterOpen: "Available to claim",
       subEmptyFilter: "No scripts match this view.",
@@ -1376,11 +1389,82 @@
       "</td>";
   }
 
+  // Cinema Association membership claim, shown in the All-submissions tab only.
+  //
+  // This column is a work queue, not a verdict, and it is the ONLY place a
+  // human ever sees these claims. Nothing here has been checked: the association
+  // has no roster we can query, so the number is whatever the writer typed and
+  // the card is the only evidence there is.
+  //
+  // Read the label carefully — the 15% was ALREADY TAKEN OFF the invoice, at
+  // submission time, on the strength of the upload alone. By the time a claim
+  // appears in this column the writer has usually paid the discounted amount, so
+  // a card that turns out to be bad is a conversation with them, not something
+  // any button here can correct.
+  //
+  // The one signal we can produce without a roster: the same membership number
+  // appearing on more than one submission. Legitimate (a member may submit
+  // twice) but worth a look, so it replaces the label rather than blocking
+  // anything.
+  function memberNumberCounts(rows) {
+    var counts = {};
+    rows.forEach(function (s) {
+      if (s.member_number) counts[s.member_number] = (counts[s.member_number] || 0) + 1;
+    });
+    return counts;
+  }
+
+  function renderMemberCell(cell, s, counts) {
+    if (!s.member_number && !s.member_card_path) {
+      cell.className = "adm-member adm-muted";
+      cell.textContent = t("memberNone");
+      return;
+    }
+    var num = document.createElement("div");
+    num.className = "adm-member__num";
+    num.dir = "ltr";
+    num.textContent = s.member_number || "—";
+    cell.appendChild(num);
+
+    if (s.member_card_path) {
+      var btn = document.createElement("button");
+      btn.className = "adm-link";
+      btn.textContent = t("memberCard");
+      btn.addEventListener("click", function () { downloadCard(s.member_card_path, btn); });
+      cell.appendChild(btn);
+    }
+
+    var repeat = s.member_number && counts[s.member_number] > 1;
+    var note = document.createElement("div");
+    note.className = "adm-member__note" + (repeat ? " adm-member__note--repeat" : "");
+    note.textContent = repeat ? t("memberRepeat") : t("memberUnverified");
+    note.title = t("memberUnverifiedTip");
+    cell.appendChild(note);
+  }
+
+  // Cards live in their own bucket, readable by STAFF ONLY (Storage RLS is the
+  // real guard — this is just which bucket to ask). A reader who somehow reached
+  // this code would get an error, not a card.
+  async function downloadCard(path, btn) {
+    var old = btn.textContent; btn.textContent = "..."; btn.disabled = true;
+    var res = await sb.storage.from(CFG.cardBucket || "member-cards").createSignedUrl(path, 120);
+    btn.textContent = old; btn.disabled = false;
+    if (res.error || !res.data) {
+      console.error("[card] createSignedUrl failed for path:", path, res.error);
+      alert(t("memberCardFail"));
+      return;
+    }
+    window.open(res.data.signedUrl, "_blank");
+  }
+
   // Full submission detail; the coverage column links to the report the writer
   // sees once approved, otherwise shows the status label. `readerName` maps a
   // submission id → the reviewing reader's name (used by the Deliveries tab).
-  function renderDetailRows(bodyEl, rows, covBySub, deliveredBySub, readerNameCol, showPayment) {
+  function renderDetailRows(bodyEl, rows, covBySub, deliveredBySub, readerNameCol, showPayment, showMember) {
     bodyEl.innerHTML = "";
+    // Repeat detection is scoped to the rows being drawn. The only tab that shows
+    // this column draws every submission, so that is the whole population.
+    var memberCounts = showMember ? memberNumberCounts(rows) : null;
     rows.forEach(function (s) {
       var st = covBySub[s.id];
       var delivered = !!deliveredBySub[s.id];
@@ -1399,7 +1483,9 @@
         "<td class='adm-file'></td>" +
         (readerNameCol ? "<td>" + esc(readerNameCol[s.id] || "—") + "</td>" : "<td class='adm-assignee2'>" + esc(adminsById[s.assigned_to] || "—") + "</td>") +
         (showPayment ? paymentCell(s) : "") +
+        (showMember ? "<td class='adm-member'></td>" : "") +
         "<td class='adm-cov'></td>";
+      if (showMember) renderMemberCell(tr.querySelector(".adm-member"), s, memberCounts);
       var fileCell = tr.querySelector(".adm-file");
       if (s.file_path) {
         if (canReadScript(s)) {
@@ -1446,7 +1532,7 @@
     $("allCount").textContent = subs.length;
     if (!subs.length) { show($("allEmpty")); $("allBody").innerHTML = ""; return; }
     hide($("allEmpty"));
-    renderDetailRows($("allBody"), subs, covBySub, deliveredBySub, null, true);
+    renderDetailRows($("allBody"), subs, covBySub, deliveredBySub, null, true, true);
     // The type drives the deadline column and the report header, so a change
     // reloads the tab rather than patching one cell.
     bindFilmTypePickers($("allBody"), loadAll);

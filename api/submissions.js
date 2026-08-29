@@ -74,6 +74,28 @@ const ARABIC_RE = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\
 // Reject anything else (path traversal, absolute paths, other buckets, etc.).
 const PATH_RE = /^[A-Za-z0-9]+-[A-Za-z0-9]+\/[A-Za-z0-9._-]+$/;
 
+// --- Partner membership (Cinema Association / جمعية السينما) -----------------
+// A writer may claim membership to be considered for the 15% discount. The claim
+// is RECORDED, not verified: the association has no roster it can give us, so
+// there is nothing to check a number against and a staff member has to look at
+// the card. These checks only reject a claim that is obviously malformed —
+// they say nothing about whether the person is a member.
+//
+// A complete claim DISCOUNTS THE INVOICE BY 15%, immediately, in this request —
+// before any human has looked at the card (2026-08-29, on request). So these
+// checks are the only thing standing between an uploaded image and a cheaper
+// invoice, and they are not much: they reject a malformed number or a file that
+// is not an image, and nothing else. The discount is applied on the upload
+// alone, by design — the alternative was making every member wait for a human
+// before they could pay. See memberDiscounted() in lib/moyasar.js.
+//
+// The invoice cannot be corrected afterwards, so a bad card is a conversation
+// with the writer, not a re-charge. Staff see every claim flagged in the
+// All-submissions tab.
+const MEMBER_NUMBER_RE = /^CA-\d{1,6}$/;
+const CARD_BUCKET = "member-cards";
+const CARD_EXT = ["png", "jpg", "jpeg", "webp", "pdf"];
+
 function fileExt(name) {
   const i = String(name).lastIndexOf(".");
   return i >= 0 ? String(name).slice(i + 1).toLowerCase() : "";
@@ -123,6 +145,20 @@ function validate(row) {
   } else if (ALLOWED_EXT.indexOf(ext) === -1) {
     return "صيغة الملف غير مدعومة";
   }
+  // A membership claim must be complete or absent — never half. A number with no
+  // card is unverifiable, and a card with no number gives staff nothing to key on.
+  if (row.member_number || row.member_card_path) {
+    if (!MEMBER_NUMBER_RE.test(row.member_number || "")) {
+      return "أدخل رقم العضوية كما هو على البطاقة، مثل CA-50.";
+    }
+    if (!row.member_card_path || row.member_card_path.length > MAX.path ||
+        !PATH_RE.test(row.member_card_path)) {
+      return "أرفق صورة واضحة من بطاقة العضوية.";
+    }
+    if (CARD_EXT.indexOf(fileExt(row.member_card_path)) === -1) {
+      return "صيغة بطاقة العضوية غير مدعومة. أرفق صورة PNG أو JPG أو WEBP أو ملف PDF.";
+    }
+  }
   return null;
 }
 
@@ -140,6 +176,16 @@ module.exports = async (req, res) => {
   }
 
   const b = req.body || {};
+
+  // The claim, normalised before anything else looks at it. "50", "ca-50" and
+  // "CA 50" are all stored as "CA-50" so two claims on one number are comparable — the only
+  // check available to staff without a roster is noticing the same number under
+  // different writers.
+  const claimsMembership = b.isMember === true || b.isMember === "yes";
+  const memberNumberRaw = (b.memberNumber || "").toString().trim().toUpperCase().replace(/\s+/g, "");
+  const memberNumber = memberNumberRaw ? "CA-" + memberNumberRaw.replace(/^CA-?/, "") : "";
+  const cardPath = (b.memberCardPath || "").toString().trim() || null;
+
   const row = {
     title_ar: (b.titleAr || "").toString().trim(),
     title_en: (b.titleEn || "").toString().trim(),
@@ -160,6 +206,11 @@ module.exports = async (req, res) => {
     ip_registered: b.ip === "yes" || b.ip === true,
     file_path: (b.filePath || "").toString().trim() || null,
     file_name: (b.fileName || "").toString().trim() || null,
+    // Membership claim. Read ONLY when the writer actually ticked the box, so a
+    // stray memberNumber in a hand-made request body cannot attach a claim to a
+    // submission that never made one.
+    member_number: claimsMembership ? (memberNumber || null) : null,
+    member_card_path: claimsMembership ? cardPath : null,
     // Payment gates everything downstream: nothing is assignable to a reader
     // until the webhook moves this to `paid`.
     status: "pending_payment",
@@ -174,6 +225,16 @@ module.exports = async (req, res) => {
   const clientCount = Number(b.pages);
   if (Number.isInteger(clientCount) && clientCount > 0 && clientCount <= 3000) {
     row.pages = clientCount;
+  }
+
+  // A claim must arrive whole. Checked before validate() because validate() sees
+  // only the row and cannot tell "ticked the box and filled nothing" apart from
+  // "made no claim" — and the first of those should be told, not silently
+  // dropped into a full-price submission with no record of what the writer meant.
+  if (claimsMembership && (!row.member_number || !row.member_card_path)) {
+    return res.status(400).json({
+      message: "أدخل رقم العضوية وأرفق صورة البطاقة، أو ألغِ اختيار العضوية.",
+    });
   }
 
   // Server-side validation (the server is the source of truth; the client
@@ -279,6 +340,11 @@ module.exports = async (req, res) => {
       filmType: row.film_type,
       // Per-page products price off this; fixed ones ignore it.
       pages: billablePages,
+      // 15% off, on the strength of the uploaded card alone. `payment_amount` is
+      // patched from the returned amount below, so the webhook's paid-vs-owed
+      // comparison sees the discounted figure and does not read a member's
+      // payment as an amount_mismatch.
+      memberDiscount: !!row.member_number,
       titleAr: row.title_ar,
       callbackUrl: SITE_URL + "/payment-status",
     });

@@ -28,6 +28,54 @@ coverage workspace + report, role-based access, deadlines, and report delivery t
 writers. **The payment gate is live and has taken real money** (see below).
 Actively iterating on UX polish and workflow features.
 
+**Recently shipped (2026-08-29):**
+- **Cinema Association partner discount — 15% off, applied automatically on
+  upload.** The script form carries an optional block above «إرسال النص والدفع»: a
+  checkbox, a **membership number** (`CA-50`) and an **upload of the card**. A
+  complete claim takes **15% off the invoice in the same request**, before any
+  human has seen the card. **Read all of this before changing it:**
+  - **Nothing is verified, and nothing can be.** The association was asked twice
+    and has **no membership roster it can give us**, so there is nothing to check a
+    number against. The `CA-\d{1,6}` check is a typo catcher. The discount rides on
+    an uploaded image alone — a deliberate call (the alternative was making every
+    member wait for a human before they could pay). Exposure is 15% of one
+    coverage: **15–180 SAR**.
+  - **It cannot be undone.** The writer has usually paid by the time a claim is
+    looked at, and nothing in the app can re-charge. A bad card is a conversation.
+  - **`priceFor()` is still the single pricing authority** and was NOT touched. The
+    discount is a separate step on top of the list price —
+    `memberDiscounted()` in `lib/moyasar.js`, applied inside `createPayment()`.
+    `MEMBER_DISCOUNT_PCT` is mirrored in `js/submit.js` for the quote only.
+  - **Three numbers must agree** and all three now do: the form's live quote
+    («… = 250 ريال — بعد خصم العضوية 15%: 212.50 ريال»), the invoice, and
+    `payment_amount`. The last one matters most — the webhook compares the paid
+    amount against it, so a discounted invoice reconciling against a list-price row
+    would have been an `amount_mismatch` on every member payment.
+  - **The invoice description carries the discount**, same reasoning as the
+    per-page arithmetic: «تغطية فيلم قصير — 25 صفحة × 10 ريال — خصم عضوية جمعية
+    السينما 15% — <العنوان>».
+  - **SCRIPT PRODUCTS ONLY**, and only because the block exists on `submit.html`
+    alone — `treatment-submit.html` has none, so a treatment can't claim. If the
+    discount should cover treatments, adding the block there is all it takes; the
+    server is product-agnostic.
+  - **Staff see every claim** in a **العضوية** column in *All submissions* (staff
+    only): number, «عرض البطاقة», and a «خصم 15% مُطبَّق — غير مُتحقَّق» label whose
+    tooltip says the money already moved. A number appearing on **more than one
+    submission** flags amber — the only fraud signal available without a roster,
+    and legitimate on its own.
+  - **`member-cards` is its own private bucket, STAFF-ONLY on read** (`is_staff`,
+    NOT `is_admin` — a reader is an admin by that function and must never see a
+    writer's ID photo). Anon insert-only, 5 MiB, image/PDF mimes. `member_number`
+    and `member_card_path` on `submissions` are readable by readers via
+    `select("*")`; the path is useless without bucket access and the column isn't
+    rendered for them.
+  - **No new serverless function** — the claim rides `/api/submissions`. Still 12/12.
+  - `privacy.html` gained a «بطاقة العضوية» paragraph (both dicts). **SQL applied
+    2026-08-29** (two columns, the bucket, two policies).
+  - **Don't add a vision/OCR scan of the card.** At ~20 submissions a month it costs
+    more to build and maintain than the discount it could protect, and tuned on the
+    single example card we have it would mostly reject REAL members.
+
 **Recently shipped (2026-08-25 → 08-27):**
 - **Assignment notice window cut to ONE HOUR**, and the sweep now runs on **every
   dashboard load** (folded into `/api/log-access`). Two scripts had sat 12 hours

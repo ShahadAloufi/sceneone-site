@@ -16,5 +16,8 @@
 window.SCENEONE_SUPABASE = {
   url: "https://tdnhzxlrluqqcrjaajwk.supabase.co",
   anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkbmh6eGxybHVxcWNyamFhandrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMyNjQ0OTksImV4cCI6MjA5ODg0MDQ5OX0.YwKAfZjLpt7MVSRsSsP5o9smegp8mi0QP2XfmVAKsAg",
-  bucket: "scripts"
+  bucket: "scripts",
+  // Membership cards for the Cinema Association discount. Separate from
+  // `scripts` on purpose: staff-only on read, never visible to readers.
+  cardBucket: "member-cards"
 };

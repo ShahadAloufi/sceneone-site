@@ -244,6 +244,32 @@ alter table public.submissions
 alter table public.submissions
   add column if not exists is_promo boolean not null default false;
 
+-- Partner membership — Cinema Association / جمعية السينما (2026-08-29).
+-- Members are entitled to a 15% discount on coverage. There is NO membership
+-- roster to check against: the association was asked and cannot supply one, and
+-- says it changes constantly. So these two columns only RECORD the claim, and a
+-- staff member verifies it by eye from the All-submissions tab.
+--
+-- Nothing here touches money. `payment_amount` and the Moyasar invoice are
+-- unaffected by a claim — deliberately, because a claim is unverified at the
+-- moment the invoice is created and a wrong invoice is the one failure this
+-- pipeline must not have. How the verified discount is actually applied is not
+-- built yet.
+--   member_number    — as printed on the card, e.g. "CA-50" (format checked, not
+--                      existence: we have nothing to check existence against)
+--   member_card_path — object path inside the private `member-cards` bucket
+-- Both null on a submission that made no claim, which is nearly all of them.
+alter table public.submissions
+  add column if not exists member_number text,
+  add column if not exists member_card_path text;
+
+-- The one fraud check available without a roster: the same membership number
+-- turning up under different writers. Not a constraint — a repeat claim is
+-- legitimate (a member may submit twice) — just an index so staff can look.
+create index if not exists submissions_member_number_idx
+  on public.submissions (member_number)
+  where member_number is not null;
+
 create index if not exists submissions_payment_invoice_id_idx
   on public.submissions (payment_invoice_id);
 
@@ -397,6 +423,44 @@ on conflict (id) do update
 insert into storage.buckets (id, name, public)
 values ('attachments', 'attachments', false)
 on conflict (id) do nothing;
+
+-- ── MEMBER-CARDS BUCKET (2026-08-29) ───────────────────────────────────────
+-- Membership cards uploaded by writers claiming the Cinema Association discount.
+-- Its own bucket, and NOT `scripts`, for two reasons:
+--   * a card carries a photograph, a full name and a membership number — it is
+--     identity data about a person, not creative work, and it must not inherit
+--     the per-assignment rules that exist to protect a writer's IP;
+--   * READERS MUST NEVER SEE IT. `scripts` is readable by the assigned reader;
+--     this bucket is staff-only, because verifying membership is a staff job and
+--     nobody else has a reason to look at someone's ID.
+-- Small images only: a 5 MiB cap and an image/PDF mime allowlist, enforced at
+-- the bucket so the limits hold even though the browser uploads directly.
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values (
+  'member-cards', 'member-cards', false,
+  5242880,
+  array['image/png', 'image/jpeg', 'image/webp', 'application/pdf']
+)
+on conflict (id) do update
+  set public = false,
+      file_size_limit = excluded.file_size_limit,
+      allowed_mime_types = excluded.allowed_mime_types;
+
+-- Writers are anonymous, so the card is uploaded with the anon key — insert
+-- only, exactly like `scripts`: no read, no list, no overwrite.
+drop policy if exists "anon can upload member cards" on storage.objects;
+create policy "anon can upload member cards"
+  on storage.objects for insert
+  to anon
+  with check ( bucket_id = 'member-cards' );
+
+-- STAFF ONLY on read. is_staff(), not is_admin() — a reader is an admin by that
+-- function's definition, and a reader has no business opening a writer's ID.
+drop policy if exists "staff read member cards" on storage.objects;
+create policy "staff read member cards"
+  on storage.objects for select
+  to authenticated
+  using ( bucket_id = 'member-cards' and public.is_staff(auth.uid()) );
 
 -- Any signed-in reader/staff may attach a file...
 drop policy if exists "readers upload attachments" on storage.objects;

@@ -252,7 +252,8 @@
         "<p>نلتزم بأحكام نظام حماية البيانات الشخصية الصادر في المملكة العربية السعودية، وبأفضل الممارسات الدولية في حماية البيانات.</p>",
       privDataTitle: "البيانات التي نجمعها",
       privDataHtml: "<p><span class=\"gold\" style=\"font-weight:500\">بيانات تقدّمها أنت مباشرة: </span>الاسم، البريد الإلكتروني، رقم الجوال، والنصّ السينمائي الذي تقدّمه، إضافةً إلى أيّ معلومات إضافية تختار مشاركتها معنا في الملف الشخصي أو عبر التواصل.</p>" +
-        "<p><span class=\"gold\" style=\"font-weight:500\">بيانات تُجمَع تلقائياً: </span>عنوان IP، نوع الجهاز والمتصفّح، وقت الزيارة، الصفحات التي اطّلعت عليها، وذلك لأغراض تحسين تجربة الاستخدام والأمن السيبراني فقط.</p>",
+        "<p><span class=\"gold\" style=\"font-weight:500\">بيانات تُجمَع تلقائياً: </span>عنوان IP، نوع الجهاز والمتصفّح، وقت الزيارة، الصفحات التي اطّلعت عليها، وذلك لأغراض تحسين تجربة الاستخدام والأمن السيبراني فقط.</p>" +
+        "<p><span class=\"gold\" style=\"font-weight:500\">بطاقة العضوية: </span>إذا اخترت طلب خصم أعضاء جمعية السينما، نحفظ رقم عضويتك وصورة البطاقة التي ترفعها. تُستخدم للتحقق من العضوية فقط، ويطّلع عليها فريق Scene One وحده — لا يراها القارئ المكلَّف بنصّك — ويمكنك طلب حذفها في أيّ وقت.</p>",
       privUseTitle: "كيف نستخدم بياناتك",
       privUseLead: "نستخدم بياناتك للأغراض التالية فقط:",
       privUseHtml: "<li>تقديم الخدمة لك وقراءة نصّك وإصدار تقريرك.</li>" +
@@ -521,7 +522,8 @@
         "<p>We comply with the Personal Data Protection Law of the Kingdom of Saudi Arabia and follow international best practices in data protection, including guidance from the Saudi Data and Artificial Intelligence Authority.</p>",
       privDataTitle: "Data We Collect",
       privDataHtml: "<p><span class=\"gold\" style=\"font-weight:500\">Data you provide directly: </span>Your name, email address, mobile number, the screenplay you submit, and any additional information you choose to share in your profile or through communications with us.</p>" +
-        "<p><span class=\"gold\" style=\"font-weight:500\">Data collected automatically: </span>IP address, device and browser type, access time, and pages visited, strictly for improving user experience and ensuring cybersecurity.</p>",
+        "<p><span class=\"gold\" style=\"font-weight:500\">Data collected automatically: </span>IP address, device and browser type, access time, and pages visited, strictly for improving user experience and ensuring cybersecurity.</p>" +
+        "<p><span class=\"gold\" style=\"font-weight:500\">Membership card: </span>If you request the Cinema Association member discount, we store your membership number and the card image you upload. It is used only to verify membership, is visible to the Scene One team alone — never to the reader assigned to your script — and you may ask us to delete it at any time.</p>",
       privUseTitle: "How We Use Your Data",
       privUseLead: "We use your data solely for the following purposes:",
       privUseHtml: "<li>Providing the Service, including reading your script and issuing your report.</li>" +

@@ -1333,6 +1333,16 @@ html[dir="rtl"] .adm-tablefilter select { background-position: left 16px center;
 .adm-pay--unpaid   { color: #c9962e; background: rgba(201,150,46,.16); }
 .adm-pay--stale    { color: var(--adm-muted); background: var(--adm-surface-2); }
 .adm-pay--refunded { color: #d9584a; background: rgba(217,88,74,.16); }
+
+/* Cinema Association membership claim (All submissions). Deliberately NOT a
+   coloured badge like the payment state: a badge reads as a verdict, and
+   nothing in this column has been verified. The number, the card, and a plain
+   line saying so. */
+.adm-member { min-width: 130px; }
+.adm-member__num { font-weight: 700; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.adm-member__note { color: var(--adm-faint); font-size: 11.5px; margin-top: 3px; line-height: 1.5; }
+/* The one thing worth a colour: the same number claimed on another submission. */
+.adm-member__note--repeat { color: #c9962e; font-weight: 700; }
 /* Writer's self-declared level. Same badge geometry as the payment state, but a
    deliberately neutral palette: this is context for the reader, NOT a quality
    score, and green/amber would read as "good writer / weak writer". The four
@@ -1751,6 +1761,85 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 .sub-drop.has-file .sub-drop__icon { color: var(--gold); }
 .sub-drop__text { font-family: var(--font-head); font-size: 15px; font-weight: 600; color: #3a3a3a; word-break: break-all; }
 .sub-drop__hint { font-size: 12px; color: #9a978f; margin-top: 6px; }
+
+/* ── Partner membership (Cinema Association) ──────────────────────────────
+   Sits between the form grid and the assurances, above the submit button. A
+   quiet bordered block rather than another grid row: it applies to a minority
+   of writers, and an untouched checkbox should read as "not for me" at a
+   glance rather than as a field left blank. */
+.sub-member {
+  margin-top: 32px;
+  background: #fff;
+  border: 1px solid #e2e0da;
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+.sub-member__toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+.sub-member__toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
+.sub-member__box {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border: 2px solid #cfccc4;
+  border-radius: 5px;
+  background: #fbfaf8;
+  position: relative;
+  transition: border-color .15s ease, background .15s ease;
+}
+.sub-member__toggle input:checked + .sub-member__box {
+  border-color: var(--gold);
+  background: var(--gold);
+}
+/* The tick is drawn rather than typed so it never depends on a glyph the
+   Arabic font may not carry. */
+.sub-member__box::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 4px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0);
+  transition: transform .15s ease;
+}
+.sub-member__toggle input:checked + .sub-member__box::after { transform: rotate(45deg) scale(1); }
+.sub-member__toggle input:focus-visible + .sub-member__box { box-shadow: 0 0 0 3px rgba(210,175,80,.25); }
+.sub-member__text {
+  font-family: var(--font-head);
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #2a2a2a;
+}
+.sub-member__note {
+  font-size: 13px;
+  color: #8a877f;
+  line-height: 1.7;
+  margin: 8px 0 0;
+  /* Line up under the label text, not under the checkbox. */
+  padding-inline-start: 28px;
+}
+.sub-member__fields {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #ece9e2;
+  display: grid;
+  gap: 16px;
+}
+.sub-member__privacy { margin-top: 0; }
+
+/* A card is one small image, so its dropzone does not need the height the
+   script picker has. */
+.sub-drop--sm { padding: 18px 16px; }
+.sub-drop--sm .sub-drop__icon { width: 24px; height: 24px; margin-bottom: 8px; }
+.sub-drop--sm .sub-drop__text { font-size: 14px; }
 
 .sub-submit {
   width: 100%;

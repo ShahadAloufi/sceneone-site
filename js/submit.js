@@ -14,6 +14,7 @@
 
   var CFG = window.SCENEONE_SUPABASE || {};
   var BUCKET = CFG.bucket || "scripts";
+  var CARD_BUCKET = CFG.cardBucket || "member-cards";
 
   // Both submission forms (script and treatment) run this file. What differs is
   // WHICH fields exist, which are required, and which extensions are accepted —
@@ -196,6 +197,97 @@
     fileInput.addEventListener("change", function () { setFileLabel(); checkFileNow(); });
   }
 
+  /* ---------- MEMBERSHIP CARD (Cinema Association) ----------
+     Optional, and present on the SCRIPT form only — js/submit.js also runs the
+     treatment form, where none of these elements exist and every block below
+     no-ops.
+
+     The claim is collected, never verified here: there is no membership list to
+     check a number against, so the format check is a typo catcher and the real
+     check is a staff member looking at the card. Nothing here affects the price. */
+  var memberToggle = document.getElementById("memberToggle");
+  var memberFields = document.getElementById("memberFields");
+  var cardDrop = document.getElementById("cardDrop");
+  var cardInput = document.getElementById("cardInput");
+  var cardDropText = document.getElementById("cardDropText");
+  var CARD_DROP_DEFAULT = cardDropText ? cardDropText.textContent : "";
+  var CARD_EXT = ["png", "jpg", "jpeg", "webp", "pdf"];
+  var CARD_MAX_BYTES = 5 * 1024 * 1024;   // matches the bucket's file_size_limit
+  // Mirrors MEMBER_DISCOUNT_PCT in lib/moyasar.js, which is what actually prices
+  // the invoice. This one only draws the quote.
+  var MEMBER_DISCOUNT_PCT = 15;
+  // 340 reads better than 340.00; 212.5 has to read as 212.50.
+  function riyals(n) { return n % 1 === 0 ? String(n) : n.toFixed(2); }
+  // The normalised form — "CA-50", exactly as printed on the card. What the
+  // writer types is normalised first (see below), so this is checked against
+  // the value that will actually be stored.
+  var MEMBER_RE = /^CA-\d{1,6}$/;
+
+  function isMemberClaimed() { return !!(memberToggle && memberToggle.checked); }
+  function cardFile() { return cardInput && cardInput.files ? cardInput.files[0] : null; }
+
+  // Normalised the way it is stored and the way staff will read it: "50",
+  // "ca-50" and "CA 50" all become "CA-50", so two claims on one number look
+  // alike — the repeat check in the dashboard compares these strings.
+  function normalizedMemberNumber() {
+    var el = document.querySelector('input[name="memberNumber"]');
+    var raw = el ? el.value.trim().toUpperCase().replace(/\s+/g, "") : "";
+    if (!raw) return "";
+    return "CA-" + raw.replace(/^CA-?/, "");
+  }
+
+  function setCardLabel() {
+    if (!cardDrop || !cardDropText) return;
+    var f = cardFile();
+    if (f) {
+      cardDrop.classList.add("has-file");
+      cardDropText.textContent = f.name;
+    } else {
+      cardDrop.classList.remove("has-file");
+      cardDropText.textContent = CARD_DROP_DEFAULT;
+    }
+  }
+
+  if (memberToggle && memberFields) {
+    memberToggle.addEventListener("change", function () {
+      memberFields.hidden = !memberToggle.checked;
+      // Unticking must not leave a stale error behind, and must not leave a
+      // card queued for upload that the writer can no longer see.
+      if (!memberToggle.checked) {
+        markInvalid("memberNumber", false);
+        markInvalid("memberCard", false);
+        if (cardInput) { cardInput.value = ""; setCardLabel(); }
+      }
+      // The claim changes the amount, so the quote under the script picker is
+      // now wrong in one direction or the other. Redraw it.
+      checkFileNow();
+    });
+  }
+
+  if (cardDrop && cardInput) {
+    cardDrop.addEventListener("click", function () { cardInput.click(); });
+    cardDrop.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); cardInput.click(); }
+    });
+    ["dragenter", "dragover"].forEach(function (ev) {
+      cardDrop.addEventListener(ev, function (e) { e.preventDefault(); cardDrop.classList.add("dragging"); });
+    });
+    ["dragleave", "drop"].forEach(function (ev) {
+      cardDrop.addEventListener(ev, function (e) { e.preventDefault(); cardDrop.classList.remove("dragging"); });
+    });
+    cardDrop.addEventListener("drop", function (e) {
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+        cardInput.files = e.dataTransfer.files;
+        setCardLabel();
+        markInvalid("memberCard", false);
+      }
+    });
+    cardInput.addEventListener("change", function () {
+      setCardLabel();
+      markInvalid("memberCard", false);
+    });
+  }
+
   /* ---------- IMMEDIATE FILE FEEDBACK ----------
      Tell the writer the moment the file lands, not after they have filled the
      rest of the form and pressed submit. Two things are checked here, and both
@@ -303,9 +395,18 @@
             perPage.max + " صفحة. " + perPage.overHint).trim());
         }
         showFileError(null);
-        // The number the writer is about to pay, shown before they commit.
+        // The number the writer is about to pay, shown before they commit — so
+        // it has to carry the member discount too, or a member reads 250 here
+        // and is charged 212.50 at the gateway. Same arithmetic as
+        // memberDiscounted() in lib/moyasar.js, which is what actually invoices.
+        var listTotal = billable * perPage.rate;
+        if (!isMemberClaimed()) {
+          return showQuote("نصك " + billable + " صفحة × " + perPage.rate + " ريال = " +
+            listTotal + " ريال");
+        }
         return showQuote("نصك " + billable + " صفحة × " + perPage.rate + " ريال = " +
-          (billable * perPage.rate) + " ريال");
+          listTotal + " ريال — بعد خصم العضوية " + MEMBER_DISCOUNT_PCT + "%: " +
+          riyals(listTotal * (100 - MEMBER_DISCOUNT_PCT) / 100) + " ريال");
       }
 
       showQuote(null);
@@ -349,7 +450,10 @@
       characters: (data.get("characters") || "").toString().trim(),
       toneRef: (data.get("toneRef") || "").toString().trim(),
       treatmentText: (data.get("treatmentText") || "").toString().trim(),
-      ip: (data.get("ip") || "no").toString()
+      ip: (data.get("ip") || "no").toString(),
+      // Cinema Association claim; absent from the treatment form.
+      isMember: isMemberClaimed(),
+      memberNumber: isMemberClaimed() ? normalizedMemberNumber() : ""
     };
   }
 
@@ -385,6 +489,22 @@
     if (file && file.size > MAX_BYTES) {
       toast("الملف كبير جدًا", "الحد الأقصى لحجم الملف هو 25 ميغابايت.", "error");
       markInvalid("file", true); ok = false;
+    }
+    // Membership: both fields are required only when the writer claims it, so
+    // they are checked here rather than through the .req-star machinery, which
+    // would make them required for everyone.
+    if (v.isMember) {
+      req("memberNumber", MEMBER_RE.test(v.memberNumber));
+      var card = cardFile();
+      req("memberCard", !!card);
+      if (card && CARD_EXT.indexOf(fileExt(card.name)) === -1) {
+        toast("صيغة البطاقة غير مدعومة", "أرفق صورة بصيغة PNG أو JPG أو WEBP أو ملف PDF.", "error");
+        markInvalid("memberCard", true); ok = false;
+      }
+      if (card && card.size > CARD_MAX_BYTES) {
+        toast("ملف البطاقة كبير جدًا", "الحد الأقصى لحجم البطاقة هو 5 ميغابايت.", "error");
+        markInvalid("memberCard", true); ok = false;
+      }
     }
     return ok;
   }
@@ -427,12 +547,29 @@
       });
       var filePath = buildPath(file.name);
 
+      // The membership card, when one was attached, goes to its OWN bucket —
+      // never `scripts`. Same anon insert-only rule, different audience: staff
+      // read it, readers never do.
+      var card = isMemberClaimed() ? cardFile() : null;
+      var cardPath = card ? buildPath(card.name) : null;
+      function uploadCard() {
+        if (!card) return Promise.resolve();
+        return sb.storage.from(CARD_BUCKET).upload(cardPath, card, {
+          contentType: card.type || "application/octet-stream",
+          upsert: false
+        }).then(function (up) {
+          if (up.error) throw up.error;
+        });
+      }
+
       countPdfPages(file).then(function (pageCount) {
         return sb.storage.from(BUCKET).upload(filePath, file, {
           contentType: file.type || "application/octet-stream",
           upsert: false
         }).then(function (up) {
           if (up.error) throw up.error;
+          return uploadCard();
+        }).then(function () {
           return fetch("/api/submissions", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -455,7 +592,13 @@
               ip: v.ip,
               filePath: filePath,
               fileName: file.name,
-              pages: pageCount
+              pages: pageCount,
+              // Recorded, not trusted: staff verify the card by eye. The server
+              // ignores both unless isMember is true.
+              isMember: v.isMember,
+              memberNumber: v.memberNumber,
+              memberCardPath: cardPath,
+              memberCardName: card ? card.name : null
             })
           });
         });
