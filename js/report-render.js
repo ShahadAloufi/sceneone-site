@@ -42,6 +42,12 @@
       // rows that predate that.
       nologline: "The logline wasn't provided by the writer.",
       outof: "/ 10", foot: "Script coverage", pagesUnit: "pages",
+      // What the writer sees in place of the reader's raw upload filename. The
+      // stored name is whatever the file happened to be called on the reader's
+      // machine ("WhatsApp Image 2026-08-26 at 8.42.30 PM.jpeg") — noise to the
+      // writer, and it leaks how the file reached us. The link still serves the
+      // real file; only the visible label is generic.
+      attachmentFile: "Attachment",
       eval: { "Premise & Theme": "Premise & Theme", "Hook": "Hook", "Stakes & Plot": "Stakes & Plot", "Character": "Character", "Dialogue": "Dialogue", "Structure & Pace": "Structure & Pace", "Producibility": "Producibility", "Presentation": "Presentation",
               "Narrative Clarity": "Narrative clarity", "Character Basics": "Character (fundamentals)", "Emotional Journey": "Emotional journey",
               "Story Structure": "Overall story structure", "Screenplay Potential": "Screenplay development potential", "Market Viability": "Market viability", "Overall presentation": "Overall presentation" },
@@ -62,6 +68,7 @@
       strengths: "نقاط القوة", develop: "ما يحتاج إلى تطوير", attachment: "مرفق لك", verdict: "الحكم", pending: "بانتظار التقييم", notwritten: "لم يُكتب بعد.",
       nologline: "لم يزوّدنا الكاتب بالفكرة المختصرة.",
       outof: "/ 10", foot: "تقييم النصوص", pagesUnit: "صفحة",
+      attachmentFile: "المرفق",
       eval: { "Premise & Theme": "الفكرة والموضوع", "Hook": "عنصر الجذب", "Stakes & Plot": "الرهانات الدرامية والحبكة", "Character": "الشخصيات", "Dialogue": "الحوار", "Structure & Pace": "البناء الدرامي والإيقاع", "Producibility": "قابلية الإنتاج", "Presentation": "العرض والتنسيق",
               "Narrative Clarity": "وضوح الرؤية السردية", "Character Basics": "الشخصيات (الأساسيات)", "Emotional Journey": "الرحلة العاطفية",
               "Story Structure": "البناء العام للقصة", "Screenplay Potential": "قابلية التطوير لسيناريو", "Market Viability": "الجدوى السوقية", "Overall presentation": "العرض العام" },
@@ -218,9 +225,11 @@
   function attachmentHtml(c, t) {
     var att = c.attachmentLink || c.attachment;
     if (!att || !att.name) return "";
+    // `att.name` still gates the block — it is how we know an attachment exists —
+    // but it is no longer what the writer reads. See attachmentFile above.
     var label = att.url
-      ? '<a href="' + esc(att.url) + '" target="_blank" rel="noopener">' + esc(att.name) + "</a>"
-      : esc(att.name);
+      ? '<a href="' + esc(att.url) + '" target="_blank" rel="noopener">' + esc(t.attachmentFile) + "</a>"
+      : esc(t.attachmentFile);
     return '<div class="rep-item"><div class="ih"><span class="t">' + t.attachment + "</span></div>" +
            '<p class="rep-attach">' + label + "</p></div>";
   }
