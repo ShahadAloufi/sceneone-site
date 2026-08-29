@@ -34,7 +34,10 @@ module.exports = async (req, res) => {
   // Look up the submission by its report token. Select only report-safe fields.
   const subResp = await fetch(
     url + "/rest/v1/submissions?report_token=eq." + encodeURIComponent(token) +
-    "&select=id,title_ar,title_en,writer,genre,film_type,draft,duration,logline",
+    // `pages` is here because «عدد الصفحات/المدة» falls back to the page count
+    // when the writer typed no duration (see mapSubmission in js/report-render.js).
+    // Without it the writer's own report shows a dash for a length we hold.
+    "&select=id,title_ar,title_en,writer,genre,film_type,draft,duration,logline,pages",
     { headers }
   );
   const subs = subResp.ok ? await subResp.json() : [];
@@ -53,6 +56,29 @@ module.exports = async (req, res) => {
   }
 
   const coverage = covs[0].data || {};
+
+  // What the attachment is called once it lands in the writer's downloads.
+  //
+  // NOT the stored name: that is whatever the file was called on the reader's
+  // machine ("WhatsApp Image 2026-08-26 at 8.42.30 PM.jpeg") — noise to the
+  // writer, and it leaks how the file reached us. The report label and the
+  // approval email are both generic already; this was the last place the raw
+  // name surfaced.
+  //
+  // ASCII only, deliberately. This value becomes a Content-Disposition filename,
+  // where anything non-ASCII needs the filename*= form to be legal — so the
+  // Arabic title is dropped rather than risk a mangled name, and the English one
+  // is stripped to characters that survive every filesystem. The extension is
+  // kept: without it the writer's OS cannot open the file.
+  function attachmentFileName(stored, titleEn) {
+    const m = /\.([A-Za-z0-9]{1,8})$/.exec(String(stored || ""));
+    const ext = m ? "." + m[1].toLowerCase() : "";
+    const title = String(titleEn || "")
+      .replace(/[^A-Za-z0-9 _-]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    return (title ? "Scene One - " + title + " - attachment" : "Scene One attachment") + ext;
+  }
 
   // The reader may have attached a resource for the writer (a screenwriting
   // guide, a formatting reference). The writer has no account, so the file is
@@ -76,12 +102,13 @@ module.exports = async (req, res) => {
       if (signResp.ok) {
         const signed = await signResp.json();
         if (signed && signed.signedURL) {
-          const fileName = coverage.attachment.name || "attachment";
-          // `download` sets Content-Disposition, so the writer's browser saves the
-          // file under the name their reader gave it. Without it they would get
-          // the storage key, which is ASCII-only and says nothing (an Arabic
-          // filename sanitises away entirely — see uploadAttachment()).
+          const fileName = attachmentFileName(coverage.attachment.name, sub.title_en);
+          // `download` sets Content-Disposition, so this is the name the file
+          // lands under in the writer's downloads. Without it they would get the
+          // storage key, which says nothing.
           attachment = {
+            // The generic name, NOT the stored one: the raw filename must not
+            // reach the browser at all, not even in the JSON payload.
             name: fileName,
             url: url + "/storage/v1" + signed.signedURL + "&download=" + encodeURIComponent(fileName),
           };
@@ -93,8 +120,15 @@ module.exports = async (req, res) => {
       console.error("report: attachment sign error:", err);
     }
   }
-  // The path must not travel to the browser even when signing failed.
-  if (coverage.attachment) delete coverage.attachment.path;
+  // Neither the path nor the raw filename may travel to the browser, even when
+  // signing failed. The renderer gates the attachment block on `name` being
+  // present, so the name is REPLACED rather than removed.
+  if (coverage.attachment) {
+    delete coverage.attachment.path;
+    if (coverage.attachment.name) {
+      coverage.attachment.name = attachmentFileName(coverage.attachment.name, sub.title_en);
+    }
+  }
 
   delete sub.id;
   res.setHeader("Cache-Control", "no-store");
