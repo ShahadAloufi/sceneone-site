@@ -250,17 +250,23 @@
       if (map && map[x]) return esc(map[x]);
       return val(raw);
     }
-    // «عدد الصفحات/المدة» — the duration the writer typed, or, failing that, the
-    // page count. Both are the same fact about length, and a row that has one
-    // rarely has the other: duration is a form field the writer fills in, the
-    // count is measured from the file. Showing a dash while we hold a count was
-    // just a gap between the two.
+    // «عدد الصفحات/المدة» — the page count, or the duration the writer typed when
+    // we hold no count.
+    //
+    // The COUNT WINS, and it has to: the reader workspace's own panel
+    // (`pagesLabel(s) || s.length` in js/coverage.js) and the dashboard's Pages
+    // column both lead with it, so a report that led with the duration showed the
+    // writer a different length from the one their reader was looking at, under
+    // the same label. The count is also the better fact — measured from the file
+    // by the server, where the duration is self-reported and often vague or
+    // absent.
     function lengthCell() {
-      if (String(s.length || "").trim()) return lv("length", s.length);
-      if (!s.pages) return val("");
-      // Same title-page convention as everywhere else the count is displayed.
-      var n = s.pages > 1 ? s.pages - 1 : s.pages;
-      return esc(n + " " + t.pagesUnit);
+      if (s.pages) {
+        // Same title-page convention as everywhere else the count is displayed.
+        var n = s.pages > 1 ? s.pages - 1 : s.pages;
+        return esc(n + " " + t.pagesUnit);
+      }
+      return lv("length", s.length);
     }
     var top = [[t.title, '<span class="rep-title">' + esc(s.titleEn || "Untitled") + (s.titleAr ? ' <span class="ar">(' + esc(s.titleAr) + ")</span>" : "") + "</span>", true],
       [t.writer, lv("writer", s.writer)], [t.format, lv("format", s.format)], [t.genre, lv("genre", s.genre)],
