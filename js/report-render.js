@@ -36,6 +36,11 @@
       synopsis: "Synopsis", evaluation: "Evaluation", market: "The market", overall: "Overall comments",
       coverageT: "Treatment coverage", synopsisT: "Treatment summary", evaluationT: "Treatment evaluation", marketT: "Market notes", footT: "Treatment coverage",
       strengths: "Strengths", develop: "To develop", attachment: "Attached for you", verdict: "Verdict", pending: "Pending", notwritten: "Not yet written.",
+      // The logline comes from the WRITER, not the reader, so it needs its own
+      // empty state: "not yet written" would wrongly read as the reader owing
+      // work. Required on the form since 2026-08, so this is only reachable by
+      // rows that predate that.
+      nologline: "The logline wasn't provided by the writer.",
       outof: "/ 10", foot: "Script coverage",
       eval: { "Premise & Theme": "Premise & Theme", "Hook": "Hook", "Stakes & Plot": "Stakes & Plot", "Character": "Character", "Dialogue": "Dialogue", "Structure & Pace": "Structure & Pace", "Producibility": "Producibility", "Presentation": "Presentation",
               "Narrative Clarity": "Narrative clarity", "Character Basics": "Character (fundamentals)", "Emotional Journey": "Emotional journey",
@@ -55,6 +60,7 @@
       synopsis: "الملخّص", evaluation: "التقييم", market: "السوق", overall: "ملاحظات عامة",
       coverageT: "تقييم المعالجة", synopsisT: "الملخّص (Treatment Summary)", evaluationT: "التقييم (Treatment Evaluation)", marketT: "السوق (Market Notes)", footT: "تقييم المعالجة",
       strengths: "نقاط القوة", develop: "ما يحتاج إلى تطوير", attachment: "مرفق لك", verdict: "الحكم", pending: "بانتظار التقييم", notwritten: "لم يُكتب بعد.",
+      nologline: "لم يزوّدنا الكاتب بالفكرة المختصرة.",
       outof: "/ 10", foot: "تقييم النصوص",
       eval: { "Premise & Theme": "الفكرة والموضوع", "Hook": "عنصر الجذب", "Stakes & Plot": "الرهانات الدرامية والحبكة", "Character": "الشخصيات", "Dialogue": "الحوار", "Structure & Pace": "البناء الدرامي والإيقاع", "Producibility": "قابلية الإنتاج", "Presentation": "العرض والتنسيق",
               "Narrative Clarity": "وضوح الرؤية السردية", "Character Basics": "الشخصيات (الأساسيات)", "Emotional Journey": "الرحلة العاطفية",
@@ -278,7 +284,7 @@
 
     return header +
       '<div class="rep-top">' + topHtml + "</div>" +
-      '<div class="logline"><div class="k">' + t.logline + '</div><div dir="auto">' + val(s.logline) + "</div></div>" +
+      '<div class="logline"><div class="k">' + t.logline + '</div><div dir="auto">' + val(s.logline, t.nologline) + "</div></div>" +
       '<div class="glance"><h3>' + t.glance + "</h3>" +
         '<table class="gl">' + glHead + glHtml + "</table></div>" +
       '<div class="rep-sec"><h2><span class="no">01</span>' + (isT ? t.synopsisT : t.synopsis) + "</h2><p>" + val(c.synopsis, nw) + "</p></div>" +

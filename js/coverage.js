@@ -81,6 +81,9 @@
         "told. Re-approving will not resend it. Please send them this link yourself:",
       approving: "Approving…", requesting: "Sending…", reviewFail: "Couldn't complete the action.",
       pl: { title: "Title", writer: "Writer", level: "Writer's level", email: "Email", ref: "Reference", format: "Format", genre: "Genre", length: "Length", draft: "Draft", ip: "IP registered", file: "Script file", logline: "Logline", vision: "Writer's vision" },
+      // Writer-supplied, so a bare dash tells the reader nothing about whose gap
+      // it is. Required on the form since 2026-08 — only older rows reach this.
+      noLogline: "The logline wasn't provided by the writer.",
       attachment: "Attachment for the writer",
       attachmentHint: "Optional. A guide or reference the writer can download with their report.",
       attachAdd: "Add attachment", attachRemove: "Remove",
@@ -146,6 +149,7 @@
         "الإرسال. يرجى إرسال هذا الرابط إليه يدويًا:",
       approving: "جارٍ الاعتماد…", requesting: "جارٍ الإرسال…", reviewFail: "تعذّر إكمال الإجراء.",
       pl: { title: "عنوان السيناريو", writer: "اسم الكاتب", level: "مستوى الكاتب", email: "البريد الإلكتروني", ref: "الرقم المرجعي", format: "نوع العمل", genre: "التصنيف", length: "عدد الصفحات/المدة", draft: "نسخة السيناريو", ip: "تسجيل الملكية الفكرية", file: "ملف السيناريو", logline: "الملخص المختصر", vision: "رؤية الكاتب" },
+      noLogline: "لم يزوّدنا الكاتب بالملخص المختصر.",
       attachment: "مرفق للكاتب",
       attachmentHint: "اختياري. دليل أو مرجع يمكن للكاتب تحميله مع تقريره.",
       attachAdd: "إضافة مرفق", attachRemove: "إزالة",
@@ -349,7 +353,7 @@
       // 4th flag = prose: full-width AND long-form, so it's set at reading size rather
       // than the larger size the short scannable fields use. The title is full-width
       // too but is not prose, which is why this is a separate flag.
-      [pl.logline, '<span dir="auto">' + esc(s.logline || dash) + "</span>", true, true],
+      [pl.logline, '<span dir="auto">' + esc(s.logline || u.noLogline) + "</span>", true, true],
       [pl.vision, '<span dir="auto">' + esc(s.vision || dash) + "</span>", true, true]
     ];
     $("pulledGrid").innerHTML = rows.map(function (r) {
