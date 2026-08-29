@@ -419,15 +419,22 @@
     var label = e.btn.textContent;
     e.btn.textContent = "…";
     // Namespaced by submission so one coverage's attachment can never collide
-    // with another's. Storage keys stay ASCII, which means an Arabic filename
-    // sanitises down to nothing useful — so fall back to a plain stem and keep
-    // the real name where it matters: `attachment.name`, which is what the writer
-    // sees, and what /api/report puts on the download itself.
+    // with another's, and NEUTRAL: the stem is dropped rather than sanitised.
+    //
+    // The key travels: it is the path inside every signed URL, so a key built
+    // from the upload's own name put "WhatsApp-Image-2026-08-26-at-8.42.30-PM"
+    // in the writer's address bar while their download ran. Nothing reads
+    // meaning from this stem — the display name lives in `attachment.name` on
+    // the coverage row, and /api/report is what puts a real name on the
+    // download — so there is nothing to lose by dropping it.
+    //
+    // The EXTENSION is kept: Storage picks the content type from it, and the
+    // writer's browser needs it to open what it saves.
+    //
+    // Files uploaded before this keep their old keys; only new ones are neutral.
     var dot = file.name.lastIndexOf(".");
     var ext = dot > 0 ? file.name.slice(dot + 1).replace(/[^A-Za-z0-9]+/g, "").slice(0, 8) : "";
-    var stem = file.name.slice(0, dot > 0 ? dot : undefined)
-      .replace(/[^A-Za-z0-9._-]+/g, "-").replace(/^-+|-+$/g, "").slice(-60);
-    var safe = (stem || "attachment") + (ext ? "." + ext : "");
+    var safe = "attachment" + (ext ? "." + ext.toLowerCase() : "");
     var path = submissionId + "/" + Date.now().toString(36) + "-" + safe;
     var up = await sb.storage.from(ATTACH_BUCKET).upload(path, file, {
       contentType: file.type || "application/octet-stream", upsert: false
