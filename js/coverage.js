@@ -729,6 +729,30 @@
     rb.innerHTML = R.render(state.submission, state.coverage, LANG);
     rb.setAttribute("dir", ar ? "rtl" : "ltr");
     rb.classList.toggle("ar", ar);
+    wireReportAttachment(rb);
+  }
+
+  // The renderer links the attachment only when it is handed a URL, and here it
+  // never is: the coverage row stores a storage PATH, and a signed URL has to be
+  // minted per click — one baked into the markup would be dead within minutes.
+  // The writer's own report gets its link from /api/report for that reason.
+  // So the preview wires the same download the editor row in section 04 uses,
+  // which is what a reviewer needs: the file is openable from the report they
+  // are reviewing, not only from the form above it.
+  function wireReportAttachment(rb) {
+    var att = state.coverage && state.coverage.attachment;
+    var cell = rb.querySelector(".rep-attach");
+    if (!att || !att.path || !cell || cell.querySelector("a")) return;
+    var label = cell.textContent;
+    var a = document.createElement("a");
+    a.href = "#";
+    a.textContent = label;
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      downloadFile(att.path, a, ATTACH_BUCKET);
+    });
+    cell.textContent = "";
+    cell.appendChild(a);
   }
 
   /* ---------- language (whole workspace + report) ---------- */

@@ -101,7 +101,11 @@ async function requireReviewer(req) {
 
 // Bilingual email inviting the writer to open their (now approved) report, and
 // to ask the reader a follow-up question about it (/ask, same report token).
-function reportEmail(sub, link, askLink, attachmentName) {
+// `hasAttachment` is a flag, not a name: the stored filename is whatever the
+// file was called on the reader's machine ("WhatsApp Image ….jpeg"), which is
+// noise to the writer and leaks how the file reached us. The report page labels
+// it generically too — see attachmentFile in js/report-render.js.
+function reportEmail(sub, link, askLink, hasAttachment) {
   var esc = escapeHtml;
   var title = sub.title_ar || sub.title_en || "";
   var name = (sub.writer || "").toString().trim();
@@ -146,10 +150,9 @@ function reportEmail(sub, link, askLink, attachmentName) {
                 '<a href="' + esc(askLink) + '" style="display:inline-block;padding:14px 32px;color:#15110f;text-decoration:none;font-size:14px;font-weight:600;border-radius:12px;">طلب توضيح/ استفسار حول التقرير</a>' +
               "</td></tr></table>" +
 
-            (attachmentName
+            (hasAttachment
               ? '<p dir="rtl" style="margin:18px auto 0;max-width:440px;padding:14px 16px;background:#f5f1e9;border-radius:12px;color:#4a453f;font-size:13.5px;line-height:1.8;">' +
-                  "أرفق لك قارئك ملفًا مع التقرير: <strong style=\"color:#15110f;\">" + esc(attachmentName) + "</strong>" +
-                  "<br>يمكنك تحميله من صفحة التقرير." +
+                  "أرفق لك قارئك ملفًا مع التقرير، ويمكنك تحميله من صفحة التقرير." +
                 "</p>"
               : "") +
 
@@ -277,8 +280,7 @@ module.exports = async (req, res) => {
   // them to the report page to open it — never a direct link, because the file
   // is private and its signed URL is minted per view by /api/report.
   const covData = covs[0].data || {};
-  const attachmentName = covData.attachment && covData.attachment.name
-    ? String(covData.attachment.name) : null;
+  const hasAttachment = !!(covData.attachment && covData.attachment.name);
 
   if (selfDeliver) {
     // Bouncing your own draft back to yourself is meaningless — the lead just
@@ -362,7 +364,7 @@ module.exports = async (req, res) => {
   const subject = "Scene One " + (filmLabel ? filmLabel + " " : "") + "Coverage Report";
   const link = SITE_URL + "/report?t=" + encodeURIComponent(sub.report_token);
   const askLink = SITE_URL + "/ask?t=" + encodeURIComponent(sub.report_token);
-  const html = reportEmail(sub, link, askLink, attachmentName);
+  const html = reportEmail(sub, link, askLink, hasAttachment);
 
   try {
     const r = await fetch("https://api.resend.com/emails", {
