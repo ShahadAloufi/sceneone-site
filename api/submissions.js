@@ -101,6 +101,45 @@ function fileExt(name) {
   return i >= 0 ? String(name).slice(i + 1).toLowerCase() : "";
 }
 
+// Is the claimed card actually in the bucket?
+//
+// The browser uploads the card straight to Storage and then POSTs the path, so
+// that path is a CLAIM like every other field in the body — and it is the only
+// thing standing between a request and a 15% cheaper invoice. Without this check
+// the discount rides on a string: a hand-made POST naming a path nobody ever
+// uploaded is invoiced at 85%, and staff opening «عرض البطاقة» get a dead link
+// with nothing to tell them why.
+//
+// This does not make the claim VERIFIED — nothing can, there is no roster. It
+// only makes it true that a card was uploaded, which is what the feature was
+// always meant to trust.
+//
+// Uses the list endpoint rather than downloading the object: we need existence
+// and a non-zero size, not the bytes.
+async function cardWasUploaded(supabaseUrl, serviceKey, path) {
+  const slash = path.lastIndexOf("/");
+  const prefix = slash > 0 ? path.slice(0, slash) : "";
+  const name = slash > 0 ? path.slice(slash + 1) : path;
+
+  const resp = await fetch(supabaseUrl + "/storage/v1/object/list/" + CARD_BUCKET, {
+    method: "POST",
+    headers: {
+      apikey: serviceKey,
+      Authorization: "Bearer " + serviceKey,
+      "Content-Type": "application/json",
+    },
+    // `search` is a prefix match within the folder, so the exact name is still
+    // compared below.
+    body: JSON.stringify({ prefix: prefix, search: name, limit: 100 }),
+  });
+  if (!resp.ok) throw new Error("card list failed: " + resp.status + " " + (await resp.text()));
+
+  const rows = await resp.json();
+  return Array.isArray(rows) && rows.some(
+    (r) => r && r.name === name && r.metadata && Number(r.metadata.size) > 0
+  );
+}
+
 // Returns an error string if the payload is invalid, or null if it's clean.
 function validate(row) {
   if (!row.title_ar || row.title_ar.length > MAX.title) return "بيانات غير صحيحة";
@@ -242,6 +281,32 @@ module.exports = async (req, res) => {
   // storage object-path format, and the file extension.
   const err = validate(row);
   if (err) return res.status(400).json({ message: err });
+
+  // ---- The card must really be there before it buys anything ----------------
+  // Runs before the page count, the invoice and the row, so a claim with no card
+  // behind it never becomes a discounted charge.
+  //
+  // A Storage failure here refuses the submission rather than guessing. Both
+  // guesses are wrong: charging full price silently bills a member who did
+  // upload their card, and skipping the check is the hole this closes. Same
+  // stance the page count already takes — an amount we cannot stand behind must
+  // not reach checkout.
+  if (row.member_card_path) {
+    let uploaded;
+    try {
+      uploaded = await cardWasUploaded(supabaseUrl, serviceKey, row.member_card_path);
+    } catch (e) {
+      console.error("submissions: card lookup failed:", e);
+      return res.status(502).json({
+        message: "تعذّر التحقق من رفع بطاقة العضوية. حاول مرة أخرى بعد قليل.",
+      });
+    }
+    if (!uploaded) {
+      return res.status(400).json({
+        message: "لم نستلم صورة بطاقة العضوية. أعد إرفاقها ثم أرسل النص.",
+      });
+    }
+  }
 
   // ---- Length, counted from the FILE (never from the request body) ----------
   // Anything whose price or discount depends on being short is re-counted here,
