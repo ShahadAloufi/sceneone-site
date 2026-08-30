@@ -32,6 +32,17 @@ const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 // branch below.
 const STREAM_MAX_BYTES = 4 * 1024 * 1024;
 
+// Is this a browser NAVIGATING here, rather than a script calling the API?
+// /download/<token> is a link in an email and in the report, so a failure on it
+// lands a person in a blank tab — and answering an API error there shows them a
+// raw {"message":…}. A navigation gets sent to their report page instead, which
+// has real error UI, with the reason in the query so the page can say what
+// happened. `fetch()` from js/report.js sends no text/html Accept, so the JSON
+// form is untouched.
+function isNavigation(req) {
+  return /text\/html/i.test((req.headers && req.headers.accept) || "");
+}
+
 function svc() {
   return { url: process.env.SUPABASE_URL, key: process.env.SUPABASE_SERVICE_ROLE_KEY };
 }
@@ -49,7 +60,22 @@ module.exports = async (req, res) => {
 
   const token = ((req.query && req.query.t) || "").toString().trim();
   const wantFile = ((req.query && req.query.file) || "").toString().trim();
-  if (!UUID_RE.test(token)) return res.status(404).json({ message: "Report not found" });
+  // Every failure below routes through this. It answers JSON as before unless a
+  // person is looking at it, in which case they go to the report page. `reason`
+  // is what js/report.js turns into a sentence. Declared before the first exit
+  // so even a malformed token gets a page rather than raw JSON — /report says
+  // "Report unavailable" for one, which is the truth and readable.
+  function downloadFailed(status, reason, message) {
+    if (wantFile === "attachment" && isNavigation(req)) {
+      res.setHeader("Cache-Control", "no-store");
+      res.setHeader("Location",
+        "/report?t=" + encodeURIComponent(token) + "&attachment=" + reason);
+      return res.status(302).end();
+    }
+    return res.status(status).json({ message: message });
+  }
+
+  if (!UUID_RE.test(token)) return downloadFailed(404, "missing", "Report not found");
 
   const headers = { apikey: key, Authorization: "Bearer " + key };
 
@@ -63,7 +89,7 @@ module.exports = async (req, res) => {
     { headers }
   );
   const subs = subResp.ok ? await subResp.json() : [];
-  if (!subs.length) return res.status(404).json({ message: "Report not found" });
+  if (!subs.length) return downloadFailed(404, "missing", "Report not found");
   const sub = subs[0];
 
   // Only expose an APPROVED coverage — the writer sees the report only after it
@@ -74,7 +100,7 @@ module.exports = async (req, res) => {
   );
   const covs = covResp.ok ? await covResp.json() : [];
   if (!covs.length || covs[0].status !== "approved") {
-    return res.status(404).json({ message: "Report not found" });
+    return downloadFailed(404, "missing", "Report not found");
   }
 
   const coverage = covs[0].data || {};
@@ -160,10 +186,10 @@ module.exports = async (req, res) => {
     // retrying. Reporting the second as the first tells a writer their reader
     // attached nothing, so they stop trying — when a minute later would have
     // worked.
-    if (!hasAttachment) return res.status(404).json({ message: "Attachment not found" });
+    if (!hasAttachment) return downloadFailed(404, "missing", "Attachment not found");
     if (!attachment) {
       // The sign call already logged why.
-      return res.status(502).json({ message: "Attachment unavailable" });
+      return downloadFailed(502, "unavailable", "Attachment unavailable");
     }
 
     let upstream;
@@ -177,11 +203,11 @@ module.exports = async (req, res) => {
       upstream = await fetch(attachment.url, { headers: { "accept-encoding": "identity" } });
     } catch (err) {
       console.error("report: attachment fetch error:", err);
-      return res.status(502).json({ message: "Attachment unavailable" });
+      return downloadFailed(502, "unavailable", "Attachment unavailable");
     }
     if (!upstream.ok || !upstream.body) {
       console.error("report: attachment fetch failed:", upstream.status);
-      return res.status(502).json({ message: "Attachment unavailable" });
+      return downloadFailed(502, "unavailable", "Attachment unavailable");
     }
 
     // Content-Length is only the truth when nothing re-encoded the body. If the

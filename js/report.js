@@ -9,8 +9,12 @@
 
   var LANG_KEY = "sceneone-report-lang";
   var UI = {
-    ar: { loading: "جارٍ تحميل التقرير…", errT: "التقرير غير متاح", errM: "قد يكون الرابط غير صحيح أو أن التقرير لم يُنشر بعد.", save: "حفظ PDF", preparing: "جارٍ التحضير…", pdfErr: "تعذّر إنشاء ملف PDF، حاول مرة أخرى.", fileBase: "تقرير Scene One", docTitle: "Scene One | تقرير التغطية" },
-    en: { loading: "Loading the report…", errT: "Report unavailable", errM: "This link may be invalid, or the report hasn't been published yet.", save: "Save as PDF", preparing: "Preparing…", pdfErr: "Couldn't generate the PDF, please try again.", fileBase: "Scene One Coverage Report", docTitle: "Scene One | Coverage report" }
+    ar: { loading: "جارٍ تحميل التقرير…", errT: "التقرير غير متاح", errM: "قد يكون الرابط غير صحيح أو أن التقرير لم يُنشر بعد.", save: "حفظ PDF", preparing: "جارٍ التحضير…", pdfErr: "تعذّر إنشاء ملف PDF، حاول مرة أخرى.", fileBase: "تقرير Scene One", docTitle: "Scene One | تقرير التغطية",
+      attachUnavailable: "تعذّر تحميل المرفق الآن. حاول مرة أخرى بعد قليل.",
+      attachMissing: "لا يوجد مرفق مع هذا التقرير." },
+    en: { loading: "Loading the report…", errT: "Report unavailable", errM: "This link may be invalid, or the report hasn't been published yet.", save: "Save as PDF", preparing: "Preparing…", pdfErr: "Couldn't generate the PDF, please try again.", fileBase: "Scene One Coverage Report", docTitle: "Scene One | Coverage report",
+      attachUnavailable: "The attachment couldn't be downloaded just now. Please try again shortly.",
+      attachMissing: "There's no attachment with this report." }
   };
 
   function $(id) { return document.getElementById(id); }
@@ -84,6 +88,25 @@
   var token = new URLSearchParams(location.search).get("t") || "";
   if (!token) { showError(); return; }
 
+  // A failed download sends the writer here rather than dropping them on raw
+  // JSON in a blank tab (see downloadFailed in api/report.js). Say what happened
+  // once the report is on screen, then strip the flag so a refresh does not
+  // repeat it — and so the URL they might bookmark is just their report.
+  var attachFlag = new URLSearchParams(location.search).get("attachment") || "";
+  function reportAttachmentFailure() {
+    if (!attachFlag) return;
+    var u = UI[lang()];
+    var msg = attachFlag === "unavailable" ? u.attachUnavailable
+            : attachFlag === "missing" ? u.attachMissing : "";
+    attachFlag = "";
+    try {
+      var url = new URL(location.href);
+      url.searchParams.delete("attachment");
+      history.replaceState(null, "", url.pathname + url.search);
+    } catch (e) {}
+    if (msg) setTimeout(function () { alert(msg); }, 0);
+  }
+
   fetch("/api/report?t=" + encodeURIComponent(token))
     .then(function (r) { if (!r.ok) throw new Error("unavailable"); return r.json(); })
     .then(function (d) {
@@ -108,6 +131,13 @@
       }
       ready();
       applyLang(lang());
+      reportAttachmentFailure();
     })
-    .catch(showError);
+    .catch(function () {
+      showError();
+      // The report itself failed to load, so the download's own reason is no
+      // longer the story — but the URL still carries it. Clear it so a reload
+      // is a clean attempt.
+      attachFlag = "";
+    });
 })();
