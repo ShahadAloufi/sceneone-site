@@ -56,8 +56,8 @@
       step4T: "04 — إعداد التقرير", step4B: "يتم إعداد تقرير مفصل يتضمن نقاط القوة وفرص التطوير والملاحظات العملية.",
       step5T: "05 — استلام النتائج", step5B: "يتلقى الكاتب تقريره ويبدأ رحلة تطوير النص بناءً على الملاحظات والتوصيات المقدمة.",
 
-      partnershipEyebrow: "Strategic Partnership",
-      partnershipTitle: "شراكة استراتيجية",
+      partnershipEyebrow: "Exclusive Benefits",
+      partnershipTitle: "مزايا حصرية",
       partnershipBody: "نؤمن بدعم مجتمع صناعة السينما السعودية، لذلك نقدّم لأعضاء الجمعية مزايا حصرية على جميع خدمات تغطية النصوص",
       partnershipOffer: "خصم 15% لأعضاء ومنسوبي الجمعية",
       partnershipNote: "يُشترط إبراز بطاقة العضوية السارية عند الطلب",
@@ -322,8 +322,8 @@
       step4T: "04 — Report Preparation", step4B: "A detailed report is created, highlighting strengths, areas for improvement, and development opportunities.",
       step5T: "05 — Delivery", step5B: "The writer receives the report and begins the next stage of development with clear, actionable insights.",
 
-      partnershipEyebrow: "Strategic Partnership",
-      partnershipTitle: "Strategic Partnership",
+      partnershipEyebrow: "Exclusive Benefits",
+      partnershipTitle: "Exclusive Benefits",
       partnershipBody: "We believe in supporting Saudi Arabia's cinema industry, which is why we offer Cinema Association members exclusive benefits on all script coverage services.",
       partnershipOffer: "15% off for Association members and staff",
       partnershipNote: "A valid membership card must be presented when requesting coverage",
