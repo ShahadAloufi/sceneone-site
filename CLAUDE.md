@@ -29,25 +29,26 @@ writers. **The payment gate is live and has taken real money** (see below).
 Actively iterating on UX polish and workflow features.
 
 **Recently shipped (2026-08-30):**
-- **The pre-launch "سجل اهتمامك" interest form is GONE, end to end.** The red
-  banner on the landing page, the register modal, its validation and submit in
-  `js/main.js`, the `?register` deep link, the toast helper that only it used,
-  all its `js/i18n.js` keys in both dictionaries, and its CSS (`.banner*`,
-  `.modal*`, `.field*`) — plus **`/api/registrations`, deleted**, which is why
-  the function count is now 11 rather than 12.
+- **The pre-launch "سجل اهتمامك" interest form no longer accepts anything.** The
+  CTA button, the register modal, its validation and submit in `js/main.js`, the
+  `?register` deep link, the toast helper that only it used, its `regTitle`/`f*`
+  keys in both dictionaries, and its CSS (`.modal*`, `.field*`) — plus
+  **`/api/registrations`, deleted**, which is why the function count is now 11
+  rather than 12.
+  - **The RED BANNER STAYS.** It was removed in the same pass and restored on
+    request: the section, its design, the clapperboard and both strings
+    (`bannerHtml`, `bannerP`) are intact. Only `bannerBtn` and the button went.
+    Don't take the banner out again on the reasoning that its CTA is gone.
+  - Its paragraph still reads «سجّل اهتمامك اليوم… عند إطلاقها», which now
+    invites an action the page cannot perform, on a platform that has launched.
+    Flagged to the user 2026-08-30, left as-is pending new copy.
   - **Nothing was lost.** That endpoint never wrote to the database — no table,
     no rows. It only emailed `sceneone.info@gmail.com`, and from
     `onboarding@resend.dev`, a leftover test sender that was never the verified
     domain.
-  - **The whole banner went, not just the button.** Every line of it was
-    pre-launch copy («سجّل اهتمامك اليوم لتكون من أوائل المهتمين… عند إطلاقها»),
-    which has been false since the platform started taking real money. The
-    headline «كل قصة تبدأ بمشهد أول…» is in the git history if it is ever wanted
-    elsewhere.
   - **`.toast` CSS stays** — `submit.html` and `treatment-submit.html` have their
     own `toast-wrap` and their own `toast()` in `js/submit.js`. Only the landing
     page's copy of the helper and its container were removed.
-  - `assets/clapperboard.png` is now referenced by nothing. Left in place.
 
 **Recently shipped (2026-08-29):**
 - **Cinema Association partner discount — 15% off, applied automatically on
