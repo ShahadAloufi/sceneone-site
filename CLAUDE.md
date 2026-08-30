@@ -29,6 +29,36 @@ writers. **The payment gate is live and has taken real money** (see below).
 Actively iterating on UX polish and workflow features.
 
 **Recently shipped (2026-08-30):**
+- **QA REVIEW NOTES: one per section, and that is the intended shape.** A reader
+  whose coverage comes back must see each note under the section it is about, in
+  its own read-only box, with a SHORT summary in the banner. Confirmed as the
+  standard 2026-08-30 against «العهد القديم». Four separate things make that
+  work, and removing any one of them regresses it:
+  - **Notes autosave as they are typed** (`set_comments` in
+    `api/review-coverage.js`, debounced 500ms in `js/coverage.js`). Before this
+    they lived only in the reviewer's browser until Request Revision, so a
+    reviewer who then approved — or closed the tab — lost the lot. It goes
+    through the API on the service role because RLS forbids anyone but the
+    assignee from writing the coverage row; a note ABOUT the work is not the
+    work. The PATCH is filtered `status=eq.submitted`.
+  - **EVERY authored section has a box**, not just the 8 evaluation points: the
+    6 market subsections, the synopsis, strengths, to-develop and the verdict
+    summary — 18 in total. They were evaluation-only, which is exactly why
+    reviewers wrote everything into the single note instead: a third of their
+    feedback had nowhere to go.
+  - **Keys are namespaced** — `market:budgetCeiling`, `section:synopsis` — in one
+    flat map. Two sections genuinely share the label «الخلاصة» (market's `net`
+    and the verdict summary), so the key can never be the label.
+  - **The reader sees notes only at `revision_requested`.** They can open their
+    own coverage while it is `submitted`, and notes now exist from the first
+    keystroke — without the status test they would watch a half-written verdict
+    appear.
+  - `.cov-banner` carries `white-space:pre-wrap` (a note is someone's typing;
+    without it a bulleted note collapses into one wall of text) and
+    `max-height:40vh` with a scroll (`review_note` is uncapped server-side).
+  - **«العهد القديم» was migrated by hand** (SQL, 2026-08-30): its 14-bullet note
+    was split into `review_comments` and the banner reduced to one line. Any
+    other coverage written before this still has its notes in the banner.
 - **The pre-launch "سجل اهتمامك" interest form no longer accepts anything.** The
   CTA button, the register modal, its validation and submit in `js/main.js`, the
   `?register` deep link, the toast helper that only it used, its `regTitle`/`f*`
