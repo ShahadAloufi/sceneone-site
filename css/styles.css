@@ -614,7 +614,9 @@ a, button {
 /* RED BANNER */
 .banner { position: relative; width: 100%; background: var(--red); overflow: hidden; padding: 80px 0; }
 .banner__inner { margin: 0 auto; padding: 0 24px; direction: ltr; }
-.banner__text { text-align: right; direction: rtl; }
+/* Centred in both languages — the block is a statement now, not a CTA with a
+   left/right reading edge, so only `direction` still has to flip. */
+.banner__text { text-align: center; direction: rtl; }
 /* Last element in the block since the CTA and its paragraph were removed, so
    no trailing margin. */
 .banner__h { font-family: var(--font-head); font-size: 36px; font-weight: 700; color: #fff; line-height: 1.625; }
@@ -1993,7 +1995,7 @@ html[dir="ltr"] .tl-step { text-align: left; direction: ltr; }
    flip, independent of which half it lands in. */
 html[dir="ltr"] .tl-block { text-align: left; direction: ltr; }
 
-html[dir="ltr"] .banner__text { text-align: left; direction: ltr; }
+html[dir="ltr"] .banner__text { direction: ltr; }
 
 html[dir="ltr"] .faq { direction: ltr; }
 html[dir="ltr"] .faq-item__btn { text-align: left; }
