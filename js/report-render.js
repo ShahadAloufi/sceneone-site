@@ -227,8 +227,12 @@
     if (!att || !att.name) return "";
     // `att.name` still gates the block — it is how we know an attachment exists —
     // but it is no longer what the writer reads. See attachmentFile above.
+    // No target="_blank": the writer's link is a download served from our own
+    // origin, so a new tab would open only to be discarded by the browser. The
+    // workspace preview intercepts the click anyway (wireReportAttachment in
+    // js/coverage.js), so the target would mean nothing there either.
     var label = att.url
-      ? '<a href="' + esc(att.url) + '" target="_blank" rel="noopener">' + esc(t.attachmentFile) + "</a>"
+      ? '<a href="' + esc(att.url) + '" rel="noopener">' + esc(t.attachmentFile) + "</a>"
       : esc(t.attachmentFile);
     return '<div class="rep-item"><div class="ih"><span class="t">' + t.attachment + "</span></div>" +
            '<p class="rep-attach">' + label + "</p></div>";

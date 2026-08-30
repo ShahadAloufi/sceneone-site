@@ -9,8 +9,8 @@
 
   var LANG_KEY = "sceneone-report-lang";
   var UI = {
-    ar: { loading: "جارٍ تحميل التقرير…", errT: "التقرير غير متاح", errM: "قد يكون الرابط غير صحيح أو أن التقرير لم يُنشر بعد.", save: "حفظ PDF", preparing: "جارٍ التحضير…", pdfErr: "تعذّر إنشاء ملف PDF، حاول مرة أخرى.", fileBase: "تقرير Scene One", docTitle: "Scene One | تقرير التغطية", attachErr: "تعذّر فتح المرفق، حاول مرة أخرى." },
-    en: { loading: "Loading the report…", errT: "Report unavailable", errM: "This link may be invalid, or the report hasn't been published yet.", save: "Save as PDF", preparing: "Preparing…", pdfErr: "Couldn't generate the PDF, please try again.", fileBase: "Scene One Coverage Report", docTitle: "Scene One | Coverage report", attachErr: "Couldn't open the attachment, please try again." }
+    ar: { loading: "جارٍ تحميل التقرير…", errT: "التقرير غير متاح", errM: "قد يكون الرابط غير صحيح أو أن التقرير لم يُنشر بعد.", save: "حفظ PDF", preparing: "جارٍ التحضير…", pdfErr: "تعذّر إنشاء ملف PDF، حاول مرة أخرى.", fileBase: "تقرير Scene One", docTitle: "Scene One | تقرير التغطية" },
+    en: { loading: "Loading the report…", errT: "Report unavailable", errM: "This link may be invalid, or the report hasn't been published yet.", save: "Save as PDF", preparing: "Preparing…", pdfErr: "Couldn't generate the PDF, please try again.", fileBase: "Scene One Coverage Report", docTitle: "Scene One | Coverage report" }
   };
 
   function $(id) { return document.getElementById(id); }
@@ -35,42 +35,7 @@
       rb.innerHTML = window.SOReport.render(data.submission, data.coverage, l);
       rb.setAttribute("dir", l === "ar" ? "rtl" : "ltr");
       rb.classList.toggle("ar", l === "ar");
-      wireAttachment(rb);
     }
-  }
-
-  // The attachment's signed URL lives ten minutes, and it is minted when the
-  // report LOADS — but the attachment sits at the very end of section 04, and a
-  // writer reading a full coverage is often on the page far longer than that
-  // before they reach it. Clicking a load-time link would then open a Supabase
-  // error, with a page reload as the only cure.
-  //
-  // So the click mints its own: the same /api/report call, whose response always
-  // carries a fresh URL, made at the moment the writer acts. The href rendered
-  // into the markup stays as a fallback for anything that bypasses this handler.
-  //
-  // Navigating rather than opening a tab is deliberate. The signed URL carries
-  // Content-Disposition: attachment, so the browser downloads and leaves the
-  // report on screen — and there is no popup blocker to fight, which an
-  // asynchronous window.open() would lose to.
-  function wireAttachment(rb) {
-    var a = rb.querySelector(".rep-attach a");
-    if (!a) return;
-    a.addEventListener("click", function (e) {
-      e.preventDefault();
-      if (a.dataset.busy) return;
-      a.dataset.busy = "1";
-      var old = a.textContent;
-      a.textContent = "…";
-      fetch("/api/report?t=" + encodeURIComponent(token))
-        .then(function (r) { if (!r.ok) throw new Error("unavailable"); return r.json(); })
-        .then(function (d) {
-          if (!d.attachment || !d.attachment.url) throw new Error("gone");
-          window.location.href = d.attachment.url;
-        })
-        .catch(function () { alert(UI[lang()].attachErr); })
-        .then(function () { a.textContent = old; delete a.dataset.busy; });
-    });
   }
 
   function showError() { $("loading").hidden = true; $("reportWrap").hidden = true; $("errorBox").hidden = false; }
@@ -129,10 +94,18 @@
         submission: window.SOReport.mapSubmission(d.submission || {}),
         coverage: window.SOReport.mergeCoverage(d.coverage || {}, schema)
       };
-      // Resource the reader attached for this writer. This URL is only what makes
-      // the renderer emit a link at all (and a fallback href); the one actually
-      // followed is minted on click — see wireAttachment.
-      if (d.attachment && d.attachment.url) data.coverage.attachmentLink = d.attachment;
+      // Resource the reader attached for this writer.
+      //
+      // The link is OUR route, not the signed URL the response also carries:
+      // /download streams the file from sceneone.info, minting its own signed URL
+      // server-side per request. So the href never goes stale however long the
+      // writer has the report open, and no supabase.co URL reaches the browser.
+      if (d.attachment && d.attachment.name) {
+        data.coverage.attachmentLink = {
+          name: d.attachment.name,
+          url: "/download/" + encodeURIComponent(token)
+        };
+      }
       ready();
       applyLang(lang());
     })
