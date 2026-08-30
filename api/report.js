@@ -155,7 +155,16 @@ module.exports = async (req, res) => {
   // supabase.co URL. The signed URL is minted and consumed server-side; it never
   // reaches the browser at all.
   if (wantFile === "attachment") {
-    if (!attachment) return res.status(404).json({ message: "Attachment not found" });
+    // Two different nulls, and the writer deserves to be told which. Nothing was
+    // ever attached is a 404 and final; signing failed is a 502 and worth
+    // retrying. Reporting the second as the first tells a writer their reader
+    // attached nothing, so they stop trying — when a minute later would have
+    // worked.
+    if (!hasAttachment) return res.status(404).json({ message: "Attachment not found" });
+    if (!attachment) {
+      // The sign call already logged why.
+      return res.status(502).json({ message: "Attachment unavailable" });
+    }
 
     let upstream;
     try {
