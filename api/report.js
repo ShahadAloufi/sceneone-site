@@ -159,7 +159,13 @@ module.exports = async (req, res) => {
 
     let upstream;
     try {
-      upstream = await fetch(attachment.url);
+      // `identity` because a COMPRESSED response is unusable to us: fetch
+      // silently decompresses the body while leaving the compressed size in
+      // Content-Length, so the header stops describing the bytes we hold.
+      // Measured: a 46 KB text attachment arrives as a 46000-byte body behind a
+      // Content-Length of 173. Everything below depends on that number being
+      // true — see the two guards.
+      upstream = await fetch(attachment.url, { headers: { "accept-encoding": "identity" } });
     } catch (err) {
       console.error("report: attachment fetch error:", err);
       return res.status(502).json({ message: "Attachment unavailable" });
@@ -169,13 +175,27 @@ module.exports = async (req, res) => {
       return res.status(502).json({ message: "Attachment unavailable" });
     }
 
+    // Content-Length is only the truth when nothing re-encoded the body. If the
+    // hint above was ignored and something came back compressed, the header
+    // describes the wire and not the bytes we hold, so it is discarded rather
+    // than believed.
+    const encoded = !!upstream.headers.get("content-encoding");
+    const rawLength = Number(upstream.headers.get("content-length"));
+    const declared = !encoded && Number.isFinite(rawLength) && rawLength > 0 ? rawLength : null;
+
     // Vercel caps a function's response payload at ~4.5 MB, while an attachment
     // may be up to 10 MiB (ATTACH_MAX_BYTES in js/coverage.js). Rather than fail
     // on the large ones, hand those back to the redirect: the writer briefly
-    // sees a supabase.co URL, which is the lesser problem by far. Only files
-    // whose size we cannot read fall through to streaming blind.
-    const declared = Number(upstream.headers.get("content-length"));
-    if (Number.isFinite(declared) && declared > STREAM_MAX_BYTES) {
+    // sees a supabase.co URL, which is the lesser problem by far.
+    //
+    // An UNKNOWN size redirects too. Streaming blind would mean betting that the
+    // file is small, and losing that bet is a failed download — while the
+    // redirect always works and costs only the URL showing. In practice this
+    // branch should never fire: it needs Storage to ignore the identity hint.
+    if (declared === null || declared > STREAM_MAX_BYTES) {
+      // The body is open but will not be read; drop it rather than leave the
+      // socket held while the browser fetches the same file again from Storage.
+      try { await upstream.body.cancel(); } catch (e) {}
       res.setHeader("Cache-Control", "no-store");
       res.setHeader("Location", attachment.url);
       return res.status(302).end();
@@ -186,7 +206,10 @@ module.exports = async (req, res) => {
     res.setHeader("Content-Type", upstream.headers.get("content-type") || "application/octet-stream");
     res.setHeader("Content-Disposition",
       'attachment; filename="' + attachment.name.replace(/"/g, "") + '"');
-    if (Number.isFinite(declared) && declared > 0) res.setHeader("Content-Length", String(declared));
+    // Forwarded ONLY when it is known to match the body. Omitting it costs
+    // nothing — the response is then chunked — while a wrong one makes Node cut
+    // the download off mid-file and hand the writer a corrupt attachment.
+    if (declared !== null) res.setHeader("Content-Length", String(declared));
     res.setHeader("Cache-Control", "no-store");
     res.status(200);
 
