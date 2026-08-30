@@ -128,7 +128,13 @@
 
   .state{max-width:520px;margin:80px auto;text-align:center;padding:0 20px;color:var(--label)}
   .state h2{color:var(--ink);font-size:20px;margin:0 0 8px}
-  .state[hidden]{display:none}
+  /* The `hidden` attribute must always win. A class rule like `.rep-notice
+     { display:flex }` has EQUAL specificity to the UA's `[hidden]{display:none}`
+     and, being an author rule, beats it — so a hidden element renders anyway.
+     This page is self-contained and does not link css/styles.css, which carries
+     the same guard for every page that does. Replaces a narrower
+     `.state[hidden]` that only covered the loading and error views. */
+  [hidden] { display: none !important; }
 
   @media print{
     .bar{display:none!important}
