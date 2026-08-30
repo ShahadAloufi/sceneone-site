@@ -49,7 +49,10 @@ function escapeHtml(v) {
 // values are capped, blanks are dropped, and anything that isn't a plain string
 // is ignored. Escaping is still the renderer's job — this only limits the size
 // and shape of what can be stored.
-const MAX_COMMENTS = 20;
+// 8 evaluation points + 6 market subsections + synopsis + strengths + to-develop
+// + verdict = 18 today, so this leaves room for a schema to grow rather than
+// silently dropping the notes past the limit.
+const MAX_COMMENTS = 40;
 const MAX_COMMENT_KEY = 80;
 const MAX_COMMENT_LEN = 2000;
 

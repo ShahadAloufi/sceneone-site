@@ -647,13 +647,44 @@
       var ta = f.querySelector("textarea"); ta.value = state.coverage.market[m.k];
       ta.addEventListener("input", function () { state.coverage.market[m.k] = ta.value; scheduleSave(); });
       autoGrow(ta);
+      buildEvalNote(f, "market:" + m.k);
+    });
+
+    // The sections that are NOT rebuilt per language — synopsis, the two overall
+    // fields, the verdict summary. Their note boxes are still built HERE, in the
+    // same pass, so evalNoteEls is rebuilt whole and a language switch cannot
+    // leave a second copy behind.
+    STATIC_NOTE_HOSTS.forEach(function (h) {
+      var el = $(h.id);
+      if (!el) return;
+      var host = el.closest(".field") || el.parentNode;
+      var old = host.querySelector(":scope > .eval-note");
+      if (old) old.remove();
+      buildEvalNote(host, h.key);
     });
   }
 
+  // Every authored section a reviewer might have something specific to say
+  // about. The evaluation points and the market subsections are generated, so
+  // they attach in their own loops; these four are fixed markup.
+  //
+  // Keys are namespaced by area so they can never collide with an evaluation
+  // point's name — `reviewComments` is one flat map.
+  var STATIC_NOTE_HOSTS = [
+    { id: "c-synopsis", key: "section:synopsis" },
+    { id: "c-strengths", key: "section:strengths" },
+    { id: "c-develop", key: "section:toDevelop" },
+    { id: "c-vtext", key: "section:verdict" }
+  ];
+
   /* ---------- per-point review notes ----------
-     Attached to each EVALUATION point only. The synopsis and the verdict are
-     built elsewhere (covMap below) and deliberately get no note box: a revision
-     note there would have nothing specific to attach to.
+     Attached to EVERY authored section: each evaluation point, each market
+     subsection, the synopsis, the two overall fields and the verdict summary.
+     They used to be on the evaluation points alone, on the reasoning that a note
+     elsewhere had nothing specific to attach to — which real use disproved. A
+     reviewer with notes on the synopsis and three market subsections had nowhere
+     to put them, so they wrote the lot into the single revision note and the
+     reader got a wall of text instead of feedback beside the thing it was about.
 
      Collapsed by default — the reviewer sees only an "Add comment" link until
      they decide a point needs one. A note that already exists always shows,
