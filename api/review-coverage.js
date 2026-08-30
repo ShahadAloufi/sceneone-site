@@ -207,11 +207,43 @@ module.exports = async (req, res) => {
   const subId = (b.submission_id || "").toString().trim();
   const action = (b.action || "").toString().trim();
   if (!subId) return res.status(400).json({ message: "معرّف النص مطلوب" });
-  if (action !== "approve" && action !== "request_revision" && action !== "set_attachment") {
+  if (action !== "approve" && action !== "request_revision" &&
+      action !== "set_attachment" && action !== "set_comments") {
     return res.status(400).json({ message: "إجراء غير معروف" });
   }
 
   const headers = { apikey: key, Authorization: "Bearer " + key };
+
+  // ---- SAVE THE PER-POINT REVIEW COMMENTS -----------------------------------
+  // Autosave for the notes a reviewer writes against each evaluation point.
+  // Until now they existed only in the reviewer's browser until they clicked
+  // Request Revision — so a reviewer who wrote six careful notes and then
+  // approved, or simply closed the tab, lost all of them.
+  //
+  // Same reason this cannot be a direct PATCH as the attachment above: RLS
+  // forbids anyone but the assignee from writing the coverage row, which is what
+  // stops a reviewer editing the work they are judging. A note ABOUT the work is
+  // not the work, so it runs here on the service role.
+  //
+  // Scoped to a coverage that is actually awaiting review: the status filter is
+  // part of the PATCH, so a note can never land on an in-progress coverage the
+  // reader is still writing, nor on one already approved and delivered.
+  if (action === "set_comments") {
+    const patch = await fetch(
+      url + "/rest/v1/coverages?submission_id=eq." + encodeURIComponent(subId) +
+      "&status=eq.submitted",
+      {
+        method: "PATCH",
+        headers: Object.assign({}, headers, { "Content-Type": "application/json", Prefer: "return=minimal" }),
+        body: JSON.stringify({ review_comments: sanitizeComments(b.comments) }),
+      }
+    );
+    if (!patch.ok) {
+      console.error("review-coverage set_comments failed:", patch.status, await patch.text());
+      return res.status(502).json({ message: "تعذّر حفظ الملاحظات" });
+    }
+    return res.status(200).json({ ok: true });
+  }
 
   // ---- SET/CLEAR THE READER ATTACHMENT --------------------------------------
   // The assigned reader manages their own attachment through the normal save

@@ -69,6 +69,7 @@
       addComment: "Add comment", removeComment: "Remove",
       commentPh: "What needs work in this point?",
       commentLblWrite: "Your note on this point", commentLblRead: "Review note",
+      noteSaveFailed: "Couldn't save that note. Check your connection and try again.",
       // Lead readers deliver their own coverage themselves — it skips quality review.
       leadDeliver: "Send Coverage to Writer",
       leadDeliverConfirm: "Send this coverage to the writer now? As a lead reader your coverage isn't reviewed by anyone else, and this can't be undone.",
@@ -139,6 +140,7 @@
       addComment: "إضافة ملاحظة", removeComment: "حذف",
       commentPh: "ما الذي يحتاج إلى تعديل في هذه النقطة؟",
       commentLblWrite: "ملاحظتك على هذه النقطة", commentLblRead: "ملاحظة المراجعة",
+      noteSaveFailed: "تعذّر حفظ الملاحظة. تحقق من الاتصال وحاول مرة أخرى.",
       // Lead readers deliver their own coverage themselves — it skips quality review.
       leadDeliver: "إرسال التغطية إلى الكاتب",
       leadDeliverConfirm: "إرسال هذه التغطية إلى الكاتب الآن؟ بصفتك قارئًا رئيسيًا لا تخضع تغطيتك لمراجعة أحد، ولا يمكن التراجع عن هذا الإجراء.",
@@ -498,6 +500,40 @@
     });
   }
 
+  /* ---------- per-point notes: autosave ----------
+     The notes used to live only in this tab until Request Revision carried them
+     across, so a reviewer who wrote several and then approved — or just closed
+     the tab — lost them. They now persist as they are typed, debounced the same
+     500ms as the reader's own coverage save.
+
+     Goes through /api/review-coverage for the same reason the attachment does:
+     RLS forbids anyone but the assignee from writing the coverage row. */
+  var noteSaveT = null;
+  function scheduleNoteSave() {
+    if (!canReview) return;
+    clearTimeout(noteSaveT);
+    noteSaveT = setTimeout(saveNotes, 500);
+  }
+
+  async function saveNotes() {
+    if (!canReview || !sb || !submissionId) return;
+    try {
+      var sess = await sb.auth.getSession();
+      var token = sess.data.session && sess.data.session.access_token;
+      var resp = await fetch("/api/review-coverage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+        body: JSON.stringify({ submission_id: submissionId, action: "set_comments", comments: reviewComments })
+      });
+      if (!resp.ok) {
+        var out = await resp.json().catch(function () { return {}; });
+        toast(out.message || UI[UILANG].noteSaveFailed);
+      }
+    } catch (e) {
+      toast(UI[UILANG].noteSaveFailed);
+    }
+  }
+
   async function downloadFile(path, el, bucket) {
     var old = el.textContent; el.textContent = "…";
     var res = await sb.storage.from(bucket || CFG.bucket).createSignedUrl(path, 120);
@@ -654,12 +690,13 @@
       els.open = true; refreshEvalNotes(); els.ta.focus();
     });
     els.del.addEventListener("click", function () {
-      delete reviewComments[name]; els.open = false; els.ta.value = ""; refreshEvalNotes();
+      delete reviewComments[name]; els.open = false; els.ta.value = ""; refreshEvalNotes(); scheduleNoteSave();
     });
     els.ta.addEventListener("input", function () {
       var v = els.ta.value;
       if (v.trim()) reviewComments[name] = v; else delete reviewComments[name];
       autoGrow(els.ta);
+      scheduleNoteSave();
     });
     els.ta.value = reviewComments[name] || "";
   }
@@ -677,7 +714,14 @@
 
       // Nothing to write and nothing written → the whole affordance disappears,
       // which is what a reader sees on a coverage that came back clean.
-      els.wrap.hidden = !writable && !text;
+      //
+      // The status test is what autosave made necessary. Notes now exist from the
+      // moment they are typed, while the coverage is still `submitted` — and the
+      // reader can open their own coverage in that state. Without this they would
+      // watch a reviewer's half-written verdict appear. They see the notes when
+      // the coverage actually comes back to them, which is what they are for.
+      var readerMaySee = covStatus === "revision_requested";
+      els.wrap.hidden = writable ? false : (!text || !readerMaySee);
       els.add.hidden = !writable || open;
       els.add.textContent = u.addComment;
       els.box.hidden = !open;
