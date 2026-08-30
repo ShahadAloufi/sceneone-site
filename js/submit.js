@@ -476,8 +476,12 @@
     }
     // Everything else is required iff the markup says so (a .req star).
     requiredFields().forEach(function (name) {
-      // The two titles are handled above, the file below.
-      if (name === "titleAr" || name === "titleEn" || name === "file") return;
+      // The two titles are handled above, the file below, and the two membership
+      // fields further down: they carry a .req star so a member can see they are
+      // required, but they are required only when the box is ticked, which this
+      // generic loop has no way to know.
+      if (name === "titleAr" || name === "titleEn" || name === "file" ||
+          name === "memberNumber" || name === "memberCard") return;
       if (name === "email") { req("email", EMAIL_RE.test(v.email)); return; }
       req(name, String(v[name] == null ? "" : v[name]).length > 0);
     });
@@ -492,7 +496,9 @@
     }
     // Membership: both fields are required only when the writer claims it, so
     // they are checked here rather than through the .req-star machinery, which
-    // would make them required for everyone.
+    // would make them required for everyone. Their stars are still in the markup
+    // — they are honest about what a member must fill in — which is exactly why
+    // requiredFields() has to skip them above.
     if (v.isMember) {
       req("memberNumber", MEMBER_RE.test(v.memberNumber));
       var card = cardFile();

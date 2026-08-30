@@ -251,10 +251,11 @@
              picker shows the discounted figure, so the number here and the
              number at the gateway agree.
 
-             No `.req` stars in here on purpose: requiredFields() in
-             js/submit.js reads them off the markup, and a star would make these
-             required for every writer. They are required only when the box is
-             ticked, which js/submit.js checks explicitly. -->
+             Both fields carry a `.req` star, but they are required only when the
+             box is ticked. requiredFields() in js/submit.js reads those stars
+             off the markup to build its generic list, so these two are named in
+             its skip list and validated explicitly instead — otherwise every
+             writer would be blocked by a section most of them never open. -->
         <div class="sub-member">
           <label class="sub-member__toggle">
             <input type="checkbox" id="memberToggle" name="isMember" value="yes">
@@ -268,14 +269,14 @@
 
           <div class="sub-member__fields" id="memberFields" hidden>
             <div class="sub-field" data-field="memberNumber">
-              <label>رقم العضوية</label>
+              <label>رقم العضوية <span class="req">*</span></label>
               <input type="text" name="memberNumber" dir="ltr" style="text-align:right" placeholder="CA-50">
               <p class="sub-hint">كما هو مكتوب على بطاقتك، مثال: CA-50.</p>
               <p class="sub-err">أدخل رقم العضوية كما هو على البطاقة، مثل CA-50.</p>
             </div>
 
             <div class="sub-field" data-field="memberCard">
-              <label>صورة بطاقة العضوية</label>
+              <label>صورة بطاقة العضوية <span class="req">*</span></label>
               <div class="sub-drop sub-drop--sm" id="cardDrop" tabindex="0" role="button" aria-label="أرفق بطاقة العضوية">
                 <input type="file" id="cardInput" name="memberCard" accept=".png,.jpg,.jpeg,.webp,.pdf" hidden>
                 <svg class="sub-drop__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="11" r="2"/><path d="M13 10h5M13 14h5M5 17c.9-1.6 2.1-2.4 3.5-2.4S11.1 15.4 12 17"/></svg>
