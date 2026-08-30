@@ -614,9 +614,10 @@ a, button {
 /* RED BANNER */
 .banner { position: relative; width: 100%; background: var(--red); overflow: hidden; padding: 80px 0; }
 .banner__inner { margin: 0 auto; padding: 0 24px; direction: ltr; }
-/* Centred in both languages — the block is a statement now, not a CTA with a
-   left/right reading edge, so only `direction` still has to flip. */
-.banner__text { text-align: center; direction: rtl; }
+/* Right-aligned in BOTH languages, not to the reading edge: on desktop the
+   clapperboard is anchored to the right of the band, so the text hugs the image
+   rather than drifting away from it. Only `direction` still flips. */
+.banner__text { text-align: right; direction: rtl; }
 /* Last element in the block since the CTA and its paragraph were removed, so
    no trailing margin. */
 .banner__h { font-family: var(--font-head); font-size: 36px; font-weight: 700; color: #fff; line-height: 1.625; }
