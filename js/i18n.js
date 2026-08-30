@@ -97,9 +97,6 @@
       li4: "منح النصوص السينمائية ذات التقييمات العالية فرصة إضافية للظهور والوصول إلى جهات في الصناعة",
       btnRequest: "اطلب التغطية", btnSample: "إطلع على نموذج التقرير",
 
-      bannerHtml: "كل قصة تبدأ بمشهد أول<br>ونحن نبحث عن الكتّاب والقرّاء النقاد الذين يؤمنون بأن النصوص القوية هي أساس السينما.",
-      bannerP: "سجّل اهتمامك اليوم لتكون من أوائل المهتمين بمنصة Scene One عند إطلاقها.",
-      bannerBtn: "سجل اهتمامك",
 
       faqTitle: "الأسئلة الشائعة",
       faqQ1: "ما هي تغطية النصوص السينمائية؟",
@@ -116,14 +113,6 @@
       footerCopyHtml: "© 2026 جميع الحقوق محفوظة لـSCENE ONE.<br><span class=\"footer__cr\">الرقم الموحد: 7054791293</span>",
       footerPrivacy: "سياسة الخصوصية", footerTerms: "الشروط والأحكام",
 
-      regTitle: "سجّل اهتمامك", regDesc: "كن من أوائل المهتمين بمنصة Scene One عند إطلاقها.",
-      fName: "الاسم الكامل", fNamePh: "اكتب اسمك", errName: "الاسم مطلوب",
-      fEmail: "البريد الإلكتروني", errEmail: "البريد الإلكتروني غير صحيح",
-      fPhone: "رقم الجوال", optWord: "(اختياري)",
-      fType: "نوع الاهتمام", typeSelectPh: "اختر نوع الاهتمام", errType: "اختر نوع الاهتمام",
-      typeWriter: "كاتب", typeReader: "قارئ ناقد", typePartner: "شريك صناعة", typeOther: "أخرى",
-      fNotes: "ملاحظات", fNotesPh: "أخبرنا المزيد عن اهتمامك",
-      submitBtn: "إرسال",
 
       // ---- readers.html (About Us / Reader Team) ----
       docTitleReaders: "تعرّف على قصتنا | Scene One",
@@ -369,9 +358,6 @@
       li4: "High-rated scripts may receive additional exposure and access to industry contacts",
       btnRequest: "Request Coverage", btnSample: "View Sample Report",
 
-      bannerHtml: "Every story begins with a scene.<br>We're looking for writers and readers who believe great scripts are the foundation of great films.",
-      bannerP: "Register your interest today and be among the first to access Scene One at launch.",
-      bannerBtn: "Register Your Interest",
 
       faqTitle: "Frequently Asked Questions",
       faqQ1: "What is script coverage?",
@@ -388,14 +374,6 @@
       footerCopyHtml: "© 2026 All rights reserved to SCENE ONE.<br><span class=\"footer__cr\">Unified National Number: 7054791293</span>",
       footerPrivacy: "Privacy Policy", footerTerms: "Terms & Conditions",
 
-      regTitle: "Register Your Interest", regDesc: "Be among the first to access Scene One at launch.",
-      fName: "Full Name", fNamePh: "Enter your name", errName: "Name is required",
-      fEmail: "Email", errEmail: "Invalid email address",
-      fPhone: "Phone Number", optWord: "(optional)",
-      fType: "Type of Interest", typeSelectPh: "Select interest type", errType: "Please select a type",
-      typeWriter: "Writer", typeReader: "Script Reader", typePartner: "Industry Partner", typeOther: "Other",
-      fNotes: "Notes", fNotesPh: "Tell us more about your interest",
-      submitBtn: "Submit",
 
       // ---- readers.html (About Us / Reader Team) ----
       docTitleReaders: "About Us | Scene One",

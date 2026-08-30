@@ -28,6 +28,27 @@ coverage workspace + report, role-based access, deadlines, and report delivery t
 writers. **The payment gate is live and has taken real money** (see below).
 Actively iterating on UX polish and workflow features.
 
+**Recently shipped (2026-08-30):**
+- **The pre-launch "سجل اهتمامك" interest form is GONE, end to end.** The red
+  banner on the landing page, the register modal, its validation and submit in
+  `js/main.js`, the `?register` deep link, the toast helper that only it used,
+  all its `js/i18n.js` keys in both dictionaries, and its CSS (`.banner*`,
+  `.modal*`, `.field*`) — plus **`/api/registrations`, deleted**, which is why
+  the function count is now 11 rather than 12.
+  - **Nothing was lost.** That endpoint never wrote to the database — no table,
+    no rows. It only emailed `sceneone.info@gmail.com`, and from
+    `onboarding@resend.dev`, a leftover test sender that was never the verified
+    domain.
+  - **The whole banner went, not just the button.** Every line of it was
+    pre-launch copy («سجّل اهتمامك اليوم لتكون من أوائل المهتمين… عند إطلاقها»),
+    which has been false since the platform started taking real money. The
+    headline «كل قصة تبدأ بمشهد أول…» is in the git history if it is ever wanted
+    elsewhere.
+  - **`.toast` CSS stays** — `submit.html` and `treatment-submit.html` have their
+    own `toast-wrap` and their own `toast()` in `js/submit.js`. Only the landing
+    page's copy of the helper and its container were removed.
+  - `assets/clapperboard.png` is now referenced by nothing. Left in place.
+
 **Recently shipped (2026-08-29):**
 - **Cinema Association partner discount — 15% off, applied automatically on
   upload.** The script form carries an optional block above «إرسال النص والدفع»: a
@@ -84,9 +105,10 @@ Actively iterating on UX polish and workflow features.
   the same number, in four places that must agree. **DB trigger changed too**
   (`interval '1 hour'`), applied.
 - **⚠️ Vercel Hobby caps the project at 12 serverless functions**, and we hit it.
-  `/api/sweep-notices` lived for a day before being folded into `log-access`. We are
-  **at 12** — anything new under `/api` must hang off an existing route, replace one,
-  or wait for Pro. Count before adding.
+  `/api/sweep-notices` lived for a day before being folded into `log-access`.
+  **Now at 11**: `/api/registrations` was retired with the pre-launch interest form
+  on 2026-08-30. Anything new under `/api` must still be counted before it is
+  added; the slot is one deploy away from being spent again.
 - **Both script coverages are priced PER PAGE** (10 SAR; short 10–40 → 100–400,
   feature 80–120 → 800–1200), replacing all three fixed script tiers. The count is
   taken from the FILE on the server (`lib/pdf-pages.js`, pdf-lib — the first

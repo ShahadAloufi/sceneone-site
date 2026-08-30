@@ -337,19 +337,6 @@
     </div>
   </section>
 
-  <!-- ── RED BANNER ── -->
-  <section class="banner" id="register">
-    <div class="banner__inner">
-      <div class="banner__text">
-        <p class="banner__h" data-i18n-html="bannerHtml">كل قصة تبدأ بمشهد أول<br>ونحن نبحث عن الكتّاب والقرّاء النقاد الذين يؤمنون بأن النصوص القوية هي أساس السينما.</p>
-        <p class="banner__p" data-i18n="bannerP">سجّل اهتمامك اليوم لتكون من أوائل المهتمين بمنصة Scene One عند إطلاقها.</p>
-        <button class="btn btn--white" data-register data-i18n="bannerBtn">سجل اهتمامك</button>
-      </div>
-    </div>
-    <div class="banner__clapper">
-      <img src="assets/clapperboard.png" alt="لوحة سينمائية">
-    </div>
-  </section>
 
   <!-- ── FAQ ── -->
   <section class="faq" id="faq">
@@ -420,50 +407,7 @@
   </footer>
 </div>
 
-<!-- ── REGISTER MODAL ── -->
-<div class="modal-backdrop" id="registerModal">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="regTitle">
-    <button class="modal__close" data-register-close data-i18n-aria="closeLabel" aria-label="إغلاق">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-    </button>
-    <h2 class="modal__title head" id="regTitle" data-i18n="regTitle">سجّل اهتمامك</h2>
-    <p class="modal__desc" data-i18n="regDesc">كن من أوائل المهتمين بمنصة Scene One عند إطلاقها.</p>
-    <form id="registerForm" novalidate>
-      <div class="field" data-field="name">
-        <label data-i18n="fName">الاسم الكامل</label>
-        <input type="text" name="name" data-i18n-ph="fNamePh" placeholder="اكتب اسمك">
-        <p class="err" data-i18n="errName">الاسم مطلوب</p>
-      </div>
-      <div class="field" data-field="email">
-        <label data-i18n="fEmail">البريد الإلكتروني</label>
-        <input type="email" name="email" dir="ltr" placeholder="name@example.com" class="field__input--email">
-        <p class="err" data-i18n="errEmail">البريد الإلكتروني غير صحيح</p>
-      </div>
-      <div class="field" data-field="phone">
-        <label><span data-i18n="fPhone">رقم الجوال</span> <span class="opt" data-i18n="optWord">(اختياري)</span></label>
-        <input type="text" name="phone" dir="ltr" placeholder="05xxxxxxxx" class="field__input--email">
-      </div>
-      <div class="field" data-field="type">
-        <label data-i18n="fType">نوع الاهتمام</label>
-        <select name="type">
-          <option value="" disabled selected data-i18n="typeSelectPh">اختر نوع الاهتمام</option>
-          <option value="كاتب" data-i18n="typeWriter">كاتب</option>
-          <option value="قارئ ناقد" data-i18n="typeReader">قارئ ناقد</option>
-          <option value="شريك صناعة" data-i18n="typePartner">شريك صناعة</option>
-          <option value="أخرى" data-i18n="typeOther">أخرى</option>
-        </select>
-        <p class="err" data-i18n="errType">اختر نوع الاهتمام</p>
-      </div>
-      <div class="field" data-field="notes">
-        <label><span data-i18n="fNotes">ملاحظات</span> <span class="opt" data-i18n="optWord">(اختياري)</span></label>
-        <textarea name="notes" data-i18n-ph="fNotesPh" placeholder="أخبرنا المزيد عن اهتمامك"></textarea>
-      </div>
-      <button type="submit" class="modal__submit" data-i18n="submitBtn">إرسال</button>
-    </form>
-  </div>
-</div>
 
-<div class="toast-wrap" id="toasts"></div>
 
 <script src="js/i18n.js"></script>
 <script src="js/main.js"></script>

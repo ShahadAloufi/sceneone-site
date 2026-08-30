@@ -1,29 +1,9 @@
 /* ===========================================================
    Scene One — interactions
-   Menu overlay · FAQ accordion · cards hover · register modal
-   · form validation/toast · about-coverage TOC scroll-spy
+   Menu overlay · FAQ accordion · cards hover · about-coverage TOC scroll-spy
    =========================================================== */
 (function () {
   "use strict";
-
-  /* ---------- i18n-aware strings for JS-generated content ----------
-     Static markup translates via data-i18n (js/i18n.js); these five strings
-     are built at runtime (submit button state, toasts) so they read the
-     current language straight off <html lang>, which js/i18n.js keeps in
-     sync with the visitor's choice. */
-  var MSG = {
-    ar: {
-      sending: "جارٍ الإرسال...", submit: "إرسال",
-      okTitle: "تم تسجيل اهتمامك بنجاح", okDesc: "سنتواصل معك عند إطلاق المنصة.",
-      errTitle: "حدث خطأ", errDesc: "تعذّر إرسال التسجيل، حاول مرة أخرى."
-    },
-    en: {
-      sending: "Sending...", submit: "Submit",
-      okTitle: "Your interest has been registered", okDesc: "We'll reach out when the platform launches.",
-      errTitle: "Something went wrong", errDesc: "Couldn't send your registration — please try again."
-    }
-  };
-  function msg() { return document.documentElement.getAttribute("lang") === "en" ? MSG.en : MSG.ar; }
 
   /* ---------- SLOW/SMOOTH SCROLL HELPER ---------- */
   function easeInOutCubic(t) {
@@ -133,116 +113,9 @@
     cardsRow.addEventListener("mouseleave", clearActive);
   }
 
-  /* ---------- TOASTS ---------- */
-  var toastWrap = document.getElementById("toasts");
-  function toast(title, desc, variant) {
-    if (!toastWrap) return;
-    var el = document.createElement("div");
-    el.className = "toast" + (variant === "error" ? " error" : "");
-    el.innerHTML = '<div class="toast__title"></div><div class="toast__desc"></div>';
-    el.querySelector(".toast__title").textContent = title;
-    el.querySelector(".toast__desc").textContent = desc;
-    toastWrap.appendChild(el);
-    setTimeout(function () {
-      el.style.transition = "opacity .3s ease, transform .3s ease";
-      el.style.opacity = "0";
-      el.style.transform = "translateY(12px)";
-      setTimeout(function () { el.remove(); }, 300);
-    }, 4000);
-  }
-
-  /* ---------- REGISTER MODAL ---------- */
-  var modal = document.getElementById("registerModal");
-  var form = document.getElementById("registerForm");
-
-  function openModal() { if (modal) { modal.classList.add("open"); document.body.style.overflow = "hidden"; } }
-  function closeModal() {
-    if (!modal) return;
-    modal.classList.remove("open");
-    document.body.style.overflow = "";
-    if (form) {
-      form.reset();
-      form.querySelectorAll(".field").forEach(function (f) { f.classList.remove("invalid"); });
-    }
-  }
-
-  document.querySelectorAll("[data-register]").forEach(function (b) {
-    b.addEventListener("click", openModal);
-  });
-  document.querySelectorAll("[data-register-close]").forEach(function (b) {
-    b.addEventListener("click", closeModal);
-  });
-  if (modal) {
-    modal.addEventListener("click", function (e) {
-      if (e.target === modal) closeModal();
-    });
-  }
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") { closeModal(); closeMenu(); }
+    if (e.key === "Escape") closeMenu();
   });
-
-  /* ---------- FORM VALIDATION + SUBMIT ----------
-     The original site posted to /api/registrations (Express + Postgres +
-     email). A static site has no server, so we validate client-side and
-     show the same success toast. To capture submissions for real, point
-     `submitRegistration` at a form service (e.g. Formspree) — see README.
-  ------------------------------------------------------------------- */
-  function fieldEl(name) { return form.querySelector('[data-field="' + name + '"]'); }
-  function markInvalid(name, on) {
-    var f = fieldEl(name);
-    if (f) f.classList.toggle("invalid", !!on);
-  }
-
-  function validate(values) {
-    var ok = true;
-    if (!values.name || values.name.trim().length < 2) { markInvalid("name", true); ok = false; } else markInvalid("name", false);
-    var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!values.email || !emailRe.test(values.email.trim())) { markInvalid("email", true); ok = false; } else markInvalid("email", false);
-    if (!values.type || values.type.trim().length < 1) { markInvalid("type", true); ok = false; } else markInvalid("type", false);
-    return ok;
-  }
-
-  function submitRegistration(values) {
-    // Posts to the Vercel serverless function at /api/registrations,
-    // which sends the registration email via Resend (server-side).
-    return fetch("/api/registrations", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values)
-    }).then(function (res) {
-      if (!res.ok) throw new Error("Request failed: " + res.status);
-      return res.json();
-    });
-  }
-
-  if (form) {
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var data = new FormData(form);
-      var values = {
-        name: (data.get("name") || "").toString(),
-        email: (data.get("email") || "").toString(),
-        phone: (data.get("phone") || "").toString(),
-        type: (data.get("type") || "").toString(),
-        notes: (data.get("notes") || "").toString()
-      };
-      if (!validate(values)) return;
-
-      var submitBtn = form.querySelector(".modal__submit");
-      submitBtn.disabled = true;
-      submitBtn.textContent = msg().sending;
-
-      submitRegistration(values).then(function () {
-        toast(msg().okTitle, msg().okDesc);
-        closeModal();
-      }).catch(function () {
-        toast(msg().errTitle, msg().errDesc, "error");
-      }).then(function () {
-        submitBtn.disabled = false;
-        submitBtn.textContent = msg().submit;
-      });
-    });
-  }
 
   /* ---------- ABOUT-COVERAGE: TOC SCROLL-SPY ---------- */
   var toc = document.getElementById("toc");
@@ -270,12 +143,6 @@
     spy();
     window.addEventListener("scroll", spy, { passive: true });
     window.addEventListener("resize", spy);
-  }
-
-  /* ---------- AUTO-OPEN REGISTER MODAL (QR / direct links) ----------
-     Visiting https://sceneone.info/?register opens the form immediately. */
-  if (/[?&]register(=|&|$)/.test(window.location.search)) {
-    openModal();
   }
 
   /* ---------- IN-PAGE HASH SMOOTH SCROLL (landing) ---------- */
