@@ -612,7 +612,13 @@ a, button {
 }
 
 /* RED BANNER */
-.banner { position: relative; width: 100%; background: var(--red); overflow: hidden; padding: 80px 0; }
+/* `place-content` on a BLOCK container — not a typo. `align-content` outside
+   grid/flex is CSS Box Alignment 3, supported in Chrome 123+, Safari 17.6+ and
+   Firefox 125+. It centres the text in the 560px band the desktop rule sets,
+   instead of leaving it at the top beside the clapperboard. Anything older just
+   ignores it and the text sits at the top, which is where it was before. Below
+   1024px the band is content-sized, so there is no free space and no effect. */
+.banner { position: relative; width: 100%; background: var(--red); overflow: hidden; padding: 80px 0; place-content: center; }
 .banner__inner { margin: 0 auto; padding: 0 24px; direction: ltr; }
 /* Right-aligned in BOTH languages, not to the reading edge: on desktop the
    clapperboard is anchored to the right of the band, so the text hugs the image
