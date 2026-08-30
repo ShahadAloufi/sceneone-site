@@ -98,7 +98,6 @@
       btnRequest: "اطلب التغطية", btnSample: "إطلع على نموذج التقرير",
 
       bannerHtml: "كل قصة تبدأ بمشهد أول<br>ونحن نبحث عن الكتّاب والقرّاء النقاد الذين يؤمنون بأن النصوص القوية هي أساس السينما.",
-      bannerP: "سجّل اهتمامك اليوم لتكون من أوائل المهتمين بمنصة Scene One عند إطلاقها.",
 
 
       faqTitle: "الأسئلة الشائعة",
@@ -362,7 +361,6 @@
       btnRequest: "Request Coverage", btnSample: "View Sample Report",
 
       bannerHtml: "Every story begins with a scene.<br>We're looking for writers and readers who believe great scripts are the foundation of great films.",
-      bannerP: "Register your interest today and be among the first to access Scene One at launch.",
 
 
       faqTitle: "Frequently Asked Questions",

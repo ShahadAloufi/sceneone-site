@@ -36,12 +36,14 @@ Actively iterating on UX polish and workflow features.
   **`/api/registrations`, deleted**, which is why the function count is now 11
   rather than 12.
   - **The RED BANNER STAYS.** It was removed in the same pass and restored on
-    request: the section, its design, the clapperboard and both strings
-    (`bannerHtml`, `bannerP`) are intact. Only `bannerBtn` and the button went.
-    Don't take the banner out again on the reasoning that its CTA is gone.
-  - Its paragraph still reads «سجّل اهتمامك اليوم… عند إطلاقها», which now
-    invites an action the page cannot perform, on a platform that has launched.
-    Flagged to the user 2026-08-30, left as-is pending new copy.
+    request: the section, its design and the clapperboard are intact, carrying
+    the headline (`bannerHtml`) alone. Don't take the banner out again on the
+    reasoning that its CTA is gone — it is meant to read as a statement now, not
+    a call to action.
+  - `bannerP` («سجّل اهتمامك اليوم… عند إطلاقها») went with the button: it
+    invited an action the page can no longer perform, on a platform that has
+    already launched. `.banner__p` is gone too, and `.banner__h` lost its bottom
+    margin now that it is the last thing in the block.
   - **Nothing was lost.** That endpoint never wrote to the database — no table,
     no rows. It only emailed `sceneone.info@gmail.com`, and from
     `onboarding@resend.dev`, a leftover test sender that was never the verified

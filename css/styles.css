@@ -615,8 +615,9 @@ a, button {
 .banner { position: relative; width: 100%; background: var(--red); overflow: hidden; padding: 80px 0; }
 .banner__inner { margin: 0 auto; padding: 0 24px; direction: ltr; }
 .banner__text { text-align: right; direction: rtl; }
-.banner__h { font-family: var(--font-head); font-size: 36px; font-weight: 700; color: #fff; line-height: 1.625; margin-bottom: 24px; }
-.banner__p { font-size: 24px; line-height: 1.625; color: rgba(255,255,255,.9); margin-bottom: 32px; }
+/* Last element in the block since the CTA and its paragraph were removed, so
+   no trailing margin. */
+.banner__h { font-family: var(--font-head); font-size: 36px; font-weight: 700; color: #fff; line-height: 1.625; }
 .banner__clapper { margin-top: 40px; display: flex; justify-content: center; }
 .banner__clapper img { margin-bottom: -80px; width: auto; object-fit: contain; }
 
