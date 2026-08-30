@@ -11,10 +11,10 @@
   var UI = {
     ar: { loading: "جارٍ تحميل التقرير…", errT: "التقرير غير متاح", errM: "قد يكون الرابط غير صحيح أو أن التقرير لم يُنشر بعد.", save: "حفظ PDF", preparing: "جارٍ التحضير…", pdfErr: "تعذّر إنشاء ملف PDF، حاول مرة أخرى.", fileBase: "تقرير Scene One", docTitle: "Scene One | تقرير التغطية",
       attachUnavailable: "تعذّر تحميل المرفق الآن. حاول مرة أخرى بعد قليل.",
-      attachMissing: "لا يوجد مرفق مع هذا التقرير." },
+      attachMissing: "لا يوجد مرفق مع هذا التقرير.", dismiss: "إغلاق" },
     en: { loading: "Loading the report…", errT: "Report unavailable", errM: "This link may be invalid, or the report hasn't been published yet.", save: "Save as PDF", preparing: "Preparing…", pdfErr: "Couldn't generate the PDF, please try again.", fileBase: "Scene One Coverage Report", docTitle: "Scene One | Coverage report",
       attachUnavailable: "The attachment couldn't be downloaded just now. Please try again shortly.",
-      attachMissing: "There's no attachment with this report." }
+      attachMissing: "There's no attachment with this report.", dismiss: "Dismiss" }
   };
 
   function $(id) { return document.getElementById(id); }
@@ -34,6 +34,7 @@
     $("saveBtn").textContent = u.save;
     var seg = $("langSeg");
     seg.querySelectorAll("button").forEach(function (b) { b.classList.toggle("on", b.dataset.l === l); });
+    paintNotice();
     if (data) {
       var rb = $("reportBody");
       rb.innerHTML = window.SOReport.render(data.submission, data.coverage, l);
@@ -43,6 +44,36 @@
   }
 
   function showError() { $("loading").hidden = true; $("reportWrap").hidden = true; $("errorBox").hidden = false; }
+
+  /* ---------- NOTICE ----------
+     Trouble that is not fatal: the report is intact, something the writer asked
+     for failed. Replaces the alert() this page used for both cases — unstyled
+     browser chrome, blocking, and for the download it fired on arrival, which is
+     the worst moment for a modal.
+
+     Held as a KEY rather than a string so the language toggle can re-render it:
+     a notice raised in Arabic must follow a writer who switches to English. */
+  var noticeKey = "";
+  function paintNotice() {
+    var box = $("notice");
+    if (!box) return;
+    box.hidden = !noticeKey;
+    if (!noticeKey) return;
+    $("noticeText").textContent = UI[lang()][noticeKey] || "";
+    $("noticeClose").setAttribute("aria-label", UI[lang()].dismiss);
+  }
+  function notice(key) {
+    noticeKey = key || "";
+    // Announced only once it carries something, so assistive tech is not told
+    // about an empty box on every render.
+    var box = $("notice");
+    if (box) box.setAttribute("role", noticeKey ? "alert" : "presentation");
+    paintNotice();
+  }
+  (function () {
+    var x = $("noticeClose");
+    if (x) x.addEventListener("click", function () { notice(""); });
+  })();
 
   function ready() {
     $("loading").hidden = true;
@@ -78,7 +109,7 @@
       document.body.appendChild(a); a.click(); a.remove();
       setTimeout(function () { URL.revokeObjectURL(href); }, 4000);
     } catch (e) {
-      alert(u.pdfErr);
+      notice("pdfErr");
     }
     btn.textContent = old; btn.disabled = false; delete btn.dataset.busy;
   });
@@ -95,16 +126,15 @@
   var attachFlag = new URLSearchParams(location.search).get("attachment") || "";
   function reportAttachmentFailure() {
     if (!attachFlag) return;
-    var u = UI[lang()];
-    var msg = attachFlag === "unavailable" ? u.attachUnavailable
-            : attachFlag === "missing" ? u.attachMissing : "";
+    var key = attachFlag === "unavailable" ? "attachUnavailable"
+            : attachFlag === "missing" ? "attachMissing" : "";
     attachFlag = "";
     try {
       var url = new URL(location.href);
       url.searchParams.delete("attachment");
       history.replaceState(null, "", url.pathname + url.search);
     } catch (e) {}
-    if (msg) setTimeout(function () { alert(msg); }, 0);
+    if (key) notice(key);
   }
 
   fetch("/api/report?t=" + encodeURIComponent(token))

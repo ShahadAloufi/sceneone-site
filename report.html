@@ -47,6 +47,19 @@
   main{padding:28px 16px 60px}
   #reportWrap{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;max-width:800px;margin:0 auto;
               box-shadow:0 18px 50px rgba(0,0,0,.12)}
+  /* Non-fatal notice, above the report card and matching its width. Soft rather
+     than alarming: the report is intact, only an extra failed. `role` is set in
+     JS so a screen reader is told when one appears. */
+  .rep-notice{display:flex;align-items:center;gap:10px;max-width:800px;margin:0 auto 14px;
+              padding:13px 16px;background:#fdece7;border:1px solid #f3c4b6;border-radius:12px;
+              color:#8c3418;font-size:14px;line-height:1.7}
+  .rep-notice__icon{width:18px;height:18px;flex-shrink:0}
+  .rep-notice span{flex:1}
+  .rep-notice__x{background:none;border:0;color:inherit;font-size:20px;line-height:1;cursor:pointer;
+                 padding:0 2px;opacity:.6}
+  .rep-notice__x:hover{opacity:1}
+  .rep-notice__x:focus-visible{outline:2px solid currentColor;outline-offset:2px;border-radius:4px}
+
   .report{padding:46px 54px}
   @media(max-width:620px){.report{padding:30px 22px}}
   .rep-header{background:#0E0E0E;margin:-46px -54px 32px;padding:32px 24px 24px;text-align:center;border-bottom:3px solid var(--orange)}
@@ -161,6 +174,15 @@
   <div class="state" id="errorBox" hidden>
     <h2 id="errorT">التقرير غير متاح</h2>
     <p id="errorM">قد يكون الرابط غير صحيح أو أن التقرير لم يُنشر بعد.</p>
+  </div>
+  <!-- The page's one way of reporting trouble that is not fatal: the report is
+       fine, something the writer asked for was not. A native alert() used to do
+       this — unstyled browser chrome, blocking, and on arrival for the download
+       case, which is a poor moment for a modal. -->
+  <div class="rep-notice" id="notice" hidden>
+    <svg class="rep-notice__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6" stroke-linecap="round"/><circle cx="12" cy="16.5" r="1" fill="currentColor" stroke="none"/></svg>
+    <span id="noticeText"></span>
+    <button type="button" class="rep-notice__x" id="noticeClose" aria-label="إغلاق">&times;</button>
   </div>
   <div id="reportWrap" hidden><div class="report" id="reportBody"></div></div>
 </main>
