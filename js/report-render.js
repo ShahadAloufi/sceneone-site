@@ -77,7 +77,11 @@
       glance_l: { "Premise & Theme": "الفكرة والموضوع", "Hook": "عنصر الجذب", "Stakes & Plot": "الرهانات الدرامية والحبكة", "Character": "الشخصيات", "Dialogue": "الحوار", "Structure & Pace": "البناء الدرامي والإيقاع", "Producibility": "قابلية الإنتاج", "Overall presentation": "العرض العام",
                  "Narrative Clarity": "وضوح الرؤية السردية", "Character Basics": "الشخصيات (الأساسيات)", "Emotional Journey": "الرحلة العاطفية",
                  "Story Structure": "البناء العام للقصة", "Screenplay Potential": "قابلية التطوير لسيناريو", "Market Viability": "الجدوى السوقية" },
-      decision: { Recommend: "يُوصى به", Consider: "يستحق الدراسة", Pass: "غير موصى به" },
+      // One wording for these three across the whole site — the guide
+      // (about-coverage), the terms, and this, the report the writer reads. They
+      // used to differ («يستحق الدراسة» here, «معتبر» in the terms), so a writer
+      // met two names for the same verdict.
+      decision: { Recommend: "موصى به", Consider: "يستحق النظر", Pass: "لا يُوصى به حاليًا" },
       fmt: { "Short film": "فيلم قصير", "Feature": "فيلم طويل", "Feature film": "فيلم طويل", "TV Pilot": "حلقة تجريبية", "Web Series": "مسلسل ويب", "Series": "مسلسل", "Other": "أخرى" },
       drf: { "First draft": "المسودة الأولى", "Second draft": "المسودة الثانية", "Revised draft": "المسودة الثانية", "Final draft": "النسخة النهائية" },
       months: { January: "يناير", February: "فبراير", March: "مارس", April: "أبريل", May: "مايو", June: "يونيو", July: "يوليو", August: "أغسطس", September: "سبتمبر", October: "أكتوبر", November: "نوفمبر", December: "ديسمبر" },

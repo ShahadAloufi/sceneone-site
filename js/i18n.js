@@ -186,7 +186,7 @@
       termsServiceLead: "تقدّم (Scene One) خدمة قراءة احترافية ونقدية للنصوص السينمائية، تشمل:",
       termsServiceHtml: "<li>قراءة كاملة للنصّ من قِبَل قارئ ناقد مؤهَّل.</li>" +
         "<li>إصدار تقرير تقييم تفصيلي يشمل الفكرة والحبكة والشخصيات والحوار والإيقاع والإمكانية الإنتاجية.</li>" +
-        "<li>تصنيف صريح للنصّ ضمن إحدى الفئات الثلاث: <strong>موصى به</strong>، <strong>معتبر</strong>، أو <strong>بحاجة الى تطوير</strong>.</li>" +
+        "<li>تصنيف صريح للنصّ ضمن إحدى الفئات الثلاث: <strong>موصى به</strong>، <strong>يستحق النظر</strong>، أو <strong>لا يُوصى به حاليًا</strong>.</li>" +
         "<li>ترشيح النصوص الحاصلة على توصية قوية إلى الشركاء الإنتاجيين، بعد موافقة الكاتب الصريحة.</li>",
       termsServiceNote: "<strong>الخدمة لا تشمل</strong>: إعادة كتابة النصّ، أو تطويره، أو تحريره، أو ضمان قبوله من قبل أيّ جهة إنتاجية. Scene One تقدّم قراءة نقدية احترافية فقط.",
       termsIpTitle: "الملكية الفكرية",
@@ -450,7 +450,7 @@
       termsServiceLead: "Scene One provides a professional script reading and evaluation service, including:",
       termsServiceHtml: "<li>A full reading of the script by a qualified Reader.</li>" +
         "<li>A detailed evaluation report covering concept, plot, characters, dialogue, pacing, and production potential.</li>" +
-        "<li>A clear classification of the script into one of three categories: <strong>Recommended</strong>, <strong>Consider</strong>, or <strong>Needs Development</strong>.</li>" +
+        "<li>A clear classification of the script into one of three categories: <strong>Recommend</strong>, <strong>Consider</strong>, or <strong>Pass</strong>.</li>" +
         "<li>Submission of strongly recommended scripts to Production Partners, subject to the Writer's explicit consent.</li>",
       termsServiceNote: "<strong>The Service does not include</strong> rewriting, editing, development, or any guarantee of acceptance by production companies. Scene One provides professional critical evaluation only.",
       termsIpTitle: "Intellectual Property",
