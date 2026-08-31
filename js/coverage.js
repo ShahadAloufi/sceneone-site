@@ -749,9 +749,15 @@
       // The status test is what autosave made necessary. Notes now exist from the
       // moment they are typed, while the coverage is still `submitted` — and the
       // reader can open their own coverage in that state. Without this they would
-      // watch a reviewer's half-written verdict appear. They see the notes when
-      // the coverage actually comes back to them, which is what they are for.
-      var readerMaySee = covStatus === "revision_requested";
+      // watch a reviewer's half-written verdict appear.
+      //
+      // `submitted` is the ONLY state that hides them, and the test has to be
+      // written that way round. It was `=== "revision_requested"` at first, which
+      // looked equivalent and was not: a reader's first save on a bounced-back
+      // coverage flips it to `in_progress` (see save() above — the DB trigger
+      // only lets readers persist in_progress/submitted). So the notes vanished
+      // the moment the reader started acting on them, and from staff as well.
+      var readerMaySee = covStatus !== "submitted";
       els.wrap.hidden = writable ? false : (!text || !readerMaySee);
       els.add.hidden = !writable || open;
       els.add.textContent = u.addComment;
