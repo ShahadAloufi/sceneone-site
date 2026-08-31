@@ -844,6 +844,11 @@ a, button {
 .grade { margin-top: 0; }
 .grades { display: flex; flex-direction: column; gap: 32px; margin-top: 48px; }
 .grade__label { display: block; font-size: 18px; font-weight: 700; letter-spacing: .18em; margin-bottom: 12px; }
+/* The Arabic gloss beside PASS / CONSIDER / RECOMMEND. Quieter than the label
+   and not letter-spaced — that tracking is for the Latin term, and it pulls
+   Arabic letterforms apart. Empty in English, so the span collapses. */
+.grade__ar { font-size: 14px; font-weight: 600; letter-spacing: 0; color: var(--muted, #8a877f); }
+.grade__ar:empty { display: none; }
 .grade p { font-size: 16px; line-height: 1.85; }
 .cov-report { margin-top: 56px; display: flex; flex-direction: column; align-items: center; }
 .cov-report img { width: 100%; max-width: 560px; border-radius: 12px; border: 1px solid rgba(255,255,255,.1); }
