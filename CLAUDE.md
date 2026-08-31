@@ -28,6 +28,39 @@ coverage workspace + report, role-based access, deadlines, and report delivery t
 writers. **The payment gate is live and has taken real money** (see below).
 Actively iterating on UX polish and workflow features.
 
+**Recently shipped (2026-08-31):**
+- **The three verdicts now read in Arabic, everywhere, and from ONE wording:**
+  `Recommend` → «موصى به», `Consider` → «يستحق النظر», `Pass` → «لا يُوصى به
+  حاليًا». Before this a writer met three different names for the same verdict —
+  «يستحق النظر» in the guide, «يستحق الدراسة» on their own report, «معتبر» in the
+  terms.
+  - **`t.decision` in `js/report-render.js` had been dead since the renderer was
+    written.** Both dictionaries carried the map; the verdict line took the raw
+    stored value with a comment saying it stays English. So EVERY Arabic report
+    printed "Recommend" — the writer's hosted report, the PDF, and the script
+    sample. Line ~317 now consults the map, with a fallback to the raw value.
+    **This changes already-delivered reports**: they render live from stored
+    coverage data, not from a snapshot taken at delivery. Verified on the live
+    report for «ليس حرج».
+  - **The stored value is still the English key.** `verdict.decision` holds
+    `"Recommend"`, only the display translates — so the workspace picker
+    (`recLabel` returns the raw option, deliberately), the admin table and
+    anything keyed on that string are unaffected. Don't "fix" the picker.
+  - **`sample-treatment-report.html` needs its own copy of the map**, and now has
+    one. It is the single report view that is NOT renderer-driven — a treatment's
+    structure is not the script schema — so the map is duplicated on purpose.
+    Change one, change the other.
+  - `terms.html` and its dictionary copy were realigned in BOTH languages; the
+    English list had said "Recommended / Consider / Needs Development", matching
+    neither the guide nor the report.
+- **`about-coverage` shows the verdicts in the reader's own language.** The
+  Arabic page carries «لا يُوصى به حاليًا» / «يستحق النظر» / «موصى به» alone — no
+  Latin term, no parenthetical gloss — and the English page keeps PASS / CONSIDER
+  / RECOMMEND. Same red/gold/green either way: the colour is an inline style on
+  the element, not part of the string. `.grade__label`'s `.18em` tracking moved
+  to `html[dir="ltr"]`; it exists for the Latin term and pulls Arabic letterforms
+  apart.
+
 **Recently shipped (2026-08-30):**
 - **QA REVIEW NOTES: one per section, and that is the intended shape.** A reader
   whose coverage comes back must see each note under the section it is about, in
