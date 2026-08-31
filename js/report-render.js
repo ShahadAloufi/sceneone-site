@@ -314,7 +314,12 @@
     }).join("");
 
     var fs = finalScore(c, sc);
-    var dec = c.verdict.decision ? c.verdict.decision : t.pending; // verdict stays English
+    // The verdict reads in the report's own language. `t.decision` had been in
+    // both dictionaries since this renderer was written but was never consulted,
+    // so an Arabic report printed "Recommend" while every other surface — the
+    // guide, the terms, the treatment sample — said «موصى به». Falls back to the
+    // raw value so a decision outside the map still renders.
+    var dec = c.verdict.decision ? (t.decision[c.verdict.decision] || c.verdict.decision) : t.pending;
 
     var header = '<div class="rep-header">' +
       '<img class="rep-logo" src="' + LOGO + '" alt="Scene One">' +
