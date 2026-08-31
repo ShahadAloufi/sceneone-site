@@ -843,12 +843,9 @@ a, button {
 .cov-section .cov-sub { font-family: var(--font-body); font-size: 18px; color: #c6c6c6; margin-bottom: 24px; }
 .grade { margin-top: 0; }
 .grades { display: flex; flex-direction: column; gap: 32px; margin-top: 48px; }
-.grade__label { display: block; font-size: 18px; font-weight: 700; letter-spacing: .18em; margin-bottom: 12px; }
-/* The Arabic gloss beside PASS / CONSIDER / RECOMMEND. Quieter than the label
-   and not letter-spaced — that tracking is for the Latin term, and it pulls
-   Arabic letterforms apart. Empty in English, so the span collapses. */
-.grade__ar { font-size: 14px; font-weight: 600; letter-spacing: 0; color: var(--muted, #8a877f); }
-.grade__ar:empty { display: none; }
+/* No tracking by default: the label is Arabic here, and .18em pulls Arabic
+   letterforms apart. The English page puts it back for the Latin term below. */
+.grade__label { display: block; font-size: 18px; font-weight: 700; margin-bottom: 12px; }
 .grade p { font-size: 16px; line-height: 1.85; }
 .cov-report { margin-top: 56px; display: flex; flex-direction: column; align-items: center; }
 .cov-report img { width: 100%; max-width: 560px; border-radius: 12px; border: 1px solid rgba(255,255,255,.1); }
@@ -2008,6 +2005,8 @@ html[dir="ltr"] .tl-step { text-align: left; direction: ltr; }
 html[dir="ltr"] .tl-block { text-align: left; direction: ltr; }
 
 html[dir="ltr"] .banner__text { direction: ltr; }
+
+html[dir="ltr"] .grade__label { letter-spacing: .18em; }
 
 html[dir="ltr"] .faq { direction: ltr; }
 html[dir="ltr"] .faq-item__btn { text-align: left; }

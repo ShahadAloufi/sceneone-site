@@ -155,12 +155,12 @@
       covAspect4Html: "<strong>4. جانب سوقي:</strong> تحديد الجمهور، النوع، ومدى ملاءمته للسوق السعودي.",
       covGradesTitle: "درجات التقييم في التغطية السينمائية", covGradesSub: "قراءة ما وراء الأرقام والتوصيات",
       covGradesP1: "التغطية السينمائية تجمع بين التقييم الموضوعي والانطباع الشخصي للقارئ. يمكن النظر إلى التقييم على أنه انعكاس لمدى استجابة القارئ للنص؛ أحيانًا يكون إشادة بنقاط قوته، وأحيانًا أخرى دعوة لتطوير بعض جوانبه. لذلك نادرًا ما تكون نتائج التقييم حاسمة أو مطلقة، بل تقع غالبًا في مساحة أوسع من التدرّج والتفسير.",
-      // The verdict labels stay PASS / CONSIDER / RECOMMEND in both languages —
-      // they are the industry's terms. Arabic readers get a gloss beside them;
-      // in English the key is empty, so the span renders blank.
-      covGradePassAr: "(لا يُوصى به حاليًا)",
-      covGradeConsiderAr: "(يستحق النظر)",
-      covGradeRecommendAr: "(موصى به)",
+      // The verdict reads in the reader's own language: Arabic on the Arabic
+      // page, the industry's PASS / CONSIDER / RECOMMEND on the English one. The
+      // colour is on the element, so it carries across either way.
+      covGradePassLabel: "لا يُوصى به حاليًا",
+      covGradeConsiderLabel: "يستحق النظر",
+      covGradeRecommendLabel: "موصى به",
       covGradePass: "يشير هذا التقييم إلى أن النص يحتاج إلى مزيد من التطوير قبل أن يصبح جاهزًا. غالبًا ما تتعلق الملاحظات بعناصر مثل الحبكة، أو الشخصيات، أو الأصالة.",
       covGradeConsider: "يعني أن النص يحتوي على عناصر واعدة تستحق الاهتمام، لكنه لا يزال بحاجة إلى بعض التحسينات للوصول إلى إمكاناته الكاملة.",
       covGradeRecommend: "أعلى درجات التقييم، ويُمنح للنصوص التي تتميز بقصة قوية وتنفيذ متقن. ومع ذلك، يظل هناك دائمًا مجال للتطوير والتحسين.",
@@ -422,7 +422,9 @@
       covAspect4Html: "<strong>4. Market Perspective:</strong> Identifies the target audience, genre positioning, and suitability for the Saudi market.",
       covGradesTitle: "Coverage Scoring System", covGradesSub: "A closer look beyond the numbers and recommendations",
       covGradesP1: "Screenplay coverage combines objective evaluation with the reader's personal response. The rating reflects how the script resonates with the reader, sometimes highlighting its strengths, and other times pointing to areas that need further development. For this reason, ratings are rarely absolute or definitive, and typically exist within a broader spectrum of interpretation and judgment.",
-      covGradePassAr: "", covGradeConsiderAr: "", covGradeRecommendAr: "",
+      covGradePassLabel: "PASS",
+      covGradeConsiderLabel: "CONSIDER",
+      covGradeRecommendLabel: "RECOMMEND",
       covGradePass: "This indicates that the script requires further development before it is ready. Feedback often focuses on elements such as plot, characters, or originality.",
       covGradeConsider: "This means the script shows promise and contains compelling elements, but still needs refinement to reach its full potential.",
       covGradeRecommend: "The highest rating. Given to scripts with a strong concept and solid execution. Even at this level, there is always room for further development and enhancement.",
