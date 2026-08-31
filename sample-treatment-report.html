@@ -176,6 +176,10 @@
       overall: "ملاحظات عامة",
       strengths: "نقاط القوة", develop: "ما يحتاج إلى تطوير",
       verdict: "الحكم", outof: "/ 10",
+      // Mirrors T.ar.decision in js/report-render.js. This page is the one
+      // report view that is NOT renderer-driven, so the map has to be repeated
+      // here — change one, change the other.
+      decision: { Recommend: "موصى به", Consider: "يستحق النظر", Pass: "لا يُوصى به حاليًا" },
       foot: "سري — لا يُتداول خارج نطاق المرسل إليه"
     },
     en: {
@@ -195,6 +199,7 @@
       overall: "Overall notes",
       strengths: "Strengths", develop: "What needs development",
       verdict: "Verdict", outof: "/ 10",
+      decision: { Recommend: "Recommend", Consider: "Consider", Pass: "Pass" },
       foot: "Confidential — not for circulation beyond the addressee"
     }
   };
@@ -347,7 +352,7 @@
         '<div class="rep-item"><div class="ih"><span class="t">' + t.develop + "</span></div>" + list(d.develop) + "</div></div>" +
       '<div class="verdict"><div class="vh">' + t.verdict + "</div>" +
         '<div style="display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:8px">' +
-          '<div class="vd" style="margin:0">' + esc(d.verdict.decision) +
+          '<div class="vd" style="margin:0">' + esc(t.decision[d.verdict.decision] || d.verdict.decision) +
             ' <span class="ctx">· ' + esc(d.verdict.context) + "</span></div>" +
           '<div class="score10"><span class="n">' + esc(d.verdict.score) + "</span> " + t.outof + "</div>" +
         "</div>" +
