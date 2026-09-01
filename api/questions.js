@@ -16,6 +16,8 @@
 //
 // Required env vars: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY.
 
+const { brandHeader } = require("../lib/email-brand");
+
 const NOTIFY_FROM = "Scene One <no-reply@sceneone.info>";
 const NOTIFY_TO = "sceneone.info@gmail.com";
 const SITE_URL = process.env.SITE_URL || "https://sceneone.info";
@@ -47,7 +49,7 @@ const BRAND_OPEN =
     '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f5f1e9;"><tr><td align="center">' +
       '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:20px;">' +
         '<tr><td style="padding:46px 44px;text-align:center;">' +
-          '<div style="font-weight:700;letter-spacing:5px;font-size:20px;color:#15110f;margin:0 0 30px;">SCENE&nbsp;<span style="color:#cd2e07;">ONE</span></div>';
+          brandHeader(30);
 
 function brandClose(trailer) {
   return "" +

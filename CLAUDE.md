@@ -37,18 +37,19 @@ Actively iterating on UX polish and workflow features.
     Every box sized for the old near-square logo now renders three times wider.
     The rule that follows: **a surface with width gets the full lockup, a square
     or short box gets the MARK ALONE.** Concretely — nav (56/64px), the menu
-    overlay (56px) and the partnership row get `scene-one-logo-v2.png`; the admin
-    login (64x64), the admin sidebar (46x46), the coverage workspace header
-    (30px tall) and the report header get `scene-one-mark-v2.png`. Put the
-    lockup in a square box and it renders at a quarter height, illegible.
+    overlay (56px), the partnership row and the **report header (64px)** get
+    `scene-one-logo-v2.png`; the admin login (64x64), the admin sidebar (46x46),
+    the coverage workspace header (30px tall) and the **`.bar` chrome strip on
+    report / sample / ask / answer (26px)** get `scene-one-mark-v2.png`. Put the
+    lockup in a square box and it renders at a quarter height, illegible; put it
+    in the 44px `.bar` and its wordmark is unreadable.
   - **The mark files are a straight crop of the supplied artwork**, not a redraw:
     there is a clean 33px alpha gap at x455-487 separating wordmark from mark, so
     the mark is `crop(488, 0, 852, 318)` = 364x318. Regenerate them that way if
     the source is ever reissued.
   - **These are PNG, not SVG — the artwork was supplied as raster.** Every use is
-    a 5x+ downscale (nav 171x64, report mark 55x48) so it is sharp on retina, and
-    the new strokes are heavy enough to survive it where the old thin-stroke mark
-    would not have. **If a vector version ever arrives it is a drop-in win**,
+    a 5x+ downscale (nav and report header 171x64, chrome-bar mark 30x26) so it
+    is sharp on retina. **If a vector version ever arrives it is a drop-in win**,
     especially for the favicon; see the note atop `js/report-render.js`.
   - **`favicon-v2.png` is generated, not supplied** — the white mark on the brand
     `#0E0202` rounded square (same radius ratio as the `favicon.svg` it replaces),
@@ -63,23 +64,68 @@ Actively iterating on UX polish and workflow features.
     now reads the opposite way round: ours used to be set TALLER than the
     association's because it stacked the mark above the name, and at equal
     heights the wide lockup dominated the row instead. Don't restore the old rule.
-  - **`sample-treatment-report.html` now uses the mark**, matching
-    `report-render.js`. It had been using the full logo, which printed "Scene One"
-    directly above the `.rep-wm` "SCENE ONE" text — the new lockup would have made
-    that duplication worse.
-  - **The EMAILS KEEP THE TEXT WORDMARK, and that is a decision, not a gap.**
-    Every email shell opens with letterspaced `SCENE&nbsp;ONE` text (`#15110f`
-    with `ONE` in `#cd2e07`) — ten copies across `lib/submission-emails.js`,
-    `lib/assignment-notices.js`, `api/review-coverage.js` and `api/questions.js`.
-    Swapping them for the logo image was built and previewed on 2026-09-01 and
-    **rejected on sight; it was reverted in full.** Do not "finish" it later.
-    For the record, since the reasons will look like objections to a future
-    session: the image has to be an absolute production URL (an email client has
-    no origin, and `SITE_URL` points at an SSO-protected preview on preview
-    deploys), it has to be the black artwork on the white card, and remote images
-    are blocked by default in a good share of clients — so the text wordmark
-    always renders where the logo sometimes would not. Dark-mode auto-inversion
-    is an unsolved risk for a black logo on a light card either way.
+  - **`.rep-wm` IS GONE, and the report header carries the lockup instead.**
+    The header used to be the mark with a letterspaced `SCENE ONE` set in the
+    page font underneath it. That text was the OLD wordmark, so swapping only the
+    mark left the report — the sample pages, the writer's real report and the
+    PDF — looking untouched by the rebrand, which is exactly how it was reported
+    on 2026-09-01. The lockup carries its own wordmark, so `.rep-wm` was deleted
+    rather than left to contradict it: markup in `js/report-render.js` and in
+    `sample-treatment-report.html`'s own copy, plus the CSS in all four
+    self-contained report pages. **Don't reintroduce a text wordmark under that
+    logo.**
+  - **A first pass put the MARK in the report header and that was wrong.** The
+    reasoning was that `.rep-wm` already said "Scene One" so the lockup would
+    duplicate it — correct as far as it went, but it kept old-brand typography on
+    the page. It also rested on a misreading: at equal size the old and new marks
+    are near-identical, so mark-only reads as "nothing changed". The new mark is
+    NOT a bolder redesign; it only looks that way if you compare the black
+    artwork upscaled against the white artwork small.
+  - **THE EMAILS CARRY THE LOGO TOO, from one shared `lib/email-brand.js`.**
+    Ten templates across `lib/submission-emails.js`, `lib/assignment-notices.js`,
+    `api/review-coverage.js` and `api/questions.js` used to open with letterspaced
+    `SCENE&nbsp;ONE` text; they now all call `brandHeader(marginBottom)`. It lives
+    in `lib/` so it costs no serverless function slot, and in ONE place because a
+    brand header that drifts between ten templates is what a writer notices with
+    two of our emails open. Three constraints are baked into that helper and
+    stated in full at the top of it — read them before touching it:
+    - **The URL is absolute and hardcoded to production**, deliberately NOT
+      `SITE_URL`: that is Preview-scoped on preview deploys, and a preview behind
+      Vercel Authentication answers an image request with an SSO redirect, so
+      every test email would show a broken logo.
+    - **THE EMAIL LOGO IS ITS OWN FILE with a white plate baked in:**
+      `assets/scene-one-email-logo.png`, the black lockup on an opaque white
+      rounded plate (920x386, shown at 185x77 so the lockup inside it is the
+      same 171px wide as everywhere else). **Neither site logo works here** —
+      both are transparent, and that is precisely the bug.
+      **Why:** a force-inverting client (the Outlook family above all) rewrites
+      an email's HTML/CSS colours but **cannot repaint the pixels inside a PNG**.
+      Transparent black artwork on the white card therefore becomes a black logo
+      on a card the client has darkened — **1.27:1, invisible bar the red dot**.
+      Measured, not guessed. Baking the background into the image turns that same
+      fact around: the plate cannot be repainted either, so it survives.
+      Behaviour in all three modes: normal client — the plate is the card's own
+      white, so it is **invisible** and the header reads as the plain black logo;
+      colour-rewriting client — dark card, white plate, legible logo; whole-email
+      filter/invert — plate and logo invert together, white logo on dark. All
+      legible.
+      **This is why the swap was never like-for-like with the text it replaced.**
+      Text got recoloured by the inverting client and always stayed legible; an
+      image gets no such rescue.
+      **A dark HTML band around the WHITE artwork was tried first and rejected.**
+      It survived inversion equally well, but it was heavy in the light mode that
+      most recipients actually see — protecting the rare case by spoiling the
+      common one. Don't reinstate it.
+    - **The alt text is styled dark**, matching the plate, for the many clients
+      that block remote images and render alt text with the img's own styles — a
+      blocked logo still reads as a letterspaced "Scene One".
+    **History worth knowing:** this was built, previewed, rejected and reverted in
+    full earlier the same day, then reinstated once the rendered preview was seen
+    beside the rebranded report. If it looks contentious in the log, it is settled.
+  - **`payment-status.html` uses the BLACK lockup on its white card**, with no
+    dark band — deliberately unlike the emails it otherwise resembles. It is a web
+    page we render ourselves, so nothing is going to rewrite its colours behind
+    our back; the band exists only to survive email clients.
   - **Still carrying the old brand outside the repo:** the Moyasar hosted checkout
     logo — a dashboard upload in BOTH the test and live environments, no code.
     See the TODO below. Not done.

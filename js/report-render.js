@@ -9,14 +9,15 @@
 (function () {
   "use strict";
 
-  // Icon-only mark (no "Scene One" wordmark baked in) — the report header
-  // already carries the SCENE ONE watermark text right below it via .rep-wm.
-  // The 2026-09-01 brand artwork is supplied as PNG, not SVG. It survives the
-  // downscale to 48px where the old mark would not have: the new strokes are
-  // heavy, and this crop is 364x318 for a 55px box. If a vector version of the
-  // logo ever arrives, swap it back — the report renders natively, so an SVG
-  // here would stay crisp at any size.
-  var LOGO = "assets/scene-one-mark-v2.png";
+  // The FULL brand lockup, not the icon-only mark. The header used to pair the
+  // mark with a letterspaced "SCENE ONE" set in the page font (.rep-wm) — but
+  // that typography is the OLD wordmark, so after the 2026-09-01 rebrand the
+  // report was the last place still showing it. The lockup carries the wordmark
+  // itself, so .rep-wm was removed rather than left to contradict it.
+  // PNG because the brand artwork was supplied as raster; at 171x64 from an
+  // 852x318 source it is a 5x downscale. If a vector version ever arrives, swap
+  // it in — the report renders natively, so an SVG would stay crisp at any size.
+  var LOGO = "assets/scene-one-logo-v2.png";
 
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>]/g, function (c) {
@@ -326,7 +327,6 @@
 
     var header = '<div class="rep-header">' +
       '<img class="rep-logo" src="' + LOGO + '" alt="Scene One">' +
-      '<div class="rep-wm">SCENE&nbsp;<span>ONE</span></div>' +
       '<div class="rep-cov">' + (isT ? t.coverageT : t.coverage) + "</div>" +
       "</div>";
 
