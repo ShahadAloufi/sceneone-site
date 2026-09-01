@@ -67,12 +67,22 @@ Actively iterating on UX polish and workflow features.
     `report-render.js`. It had been using the full logo, which printed "Scene One"
     directly above the `.rep-wm` "SCENE ONE" text — the new lockup would have made
     that duplication worse.
-  - **Still carrying the OLD brand, both outside the repo:** the Moyasar hosted
-    checkout logo (a dashboard upload in BOTH the test and live environments, no
-    code — see the TODO below) and the **emails**, whose header is letterspaced
-    `SCENE ONE` text, not an image. The email wordmark is sans and the new logo's
-    Latin is serif; email clients can't load a custom font, so matching it means a
-    design decision, not a swap. Neither is done.
+  - **The EMAILS KEEP THE TEXT WORDMARK, and that is a decision, not a gap.**
+    Every email shell opens with letterspaced `SCENE&nbsp;ONE` text (`#15110f`
+    with `ONE` in `#cd2e07`) — ten copies across `lib/submission-emails.js`,
+    `lib/assignment-notices.js`, `api/review-coverage.js` and `api/questions.js`.
+    Swapping them for the logo image was built and previewed on 2026-09-01 and
+    **rejected on sight; it was reverted in full.** Do not "finish" it later.
+    For the record, since the reasons will look like objections to a future
+    session: the image has to be an absolute production URL (an email client has
+    no origin, and `SITE_URL` points at an SSO-protected preview on preview
+    deploys), it has to be the black artwork on the white card, and remote images
+    are blocked by default in a good share of clients — so the text wordmark
+    always renders where the logo sometimes would not. Dark-mode auto-inversion
+    is an unsolved risk for a black logo on a light card either way.
+  - **Still carrying the old brand outside the repo:** the Moyasar hosted checkout
+    logo — a dashboard upload in BOTH the test and live environments, no code.
+    See the TODO below. Not done.
   - The old `scene-one-logo.svg`, `scene-one-logo-light.svg`, `scene-one-mark.svg`,
     `favicon.svg` and `favicon.png` are now **unreferenced but still in `assets/`**,
     left in place deliberately rather than deleted.
