@@ -157,6 +157,10 @@ function validate(row) {
   // overriding the treatment spec's original "optional".
   if (!isTreatment(row.film_type) && !row.duration) return "بيانات غير صحيحة";
   if (!row.theme) return "بيانات غير صحيحة";
+  // The characters overview carries a required star on the treatment form but was
+  // only ever length-checked here, so it was required in the browser and optional
+  // to anything posting directly. Treatment-only, like the tone reference below.
+  if (isTreatment(row.film_type) && !row.characters) return "بيانات غير صحيحة";
   if (row.characters && row.characters.length > MAX.characters) return "بيانات غير صحيحة";
   // The tone/style reference is required on the treatment form (2026-09-01),
   // like the theme before it. Treatment-only: the script form has no such field.
