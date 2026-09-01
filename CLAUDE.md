@@ -126,9 +126,10 @@ Actively iterating on UX polish and workflow features.
     dark band — deliberately unlike the emails it otherwise resembles. It is a web
     page we render ourselves, so nothing is going to rewrite its colours behind
     our back; the band exists only to survive email clients.
-  - **Still carrying the old brand outside the repo:** the Moyasar hosted checkout
-    logo — a dashboard upload in BOTH the test and live environments, no code.
-    See the TODO below. Not done.
+  - **The rebrand is COMPLETE**, including the one surface outside the repo: the
+    Moyasar hosted checkout logo was uploaded in the dashboard on 2026-09-01. The
+    only thing left to confirm is the `MOYASAR_LOGO_URL` override described in the
+    TODO below — set it wrong and the dashboard upload is ignored.
   - The old `scene-one-logo.svg`, `scene-one-logo-light.svg`, `scene-one-mark.svg`,
     `favicon.svg` and `favicon.png` are now **unreferenced but still in `assets/`**,
     left in place deliberately rather than deleted.
@@ -1983,17 +1984,23 @@ must be in the `supabase_realtime` publication for live updates to fire.
 - **Verify the payment column against real rows** — it was built against injected sample
   data (the dashboard needs Supabase auth, which the local preview can't run), so the
   badge logic is only proven on the deploy.
-- **Upload the Scene One logo in the Moyasar dashboard** — the hosted checkout shows a
-  grey "company logo" placeholder today (seen on a test invoice 2026-07-28; the API
-  returns `logo_url: .../default-logo.png`). It is the one screen in the flow we don't
-  style, and the writer reaches it straight from a fully branded submission form, so an
-  unbranded page there reads as a redirect to the wrong site — on a payment page, that
-  costs conversions. **Dashboard setting, no code.** Do it for **both** the test and
-  live environments; like keys and webhooks, they're configured separately.
-  **Use the 2026-09-01 logo** — `assets/scene-one-logo-v2.png`, or the mark alone
-  (`assets/scene-one-mark-v2.png`) if the checkout wants something nearer square.
-  This is now the last place in the writer's paid flow still able to show the old
-  brand, since the checkout sits between a rebranded form and a rebranded report.
+- ~~**Upload the Scene One logo in the Moyasar dashboard**~~ — **done 2026-09-01**,
+  with the new brand logo. The hosted checkout had shown a grey "company logo"
+  placeholder since 2026-07-28 (`logo_url: .../default-logo.png`); it is the one
+  screen in the paid flow we don't style, reached straight from a fully branded
+  form, so an unbranded page there reads as a redirect to the wrong site. Kept
+  here as the record that it is a **dashboard setting, no code**, configured
+  **separately for the test and live environments** exactly like keys and
+  webhooks — so a future rebrand has to be done twice again.
+  ⚠️ **`MOYASAR_LOGO_URL` can silently override the dashboard.** When that Vercel
+  variable is non-blank, `lib/moyasar.js` puts it on every invoice as `logo_url`,
+  which takes precedence over the dashboard's company logo. If it is still set and
+  still points at a pre-rebrand asset, the checkout keeps showing the OLD logo no
+  matter what the dashboard says. It is optional and may well be unset — but check
+  it, and if it is set, repoint it at
+  `https://sceneone.info/assets/scene-one-logo-v2.png`. Never blank it to an empty
+  string in place: an empty `logo_url` is a malformed URI that Moyasar rejects,
+  taking the whole checkout down. Delete the variable instead.
 - **Confirm the production domain** — report-email links use `https://sceneone.info`
   (`SITE_URL` in `api/review-coverage.js`); update if the live domain differs.
 - **Verify on the deploy** (can't run locally): send a report → open the link on
