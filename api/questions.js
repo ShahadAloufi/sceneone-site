@@ -261,7 +261,7 @@ async function ask(req, res, headers, url, token, question) {
   // is assigned, and the paper trail when one is.
   const emailed = await sendEmail({
     to: readerEmails.length ? readerEmails.concat([NOTIFY_TO]) : [NOTIFY_TO],
-    subject: "استفسار من الكاتب حول التقرير" + (title ? " — " + title : ""),
+    subject: "استفسار من الكاتب حول التقرير" + (title ? " · " + title : ""),
     html: emailDocument(questionEmail(sub, question, link)),
   });
 
@@ -323,7 +323,7 @@ async function answerQuestion(req, res, headers, url, token, answer) {
   const emailed = await sendEmail({
     to: [sub.email],
     cc: [NOTIFY_TO],
-    subject: "ردّ على استفسارك حول التقرير" + (title ? " — " + title : ""),
+    subject: "ردّ على استفسارك حول التقرير" + (title ? " · " + title : ""),
     html: emailDocument(answerEmail(sub, row.question, answer, reportLink)),
   });
 
