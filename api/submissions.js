@@ -158,6 +158,9 @@ function validate(row) {
   if (!isTreatment(row.film_type) && !row.duration) return "بيانات غير صحيحة";
   if (!row.theme) return "بيانات غير صحيحة";
   if (row.characters && row.characters.length > MAX.characters) return "بيانات غير صحيحة";
+  // The tone/style reference is required on the treatment form (2026-09-01),
+  // like the theme before it. Treatment-only: the script form has no such field.
+  if (isTreatment(row.film_type) && !row.tone_ref) return "بيانات غير صحيحة";
   if (row.tone_ref && row.tone_ref.length > MAX.toneRef) return "بيانات غير صحيحة";
   if (row.treatment_text && row.treatment_text.length > MAX.treatmentText) return "بيانات غير صحيحة";
   if (!row.email || row.email.length > MAX.email || !EMAIL_RE.test(row.email)) return "بريد إلكتروني غير صحيح";
