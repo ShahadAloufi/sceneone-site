@@ -81,13 +81,13 @@
       treatLi8: "توصية واضحة للتطوير أو التعديل أو إعادة التفكير",
       ctypesNote: "يمكنك إعادة تقديم نسخة مطوّرة من نفس السيناريو (Draft 2) مجانًا بعد استلام التقييم الأولي، بشرط أن تكون نسخة محدثة لنفس العمل وليست مشروعًا جديدًا.",
       featureTitle: "تغطية النصوص السينمائية الطويلة",
-      featurePriceNote: "10 ريال لكل صفحة — من 80 إلى 120 صفحة",
+      featurePriceNote: "10 ريال لكل صفحة · من 80 إلى 120 صفحة",
       featureDescHtml: "يقدم هذا التقرير ملاحظات تفصيلية على الفيلم الطويل (<strong>من 80 إلى 120 صفحة</strong>). يشمل ذلك تقييمًا وملاحظات حول: " +
         "<strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والحوار، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong>",
       featureLi1Html: "مدة التسليم: حتى 4 أسابيع <span class=\"ctype-card__note\">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span>",
 
       shortTitle: "تغطية النصوص السينمائية القصيرة",
-      shortPriceNote: "10 ريال لكل صفحة — من 10 إلى 40 صفحة",
+      shortPriceNote: "10 ريال لكل صفحة · من 10 إلى 40 صفحة",
       shortDescHtml: "يقدم هذا التقرير ملاحظات تفصيلية على الفيلم القصير (<strong>من 10 إلى 40 صفحة</strong>). يشمل ذلك تقييمًا وملاحظات حول: " +
         "<strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والحوار، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong>",
       shortLi1Html: "مدة التسليم: عادةً من 10 إلى 15 يومًا <span class=\"ctype-card__note\">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span>",
@@ -350,13 +350,13 @@
       treatLi8: "Development readiness verdict (continue / revise / rethink)",
       ctypesNote: "After receiving your initial coverage, you're welcome to resubmit an updated draft of the same screenplay (Draft 2) free of charge, as long as it remains the same project and not a new submission.",
       featureTitle: "Feature Film Coverage",
-      featurePriceNote: "10 SAR per page — 80 to 120 pages",
+      featurePriceNote: "10 SAR per page · 80 to 120 pages",
       featureDescHtml: "Provides detailed feedback on feature-length scripts (<strong>80 to 120 pages</strong>), including: " +
         "<strong>concept and premise, hook and originality, dramatic stakes and structure, characters, dialogue, structure and pacing, production viability, an approximate budget estimate, and an overall assessment.</strong>",
       featureLi1Html: "Turnaround: up to 4 weeks <span class=\"ctype-card__note\">(the timeline begins once your script is assigned to a reader; you'll be notified by email when that happens)</span>",
 
       shortTitle: "Short Film Coverage",
-      shortPriceNote: "10 SAR per page — 10 to 40 pages",
+      shortPriceNote: "10 SAR per page · 10 to 40 pages",
       shortDescHtml: "Provides detailed feedback on short film scripts (<strong>10 to 40 pages</strong>), including: " +
         "<strong>concept and premise, hook and originality, dramatic stakes and structure, characters, dialogue, structure and pacing, production viability, an approximate budget estimate, and an overall assessment.</strong>",
       shortLi1Html: "Turnaround: typically 10–15 days <span class=\"ctype-card__note\">(the timeline begins once your script is assigned to a reader; you'll be notified by email when that happens)</span>",
