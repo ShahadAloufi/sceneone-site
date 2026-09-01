@@ -16,7 +16,7 @@
 //
 // Required env vars: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY.
 
-const { brandHeader } = require("../lib/email-brand");
+const { brandHeader, emailDocument } = require("../lib/email-brand");
 
 const NOTIFY_FROM = "Scene One <no-reply@sceneone.info>";
 const NOTIFY_TO = "sceneone.info@gmail.com";
@@ -262,7 +262,7 @@ async function ask(req, res, headers, url, token, question) {
   const emailed = await sendEmail({
     to: readerEmails.length ? readerEmails.concat([NOTIFY_TO]) : [NOTIFY_TO],
     subject: "استفسار من الكاتب حول التقرير" + (title ? " — " + title : ""),
-    html: questionEmail(sub, question, link),
+    html: emailDocument(questionEmail(sub, question, link)),
   });
 
   return res.status(200).json({ ok: true, emailed: emailed });
@@ -324,7 +324,7 @@ async function answerQuestion(req, res, headers, url, token, answer) {
     to: [sub.email],
     cc: [NOTIFY_TO],
     subject: "ردّ على استفسارك حول التقرير" + (title ? " — " + title : ""),
-    html: answerEmail(sub, row.question, answer, reportLink),
+    html: emailDocument(answerEmail(sub, row.question, answer, reportLink)),
   });
 
   return res.status(200).json({ ok: true, emailed: emailed });

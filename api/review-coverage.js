@@ -29,7 +29,7 @@
 //
 // Required env vars: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY.
 
-const { brandHeader } = require("../lib/email-brand");
+const { brandHeader, emailDocument } = require("../lib/email-brand");
 
 const NOTIFY_FROM = "Scene One <no-reply@sceneone.info>";
 const NOTIFY_TO = "sceneone.info@gmail.com";
@@ -416,7 +416,7 @@ module.exports = async (req, res) => {
   // to the end to find the file.
   const fileLink = hasAttachment
     ? SITE_URL + "/download/" + encodeURIComponent(sub.report_token) : null;
-  const html = reportEmail(sub, link, askLink, fileLink);
+  const html = emailDocument(reportEmail(sub, link, askLink, fileLink));
 
   try {
     const r = await fetch("https://api.resend.com/emails", {
