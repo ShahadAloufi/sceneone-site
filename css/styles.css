@@ -419,10 +419,13 @@ a, button {
 .partnership__pip { width: 12px; height: 3px; border-radius: 1.5px; background: var(--gold); }
 
 .partnership__logos { display: flex; align-items: center; justify-content: center; gap: 28px; margin-top: 56px; }
-.partnership__logo { height: 92px; width: auto; }
-/* The association mark is wordmark-only while ours carries a clapperboard above
-   its name, so matching their heights would leave the association looking
-   larger — it is set smaller on purpose. */
+.partnership__logo { height: 64px; width: auto; }
+/* Both marks are now wordmark-beside-symbol lockups of similar weight, so their
+   heights sit close together. Ours is the wider of the two at any given height
+   (2.7:1 against their 1.7:1), which is why it is set slightly SHORTER than the
+   association's rather than taller — matching heights made ours dominate the
+   row. Before 2026-09-01 our logo stacked the clapperboard above the name and
+   this rule read the other way round; don't restore that. */
 .partnership__logo--assoc { height: 68px; }
 .partnership__pip--sep { opacity: .55; }
 
@@ -448,7 +451,7 @@ a, button {
   /* Stacked: side by side at this width each mark is too small to read. */
   .partnership__logos { flex-direction: column; gap: 20px; }
   .partnership__pip--sep { width: 3px; height: 12px; }
-  .partnership__logo { height: 76px; }
+  .partnership__logo { height: 54px; }
   .partnership__logo--assoc { height: 56px; }
   .partnership__eyebrow { font-size: 11px; gap: 10px; }
   .partnership__eyebrow::before, .partnership__eyebrow::after { width: 24px; }
@@ -988,9 +991,9 @@ html[data-theme="dark"] .adm-login__panel { background: #000000; }
 .adm-login__title { text-align: center; font-size: 22px; font-weight: 700; margin: 0 0 34px; color: var(--adm-text); }
 .adm-login__logo {
   display: block; height: 64px; width: 64px; margin: 0 auto;
-  background: no-repeat center / contain url(../assets/scene-one-logo-light.svg);
+  background: no-repeat center / contain url(../assets/scene-one-mark-light-v2.png);
 }
-html[data-theme="dark"] .adm-login__logo { background-image: url(../assets/scene-one-logo.svg); }
+html[data-theme="dark"] .adm-login__logo { background-image: url(../assets/scene-one-mark-v2.png); }
 
 /* password field + show/hide eye */
 .adm-pass { position: relative; }
@@ -1101,9 +1104,9 @@ html[data-theme="dark"] .adm-login__submit { background: #ffffff; color: #111418
    sidebar, black+orange mark on the light sidebar. */
 .adm-brand-logo {
   display: block; height: 46px; width: 46px;
-  background: no-repeat center / contain url(../assets/scene-one-logo-light.svg);
+  background: no-repeat center / contain url(../assets/scene-one-mark-light-v2.png);
 }
-html[data-theme="dark"] .adm-brand-logo { background-image: url(../assets/scene-one-logo.svg); }
+html[data-theme="dark"] .adm-brand-logo { background-image: url(../assets/scene-one-mark-v2.png); }
 
 .adm-nav { display: flex; flex-direction: column; gap: 4px; }
 .adm-navitem {

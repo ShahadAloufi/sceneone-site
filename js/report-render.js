@@ -9,11 +9,14 @@
 (function () {
   "use strict";
 
-  // Vector SVG: the report renders natively (never via html2canvas anymore), so
-  // the SVG stays crisp at any size — a downscaled PNG washed the thin strokes out.
   // Icon-only mark (no "Scene One" wordmark baked in) — the report header
   // already carries the SCENE ONE watermark text right below it via .rep-wm.
-  var LOGO = "assets/scene-one-mark.svg";
+  // The 2026-09-01 brand artwork is supplied as PNG, not SVG. It survives the
+  // downscale to 48px where the old mark would not have: the new strokes are
+  // heavy, and this crop is 364x318 for a 55px box. If a vector version of the
+  // logo ever arrives, swap it back — the report renders natively, so an SVG
+  // here would stay crisp at any size.
+  var LOGO = "assets/scene-one-mark-v2.png";
 
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>]/g, function (c) {

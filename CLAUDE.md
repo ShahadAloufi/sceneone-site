@@ -28,6 +28,56 @@ coverage workspace + report, role-based access, deadlines, and report delivery t
 writers. **The payment gate is live and has taken real money** (see below).
 Actively iterating on UX polish and workflow features.
 
+**Recently shipped (2026-09-01):**
+- **NEW BRAND LOGO — a horizontal lockup replacing the old vertical one.** The
+  supplied artwork is «سين ون» over a serif "Scene One" beside the bracket-frame
+  clapper mark. Brand red is unchanged (`#CD2E07`, the same value already in the
+  code). Two files were supplied, white-artwork and black-artwork, both 852x318.
+  - **The aspect ratio went from ~0.9:1 to 2.7:1, and that is what breaks things.**
+    Every box sized for the old near-square logo now renders three times wider.
+    The rule that follows: **a surface with width gets the full lockup, a square
+    or short box gets the MARK ALONE.** Concretely — nav (56/64px), the menu
+    overlay (56px) and the partnership row get `scene-one-logo-v2.png`; the admin
+    login (64x64), the admin sidebar (46x46), the coverage workspace header
+    (30px tall) and the report header get `scene-one-mark-v2.png`. Put the
+    lockup in a square box and it renders at a quarter height, illegible.
+  - **The mark files are a straight crop of the supplied artwork**, not a redraw:
+    there is a clean 33px alpha gap at x455-487 separating wordmark from mark, so
+    the mark is `crop(488, 0, 852, 318)` = 364x318. Regenerate them that way if
+    the source is ever reissued.
+  - **These are PNG, not SVG — the artwork was supplied as raster.** Every use is
+    a 5x+ downscale (nav 171x64, report mark 55x48) so it is sharp on retina, and
+    the new strokes are heavy enough to survive it where the old thin-stroke mark
+    would not have. **If a vector version ever arrives it is a drop-in win**,
+    especially for the favicon; see the note atop `js/report-render.js`.
+  - **`favicon-v2.png` is generated, not supplied** — the white mark on the brand
+    `#0E0202` rounded square (same radius ratio as the `favicon.svg` it replaces),
+    256px, 9% padding. The padding was tightened from 17% because at a real 16px
+    tab size the brackets and the S mush together; don't pad it out again. It
+    replaced BOTH the old `favicon.svg` and the `alternate icon` PNG line, so
+    every page now carries one `rel="icon"` link.
+  - **Everything is `-v2`-suffixed on purpose** — per the cache rule below,
+    renaming is the only reliable way to retire an asset returning visitors have
+    cached. Replacing the logo in place would have shown them the old one.
+  - **`.partnership__logo` dropped 92px -> 64px** (mobile 76 -> 54) and its comment
+    now reads the opposite way round: ours used to be set TALLER than the
+    association's because it stacked the mark above the name, and at equal
+    heights the wide lockup dominated the row instead. Don't restore the old rule.
+  - **`sample-treatment-report.html` now uses the mark**, matching
+    `report-render.js`. It had been using the full logo, which printed "Scene One"
+    directly above the `.rep-wm` "SCENE ONE" text — the new lockup would have made
+    that duplication worse.
+  - **Still carrying the OLD brand, both outside the repo:** the Moyasar hosted
+    checkout logo (a dashboard upload in BOTH the test and live environments, no
+    code — see the TODO below) and the **emails**, whose header is letterspaced
+    `SCENE ONE` text, not an image. The email wordmark is sans and the new logo's
+    Latin is serif; email clients can't load a custom font, so matching it means a
+    design decision, not a swap. Neither is done.
+  - The old `scene-one-logo.svg`, `scene-one-logo-light.svg`, `scene-one-mark.svg`,
+    `favicon.svg` and `favicon.png` are now **unreferenced but still in `assets/`**,
+    left in place deliberately rather than deleted.
+
+
 **Recently shipped (2026-08-31):**
 - **The three verdicts now read in Arabic, everywhere, and from ONE wording:**
   `Recommend` → «موصى به», `Consider` → «يستحق النظر», `Pass` → «لا يُوصى به
@@ -1884,6 +1934,10 @@ must be in the `supabase_realtime` publication for live updates to fire.
   unbranded page there reads as a redirect to the wrong site — on a payment page, that
   costs conversions. **Dashboard setting, no code.** Do it for **both** the test and
   live environments; like keys and webhooks, they're configured separately.
+  **Use the 2026-09-01 logo** — `assets/scene-one-logo-v2.png`, or the mark alone
+  (`assets/scene-one-mark-v2.png`) if the checkout wants something nearer square.
+  This is now the last place in the writer's paid flow still able to show the old
+  brand, since the checkout sits between a rebranded form and a rebranded report.
 - **Confirm the production domain** — report-email links use `https://sceneone.info`
   (`SITE_URL` in `api/review-coverage.js`); update if the live domain differs.
 - **Verify on the deploy** (can't run locally): send a report → open the link on
