@@ -110,7 +110,7 @@
       roleLeadReader: "قارئ رئيسي",
       roleSeniorReader: "قارئ أول", roleJuniorReader: "قارئ مبتدئ", assignCo: "إضافة قارئ مشارك",
       assignTwice: "لا يمكنك إسناد نفسك مرتين",
-      assignBlocked: "لا يمكنك قبول تكليف جديد حتى يُعتمد تقرير تكليفك الحالي ويُرسل إلى الكاتب.",
+      assignBlocked: "لا يمكنك قبول تكليف جديد حتى ترسل تقييم تكليفك الحالي لاعتماد فريق الجودة.",
       claimBlockedLevel: "هذا النص لكاتب محترف أو متمرّس، وهو مخصص لقارئ أول.",
       claimConfirm: "سيتم إشعار الكاتب ببدء العمل على نصه بعد ساعة واحدة. يمكنك إلغاء الإسناد خلال هذه المدة. هل تريد المتابعة؟",
       covLocked: "أسند نفسك أولاً", covDenied: "لا يمكنك عرض هذا التقييم إلا بعد إسناد نفسك للنص.",
@@ -203,7 +203,7 @@
       roleLeadReader: "Lead Reader",
       roleSeniorReader: "Senior Reader", roleJuniorReader: "Junior Reader", assignCo: "Add co-reader",
       assignTwice: "You cannot assign yourself twice",
-      assignBlocked: "You can't take a new assignment until your current report is approved and sent to the writer.",
+      assignBlocked: "You can't take a new assignment until you send your current coverage for quality review.",
       claimBlockedLevel: "This script is from a professional or veteran writer — reserved for senior readers.",
       claimConfirm: "The writer will be notified that you started working on their script after 1 hour. You can release it before then. Continue?",
       covLocked: "Assign yourself first", covDenied: "You can only view this coverage after assigning yourself to the script.",
@@ -889,14 +889,25 @@
            JUNIOR_BLOCKED_LEVELS.indexOf(s.writer_level) !== -1;
   }
 
-  // One active assignment per reader. `currentRows` is already the active
-  // pipeline (renderSubmissionsTable drops delivered scripts), so anything in it
-  // that is mine counts as active. The server is stricter — it also counts
-  // assigned-but-refunded scripts, which never reach this list — so a rare
+  // One active assignment per reader, where "active" means the coverage is still
+  // the reader's own work: nothing written yet, in_progress, or sent back by QA
+  // as revision_requested. A coverage waiting in the quality team's queue
+  // ('submitted') does NOT count — that wait can run for days, and holding the
+  // reader idle through it buys nothing. Neither does 'approved', which is done
+  // even on the rare path where the delivery email failed and delivered_at is
+  // still null. `currentRows` is already the active pipeline
+  // (renderSubmissionsTable drops delivered scripts), so anything in it that is
+  // mine and not in one of those two states counts.
+  //
+  // Mirrors /api/claim-script, which stays stricter: it also counts
+  // assigned-but-refunded scripts, which never reach this list, so a rare
   // false-negative here still fails safely at the API with assignBlocked.
+  var HANDED_OFF = ["submitted", "approved"];
   function hasActiveAssignment() {
     if (!me || !isReader(me.role)) return false;
-    return currentRows.some(amAssignedTo);
+    return currentRows.some(function (s) {
+      return amAssignedTo(s) && HANDED_OFF.indexOf(currentCov[s.id]) === -1;
+    });
   }
 
   // Release window. A reader can release a script they just claimed until the

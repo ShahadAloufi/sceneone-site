@@ -204,10 +204,19 @@ module.exports = async (req, res) => {
   }
 
   // One-active-assignment limit: every reader (junior or senior) may hold only
-  // one undelivered script at a time, as primary OR co-reader. "Undelivered"
-  // mirrors the dashboard's own delivered_at check (see admin.js) — a script
-  // whose coverage has been approved has left the reader's active queue even if
-  // assigned_to still points at them, so it must not count here.
+  // one script that is still THEIR work to do, as primary OR co-reader.
+  //
+  // "Still their work" means the coverage has not left their hands: no coverage
+  // row yet, 'in_progress', or 'revision_requested' (QA sent it back). Once the
+  // reader submits for approval the ball is in the quality team's court and may
+  // sit there for days, so 'submitted' does NOT block a new claim — waiting on
+  // someone else's review is not a reason to keep a reader idle. 'approved' does
+  // not block either: the coverage is done even in the rare case where the
+  // delivery email failed and delivered_at is still null.
+  //
+  // A script that comes back as 'revision_requested' while the reader already
+  // holds a second one leaves them with two. That is by design — this is a
+  // claim-time gate, not a running cap — and it is visible on the dashboard.
   //
   // FAILS OPEN, deliberately. This is a workload rule, not a security boundary,
   // and it is the only thing standing between a reader and any claim at all. If
@@ -219,7 +228,7 @@ module.exports = async (req, res) => {
   let hasActive = false;
   try {
     const activeResp = await fetch(
-      url + "/rest/v1/submissions?select=id,coverages(delivered_at)" +
+      url + "/rest/v1/submissions?select=id,coverages(status,delivered_at)" +
       "&or=(assigned_to.eq." + encodeURIComponent(me.id) + ",co_reader_id.eq." + encodeURIComponent(me.id) + ")",
       { headers }
     );
@@ -228,7 +237,9 @@ module.exports = async (req, res) => {
       hasActive = activeRows.some(function (row) {
         var cov = row.coverages;
         if (Array.isArray(cov)) cov = cov[0];
-        return !cov || !cov.delivered_at;
+        if (!cov) return true;                 // claimed, nothing written yet
+        if (cov.delivered_at) return false;    // sent to the writer, done
+        return cov.status !== "submitted" && cov.status !== "approved";
       });
     } else {
       console.error("claim-script active-check FAILED (allowing claim):",
@@ -242,7 +253,7 @@ module.exports = async (req, res) => {
     // assign() regex-matches to show the friendlier assignBlocked copy instead
     // of this raw fallback — keep both in sync if either changes.
     return res.status(409).json({
-      message: "READER_HAS_ACTIVE_ASSIGNMENT: لديك تكليف نشط بالفعل، أكمل تسليمه قبل قبول تكليف جديد",
+      message: "READER_HAS_ACTIVE_ASSIGNMENT: لديك تكليف نشط بالفعل، أرسله لاعتماد فريق الجودة قبل قبول تكليف جديد",
     });
   }
 
