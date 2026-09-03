@@ -1171,12 +1171,15 @@ html[data-theme="light"] .adm-decor-clapper { background-image: url(../assets/de
   padding: 20px; display: flex; flex-direction: column; gap: 12px;
 }
 .adm-kpi__head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.adm-kpi__badge { display: inline-flex; align-items: center; justify-content: center; text-align: center; font-size: 15px; font-weight: 800; color: var(--adm-accent); background: var(--adm-accent-soft); border-radius: 8px; padding: 5px 13px; }
+/* The figure alone — no pill. The colour still carries the state, so the tinted
+   background was saying the same thing twice and competing with the count, which
+   is the number the tile is actually about. */
+.adm-kpi__badge { display: inline-flex; align-items: center; justify-content: center; text-align: center; font-size: 15px; font-weight: 800; color: var(--adm-accent); }
 .adm-kpi__label { font-size: 13px; color: var(--adm-muted); font-weight: 600; }
 .adm-kpi__value { font-size: 32px; font-weight: 800; line-height: 1; color: var(--adm-text); font-variant-numeric: tabular-nums; }
-.adm-kpi--pending .adm-kpi__badge { color: var(--adm-red); background: var(--adm-red-soft); }
-.adm-kpi--review .adm-kpi__badge { color: var(--adm-amber); background: var(--adm-amber-soft); }
-.adm-kpi--done .adm-kpi__badge { color: var(--adm-green); background: var(--adm-green-soft); }
+.adm-kpi--pending .adm-kpi__badge { color: var(--adm-red); }
+.adm-kpi--review .adm-kpi__badge { color: var(--adm-amber); }
+.adm-kpi--done .adm-kpi__badge { color: var(--adm-green); }
 
 .adm-tablehead { display: flex; align-items: center; margin-bottom: 12px; }
 /* Month filter (deliveries) — sits at the end of the table header row. */
