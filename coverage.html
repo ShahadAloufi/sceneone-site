@@ -397,8 +397,14 @@
   .guard__box a{color:var(--orange);text-decoration:none;font-weight:600}
 
   /* Arabic script is cursive — letter-spacing pulls the joined letters apart.
-     Zero it out on the uppercase-styled labels when the UI is in Arabic. */
+     Zero it out on the uppercase-styled labels when the UI is in Arabic.
+     THIS LIST HAS TO GROW WITH THE UI: any new label styled the uppercase way
+     (letter-spacing + text-transform) needs adding here, or its Arabic renders
+     as disconnected letters. `.eval-note__lbl` was missed when the per-point
+     review notes landed, which is exactly how that shows up. */
   html[lang="ar"] .eyebrow,
+  html[lang="ar"] .eval-note__lbl,
+  html[lang="ar"] .savestate,
   html[lang="ar"] label.lbl,
   html[lang="ar"] .section-title,
   html[lang="ar"] .meta-grid .k,
