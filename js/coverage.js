@@ -57,7 +57,7 @@
       // Quality-control review flow
       submitApproval: "Submit Coverage for Approval",
       approveSend: "Approve & Send to Writer", requestRevision: "Request Revision",
-      revisionNotePh: "Reason for revision — only needed to request a revision",
+      revisionNotePh: "Reason for revision, only needed to request a revision",
       reviewHint: "Approving needs no note. A note is only required to request a revision.",
       noteRequired: "Add a revision note before requesting changes.",
       reviewTimeout: "The request timed out. Check whether the report was sent before retrying.",
@@ -128,7 +128,7 @@
       // مسار مراجعة الجودة
       submitApproval: "إرسال التغطية للاعتماد",
       approveSend: "اعتماد وإرسال إلى الكاتب", requestRevision: "طلب تعديل",
-      revisionNotePh: "سبب التعديل — مطلوب فقط عند طلب تعديل",
+      revisionNotePh: "سبب التعديل، مطلوب فقط عند طلب تعديل",
       reviewHint: "الاعتماد لا يحتاج إلى ملاحظة. الملاحظة مطلوبة فقط عند طلب تعديل.",
       noteRequired: "أضف ملاحظة التعديل قبل طلب التعديل.",
       reviewTimeout: "انتهت مهلة الطلب. تحقق مما إذا كان التقرير قد أُرسل قبل إعادة المحاولة.",
