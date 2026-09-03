@@ -176,7 +176,8 @@
   .cov-banner--await{border-color:rgba(205,46,7,.5);color:var(--ink)}
   .cov-banner--revision{border-color:rgba(205,46,7,.7);color:var(--ink)}
   .cov-banner--approved{border-color:rgba(34,139,73,.65);color:var(--ink)}
-  .cov-reviewbar{border:1px solid rgba(205,46,7,.4);background:var(--card);border-radius:14px;
+  /* Flat, like the banner above it: border only, 2px at a matching alpha. */
+  .cov-reviewbar{border:2px solid rgba(205,46,7,.6);background:transparent;border-radius:14px;
     padding:16px 18px;margin:0 0 18px;display:flex;flex-direction:column;gap:12px}
   .cov-reviewbar[hidden]{display:none}
   .cov-reviewbar textarea{width:100%;resize:vertical;min-height:52px;font:inherit;color:var(--ink);
