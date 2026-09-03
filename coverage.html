@@ -180,7 +180,11 @@
   .cov-reviewbar{border:2px solid rgba(205,46,7,.6);background:transparent;border-radius:14px;
     padding:16px 18px;margin:0 0 18px;display:flex;flex-direction:column;gap:12px}
   .cov-reviewbar[hidden]{display:none}
-  .cov-reviewbar textarea{width:100%;resize:vertical;min-height:52px;font:inherit;color:var(--ink);
+  /* `max-width:100%` is what keeps a dragged box inside the panel. Resizing
+     writes an inline WIDTH as well as a height, and without a cap that width
+     wins over the container: the field grows straight through the border — 20px
+     past it here, since the panel spends that on padding. */
+  .cov-reviewbar textarea{width:100%;max-width:100%;resize:vertical;min-height:52px;font:inherit;color:var(--ink);
     background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
   .cov-reviewbar__actions{display:flex;gap:12px;flex-wrap:wrap}
   .cov-reviewbar__hint{margin:0;font-size:13px;color:var(--label);line-height:1.5}
@@ -269,7 +273,7 @@
      A READ-ONLY note gets no handle: there is nothing to resize, and the grip
      floated in the box padding rather than on the border, because the textarea
      is transparent and borderless inside it. */
-  .eval-note__box textarea{width:100%;resize:none;min-height:46px;font:inherit;font-size:15px;
+  .eval-note__box textarea{width:100%;max-width:100%;resize:none;min-height:46px;font:inherit;font-size:15px;
                   color:var(--ink);background:transparent;border:0;outline:none;padding:0;line-height:1.7}
   .eval-note__box textarea:not([readonly]){resize:vertical}
   /* Read-only: what the reader sees when the coverage comes back for revision. */
