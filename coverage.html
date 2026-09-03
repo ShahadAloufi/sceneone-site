@@ -13,7 +13,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#15110f; --orange:#CD2E07; --orange-d:#a82405;
@@ -25,7 +25,12 @@
     /* landing-style action buttons: solid (primary) + ghost outline (secondary) */
     --btn-solid-bg:#141414; --btn-solid-bg-hover:#000000; --btn-solid-text:#ffffff;
     --btn-bg:#f4f0ea; --btn-bg-hover:#ece7df; --btn-line:#e0d9cf; --btn-ink:#2c2620;
-    --font:'Tajawal',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    /* Almarai for the workspace chrome, matching the dashboard a reader arrives
+       from. The report preview further down deliberately KEEPS Tajawal
+       (.rep-tag, #reportBody.ar, .rep-title .ar): it reproduces what the writer
+       receives, and the writer's report is still Tajawal — a preview in a
+       different face would misrepresent it. */
+    --font:'Almarai',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   }
   /* English: swap to IBM Plex Sans, same split as the marketing pages'
      css/styles.css (this page is self-contained, so it needs its own copy). */
