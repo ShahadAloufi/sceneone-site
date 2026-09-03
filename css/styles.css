@@ -1232,7 +1232,7 @@ html[dir="rtl"] .adm-tablefilter select { background-position: left 16px center;
    stays close to the height of an empty column. */
 .adm-card .adm-due { display: inline-flex; align-items: center; gap: 7px; flex-wrap: wrap; }
 .adm-card .adm-due > div { display: inline; font-size: 12px; }
-.adm-card .adm-due__badge { margin-top: 0; padding: 2px 8px; font-size: 11px; }
+.adm-card .adm-due__badge { margin-top: 0; font-size: 11px; }
 .adm-card .adm-link { width: auto; height: 28px; padding: 4px 12px; font-size: 12px; border-radius: 7px; }
 .adm-card .adm-av { width: 26px; height: 26px; font-size: 11.5px; }
 @media (max-width: 900px) { .adm-kanban { grid-template-columns: 1fr; } }
@@ -1248,20 +1248,23 @@ html[dir="rtl"] .adm-tablefilter select { background-position: left 16px center;
 .adm-muted { color: var(--adm-faint); font-size: 12px; }
 .adm-empty { padding: 40px; text-align: center; color: var(--adm-faint); }
 /* Submission deadline (submitted date + 2 weeks) */
-.adm-due__badge { display: inline-flex; align-items: center; justify-content: center; text-align: center; margin-top: 6px; font-size: 12px; font-weight: 800; padding: 4px 11px; border-radius: 8px; white-space: nowrap; }
-.adm-due--ok   { color: #2f9d5e; background: rgba(47,157,94,.14); }
-.adm-due--soon { color: #c9962e; background: rgba(201,150,46,.16); }
-.adm-due--over { color: #d9584a; background: rgba(217,88,74,.16); }
-.adm-due--done { color: var(--adm-muted); background: var(--adm-surface-2); }
+/* The words alone — no pill. Every state says something different («متأخّر»,
+   «تم التسليم», «ينتهي اليوم», «لم تبدأ بعد», «متبقٍّ N يوم»), so the tint was
+   reinforcement rather than the signal, and a table full of filled chips reads
+   busier than the dates it sits beside. Colour still carries the urgency. */
+.adm-due__badge { display: inline-flex; align-items: center; justify-content: center; text-align: center; margin-top: 6px; font-size: 12px; font-weight: 800; white-space: nowrap; }
+.adm-due--ok   { color: #2f9d5e; }
+.adm-due--soon { color: #c9962e; }
+.adm-due--over { color: #d9584a; }
+.adm-due--done { color: var(--adm-muted); }
 /* Delivery clock hasn't started: the assignment isn't confirmed yet (no
    writer_notified_at). Deliberately neutral — this is not a warning state, so it
-   must not compete with the amber/red pills for attention. The dashed border is
-   what separates it from the solid `--done` pill, which shares its colours;
-   dimming it with opacity instead made it genuinely hard to read. */
-.adm-due--idle {
-  color: var(--adm-muted); background: transparent;
-  border: 1px dashed var(--adm-outline-line);
-}
+   must not compete with the amber/red states for attention.
+   It used to carry a dashed border, purely to tell it apart from the solid
+   `--done` pill it shares colours with. With the pills gone that border would be
+   the only boxed thing in the column, and it is not needed: the two read
+   «لم تبدأ بعد» and «تم التسليم», which is the difference that matters. */
+.adm-due--idle { color: var(--adm-muted); }
 /* Payment state (All submissions tab). Same badge geometry as the deadline, and
    the same colour language: green = settled, amber = waiting, red = wrong. */
 /* Staff-only picker in the film-type column: it has to read as an editable field
