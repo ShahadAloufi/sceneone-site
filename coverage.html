@@ -257,7 +257,13 @@
   .eval-note__box[hidden]{display:none}
   .eval-note__lbl{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
                   color:var(--orange);margin-bottom:6px}
-  .eval-note__box textarea{width:100%;resize:vertical;min-height:46px;font:inherit;font-size:15px;
+  /* `resize:none` — the note grows to fit on its own (autoGrow in js/coverage.js,
+     on input and on render), so the drag handle did nothing useful. It also
+     LOOKED broken: the textarea is transparent and borderless inside a padded
+     box, so the grip floated in open space instead of sitting on the corner the
+     reader can actually see. Read-only notes had one too, where resizing is
+     meaningless. */
+  .eval-note__box textarea{width:100%;resize:none;min-height:46px;font:inherit;font-size:15px;
                   color:var(--ink);background:transparent;border:0;outline:none;padding:0;line-height:1.7}
   /* Read-only: what the reader sees when the coverage comes back for revision. */
   .eval-note__box textarea[readonly]{color:var(--ink);opacity:1}
