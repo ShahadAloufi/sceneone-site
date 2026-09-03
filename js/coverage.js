@@ -189,12 +189,24 @@
   // Textareas auto-grow to fit their content so writers never fight a scrollbar.
   function autoGrow(ta) {
     if (!ta) return;
+    // A box the user has DRAGGED to their own size keeps it. Without this the
+    // next keystroke snaps it back to fit the content, and the resize handle
+    // looks broken — which is why it has to be checked here rather than at the
+    // call sites: the global input listener below auto-grows every textarea.
+    // `autoH` records the height WE last set, so any inline height that differs
+    // came from the user.
+    if (ta.dataset.userSized === "1") return;
+    if (ta.dataset.autoH && ta.style.height && ta.style.height !== ta.dataset.autoH) {
+      ta.dataset.userSized = "1";
+      return;
+    }
     ta.style.height = "auto";
     // With box-sizing:border-box the border isn't part of scrollHeight, so add it
     // back — otherwise the box ends up a couple px short and clips the last line.
     var cs = getComputedStyle(ta);
     var border = (parseFloat(cs.borderTopWidth) || 0) + (parseFloat(cs.borderBottomWidth) || 0);
     ta.style.height = (ta.scrollHeight + border) + "px";
+    ta.dataset.autoH = ta.style.height;
   }
   function autoGrowAll() { var t = document.querySelectorAll("textarea"); for (var i = 0; i < t.length; i++) autoGrow(t[i]); }
   // Recompute now, on the next frame, and after web fonts load — measuring
