@@ -61,7 +61,7 @@
       reviewHint: "Approving needs no note. A note is only required to request a revision.",
       noteRequired: "Add a revision note before requesting changes.",
       reviewTimeout: "The request timed out. Check whether the report was sent before retrying.",
-      awaitingBanner: "Submitted for approval — awaiting the quality team's review. It's locked until they respond.",
+      awaitingBanner: "Submitted for approval, awaiting the quality team's review. It's locked until they respond.",
       revisionBanner: "Revision requested by the quality team:",
       approvedBanner: "Approved and sent to the writer.",
       reviewPrompt: "This coverage is awaiting your approval.",
@@ -77,7 +77,7 @@
       tRevision: "Sent back to the reader for revision",
       // Shown as a blocking alert, not a toast: approval succeeded but the writer
       // was NOT emailed, and only a human can put that right.
-      approvedNoEmail: "Approved — but the email to the writer FAILED to send.\n\n" +
+      approvedNoEmail: "Approved, but the email to the writer FAILED to send.\n\n" +
         "The report is live and the coverage is approved, but the writer has not been " +
         "told. Re-approving will not resend it. Please send them this link yourself:",
       approving: "Approving…", requesting: "Sending…", reviewFail: "Couldn't complete the action.",
@@ -132,7 +132,7 @@
       reviewHint: "الاعتماد لا يحتاج إلى ملاحظة. الملاحظة مطلوبة فقط عند طلب تعديل.",
       noteRequired: "أضف ملاحظة التعديل قبل طلب التعديل.",
       reviewTimeout: "انتهت مهلة الطلب. تحقق مما إذا كان التقرير قد أُرسل قبل إعادة المحاولة.",
-      awaitingBanner: "تم الإرسال للاعتماد — بانتظار مراجعة فريق الجودة. التغطية مقفلة حتى ردّهم.",
+      awaitingBanner: "تم الإرسال للاعتماد، بانتظار مراجعة فريق الجودة. التغطية مقفلة حتى ردّهم.",
       revisionBanner: "طلب فريق الجودة إجراء تعديل:",
       approvedBanner: "تم الاعتماد والإرسال إلى الكاتب.",
       reviewPrompt: "هذه التغطية بانتظار اعتمادك.",
@@ -146,7 +146,7 @@
       leadDeliverConfirm: "إرسال هذه التغطية إلى الكاتب الآن؟ بصفتك قارئًا رئيسيًا لا تخضع تغطيتك لمراجعة أحد، ولا يمكن التراجع عن هذا الإجراء.",
       tSubmitted: "تم إرسال التغطية للاعتماد", tApproved: "تم الاعتماد والإرسال إلى الكاتب",
       tRevision: "أُعيدت إلى القارئ للتعديل",
-      approvedNoEmail: "تم الاعتماد — لكن تعذّر إرسال البريد إلى الكاتب.\n\n" +
+      approvedNoEmail: "تم الاعتماد، لكن تعذّر إرسال البريد إلى الكاتب.\n\n" +
         "التقرير جاهز والتغطية معتمدة، لكن الكاتب لم يُبلَّغ. إعادة الاعتماد لن تُعيد " +
         "الإرسال. يرجى إرسال هذا الرابط إليه يدويًا:",
       approving: "جارٍ الاعتماد…", requesting: "جارٍ الإرسال…", reviewFail: "تعذّر إكمال الإجراء.",
