@@ -888,6 +888,14 @@ a, button {
 }
 
 /* ===== ADMIN PANEL ===== */
+/* Arabic here is ALMARAI, not the site-wide Tajawal — chosen 2026-09-01 for the
+   dashboard's dense tables. Set in three places below (.adm, .adm-login,
+   .adm-btn); no .adm rule reads --font-body/--font-head, so the public site and
+   the writer's report are untouched.
+   Almarai ships 300/400/700/800 and has NO 500 or 600. The rules below still ask
+   for those, and the browser resolves them the same way every time: 600 snaps up
+   to 700, 500 snaps down to 400. Left as-is rather than rewritten across 14
+   rules, so switching the family again stays a one-line change. */
 /* The `hidden` attribute must always win: class rules like `.adm-login {
    display:flex }` have equal specificity to the UA `[hidden]{display:none}`
    and would otherwise keep hidden views visible (blocking view switching). */
@@ -969,7 +977,7 @@ html[data-theme="dark"] {
 /* ---- Split-screen sign-in: cinema image left, form right ---- */
 .adm-login {
   min-height: 100vh; display: flex;
-  font-family: 'Tajawal', system-ui, sans-serif;
+  font-family: 'Almarai', system-ui, sans-serif;
   background: var(--adm-bg);
 }
 .adm-login__media {
@@ -1053,7 +1061,7 @@ html[data-theme="dark"] .adm-login__submit { background: #ffffff; color: #111418
 
 .adm-btn {
   border: none; border-radius: 10px; padding: 12px 16px; font-size: 15px; font-weight: 700;
-  cursor: pointer; font-family: 'Tajawal', sans-serif; transition: background .15s, opacity .15s;
+  cursor: pointer; font-family: 'Almarai', sans-serif; transition: background .15s, opacity .15s;
 }
 .adm-btn:disabled { opacity: .6; cursor: default; }
 .adm-btn--primary { width: 100%; background: var(--adm-primary-bg); color: var(--adm-primary-text); }
@@ -1078,7 +1086,7 @@ html[data-theme="dark"] .adm-login__submit { background: #ffffff; color: #111418
 
 .adm {
   min-height: 100vh; display: flex; background: var(--adm-bg);
-  font-family: 'Tajawal', system-ui, sans-serif; color: var(--adm-text);
+  font-family: 'Almarai', system-ui, sans-serif; color: var(--adm-text);
 }
 
 /* Boot loader: covers the page while the session check runs so it's never blank. */
