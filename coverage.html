@@ -165,13 +165,17 @@
      `max-height` because the note has no length limit server-side — a reviewer
      who writes at length would otherwise push the whole coverage off-screen. It
      scrolls inside itself instead. */
+  /* No fill on any of the three: the border carries the state, and the wash on
+     top of it read as a warning. 2px, with the alpha raised to match — doubling
+     the width at the old alpha just spreads the same faint colour. Same
+     treatment as the per-point notes below. */
   .cov-banner{border-radius:12px;padding:14px 18px;margin:0 0 18px;font-size:14.5px;font-weight:500;
-    line-height:1.6;border:1px solid var(--line);background:var(--card);
+    line-height:1.6;border:2px solid var(--line);background:transparent;
     white-space:pre-wrap;max-height:40vh;overflow-y:auto;overscroll-behavior:contain}
   .cov-banner[hidden]{display:none}
-  .cov-banner--await{background:rgba(205,46,7,.06);border-color:rgba(205,46,7,.32);color:var(--ink)}
-  .cov-banner--revision{background:rgba(205,46,7,.09);border-color:rgba(205,46,7,.5);color:var(--ink)}
-  .cov-banner--approved{background:rgba(34,139,73,.1);border-color:rgba(34,139,73,.45);color:var(--ink)}
+  .cov-banner--await{border-color:rgba(205,46,7,.5);color:var(--ink)}
+  .cov-banner--revision{border-color:rgba(205,46,7,.7);color:var(--ink)}
+  .cov-banner--approved{border-color:rgba(34,139,73,.65);color:var(--ink)}
   .cov-reviewbar{border:1px solid rgba(205,46,7,.4);background:var(--card);border-radius:14px;
     padding:16px 18px;margin:0 0 18px;display:flex;flex-direction:column;gap:12px}
   .cov-reviewbar[hidden]{display:none}
