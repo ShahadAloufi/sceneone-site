@@ -249,7 +249,10 @@
   .eval-note__add{background:none;border:0;padding:0;font:inherit;font-size:13px;
                   color:var(--orange);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
   .eval-note__add[hidden]{display:none}
-  .eval-note__box{border:1px solid rgba(205,46,7,.45);background:rgba(205,46,7,.06);
+  /* Border only, no fill. The orange rule and the «ملاحظة المراجعة» label are
+     enough to set a review note apart from the reader's own field above it; the
+     tint on top of that read as a warning the note is not. */
+  .eval-note__box{border:1px solid rgba(205,46,7,.45);
                   border-radius:10px;padding:10px 12px}
   .eval-note__box[hidden]{display:none}
   .eval-note__lbl{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
