@@ -458,8 +458,61 @@ a, button {
   .partnership__offer { padding: 15px 26px; font-size: 15.5px; }
 }
 
-/* COVERAGE TYPES */
+/* COVERAGE TYPES / PACKAGES */
 .ctypes { padding: 120px 24px 200px; direction: rtl; }
+.ctypes__title {
+  font-family: var(--font-head);
+  font-size: 40px;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+/* Audience switch: writers vs industry partners. A two-pill segmented control
+   rather than a row of links, so it reads as one choice with one answer. */
+.pkg-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 auto 36px;
+  padding: 6px;
+  width: max-content;
+  max-width: 100%;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 999px;
+  background: rgba(255,255,255,.04);
+}
+.pkg-tab {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  color: rgba(255,255,255,.62);
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  padding: 13px 30px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color .25s ease, background-color .25s ease;
+}
+.pkg-tab:hover { color: #fff; }
+.pkg-tab.is-active { color: #000; background: #fff; }
+/* Keyboard users need to see which pill has focus even while it is the
+   unselected one, where the hover colour alone would not show it. */
+.pkg-tab:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+/* The panel sets no `display` of its own, so the UA's [hidden] rule is what
+   hides the inactive one. Stated explicitly all the same: a later author rule
+   with `display` would silently beat [hidden] at equal specificity and leave
+   both panels stacked on the page. */
+.pkg-panel[hidden] { display: none !important; }
+
+/* Partner cards carry no price, so the title would otherwise sit tight against
+   the body copy where the price block used to open the gap. */
+.ctype-card--partner .ctype-card__title { margin-bottom: 28px; }
+.ctype-card--partner .ctype-card__desc:last-child { margin-bottom: 0; }
 /* Quiet note above the pricing cards — deliberately smaller than the card copy,
    centred over the grid rather than sitting inside either card. */
 .ctypes__note {
@@ -582,6 +635,11 @@ a, button {
   gap: 16px;
 }
 @media (max-width: 640px) {
+  .ctypes__title { font-size: 30px; }
+  /* Two pills side by side overflow a phone; let them stack and fill the row
+     rather than scroll sideways. */
+  .pkg-tabs { width: 100%; border-radius: 18px; }
+  .pkg-tab { flex: 1; padding: 13px 12px; font-size: 14px; border-radius: 14px; }
   .ctype-card { min-height: auto; padding: 40px 28px; }
   .ctype-card__title { font-size: 26px; }
   .ctype-card__btns { flex-direction: column; }

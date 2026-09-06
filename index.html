@@ -211,8 +211,23 @@
     </div>
   </section>
 
-  <!-- ── COVERAGE TYPES ── -->
+  <!-- ── PACKAGES (COVERAGE TYPES) ──
+       Two audiences, one section. The writers' panel is the original pricing
+       grid; the industry-partners panel sits behind the second tab. The tabs are
+       a progressive enhancement: js/main.js wires them, and with JS off the
+       writers' panel — the one every inbound link means — is what renders,
+       because only the partners panel carries the `hidden` attribute. -->
   <section class="ctypes" id="coverage-types">
+    <h2 class="ctypes__title" data-i18n="packagesTitle">الباقات</h2>
+
+    <div class="pkg-tabs" role="tablist" aria-label="الباقات" data-i18n-aria="packagesTablist">
+      <button type="button" class="pkg-tab is-active" role="tab" id="pkgTabWriters"
+              aria-selected="true" aria-controls="pkgWriters" data-i18n="pkgTabWriters">للكُتّاب</button>
+      <button type="button" class="pkg-tab" role="tab" id="pkgTabPartners"
+              aria-selected="false" aria-controls="pkgPartners" data-i18n="pkgTabPartners">لشركاء الصناعة</button>
+    </div>
+
+    <div class="pkg-panel" id="pkgWriters" role="tabpanel" aria-labelledby="pkgTabWriters">
     <p class="ctypes__note" data-i18n="ctypesNote">يمكنك إعادة تقديم نسخة مطوّرة من نفس السيناريو (Draft 2) مجانًا بعد استلام التقييم الأولي، بشرط أن تكون نسخة محدثة لنفس العمل وليست مشروعًا جديدًا.</p>
     <div class="ctypes__grid">
 
@@ -334,6 +349,57 @@
       </article>
 
     </div>
+    </div><!-- /#pkgWriters -->
+
+    <!-- Industry partners. No price line: these are negotiated per engagement,
+         so the card ends on a contact CTA rather than a figure. -->
+    <div class="pkg-panel" id="pkgPartners" role="tabpanel" aria-labelledby="pkgTabPartners" hidden>
+      <p class="ctypes__note" data-i18n="pkgPartnersNote">باقات مخصصة لجهات الإنتاج والتوزيع وصناديق الدعم والمهرجانات. التفاصيل والتسعير تُحدد بالتواصل معنا.</p>
+      <div class="ctypes__grid">
+
+        <article class="ctype-card ctype-card--partner">
+          <div class="ctype-card__head">
+            <h3 class="ctype-card__title" data-i18n="pkgAccessTitle">الوصول إلى النصوص المختارة</h3>
+            <p class="ctype-card__desc" data-i18n="pkgAccessDesc1">يوفر هذا البكج وصولًا إلى مجموعة من النصوص السينمائية التي اجتازت مرحلة التقييم في Scene One وحصلت على تقييمات عالية، مع تقارير احترافية تساعد على قراءة المشروع واتخاذ القرار.</p>
+            <p class="ctype-card__desc" data-i18n-html="pkgAccessDesc2Html">يشمل ذلك تقييمًا وملاحظات حول: <strong>الفكرة، والموضوع، وعنصر الجذب (Hook)، والرهانات الدرامية، والحبكة، والشخصيات، والحوار، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong></p>
+          </div>
+          <div class="ctype-card__foot">
+            <ul class="ctype-card__list">
+              <li data-i18n="pkgAccessLi1">الوصول إلى نصوص حاصلة على تقييمات عالية</li>
+              <li data-i18n="pkgAccessLi2">تقارير تقييم احترافية لكل نص (Coverage)</li>
+              <li data-i18n="pkgAccessLi3">تصنيف النصوص حسب النوع، الميزانية، وجاهزية المشروع</li>
+              <li data-i18n="pkgAccessLi4">قائمة دورية بأفضل النصوص المختارة</li>
+              <li data-i18n="pkgAccessLi5">إمكانية طلب التواصل مع الكُتّاب</li>
+            </ul>
+            <div class="ctype-card__btns">
+              <a class="btn btn--white" href="#contact" data-i18n="btnPartnerContact">تواصل معنا</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="ctype-card ctype-card--partner">
+          <div class="ctype-card__head">
+            <h3 class="ctype-card__title" data-i18n="pkgDevTitle">مسار تطوير المشاريع والإنتاج</h3>
+            <p class="ctype-card__desc" data-i18n-html="pkgDevDesc1Html">يقدّم هذا البكج مسارًا متكاملًا لتطوير النصوص السينمائية المختارة، حيث يتم العمل على المشاريع الحاصلة على تقييم <strong>«موصى به»</strong> للانتقال بها من مرحلة النص إلى مشروع جاهز للتقديم للسوق وجهات الإنتاج.</p>
+            <p class="ctype-card__desc" data-i18n="pkgDevDesc2">يشمل ذلك تقييمًا وتطويرًا على مستوى المشروع، يغطي الجوانب الإبداعية والسردية، بالإضافة إلى جاهزية المشروع من ناحية السوق والإنتاج، وتحديد أولويات التطوير وبناء مسار واضح للتقدم.</p>
+          </div>
+          <div class="ctype-card__foot">
+            <ul class="ctype-card__list">
+              <li data-i18n="pkgDevLi1">جميع ما يشمله «الوصول إلى النصوص المختارة»</li>
+              <li data-i18n="pkgDevLi2">اختيار المشاريع الحاصلة على تقييم «موصى به»</li>
+              <li data-i18n="pkgDevLi3">تقييم جاهزية المشروع للسوق والإنتاج</li>
+              <li data-i18n="pkgDevLi4">تحديد أولويات التطوير وبناء خارطة طريق واضحة</li>
+              <li data-i18n="pkgDevLi5">تطوير مواد التقديم (Pitch) وتموضع المشروع في السوق</li>
+              <li data-i18n="pkgDevLi6">تنسيق التواصل مع الكُتّاب ومتابعة تقدم المشروع</li>
+            </ul>
+            <div class="ctype-card__btns">
+              <a class="btn btn--white" href="#contact" data-i18n="btnPartnerContact">تواصل معنا</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div><!-- /#pkgPartners -->
   </section>
 
 
