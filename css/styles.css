@@ -512,7 +512,6 @@ a, button {
 /* Partner cards carry no price, so the title would otherwise sit tight against
    the body copy where the price block used to open the gap. */
 .ctype-card--partner .ctype-card__title { margin-bottom: 28px; }
-.ctype-card--partner .ctype-card__desc:last-child { margin-bottom: 0; }
 /* Quiet note above the pricing cards — deliberately smaller than the card copy,
    centred over the grid rather than sitting inside either card. */
 .ctypes__note {
