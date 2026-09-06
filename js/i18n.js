@@ -81,6 +81,7 @@
       treatLi8: "توصية واضحة للتطوير أو التعديل أو إعادة التفكير",
       // ── Packages: audience switch + industry-partner cards ──
       packagesTitle: "الباقات",
+      launchPrices: "أسعار الإطلاق",
       packagesTablist: "الباقات",
       pkgTabWriters: "للكُتّاب",
       pkgTabPartners: "لشركاء الصناعة",
@@ -377,6 +378,7 @@
       treatLi8: "Development readiness verdict (continue / revise / rethink)",
       // ── Packages: audience switch + industry-partner cards ──
       packagesTitle: "Packages",
+      launchPrices: "Launch Prices",
       packagesTablist: "Packages",
       pkgTabWriters: "For Writers",
       pkgTabPartners: "For Industry Partners",

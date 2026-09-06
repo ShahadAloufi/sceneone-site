@@ -511,6 +511,10 @@ a, button {
 
 /* Partner cards carry no price, so the title would otherwise sit tight against
    the body copy where the price block used to open the gap. */
+/* Partner cards carry no launch band, so they must not keep the top padding
+   that clears one. Doubled class: this block sits ABOVE .ctype-card, and at
+   equal specificity the later rule's `padding` shorthand would win. */
+.ctype-card.ctype-card--partner { padding-top: 56px; }
 .ctype-card--partner .ctype-card__title { margin-bottom: 28px; }
 /* Quiet note above the pricing cards — deliberately smaller than the card copy,
    centred over the grid rather than sitting inside either card. */
@@ -535,7 +539,13 @@ a, button {
   min-height: 550px;
   border-radius: 10px;
   background: #2d2a27;
-  padding: 56px 48px;
+  /* Top padding clears the launch band, which is taken out of flow so it does
+     not become a third flex child — with justify-content:space-between a third
+     child would strand the card's head in the middle of the box. `overflow:
+     hidden` is what clips the band's square top corners to the card's radius. */
+  padding: 88px 48px 56px;
+  position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -547,6 +557,28 @@ a, button {
   background-color: #353230;
   box-shadow: 0 16px 40px rgba(0,0,0,.35);
 }
+/* Launch-prices band: a gold strip across the top of every priced card. Sits on
+   the site's own gold rather than a new yellow. */
+.ctype-card__launch {
+  position: absolute;
+  top: 0;
+  inset-inline: 0;
+  background: var(--gold);
+  color: #0e0202;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  padding: 12px 16px;
+}
+/* Tracking only in English. Arabic is cursive, so letter-spacing would pull the
+   letters of «أسعار الإطلاق» apart at the joins. */
+html[dir="ltr"] .ctype-card__launch {
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
 .ctype-card__title {
   font-family: var(--font-head);
   font-size: 34px;
@@ -639,7 +671,9 @@ a, button {
      rather than scroll sideways. */
   .pkg-tabs { width: 100%; border-radius: 18px; }
   .pkg-tab { flex: 1; padding: 13px 12px; font-size: 14px; border-radius: 14px; }
-  .ctype-card { min-height: auto; padding: 40px 28px; }
+  .ctype-card { min-height: auto; padding: 68px 28px 40px; }
+  .ctype-card__launch { font-size: 12px; padding: 10px 14px; }
+  .ctype-card.ctype-card--partner { padding-top: 40px; }
   .ctype-card__title { font-size: 26px; }
   .ctype-card__btns { flex-direction: column; }
   .ctype-card__btns .btn { text-align: center; }
