@@ -566,7 +566,9 @@ a, button {
   color: #0e0202;
   font-family: var(--font-body);
   font-size: 28px;
-  font-weight: 700;
+  /* Tajawal 800 - a real face, requested alongside the rest on index.html.
+     The site's other bold text stops at 700 because that is all it loads. */
+  font-weight: 800;
   line-height: 1.2;
   text-align: center;
   padding: 20px 24px;
@@ -576,6 +578,9 @@ a, button {
 html[dir="ltr"] .ctype-card__launch {
   letter-spacing: .18em;
   text-transform: uppercase;
+  /* IBM Plex Sans has no 800, so asking for one only invites a smeared
+     synthetic bold. Cap English at the real 700. */
+  font-weight: 700;
 }
 
 .ctype-card__title {
