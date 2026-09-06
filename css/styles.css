@@ -557,7 +557,7 @@ a, button {
 /* Launch-prices band: a gold strip across the top of every priced card. Sits on
    the site's own gold rather than a new yellow. */
 /* Only a card that actually shows a band reserves room for it. */
-.ctype-card--launch { padding-top: 120px; }
+.ctype-card--launch { padding-top: 134px; }
 .ctype-card__launch {
   position: absolute;
   top: 0;
@@ -565,7 +565,7 @@ a, button {
   background: var(--gold);
   color: #0e0202;
   font-family: var(--font-body);
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 700;
   line-height: 1.2;
   text-align: center;
@@ -671,8 +671,8 @@ html[dir="ltr"] .ctype-card__launch {
   .pkg-tabs { width: 100%; border-radius: 18px; }
   .pkg-tab { flex: 1; padding: 13px 12px; font-size: 14px; border-radius: 14px; }
   .ctype-card { min-height: auto; padding: 40px 28px; }
-  .ctype-card--launch { padding-top: 92px; }
-  .ctype-card__launch { font-size: 18px; padding: 16px 14px; }
+  .ctype-card--launch { padding-top: 100px; }
+  .ctype-card__launch { font-size: 22px; padding: 16px 14px; }
   .ctype-card__title { font-size: 26px; }
   .ctype-card__btns { flex-direction: column; }
   .ctype-card__btns .btn { text-align: center; }
