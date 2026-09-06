@@ -16,3 +16,11 @@
 # the PDF renderer, plus pdf-lib for counting a submission's pages). Never
 # committed — the frontend stays buildless, this is serverless-only.
 node_modules/
+
+# Throwaway cache-busted copies of a page, used to preview a change when the
+# browser is serving a stale styles.css / i18n.js. They are duplicates of a real
+# page with versioned asset URLs baked in, so committing one would publish a
+# frozen fork of it (cleanUrls puts _preview.html at /_preview). Ignored so
+# `git add -A` can never pick one up.
+/_preview*.html
+/_bust*.html
