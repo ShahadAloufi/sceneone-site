@@ -114,7 +114,7 @@
       featureLi1Html: "مدة التسليم: حتى 4 أسابيع <span class=\"ctype-card__note\">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span>",
 
       shortTitle: "تغطية النصوص السينمائية القصيرة",
-      shortPriceNote: "10 ريال لكل صفحة · من 10 إلى 40 صفحة",
+      shortPriceNote: "السعر حسب حجم النص",
       shortDescHtml: "يقدم هذا التقرير ملاحظات تفصيلية على الفيلم القصير (<strong>من 10 إلى 40 صفحة</strong>). يشمل ذلك تقييمًا وملاحظات حول: " +
         "<strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والحوار، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong>",
       shortLi1Html: "مدة التسليم: عادةً من 10 إلى 15 يومًا <span class=\"ctype-card__note\">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span>",
@@ -410,7 +410,7 @@
       featureLi1Html: "Turnaround: up to 4 weeks <span class=\"ctype-card__note\">(the timeline begins once your script is assigned to a reader; you'll be notified by email when that happens)</span>",
 
       shortTitle: "Short Film Coverage",
-      shortPriceNote: "10 SAR per page · 10 to 40 pages",
+      shortPriceNote: "Priced by script length",
       shortDescHtml: "Provides detailed feedback on short film scripts (<strong>10 to 40 pages</strong>), including: " +
         "<strong>concept and premise, hook and originality, dramatic stakes and structure, characters, dialogue, structure and pacing, production viability, an approximate budget estimate, and an overall assessment.</strong>",
       shortLi1Html: "Turnaround: typically 10–15 days <span class=\"ctype-card__note\">(the timeline begins once your script is assigned to a reader; you'll be notified by email when that happens)</span>",
