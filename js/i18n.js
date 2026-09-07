@@ -162,6 +162,8 @@
       widBio: "كاتبة سيناريو، منتجة تطوير، وقائدة عمل (showrunner) تهتم بالمحتوى المرئي ومدى تأثيره عاطفيًا على الجمهور. بشغفها بالأفلام وفن صناعة القصص، تقرأ ود النصوص بعينٍ تبحث عما ينجح في القصة، وما يمكن تطويره، وأين تكمن قوتها سرديًا، إيمانًا منها بدور القصة الجيدة في إثراء السينما السعودية.",
       fajrName: "فجر الفرحان", fajrRole: "قارئة نصوص سينمائية",
       fajrBio: "متخصصة في السينما والفنون الأدائية، بخبرة في كتابة السيناريو والإنتاج الإبداعي والسرد البصري. تركّز في قراءاتها على بناء القصة، واللغة البصرية، والأثر العاطفي للنص.",
+      hasanName: "حسن زروق", hasanRole: "مسؤول تطوير إبداعي ومنتج تطوير",
+      hasanBio: "مخرج سينمائي بخبرة تتجاوز 15 عامًا في السينما والتلفزيون والمحتوى الإبداعي. يعمل عند تقاطع تطوير القصص والاستراتيجية والإنتاج، ويساعد الأفكار على التحول إلى مشاريع واضحة ومؤثرة وموجهة للجمهور. يقود تطوير النصوص وغرف الكُتّاب والتعاونات الإبداعية، مستندًا إلى خبرة متنوعة عبر أفريقيا والشرق الأوسط وأوروبا، مع تركيز على السرد العاطفي والأصالة الثقافية ومتطلبات السوق. حاصل على ماجستير في الكتابة والإنتاج السينمائي من ميلانو، ويهتم بدعم صناع الأفلام في تطوير قصص قوية ومعاصرة.",
 
       // ---- about-coverage.html ----
       docTitleCoverage: "عن تغطية النصوص السينمائية | Scene One",
@@ -457,6 +459,8 @@
       widBio: "A screenwriter, development producer, and showrunner who cares deeply for visual storytelling and its emotional influence on audience. Driven by her passion for film and the craft behind every story, Wid reads screenplays with an eye for what works, what could work better, and where its potential lies, all with the aim of enriching Saudi cinema.",
       fajrName: "Fajr Alfarhan", fajrRole: "Script Reader",
       fajrBio: "Specialized in film and performing arts, with experience in screenwriting, creative production, and visual storytelling. Her analysis focuses on story structure, visual language, and the emotional impact of the script.",
+      hasanName: "Hasan Zarroug", hasanRole: "Creative Development Lead & Development Producer",
+      hasanBio: "A filmmaker with over 15 years of experience across film, television, and creative content. He works at the intersection of story development, creative strategy, and production, helping ideas evolve into clear, compelling, audience-focused projects. He leads script development, writers\u2019 rooms, and creative collaborations, drawing on experience across Africa, the Middle East, and Europe, with a focus on emotional storytelling, cultural authenticity, and market awareness. He holds a Master\u2019s degree in Screenwriting & Production from Milan and is dedicated to supporting filmmakers in developing strong, contemporary stories.",
 
       // ---- about-coverage.html ----
       docTitleCoverage: "About Screenplay Coverage | Scene One",
