@@ -749,9 +749,12 @@ bottom of `css/styles.css`; markup is `readers.html`.
   underneath. `scroll-behavior: smooth` is already global on `<html>`; no JS.
 - **Landing hero buttons:** «عرض التغطيات» → `#coverage-types` (was «سجل
   اهتمامك» opening the registration modal), and «دليل المنصة» → `/about-coverage`.
-  **Registration is no longer in the hero or any menu** — it survives only via
-  the `#register` banner further down and `/?register`. Deliberate, but it is a
-  real drop in prominence; revisit if sign-ups fall.
+  **Registration no longer exists on the public site at all.** Not the hero, not
+  a menu, not the `#register` banner (its CTA went first, then the whole section
+  was hidden), and not `/?register` — no JS reads that query, and
+  `/api/registrations` is deleted. The modal markup and every `.modal*` rule are
+  gone too. There is nothing left to "revisit"; bringing sign-ups back means
+  building the flow again, endpoint included.
 
 ---
 
