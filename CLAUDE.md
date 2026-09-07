@@ -205,11 +205,13 @@ Actively iterating on UX polish and workflow features.
   keys in both dictionaries, and its CSS (`.modal*`, `.field*`) — plus
   **`/api/registrations`, deleted**, which is why the function count is now 11
   rather than 12.
-  - **The RED BANNER STAYS.** It was removed in the same pass and restored on
-    request: the section, its design and the clapperboard are intact, carrying
-    the headline (`bannerHtml`) alone. Don't take the banner out again on the
-    reasoning that its CTA is gone — it is meant to read as a statement now, not
-    a call to action.
+  - **The RED BANNER is HIDDEN (2026-09-07), not deleted.** History matters
+    here: it was removed once by mistake and restored on request, so it must
+    never be deleted on the reasoning that its CTA is gone — it reads as a
+    statement, not a call to action. It is now commented out in `index.html` at
+    the owner's request, "for now". The markup, `bannerHtml` and every `.banner*`
+    rule are untouched; uncommenting that one block is the whole restore. Nothing
+    links to `#register`, so the missing anchor breaks no navigation.
   - `bannerP` («سجّل اهتمامك اليوم… عند إطلاقها») went with the button: it
     invited an action the page can no longer perform, on a platform that has
     already launched. `.banner__p` is gone too, and `.banner__h` lost its bottom
