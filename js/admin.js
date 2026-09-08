@@ -80,7 +80,7 @@
       subListTitle: "قائمة النصوص", thDate: "التاريخ", thTitle: "العنوان", thWriter: "الكاتب", thLevel: "المستوى", thEmail: "البريد الإلكتروني",
       thGenre: "التصنيف", thFilmType: "نوع الفيلم", thDraft: "المسودة", thPages: "الصفحات", thFile: "الملف", thAssignee: "المسند إليه",
       thAssignee2: "المُكلَّف",
-      thDeadline: "الموعد النهائي",
+      thDeadline: "الموعد النهائي", thSentAt: "تاريخ الإرسال",
       dueOver: "متأخّر", dueDone: "تم التسليم", dueToday: "ينتهي اليوم",
       // Shown until the assignment is confirmed (the writer's "work started"
       // email has gone out) — before that the delivery count hasn't begun.
@@ -178,7 +178,7 @@
       subListTitle: "Scripts list", thDate: "Date", thTitle: "Title", thWriter: "Writer", thLevel: "Level", thEmail: "Email",
       thGenre: "Genre", thFilmType: "Film type", thDraft: "Draft", thPages: "Pages", thFile: "File", thAssignee: "Assignee",
       thAssignee2: "Assignee",
-      thDeadline: "Deadline",
+      thDeadline: "Deadline", thSentAt: "Sent to writer",
       dueOver: "Overdue", dueDone: "Delivered", dueToday: "Due today",
       dueNotStarted: "Not started",
       dueNotStartedTip: "The delivery window starts once the assignment is confirmed and the writer is notified",
@@ -302,6 +302,18 @@
       // Show date only. The full timestamp (incl. time) stays in created_at
       // in the database and can be retrieved when the exact hour is needed.
       return d.toLocaleDateString(ULANG, { year: "numeric", month: "short", day: "numeric" });
+    } catch (e) { return s; }
+  }
+  // Date AND time. fmtDate deliberately drops the hour, but "when did the writer
+  // get this" is sometimes a same-day question, so the delivery cell carries the
+  // full stamp in its tooltip.
+  function fmtDateTime(s) {
+    try {
+      var d = new Date(s);
+      return d.toLocaleString(ULANG, {
+        year: "numeric", month: "short", day: "numeric",
+        hour: "2-digit", minute: "2-digit"
+      });
     } catch (e) { return s; }
   }
   // Every submission gets a 2-week window from the day it was submitted.
@@ -1468,10 +1480,22 @@
     window.open(res.data.signedUrl, "_blank");
   }
 
+  // When the report actually reached the writer. Date in the cell, full stamp on
+  // hover. A delivered row always has this; the dash is for the impossible case
+  // (a row that reached a deliveries table without a delivered_at) rather than a
+  // blank that would read as "not sent yet".
+  function sentAtCell(at) {
+    if (!at) return "<td class='adm-muted'>\u2014</td>";
+    return "<td title='" + esc(fmtDateTime(at)) + "'>" + esc(fmtDate(at)) + "</td>";
+  }
+
   // Full submission detail; the coverage column links to the report the writer
   // sees once approved, otherwise shows the status label. `readerName` maps a
   // submission id → the reviewing reader's name (used by the Deliveries tab).
-  function renderDetailRows(bodyEl, rows, covBySub, deliveredBySub, readerNameCol, showPayment, showMember) {
+  // `sentAtCol` maps a submission id → the coverage's delivered_at. Pass it and
+  // the table gains a "sent to writer" column right after the deadline, where the
+  // other dates already are; omit it and the table is exactly as before.
+  function renderDetailRows(bodyEl, rows, covBySub, deliveredBySub, readerNameCol, showPayment, showMember, sentAtCol) {
     bodyEl.innerHTML = "";
     // Repeat detection is scoped to the rows being drawn. The only tab that shows
     // this column draws every submission, so that is the whole population.
@@ -1483,6 +1507,7 @@
       tr.innerHTML =
         "<td>" + esc(fmtDate(s.created_at)) + "</td>" +
         deadlineCell(s, delivered) +
+        (sentAtCol ? sentAtCell(sentAtCol[s.id]) : "") +
         "<td><strong>" + esc(s.title_ar) + "</strong><br><span class='adm-muted' dir='ltr'>" + esc(s.title_en) + "</span></td>" +
         "<td>" + esc(s.writer) + "</td>" +
         levelCell(s) +
@@ -1777,7 +1802,7 @@
   }
 
   // Must stay in step with renderDetailRows' cell order — it builds these rows too.
-  var DLV_HEAD = ["thDate", "thDeadline", "thTitle", "thWriter", "thLevel", "thEmail", "thGenre",
+  var DLV_HEAD = ["thDate", "thDeadline", "thSentAt", "thTitle", "thWriter", "thLevel", "thEmail", "thGenre",
                   "thFilmType", "thDraft", "thPages", "thFile", "thReader", "thCoverage"];
 
   function renderDeliveries() {
@@ -1793,8 +1818,11 @@
     hide($("dlvEmpty"));
     renderMonthGroups($("dlvGroups"), groupByMonth(rows), function (items) {
       var table = monthTable(DLV_HEAD);
+      var sentAt = {};
+      items.forEach(function (r) { sentAt[r.s.id] = r.at; });
       renderDetailRows(table.querySelector("tbody"),
-        items.map(function (r) { return r.s; }), dlvCov, dlvDelivered, dlvReader);
+        items.map(function (r) { return r.s; }), dlvCov, dlvDelivered, dlvReader,
+        false, false, sentAt);
       return table;
     });
   }
