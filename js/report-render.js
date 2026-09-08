@@ -17,7 +17,7 @@
   // PNG because the brand artwork was supplied as raster; at 171x64 from an
   // 852x318 source it is a 5x downscale. If a vector version ever arrives, swap
   // it in — the report renders natively, so an SVG would stay crisp at any size.
-  var LOGO = "assets/scene-one-logo-v2.png";
+  var LOGO = "assets/scene-one-logo-v3.svg";
 
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>]/g, function (c) {

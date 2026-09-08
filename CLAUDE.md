@@ -42,18 +42,37 @@ Actively iterating on UX polish and workflow features.
     the coverage workspace header (30px tall) and the **`.bar` chrome strip on
     report / sample / ask / answer (26px)** get `scene-one-mark-v2.png`. Put the
     lockup in a square box and it renders at a quarter height, illegible; put it
-    in the 44px `.bar` and its wordmark is unreadable.
+    in the 44px `.bar` and its wordmark is unreadable. (Those two filenames are
+    now `-v3.svg`; see the vector note below. The SPLIT is what matters here.)
   - **The mark files are a straight crop of the supplied artwork**, not a redraw:
     there is a clean 33px alpha gap at x455-487 separating wordmark from mark, so
     the mark is `crop(488, 0, 852, 318)` = 364x318. Regenerate them that way if
     the source is ever reissued.
-  - **These are PNG, not SVG — the artwork was supplied as raster.** Every use is
-    a 5x+ downscale (nav and report header 171x64, chrome-bar mark 30x26) so it
-    is sharp on retina. **If a vector version ever arrives it is a drop-in win**,
-    especially for the favicon; see the note atop `js/report-render.js`.
+  - **~~These are PNG, not SVG~~ — SUPERSEDED 2026-09-08: the vector arrived.**
+    The logo was reissued as two SVGs (white artwork and black artwork, viewBox
+    `0 0 211 80`) and every in-page use now points at `-v3.svg`:
+    `scene-one-logo-v3.svg` / `scene-one-logo-light-v3.svg` for the lockup,
+    `scene-one-mark-v3.svg` / `scene-one-mark-light-v3.svg` for the mark. The
+    lockup/mark split above still holds — a wide surface gets the lockup, a
+    square or short box gets the mark.
+    - **The mark SVGs are extracted, not redrawn.** Everything from the first
+      bracket-corner path (`M119.756 33.2711` white / `M120 33.2711` black) to
+      `</svg>` is the mark; the file is that slice under `viewBox="119.756 0 91
+      79.7166"` (black: `120 0 91 79.7166`). Re-cut them that way if the source
+      is reissued — do not hand-trace.
+    - **Two things stay raster, and must.** `scene-one-email-logo.png` (email
+      clients do not render SVG) and `favicon-v2.png`. Both are regenerated FROM
+      the new SVGs by rendering at 4-8x in headless Chrome and downsampling, so
+      they track the vector rather than drifting from it.
+    - **The old `-v2` PNGs are still on disk on purpose** — `MOYASAR_LOGO_URL`
+      may be an absolute URL pointing at one (see the checkout note below), and
+      deleting the file would break the checkout logo rather than update it.
+      Clear that variable first, then they can go.
   - **`favicon-v2.png` is generated, not supplied** — the white mark on the brand
     `#0E0202` rounded square (same radius ratio as the `favicon.svg` it replaces),
-    256px, 9% padding. The padding was tightened from 17% because at a real 16px
+    256px, 9% padding. Regenerated 2026-09-08 from `scene-one-mark-v3.svg` at the
+    same 209x183 footprint, 50px corner radius, so the filename (and every
+    `rel="icon"` line) is unchanged. The padding was tightened from 17% because at a real 16px
     tab size the brackets and the S mush together; don't pad it out again. It
     replaced BOTH the old `favicon.svg` and the `alternate icon` PNG line, so
     every page now carries one `rel="icon"` link.
@@ -2003,7 +2022,9 @@ must be in the `supabase_realtime` publication for live updates to fire.
   still points at a pre-rebrand asset, the checkout keeps showing the OLD logo no
   matter what the dashboard says. It is optional and may well be unset — but check
   it, and if it is set, repoint it at
-  `https://sceneone.info/assets/scene-one-logo-v2.png`. Never blank it to an empty
+  `https://sceneone.info/assets/scene-one-email-logo.png` — a PNG, because a
+  payment provider is not a place to bet on SVG support, and that file is already
+  the black lockup on a white plate, which suits a light checkout page. Never blank it to an empty
   string in place: an empty `logo_url` is a malformed URI that Moyasar rejects,
   taking the whole checkout down. Delete the variable instead.
 - **Confirm the production domain** — report-email links use `https://sceneone.info`

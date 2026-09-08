@@ -1094,9 +1094,9 @@ html[data-theme="dark"] .adm-login__panel { background: #000000; }
 .adm-login__title { text-align: center; font-size: 22px; font-weight: 700; margin: 0 0 34px; color: var(--adm-text); }
 .adm-login__logo {
   display: block; height: 64px; width: 64px; margin: 0 auto;
-  background: no-repeat center / contain url(../assets/scene-one-mark-light-v2.png);
+  background: no-repeat center / contain url(../assets/scene-one-mark-light-v3.svg);
 }
-html[data-theme="dark"] .adm-login__logo { background-image: url(../assets/scene-one-mark-v2.png); }
+html[data-theme="dark"] .adm-login__logo { background-image: url(../assets/scene-one-mark-v3.svg); }
 
 /* password field + show/hide eye */
 .adm-pass { position: relative; }
@@ -1207,9 +1207,9 @@ html[data-theme="dark"] .adm-login__submit { background: #ffffff; color: #111418
    sidebar, black+orange mark on the light sidebar. */
 .adm-brand-logo {
   display: block; height: 46px; width: 46px;
-  background: no-repeat center / contain url(../assets/scene-one-mark-light-v2.png);
+  background: no-repeat center / contain url(../assets/scene-one-mark-light-v3.svg);
 }
-html[data-theme="dark"] .adm-brand-logo { background-image: url(../assets/scene-one-mark-v2.png); }
+html[data-theme="dark"] .adm-brand-logo { background-image: url(../assets/scene-one-mark-v3.svg); }
 
 .adm-nav { display: flex; flex-direction: column; gap: 4px; }
 .adm-navitem {
