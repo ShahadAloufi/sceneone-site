@@ -163,7 +163,7 @@
       fajrName: "فجر الفرحان", fajrRole: "قارئة نصوص سينمائية",
       fajrBio: "متخصصة في السينما والفنون الأدائية، بخبرة في كتابة السيناريو والإنتاج الإبداعي والسرد البصري. تركّز في قراءاتها على بناء القصة، واللغة البصرية، والأثر العاطفي للنص.",
       hasanName: "حسن زروق", hasanRole: "مسؤول تطوير إبداعي ومنتج تطوير",
-      hasanBio: "مخرج سينمائي بخبرة تتجاوز 15 عامًا في السينما والتلفزيون والمحتوى الإبداعي. يعمل عند تقاطع تطوير القصص والاستراتيجية والإنتاج، ويساعد الأفكار على التحول إلى مشاريع واضحة ومؤثرة وموجهة للجمهور. يقود تطوير النصوص وغرف الكُتّاب والتعاونات الإبداعية، مستندًا إلى خبرة متنوعة عبر أفريقيا والشرق الأوسط وأوروبا، مع تركيز على السرد العاطفي والأصالة الثقافية ومتطلبات السوق. حاصل على ماجستير في الكتابة والإنتاج السينمائي من ميلانو، ويهتم بدعم صناع الأفلام في تطوير قصص قوية ومعاصرة.",
+      hasanBio: "مخرج سينمائي بخبرة تتجاوز 15 عامًا في السينما والتلفزيون والمحتوى الإبداعي. مهتم في تطوير القصص والاستراتيجية والإنتاج، ويساعد الأفكار على التحول إلى مشاريع واضحة ومؤثرة وموجهة للجمهور. مستندًا إلى خبرة متنوعة عبر أفريقيا والشرق الأوسط وأوروبا، مع تركيز على السرد العاطفي والأصالة الثقافية ومتطلبات السوق. حاصل على درجة الماجستير المتخصص في الكتابة والإنتاج السينمائي الدوليين من ميلانو، ويهتم بالتواصل والتعاون مع الكُتّاب والمخرجين والمنتجين والفرق الإبداعية التي تعمل على تطوير قصص طموحة موجهة إلى جماهير معاصرة.",
 
       // ---- about-coverage.html ----
       docTitleCoverage: "عن تغطية النصوص السينمائية | Scene One",
@@ -460,7 +460,7 @@
       fajrName: "Fajr Alfarhan", fajrRole: "Script Reader",
       fajrBio: "Specialized in film and performing arts, with experience in screenwriting, creative production, and visual storytelling. Her analysis focuses on story structure, visual language, and the emotional impact of the script.",
       hasanName: "Hasan Zarroug", hasanRole: "Creative Development Lead & Development Producer",
-      hasanBio: "A filmmaker with over 15 years of experience across film, television, and creative content. He works at the intersection of story development, creative strategy, and production, helping ideas evolve into clear, compelling, audience-focused projects. He leads script development, writers\u2019 rooms, and creative collaborations, drawing on experience across Africa, the Middle East, and Europe, with a focus on emotional storytelling, cultural authenticity, and market awareness. He holds a Master\u2019s degree in Screenwriting & Production from Milan and is dedicated to supporting filmmakers in developing strong, contemporary stories.",
+      hasanBio: "A film director with over 15 years of experience across cinema, television, and creative content. He is deeply engaged in story development, creative strategy, and production, helping ideas evolve into clear, impactful, and audience-driven projects. His work is informed by diverse experience across Africa, the Middle East, and Europe, with a strong focus on emotional storytelling, cultural authenticity, and market awareness. He holds a specialized Master’s degree in International Screenwriting and Film Production from Milan, and is passionate about collaborating with writers, directors, producers, and creative teams working on ambitious stories for contemporary audiences.",
 
       // ---- about-coverage.html ----
       docTitleCoverage: "About Screenplay Coverage | Scene One",
