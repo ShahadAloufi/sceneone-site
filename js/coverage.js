@@ -196,6 +196,12 @@
     // `autoH` records the height WE last set, so any inline height that differs
     // came from the user.
     if (ta.dataset.userSized === "1") return;
+    // A textarea inside the INACTIVE tab reports scrollHeight 0 (.view is
+    // display:none), so measuring it there pins it to a couple of px and the
+    // CSS min-height is all that shows — a permanently clipped box with its own
+    // scrollbar, because nothing measured it again when the tab was shown.
+    // Skip it here and let show() re-grow the view when it becomes visible.
+    if (!ta.offsetParent) return;
     if (ta.dataset.autoH && ta.style.height && ta.style.height !== ta.dataset.autoH) {
       ta.dataset.userSized = "1";
       return;
@@ -325,6 +331,9 @@
     document.querySelectorAll(".tab").forEach(function (t) { t.classList.toggle("active", t.dataset.view === v); });
     if (v === "review") renderPulled();
     if (v === "report") renderReport();
+    // The view was display:none until the line above, so anything in it that
+    // sizes itself to its content could not be measured yet.
+    autoGrowSoon();
     window.scrollTo(0, 0);
   }
   document.querySelectorAll(".tab").forEach(function (t) { t.onclick = function () { show(t.dataset.view); }; });
@@ -1082,6 +1091,9 @@
   function enterApp() {
     $("guard").style.display = "none";
     $("app").hidden = false;
+    // Everything above ran against a hidden #app, so nothing could measure
+    // itself. First chance to size the textareas to their content.
+    autoGrowSoon();
   }
 
   /* ---------- submission mapping ---------- */
