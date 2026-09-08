@@ -21,7 +21,12 @@
   /* English: swap to IBM Plex Sans, same split as the marketing pages'
      css/styles.css (this page is self-contained, so it needs its own copy). */
   html[dir="ltr"]{
-    --font:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    /* IBM Plex Sans carries no Arabic, so without a named Arabic face after it
+       any Arabic on an English page — a writer's name, a title, a logline —
+       fell through to the system UI font and rendered in a different face from
+       the rest of the platform. Font fallback is per GLYPH, so Latin still gets
+       Plex and Arabic gets Tajawal: one stack, both scripts, no markup needed. */
+    --font:'IBM Plex Sans','Tajawal',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   }
   *{box-sizing:border-box}
   html,body{margin:0}
