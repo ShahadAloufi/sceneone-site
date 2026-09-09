@@ -466,7 +466,7 @@
       fajrName: "Fajr Alfarhan", fajrRole: "Script Reader",
       fajrBio: "Specialized in film and performing arts, with experience in screenwriting, creative production, and visual storytelling. Her analysis focuses on story structure, visual language, and the emotional impact of the script.",
       hasanName: "Hasan Zarroug", hasanRole: "Creative Development Lead & Development Producer",
-      hasanBio: "A film director with over 15 years of experience across cinema, and television. He is deeply engaged in story development, creative strategy, and production, helping ideas evolve into impactful, and audience-driven projects. He holds a specialized Master’s degree in International Screenwriting and Film Production from Milan, and is passionate about collaborating with writers, directors, producers, and creative teams working on ambitious stories for contemporary audiences. Bringing in diverse experience across Africa, the Middle East, and Europe.",
+      hasanBio: "A film director with over 15 years of experience across cinema and television. He is deeply engaged in story development, creative strategy, and production, helping ideas evolve into impactful and audience-driven projects. He holds a specialized Master’s degree in International Screenwriting and Film Production from Milan, and is passionate about collaborating with writers, directors, producers, and creative teams working on ambitious stories for contemporary audiences. Bringing in diverse experience across Africa, the Middle East, and Europe.",
 
       // ---- about-coverage.html ----
       docTitleCoverage: "About Screenplay Coverage | Scene One",
