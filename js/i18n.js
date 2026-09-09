@@ -25,7 +25,7 @@
   var T = {
     ar: {
       navHome: "الرئيسية", navAbout: "Scene One", navReaders: "من يقرأ نصك؟",
-      navJourney: "رحلة النص", navGuide: "دليل المنصة", navContact: "تواصل معنا",
+      navJourney: "رحلة النص", navGuide: "ما هي تغطية النصوص؟", navContact: "تواصل معنا",
       menuLabel: "القائمة", closeLabel: "إغلاق",
 
       overlayTag: "Scene One / 2026",
@@ -330,7 +330,7 @@
     },
     en: {
       navHome: "Home", navAbout: "Scene One", navReaders: "Who Reads Your Script?",
-      navJourney: "Script Journey", navGuide: "Platform Guide", navContact: "Contact Us",
+      navJourney: "Script Journey", navGuide: "What is script coverage?", navContact: "Contact Us",
       menuLabel: "Menu", closeLabel: "Close",
 
       overlayTag: "Scene One / 2026",
