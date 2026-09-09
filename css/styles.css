@@ -396,7 +396,7 @@ a, button {
 /* ABOUT */
 .about { margin-bottom: 200px; padding: 56px 24px; text-align: center; }
 .about__title { font-family: var(--font-head); font-size: 36px; font-weight: 700; color: #fff; margin-bottom: 24px; }
-.about__body { font-size: 20px; line-height: 1.8; color: #C4C4C4; letter-spacing: .02em; max-width: 576px; margin: 0 auto; text-align: right; }
+.about__body { font-size: 20px; line-height: 1.8; color: #C4C4C4; letter-spacing: .02em; max-width: 576px; margin: 0 auto; text-align: center; }
 .about__body p { margin-bottom: 20px; }
 .about__body p:last-child { margin-bottom: 0; }
 @media (min-width: 640px) {
@@ -2144,7 +2144,6 @@ html[dir="ltr"] .quote { text-align: left; }
 html[dir="ltr"] .quote__rule { margin: 0 auto 24px 0; }
 html[dir="ltr"] .quote p { margin-left: 0; margin-right: auto; }
 
-html[dir="ltr"] .about__body { text-align: left; }
 
 html[dir="ltr"] .partnership { direction: ltr; }
 
