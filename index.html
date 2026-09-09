@@ -89,7 +89,16 @@
 
   <!-- ── HERO ── -->
   <section class="hero">
-    <img class="hero__bg" src="assets/hero_bg.jpg" alt="">
+    <!-- Looping background. The poster is a CSS background on .hero rather than
+         a poster= attribute, and the video starts transparent: if autoplay is
+         refused (Low Power Mode, "Auto-Play: Never", a data saver) the still
+         frame is what shows, instead of iOS painting a play glyph over the hero.
+         js/main.js does the reveal and the one retry. -->
+    <video class="hero__bg" autoplay muted loop playsinline preload="auto"
+           disablepictureinpicture disableremoteplayback
+           aria-hidden="true" tabindex="-1">
+      <source src="assets/hero-landing.mp4" type="video/mp4">
+    </video>
     <div class="hero__shade"></div>
     <div class="hero__content">
       <h1 class="hero__title" data-i18n="heroTitle">حيث تبدأ رحلة النص</h1>

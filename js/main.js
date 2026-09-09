@@ -145,6 +145,40 @@
     window.addEventListener("resize", spy);
   }
 
+  /* ---------- HERO BACKGROUND VIDEO (landing + readers) ----------
+     Autoplay is only allowed for a muted, playsinline video, and even then not
+     always: iOS Low Power Mode refuses outright, and per-site "Auto-Play: Never"
+     and some data savers do the same. When the browser refuses, it paints the
+     poster with a PLAY BUTTON over it — which reads as a broken hero rather than
+     a background. So: re-assert muted as a property (the attribute alone isn't
+     always enough), ask to play, and if that is rejected, retry once on the
+     first user gesture, by which point the policy allows it. Never shows
+     controls either way.
+
+     Both heroes keep their still frame as a CSS background on the SECTION and
+     start the video transparent, so a refusal degrades to that still rather
+     than to a play glyph. This used to live inline in readers.html; it is here
+     now because index.html grew a hero video too and one copy is enough. */
+  document.querySelectorAll('video.hero__bg, video.au-hero__bg').forEach(function (v) {
+    // Reveal ONLY once frames are actually running.
+    function reveal() { v.classList.add('is-playing'); }
+    v.addEventListener('playing', reveal);
+    if (!v.paused && v.currentTime > 0) reveal();   // already running before we bound
+    function attempt() {
+      v.muted = true;               // property, not just the attribute
+      var p = v.play();
+      if (p && typeof p.catch === 'function') p.catch(function () { /* blocked; wait for a gesture */ });
+    }
+    attempt();
+    // One retry, on whichever gesture comes first, then unbind.
+    var events = ['pointerdown', 'touchstart', 'keydown', 'scroll'];
+    function retry() {
+      events.forEach(function (e) { window.removeEventListener(e, retry); });
+      attempt();
+    }
+    events.forEach(function (e) { window.addEventListener(e, retry, { once: true, passive: true }); });
+  });
+
   /* ---------- PACKAGES TABS (landing) ----------
      Writers / industry partners. Progressive enhancement: the markup ships with
      the writers' panel visible and the partners' panel carrying `hidden`, so

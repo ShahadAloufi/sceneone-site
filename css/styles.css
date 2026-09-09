@@ -267,18 +267,52 @@ a, button {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  overflow: hidden;
+  /* The poster lives HERE, not on the <video>, so the hero is never empty and
+     never shows a play glyph when autoplay is refused — same reasoning as
+     .au-hero on /readers. */
+  background: var(--bg) url('../assets/hero-landing-poster.jpg') center center / cover no-repeat;
 }
+/* Transparent until frames are actually running, then it crossfades over the
+   poster; a refusal simply leaves the still. pointer-events:none keeps a tap
+   from reaching the element and summoning native playback UI. */
 .hero__bg {
   position: absolute;
   inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
+  opacity: 0; transition: opacity .5s ease;
   pointer-events: none;
+}
+.hero__bg.is-playing { opacity: 1; }
+/* Motion is decorative here, so a reduced-motion preference drops the video and
+   keeps the poster. */
+@media (prefers-reduced-motion: reduce) {
+  .hero__bg { display: none; }
+}
+/* The source is 16:9 (1.78) and the hero is a 100vh box, so the narrower the
+   VIEWPORT'S aspect ratio the harder `cover` crops the sides — and this footage
+   is centred Arabic text, which slices mid-word and drops the fragments onto the
+   headline. A 375x812 phone keeps barely a quarter of the frame's width; a
+   768x1024 tablet keeps about 40%.
+
+   Keyed on aspect-ratio rather than width because that is what actually drives
+   the crop: a short wide window is fine at any width, a tall narrow one is not.
+   Below 3:2 the whole frame shows instead, as a band above the copy, with the
+   poster sized to match so the two never disagree while the video loads. */
+@media (max-aspect-ratio: 3/2) {
+  .hero { background-size: contain; background-position: center 22%; }
+  .hero__bg { object-fit: contain; object-position: center 22%; }
 }
 .hero__shade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,.3), transparent, var(--bg));
+  /* The middle stop used to be fully transparent, which was fine behind a photo.
+     Behind the screenplay-typing loop it left the video's own Arabic at full
+     strength exactly where the hero headline sits, so two Arabic texts competed.
+     A scrim all the way down keeps the motion readable as texture and lets the
+     headline win. */
+  background: linear-gradient(to bottom, rgba(0,0,0,.5), rgba(0,0,0,.42), var(--bg));
 }
 .hero__content {
   position: relative;
