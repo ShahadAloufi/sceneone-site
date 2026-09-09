@@ -42,10 +42,9 @@
         "نمنح نصك قراءة تتجاوز السطح، لنكشف ما بين سطوره، ونرى إمكانياته من زاوية أخرى. لكننا لا نتوقف عند ذلك…<br>" +
         "بعض النصوص لا تحتاج ملاحظات فقط، بل تحتاج أن تجد طريقها إلى من يؤمن بها",
 
-      aboutTitle: "من الفكرة للنص.",
-      aboutP1: "يمتلك الكثير من الكتّاب أفكارًا واعدة ونصوصًا تحمل إمكانات حقيقية، لكن تطوير النص السينمائي لا يعتمد على الكتابة وحدها.",
-      aboutP2: "في كثير من الأحيان، يحتاج الكاتب إلى قراءة نقدية احترافية تساعده على رؤية عمله من منظور مختلف، واكتشاف نقاط القوة وفرص التحسين قبل الانتقال إلى المرحلة التالية.",
-      aboutP3: "لهذا وُجدت Scene One؛ لتوفير تقييمات متخصصة وتقارير مفصلة تساعد الكتّاب على تطوير نصوصهم واتخاذ قرارات أكثر وضوحًا في رحلتهم الإبداعية.",
+      aboutTitle: "من الفكرة… إلى فرصة تستحق أن تُرى",
+      aboutP1: "في سين ون، نقرأ نصك كما يُقرأ داخل الصناعة بمعايير واضحة، ونظرة نقدية تكشف إمكانياته الحقيقية، وما يحتاجه ليصبح مشروعاً قابلاً للتقديم",
+      aboutP2: "النصوص التي تثبت نفسها لا تتوقف عند التقييم، بل تُختار للاستضافة، وتُعرض على جهات تبحث عن أعمال جاهزة للتطوير",
 
       cardWritersAlt: "للكُتّاب", cardProducersAlt: "شركاء الصناعة", cardCinemaAlt: "السينما السعودية",
       cardWritersImg: "assets/card_writers.png", cardProducersImg: "assets/card_producers.png", cardCinemaImg: "assets/card_cinema.png",
@@ -348,10 +347,9 @@
         "We give your script a reading that goes past the surface, to draw out what sits between its lines and see its potential from another angle. But we don't stop there…<br>" +
         "Some scripts don't only need notes. They need to find their way to someone who believes in them",
 
-      aboutTitle: "From Idea to Script",
-      aboutP1: "Many writers have promising ideas and scripts with real potential. But developing a screenplay takes more than writing alone.",
-      aboutP2: "At different stages, writers often need professional, critical feedback, the kind that helps them see their work from a new perspective, identify strengths, and uncover opportunities for improvement before moving forward.",
-      aboutP3: "That's why Scene One exists. We provide specialized evaluations and detailed reports designed to help writers refine their scripts and make more confident, informed decisions throughout their creative journey.",
+      aboutTitle: "From an Idea… to a Chance Worth Seeing",
+      aboutP1: "At Scene One we read your script the way the industry reads it: against clear criteria, with a critical eye that draws out its real potential and what it still needs to become a project you can take out",
+      aboutP2: "Scripts that prove themselves don't stop at the evaluation. They are selected for hosting and put in front of parties looking for work that is ready to develop",
 
       cardWritersAlt: "For Writers", cardProducersAlt: "Industry Partners", cardCinemaAlt: "Saudi Cinema",
       cardWritersImg: "assets/card_writers-en.png", cardProducersImg: "assets/card_producers-en.png", cardCinemaImg: "assets/card_cinema-en.png",
