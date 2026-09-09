@@ -38,8 +38,9 @@
       heroNda: "جميع النصوص تخضع لاتفاقيات عدم إفصاح (NDA)، ولا يطّلع عليها سوى القارئ المكلّف بتقييمها.",
       partnerBadge: "شريك معتمد",
 
-      quoteHtml: "لأن كل قصة تستحق أن تُمنح فرصة حقيقية للتطور،<br>" +
-        "تمنحك Scene One منظورًا احترافيًا لنصك من خلال قراءات نقدية متخصصة وتقارير مفصلة تساعدك على اكتشاف نقاط القوة ومعالجة مواطن الضعف، لتتمكن من تطوير مشروعك بثقة ووضوح.",
+      quoteHtml: "لأن كل نص يُمكن أن يُرى بشكل مختلف… إذا وُجدت العين التي تراه<br>" +
+        "نمنح نصك قراءة تتجاوز السطح، لنكشف ما بين سطوره، ونرى إمكانياته من زاوية أخرى. لكننا لا نتوقف عند ذلك…<br>" +
+        "بعض النصوص لا تحتاج ملاحظات فقط، بل تحتاج أن تجد طريقها إلى من يؤمن بها",
 
       aboutTitle: "من الفكرة للنص.",
       aboutP1: "يمتلك الكثير من الكتّاب أفكارًا واعدة ونصوصًا تحمل إمكانات حقيقية، لكن تطوير النص السينمائي لا يعتمد على الكتابة وحدها.",
@@ -343,8 +344,9 @@
       heroNda: "All submissions are protected under non-disclosure agreements (NDA) and are only accessed by the assigned reader.",
       partnerBadge: "Accredited partner",
 
-      quoteHtml: "Every story deserves a real chance to evolve.<br>" +
-        "Scene One gives you a professional perspective on your script through specialized coverage and detailed reports, helping you identify strengths, address weaknesses, and move forward with clarity and confidence.",
+      quoteHtml: "Because every script can be seen differently… if the right eye finds it<br>" +
+        "We give your script a reading that goes past the surface, to draw out what sits between its lines and see its potential from another angle. But we don't stop there…<br>" +
+        "Some scripts don't only need notes. They need to find their way to someone who believes in them",
 
       aboutTitle: "From Idea to Script",
       aboutP1: "Many writers have promising ideas and scripts with real potential. But developing a screenplay takes more than writing alone.",
