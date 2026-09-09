@@ -34,7 +34,7 @@
 
       heroTitle: "حيث تبدأ رحلة النص",
       heroSub: "نقرأ نصك بعين مهنية، نحدد نقاط القوة وما يحتاج إلى تطوير، لنساعدك في الوصول إلى نسخة أقوى وأكثر جاهزية للخطوة التالية",
-      btnViewCoverage: "عرض التغطيات", btnGuide: "دليل المنصة",
+      btnViewCoverage: "عرض التغطيات", btnGuide: "ما هي تغطية النصوص؟",
       heroNda: "جميع النصوص تخضع لاتفاقيات عدم إفصاح (NDA)، ولا يطّلع عليها سوى القارئ المكلّف بتقييمها.",
       partnerBadge: "شريك معتمد",
 
@@ -340,7 +340,7 @@
 
       heroTitle: "Where Your Script's Journey Begins",
       heroSub: "We read your script with a professional eye, naming its strengths and what still needs work, to help you reach a stronger draft that is readier for the next step",
-      btnViewCoverage: "View Coverages", btnGuide: "Platform Guide",
+      btnViewCoverage: "View Coverages", btnGuide: "What is script coverage?",
       heroNda: "All submissions are protected under non-disclosure agreements (NDA) and are only accessed by the assigned reader.",
       partnerBadge: "Accredited partner",
 
