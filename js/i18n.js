@@ -56,9 +56,8 @@
       step4T: "04 — إعداد التقرير", step4B: "يتم إعداد تقرير مفصل يتضمن نقاط القوة وفرص التطوير والملاحظات العملية.",
       step5T: "05 — استلام النتائج", step5B: "يتلقى الكاتب تقريره ويبدأ رحلة تطوير النص بناءً على الملاحظات والتوصيات المقدمة.",
       step6T: "06 — الترشيح للاستضافة", step6B: "يتم ترشيح النصوص الأعلى تقييماً للدخول في مرحلة الاستضافة على المنصة، بعد موافقة الكاتب الكتابية الصريحة.",
-      step7T: "07 — استضافة النص", step7B: "يُعرض المشروع المختار ضمن مكتبة خاصة موجهة لجهات الصناعة والشركاء.",
-      step8T: "08 — الوصول للجهات", step8B: "تُشارك المشاريع المستضافة مع منتجين وشركات وجهات مهتمة.",
-      step9T: "09 — فرص التطوير والإنتاج", step9B: "قد ينتج عن ذلك فرص فعلية لتطوير المشروع أو نقله إلى مراحل إنتاجية.",
+      step7T: "07 — الاستضافة والمشاركة", step7B: "يُضاف المشروع المختار إلى مكتبة خاصة، ويتم ترشيحه ومشاركته مع جهات الصناعة والشركاء.",
+      step8T: "08 — فرص التطوير والإنتاج", step8B: "قد ينتج عن ذلك فرص فعلية لتطوير المشروع أو نقله إلى مراحل إنتاجية.",
 
       partnershipEyebrow: "Exclusive Benefits",
       partnershipTitle: "مزايا حصرية",
@@ -362,9 +361,8 @@
       step4T: "04 — Report Preparation", step4B: "A detailed report is created, highlighting strengths, areas for improvement, and development opportunities.",
       step5T: "05 — Delivery", step5B: "The writer receives the report and begins the next stage of development with clear, actionable insights.",
       step6T: "06 — Nomination for Hosting", step6B: "The highest-rated scripts are nominated to enter the platform's hosting stage, upon the writer's explicit written consent.",
-      step7T: "07 — Script Hosting", step7B: "The selected project is presented in a dedicated library for industry partners.",
-      step8T: "08 — Industry Reach", step8B: "Hosted projects are shared with producers, companies, and interested parties.",
-      step9T: "09 — Development & Production Opportunities", step9B: "This can lead to real opportunities to develop the project or carry it into production.",
+      step7T: "07 — Hosting & Sharing", step7B: "The selected project is added to a dedicated library, then nominated and shared with industry partners and companies.",
+      step8T: "08 — Development & Production Opportunities", step8B: "This can lead to real opportunities to develop the project or carry it into production.",
 
       partnershipEyebrow: "Exclusive Benefits",
       partnershipTitle: "Exclusive Benefits",
