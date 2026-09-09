@@ -2026,7 +2026,16 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
 .au-cards {
   margin: 0 0 0 auto;
   display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 4vw, 64px);
+  /* Bios differ a lot in length (117px to 322px as written), which left the
+     cards ragged. `1fr` rows make every row as tall as the tallest card, and the
+     card/bio rules below pass that height down to the bio box itself — so every
+     description occupies an identical block WITHOUT clamping anyone's text.
+     Columns were already equal; only height was ever the problem. */
+  grid-auto-rows: 1fr;
 }
+.au-card { display: flex; flex-direction: column; }
+/* Takes the leftover height, which is what makes the boxes match. */
+.au-card__bio { flex: 1; }
 .au-card__photo {
   aspect-ratio: 3 / 4; overflow: hidden; background: transparent; margin: 0 0 24px auto;
   width: 80%; max-width: 320px;
@@ -2057,6 +2066,10 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   .au-about__label { grid-column: 1; grid-row: 1; text-align: right; }
   .au-about__body { grid-column: 1; grid-row: 2; }
   .au-cards { grid-template-columns: 1fr; max-width: 460px; gap: 48px; }
+  /* Single column: matching every card to the longest bio would just add
+     whitespace, since no two cards sit side by side to compare. */
+  .au-cards { grid-auto-rows: auto; }
+  .au-card__bio { flex: 0 1 auto; }
 }
 @media (max-width: 640px) {
   .au-hero { height: 720px; padding: 112px 0 0; }
