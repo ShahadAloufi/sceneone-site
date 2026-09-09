@@ -43,7 +43,7 @@
         "بعض النصوص لا تحتاج ملاحظات فقط، بل تحتاج أن تجد طريقها إلى من يؤمن بها",
 
       aboutTitle: "من الفكرة… إلى نسخة تستحق أن تُرى",
-      aboutP1: "في سين ون، نقرأ نصك كما يُقرأ داخل الصناعة بمعايير واضحة، ونظرة نقدية تكشف إمكانياته الحقيقية، وما يحتاجه ليصبح مشروعاً قابلاً للتقديم",
+      aboutP1: "نقرأ نصك كما يُقرأ داخل الصناعة بمعايير واضحة، ونظرة نقدية تكشف إمكانياته الحقيقية، وما يحتاجه ليصبح مشروعاً قابلاً للتقديم",
       aboutP2: "النصوص التي تثبت نفسها لا تتوقف عند التقييم، بل تُختار للاستضافة، وتُعرض على جهات تبحث عن أعمال جاهزة للتطوير",
 
       cardWritersAlt: "للكُتّاب", cardProducersAlt: "شركاء الصناعة", cardCinemaAlt: "السينما السعودية",
@@ -348,7 +348,7 @@
         "Some scripts don't only need notes. They need to find their way to someone who believes in them",
 
       aboutTitle: "From an Idea… to a Draft Worth Seeing",
-      aboutP1: "At Scene One we read your script the way the industry reads it: against clear criteria, with a critical eye that draws out its real potential and what it still needs to become a project you can take out",
+      aboutP1: "We read your script the way the industry reads it: against clear criteria, with a critical eye that draws out its real potential and what it still needs to become a project you can take out",
       aboutP2: "Scripts that prove themselves don't stop at the evaluation. They are selected for hosting and put in front of parties looking for work that is ready to develop",
 
       cardWritersAlt: "For Writers", cardProducersAlt: "Industry Partners", cardCinemaAlt: "Saudi Cinema",
