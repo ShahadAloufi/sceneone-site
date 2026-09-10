@@ -300,47 +300,24 @@
       </article>
 
       <!-- Treatment coverage: an early-stage read on the STORY, not the
-           eight-point script coverage below — hence its own short list and no
-           sample-report link (the sample is a script report and would mislead).
-           Priced as its own film_type (treatment_short / treatment_feature in
-           PRICES), so the form charges 70 / 150 rather than a script rate. -->
-      <article class="ctype-card">
-        <div class="ctype-card__head">
-          <h3 class="ctype-card__title" data-i18n="treatShortTitle">تغطية المعالجة السينمائية للفيلم القصير</h3>
-          <p class="ctype-card__desc" data-i18n-html="treatShortDescHtml">تقييم مبكر لفكرة القصة يحدد مدى جاهزيتها للتحول إلى سيناريو سينمائي (<strong>حتى 5 صفحات</strong>).</p>
-        </div>
-        <div class="ctype-card__foot">
-          <ul class="ctype-card__list">
-            <li data-i18n-html="treatShortTurnaroundHtml">مدة التسليم: أسبوع واحد <span class="ctype-card__note">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span></li>
-            <li data-i18n="treatLi1">تقييم الفكرة وأصالتها</li>
-            <li data-i18n="treatLi2">تحليل هيكل القصة العام</li>
-            <li data-i18n="treatLi3">مراجعة الشخصيات ودوافعها</li>
-            <li data-i18n="treatLi4">تحديد المسار العاطفي والموضوعي</li>
-            <li data-i18n="treatLi5">قابلية التطوير إلى سيناريو</li>
-            <li data-i18n="treatLi6">ملاحظات السوق: الجمهور والمهرجانات وقابلية الإنتاج</li>
-            <li data-i18n="treatLi7">نقاط القوة وما يحتاج إلى تطوير</li>
-            <li data-i18n="treatLi8">توصية واضحة للتطوير أو التعديل أو إعادة التفكير</li>
-          </ul>
-          <div class="ctype-card__btns">
-            <a class="btn btn--white" href="/treatment-submit?type=treatment_short" data-i18n="btnRequest">اطلب التغطية</a>
-            <a class="btn btn--ghost" href="sample-treatment-report.html" target="_blank" rel="noopener" data-i18n="btnSample">إطلع على نموذج التقرير</a>
-          </div>
-        </div>
-      </article>
+           eight-point script coverage above — hence its own short list, and a
+           sample link to the TREATMENT report rather than the script one.
 
-      <!-- Treatment coverage: an early-stage read on the STORY, not the
-           eight-point script coverage below — hence its own short list and no
-           sample-report link (the sample is a script report and would mislead).
-           Priced as its own film_type (treatment_short / treatment_feature in
-           PRICES), so the form charges 70 / 150 rather than a script rate. -->
+           ONE card for both lengths. Short and feature are still separate
+           products (treatment_short / treatment_feature, 70 / 150 in PRICES),
+           but the writer picks between them on the form's own required
+           "نوع المشروع" select instead of by choosing a card. So this link
+           carries no ?type=: with none, preselectType() leaves that select on
+           its "اختر نوع المشروع" placeholder, which IS the choose-after-clicking
+           flow. Re-adding a ?type= here would silently pre-pick a price. -->
       <article class="ctype-card">
         <div class="ctype-card__head">
-          <h3 class="ctype-card__title" data-i18n="treatFeatureTitle">تغطية المعالجة السينمائية للفيلم الطويل</h3>
-          <p class="ctype-card__desc" data-i18n-html="treatFeatureDescHtml">تقييم مبكر لفكرة القصة يحدد مدى جاهزيتها للتحول إلى سيناريو سينمائي (<strong>حتى 15 صفحة</strong>).</p>
+          <h3 class="ctype-card__title" data-i18n="treatTitle">تغطية المعالجة السينمائية</h3>
+          <p class="ctype-card__desc" data-i18n-html="treatDescHtml">تقييم مبكر لفكرة القصة يحدد مدى جاهزيتها للتحول إلى سيناريو سينمائي (<strong>حتى 5 صفحات للفيلم القصير، وحتى 15 صفحة للفيلم الطويل</strong>). تختار نوع المشروع عند التقديم.</p>
         </div>
         <div class="ctype-card__foot">
           <ul class="ctype-card__list">
-            <li data-i18n-html="treatFeatureTurnaroundHtml">مدة التسليم: 10 أيام <span class="ctype-card__note">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span></li>
+            <li data-i18n-html="treatTurnaroundHtml">مدة التسليم: أسبوع واحد للفيلم القصير، و10 أيام للفيلم الطويل <span class="ctype-card__note">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span></li>
             <li data-i18n="treatLi1">تقييم الفكرة وأصالتها</li>
             <li data-i18n="treatLi2">تحليل هيكل القصة العام</li>
             <li data-i18n="treatLi3">مراجعة الشخصيات ودوافعها</li>
@@ -351,7 +328,7 @@
             <li data-i18n="treatLi8">توصية واضحة للتطوير أو التعديل أو إعادة التفكير</li>
           </ul>
           <div class="ctype-card__btns">
-            <a class="btn btn--white" href="/treatment-submit?type=treatment_feature" data-i18n="btnRequest">اطلب التغطية</a>
+            <a class="btn btn--white" href="/treatment-submit" data-i18n="btnRequest">اطلب التغطية</a>
             <a class="btn btn--ghost" href="sample-treatment-report.html" target="_blank" rel="noopener" data-i18n="btnSample">إطلع على نموذج التقرير</a>
           </div>
         </div>

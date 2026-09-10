@@ -68,12 +68,9 @@
       // Treatment coverage — a story-stage read, deliberately shorter than the
       // script coverage below. Both treatment cards share every string except
       // the film type and page cap in their description.
-      treatShortTitle: "تغطية المعالجة السينمائية للفيلم القصير",
-      treatFeatureTitle: "تغطية المعالجة السينمائية للفيلم الطويل",
-      treatShortDescHtml: "تقييم مبكر لفكرة القصة يحدد مدى جاهزيتها للتحول إلى سيناريو سينمائي (<strong>حتى 5 صفحات</strong>).",
-      treatFeatureDescHtml: "تقييم مبكر لفكرة القصة يحدد مدى جاهزيتها للتحول إلى سيناريو سينمائي (<strong>حتى 15 صفحة</strong>).",
-      treatShortTurnaroundHtml: "مدة التسليم: أسبوع واحد <span class=\"ctype-card__note\">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span>",
-      treatFeatureTurnaroundHtml: "مدة التسليم: 10 أيام <span class=\"ctype-card__note\">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span>",
+      treatTitle: "تغطية المعالجة السينمائية",
+      treatDescHtml: "تقييم مبكر لفكرة القصة يحدد مدى جاهزيتها للتحول إلى سيناريو سينمائي (<strong>حتى 5 صفحات للفيلم القصير، وحتى 15 صفحة للفيلم الطويل</strong>). تختار نوع المشروع عند التقديم.",
+      treatTurnaroundHtml: "مدة التسليم: أسبوع واحد للفيلم القصير، و10 أيام للفيلم الطويل <span class=\"ctype-card__note\">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span>",
       treatLi1: "تقييم الفكرة وأصالتها",
       treatLi2: "تحليل هيكل القصة العام",
       treatLi3: "مراجعة الشخصيات ودوافعها",
@@ -370,12 +367,9 @@
       partnershipOffer: "15% off for Association members and staff",
       partnershipNote: "A valid membership card must be presented when requesting coverage",
 
-      treatShortTitle: "Short Film Treatment Coverage",
-      treatFeatureTitle: "Feature Film Treatment Coverage",
-      treatShortDescHtml: "Early-stage story evaluation that tests whether your idea is strong enough to become a screenplay (<strong>up to 5 pages</strong>).",
-      treatFeatureDescHtml: "Early-stage story evaluation that tests whether your idea is strong enough to become a screenplay (<strong>up to 15 pages</strong>).",
-      treatShortTurnaroundHtml: "Turnaround: one week <span class=\"ctype-card__note\">(the timeline begins once your script is assigned to a reader; you'll be notified by email when that happens)</span>",
-      treatFeatureTurnaroundHtml: "Turnaround: 10 days <span class=\"ctype-card__note\">(the timeline begins once your script is assigned to a reader; you'll be notified by email when that happens)</span>",
+      treatTitle: "Screenplay Treatment Coverage",
+      treatDescHtml: "Early-stage story evaluation that tests whether your idea is strong enough to become a screenplay (<strong>up to 5 pages for a short, up to 15 for a feature</strong>). You choose the project type when you submit.",
+      treatTurnaroundHtml: "Turnaround: one week for a short, 10 days for a feature <span class=\"ctype-card__note\">(the timeline begins once your script is assigned to a reader; you'll be notified by email when that happens)</span>",
       treatLi1: "Story concept & originality assessment",
       treatLi2: "Narrative structure overview (beginning, middle, end)",
       treatLi3: "Character strength & motivation review",
