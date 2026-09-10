@@ -39,7 +39,6 @@
       partnerBadge: "شريك معتمد",
 
       quoteHtml: "لأن كل نص يُمكن أن يُرى بشكل مختلف… إذا وُجدت العين التي تراه<br>" +
-        "نمنح نصك قراءة تتجاوز السطح، لنكشف ما بين سطوره، ونرى إمكانياته من زاوية أخرى. لكننا لا نتوقف عند ذلك…<br>" +
         "بعض النصوص لا تحتاج ملاحظات فقط، بل تحتاج أن تجد طريقها إلى من يؤمن بها",
 
       aboutTitle: "من الفكرة… إلى نسخة تستحق أن تُرى",
@@ -341,7 +340,6 @@
       partnerBadge: "Accredited partner",
 
       quoteHtml: "Because every script can be seen differently… if the right eye finds it<br>" +
-        "We give your script a reading that goes past the surface, to draw out what sits between its lines and see its potential from another angle. But we don't stop there…<br>" +
         "Some scripts don't only need notes. They need to find their way to someone who believes in them",
 
       aboutTitle: "From an Idea… to a Draft Worth Seeing",
