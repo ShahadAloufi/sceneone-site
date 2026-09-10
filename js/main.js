@@ -148,35 +148,53 @@
   /* ---------- HERO BACKGROUND VIDEO (landing + readers) ----------
      Autoplay is only allowed for a muted, playsinline video, and even then not
      always: iOS Low Power Mode refuses outright, and per-site "Auto-Play: Never"
-     and some data savers do the same. When the browser refuses, it paints the
-     poster with a PLAY BUTTON over it — which reads as a broken hero rather than
-     a background. So: re-assert muted as a property (the attribute alone isn't
-     always enough), ask to play, and if that is rejected, retry once on the
-     first user gesture, by which point the policy allows it. Never shows
-     controls either way.
+     and some data savers do the same.
 
-     Both heroes keep their still frame as a CSS background on the SECTION and
-     start the video transparent, so a refusal degrades to that still rather
-     than to a play glyph. This used to live inline in readers.html; it is here
-     now because index.html grew a hero video too and one copy is enough. */
+     A refused OR paused video is where the browser paints its own play glyph,
+     which reads as a broken hero rather than a background. Two defences, because
+     one was not enough — on macOS Safari the glyph showed through the host's
+     opacity:0, so css/styles.css now hides the native controls outright, and the
+     rules here make sure a video that is not running is never visible either.
+
+     The element stays transparent until frames are actually moving, so any
+     refusal degrades to the section's own poster background rather than to a
+     control. Never shows controls, and is never meant to be operable. */
   document.querySelectorAll('video.hero__bg, video.au-hero__bg').forEach(function (v) {
-    // Reveal ONLY once frames are actually running.
-    function reveal() { v.classList.add('is-playing'); }
-    v.addEventListener('playing', reveal);
-    if (!v.paused && v.currentTime > 0) reveal();   // already running before we bound
+    var tries = 0;
+
     function attempt() {
       v.muted = true;               // property, not just the attribute
       var p = v.play();
-      if (p && typeof p.catch === 'function') p.catch(function () { /* blocked; wait for a gesture */ });
+      if (p && typeof p.catch === 'function') p.catch(function () { /* blocked; wait for a chance */ });
     }
+    // Reveal ONLY once frames are genuinely running.
+    function reveal() { tries = 0; v.classList.add('is-playing'); }
+
+    v.addEventListener('playing', reveal);
+    if (!v.paused && v.currentTime > 0) reveal();   // already running before we bound
+
+    // Whatever stopped it — a policy pause, the tab going to the background, a
+    // laptop dropping into Low Power Mode — a stopped video must not sit on
+    // screen. Hide it first, then ask again. `loop` means this is never the end
+    // of playback, so a pause is always something to recover from. Bounded, so a
+    // browser that refuses outright settles on the poster instead of spinning.
+    v.addEventListener('pause', function () {
+      v.classList.remove('is-playing');
+      if (tries++ < 3) attempt();
+    });
+
     attempt();
-    // One retry, on whichever gesture comes first, then unbind.
-    var events = ['pointerdown', 'touchstart', 'keydown', 'scroll'];
-    function retry() {
-      events.forEach(function (e) { window.removeEventListener(e, retry); });
-      attempt();
-    }
-    events.forEach(function (e) { window.addEventListener(e, retry, { once: true, passive: true }); });
+
+    // Retry on the first interaction of each kind, and whenever the tab comes
+    // back to the front. These stay bound: the old version unbound after one
+    // gesture, which is why a page that lost autoplay early could only be
+    // rescued by the very next keypress and never afterwards.
+    ['pointerdown', 'touchstart', 'keydown', 'scroll'].forEach(function (e) {
+      window.addEventListener(e, function () { if (v.paused) { tries = 0; attempt(); } }, { passive: true });
+    });
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden && v.paused) { tries = 0; attempt(); }
+    });
   });
 
   /* ---------- PACKAGES TABS (landing) ----------

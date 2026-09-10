@@ -285,6 +285,22 @@ a, button {
   pointer-events: none;
 }
 .hero__bg.is-playing { opacity: 1; }
+/* Safari paints its own start-playback glyph over a PAUSED video, and on macOS
+   it survives the host's opacity:0 — which is how a play button ended up sitting
+   in the middle of the hero on first load. Kill the native controls outright:
+   this element is decoration, it is never meant to be operable. */
+.hero__bg::-webkit-media-controls,
+.hero__bg::-webkit-media-controls-start-playback-button,
+.hero__bg::-webkit-media-controls-panel,
+.hero__bg::-webkit-media-controls-overlay-play-button,
+.au-hero__bg::-webkit-media-controls,
+.au-hero__bg::-webkit-media-controls-start-playback-button,
+.au-hero__bg::-webkit-media-controls-panel,
+.au-hero__bg::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+  -webkit-appearance: none;
+  opacity: 0 !important;
+}
 /* Motion is decorative here, so a reduced-motion preference drops the video and
    keeps the poster. */
 @media (prefers-reduced-motion: reduce) {
