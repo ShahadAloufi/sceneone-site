@@ -29,6 +29,15 @@ const MAX_ANSWER = 5000;
 // Generous enough that a genuine back-and-forth never hits it.
 const MAX_PER_SUBMISSION = 10;
 
+// The reader may attach ONE file to their reply. 10MB matches ATTACH_MAX_BYTES
+// in js/coverage.js — the same reader attaching the same kind of thing.
+const ATTACH_BUCKET = "attachments";
+const ATTACH_MAX_BYTES = 10 * 1024 * 1024;
+// Extension allowlist, not a MIME check: the browser's reported type is a hint
+// the client controls, while the extension is what Storage derives the served
+// content type from and what the writer's OS opens the file with.
+const ATTACH_EXT = ["pdf", "doc", "docx", "txt", "rtf", "fdx", "png", "jpg", "jpeg", "webp"];
+
 function svc() {
   return { url: process.env.SUPABASE_URL, key: process.env.SUPABASE_SERVICE_ROLE_KEY };
 }
@@ -105,7 +114,7 @@ function questionEmail(sub, question, link) {
 }
 
 // → the writer: their question quoted back, then the reader's reply.
-function answerEmail(sub, question, answer, reportLink) {
+function answerEmail(sub, question, answer, reportLink, attachmentLink) {
   var name = (sub.writer || "").toString().trim();
   var bodyStyle = "margin:0 auto;max-width:460px;font-size:15px;line-height:1.9;color:#4a453f;";
   return BRAND_OPEN +
@@ -117,6 +126,11 @@ function answerEmail(sub, question, answer, reportLink) {
     "</p>" +
     quote("استفسارك", question, false) +
     quote("ردّ القارئ", answer, true) +
+    (attachmentLink
+      ? '<p dir="rtl" style="' + bodyStyle + 'margin:18px auto 0;text-align:center;">' +
+          '\u{1F4CE} <a href="' + escapeHtml(attachmentLink) + '" style="color:#cd2e07;font-weight:700;text-decoration:none;">تحميل المرفق</a>' +
+        "</p>"
+      : "") +
     (reportLink
       ? '<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:24px auto 0;"><tr>' +
           '<td style="border-radius:12px;background:#111111;">' +
@@ -183,6 +197,57 @@ async function readThread(req, res, headers, url) {
       title_en: sub.title_en || "",
       writer: sub.writer || "",
     },
+  });
+}
+
+/* ---------- POST { q, upload }: mint a signed upload URL ----------
+   The reader answering is not signed in — they arrive on a tokenised link — so
+   they cannot satisfy the `attachments` bucket's admin-only RLS. The service
+   role mints a one-shot upload URL instead and the browser PUTs straight to
+   Storage, which keeps the file off this function entirely: a 10MB body would
+   not survive Vercel's 4.5MB request limit anyway.
+
+   The path is ours, never the client's, and it is namespaced by the question, so
+   one reply's attachment can never land on another's. The stem is dropped rather
+   than sanitised for the same reason as the coverage attachment: the key travels
+   inside signed URLs, and nothing reads meaning from it. */
+async function signUpload(req, res, headers, url, token, upload) {
+  if (!UUID_RE.test(token)) return res.status(404).json({ message: "الرابط غير صالح" });
+
+  const name = (upload.name || "").toString();
+  const size = Number(upload.size) || 0;
+  if (!name) return res.status(400).json({ message: "طلب غير صالح" });
+  if (size > ATTACH_MAX_BYTES) return res.status(400).json({ message: "حجم الملف يتجاوز 10 ميغابايت" });
+
+  const dot = name.lastIndexOf(".");
+  const ext = dot > 0 ? name.slice(dot + 1).toLowerCase().replace(/[^a-z0-9]+/g, "") : "";
+  if (!ext || ATTACH_EXT.indexOf(ext) === -1) {
+    return res.status(400).json({ message: "نوع الملف غير مدعوم" });
+  }
+
+  // The reply must still be open — no attaching to an answer already sent.
+  const qResp = await fetch(
+    url + "/rest/v1/report_questions?answer_token=eq." + encodeURIComponent(token) + "&select=id,answer",
+    { headers }
+  );
+  const rows = qResp.ok ? await qResp.json() : [];
+  if (!rows.length) return res.status(404).json({ message: "الرابط غير صالح" });
+  if (rows[0].answer) return res.status(409).json({ message: "تم إرسال الرد على هذا الاستفسار مسبقًا" });
+
+  const path = "questions/" + rows[0].id + "/" + Date.now().toString(36) + "-attachment." + ext;
+  const signResp = await fetch(
+    url + "/storage/v1/object/upload/sign/" + ATTACH_BUCKET + "/" + path,
+    { method: "POST", headers: Object.assign({}, headers, { "Content-Type": "application/json" }), body: "{}" }
+  );
+  if (!signResp.ok) {
+    console.error("answer attachment sign failed:", signResp.status, await signResp.text());
+    return res.status(502).json({ message: "تعذّر رفع الملف، حاول مرة أخرى" });
+  }
+  const signed = await signResp.json();
+  // Supabase returns the path with its own token as a query string.
+  return res.status(200).json({
+    path: path,
+    uploadUrl: url + "/storage/v1" + (signed.url || ""),
   });
 }
 
@@ -269,7 +334,7 @@ async function ask(req, res, headers, url, token, question) {
 }
 
 /* ---------- POST { q, answer }: the reader replies ---------- */
-async function answerQuestion(req, res, headers, url, token, answer) {
+async function answerQuestion(req, res, headers, url, token, answer, attachment) {
   if (!UUID_RE.test(token)) return res.status(404).json({ message: "الرابط غير صالح" });
   if (!answer) return res.status(400).json({ message: "الرجاء كتابة الرد" });
   if (answer.length > MAX_ANSWER) return res.status(400).json({ message: "الرد طويل جدًا" });
@@ -283,6 +348,28 @@ async function answerQuestion(req, res, headers, url, token, answer) {
   if (!rows.length) return res.status(404).json({ message: "الرابط غير صالح" });
   const row = rows[0];
   if (row.answer) return res.status(409).json({ message: "تم إرسال الرد على هذا الاستفسار مسبقًا" });
+
+  // The client sends back the {name, path} it was given. Trust neither: the path
+  // must be one WE minted for THIS question (so a reply cannot claim another
+  // one's file, or an arbitrary key in the bucket), and the object must actually
+  // be there — a signed URL that was never PUT to leaves a path that resolves to
+  // nothing, and storing it would promise the writer a download that 404s.
+  let att = null;
+  if (attachment && attachment.path) {
+    const path = String(attachment.path);
+    if (path.indexOf("questions/" + row.id + "/") !== 0) {
+      return res.status(400).json({ message: "طلب غير صالح" });
+    }
+    const head = await fetch(
+      url + "/storage/v1/object/info/" + ATTACH_BUCKET + "/" + path,
+      { headers }
+    );
+    if (!head.ok) {
+      console.error("answer attachment missing at send:", head.status, path);
+      return res.status(400).json({ message: "تعذّر إرفاق الملف، حاول رفعه مرة أخرى" });
+    }
+    att = { name: String(attachment.name || "attachment").slice(0, 200), path: path };
+  }
 
   const subResp = await fetch(
     url + "/rest/v1/submissions?id=eq." + encodeURIComponent(row.submission_id) +
@@ -303,7 +390,11 @@ async function answerQuestion(req, res, headers, url, token, answer) {
         "Content-Type": "application/json",
         Prefer: "return=representation",
       }),
-      body: JSON.stringify({ answer: answer, answered_at: new Date().toISOString() }),
+      body: JSON.stringify({
+        answer: answer,
+        answered_at: new Date().toISOString(),
+        answer_attachment: att,
+      }),
     }
   );
   if (!patch.ok) {
@@ -320,11 +411,19 @@ async function answerQuestion(req, res, headers, url, token, answer) {
   const reportLink = sub.report_token
     ? SITE_URL + "/report?t=" + encodeURIComponent(sub.report_token)
     : "";
+  // The writer has no account, so the file is reached through their REPORT
+  // token — the same secret their report link already carries — and streamed by
+  // /api/report. The answer_token in this page's URL is the reader's, and must
+  // never travel to the writer.
+  const attachmentLink = att && sub.report_token
+    ? SITE_URL + "/api/report?t=" + encodeURIComponent(sub.report_token) +
+      "&file=answer&q=" + encodeURIComponent(row.id)
+    : "";
   const emailed = await sendEmail({
     to: [sub.email],
     cc: [NOTIFY_TO],
     subject: "ردّ على استفسارك حول التقرير" + (title ? " · " + title : ""),
-    html: emailDocument(answerEmail(sub, row.question, answer, reportLink)),
+    html: emailDocument(answerEmail(sub, row.question, answer, reportLink, attachmentLink)),
   });
 
   return res.status(200).json({ ok: true, emailed: emailed });
@@ -356,7 +455,17 @@ module.exports = async (req, res) => {
     return ask(req, res, headers, url, askToken, (b.question || "").toString().trim());
   }
   if (answerToken) {
-    return answerQuestion(req, res, headers, url, answerToken, (b.answer || "").toString().trim());
+    // Same token, two shapes: `upload` asks for somewhere to put a file, `answer`
+    // sends the reply itself. Checked in that order so a request carrying both
+    // cannot quietly send a half-formed answer.
+    if (b.upload) {
+      return signUpload(req, res, headers, url, answerToken, b.upload || {});
+    }
+    return answerQuestion(
+      req, res, headers, url, answerToken,
+      (b.answer || "").toString().trim(),
+      b.attachment || null
+    );
   }
   return res.status(400).json({ message: "طلب غير صالح" });
 };

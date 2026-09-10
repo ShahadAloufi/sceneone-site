@@ -55,6 +55,18 @@
            color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
   textarea:focus{outline:none;border-color:var(--orange)}
   .count{font-size:12px;color:var(--muted);margin-top:8px;text-align:left;direction:ltr}
+  /* Attachment row. Deliberately quiet: the reply is the point, the file is the
+     option. The native file input is replaced by a labelled button because its
+     own chrome cannot be styled and reads as a foreign control here. */
+  .att{margin-top:18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .att__btn{border:1px solid var(--line);background:transparent;color:inherit;font-family:inherit;
+            font-size:14px;border-radius:10px;padding:10px 18px;cursor:pointer}
+  .att__btn:hover{background:rgba(0,0,0,.04)}
+  .att__btn:disabled{opacity:.55;cursor:default}
+  .att__name{font-size:14px;color:var(--muted);word-break:break-all}
+  .att__rm{border:0;background:transparent;color:#cd2e07;font-family:inherit;font-size:14px;
+           cursor:pointer;padding:4px}
+  .att__hint{margin-top:8px;font-size:12px;line-height:1.7;color:var(--muted)}
 
   .btn{margin-top:22px;width:100%;border:0;background:#111;color:#fff;font-family:inherit;
        font-size:15px;font-weight:600;padding:15px 20px;border-radius:12px;cursor:pointer;transition:.15s}
@@ -99,6 +111,15 @@
     <label for="a">اكتب ردّك على استفسار الكاتب</label>
     <textarea id="a" maxlength="5000" placeholder="اكتب ردّك هنا…"></textarea>
     <div class="count"><span id="count">0</span> / 5000</div>
+
+    <div class="att">
+      <input type="file" id="attInput" hidden
+             accept=".pdf,.doc,.docx,.txt,.rtf,.fdx,.png,.jpg,.jpeg,.webp">
+      <button type="button" class="att__btn" id="attBtn">إضافة مرفق</button>
+      <span class="att__name" id="attName" hidden></span>
+      <button type="button" class="att__rm" id="attRm" hidden>إزالة</button>
+    </div>
+    <p class="att__hint">اختياري. ملف واحد يصل الكاتب مع ردّك، بحد أقصى 10 ميغابايت.</p>
 
     <button class="btn" id="send">إرسال الرد إلى الكاتب</button>
     <div class="msg" id="msg"></div>
@@ -173,6 +194,77 @@
   var a = $("a");
   a.addEventListener("input", function () { $("count").textContent = a.value.length; });
 
+  /* ---------- ATTACHMENT ----------
+     This page has no Supabase session — it is reached from a tokenised email
+     link — so it cannot upload under the `attachments` bucket's admin-only RLS.
+     It asks /api/questions for a one-shot signed upload URL and PUTs the file
+     straight to Storage, which also keeps a 10MB file away from a function whose
+     request body limit is 4.5MB.
+
+     The upload runs on PICK, not on send: by the time the reader presses the
+     button the file is already in place and the reply is one small JSON POST, so
+     a slow upload can never look like a slow send. `attached` holds the
+     {name, path} that travels with the reply — null until an upload actually
+     succeeds, so a failed one is never silently sent as though it worked. */
+  var ATT_MAX = 10 * 1024 * 1024;
+  var attached = null;
+  var attIn = $("attInput"), attBtn = $("attBtn"), attName = $("attName"), attRm = $("attRm");
+
+  function attReset() {
+    attached = null;
+    attIn.value = "";                       // so re-picking the same file re-fires change
+    attName.hidden = true; attName.textContent = "";
+    attRm.hidden = true;
+    attBtn.hidden = false; attBtn.disabled = false;
+    attBtn.textContent = "إضافة مرفق";
+  }
+  function attFail(text) {
+    var m = $("msg");
+    m.className = "msg err";
+    m.textContent = text;
+    attReset();
+  }
+
+  attBtn.addEventListener("click", function () { attIn.click(); });
+  attRm.addEventListener("click", attReset);
+
+  attIn.addEventListener("change", function () {
+    var file = attIn.files && attIn.files[0];
+    if (!file) return;
+    if (file.size > ATT_MAX) { attFail("حجم الملف يتجاوز 10 ميغابايت."); return; }
+
+    $("msg").className = "msg";
+    attBtn.disabled = true;
+    attBtn.textContent = "جارٍ الرفع…";
+
+    fetch("/api/questions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ q: token, upload: { name: file.name, size: file.size, type: file.type } }),
+    })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) {
+        if (!res.ok) throw new Error((res.d && res.d.message) || "failed");
+        return fetch(res.d.uploadUrl, {
+          method: "PUT",
+          headers: { "Content-Type": file.type || "application/octet-stream" },
+          body: file,
+        }).then(function (up) {
+          if (!up.ok) throw new Error("failed");
+          return { name: file.name, path: res.d.path };
+        });
+      })
+      .then(function (att) {
+        attached = att;
+        attBtn.hidden = true;
+        attName.hidden = false; attName.textContent = att.name;
+        attRm.hidden = false;
+      })
+      .catch(function (e) {
+        attFail(e.message && e.message !== "failed" ? e.message : "تعذّر رفع الملف، حاول مرة أخرى.");
+      });
+  });
+
   $("send").addEventListener("click", function () {
     var btn = this;
     var text = a.value.trim();
@@ -192,7 +284,7 @@
     fetch("/api/questions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ q: token, answer: text }),
+      body: JSON.stringify({ q: token, answer: text, attachment: attached }),
     })
       .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
       .then(function (res) {

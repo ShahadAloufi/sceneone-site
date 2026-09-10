@@ -66,7 +66,7 @@ module.exports = async (req, res) => {
   // so even a malformed token gets a page rather than raw JSON — /report says
   // "Report unavailable" for one, which is the truth and readable.
   function downloadFailed(status, reason, message) {
-    if (wantFile === "attachment" && isNavigation(req)) {
+    if ((wantFile === "attachment" || wantFile === "answer") && isNavigation(req)) {
       res.setHeader("Cache-Control", "no-store");
       res.setHeader("Location",
         "/report?t=" + encodeURIComponent(token) + "&attachment=" + reason);
@@ -136,16 +136,43 @@ module.exports = async (req, res) => {
   // there — it never reaches the browser, and the JSON form does not pay for a
   // sign call it has no use for. The report page needs to know an attachment
   // exists and what it is called; the link it renders is our own /download route.
-  const hasAttachment = !!(coverage.attachment && coverage.attachment.path);
+  // Two things can be downloaded through this token, and they share every line
+  // of the streaming path below — only the source row differs.
+  //
+  //   file=attachment            the resource the reader attached to the COVERAGE
+  //   file=answer&q=<question>   the file attached to a reply to one of the
+  //                              writer's questions (report_questions.answer_attachment)
+  //
+  // The question is re-checked against THIS submission, so a report token can
+  // only ever reach files belonging to its own script — a valid token plus
+  // someone else's question id gets a 404, not a download.
+  let source = coverage.attachment || null;
+  if (wantFile === "answer") {
+    source = null;
+    const qid = ((req.query && req.query.q) || "").toString().trim();
+    if (UUID_RE.test(qid)) {
+      const qResp = await fetch(
+        url + "/rest/v1/report_questions?id=eq." + encodeURIComponent(qid) +
+        "&select=answer_attachment,submission_id",
+        { headers }
+      );
+      const qrows = qResp.ok ? await qResp.json() : [];
+      if (qrows.length && qrows[0].submission_id === sub.id) {
+        source = qrows[0].answer_attachment || null;
+      }
+    }
+  }
+
+  const hasAttachment = !!(source && source.path);
   const attachmentName = hasAttachment
-    ? attachmentFileName(coverage.attachment.name, sub.title_en) : null;
+    ? attachmentFileName(source.name, sub.title_en) : null;
 
   let attachment = null;
-  if (wantFile === "attachment" && hasAttachment) {
+  if ((wantFile === "attachment" || wantFile === "answer") && hasAttachment) {
     try {
       const signResp = await fetch(
         url + "/storage/v1/object/sign/attachments/" +
-        coverage.attachment.path.split("/").map(encodeURIComponent).join("/"),
+        source.path.split("/").map(encodeURIComponent).join("/"),
         {
           method: "POST",
           headers: Object.assign({ "Content-Type": "application/json" }, headers),
@@ -180,7 +207,7 @@ module.exports = async (req, res) => {
   // the writer stays on sceneone.info for the whole download and never sees a
   // supabase.co URL. The signed URL is minted and consumed server-side; it never
   // reaches the browser at all.
-  if (wantFile === "attachment") {
+  if (wantFile === "attachment" || wantFile === "answer") {
     // Two different nulls, and the writer deserves to be told which. Nothing was
     // ever attached is a 404 and final; signing failed is a 502 and worth
     // retrying. Reporting the second as the first tells a writer their reader

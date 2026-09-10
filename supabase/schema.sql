@@ -759,6 +759,25 @@ create table if not exists public.report_questions (
   created_at    timestamptz not null default now(),
   answered_at   timestamptz
 );
+
+-- ── ANSWER ATTACHMENT (2026-09-10) ─────────────────────────────────────────
+-- A reader replying to a writer's question may attach ONE file to that reply —
+-- a marked-up page, a reference, a rewritten scene.
+--
+-- {name, path} as jsonb, mirroring coverages.data.attachment: `name` is what the
+-- reader picked the file as, `path` is the key inside the `attachments` bucket.
+-- One column rather than two, so the pair is written and cleared atomically and
+-- a half-set row is not representable.
+--
+-- The bucket is the existing private `attachments` one, under a questions/
+-- prefix. Its RLS only lets an admin session read or write, and the reader
+-- answering is NOT signed in — they arrive on a tokenised link from an email.
+-- So the upload goes through a short-lived signed upload URL minted by
+-- /api/questions on the service role, and the writer's download is streamed by
+-- /api/report against their report token. Neither side ever touches the bucket
+-- directly, which is why no new storage policy is needed here.
+alter table public.report_questions
+  add column if not exists answer_attachment jsonb;
 create index if not exists report_questions_submission_idx
   on public.report_questions (submission_id, created_at desc);
 create index if not exists report_questions_answer_token_idx
