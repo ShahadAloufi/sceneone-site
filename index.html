@@ -89,12 +89,13 @@
 
   <!-- ── HERO ── -->
   <section class="hero">
-    <!-- Looping background. The poster is a CSS background on .hero rather than
-         a poster= attribute, and the video starts transparent: if autoplay is
-         refused (Low Power Mode, "Auto-Play: Never", a data saver) the still
-         frame is what shows, instead of iOS painting a play glyph over the hero.
-         js/main.js does the reveal and the one retry. -->
-    <video class="hero__bg" autoplay muted loop playsinline preload="auto"
+    <!-- Looping background, rendered from the first paint. It used to start
+         transparent and reveal itself on `playing`, which deadlocked: WebKit
+         gates muted autoplay on the element being rendered, so it would not
+         start until a click. The still now comes from `poster` (and .hero's
+         background behind it), and the play glyph is suppressed in CSS rather
+         than by hiding the element. js/main.js only retries a refused play. -->
+    <video class="hero__bg" autoplay muted loop playsinline preload="auto" poster="assets/hero-landing-poster.jpg"
            disablepictureinpicture disableremoteplayback
            aria-hidden="true" tabindex="-1">
       <source src="assets/hero-landing.mp4" type="video/mp4">

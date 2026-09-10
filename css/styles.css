@@ -273,18 +273,24 @@ a, button {
      .au-hero on /readers. */
   background: var(--bg) url('../assets/hero-landing-poster.jpg') center center / cover no-repeat;
 }
-/* Transparent until frames are actually running, then it crossfades over the
-   poster; a refusal simply leaves the still. pointer-events:none keeps a tap
-   from reaching the element and summoning native playback UI. */
+/* VISIBLE FROM THE START, deliberately.
+   It used to sit at opacity:0 until the `playing` event revealed it, to keep a
+   refused autoplay from showing a play glyph. That deadlocked: WebKit gates
+   muted autoplay on the element actually being rendered, so invisible meant
+   refused, refused meant `playing` never fired, and the video stayed invisible
+   until a click granted the gesture. Which is exactly what happened.
+
+   The glyph is handled by the rules below instead, and the `poster` attribute
+   gives a refused video the same still to show, so nothing is lost by rendering
+   it from the first paint. pointer-events:none keeps a tap from ever reaching
+   the element and summoning native playback UI. */
 .hero__bg {
   position: absolute;
   inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
-  opacity: 0; transition: opacity .5s ease;
   pointer-events: none;
 }
-.hero__bg.is-playing { opacity: 1; }
 /* Safari paints its own start-playback glyph over a PAUSED video, and on macOS
    it survives the host's opacity:0 — which is how a play button ended up sitting
    in the middle of the hero on first load. Kill the native controls outright:
@@ -1992,12 +1998,13 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
    never starts, the poster simply stays and nothing looks broken.
    pointer-events:none keeps a tap from ever reaching the element and summoning
    native playback UI. */
+/* Visible from the first paint, same reasoning as .hero__bg above: hiding it
+   until playback starts is what stops playback from starting. */
 .au-hero__bg {
   position: absolute; inset: 0; z-index: 0;
   width: 100%; height: 100%; object-fit: cover;
-  opacity: 0; transition: opacity .5s ease; pointer-events: none;
+  pointer-events: none;
 }
-.au-hero__bg.is-playing { opacity: 1; }
 .au-hero__shade {
   position: absolute; inset: 0; z-index: 1;
   background: linear-gradient(to bottom, rgba(0,0,0,.25) 0%, transparent 45%, var(--bg) 100%);

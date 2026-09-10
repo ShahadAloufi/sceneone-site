@@ -146,19 +146,17 @@
   }
 
   /* ---------- HERO BACKGROUND VIDEO (landing + readers) ----------
-     Autoplay is only allowed for a muted, playsinline video, and even then not
+     The markup autoplays on its own; this only exists to recover when the
+     browser refuses. Autoplay is allowed for a muted, playsinline video, but not
      always: iOS Low Power Mode refuses outright, and per-site "Auto-Play: Never"
      and some data savers do the same.
 
-     A refused OR paused video is where the browser paints its own play glyph,
-     which reads as a broken hero rather than a background. Two defences, because
-     one was not enough — on macOS Safari the glyph showed through the host's
-     opacity:0, so css/styles.css now hides the native controls outright, and the
-     rules here make sure a video that is not running is never visible either.
-
-     The element stays transparent until frames are actually moving, so any
-     refusal degrades to the section's own poster background rather than to a
-     control. Never shows controls, and is never meant to be operable. */
+     There used to be a reveal step here — the video sat at opacity:0 until the
+     `playing` event. That was the bug: WebKit gates muted autoplay on the
+     element actually being rendered, so hiding it until it played meant it never
+     played, and only a click could start it. The element is visible from the
+     first paint now, `poster` covers the not-yet-playing case, and CSS hides the
+     native controls so nothing draws a play button over the hero. */
   document.querySelectorAll('video.hero__bg, video.au-hero__bg').forEach(function (v) {
     var tries = 0;
 
@@ -167,28 +165,20 @@
       var p = v.play();
       if (p && typeof p.catch === 'function') p.catch(function () { /* blocked; wait for a chance */ });
     }
-    // Reveal ONLY once frames are genuinely running.
-    function reveal() { tries = 0; v.classList.add('is-playing'); }
 
-    v.addEventListener('playing', reveal);
-    if (!v.paused && v.currentTime > 0) reveal();   // already running before we bound
+    v.addEventListener('playing', function () { tries = 0; });
 
     // Whatever stopped it — a policy pause, the tab going to the background, a
-    // laptop dropping into Low Power Mode — a stopped video must not sit on
-    // screen. Hide it first, then ask again. `loop` means this is never the end
-    // of playback, so a pause is always something to recover from. Bounded, so a
-    // browser that refuses outright settles on the poster instead of spinning.
-    v.addEventListener('pause', function () {
-      v.classList.remove('is-playing');
-      if (tries++ < 3) attempt();
-    });
+    // laptop dropping into Low Power Mode — ask again. `loop` means a pause is
+    // never the end of playback, so it is always something to recover from.
+    // Bounded, so a browser that refuses outright settles on the poster instead
+    // of spinning.
+    v.addEventListener('pause', function () { if (tries++ < 3) attempt(); });
 
     attempt();
 
-    // Retry on the first interaction of each kind, and whenever the tab comes
-    // back to the front. These stay bound: the old version unbound after one
-    // gesture, which is why a page that lost autoplay early could only be
-    // rescued by the very next keypress and never afterwards.
+    // And on the first interaction of each kind, or when the tab comes back to
+    // the front. These stay bound and only act while it is actually paused.
     ['pointerdown', 'touchstart', 'keydown', 'scroll'].forEach(function (e) {
       window.addEventListener(e, function () { if (v.paused) { tries = 0; attempt(); } }, { passive: true });
     });
