@@ -390,15 +390,29 @@ async function answerQuestion(req, res, headers, url, token, answer, attachment)
         "Content-Type": "application/json",
         Prefer: "return=representation",
       }),
-      body: JSON.stringify({
-        answer: answer,
-        answered_at: new Date().toISOString(),
-        answer_attachment: att,
-      }),
+      // `answer_attachment` is written ONLY when there is one. Sending it as null
+      // on every reply made each one depend on the column existing, so a
+      // text-only reply failed outright wherever the migration had not run yet —
+      // a feature that is not being used should not be able to break the one
+      // that is.
+      body: JSON.stringify(Object.assign(
+        { answer: answer, answered_at: new Date().toISOString() },
+        att ? { answer_attachment: att } : {}
+      )),
     }
   );
   if (!patch.ok) {
-    console.error("answer patch failed:", patch.status, await patch.text());
+    const detail = await patch.text();
+    console.error("answer patch failed:", patch.status, detail);
+    // The one failure worth naming: PostgREST answers an unknown column with
+    // PGRST204, which means the answer_attachment migration has not been run on
+    // this database. Nothing the reader does will fix that, so say so here
+    // rather than leaving it as a generic "try again" in the logs.
+    if (detail && detail.indexOf("answer_attachment") !== -1) {
+      console.error("answer patch: report_questions.answer_attachment is missing — " +
+                    "run the ALTER TABLE in supabase/schema.sql");
+      return res.status(502).json({ message: "تعذّر إرفاق الملف، أرسل ردك بدون مرفق" });
+    }
     return res.status(502).json({ message: "تعذّر حفظ الرد، حاول مرة أخرى" });
   }
   if (!(await patch.json()).length) {
