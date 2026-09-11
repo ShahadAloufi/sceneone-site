@@ -34,7 +34,7 @@
 
       heroTitle: "من سيناريو واعد… إلى فرصة حقيقية",
       heroLede: "نقيّم، ونفتح لنصك أبواب الوصول إلى الجهات المناسبة",
-      heroSub: "عن طريق تحويل السيناريو إلى تقرير صناعي معتمد، مبني على منهجية تقييم تُستخدم فعليًا داخل شركات الإنتاج والتطوير",
+      heroSub: "تغطية احترافية لنصوص الأفلام القصيرة والطويلة بالعربية، وفق معايير غرف القراءة العالمية، مع ملاحظات عملية وخطة تطوير واضحة وفرصة وصول للنصوص المتميزة إلى صناع القرار",
       btnViewCoverage: "عرض التغطيات", btnGuide: "ما هي تغطية النصوص؟",
       heroNda: "جميع النصوص تخضع لاتفاقيات عدم إفصاح (NDA)، ولا يطّلع عليها سوى القارئ المكلّف بتقييمها.",
       partnerBadge: "شريك معتمد",
@@ -357,7 +357,7 @@
 
       heroTitle: "From a promising script… to a real opportunity",
       heroLede: "We evaluate your script, and open its way to the right industry doors",
-      heroSub: "By turning the screenplay into an accredited industry report, built on an evaluation methodology actually used inside production and development companies",
+      heroSub: "Professional coverage for short and feature scripts in Arabic, held to the standards of international reading rooms — practical notes, a clear development plan, and a route to decision-makers for the scripts that stand out",
       btnViewCoverage: "View Coverages", btnGuide: "What is script coverage?",
       heroNda: "All submissions are protected under non-disclosure agreements (NDA) and are only accessed by the assigned reader.",
       partnerBadge: "Accredited partner",
