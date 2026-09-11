@@ -470,6 +470,51 @@ a, button {
   .goal__num { height: 31px; }
 }
 
+/* AUDIENCE
+   Borrows the packages card's surface — #2d2a27, 10px, the same lift on hover —
+   so the two read as one family, but sizes to its own content. Two columns from
+   900px, one below. Card order is left to `direction`, which puts the first in
+   the markup top-right in Arabic and top-left in English. */
+.audience { padding: 0 24px 120px; direction: rtl; }
+.audience__title {
+  font-family: var(--font-head);
+  font-size: 34px;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 48px;
+}
+.audience__grid { display: grid; gap: 24px; max-width: 1140px; margin: 0 auto; }
+.aud-card {
+  background: #2d2a27;
+  border-radius: 10px;
+  padding: 40px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  transition: transform .3s ease, background-color .3s ease, box-shadow .3s ease;
+}
+.aud-card:hover {
+  transform: translateY(-6px);
+  background-color: #353230;
+  box-shadow: 0 16px 40px rgba(0,0,0,.35);
+}
+.aud-card__title { font-family: var(--font-head); font-size: 24px; font-weight: 700; color: #fff; line-height: 1.5; margin-bottom: 14px; }
+.aud-card__desc { font-size: 16px; line-height: 1.9; color: rgba(255,255,255,.62); margin: 0; }
+@media (min-width: 720px) {
+  .audience { padding: 0 40px 160px; }
+  .audience__title { font-size: 40px; }
+}
+@media (min-width: 900px) {
+  .audience__grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .aud-card { min-height: 235px; padding: 44px 44px; }
+  .aud-card__title { font-size: 26px; }
+}
+/* The section reads right-to-left even inside the LTR mirror below, so it needs
+   the same unwind .ctypes gets. */
+html[dir="ltr"] .audience { direction: ltr; }
+
 /* STRATEGIC PARTNERSHIP */
 /* Full-bleed band over the auditorium photo. The photo carries its own dark
    top/bottom fade to var(--bg) so the band has no hard seam against the

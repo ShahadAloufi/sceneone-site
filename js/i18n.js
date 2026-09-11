@@ -49,6 +49,16 @@
       goal2: "تقليل الفجوة بين الكاتب والعالم الإنتاجي",
       goal3: "بناء معيار تقييم واضح للنصوص العربية",
 
+      audienceTitle: "الفئة المستهدفة",
+      aud1T: "المواهب الجديدة في السينما السعودية",
+      aud1B: "كتّاب ناشئون لا يمتلكون شبكة علاقات داخل الصناعة، لكن لديهم نصوص قابلة للتطوير وتحتاج إلى مسار واضح",
+      aud2T: "كتّاب التجربة والتحول المهني",
+      aud2B: "أشخاص ينتقلون من الكتابة الأدبية أو الإبداعية إلى كتابة السيناريو ويرغبون بفهم المعايير السينمائية بشكل عملي",
+      aud3T: "صناع الأفلام المستقلون",
+      aud3B: "مخرجون أو منتجون في بداياتهم يعملون على مشاريع قصيرة أو مستقلة",
+      aud4T: "كتّاب السيناريو الطموحون لدخول السوق",
+      aud4B: "كتّاب يسعون للوصول إلى شركات الإنتاج أو الجهات السينمائية",
+
 
 
       journeyTitle: "رحلة النص",
@@ -352,6 +362,16 @@
       goal1: "Helping new voices in cinema be heard",
       goal2: "Closing the gap between the writer and the production world",
       goal3: "Building a clear evaluation standard for Arabic scripts",
+
+      audienceTitle: "Who This Is For",
+      aud1T: "New Voices in Saudi Cinema",
+      aud1B: "Emerging writers with no network inside the industry, but with scripts worth developing and no clear path forward",
+      aud2T: "Writers Changing Track",
+      aud2B: "People moving from literary or creative writing into screenwriting, who want a practical grasp of how scripts are judged",
+      aud3T: "Independent Filmmakers",
+      aud3B: "Directors and producers early in their careers, working on short or independent projects",
+      aud4T: "Screenwriters Aiming at the Market",
+      aud4B: "Writers looking to reach production companies and industry bodies",
 
 
 
