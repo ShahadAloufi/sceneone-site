@@ -141,6 +141,15 @@
 
 
       faqTitle: "الأسئلة الشائعة",
+      faqEyebrow: "لديك أسئلة؟",
+      faqCatGeneral: "عام",
+      faqCatServices: "الخدمات",
+      faqCatPricing: "الأسعار",
+      faqCatProcess: "آلية العمل",
+      faqQ5: "كيف تُحتسب أسعار التغطية؟",
+      faqA5: "تختلف التغطية القصيرة عن الطويلة: النص القصير (من 10 إلى 40 صفحة) يُحتسب بالصفحة، والنص الطويل (من 80 إلى 120 صفحة) ضمن نطاق سعري حسب حجمه. الأسعار المعروضة في قسم الباقات هي أسعار الإطلاق، ويمكنك إعادة تقديم نسخة مطوّرة من العمل نفسه (Draft 2) مجانًا بعد استلام التقييم الأولي.",
+      faqQ6: "كم تستغرق التغطية، وماذا يحدث بعد التسليم؟",
+      faqA6: "مدة التسليم عادةً من 10 إلى 15 يومًا، وتبدأ من لحظة إسناد نصك إلى أحد القرّاء، وتصلك رسالة عبر البريد عند الإسناد. بعد التسليم تستكمل رحلة النص خطواتها: النصوص الأعلى تقييمًا تُرشَّح للاستضافة بموافقة الكاتب الكتابية، ثم تُشارك مع جهات الصناعة والشركاء.",
       faqQ1: "ما هي تغطية النصوص السينمائية؟",
       faqA1: "تغطية النصوص السينمائية (Script Coverage) هي تحليل مفصّل يقدّمه قارئ/ناقد مختص لعمل الكاتب. نشأت هذه الخدمة في الاستوديوهات حيث كان يُوظَّف قرّاء لقراءة عدد كبير من السيناريوهات نيابةً عن المنتجين. لكن خدمتنا في التغطية النقدية تختلف عن ذلك؛ فهدفنا الأساسي هو مساعدة الكتّاب على تطوير نصوصهم والوصول بها إلى مرحلة تجعلها جاهزة للإرسال إلى شركاء الصناعة، مع تقييم صريح لما ينجح وما لا ينجح وأسباب واضحة لكل رأي.",
       faqQ2: "ما هي خدمات التغطية التي نقدمها؟",
@@ -452,6 +461,15 @@
 
 
       faqTitle: "Frequently Asked Questions",
+      faqEyebrow: "Got questions?",
+      faqCatGeneral: "General",
+      faqCatServices: "Services",
+      faqCatPricing: "Pricing",
+      faqCatProcess: "Process",
+      faqQ5: "How is coverage priced?",
+      faqA5: "Short and feature scripts are priced differently: a short (10-40 pages) is charged per page, while a feature (80-120 pages) falls into a range set by its length. The figures shown in the packages section are launch prices, and you can resubmit a developed version of the same work (Draft 2) free of charge once you have your first evaluation.",
+      faqQ6: "How long does coverage take, and what happens after delivery?",
+      faqA6: "Delivery is usually 10 to 15 days, counted from the moment your script is assigned to a reader — you get an email when that happens. After delivery the script's journey continues: the highest-rated scripts are nominated for hosting, with the writer's explicit written consent, then shared with industry partners.",
       faqQ1: "What is script coverage?",
       faqA1: "Script coverage is a detailed analysis of a writer's work, prepared by a specialized reader. The practice began in studios, where readers were hired to read large volumes of scripts on behalf of producers. Our coverage service is different: our core goal is to help writers develop their scripts to a stage where they're ready to send to industry partners, with a candid assessment of what's working, what isn't, and clear reasoning behind every note.",
       faqQ2: "What coverage services do we offer?",

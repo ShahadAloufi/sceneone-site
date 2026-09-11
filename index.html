@@ -420,35 +420,61 @@
   <!-- ── FAQ ── -->
   <section class="faq" id="faq">
     <div class="faq__wrap">
+      <p class="faq__eyebrow" data-i18n="faqEyebrow">لديك أسئلة؟</p>
       <h2 class="faq__title" data-i18n="faqTitle">الأسئلة الشائعة</h2>
+
+      <!-- Category filter. The pills are a filter, not tabs: each one narrows the
+           list below rather than swapping panels, so they are plain buttons with
+           aria-pressed and the list keeps its own semantics. -->
+      <div class="faq-cats" id="faqCats">
+        <button type="button" class="faq-cat is-active" data-faq-filter="general" aria-pressed="true" data-i18n="faqCatGeneral">عام</button>
+        <button type="button" class="faq-cat" data-faq-filter="services" aria-pressed="false" data-i18n="faqCatServices">الخدمات</button>
+        <button type="button" class="faq-cat" data-faq-filter="pricing" aria-pressed="false" data-i18n="faqCatPricing">الأسعار</button>
+        <button type="button" class="faq-cat" data-faq-filter="process" aria-pressed="false" data-i18n="faqCatProcess">آلية العمل</button>
+      </div>
+
       <div class="faq__list" id="faqList">
-        <div class="faq-item">
+        <div class="faq-item" data-faq-cat="general">
           <button class="faq-item__btn" aria-expanded="false">
             <span class="faq-item__q" data-i18n="faqQ1">ما هي تغطية النصوص السينمائية؟</span>
-            <svg class="faq-item__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            <span class="faq-item__sign" aria-hidden="true"></span>
           </button>
           <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA1">تغطية النصوص السينمائية (Script Coverage) هي تحليل مفصّل يقدّمه قارئ/ناقد مختص لعمل الكاتب. نشأت هذه الخدمة في الاستوديوهات حيث كان يُوظَّف قرّاء لقراءة عدد كبير من السيناريوهات نيابةً عن المنتجين. لكن خدمتنا في التغطية النقدية تختلف عن ذلك؛ فهدفنا الأساسي هو مساعدة الكتّاب على تطوير نصوصهم والوصول بها إلى مرحلة تجعلها جاهزة للإرسال إلى شركاء الصناعة، مع تقييم صريح لما ينجح وما لا ينجح وأسباب واضحة لكل رأي.</p></div></div>
         </div>
-        <div class="faq-item">
+        <div class="faq-item" data-faq-cat="services">
           <button class="faq-item__btn" aria-expanded="false">
             <span class="faq-item__q" data-i18n="faqQ2">ما هي خدمات التغطية التي نقدمها؟</span>
-            <svg class="faq-item__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            <span class="faq-item__sign" aria-hidden="true"></span>
           </button>
           <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA2">نقدّم حاليًا نوعين من الملاحظات النقدية: تغطية النصوص السينمائية، حيث يدوّن الناقد ملاحظات بنّاءة تشمل الفكرة والموضوع (Premise & Theme)، عنصر الجذب (Hook)، المخاطر وتطور الحبكة (Stakes & Plot)، الشخصيات، الحوار (Dialogue)، البنية والإيقاع (Structure & Pace)، قابلية الإنتاج (Producibility)، والعرض العام، مع خاتمة تلخّص أبرز نقاط القوة والجوانب التي تحتاج إلى تحسين. وتغطية المعالجات (Treatments)، حيث يدوّن الناقد ملاحظات تمتد إلى صفحتين تشمل المحتوى، والـ logline، وبنية القصة، وأدوار الشخصيات، واقتراحات لتحسين عرضك التقديمي (Pitch).</p></div></div>
         </div>
-        <div class="faq-item">
+        <div class="faq-item" data-faq-cat="general">
           <button class="faq-item__btn" aria-expanded="false">
             <span class="faq-item__q" data-i18n="faqQ3">لماذا أحتاج إلى خدمة التغطية (Coverage)؟</span>
-            <svg class="faq-item__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            <span class="faq-item__sign" aria-hidden="true"></span>
           </button>
           <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA3">من الصعب النظر إلى عملك بموضوعية تامة عندما تكون أنت المؤلف، لذلك توفّر خدمة التغطية نظرة موضوعية من شخص يفهم متطلبات الصناعة. وعند إرسال نصّك إلى استوديو أو وكيل أو منتج، فلن تتمكّن من الاطلاع على ملاحظات القارئ، مما يعني أنك لن تحصل على فرصة لمعالجة نقاط الضعف — أما من خلال هذه الخدمة فستحصل على هذه الفرصة.</p></div></div>
         </div>
-        <div class="faq-item">
+        <div class="faq-item" data-faq-cat="general">
           <button class="faq-item__btn" aria-expanded="false">
             <span class="faq-item__q" data-i18n="faqQ4">من هم Scene One؟</span>
-            <svg class="faq-item__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            <span class="faq-item__sign" aria-hidden="true"></span>
           </button>
           <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA4">تأسست Scene One بهدف مساعدة كتّاب السيناريو الصاعدين على دخول صناعة الأفلام.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="pricing">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ5">كيف تُحتسب أسعار التغطية؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA5">تختلف التغطية القصيرة عن الطويلة: النص القصير (من 10 إلى 40 صفحة) يُحتسب بالصفحة، والنص الطويل (من 80 إلى 120 صفحة) ضمن نطاق سعري حسب حجمه. الأسعار المعروضة في قسم الباقات هي أسعار الإطلاق، ويمكنك إعادة تقديم نسخة مطوّرة من العمل نفسه (Draft 2) مجانًا بعد استلام التقييم الأولي.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="process">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ6">كم تستغرق التغطية، وماذا يحدث بعد التسليم؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA6">مدة التسليم عادةً من 10 إلى 15 يومًا، وتبدأ من لحظة إسناد نصك إلى أحد القرّاء، وتصلك رسالة عبر البريد عند الإسناد. بعد التسليم تستكمل رحلة النص خطواتها: النصوص الأعلى تقييمًا تُرشَّح للاستضافة بموافقة الكاتب الكتابية، ثم تُشارك مع جهات الصناعة والشركاء.</p></div></div>
         </div>
       </div>
     </div>

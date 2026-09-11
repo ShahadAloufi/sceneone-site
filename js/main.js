@@ -95,6 +95,39 @@
     });
   });
 
+  /* ---------- FAQ CATEGORY FILTER ----------
+     Narrows the list rather than swapping panels, so the pills are buttons with
+     aria-pressed, not a tablist. Switching category collapses whatever was open:
+     leaving a panel expanded behind a filter change means the list reappears
+     mid-scroll at a height the reader did not ask for. */
+  var faqCats = document.getElementById("faqCats");
+  if (faqCats) {
+    var faqItems = Array.prototype.slice.call(document.querySelectorAll(".faq-item"));
+    var pills = Array.prototype.slice.call(faqCats.querySelectorAll(".faq-cat"));
+
+    function applyFaqFilter(cat) {
+      faqItems.forEach(function (item) {
+        item.hidden = item.getAttribute("data-faq-cat") !== cat;
+        item.classList.remove("open");
+        var b = item.querySelector(".faq-item__btn");
+        if (b) b.setAttribute("aria-expanded", "false");
+      });
+      pills.forEach(function (p) {
+        var on = p.getAttribute("data-faq-filter") === cat;
+        p.classList.toggle("is-active", on);
+        p.setAttribute("aria-pressed", on ? "true" : "false");
+      });
+    }
+
+    pills.forEach(function (p) {
+      p.addEventListener("click", function () {
+        applyFaqFilter(p.getAttribute("data-faq-filter"));
+      });
+    });
+
+    applyFaqFilter("general");
+  }
+
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") closeMenu();
   });
