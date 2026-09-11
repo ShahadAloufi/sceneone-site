@@ -11,6 +11,12 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
+  /* One vertical rhythm for every landing section, so the gaps between them are
+     a single decision rather than nine. Sections set `padding: var(--sec-y)
+     var(--sec-x)`; anything that needs to break the rhythm (the hero, which is
+     100vh, and .intro, which butts against the hero) says so explicitly. */
+  --sec-y: 56px;
+  --sec-x: 24px;
   --bg: #0e0202;
   --gold: #d2af50;
   --red: #cd2e07;
@@ -23,6 +29,10 @@
 html[dir="ltr"] {
   --font-body: 'IBM Plex Sans', sans-serif;
   --font-head: 'IBM Plex Sans', sans-serif;
+}
+
+@media (min-width: 640px) {
+  :root { --sec-y: 88px; --sec-x: 40px; }
 }
 
 html {
@@ -322,9 +332,14 @@ a, button {
    the crop: a short wide window is fine at any width, a tall narrow one is not.
    Below 3:2 the whole frame shows instead, as a band above the copy, with the
    poster sized to match so the two never disagree while the video loads. */
-@media (max-aspect-ratio: 3/2) {
-  .hero { background-size: contain; background-position: center 22%; }
-  .hero__bg { object-fit: contain; object-position: center 22%; }
+/* The contain fallback that used to live here was for the previous footage —
+   centred Arabic text that cover-cropping sliced mid-word onto the headline.
+   The asset is now pre-cropped to 3:2 out of the portrait master (see the
+   <source media> pair in index.html), so there is nothing left for contain to
+   protect and it only cost black gutters either side. Cover at every ratio; the
+   poster behind it switches with the source so the two never disagree. */
+@media (max-aspect-ratio: 1/1) {
+  .hero { background-image: url('../assets/hero-landing-portrait-poster.jpg'); }
 }
 .hero__shade {
   position: absolute;
@@ -414,9 +429,13 @@ a, button {
    explicit grid-column rather than DOM order so the copy can stay first in the
    markup for reading order, while the picture still lands on the side the
    layout wants — which flips with `direction`, so this mirrors for free in EN. */
-.intro { padding: 72px 24px 0; }
-.intro__wordmark { display: block; width: 100%; max-width: 340px; height: auto; margin: 0 auto 56px; }
-.intro__grid { display: grid; gap: 40px; max-width: 1120px; margin: 0 auto; align-items: center; }
+.intro { padding: var(--sec-y) var(--sec-x); }
+.intro__wordmark { display: block; width: 100%; max-width: 340px; height: auto; margin: 0 auto 32px; }
+/* start, not center: the photo is much taller than the copy, and centring the
+   two left the paragraphs floating in the middle of the row with a long empty
+   stretch under the wordmark. Aligned to the top they sit where the eye goes
+   after the lockup. */
+.intro__grid { display: grid; gap: 40px; max-width: 1120px; margin: 0 auto; align-items: start; }
 .intro__copy { font-size: 18px; line-height: 1.9; color: #C4C4C4; letter-spacing: .02em; }
 .intro__copy p { margin-bottom: 28px; }
 .intro__copy p:last-child { margin-bottom: 0; }
@@ -437,12 +456,11 @@ a, button {
     linear-gradient(to right,  var(--bg) 0%, transparent 27%, transparent 73%, var(--bg) 100%);
 }
 @media (min-width: 640px) {
-  .intro { padding: 88px 40px 0; }
   .intro__wordmark { max-width: 460px; }
   .intro__copy { font-size: 20px; }
 }
 @media (min-width: 900px) {
-  .intro__wordmark { max-width: 560px; margin-bottom: 72px; }
+  .intro__wordmark { max-width: 560px; margin-bottom: 40px; }
   .intro__grid { grid-template-columns: 1fr 1fr; gap: 64px; }
   /* grid-row is not redundant: with only grid-column set, auto-placement is
      sparse and refuses to move backwards, so naming column 2 for the copy sent
@@ -457,14 +475,13 @@ a, button {
    artwork rather than generated content. */
 /* The bottom padding stands in for the 200px margin .about used to put between
    this stretch of the page and the timeline, now that .about is gone. */
-.goals { padding: 88px 24px 120px; }
+.goals { padding: var(--sec-y) var(--sec-x); }
 .goals__title { font-family: var(--font-head); font-size: 30px; font-weight: 700; color: #fff; text-align: center; margin-bottom: 56px; }
 .goals__row { list-style: none; margin: 0 auto; padding: 0; max-width: 1000px; display: grid; gap: 48px; }
 .goal { text-align: center; }
 .goal__num { display: block; height: 28px; width: auto; margin: 0 auto 20px; }
 .goal__text { font-size: 18px; line-height: 1.8; color: #C4C4C4; letter-spacing: .02em; max-width: 260px; margin: 0 auto; }
 @media (min-width: 720px) {
-  .goals { padding: 112px 40px 160px; }
   .goals__title { font-size: 36px; }
   .goals__row { grid-template-columns: repeat(3, 1fr); gap: 40px; align-items: start; }
   .goal__num { height: 31px; }
@@ -477,7 +494,7 @@ a, button {
    the same step up the packages card takes, about +8 a channel. Two columns
    from 900px, one below. Card order is left to `direction`, which puts the first in
    the markup top-right in Arabic and top-left in English. */
-.audience { padding: 0 24px 120px; direction: rtl; }
+.audience { padding: var(--sec-y) var(--sec-x); direction: rtl; }
 .audience__title {
   font-family: var(--font-head);
   font-size: 34px;
@@ -505,7 +522,6 @@ a, button {
 .aud-card__title { font-family: var(--font-head); font-size: 24px; font-weight: 700; color: #fff; line-height: 1.5; margin-bottom: 14px; }
 .aud-card__desc { font-size: 16px; line-height: 1.9; color: rgba(255,255,255,.62); margin: 0; }
 @media (min-width: 720px) {
-  .audience { padding: 0 40px 160px; }
   .audience__title { font-size: 40px; }
 }
 @media (min-width: 900px) {
@@ -521,7 +537,7 @@ html[dir="ltr"] .audience { direction: ltr; }
 /* Full-bleed band over the auditorium photo. The photo carries its own dark
    top/bottom fade to var(--bg) so the band has no hard seam against the
    sections either side of it — same treatment as the hero photos. */
-.partnership { position: relative; overflow: hidden; padding: 96px 24px; direction: rtl; background: var(--bg); }
+.partnership { position: relative; overflow: hidden; padding: var(--sec-y) var(--sec-x); direction: rtl; background: var(--bg); }
 .partnership__bg { position: absolute; inset: 0; z-index: 0; }
 .partnership__bg img { width: 100%; height: 100%; object-fit: cover; object-position: center 42%; }
 .partnership__bg::after {
@@ -575,7 +591,6 @@ html[dir="ltr"] .audience { direction: ltr; }
 .partnership__note { font-family: var(--font-body); font-size: 13px; color: rgba(255,255,255,.5); margin-top: 18px; }
 
 @media (min-width: 640px) {
-  .partnership { padding: 128px 40px; }
   .partnership__title { font-size: 52px; }
   .partnership__body { font-size: 18px; }
   .partnership__offer { font-size: 18px; padding: 18px 48px; }
@@ -592,7 +607,7 @@ html[dir="ltr"] .audience { direction: ltr; }
 }
 
 /* COVERAGE TYPES / PACKAGES */
-.ctypes { padding: 120px 24px 200px; direction: rtl; }
+.ctypes { padding: var(--sec-y) var(--sec-x); direction: rtl; }
 .ctypes__title {
   font-family: var(--font-head);
   font-size: 40px;
@@ -817,7 +832,7 @@ html[dir="ltr"] .ctype-card__launch {
 }
 
 /* JOURNEY TIMELINE */
-.journey { position: relative; margin-bottom: 0; padding: 56px 24px; direction: rtl; overflow: hidden; }
+.journey { position: relative; margin-bottom: 0; padding: var(--sec-y) var(--sec-x); direction: rtl; overflow: hidden; }
 /* Ambient glow, rebuilt from the supplied SVG rather than shipped as one: it is
    a single radial gradient, so as CSS it costs nothing, scales to any section
    height and can sit behind live text. The source is a 1512x774 ellipse anchored
@@ -848,7 +863,6 @@ html[dir="ltr"] .ctype-card__launch {
 .jt-track { display: none; }
 
 @media (min-width: 640px) {
-  .journey { padding: 80px 40px; }
   .journey__title { font-size: 48px; }
   .tl-step__title { font-size: 24px; }
   .tl-step__body { font-size: 18px; }
@@ -860,7 +874,6 @@ html[dir="ltr"] .ctype-card__launch {
    1280px is where they stop doing that. Anything narrower keeps the stacked
    list, which reads better than a squeezed rail. */
 @media (min-width: 1280px) {
-  .journey { padding: 120px 40px 96px; }
   .journey__title { margin-bottom: 96px; }
   .timeline__mobile { display: none; }
 
@@ -884,7 +897,7 @@ html[dir="ltr"] .ctype-card__launch {
     left: 0; right: 0; bottom: 12px;
     height: 6px;
     border-radius: 3px;
-    background: linear-gradient(to left, rgba(244,119,33,.25), #f04e0f 18%, #f04e0f 82%, rgba(244,119,33,.25));
+    background: #f04e0f;
     z-index: 0;
   }
   .jt-step {
@@ -957,7 +970,7 @@ html[dir="ltr"] .ctype-card__launch {
 }
 
 /* FAQ */
-.faq { position: relative; padding: 64px 24px; direction: rtl; }
+.faq { position: relative; padding: var(--sec-y) var(--sec-x); direction: rtl; }
 .faq__wrap { max-width: 1180px; margin: 0 auto; }
 /* Eyebrow and title are start-aligned, not centred: the filter row beneath them
    has to start on the same edge, and a centred heading over a start-aligned
@@ -1024,7 +1037,6 @@ html[dir="ltr"] .ctype-card__launch {
 .faq-item__panel-inner { overflow: hidden; }
 .faq-item__a { padding-bottom: 26px; max-width: 900px; font-size: 15px; line-height: 1.9; color: rgba(255,255,255,.7); }
 @media (min-width: 640px) {
-  .faq { padding: 96px 40px; }
   .faq__eyebrow { font-size: 15px; }
   .faq__title { font-size: 40px; margin-bottom: 40px; }
   .faq-item__q { font-size: 20px; }
@@ -1032,7 +1044,7 @@ html[dir="ltr"] .ctype-card__launch {
 }
 
 /* CTA */
-.cta { position: relative; width: 100%; overflow: hidden; background: var(--bg); min-height: 80vh; padding: 128px 0; }
+.cta { position: relative; width: 100%; overflow: hidden; background: var(--bg); min-height: 80vh; padding: var(--sec-y) 0; }
 .cta__bg { position: absolute; inset: 0; height: 100%; width: 100%; object-fit: cover; object-position: bottom; opacity: .55; }
 .cta__shade { position: absolute; inset: 0; background: linear-gradient(to bottom, var(--bg), rgba(14,2,2,.6), var(--bg)); }
 .cta__content { position: relative; z-index: 10; margin: 0 auto; max-width: 700px; padding: 128px 24px; text-align: center; }
@@ -1692,12 +1704,7 @@ display: flex;
   color: var(--adm-muted);
 
   font-size: 14px;
-
-
-
-
 }
-
 
 .adm-loading::before {
   content: "";
@@ -1709,13 +1716,11 @@ display: flex;
   animation: adm-spin 0.8s linear infinite;
 }
 
-
 @keyframes adm-spin {
   to {
     transform: rotate(360deg);
   }
 }
-
 
 /* ===== Scene One loader (shared) ===== */
 
@@ -1786,7 +1791,6 @@ html[data-theme="light"] .so-loader{ --frame:#15110f; }  /* auto on light theme 
 .adm-link--danger:hover { background: rgba(192,57,43,.08); border-color: rgba(192,57,43,.6); color: #C0392B; }
 html[data-theme="dark"] .adm-link--danger { color: #e57368; border-color: rgba(229,115,104,.4); }
 html[data-theme="dark"] .adm-link--danger:hover { background: rgba(229,115,104,.12); color: #e57368; }
-
 
 /* Assignee cell: circular letter-avatar / empty "add me" icon */
 .adm-av {
@@ -2370,7 +2374,6 @@ html[dir="ltr"] .hero__content { direction: ltr; text-align: left; margin-left: 
 html[dir="ltr"] .quote { text-align: left; }
 html[dir="ltr"] .quote__rule { margin: 0 auto 24px 0; }
 html[dir="ltr"] .quote p { margin-left: 0; margin-right: auto; }
-
 
 html[dir="ltr"] .partnership { direction: ltr; }
 
