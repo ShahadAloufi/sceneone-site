@@ -884,21 +884,9 @@ html[dir="ltr"] .ctype-card__launch {
     position: relative;
     list-style: none;
     margin: 0 auto;
-    padding: 0 0 22px;
+    padding: 0;
     max-width: 1560px;
     min-height: 460px;
-  }
-  /* The rail. Sits behind the nodes and spans the whole track, its centre level
-     with theirs — node is 14px tall on a 22px bottom pad, rail is 6px, so 12px
-     up from the track's floor puts the two centre lines together. */
-  .jt-track::after {
-    content: '';
-    position: absolute;
-    left: 0; right: 0; bottom: 12px;
-    height: 6px;
-    border-radius: 3px;
-    background: #f04e0f;
-    z-index: 0;
   }
   .jt-step {
     position: relative;
@@ -926,13 +914,6 @@ html[dir="ltr"] .ctype-card__launch {
     border: 1px solid rgba(255,255,255,.09);
     border-radius: 6px;
     padding: 4px 12px;
-    margin-bottom: 10px;
-  }
-  .jt-step__node {
-    width: 14px; height: 14px;
-    border-radius: 3px;
-    background: #f04e0f;
-    box-shadow: 0 0 0 4px rgba(240,78,15,.18);
   }
 }
 
