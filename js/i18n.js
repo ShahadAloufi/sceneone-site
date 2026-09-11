@@ -32,8 +32,9 @@
       overlayBlurb: "منصة متخصصة في تقييم النصوص السينمائية وتقديم ملاحظات احترافية تساعد الكتّاب على تطوير أعمالهم وصقلها قبل خطوتهم التالية.",
       overlayContact: "تواصل", overlaySocial: "حساباتنا",
 
-      heroTitle: "حيث تبدأ رحلة النص",
-      heroSub: "نقرأ نصك بعين مهنية، نحدد نقاط القوة وما يحتاج إلى تطوير، لنساعدك في الوصول إلى نسخة أقوى وأكثر جاهزية للخطوة التالية",
+      heroTitle: "من سيناريو واعد… إلى فرصة حقيقية",
+      heroLede: "نقيّم، ونفتح لنصك أبواب الوصول إلى الجهات المناسبة",
+      heroSub: "عن طريق تحويل السيناريو إلى تقرير صناعي معتمد، مبني على منهجية تقييم تُستخدم فعليًا داخل شركات الإنتاج والتطوير",
       btnViewCoverage: "عرض التغطيات", btnGuide: "ما هي تغطية النصوص؟",
       heroNda: "جميع النصوص تخضع لاتفاقيات عدم إفصاح (NDA)، ولا يطّلع عليها سوى القارئ المكلّف بتقييمها.",
       partnerBadge: "شريك معتمد",
@@ -333,8 +334,9 @@
       overlayBlurb: "A specialized platform for screenplay evaluation, offering professional feedback that helps writers develop and refine their work before their next step.",
       overlayContact: "Contact", overlaySocial: "Follow Us",
 
-      heroTitle: "Where Your Script's Journey Begins",
-      heroSub: "We read your script with a professional eye, naming its strengths and what still needs work, to help you reach a stronger draft that is readier for the next step",
+      heroTitle: "From a promising script… to a real opportunity",
+      heroLede: "We evaluate your script, and open its way to the right industry doors",
+      heroSub: "By turning the screenplay into an accredited industry report, built on an evaluation methodology actually used inside production and development companies",
       btnViewCoverage: "View Coverages", btnGuide: "What is script coverage?",
       heroNda: "All submissions are protected under non-disclosure agreements (NDA) and are only accessed by the assigned reader.",
       partnerBadge: "Accredited partner",

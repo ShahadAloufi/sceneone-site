@@ -359,6 +359,7 @@ a, button {
   color: #fff;
   margin-bottom: 16px;
 }
+.hero__lede { font-family: var(--font-head); font-weight: 700; font-size: 20px; line-height: 1.5; color: #fff; margin-bottom: 10px; max-width: 600px; }
 .hero__sub { font-family: var(--font-head); font-weight: 500; font-size: 18px; line-height: 1.6; color: rgba(255,255,255,.85); margin-bottom: 32px; max-width: 600px; }
 .hero__nda { font-family: var(--font-body); font-size: 13px; line-height: 1.7; color: rgba(255,255,255,.5); margin-top: 24px; max-width: 520px; }
 
@@ -369,6 +370,7 @@ a, button {
      the rule — re-check them together. */
   .hero__content { padding: 128px 40px 0; margin-right: 40px; }
   .hero__title { font-size: 36px; }
+  .hero__lede { font-size: 24px; }
   .hero__sub { font-size: 22px; }
   .hero__nda { font-size: 14px; }
 }
