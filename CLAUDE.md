@@ -28,6 +28,100 @@ coverage workspace + report, role-based access, deadlines, and report delivery t
 writers. **The payment gate is live and has taken real money** (see below).
 Actively iterating on UX polish and workflow features.
 
+**Recently shipped (2026-09-07 → 09-11):**
+
+- **Reply attachments in the writer Q&A.** A reader answering a question can send
+  one file with the reply (10MB, extension allowlist). See the `/api/questions`
+  and Storage entries for the mechanics. **The migration is required** —
+  `alter table public.report_questions add column if not exists answer_attachment
+  jsonb;` — and until it is run on a database, an attachment cannot be saved.
+  Text-only replies deliberately do NOT write that column, so they keep working
+  either way: an unused feature must not be able to break the one in use.
+
+- **Landing page, restructured.** Read these before editing `index.html`:
+  - **PACKAGES is now two audiences behind a tab.** `#coverage-types` holds
+    `#pkgWriters` (three cards) and `#pkgPartners` (two). Only the partners panel
+    ships with `hidden`, so with JS off the writers' pricing — what every inbound
+    link means — is what renders. `#packages-partners` in the URL opens the
+    partners tab and scrolls to the section.
+  - **Treatment is ONE card.** Short and feature are still separate products
+    (`treatment_short` / `treatment_feature`, 70 / 150), but the writer picks on
+    the form's own required «نوع المشروع» select. **The card's link must carry no
+    `?type=`** — `preselectType()` returns early without one, which is what
+    leaves that select on its placeholder. Re-adding a `?type=` silently
+    pre-picks a price.
+  - **Prices:** the two script cards say «السعر حسب حجم النص» rather than a
+    per-page rate, and the treatment card shows no price at all. `priceFor()` is
+    unchanged; this is display only.
+  - **Launch band:** `.ctype-card--launch` carries the gold «أسعار الإطلاق»
+    strip. The band is ABSOLUTE, not a flex child — `.ctype-card` is
+    `justify-content:space-between`, so a third child strands the head in the
+    middle of the box. Room for it comes from the modifier, so an unbanded card
+    keeps normal padding. Tajawal 800 is requested on `index.html` only.
+  - **Journey is eight steps**, ending in hosting, industry reach and the
+    opportunities that follow. Step 06 names the consent condition in the terms'
+    own words — the terms promise sharing only «بعد موافقة الكاتب الكتابية
+    الصريحة», so the page must not imply hosting is automatic.
+  - The "السينما السعودية" card is gone (two remain). Its PNGs are still on disk,
+    unreferenced — the copy is baked INTO the image, so they are the only copy of
+    it.
+
+- **Hero background video (`assets/hero-landing.mp4`).** Two traps, both learned
+  the hard way:
+  - **Never hide the video until it plays.** It used to sit at `opacity:0` and
+    reveal itself on `playing`. WebKit gates muted autoplay on the element being
+    RENDERED, so invisible meant refused, refused meant `playing` never fired,
+    and only a click started it. It renders from the first paint now; `poster`
+    covers the not-yet-playing case and CSS suppresses
+    `::-webkit-media-controls` so nothing draws a play glyph. Do not reinstate
+    the reveal.
+  - **`cover` crops hard as the viewport narrows**, and this footage is centred
+    Arabic — a phone kept a quarter of the frame's width and sliced words onto
+    the headline. Below a **3:2 viewport** it letterboxes instead. Keyed on
+    aspect-ratio, not width: a short wide window is fine at any width.
+  - Low Power Mode and a per-site "Auto-Play: Never" still refuse, and neither is
+    reachable from the page. The poster is what that degrades to.
+
+- **Arabic keeps its face in English.** `--font` swaps to IBM Plex Sans on
+  `dir="ltr"`, which has NO Arabic glyphs — so Arabic on an English page fell
+  through to the system UI font. Every LTR stack now names the brand's Arabic
+  face after Plex (`coverage.html` → Almarai, `report.html` + both samples →
+  Tajawal). Fallback is per GLYPH, so Latin still gets Plex. The admin panel was
+  never affected: it sets Almarai directly on `.adm`, not through the variable.
+
+- **Readers can claim again once QA has it.** The one-active-assignment gate
+  counted any undelivered script, so a reader was blocked through the whole
+  quality review. "Active" now means the coverage is still theirs: no row,
+  `in_progress`, or `revision_requested`. `submitted` and `approved` do not
+  block — `approved` included, so the rare failed-delivery path (`delivered_at`
+  still null) does not strand them on finished work. Enforced in
+  `api/claim-script.js`; `js/admin.js` mirrors it to grey out the button. It is a
+  claim-TIME gate, not a running cap: a revision coming back while they hold a
+  second script leaves them with two, by design.
+
+- **Deliveries shows when the report was sent.** New «تاريخ الإرسال» column, date
+  in the cell and the full timestamp on hover. `renderDetailRows` is shared with
+  the all-submissions tab, so the column is opt-in through a trailing
+  `sentAtCol` argument — that tab passes nothing and is unchanged.
+
+- **Team page:** حسن زروق added (second, after ود القبلان). Bios are equalised by
+  `grid-auto-rows: 1fr` plus a flex card with `flex:1` on the bio, so every
+  description occupies the same block without clamping anyone's text — and a
+  longer bio simply grows the row. Reverted below the single-column breakpoint,
+  where matching to the longest bio is only whitespace.
+
+- **RTL form fields need BOTH.** `answer.html` / `ask.html` textareas set
+  `direction:rtl` + `text-align:right` in CSS **and** `dir="rtl"` as an
+  attribute: some engines place a control's PLACEHOLDER from the attribute, not
+  the CSS, which left it floating away from the caret.
+
+- **Copy:** the hero line, the quote block (two lines), and the «من الفكرة» section
+  were rewritten, and «دليل المنصة» became «ما هي تغطية النصوص؟» on both the hero
+  button and the nav. That nav label lives on SEVEN pages — five via
+  `data-i18n="navGuide"`, plus `submit.html` and `treatment-submit.html` as
+  literal text. **Those two forms carry no i18n at all**: they are Arabic-only, so
+  any shared-copy change has to be made in their markup by hand.
+
 **Recently shipped (2026-09-01):**
 - **NEW BRAND LOGO — a horizontal lockup replacing the old vertical one.** The
   supplied artwork is «سين ون» over a serif "Scene One" beside the bracket-frame
@@ -740,7 +834,9 @@ bottom of `css/styles.css`; markup is `readers.html`.
   site where every destination was hidden behind the hamburger. Six items, in
   this order (**reordered 2026-08-12**, دليل المنصة moved up before من يقرأ
   نصك؟): الرئيسية · Scene One · دليل المنصة · من يقرأ نصك؟ · رحلة النص ·
-  تواصل معنا. The bar (`.nav__links`) and the hamburger's overlay
+  تواصل معنا. **That third item was RENAMED 2026-09-11** to «ما هي تغطية
+  النصوص؟» / "What is script coverage?" — same key (`navGuide`), same
+  destination, and it is the label to search for now. The bar (`.nav__links`) and the hamburger's overlay
   (`.overlay__links`) list the same six in the same order on every page that
   has this nav — keep them in step if the order ever changes again.
 - **Breakpoint is 1000px.** Above it the links show and **the hamburger is
@@ -1608,8 +1704,13 @@ must be in the `supabase_realtime` publication for live updates to fire.
 - **The "work started" notice is now Arabic-only.** Its English half was dropped with
   the 2026-08-06 rewrite. The payment confirmation and the coverage report are still
   bilingual, so that email is the odd one out — decide which way they should all go.
-- **Registration lost prominence 2026-08-07.** It is no longer in the hero or any menu;
-  only the `#register` banner and `/?register` remain. Watch sign-ups.
+- ~~**Registration lost prominence 2026-08-07.**~~ **Registration no longer exists
+  on the public site at all.** Not the hero, not a menu, not the `#register`
+  banner (its CTA went first, then the whole section was hidden 2026-09-07), and
+  not `/?register` — no JS reads that query and `/api/registrations` is deleted.
+  The modal markup and every `.modal*` rule are gone too. There is nothing to
+  "watch"; bringing sign-ups back means building the flow again, endpoint
+  included.
 - ~~Test the refund path~~ — **done 2026-08-05, on live Moyasar.** A full refund of the
   1 SAR payment on `9ad52050-…` took the `pulled` branch exactly as designed: status →
   terminal **`refunded`**, `refunded_at` stamped, `paid_at` preserved, and the staff
@@ -1689,7 +1790,11 @@ must be in the `supabase_realtime` publication for live updates to fire.
     question text not null,
     answer text,
     created_at timestamptz not null default now(),
-    answered_at timestamptz
+    answered_at timestamptz,
+    -- {name, path} of a file the reader attached to their reply (2026-09-10),
+    -- mirroring coverages.data.attachment. One column so the pair is written
+    -- and cleared atomically and a half-set row is not representable.
+    answer_attachment jsonb
   );
   create index if not exists report_questions_submission_idx
     on public.report_questions (submission_id, created_at desc);
@@ -2105,17 +2210,31 @@ privileged reads/writes.
   `includeFiles` glob, `engines.node` = 20, and `AWS_LAMBDA_JS_RUNTIME=nodejs20.x` set
   before the require — see the comment atop `api/report-pdf.js`.
 - **`/api/questions`** — **public** (tokens are the auth); the whole post-delivery
-  Q&A. Three behaviours in **one function** — see the function-count note below.
+  Q&A. Four behaviours in **one function** — see the function-count note below.
+  The reply attachment's DOWNLOAD is not here: it is `/api/report?t=<report_token>
+  &file=answer&q=<question id>`, which reuses that function's token gate and its
+  already-hardened streaming path, and keeps the reader's `answer_token` out of
+  the writer's hands. Adding it there is also why this feature cost **no new
+  Vercel function** (still 11 of 12).
   - `GET ?q=<answer_token>` — the thread for the reader's reply page. Returns the
     title only, never the writer's email.
   - `POST { t: <report_token>, question }` — the writer asks. Same gate as
     `/api/report` (approved coverage only), capped at 10 per submission. Inserts a
     `report_questions` row and emails the assigned reader (+ co-reader, + the Scene
     One inbox) a link to `/answer?q=<answer_token>`.
-  - `POST { q: <answer_token>, answer }` — the reader replies. **One-shot**: the
-    PATCH is conditioned on `answer=is.null`, so a double-submit or a forwarded link
-    can't overwrite a sent reply or email the writer twice. Emails the answer to the
-    writer (cc the Scene One inbox).
+  - `POST { q: <answer_token>, answer, attachment? }` — the reader replies.
+    **One-shot**: the PATCH is conditioned on `answer=is.null`, so a double-submit
+    or a forwarded link can't overwrite a sent reply or email the writer twice.
+    Emails the answer to the writer (cc the Scene One inbox).
+  - `POST { q: <answer_token>, upload: {name, size, type} }` — mints a **signed
+    upload URL** for a reply attachment (2026-09-10). `answer.html` has no
+    Supabase session, so it cannot satisfy the `attachments` bucket's admin-only
+    RLS; and a 10MB body would not survive Vercel's 4.5MB request limit. The
+    service role signs, the browser PUTs straight to Storage, the file never
+    passes through a function. The path is ours and namespaced
+    `questions/<question id>/`; at send time the path is re-checked to be one
+    minted for THAT question and the object is confirmed to exist, so a reply
+    cannot claim another's file or promise a download that 404s.
   - The POST branch is chosen by which token is present; sending both is a 400
     rather than a guess.
 - **`POST /api/log-access`** — any signed-in admin/reader; records their dashboard
@@ -2175,6 +2294,14 @@ privileged reads/writes.
 - Object path format: `<digits>-<base36>/<sanitized-filename>` (enforced server-side).
 - Reads use short-lived signed URLs. Allowed extensions: pdf, fdx, fountain, docx, txt.
   Max size 25 MiB.
+- Private bucket **`attachments`** holds Scene One's own material for the writer,
+  never the writer's IP. Two prefixes, same bucket:
+  - `<submission id>/…` — the resource a reader attaches to a COVERAGE.
+  - `questions/<question id>/…` — a file attached to a REPLY (2026-09-10).
+  Neither side touches the bucket directly: the reader uploads through a signed
+  upload URL minted by `/api/questions`, and the writer's download is streamed by
+  `/api/report` against their report token. That is why the reply attachment
+  needed no new storage policy.
 
 ---
 
