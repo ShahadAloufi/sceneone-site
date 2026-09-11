@@ -17,6 +17,11 @@
      100vh, and .intro, which butts against the hero) says so explicitly. */
   --sec-y: 56px;
   --sec-x: 24px;
+  /* The card surface, shared by the packages cards, the audience cards and the
+     submit CTA. One token because they are meant to be the same colour — three
+     copies of the hex is how they stop being. */
+  --card: #2d2a27;
+  --card-hover: #353230;
   --bg: #0e0202;
   --gold: #d2af50;
   --red: #cd2e07;
@@ -499,9 +504,7 @@ a, button {
 
 /* AUDIENCE
    Shares the packages card's shape and behaviour — 10px radius, the same lift
-   and shadow on hover — but sits on a neutral #252525 rather than the packages
-   card's warm #2d2a27, so these read as ground the page moves over rather than
-   as things to buy. Hover takes
+   and shadow on hover — and the same surface, off the shared --card token. Hover takes
    the same step up the packages card takes, about +8 a channel. Two columns
    from 900px, one below. Card order is left to `direction`, which puts the first in
    the markup top-right in Arabic and top-left in English. */
@@ -516,7 +519,7 @@ a, button {
 }
 .audience__grid { display: grid; gap: 24px; max-width: 1140px; margin: 0 auto; }
 .aud-card {
-  background: #252525;
+  background: var(--card);
   border-radius: 10px;
   padding: 40px 36px;
   display: flex;
@@ -527,7 +530,7 @@ a, button {
 }
 .aud-card:hover {
   transform: translateY(-6px);
-  background-color: #2d2d2d;
+  background-color: var(--card-hover);
   box-shadow: 0 16px 40px rgba(0,0,0,.35);
 }
 .aud-card__title { font-family: var(--font-head); font-size: 24px; font-weight: 700; color: #fff; line-height: 1.5; margin-bottom: 14px; }
@@ -556,7 +559,7 @@ html[dir="ltr"] .audience { direction: ltr; }
 .submit-cta__card {
   max-width: 1140px;
   margin: 0 auto;
-  background: #2d2a27;
+  background: var(--card);
   border-radius: 10px;
   padding: 28px 32px;
   display: flex;
@@ -738,7 +741,7 @@ html[dir="ltr"] .submit-cta { direction: ltr; }
   max-width: 100%;
   min-height: 550px;
   border-radius: 10px;
-  background: #2d2a27;
+  background: var(--card);
   padding: 56px 48px;
   /* The launch band is taken out of flow, so it does not become a third flex
      child — with justify-content:space-between a third child would strand the
@@ -755,7 +758,7 @@ html[dir="ltr"] .submit-cta { direction: ltr; }
 }
 .ctype-card:hover {
   transform: translateY(-6px);
-  background-color: #353230;
+  background-color: var(--card-hover);
   box-shadow: 0 16px 40px rgba(0,0,0,.35);
 }
 /* Launch-prices band: a gold strip across the top of every priced card. Sits on
