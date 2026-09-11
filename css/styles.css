@@ -543,6 +543,47 @@ a, button {
    the same unwind .ctypes gets. */
 html[dir="ltr"] .audience { direction: ltr; }
 
+/* SUBMIT CTA
+   One card, copy on the start side and the button on the end side, stacking
+   below 720px. Padding is the section rhythm like everything else; the card
+   supplies its own inner padding on top of that. */
+.submit-cta { padding: var(--sec-y) var(--sec-x); direction: rtl; }
+.submit-cta__card {
+  max-width: 1140px;
+  margin: 0 auto;
+  background: #2d2a27;
+  border-radius: 10px;
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 20px;
+}
+.submit-cta__title { font-family: var(--font-head); font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.submit-cta__sub { font-size: 16px; line-height: 1.7; color: rgba(255,255,255,.62); }
+.submit-cta__btn {
+  /* #cd2e07 — the site's --red, already defined, rather than a second copy of
+     the same hex that would drift from it later. */
+  background: var(--red);
+  color: #fff;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 16px;
+  text-align: center;
+  padding: 14px 28px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  transition: background-color .2s ease, transform .2s ease;
+}
+.submit-cta__btn:hover { background: #b52706; }
+.submit-cta__btn:active { transform: translateY(1px); }
+@media (min-width: 720px) {
+  .submit-cta__card { flex-direction: row; align-items: center; justify-content: space-between; gap: 40px; padding: 32px 40px; }
+  .submit-cta__title { font-size: 26px; }
+  .submit-cta__btn { min-width: 220px; }
+}
+html[dir="ltr"] .submit-cta { direction: ltr; }
+
 /* STRATEGIC PARTNERSHIP */
 /* Full-bleed band over the auditorium photo. The photo carries its own dark
    top/bottom fade to var(--bg) so the band has no hard seam against the

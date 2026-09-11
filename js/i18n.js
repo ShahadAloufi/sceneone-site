@@ -47,6 +47,9 @@
       goal3: "بناء معيار تقييم واضح للنصوص العربية",
 
       audienceTitle: "الفئة المستهدفة",
+      submitCtaTitle: "قدم نصك السينمائي",
+      submitCtaSub: "أرسل نصك السينمائي الآن واكتشف كيف يمكن لسين ون أن تحوّله إلى واقع",
+      submitCtaBtn: "ابدأ الآن",
       aud1T: "المواهب الجديدة في السينما السعودية",
       aud1B: "كتّاب ناشئون لا يمتلكون شبكة علاقات داخل الصناعة، لكن لديهم نصوص قابلة للتطوير وتحتاج إلى مسار واضح",
       aud2T: "كتّاب التجربة والتحول المهني",
@@ -367,6 +370,9 @@
       goal3: "Building a clear evaluation standard for Arabic scripts",
 
       audienceTitle: "Who This Is For",
+      submitCtaTitle: "Submit Your Screenplay",
+      submitCtaSub: "Send us your screenplay now and find out what Scene One can help it become",
+      submitCtaBtn: "Start Now",
       aud1T: "New Voices in Saudi Cinema",
       aud1B: "Emerging writers with no network inside the industry, but with scripts worth developing and no clear path forward",
       aud2T: "Writers Changing Track",
