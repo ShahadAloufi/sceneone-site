@@ -124,19 +124,29 @@
     </div>
   </section>
 
-  <!-- ── QUOTE ── -->
-  <section class="quote">
-    <div class="quote__rule"></div>
-    <p dir="auto" data-i18n-html="quoteHtml">
-      لأن كل نص يُمكن أن يُرى بشكل مختلف… إذا وُجدت العين التي تراه<br>
-      بعض النصوص لا تحتاج ملاحظات فقط، بل تحتاج أن تجد طريقها إلى من يؤمن بها
-    </p>
+  <!-- ── INTRO ──
+       Replaces the old .quote + .script-img-wrap pair that used to sit here.
+       The wordmark is the supplied SVG rather than live text: it is a lockup,
+       not a heading, and it has to stay identical to the logo in the nav.
+       The photo beside it is WebP, not JPEG, and that is load-bearing: the
+       artwork carries its own alpha falloff, and flattening it to JPEG turned
+       the transparent corner into a white slab. WebP keeps the alpha at 40KB
+       where the equivalent PNG is 452KB. The SVG it arrived in also painted
+       four flat #0d0202 edge rects over the picture; that colour is exactly
+       --bg, so those are rebuilt in CSS off the token instead of baked in. -->
+  <section class="intro">
+    <img class="intro__wordmark" src="assets/wordmark-sceneone.svg" alt="سين ون — Scene One">
+    <div class="intro__grid">
+      <div class="intro__copy">
+        <p data-i18n="introP1">حيث لا تقف الكلمة عند حدود الصفحة، بل تنبض حياةً لتفتح آفاقًا جديدة أمام كل كاتب يحمل حلمًا يستحق أن يُروى</p>
+        <p data-i18n="introP2">وللنصوص المتميزة نفتح لها أبواب الصناعة، ونربطها بفرص إنتاجية وتمويلية حقيقية، لنكون الجسر الذي يعبر عليه حلمك إلى واقع الشاشة</p>
+        <p data-i18n="introP3">هنا، نحتفي بالقلم، ونصون الفكرة، ونصنع من كل نص بدايةً جديدة لفِلم يستحق الوصول الى الشاشة</p>
+      </div>
+      <div class="intro__media">
+        <img src="assets/intro-writer.webp" data-i18n-alt="introImgAlt" alt="كاتب يدوّن ملاحظاته على مسودة نص">
+      </div>
+    </div>
   </section>
-
-  <!-- ── SCRIPT IMAGE ── -->
-  <div class="script-img-wrap">
-    <img src="assets/script_papers.png" alt="مسودة نص">
-  </div>
 
   <!-- ── ABOUT ── -->
   <section class="about" id="about">

@@ -39,8 +39,10 @@
       heroNda: "جميع النصوص تخضع لاتفاقيات عدم إفصاح (NDA)، ولا يطّلع عليها سوى القارئ المكلّف بتقييمها.",
       partnerBadge: "شريك معتمد",
 
-      quoteHtml: "لأن كل نص يُمكن أن يُرى بشكل مختلف… إذا وُجدت العين التي تراه<br>" +
-        "بعض النصوص لا تحتاج ملاحظات فقط، بل تحتاج أن تجد طريقها إلى من يؤمن بها",
+      introP1: "حيث لا تقف الكلمة عند حدود الصفحة، بل تنبض حياةً لتفتح آفاقًا جديدة أمام كل كاتب يحمل حلمًا يستحق أن يُروى",
+      introP2: "وللنصوص المتميزة نفتح لها أبواب الصناعة، ونربطها بفرص إنتاجية وتمويلية حقيقية، لنكون الجسر الذي يعبر عليه حلمك إلى واقع الشاشة",
+      introP3: "هنا، نحتفي بالقلم، ونصون الفكرة، ونصنع من كل نص بدايةً جديدة لفِلم يستحق الوصول الى الشاشة",
+      introImgAlt: "كاتب يدوّن ملاحظاته على مسودة نص",
 
       aboutTitle: "من الفكرة… إلى نسخة تستحق أن تُرى",
       aboutP1: "نقرأ نصك كما يُقرأ داخل الصناعة بمعايير واضحة، ونظرة نقدية تكشف إمكانياته الحقيقية، وما يحتاجه ليصبح مشروعاً قابلاً للتقديم",
@@ -341,8 +343,10 @@
       heroNda: "All submissions are protected under non-disclosure agreements (NDA) and are only accessed by the assigned reader.",
       partnerBadge: "Accredited partner",
 
-      quoteHtml: "Because every script can be seen differently… if the right eye finds it<br>" +
-        "Some scripts don't only need notes. They need to find their way to someone who believes in them",
+      introP1: "Where the word does not stop at the edge of the page, but comes alive to open new horizons for every writer carrying a dream worth telling",
+      introP2: "And for the scripts that stand out, we open the industry's doors and connect them to real production and financing opportunities — the bridge your dream crosses on its way to the screen",
+      introP3: "Here we honour the pen, we protect the idea, and we make of every script a new beginning for a film that deserves to reach the screen",
+      introImgAlt: "A writer marking up a script draft",
 
       aboutTitle: "From an Idea… to a Draft Worth Seeing",
       aboutP1: "We read your script the way the industry reads it: against clear criteria, with a critical eye that draws out its real potential and what it still needs to become a project you can take out",
