@@ -312,26 +312,19 @@ a, button {
 @media (prefers-reduced-motion: reduce) {
   .hero__bg { display: none; }
 }
-/* There used to be a `max-aspect-ratio: 3/2` override here that dropped the
-   video to `contain` on narrow windows. It existed for the old footage, which
-   was centred Arabic text: `cover` cropping a 16:9 source into a 100vh box
-   sliced that text mid-word and dropped the fragments onto the headline.
+/* The source is 16:9 (1.78) and the hero is a 100vh box, so the narrower the
+   VIEWPORT'S aspect ratio the harder `cover` crops the sides — and this footage
+   is centred Arabic text, which slices mid-word and drops the fragments onto the
+   headline. A 375x812 phone keeps barely a quarter of the frame's width; a
+   768x1024 tablet keeps about 40%.
 
-   The current loop is an abstract macro of a pen on paper — no text, no subject
-   that has to stay whole — so cropping it costs nothing, while `contain` cost a
-   letterboxed band with black gutters either side of the frame.
-
-   The asset itself is pre-cropped to 3:2 out of a portrait 888x1194 master.
-   Doing that crop in ffmpeg rather than leaving it to `cover` is the whole
-   point: cover-fitting a 0.74 source into a ~1.75 hero box has to scale it
-   about 2.3x and throw the top and bottom away, which read as the video being
-   wildly zoomed on a maximised window. At 3:2 the browser barely rescales.
-
-   A phone is the same problem mirrored, so the portrait master is served
-   there instead (see the <source media> pair in index.html) and the poster
-   behind it has to switch to match, or the still and the video disagree. */
-@media (max-aspect-ratio: 1/1) {
-  .hero { background-image: url('../assets/hero-landing-portrait-poster.jpg'); }
+   Keyed on aspect-ratio rather than width because that is what actually drives
+   the crop: a short wide window is fine at any width, a tall narrow one is not.
+   Below 3:2 the whole frame shows instead, as a band above the copy, with the
+   poster sized to match so the two never disagree while the video loads. */
+@media (max-aspect-ratio: 3/2) {
+  .hero { background-size: contain; background-position: center 22%; }
+  .hero__bg { object-fit: contain; object-position: center 22%; }
 }
 .hero__shade {
   position: absolute;

@@ -98,12 +98,6 @@
     <video class="hero__bg" autoplay muted loop playsinline preload="auto" poster="assets/hero-landing-poster.jpg"
            disablepictureinpicture disableremoteplayback
            aria-hidden="true" tabindex="-1">
-      <!-- Two crops of the same take. The master is portrait; the 3:2 cut is
-           rendered from it so a wide hero does not have to cover-scale a
-           portrait frame 2x and slice the pen out of view. `media` is read
-           once, at load, which is the same bargain the responsive stills on
-           /readers make — a resize past the boundary needs a reload. -->
-      <source src="assets/hero-landing-portrait.mp4" media="(max-aspect-ratio: 1/1)" type="video/mp4">
       <source src="assets/hero-landing.mp4" type="video/mp4">
     </video>
     <div class="hero__shade"></div>
