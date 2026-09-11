@@ -38,9 +38,7 @@
       heroNdaHtml: "نصك محمي هنا في Scene One، لكننا نشجعك على حماية نصك بزيارة <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"hero__nda-link\">SAIP</a>.",
       partnerBadge: "شريك معتمد",
 
-      introP1: "حيث لا تقف الكلمة عند حدود الصفحة، بل تنبض حياةً لتفتح آفاقًا جديدة أمام كل كاتب يحمل حلمًا يستحق أن يُروى",
-      introP2: "وللنصوص المتميزة نفتح لها أبواب الصناعة، ونربطها بفرص إنتاجية وتمويلية حقيقية، لنكون الجسر الذي يعبر عليه حلمك إلى واقع الشاشة",
-      introP3: "هنا، نحتفي بالقلم، ونصون الفكرة، ونصنع من كل نص بدايةً جديدة لفِلم يستحق الوصول الى الشاشة",
+      introP1: "تهدف سين ون إلى سد الفجوة بين الكتابة والإنتاج، من خلال تقارير تغطية واضحة (موصى به / يستحق النظر / لا يُوصى به حاليًا) وملاحظات تفصيلية قابلة للتنفيذ، تغطي الفكرة، البنية، الشخصيات، الحوار، الإيقاع، وقابلية الإنتاج. كما تتيح الخدمة بعد الحصول على التقرير برنامج إستضافة النصوص وهي خدمة لترشيح النصوص ذات التقييمات العالية إلى جهات في الصناعة، ما يزيد فرص وصولها إلى صناع القرار",
       introImgAlt: "كاتب يدوّن ملاحظاته على مسودة نص",
 
       goalsTitle: "أهداف سين ون",
@@ -360,9 +358,7 @@
       heroNdaHtml: "Your script is protected here at Scene One, but we encourage you to protect it yourself by registering with <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"hero__nda-link\">SAIP</a>.",
       partnerBadge: "Accredited partner",
 
-      introP1: "Where the word does not stop at the edge of the page, but comes alive to open new horizons for every writer carrying a dream worth telling",
-      introP2: "And for the scripts that stand out, we open the industry's doors and connect them to real production and financing opportunities — the bridge your dream crosses on its way to the screen",
-      introP3: "Here we honour the pen, we protect the idea, and we make of every script a new beginning for a film that deserves to reach the screen",
+      introP1: "Scene One exists to close the gap between writing and production, through clear coverage reports (Recommend / Consider / Pass for now) and detailed, actionable notes covering concept, structure, character, dialogue, pace and producibility. Once the report is in hand, the service also opens the script hosting programme, which nominates the highest-rated scripts to industry parties and improves their chances of reaching decision-makers.",
       introImgAlt: "A writer marking up a script draft",
 
       goalsTitle: "What Scene One Is For",
