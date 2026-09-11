@@ -439,8 +439,12 @@ a, button {
 .intro__copy { font-size: 18px; line-height: 1.9; color: #C4C4C4; letter-spacing: .02em; }
 .intro__copy p { margin-bottom: 28px; }
 .intro__copy p:last-child { margin-bottom: 0; }
-.intro__media { position: relative; }
-.intro__media img { display: block; width: 100%; height: auto; }
+/* The photo is still portrait after trimming, and taller than the copy beside
+   it. Cap it to the copy's own height and cover-crop so the two sit as one row
+   rather than the picture running on past the last paragraph. `align-self:
+   stretch` lets it match whatever the copy comes to in either language. */
+.intro__media { position: relative; align-self: stretch; }
+.intro__media img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 35%; }
 /* The artwork arrived with its edge fades painted on as flat #0d0202 rects.
    That is --bg, so they are rebuilt here as one overlay instead: same four
    directions, same 130/483 and 130/859 proportions as the source, but tied to
@@ -461,7 +465,7 @@ a, button {
 }
 @media (min-width: 900px) {
   .intro__wordmark { max-width: 560px; margin-bottom: 40px; }
-  .intro__grid { grid-template-columns: 1fr 1fr; gap: 64px; }
+  .intro__grid { grid-template-columns: 1fr 1fr; gap: 64px; min-height: 420px; }
   /* grid-row is not redundant: with only grid-column set, auto-placement is
      sparse and refuses to move backwards, so naming column 2 for the copy sent
      the media to a second row rather than to column 1 beside it. */
