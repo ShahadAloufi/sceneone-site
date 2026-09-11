@@ -499,8 +499,9 @@ a, button {
 
 /* AUDIENCE
    Shares the packages card's shape and behaviour — 10px radius, the same lift
-   and shadow on hover — but sits a shade darker than it at #241f1c, so these
-   read as ground the page moves over rather than as things to buy. Hover takes
+   and shadow on hover — but sits on a neutral #252525 rather than the packages
+   card's warm #2d2a27, so these read as ground the page moves over rather than
+   as things to buy. Hover takes
    the same step up the packages card takes, about +8 a channel. Two columns
    from 900px, one below. Card order is left to `direction`, which puts the first in
    the markup top-right in Arabic and top-left in English. */
@@ -515,7 +516,7 @@ a, button {
 }
 .audience__grid { display: grid; gap: 24px; max-width: 1140px; margin: 0 auto; }
 .aud-card {
-  background: #241f1c;
+  background: #252525;
   border-radius: 10px;
   padding: 40px 36px;
   display: flex;
@@ -526,7 +527,7 @@ a, button {
 }
 .aud-card:hover {
   transform: translateY(-6px);
-  background-color: #2c2724;
+  background-color: #2d2d2d;
   box-shadow: 0 16px 40px rgba(0,0,0,.35);
 }
 .aud-card__title { font-family: var(--font-head); font-size: 24px; font-weight: 700; color: #fff; line-height: 1.5; margin-bottom: 14px; }
