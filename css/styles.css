@@ -175,7 +175,9 @@ a, button {
   position: fixed;
   inset: 0;
   z-index: 60;
-  background: #000;
+  /* The page ground, not pure black — the overlay covers the site, so a flatter
+     black than the page reads as a different surface. */
+  background: var(--bg);
   display: none;
   flex-direction: column;
   direction: ltr;
