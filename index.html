@@ -288,7 +288,8 @@
        writers' panel — the one every inbound link means — is what renders,
        because only the partners panel carries the `hidden` attribute. -->
   <section class="ctypes" id="coverage-types">
-    <h2 class="ctypes__title" data-i18n="packagesTitle">الباقات</h2>
+    <h2 class="ctypes__title" data-i18n="packagesTitle">خدماتنا</h2>
+    <p class="ctypes__value" data-i18n-html="ctypesValueHtml">تكلفة التقييم أقل بكثير من <strong>خسارة فرصة إنتاج</strong> بسبب ملاحظات لم تُكتشف مبكرًا</p>
 
     <div class="pkg-tabs" role="tablist" aria-label="الباقات" data-i18n-aria="packagesTablist">
       <button type="button" class="pkg-tab is-active" role="tab" id="pkgTabWriters"
@@ -298,102 +299,56 @@
     </div>
 
     <div class="pkg-panel" id="pkgWriters" role="tabpanel" aria-labelledby="pkgTabWriters">
-    <p class="ctypes__note" data-i18n="ctypesNote">يمكنك إعادة تقديم نسخة مطوّرة من نفس السيناريو (Draft 2) مجانًا بعد استلام التقييم الأولي، بشرط أن تكون نسخة محدثة لنفس العمل وليست مشروعًا جديدًا.</p>
-    <div class="ctypes__grid">
-
-      <!-- Short film coverage is priced PER PAGE (10 SAR each, 10–40 pages), so the
-           card advertises the range and the exact amount is quoted on the form
-           once the file is uploaded. See PER_PAGE in lib/moyasar.js. -->
-      <article class="ctype-card ctype-card--launch">
-        <p class="ctype-card__launch" data-i18n="launchPrices">أسعار الإطلاق</p>
-        <div class="ctype-card__head">
-          <h3 class="ctype-card__title" data-i18n="shortTitle">تغطية النصوص السينمائية القصيرة</h3>
-          <div class="price-div">
-            <img class="riyal-icon" src="assets/riyal.svg" alt="ريال">
-            <h1 class="price-range">100 - 400</h1>
+      <p class="ctypes__launch" data-i18n="launchPrices">أسعار إطلاق مؤقتة</p>
+      <ul class="svc-list">
+        <li class="svc">
+          <div class="svc__head">
+            <p class="svc__pill" data-i18n="svcShortPill">100 الى 400 ريال بحسب عدد الصفحات</p>
+            <h3 class="svc__title" data-i18n="svcShortTitle">تغطية النصوص السينمائية القصيرة</h3>
+          <p class="svc__pages" data-i18n="svcShortPages">( من ١٠ صفحات الى ٤٠ صفحة )</p>
           </div>
-          <p class="ctype-card__price-note" data-i18n="shortPriceNote">السعر حسب حجم النص</p>
-          <p class="ctype-card__desc" data-i18n-html="shortDescHtml">يقدم هذا التقرير ملاحظات تفصيلية على الفيلم القصير (<strong>من 10 إلى 40 صفحة</strong>). يشمل ذلك تقييمًا وملاحظات حول: <strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والحوار، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong></p>
-        </div>
-        <div class="ctype-card__foot">
-          <ul class="ctype-card__list">
-            <li data-i18n-html="shortLi1Html">مدة التسليم: عادةً من 10 إلى 15 يومًا <span class="ctype-card__note">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span></li>
-            <li data-i18n="li2">تقييمات وفق معايير الصناعة: Pass / Consider / Recommend</li>
-            <li data-i18n="li3">ملاحظات تفصيلية تتضمن اقتراحات عملية لتحسين النص السينمائي</li>
-            <li data-i18n="li4">منح النصوص السينمائية ذات التقييمات العالية فرصة إضافية للظهور والوصول إلى جهات في الصناعة</li>
-          </ul>
-          <div class="ctype-card__btns">
-            <a class="btn btn--white" href="/submit?type=short" data-i18n="btnRequest">اطلب التغطية</a>
-            <a class="btn btn--ghost" href="sample-report.html" target="_blank" rel="noopener" data-i18n="btnSample">إطلع على نموذج التقرير</a>
+          <div class="svc__body">
+            <p class="svc__lead" data-i18n="svcShortLead">تحصل على تقرير تغطية احترافي لفيلم قصير يحدد موقع نصك بدقة</p>
+            <p class="svc__desc" data-i18n-html="svcShortDescHtml">يقدّم التقرير ملاحظات عملية قابلة للتطبيق، وفهمًا واضحًا لمستوى النص، مع إمكانية ترشيح النصوص المتميزة لمسارات وصول إلى جهات في الصناعة <strong>خلال 10–15 يوم عمل</strong> من إسناد النص لقارئ معتمد.</p>
           </div>
-        </div>
-      </article>
-
-      <article class="ctype-card ctype-card--launch">
-        <p class="ctype-card__launch" data-i18n="launchPrices">أسعار الإطلاق</p>
-        <div class="ctype-card__head">
-          <h3 class="ctype-card__title" data-i18n="featureTitle">تغطية النصوص السينمائية الطويلة</h3>
-          <div class="price-div">
-            <img class="riyal-icon" src="assets/riyal.svg" alt="ريال">
-            <h1 class="price-range">800 - 1200</h1>
+          <div class="svc__actions">
+            <a class="svc__btn svc__btn--ghost" href="sample-report.html" target="_blank" rel="noopener" data-i18n="svcBtnSample">عرض ما ستحصل عليه من التقرير</a>
+            <a class="svc__btn" href="/submit?type=short" data-i18n="svcBtnBook">حجز التقييم</a>
           </div>
-          <p class="ctype-card__price-note" data-i18n="featurePriceNote">السعر حسب حجم النص</p>
-          <p class="ctype-card__desc" data-i18n-html="featureDescHtml">يقدم هذا التقرير ملاحظات تفصيلية على الفيلم الطويل (<strong>من 80 إلى 120 صفحة</strong>). يشمل ذلك تقييمًا وملاحظات حول: <strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والحوار، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong></p>
-        </div>
-        <div class="ctype-card__foot">
-          <ul class="ctype-card__list">
-            <li data-i18n-html="featureLi1Html">مدة التسليم: حتى 4 أسابيع <span class="ctype-card__note">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span></li>
-            <li data-i18n="li2">تقييمات وفق معايير الصناعة: Pass / Consider / Recommend</li>
-            <li data-i18n="li3">ملاحظات تفصيلية تتضمن اقتراحات عملية لتحسين النص السينمائي</li>
-            <li data-i18n="li4">منح النصوص السينمائية ذات التقييمات العالية فرصة إضافية للظهور والوصول إلى جهات في الصناعة</li>
-          </ul>
-          <div class="ctype-card__btns">
-            <a class="btn btn--white" href="/submit?type=feature" data-i18n="btnRequest">اطلب التغطية</a>
-            <a class="btn btn--ghost" href="sample-report.html" target="_blank" rel="noopener" data-i18n="btnSample">إطلع على نموذج التقرير</a>
+        </li>
+        <li class="svc">
+          <div class="svc__head">
+            <p class="svc__pill" data-i18n="svcFeaturePill">800 الى 1,200 ريال بحسب عدد الصفحات</p>
+            <h3 class="svc__title" data-i18n="svcFeatureTitle">تغطية النصوص السينمائية الطويلة</h3>
+          <p class="svc__pages" data-i18n="svcFeaturePages">( من 80 صفحات الى 120 صفحة )</p>
           </div>
-        </div>
-      </article>
-
-      <!-- Treatment coverage: an early-stage read on the STORY, not the
-           eight-point script coverage above — hence its own short list, and a
-           sample link to the TREATMENT report rather than the script one.
-
-           ONE card for both lengths. Short and feature are still separate
-           products (treatment_short / treatment_feature, 70 / 150 in PRICES),
-           but the writer picks between them on the form's own required
-           "نوع المشروع" select instead of by choosing a card. So this link
-           carries no ?type=: with none, preselectType() leaves that select on
-           its "اختر نوع المشروع" placeholder, which IS the choose-after-clicking
-           flow. Re-adding a ?type= here would silently pre-pick a price. -->
-      <article class="ctype-card">
-        <div class="ctype-card__head">
-          <h3 class="ctype-card__title" data-i18n="treatTitle">تغطية المعالجة السينمائية</h3>
-          <p class="ctype-card__desc" data-i18n-html="treatDescHtml">تقييم مبكر لفكرة القصة يحدد مدى جاهزيتها للتحول إلى سيناريو سينمائي (<strong>حتى 5 صفحات للفيلم القصير، وحتى 15 صفحة للفيلم الطويل</strong>). تختار نوع المشروع عند التقديم.</p>
-        </div>
-        <div class="ctype-card__foot">
-          <ul class="ctype-card__list">
-            <li data-i18n-html="treatTurnaroundHtml">مدة التسليم: أسبوع واحد للفيلم القصير، و10 أيام للفيلم الطويل <span class="ctype-card__note">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span></li>
-            <li data-i18n="treatLi1">تقييم الفكرة وأصالتها</li>
-            <li data-i18n="treatLi2">تحليل هيكل القصة العام</li>
-            <li data-i18n="treatLi3">مراجعة الشخصيات ودوافعها</li>
-            <li data-i18n="treatLi4">تحديد المسار العاطفي والموضوعي</li>
-            <li data-i18n="treatLi5">قابلية التطوير إلى سيناريو</li>
-            <li data-i18n="treatLi6">ملاحظات السوق: الجمهور والمهرجانات وقابلية الإنتاج</li>
-            <li data-i18n="treatLi7">نقاط القوة وما يحتاج إلى تطوير</li>
-            <li data-i18n="treatLi8">توصية واضحة للتطوير أو التعديل أو إعادة التفكير</li>
-          </ul>
-          <div class="ctype-card__btns">
-            <a class="btn btn--white" href="/treatment-submit" data-i18n="btnRequest">اطلب التغطية</a>
-            <a class="btn btn--ghost" href="sample-treatment-report.html" target="_blank" rel="noopener" data-i18n="btnSample">إطلع على نموذج التقرير</a>
+          <div class="svc__body">
+            <p class="svc__lead" data-i18n="svcFeatureLead">تحصل على تقرير تغطية احترافي لفيلم طويل يحدد موقع نصك بدقة.</p>
+            <p class="svc__desc" data-i18n-html="svcFeatureDescHtml">يقدّم التقرير ملاحظات عملية قابلة للتطبيق، وفهمًا واضحًا لمستوى النص، مع إمكانية ترشيح النصوص المتميزة لمسارات وصول إلى جهات في الصناعة <strong>حتى 4 أسابيع</strong> من إسناد النص لقارئ معتمد.</p>
           </div>
-        </div>
-      </article>
-
+          <div class="svc__actions">
+            <a class="svc__btn svc__btn--ghost" href="sample-report.html" target="_blank" rel="noopener" data-i18n="svcBtnSample">عرض ما ستحصل عليه من التقرير</a>
+            <a class="svc__btn" href="/submit?type=feature" data-i18n="svcBtnBook">حجز التقييم</a>
+          </div>
+        </li>
+        <li class="svc">
+          <div class="svc__head">
+            <p class="svc__pill" data-i18n="svcTreatPill">150 ريال بحسب عدد الصفحات</p>
+            <h3 class="svc__title" data-i18n="svcTreatTitle">تغطية المعالجة السينمائية</h3>
+          </div>
+          <div class="svc__body">
+            <p class="svc__lead" data-i18n="svcTreatLead">تقييم مبكر للمعالجة يحدد مدى جاهزيتها للتحول إلى سيناريو سينمائي مكتمل</p>
+            <p class="svc__desc" data-i18n-html="svcTreatDescHtml">خلال 7 أيام للفيلم القصير و10–12 يومًا للفيلم الطويل من لحظة إسناد النص لقارئ معتمد</p>
+          </div>
+          <div class="svc__actions">
+            <a class="svc__btn svc__btn--ghost" href="sample-treatment-report.html" target="_blank" rel="noopener" data-i18n="svcBtnSample">عرض ما ستحصل عليه من التقرير</a>
+            <a class="svc__btn" href="/treatment-submit" data-i18n="svcBtnBook">حجز التقييم</a>
+          </div>
+        </li>
+      </ul>
+      <p class="ctypes__note" data-i18n="ctypesNote">يمكنك إعادة تقديم نسخة مطوّرة من نفس السيناريو (Draft 2) مجانًا بعد استلام التقييم الأولي، بشرط أن تكون نسخة محدثة لنفس العمل وليست مشروعًا جديدًا.</p>
     </div>
-    </div><!-- /#pkgWriters -->
 
-    <!-- Industry partners. No price line: these are negotiated per engagement,
-         so the card ends on a contact CTA rather than a figure. -->
     <div class="pkg-panel" id="pkgPartners" role="tabpanel" aria-labelledby="pkgTabPartners" hidden>
       <p class="ctypes__note" data-i18n="pkgPartnersNote">باقات مخصصة لجهات الإنتاج والتوزيع وصناديق الدعم والمهرجانات. التفاصيل والتسعير تُحدد بالتواصل معنا.</p>
       <div class="ctypes__grid">
