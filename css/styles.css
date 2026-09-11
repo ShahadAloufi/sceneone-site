@@ -422,6 +422,63 @@ a, button {
 .btn--disabled { opacity: .4; pointer-events: none; cursor: not-allowed; }
 .btn--ghost:hover { background: rgba(255,255,255,.2); }
 
+/* ── BOOKLET BUTTON (.s1-booklet-btn) ──────────────────────────────────────
+   Self-contained: it carries no .btn base, so everything it needs is here and
+   nothing here reaches anything else. Built for a black section.
+
+   Laid out with logical properties and a flex row, so it mirrors on its own in
+   Arabic — ::before is the first flex item, which `direction` puts on the right
+   in RTL and the left in LTR without a second rule. */
+.s1-booklet-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding-block: 14px;
+  padding-inline: 26px;
+  border: 1px solid rgba(244, 242, 238, .55);
+  border-radius: 999px;
+  background-color: transparent;
+  color: #f4f2ee;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 250ms ease, color 250ms ease, border-color 250ms ease;
+}
+/* Hover and keyboard focus land on the same filled state, so the button never
+   reads as inactive to someone tabbing through it. */
+.s1-booklet-btn:hover,
+.s1-booklet-btn:focus-visible {
+  background-color: #f4f2ee;
+  border-color: #f4f2ee;
+  color: #000;
+}
+.s1-booklet-btn:focus-visible {
+  outline: 2px solid #d2af50;
+  outline-offset: 2px;
+}
+
+/* The REC dot. A pseudo-element rather than a <span aria-hidden>: decorative
+   content that never enters the accessibility tree in the first place, so there
+   is no attribute to forget and nothing extra in the markup. */
+.s1-booklet-btn::before {
+  content: "";
+  flex: 0 0 auto;
+  inline-size: 9px;
+  block-size: 9px;
+  border-radius: 50%;
+  background-color: #cd2e07;
+  animation: s1-booklet-rec 1.4s steps(1) infinite;
+}
+/* steps(1) is the point: the dot holds each state for half the cycle and jumps,
+   the way a recording indicator does, rather than easing between them. */
+@keyframes s1-booklet-rec {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .15; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .s1-booklet-btn::before { animation: none; }
+}
+
 /* QUOTE */
 .quote {
   padding: 32px 24px 0;
