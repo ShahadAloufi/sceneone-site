@@ -49,12 +49,7 @@
       goal2: "تقليل الفجوة بين الكاتب والعالم الإنتاجي",
       goal3: "بناء معيار تقييم واضح للنصوص العربية",
 
-      aboutTitle: "من الفكرة… إلى نسخة تستحق أن تُرى",
-      aboutP1: "نقرأ نصك كما يُقرأ داخل الصناعة بمعايير واضحة، ونظرة نقدية تكشف إمكانياته الحقيقية، وما يحتاجه ليصبح مشروعاً قابلاً للتقديم",
-      aboutP2: "النصوص التي تثبت نفسها لا تتوقف عند التقييم، تُختار للاستضافة، وتُعرض على جهات تبحث عن أعمال جاهزة للتطوير",
 
-      cardWritersAlt: "للكُتّاب", cardProducersAlt: "شركاء الصناعة",
-      cardWritersImg: "assets/card_writers.png", cardProducersImg: "assets/card_producers.png",
 
       journeyTitle: "رحلة النص",
       step1T: "01 — تقديم النص", step1B: "يقوم الكاتب برفع النص السينمائي وإدخال المعلومات الأساسية الخاصة بالمشروع.",
@@ -358,12 +353,7 @@
       goal2: "Closing the gap between the writer and the production world",
       goal3: "Building a clear evaluation standard for Arabic scripts",
 
-      aboutTitle: "From an Idea… to a Draft Worth Seeing",
-      aboutP1: "We read your script the way the industry reads it: against clear criteria, with a critical eye that draws out its real potential and what it still needs to become a project you can take out",
-      aboutP2: "Scripts that prove themselves don't stop at the evaluation. They are selected for hosting and put in front of parties looking for work that is ready to develop",
 
-      cardWritersAlt: "For Writers", cardProducersAlt: "Industry Partners",
-      cardWritersImg: "assets/card_writers-en.png", cardProducersImg: "assets/card_producers-en.png",
 
       journeyTitle: "Script Journey",
       step1T: "01 — Submission", step1B: "The writer submits their screenplay and provides the essential project details.",

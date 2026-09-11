@@ -134,7 +134,7 @@
        where the equivalent PNG is 452KB. The SVG it arrived in also painted
        four flat #0d0202 edge rects over the picture; that colour is exactly
        --bg, so those are rebuilt in CSS off the token instead of baked in. -->
-  <section class="intro">
+  <section class="intro" id="about">
     <img class="intro__wordmark" src="assets/wordmark-sceneone.svg" alt="سين ون — Scene One">
     <div class="intro__grid">
       <div class="intro__copy">
@@ -171,28 +171,6 @@
         <p class="goal__text" data-i18n="goal3">بناء معيار تقييم واضح للنصوص العربية</p>
       </li>
     </ol>
-  </section>
-
-  <!-- ── ABOUT ── -->
-  <section class="about" id="about">
-    <h2 class="about__title" data-i18n="aboutTitle">من الفكرة… إلى نسخة تستحق أن تُرى</h2>
-    <div class="about__body">
-      <p data-i18n="aboutP1">نقرأ نصك كما يُقرأ داخل الصناعة بمعايير واضحة، ونظرة نقدية تكشف إمكانياته الحقيقية، وما يحتاجه ليصبح مشروعاً قابلاً للتقديم</p>
-      <p data-i18n="aboutP2">النصوص التي تثبت نفسها لا تتوقف عند التقييم، تُختار للاستضافة، وتُعرض على جهات تبحث عن أعمال جاهزة للتطوير</p>
-    </div>
-  </section>
-
-  <!-- ── THREE CARDS ── -->
-  <section class="cards">
-    <div class="cards__row" id="cards">
-      <!-- The title + paragraph inside each of these three photos are baked into
-           the PNG itself (photo composited with rendered text), not HTML overlay —
-           so translating them means swapping the whole image, not the text. Each
-           has an -en twin at the same crop/size; js/i18n.js swaps data-i18n-src
-           the same way it swaps data-i18n-alt. -->
-      <div class="cards__item" data-card="0"><img src="assets/card_writers.png" data-i18n-src="cardWritersImg" data-i18n-alt="cardWritersAlt" alt="للكُتّاب"></div>
-      <div class="cards__item" data-card="1"><img src="assets/card_producers.png" data-i18n-src="cardProducersImg" data-i18n-alt="cardProducersAlt" alt="شركاء الصناعة"></div>
-    </div>
   </section>
 
   <!-- ── JOURNEY TIMELINE ── -->

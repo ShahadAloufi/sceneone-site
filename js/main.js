@@ -95,24 +95,6 @@
     });
   });
 
-  /* ---------- THREE CARDS (desktop hover cascade) ---------- */
-  var cardsRow = document.getElementById("cards");
-  if (cardsRow) {
-    var items = cardsRow.querySelectorAll(".cards__item");
-    function setActive(i) {
-      cardsRow.classList.add("has-active");
-      items.forEach(function (el, idx) { el.classList.toggle("active", idx === i); });
-    }
-    function clearActive() {
-      cardsRow.classList.remove("has-active");
-      items.forEach(function (el) { el.classList.remove("active"); });
-    }
-    items.forEach(function (el, idx) {
-      el.addEventListener("mouseenter", function () { setActive(idx); });
-    });
-    cardsRow.addEventListener("mouseleave", clearActive);
-  }
-
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") closeMenu();
   });
