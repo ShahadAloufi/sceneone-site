@@ -719,15 +719,17 @@ html[dir="ltr"] .perks { direction: ltr; }
   font-size: 14px;
   font-weight: 700;
   color: #fff;
-  border: 1px solid rgba(255,255,255,.35);
+  background: transparent;
+  border: 1px solid #fff;
   border-radius: 6px;
   padding: 12px 18px;
-  transition: background-color .2s ease, border-color .2s ease;
+  transition: background-color .2s ease, border-color .2s ease, color .2s ease;
 }
-.svc__btn:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.6); }
-/* The sample-report link is the quieter of the two: reading it is a detour,
-   booking is the thing the row is for. */
-.svc__btn--ghost { border-color: rgba(255,255,255,.18); color: rgba(255,255,255,.8); }
+.svc__btn:hover { background: rgba(255,255,255,.12); }
+/* The filled one is the sample report, not the booking — the design puts the
+   weight on seeing what you get before committing to it. */
+.svc__btn--fill { background: #f0ede8; border-color: #f0ede8; color: #16110f; }
+.svc__btn--fill:hover { background: #fff; border-color: #fff; }
 @media (min-width: 900px) {
   .svc {
     grid-template-columns: 30% 1fr 22%;
@@ -757,43 +759,6 @@ html[dir="ltr"] .perks { direction: ltr; }
 
 /* Audience switch: writers vs industry partners. A two-pill segmented control
    rather than a row of links, so it reads as one choice with one answer. */
-.pkg-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin: 0 auto 36px;
-  padding: 6px;
-  width: max-content;
-  max-width: 100%;
-  border: 1px solid rgba(255,255,255,.22);
-  border-radius: 999px;
-  background: rgba(255,255,255,.04);
-}
-.pkg-tab {
-  font-family: var(--font-body);
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 1;
-  color: rgba(255,255,255,.62);
-  background: transparent;
-  border: 0;
-  border-radius: 999px;
-  padding: 13px 30px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: color .25s ease, background-color .25s ease;
-}
-.pkg-tab:hover { color: #fff; }
-.pkg-tab.is-active { color: #000; background: #fff; }
-/* Keyboard users need to see which pill has focus even while it is the
-   unselected one, where the hover colour alone would not show it. */
-.pkg-tab:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
-
-/* The panel sets no `display` of its own, so the UA's [hidden] rule is what
-   hides the inactive one. Stated explicitly all the same: a later author rule
-   with `display` would silently beat [hidden] at equal specificity and leave
-   both panels stacked on the page. */
-.pkg-panel[hidden] { display: none !important; }
 
 /* Partner cards carry no price, so the title would otherwise sit tight against
    the body copy where the price block used to open the gap. */
@@ -959,8 +924,6 @@ html[dir="ltr"] .ctype-card__launch {
   .ctypes__title { font-size: 30px; }
   /* Two pills side by side overflow a phone; let them stack and fill the row
      rather than scroll sideways. */
-  .pkg-tabs { width: 100%; border-radius: 18px; }
-  .pkg-tab { flex: 1; padding: 13px 12px; font-size: 14px; border-radius: 14px; }
   .ctype-card { min-height: auto; padding: 40px 28px; }
   .ctype-card--launch { padding-top: 100px; }
   .ctype-card__launch { font-size: 22px; padding: 16px 14px; }

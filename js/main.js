@@ -202,42 +202,6 @@
     });
   });
 
-  /* ---------- PACKAGES TABS (landing) ----------
-     Writers / industry partners. Progressive enhancement: the markup ships with
-     the writers' panel visible and the partners' panel carrying `hidden`, so
-     with this script absent the page still shows the pricing every inbound link
-     points at. Visibility is driven by the `hidden` ATTRIBUTE, never an inline
-     display — .pkg-panel deliberately declares no display of its own.
-
-     #packages-partners in the URL opens the partners tab directly, so the tab
-     can be linked to from outside the page. */
-  var pkgTabs = document.querySelectorAll(".pkg-tab");
-  if (pkgTabs.length) {
-    var selectPkg = function (tab) {
-      pkgTabs.forEach(function (t) {
-        var on = t === tab;
-        var panel = document.getElementById(t.getAttribute("aria-controls"));
-        t.classList.toggle("is-active", on);
-        t.setAttribute("aria-selected", on ? "true" : "false");
-        if (panel) panel.hidden = !on;
-      });
-    };
-    pkgTabs.forEach(function (t) {
-      t.addEventListener("click", function () { selectPkg(t); });
-    });
-    if (window.location.hash === "#packages-partners") {
-      var partnersTab = document.getElementById("pkgTabPartners");
-      var pkgSection = document.getElementById("coverage-types");
-      // That hash matches no element, so the smooth-scroll block below finds
-      // nothing to scroll to. Aim it at the section itself.
-      if (partnersTab && pkgSection) {
-        selectPkg(partnersTab);
-        requestAnimationFrame(function () {
-          pkgSection.scrollIntoView({ behavior: "smooth", block: "start" });
-        });
-      }
-    }
-  }
 
   /* ---------- IN-PAGE HASH SMOOTH SCROLL (landing) ---------- */
   if (window.location.hash) {
