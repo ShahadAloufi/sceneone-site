@@ -463,6 +463,14 @@ a, button {
      the media to a second row rather than to column 1 beside it. */
   .intro__copy { grid-column: 2; grid-row: 1; }
   .intro__media { grid-column: 1; grid-row: 1; }
+  /* The asset's top 460 rows of 1718 are fully transparent, so the box's centre
+     line sits well above the picture's. align-items:center was centring the copy
+     on the box — correctly, and it still looked wrong. Give the box the aspect
+     of the visible part (966x1258) and pin the image to its bottom: the frame
+     now ends where the picture does, and centring means what it looks like it
+     means. The file is untouched, only the window onto it. */
+  .intro__media { aspect-ratio: 966 / 1258; }
+  .intro__media img { height: 100%; object-fit: cover; object-position: center bottom; }
 }
 
 /* GOALS
