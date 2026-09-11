@@ -592,6 +592,24 @@ html[dir="ltr"] .audience { direction: ltr; }
 }
 html[dir="ltr"] .submit-cta { direction: ltr; }
 
+/* PERKS
+   Same three-column shape as .goals and deliberately so — both are "three short
+   things about the service" — but with no numerals, so the title carries the
+   column on its own and the copy can run longer. Columns are wider than the
+   goals' 260px for that reason. */
+.perks { padding: var(--sec-y) var(--sec-x); direction: rtl; }
+.perks__title { font-family: var(--font-head); font-size: 30px; font-weight: 700; color: #fff; text-align: center; margin-bottom: 56px; }
+.perks__row { list-style: none; margin: 0 auto; padding: 0; max-width: 1140px; display: grid; gap: 48px; }
+.perk { text-align: center; }
+.perk__title { font-family: var(--font-head); font-size: 20px; font-weight: 700; color: #fff; line-height: 1.5; margin-bottom: 18px; }
+.perk__body { font-size: 15px; line-height: 1.9; color: rgba(255,255,255,.62); max-width: 340px; margin: 0 auto; }
+@media (min-width: 720px) {
+  .perks__title { font-size: 36px; margin-bottom: 72px; }
+  .perks__row { grid-template-columns: repeat(3, 1fr); gap: 56px; align-items: start; }
+  .perk__title { font-size: 22px; }
+}
+html[dir="ltr"] .perks { direction: ltr; }
+
 /* STRATEGIC PARTNERSHIP */
 /* Full-bleed band over the auditorium photo. The photo carries its own dark
    top/bottom fade to var(--bg) so the band has no hard seam against the
