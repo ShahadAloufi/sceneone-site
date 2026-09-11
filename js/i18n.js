@@ -44,6 +44,11 @@
       introP3: "هنا، نحتفي بالقلم، ونصون الفكرة، ونصنع من كل نص بدايةً جديدة لفِلم يستحق الوصول الى الشاشة",
       introImgAlt: "كاتب يدوّن ملاحظاته على مسودة نص",
 
+      goalsTitle: "أهداف سين ون",
+      goal1: "دعم ظهور أصوات جديدة في السينما",
+      goal2: "تقليل الفجوة بين الكاتب والعالم الإنتاجي",
+      goal3: "بناء معيار تقييم واضح للنصوص العربية",
+
       aboutTitle: "من الفكرة… إلى نسخة تستحق أن تُرى",
       aboutP1: "نقرأ نصك كما يُقرأ داخل الصناعة بمعايير واضحة، ونظرة نقدية تكشف إمكانياته الحقيقية، وما يحتاجه ليصبح مشروعاً قابلاً للتقديم",
       aboutP2: "النصوص التي تثبت نفسها لا تتوقف عند التقييم، تُختار للاستضافة، وتُعرض على جهات تبحث عن أعمال جاهزة للتطوير",
@@ -347,6 +352,11 @@
       introP2: "And for the scripts that stand out, we open the industry's doors and connect them to real production and financing opportunities — the bridge your dream crosses on its way to the screen",
       introP3: "Here we honour the pen, we protect the idea, and we make of every script a new beginning for a film that deserves to reach the screen",
       introImgAlt: "A writer marking up a script draft",
+
+      goalsTitle: "What Scene One Is For",
+      goal1: "Helping new voices in cinema be heard",
+      goal2: "Closing the gap between the writer and the production world",
+      goal3: "Building a clear evaluation standard for Arabic scripts",
 
       aboutTitle: "From an Idea… to a Draft Worth Seeing",
       aboutP1: "We read your script the way the industry reads it: against clear criteria, with a critical eye that draws out its real potential and what it still needs to become a project you can take out",

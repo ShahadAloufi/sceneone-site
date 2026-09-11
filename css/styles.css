@@ -451,6 +451,23 @@ a, button {
   .intro__media { grid-column: 1; grid-row: 1; }
 }
 
+/* GOALS
+   Three even columns from 720px up, stacked below it. list-style is dropped
+   because the numerals ARE the list markers here — they just happen to be
+   artwork rather than generated content. */
+.goals { padding: 88px 24px 0; }
+.goals__title { font-family: var(--font-head); font-size: 30px; font-weight: 700; color: #fff; text-align: center; margin-bottom: 56px; }
+.goals__row { list-style: none; margin: 0 auto; padding: 0; max-width: 1000px; display: grid; gap: 48px; }
+.goal { text-align: center; }
+.goal__num { display: block; height: 28px; width: auto; margin: 0 auto 20px; }
+.goal__text { font-size: 18px; line-height: 1.8; color: #C4C4C4; letter-spacing: .02em; max-width: 260px; margin: 0 auto; }
+@media (min-width: 720px) {
+  .goals { padding: 112px 40px 0; }
+  .goals__title { font-size: 36px; }
+  .goals__row { grid-template-columns: repeat(3, 1fr); gap: 40px; align-items: start; }
+  .goal__num { height: 31px; }
+}
+
 /* ABOUT */
 .about { margin-bottom: 200px; padding: 56px 24px; text-align: center; }
 .about__title { font-family: var(--font-head); font-size: 36px; font-weight: 700; color: #fff; margin-bottom: 24px; }

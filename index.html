@@ -148,6 +148,31 @@
     </div>
   </section>
 
+  <!-- ── GOALS ──
+       The numerals are the supplied SVGs rather than typed digits: they are
+       drawn in a face the site does not load, and at 01 vs 02/03 they are not
+       even the same width (28 vs 42), so letting a font stand in for them would
+       shift the column rhythm. Sized by height alone so each keeps its own
+       width. Ordered 01..03 in the markup and left to `direction` — RTL puts 01
+       on the right, as in the source, and EN mirrors it without a second rule. -->
+  <section class="goals" id="goals">
+    <h2 class="goals__title" data-i18n="goalsTitle">أهداف سين ون</h2>
+    <ol class="goals__row">
+      <li class="goal">
+        <img class="goal__num" src="assets/goal-01.svg" alt="01">
+        <p class="goal__text" data-i18n="goal1">دعم ظهور أصوات جديدة في السينما</p>
+      </li>
+      <li class="goal">
+        <img class="goal__num" src="assets/goal-02.svg" alt="02">
+        <p class="goal__text" data-i18n="goal2">تقليل الفجوة بين الكاتب والعالم الإنتاجي</p>
+      </li>
+      <li class="goal">
+        <img class="goal__num" src="assets/goal-03.svg" alt="03">
+        <p class="goal__text" data-i18n="goal3">بناء معيار تقييم واضح للنصوص العربية</p>
+      </li>
+    </ol>
+  </section>
+
   <!-- ── ABOUT ── -->
   <section class="about" id="about">
     <h2 class="about__title" data-i18n="aboutTitle">من الفكرة… إلى نسخة تستحق أن تُرى</h2>
