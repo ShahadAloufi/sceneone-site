@@ -355,7 +355,7 @@
       overlayContact: "Contact", overlaySocial: "Follow Us",
 
       heroTitle: "From a promising script… to a real opportunity",
-      heroSub: "Professional coverage for short and feature scripts in Arabic, held to the standards of international reading rooms — practical notes, a clear development plan, and a route to decision-makers for the scripts that stand out",
+      heroSub: "Professional coverage for short and feature scripts in Arabic, held to the standards of international reading rooms, with practical notes, a clear development plan, and a route to decision-makers for the scripts that stand out",
       btnViewCoverage: "View Coverages", btnGuide: "What is script coverage?",
       heroNda: "All submissions are protected under non-disclosure agreements (NDA) and are only accessed by the assigned reader.",
       partnerBadge: "Accredited partner",
