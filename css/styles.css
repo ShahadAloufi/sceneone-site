@@ -433,13 +433,22 @@ a, button {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  padding-block: 14px;
-  padding-inline: 26px;
+  /* Geometry matched to .btn, its neighbour in the row — same 8px radius, same
+     16px/500 type, same outer height — so the pair reads as one control set.
+     Only the colour treatment and the dot are this button's own.
+
+     The padding is 10px minus the border: .btn has no border, so matching its
+     padding literally would sit this button 2px taller. line-height follows
+     .btn's `normal` for the same reason — 1.5 added another 5px. */
+  padding-block: calc(10px - 1px);
+  padding-inline: 24px;
   border: 1px solid rgba(244, 242, 238, .55);
-  border-radius: 999px;
+  border-radius: 8px;
   background-color: transparent;
   color: #f4f2ee;
-  line-height: 1;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: normal;
   text-decoration: none;
   cursor: pointer;
   transition: background-color 250ms ease, color 250ms ease, border-color 250ms ease;
