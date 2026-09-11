@@ -832,13 +832,6 @@ html[dir="ltr"] .ctype-card__launch {
     rgba(244,119,33,.95) 0%,
     rgba(120,48,11,.54) 55%,
     rgba(5,5,5,0) 100%);
-  /* The gradient is anchored at the corner, so the section's top edge cuts
-     straight through the brightest part of it and lands as a hard horizontal
-     seam against the black above. Ramp the first 120px in with a mask rather
-     than moving the gradient: the falloff stays exactly as drawn, it just
-     arrives instead of starting. */
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 120px);
-  mask-image: linear-gradient(to bottom, transparent 0, #000 120px);
 }
 .journey > *:not(.journey__glow) { position: relative; z-index: 1; }
 .journey__title { font-family: var(--font-head); font-size: 40px; font-weight: 700; color: #fff; margin-bottom: 64px; text-align: center; }
