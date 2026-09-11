@@ -202,36 +202,130 @@
     </div>
   </section>
 
-  <!-- ── JOURNEY TIMELINE ── -->
+  <!-- ── JOURNEY TIMELINE ──
+       Two renderings of the same eight steps. Below 1100px it is the stacked
+       list it has always been; above, it becomes the horizontal rail, which
+       needs real width to give eight columns room to breathe and so is not
+       worth trying to squeeze onto a phone.
+
+       The step numbers live in the markup rather than inside the translated
+       title, because the rail shows them in their own pill on the track while
+       the list keeps them inline — one string, two placements. -->
   <section class="journey" id="journey">
+    <div class="journey__glow" aria-hidden="true"></div>
     <h2 class="journey__title" data-i18n="journeyTitle">رحلة النص</h2>
-    <div class="timeline">
-      <div class="timeline__line"></div>
 
-      <!-- MOBILE -->
-      <div class="timeline__mobile">
-        <div class="tl-step"><p class="tl-step__title" data-i18n="step1T">01 — تقديم النص</p><p class="tl-step__body" data-i18n="step1B">يقوم الكاتب برفع النص السينمائي وإدخال المعلومات الأساسية الخاصة بالمشروع.</p></div>
-        <div class="tl-step"><p class="tl-step__title" data-i18n="step2T">02 — المراجعة الأولية</p><p class="tl-step__body" data-i18n="step2B">يتم التحقق من اكتمال الملف واستيفائه لمتطلبات التقديم.</p></div>
-        <div class="tl-step"><p class="tl-step__title" data-i18n="step3T">03 — القراءة والتقييم</p><p class="tl-step__body" data-i18n="step3B">يتولى قارئ ناقد متخصص قراءة النص وإعداد تقييم احترافي يتناول عناصره الأساسية.</p></div>
-        <div class="tl-step"><p class="tl-step__title" data-i18n="step4T">04 — إعداد التقرير</p><p class="tl-step__body" data-i18n="step4B">يتم إعداد تقرير مفصل يتضمن نقاط القوة وفرص التطوير والملاحظات العملية.</p></div>
-        <div class="tl-step"><p class="tl-step__title" data-i18n="step5T">05 — استلام النتائج</p><p class="tl-step__body" data-i18n="step5B">يتلقى الكاتب تقريره ويبدأ رحلة تطوير النص بناءً على الملاحظات والتوصيات المقدمة.</p></div>
-        <div class="tl-step"><p class="tl-step__title" data-i18n="step6T">06 — الترشيح للاستضافة</p><p class="tl-step__body" data-i18n="step6B">يتم ترشيح النصوص الأعلى تقييماً للدخول في مرحلة الاستضافة على المنصة، بعد موافقة الكاتب الكتابية الصريحة.</p></div>
-        <div class="tl-step"><p class="tl-step__title" data-i18n="step7T">07 — الاستضافة والمشاركة</p><p class="tl-step__body" data-i18n="step7B">يُضاف المشروع المختار إلى مكتبة خاصة، ويتم ترشيحه ومشاركته مع جهات الصناعة والشركاء.</p></div>
-        <div class="tl-step"><p class="tl-step__title" data-i18n="step8T">08 — فرص التطوير والإنتاج</p><p class="tl-step__body" data-i18n="step8B">قد ينتج عن ذلك فرص فعلية لتطوير المشروع أو نقله إلى مراحل إنتاجية.</p></div>
-      </div>
+    <ol class="timeline__mobile">
+        <li class="tl-step">
+          <p class="tl-step__title"><span class="tl-step__num">01</span><span data-i18n="step1T">تقديم النص</span></p>
+          <p class="tl-step__body" data-i18n="step1B">يقوم الكاتب برفع النص السينمائي وإدخال المعلومات الأساسية الخاصة بالمشروع.</p>
+        </li>
+        <li class="tl-step">
+          <p class="tl-step__title"><span class="tl-step__num">02</span><span data-i18n="step2T">المراجعة الأولية</span></p>
+          <p class="tl-step__body" data-i18n="step2B">يتم التحقق من اكتمال الملف واستيفائه لمتطلبات التقديم.</p>
+        </li>
+        <li class="tl-step">
+          <p class="tl-step__title"><span class="tl-step__num">03</span><span data-i18n="step3T">القراءة والتقييم</span></p>
+          <p class="tl-step__body" data-i18n="step3B">يتولى قارئ ناقد متخصص قراءة النص وإعداد تقييم احترافي يتناول عناصره الأساسية.</p>
+        </li>
+        <li class="tl-step">
+          <p class="tl-step__title"><span class="tl-step__num">04</span><span data-i18n="step4T">إعداد التقرير</span></p>
+          <p class="tl-step__body" data-i18n="step4B">يتم إعداد تقرير مفصل يتضمن نقاط القوة وفرص التطوير والملاحظات العملية.</p>
+        </li>
+        <li class="tl-step">
+          <p class="tl-step__title"><span class="tl-step__num">05</span><span data-i18n="step5T">استلام النتائج</span></p>
+          <p class="tl-step__body" data-i18n="step5B">يتلقى الكاتب تقريره ويبدأ رحلة تطوير النص بناءً على الملاحظات والتوصيات المقدمة.</p>
+        </li>
+        <li class="tl-step">
+          <p class="tl-step__title"><span class="tl-step__num">06</span><span data-i18n="step6T">الترشيح للاستضافة</span></p>
+          <p class="tl-step__body" data-i18n="step6B">يتم ترشيح النصوص الأعلى تقييماً للدخول في مرحلة الاستضافة على المنصة، بعد موافقة الكاتب الكتابية الصريحة.</p>
+        </li>
+        <li class="tl-step">
+          <p class="tl-step__title"><span class="tl-step__num">07</span><span data-i18n="step7T">الاستضافة والمشاركة</span></p>
+          <p class="tl-step__body" data-i18n="step7B">يُضاف المشروع المختار إلى مكتبة خاصة، ويتم ترشيحه ومشاركته مع جهات الصناعة والشركاء.</p>
+        </li>
+        <li class="tl-step">
+          <p class="tl-step__title"><span class="tl-step__num">08</span><span data-i18n="step8T">فرص التطوير والإنتاج</span></p>
+          <p class="tl-step__body" data-i18n="step8B">قد ينتج عن ذلك فرص فعلية لتطوير المشروع أو نقله إلى مراحل إنتاجية.</p>
+        </li>
+    </ol>
 
-      <!-- DESKTOP -->
-      <div class="timeline__desktop">
-        <div class="tl-row"><div class="tl-half tl-half--left"></div><div class="tl-half tl-half--right"><div class="tl-block"><p class="tl-step__title" data-i18n="step1T">01 — تقديم النص</p><p class="tl-step__body" data-i18n="step1B">يقوم الكاتب برفع النص السينمائي وإدخال المعلومات الأساسية الخاصة بالمشروع.</p></div></div></div>
-        <div class="tl-row"><div class="tl-half tl-half--left"><div class="tl-block"><p class="tl-step__title" data-i18n="step2T">02 — المراجعة الأولية</p><p class="tl-step__body" data-i18n="step2B">يتم التحقق من اكتمال الملف واستيفائه لمتطلبات التقديم.</p></div></div><div class="tl-half tl-half--right"></div></div>
-        <div class="tl-row"><div class="tl-half tl-half--left"></div><div class="tl-half tl-half--right"><div class="tl-block"><p class="tl-step__title" data-i18n="step3T">03 — القراءة والتقييم</p><p class="tl-step__body" data-i18n="step3B">يتولى قارئ ناقد متخصص قراءة النص وإعداد تقييم احترافي يتناول عناصره الأساسية.</p></div></div></div>
-        <div class="tl-row"><div class="tl-half tl-half--left"><div class="tl-block"><p class="tl-step__title" data-i18n="step4T">04 — إعداد التقرير</p><p class="tl-step__body" data-i18n="step4B">يتم إعداد تقرير مفصل يتضمن نقاط القوة وفرص التطوير والملاحظات العملية.</p></div></div><div class="tl-half tl-half--right"></div></div>
-        <div class="tl-row"><div class="tl-half tl-half--left"></div><div class="tl-half tl-half--right"><div class="tl-block"><p class="tl-step__title" data-i18n="step5T">05 — استلام النتائج</p><p class="tl-step__body" data-i18n="step5B">يتلقى الكاتب تقريره ويبدأ رحلة تطوير النص بناءً على الملاحظات والتوصيات المقدمة.</p></div></div></div>
-        <div class="tl-row"><div class="tl-half tl-half--left"><div class="tl-block"><p class="tl-step__title" data-i18n="step6T">06 — الترشيح للاستضافة</p><p class="tl-step__body" data-i18n="step6B">يتم ترشيح النصوص الأعلى تقييماً للدخول في مرحلة الاستضافة على المنصة، بعد موافقة الكاتب الكتابية الصريحة.</p></div></div><div class="tl-half tl-half--right"></div></div>
-        <div class="tl-row"><div class="tl-half tl-half--left"></div><div class="tl-half tl-half--right"><div class="tl-block"><p class="tl-step__title" data-i18n="step7T">07 — الاستضافة والمشاركة</p><p class="tl-step__body" data-i18n="step7B">يُضاف المشروع المختار إلى مكتبة خاصة، ويتم ترشيحه ومشاركته مع جهات الصناعة والشركاء.</p></div></div></div>
-        <div class="tl-row"><div class="tl-half tl-half--left"><div class="tl-block"><p class="tl-step__title" data-i18n="step8T">08 — فرص التطوير والإنتاج</p><p class="tl-step__body" data-i18n="step8B">قد ينتج عن ذلك فرص فعلية لتطوير المشروع أو نقله إلى مراحل إنتاجية.</p></div></div><div class="tl-half tl-half--right"></div></div>
-      </div>
-    </div>
+    <!-- Odd steps hang their text high and even steps low (see .jt-step:nth-child
+         stem heights), so eight labels can sit side by side without colliding. -->
+    <ol class="jt-track">
+        <li class="jt-step">
+          <div class="jt-step__text">
+            <h3 class="jt-step__title" data-i18n="step1T">تقديم النص</h3>
+            <p class="jt-step__body" data-i18n="step1B">يقوم الكاتب برفع النص السينمائي وإدخال المعلومات الأساسية الخاصة بالمشروع.</p>
+          </div>
+          <span class="jt-step__stem" aria-hidden="true"></span>
+          <span class="jt-step__pill">01</span>
+          <span class="jt-step__node" aria-hidden="true"></span>
+        </li>
+        <li class="jt-step">
+          <div class="jt-step__text">
+            <h3 class="jt-step__title" data-i18n="step2T">المراجعة الأولية</h3>
+            <p class="jt-step__body" data-i18n="step2B">يتم التحقق من اكتمال الملف واستيفائه لمتطلبات التقديم.</p>
+          </div>
+          <span class="jt-step__stem" aria-hidden="true"></span>
+          <span class="jt-step__pill">02</span>
+          <span class="jt-step__node" aria-hidden="true"></span>
+        </li>
+        <li class="jt-step">
+          <div class="jt-step__text">
+            <h3 class="jt-step__title" data-i18n="step3T">القراءة والتقييم</h3>
+            <p class="jt-step__body" data-i18n="step3B">يتولى قارئ ناقد متخصص قراءة النص وإعداد تقييم احترافي يتناول عناصره الأساسية.</p>
+          </div>
+          <span class="jt-step__stem" aria-hidden="true"></span>
+          <span class="jt-step__pill">03</span>
+          <span class="jt-step__node" aria-hidden="true"></span>
+        </li>
+        <li class="jt-step">
+          <div class="jt-step__text">
+            <h3 class="jt-step__title" data-i18n="step4T">إعداد التقرير</h3>
+            <p class="jt-step__body" data-i18n="step4B">يتم إعداد تقرير مفصل يتضمن نقاط القوة وفرص التطوير والملاحظات العملية.</p>
+          </div>
+          <span class="jt-step__stem" aria-hidden="true"></span>
+          <span class="jt-step__pill">04</span>
+          <span class="jt-step__node" aria-hidden="true"></span>
+        </li>
+        <li class="jt-step">
+          <div class="jt-step__text">
+            <h3 class="jt-step__title" data-i18n="step5T">استلام النتائج</h3>
+            <p class="jt-step__body" data-i18n="step5B">يتلقى الكاتب تقريره ويبدأ رحلة تطوير النص بناءً على الملاحظات والتوصيات المقدمة.</p>
+          </div>
+          <span class="jt-step__stem" aria-hidden="true"></span>
+          <span class="jt-step__pill">05</span>
+          <span class="jt-step__node" aria-hidden="true"></span>
+        </li>
+        <li class="jt-step">
+          <div class="jt-step__text">
+            <h3 class="jt-step__title" data-i18n="step6T">الترشيح للاستضافة</h3>
+            <p class="jt-step__body" data-i18n="step6B">يتم ترشيح النصوص الأعلى تقييماً للدخول في مرحلة الاستضافة على المنصة، بعد موافقة الكاتب الكتابية الصريحة.</p>
+          </div>
+          <span class="jt-step__stem" aria-hidden="true"></span>
+          <span class="jt-step__pill">06</span>
+          <span class="jt-step__node" aria-hidden="true"></span>
+        </li>
+        <li class="jt-step">
+          <div class="jt-step__text">
+            <h3 class="jt-step__title" data-i18n="step7T">الاستضافة والمشاركة</h3>
+            <p class="jt-step__body" data-i18n="step7B">يُضاف المشروع المختار إلى مكتبة خاصة، ويتم ترشيحه ومشاركته مع جهات الصناعة والشركاء.</p>
+          </div>
+          <span class="jt-step__stem" aria-hidden="true"></span>
+          <span class="jt-step__pill">07</span>
+          <span class="jt-step__node" aria-hidden="true"></span>
+        </li>
+        <li class="jt-step">
+          <div class="jt-step__text">
+            <h3 class="jt-step__title" data-i18n="step8T">فرص التطوير والإنتاج</h3>
+            <p class="jt-step__body" data-i18n="step8B">قد ينتج عن ذلك فرص فعلية لتطوير المشروع أو نقله إلى مراحل إنتاجية.</p>
+          </div>
+          <span class="jt-step__stem" aria-hidden="true"></span>
+          <span class="jt-step__pill">08</span>
+          <span class="jt-step__node" aria-hidden="true"></span>
+        </li>
+    </ol>
   </section>
 
   <!-- ── EXCLUSIVE BENEFITS ──

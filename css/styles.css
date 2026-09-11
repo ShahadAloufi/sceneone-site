@@ -817,29 +817,117 @@ html[dir="ltr"] .ctype-card__launch {
 }
 
 /* JOURNEY TIMELINE */
-.journey { margin-bottom: 0; padding: 56px 24px; direction: rtl; }
+.journey { position: relative; margin-bottom: 0; padding: 56px 24px; direction: rtl; overflow: hidden; }
+/* Ambient glow, rebuilt from the supplied SVG rather than shipped as one: it is
+   a single radial gradient, so as CSS it costs nothing, scales to any section
+   height and can sit behind live text. The source is a 1512x774 ellipse anchored
+   at the top-right corner with radii 1139x658 — 75% and 85% of the box — so the
+   proportions are kept as percentages and the stops copied across. */
+.journey__glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(ellipse 75% 85% at 100% 0%,
+    rgba(244,119,33,.95) 0%,
+    rgba(120,48,11,.54) 55%,
+    rgba(5,5,5,0) 100%);
+  /* The gradient is anchored at the corner, so the section's top edge cuts
+     straight through the brightest part of it and lands as a hard horizontal
+     seam against the black above. Ramp the first 120px in with a mask rather
+     than moving the gradient: the falloff stays exactly as drawn, it just
+     arrives instead of starting. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 120px);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 120px);
+}
+.journey > *:not(.journey__glow) { position: relative; z-index: 1; }
 .journey__title { font-family: var(--font-head); font-size: 40px; font-weight: 700; color: #fff; margin-bottom: 64px; text-align: center; }
-.timeline { position: relative; }
-.timeline__line { display: none; }
-.timeline__mobile { display: flex; flex-direction: column; gap: 48px; direction: rtl; }
+
+/* STACKED (default, and the only rendering below 1100px) */
+.timeline__mobile { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 48px; direction: rtl; }
 .tl-step { width: 100%; text-align: right; direction: rtl; }
 .tl-step__title { font-family: var(--font-head); font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.tl-step__num { color: var(--gold, #d4af37); }
+/* Separator lives in CSS so the number and the translated title stay two
+   independent strings in the markup. */
+.tl-step__num::after { content: ' — '; }
 .tl-step__body { font-size: 16px; line-height: 1.625; color: rgba(255,255,255,.7); }
-.timeline__desktop { display: none; }
+.jt-track { display: none; }
 
 @media (min-width: 640px) {
   .journey { padding: 80px 40px; }
   .journey__title { font-size: 48px; }
+  .tl-step__title { font-size: 24px; }
+  .tl-step__body { font-size: 18px; }
+}
+
+/* HORIZONTAL RAIL (1280px and up)
+   The threshold is about column width, not about "desktop". Eight labels share
+   the track, so at 1100px each gets ~130px and the titles break to three lines;
+   1280px is where they stop doing that. Anything narrower keeps the stacked
+   list, which reads better than a squeezed rail. */
+@media (min-width: 1280px) {
+  .journey { padding: 120px 40px 96px; }
+  .journey__title { margin-bottom: 96px; }
   .timeline__mobile { display: none; }
-  .timeline__desktop { display: block; }
-  .timeline__line { display: block; position: absolute; right: 50%; top: 0; bottom: 0; width: 1px; background: rgba(255,255,255,.2); transform: translateX(50%); }
-  .tl-row { position: relative; display: flex; padding-bottom: 64px; direction: ltr; }
-  .tl-half { width: 50%; display: flex; }
-  .tl-half--left { justify-content: flex-end; padding-right: 32px; }
-  .tl-half--right { justify-content: flex-start; padding-left: 32px; }
-  .tl-block { max-width: 320px; text-align: right; direction: rtl; }
-  .tl-block .tl-step__title { font-size: 24px; }
-  .tl-block .tl-step__body { font-size: 18px; }
+
+  .jt-track {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    align-items: end;
+    position: relative;
+    list-style: none;
+    margin: 0 auto;
+    padding: 0 0 22px;
+    max-width: 1560px;
+    min-height: 460px;
+  }
+  /* The rail. Sits behind the nodes and spans the whole track, its centre level
+     with theirs — node is 14px tall on a 22px bottom pad, rail is 6px, so 12px
+     up from the track's floor puts the two centre lines together. */
+  .jt-track::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: 12px;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(to left, rgba(244,119,33,.25), #f04e0f 18%, #f04e0f 82%, rgba(244,119,33,.25));
+    z-index: 0;
+  }
+  .jt-step {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+  .jt-step__text { text-align: center; max-width: 200px; }
+  .jt-step__title { font-family: var(--font-head); font-size: 18px; font-weight: 700; color: #fff; line-height: 1.45; margin-bottom: 10px; }
+  .jt-step__body { font-size: 13.5px; line-height: 1.7; color: rgba(255,255,255,.6); }
+  /* The stagger. Alternating stem lengths drop every second label clear of its
+     neighbours, which is what lets eight of them stand side by side at all. */
+  .jt-step__stem { width: 1px; background: rgba(255,255,255,.28); margin-top: 14px; }
+  .jt-step:nth-child(odd) .jt-step__stem { height: 150px; }
+  .jt-step:nth-child(even) .jt-step__stem { height: 64px; }
+  .jt-step__pill {
+    font-size: 12px;
+    letter-spacing: .08em;
+    color: rgba(255,255,255,.85);
+    background: #1c1512;
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 6px;
+    padding: 4px 12px;
+    margin-bottom: 10px;
+  }
+  .jt-step__node {
+    width: 14px; height: 14px;
+    border-radius: 3px;
+    background: #f04e0f;
+    box-shadow: 0 0 0 4px rgba(240,78,15,.18);
+  }
 }
 
 /* RED BANNER */
@@ -2255,10 +2343,9 @@ html[dir="ltr"] .ctype-card__list li::before { right: auto; left: 0; }
 html[dir="ltr"] .journey { direction: ltr; }
 html[dir="ltr"] .timeline__mobile { direction: ltr; }
 html[dir="ltr"] .tl-step { text-align: left; direction: ltr; }
-/* .tl-row stays direction:ltr regardless of language (it's what makes the
-   alternating left/right layout work); only the block's own text needs to
-   flip, independent of which half it lands in. */
-html[dir="ltr"] .tl-block { text-align: left; direction: ltr; }
+/* The rail needs no mirror rule of its own: its steps are laid out by grid in
+   source order, so `direction` on .journey reverses them, and the labels are
+   centre-aligned in both languages. */
 
 html[dir="ltr"] .banner__text { direction: ltr; }
 
