@@ -794,7 +794,10 @@ html[dir="ltr"] .perks { direction: ltr; }
   color: rgba(255,255,255,.55);
   text-align: center;
   max-width: 720px;
-  margin: 0 auto 28px;
+  /* The note used to sit ABOVE the cards, so it carried a bottom margin and no
+     top one. It sits under the list now, hard against the last row's hairline,
+     so the spacing flips: room above it, nothing below. */
+  margin: 44px auto 0;
 }
 .ctypes__grid {
   display: flex;
