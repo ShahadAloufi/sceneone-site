@@ -17,6 +17,10 @@
      100vh, and .intro, which butts against the hero) says so explicitly. */
   --sec-y: 56px;
   --sec-x: 24px;
+  /* One content width for the whole landing page. Section wrappers cap at this
+     and centre; the gutter comes from --sec-x on the section itself, so the
+     container never has to repeat it. */
+  --container: 1400px;
   /* The card surface, shared by the packages cards, the audience cards and the
      submit CTA. One token because they are meant to be the same colour — three
      copies of the hex is how they stop being. */
@@ -37,7 +41,10 @@ html[dir="ltr"] {
 }
 
 @media (min-width: 640px) {
-  :root { --sec-y: 88px; --sec-x: 40px; }
+  :root { --sec-y: 88px; }
+}
+@media (min-width: 1024px) {
+  :root { --sec-x: 32px; }
 }
 
 html {
@@ -442,7 +449,7 @@ a, button {
    layout wants — which flips with `direction`, so this mirrors for free in EN. */
 .intro { padding: var(--sec-y) var(--sec-x); }
 .intro__wordmark { display: block; width: 100%; max-width: 340px; height: auto; margin: 0 auto 56px; }
-.intro__grid { display: grid; gap: 40px; max-width: 1120px; margin: 0 auto; align-items: center; }
+.intro__grid { display: grid; gap: 40px; max-width: var(--container); margin: 0 auto; align-items: center; }
 .intro__copy { font-size: 18px; line-height: 1.9; color: #C4C4C4; letter-spacing: .02em; }
 .intro__copy p { margin-bottom: 28px; }
 .intro__copy p:last-child { margin-bottom: 0; }
@@ -492,7 +499,7 @@ a, button {
    this stretch of the page and the timeline, now that .about is gone. */
 .goals { padding: var(--sec-y) var(--sec-x); }
 .goals__title { font-family: var(--font-head); font-size: 30px; font-weight: 700; color: #fff; text-align: center; margin-bottom: 56px; }
-.goals__row { list-style: none; margin: 0 auto; padding: 0; max-width: 1000px; display: grid; gap: 48px; }
+.goals__row { list-style: none; margin: 0 auto; padding: 0; max-width: var(--container); display: grid; gap: 48px; }
 .goal { text-align: center; }
 .goal__num { display: block; height: 28px; width: auto; margin: 0 auto 20px; }
 .goal__text { font-size: 18px; line-height: 1.8; color: #C4C4C4; letter-spacing: .02em; max-width: 260px; margin: 0 auto; }
@@ -517,7 +524,7 @@ a, button {
   text-align: center;
   margin-bottom: 48px;
 }
-.audience__grid { display: grid; gap: 24px; max-width: 1140px; margin: 0 auto; }
+.audience__grid { display: grid; gap: 24px; max-width: var(--container); margin: 0 auto; }
 .aud-card {
   background: var(--card);
   border-radius: 10px;
@@ -557,7 +564,7 @@ html[dir="ltr"] .audience { direction: ltr; }
    own bottom padding is the whole gap now. */
 .submit-cta { padding: 0 var(--sec-x) var(--sec-y); direction: rtl; }
 .submit-cta__card {
-  max-width: 1140px;
+  max-width: var(--container);
   margin: 0 auto;
   background: var(--card);
   border-radius: 10px;
@@ -599,7 +606,7 @@ html[dir="ltr"] .submit-cta { direction: ltr; }
    goals' 260px for that reason. */
 .perks { padding: var(--sec-y) var(--sec-x); direction: rtl; }
 .perks__title { font-family: var(--font-head); font-size: 30px; font-weight: 700; color: #fff; text-align: center; margin-bottom: 56px; }
-.perks__row { list-style: none; margin: 0 auto; padding: 0; max-width: 1140px; display: grid; gap: 48px; }
+.perks__row { list-style: none; margin: 0 auto; padding: 0; max-width: var(--container); display: grid; gap: 48px; }
 .perk { text-align: center; }
 .perk__title { font-family: var(--font-head); font-size: 20px; font-weight: 700; color: #fff; line-height: 1.5; margin-bottom: 18px; }
 .perk__body { font-size: 15px; line-height: 1.9; color: rgba(255,255,255,.62); max-width: 340px; margin: 0 auto; }
@@ -699,7 +706,7 @@ html[dir="ltr"] .perks { direction: ltr; }
    what you get, what you do next — and a row lets those three columns line up
    down the page in a way three separate boxes cannot. Hairlines between, so the
    list reads as one table rather than three panels. Stacks below 900px. */
-.svc-list { list-style: none; margin: 0 auto; padding: 0; max-width: 1280px; }
+.svc-list { list-style: none; margin: 0 auto; padding: 0; max-width: var(--container); }
 .svc {
   display: grid;
   gap: 20px;
@@ -1011,7 +1018,7 @@ html[dir="ltr"] .ctype-card__launch {
     list-style: none;
     margin: 0 auto;
     padding: 0;
-    max-width: 1560px;
+    max-width: var(--container);
     min-height: 460px;
   }
   .jt-step {
@@ -1078,7 +1085,7 @@ html[dir="ltr"] .ctype-card__launch {
 
 /* FAQ */
 .faq { position: relative; padding: var(--sec-y) var(--sec-x); direction: rtl; }
-.faq__wrap { max-width: 1180px; margin: 0 auto; }
+.faq__wrap { max-width: var(--container); margin: 0 auto; }
 /* Eyebrow and title are start-aligned, not centred: the filter row beneath them
    has to start on the same edge, and a centred heading over a start-aligned
    control reads as two unrelated blocks. */
