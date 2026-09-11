@@ -840,7 +840,7 @@ html[dir="ltr"] .ctype-card__launch {
 .timeline__mobile { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 48px; direction: rtl; }
 .tl-step { width: 100%; text-align: right; direction: rtl; }
 .tl-step__title { font-family: var(--font-head); font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px; }
-.tl-step__num { color: var(--gold, #d4af37); }
+.tl-step__num { color: #fff; }
 /* Separator lives in CSS so the number and the translated title stay two
    independent strings in the markup. */
 .tl-step__num::after { content: ' — '; }
