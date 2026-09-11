@@ -319,10 +319,20 @@ a, button {
 
    The current loop is an abstract macro of a pen on paper — no text, no subject
    that has to stay whole — so cropping it costs nothing, while `contain` cost a
-   letterboxed band with black gutters either side of the frame. It covers at
-   every ratio now; `object-position` keeps the nib in view as the sides go. */
-.hero { background-position: center 38%; }
-.hero__bg { object-position: center 38%; }
+   letterboxed band with black gutters either side of the frame.
+
+   The asset itself is pre-cropped to 3:2 out of a portrait 888x1194 master.
+   Doing that crop in ffmpeg rather than leaving it to `cover` is the whole
+   point: cover-fitting a 0.74 source into a ~1.75 hero box has to scale it
+   about 2.3x and throw the top and bottom away, which read as the video being
+   wildly zoomed on a maximised window. At 3:2 the browser barely rescales.
+
+   A phone is the same problem mirrored, so the portrait master is served
+   there instead (see the <source media> pair in index.html) and the poster
+   behind it has to switch to match, or the still and the video disagree. */
+@media (max-aspect-ratio: 1/1) {
+  .hero { background-image: url('../assets/hero-landing-portrait-poster.jpg'); }
+}
 .hero__shade {
   position: absolute;
   inset: 0;
