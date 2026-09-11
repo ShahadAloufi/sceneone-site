@@ -377,13 +377,13 @@ a, button {
   margin-bottom: 16px;
 }
 .hero__sub { font-family: var(--font-head); font-weight: 500; font-size: 18px; line-height: 1.6; color: rgba(255,255,255,.85); margin-bottom: 32px; max-width: 600px; }
-.hero__nda { font-family: var(--font-body); font-size: 13px; line-height: 1.7; color: rgba(255,255,255,.5); margin-top: 24px; max-width: 520px; }
-/* Matches .sub-note__link on the submission form, where the same SAIP pointer
-   already appears — same gold, underline and weight, so the two read as one
-   piece of advice rather than two. Kept as its own rule instead of sharing the
-   class: that name belongs to the form's note. */
-.hero__nda-link { color: var(--gold); text-decoration: underline; font-weight: 600; }
-.hero__nda-link:hover { color: #b8963f; }
+.hero__nda { font-family: var(--font-body); font-size: 15px; line-height: 1.7; color: rgba(255,255,255,.5); margin-top: 24px; max-width: 520px; }
+/* The submission form's version of this pointer is gold; here it is white, so
+   it stays a footnote against a photographic hero rather than pulling attention
+   off the CTAs just above it. Underlined and heavier, which is what marks it as
+   a link now that colour no longer does. */
+.hero__nda-link { color: #fff; text-decoration: underline; font-weight: 600; }
+.hero__nda-link:hover { color: rgba(255,255,255,.75); }
 
 @media (min-width: 640px) {
   /* No bottom padding: the badge is meant to sit right above .quote__rule, so
@@ -393,7 +393,7 @@ a, button {
   .hero__content { padding: 128px 40px 0; margin-right: 40px; }
   .hero__title { font-size: 36px; }
   .hero__sub { font-size: 22px; }
-  .hero__nda { font-size: 14px; }
+  .hero__nda { font-size: 16px; }
 }
 
 /* buttons */
