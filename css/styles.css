@@ -696,15 +696,26 @@ html[dir="ltr"] .perks { direction: ltr; }
   border-bottom: 1px solid rgba(255,255,255,.08);
 }
 .svc:first-child { border-top: 1px solid rgba(255,255,255,.08); }
+/* Plain gold text, no pill: the price is the first thing in the row and the
+   badge was competing with the title right under it. */
 .svc__pill {
-  display: inline-block;
-  background: var(--gold);
-  color: #1a1207;
-  font-size: 13px;
+  color: var(--gold);
+  font-size: 15px;
   font-weight: 700;
-  border-radius: 999px;
-  padding: 6px 16px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
+}
+/* The riyal mark is drawn as a mask rather than an <img>, because the source SVG
+   has fill="white" baked into its paths and could not follow the gold. As a mask
+   it takes currentColor, so it tracks whatever colour the price ends up. */
+.svc__riyal {
+  display: inline-block;
+  width: .8em;
+  height: .9em;
+  vertical-align: -.1em;
+  margin: 0 .12em;
+  background: currentColor;
+  -webkit-mask: url('../assets/riyal.svg') no-repeat center / contain;
+  mask: url('../assets/riyal.svg') no-repeat center / contain;
 }
 .svc__title { font-family: var(--font-head); font-size: 26px; font-weight: 700; color: #fff; line-height: 1.4; }
 .svc__pages { margin-top: 10px; font-size: 14px; color: rgba(255,255,255,.55); }
