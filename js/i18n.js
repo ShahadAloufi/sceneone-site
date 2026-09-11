@@ -33,7 +33,6 @@
       overlayContact: "تواصل", overlaySocial: "حساباتنا",
 
       heroTitle: "من سيناريو واعد… إلى فرصة حقيقية",
-      heroLede: "نقيّم، ونفتح لنصك أبواب الوصول إلى الجهات المناسبة",
       heroSub: "تغطية احترافية لنصوص الأفلام القصيرة والطويلة بالعربية، وفق معايير غرف القراءة العالمية، مع ملاحظات عملية وخطة تطوير واضحة وفرصة وصول للنصوص المتميزة إلى صناع القرار",
       btnViewCoverage: "عرض التغطيات", btnGuide: "ما هي تغطية النصوص؟",
       heroNda: "جميع النصوص تخضع لاتفاقيات عدم إفصاح (NDA)، ولا يطّلع عليها سوى القارئ المكلّف بتقييمها.",
@@ -356,7 +355,6 @@
       overlayContact: "Contact", overlaySocial: "Follow Us",
 
       heroTitle: "From a promising script… to a real opportunity",
-      heroLede: "We evaluate your script, and open its way to the right industry doors",
       heroSub: "Professional coverage for short and feature scripts in Arabic, held to the standards of international reading rooms — practical notes, a clear development plan, and a route to decision-makers for the scripts that stand out",
       btnViewCoverage: "View Coverages", btnGuide: "What is script coverage?",
       heroNda: "All submissions are protected under non-disclosure agreements (NDA) and are only accessed by the assigned reader.",
