@@ -927,18 +927,18 @@ html[dir="ltr"] .ctype-card__launch {
   .tl-step__body { font-size: 18px; }
 }
 
-/* HORIZONTAL RAIL (1280px and up)
-   The threshold is about column width, not about "desktop". Eight labels share
-   the track, so at 1100px each gets ~130px and the titles break to three lines;
-   1280px is where they stop doing that. Anything narrower keeps the stacked
-   list, which reads better than a squeezed rail. */
-@media (min-width: 1280px) {
+/* HORIZONTAL RAIL (1100px and up)
+   The threshold is about column width, not about "desktop": the labels share
+   the track, and below this they break to three lines and the rail reads worse
+   than the stacked list. It was 1280 when there were eight steps; at six each
+   column gets the same room at 1100, so the rail now starts earlier. */
+@media (min-width: 1100px) {
   .journey__title { margin-bottom: 96px; }
   .timeline__mobile { display: none; }
 
   .jt-track {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     align-items: end;
     position: relative;
     list-style: none;
