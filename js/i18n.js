@@ -77,10 +77,11 @@
       step5T: "الاستضافة والمشاركة", step5B: "يُضاف المشروع المختار إلى مكتبة خاصة، ويتم ترشيحه ومشاركته مع جهات الصناعة والشركاء.",
       step6T: "فرص التطوير والإنتاج", step6B: "قد ينتج عن ذلك فرص فعلية لتطوير المشروع أو نقله إلى مراحل إنتاجية.",
 
-      partnershipEyebrow: "Exclusive Benefits",
-      partnershipTitle: "مزايا حصرية",
-      partnershipBody: "نؤمن بدعم مجتمع صناعة السينما السعودية، لذلك نقدّم لأعضاء الجمعية مزايا حصرية على جميع خدمات تغطية النصوص",
-      partnershipOffer: "خصم 15% لأعضاء ومنسوبي الجمعية",
+      partnershipEyebrow: "Partnerships",
+      partnershipTitle: "شراكات سين ون",
+      partnershipBody: "نتعاون مع جهات في قطاع السينما لدعم الكتّاب وصنّاع الأفلام، وتوفير فرص ومزايا تساعدهم على تطوير مشاريعهم.",
+      partnershipOffer: "يحصل أعضاء جمعية السينما السعودية على خصم 15% على خدمات تغطية النصوص.",
+      partnershipCta: "استكشف خدمات التغطية",
       partnershipNote: "يُشترط إبراز بطاقة العضوية السارية عند الطلب",
 
       // Treatment coverage — a story-stage read, deliberately shorter than the
@@ -410,10 +411,11 @@
       step5T: "Hosting & Sharing", step5B: "The selected project is added to a dedicated library, then nominated and shared with industry partners and companies.",
       step6T: "Development & Production Opportunities", step6B: "This can lead to real opportunities to develop the project or carry it into production.",
 
-      partnershipEyebrow: "Exclusive Benefits",
-      partnershipTitle: "Exclusive Benefits",
-      partnershipBody: "We believe in supporting Saudi Arabia's cinema industry, which is why we offer Cinema Association members exclusive benefits on all script coverage services.",
-      partnershipOffer: "15% off for Association members and staff",
+      partnershipEyebrow: "Partnerships",
+      partnershipTitle: "Scene One Partnerships",
+      partnershipBody: "We collaborate with organizations in the film sector to support writers and filmmakers, and to provide opportunities and benefits that help them develop their projects.",
+      partnershipOffer: "Saudi Film Society members receive a 15% discount on script coverage services.",
+      partnershipCta: "Explore Coverage Services",
       partnershipNote: "A valid membership card must be presented when requesting coverage",
 
       treatTitle: "Screenplay Treatment Coverage",

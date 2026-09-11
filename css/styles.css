@@ -660,17 +660,27 @@ html[dir="ltr"] .perks { direction: ltr; }
   color: rgba(255,255,255,.82); margin: 48px auto 0; max-width: 620px;
 }
 /* The offer itself — the one thing in the band that has to survive a skim. */
+/* The offer used to BE the white pill. It is a sentence now and the pill moved
+   to the CTA below it, which is the thing worth pressing. */
 .partnership__offer {
-  display: inline-block; margin-top: 40px; padding: 16px 40px; border-radius: 999px;
+  font-family: var(--font-head); font-size: 17px; font-weight: 700; color: #fff;
+  margin-top: 36px; line-height: 1.7;
+}
+.partnership__cta {
+  display: inline-block; margin-top: 24px; padding: 16px 40px; border-radius: 999px;
   background: #fff; color: #0e0202;
   font-family: var(--font-head); font-size: 17px; font-weight: 700;
+  transition: background-color .2s ease, transform .2s ease;
 }
+.partnership__cta:hover { background: #ece8e1; }
+.partnership__cta:active { transform: translateY(1px); }
 .partnership__note { font-family: var(--font-body); font-size: 13px; color: rgba(255,255,255,.5); margin-top: 18px; }
 
 @media (min-width: 640px) {
   .partnership__title { font-size: 52px; }
   .partnership__body { font-size: 18px; }
-  .partnership__offer { font-size: 18px; padding: 18px 48px; }
+  .partnership__offer { font-size: 18px; }
+  .partnership__cta { font-size: 18px; padding: 18px 48px; }
 }
 @media (max-width: 520px) {
   /* Stacked: side by side at this width each mark is too small to read. */
@@ -680,7 +690,8 @@ html[dir="ltr"] .perks { direction: ltr; }
   .partnership__logo--assoc { height: 56px; }
   .partnership__eyebrow { font-size: 11px; gap: 10px; }
   .partnership__eyebrow::before, .partnership__eyebrow::after { width: 24px; }
-  .partnership__offer { padding: 15px 26px; font-size: 15.5px; }
+  .partnership__offer { font-size: 15.5px; }
+  .partnership__cta { padding: 15px 26px; font-size: 15.5px; }
 }
 
 /* SERVICES LIST (writers' panel)
