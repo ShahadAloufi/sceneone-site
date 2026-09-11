@@ -117,7 +117,9 @@
         <a class="btn btn--white" href="#coverage-types" data-i18n="btnViewCoverage">عرض التغطيات</a>
         <a class="btn btn--ghost" href="/about-coverage" data-i18n="btnGuide">ما هي تغطية النصوص؟</a>
       </div>
-      <p class="hero__nda" data-i18n="heroNda">جميع النصوص تخضع لاتفاقيات عدم إفصاح (NDA)، ولا يطّلع عليها سوى القارئ المكلّف بتقييمها.</p>
+      <!-- data-i18n-html, not data-i18n: the line carries a link, and the plain
+           key would insert the markup as text. -->
+      <p class="hero__nda" data-i18n-html="heroNdaHtml">نصك محمي هنا في Scene One، لكننا نشجعك على حماية نصك بزيارة <a href="https://www.saip.gov.sa/" target="_blank" rel="noopener noreferrer" class="hero__nda-link">SAIP</a>.</p>
 
       <!-- Accreditation badge. Lives inside .hero__content so it inherits the
            hero's right gutter and sits over the photo, just above .quote__rule.

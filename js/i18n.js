@@ -35,7 +35,7 @@
       heroTitle: "من سيناريو واعد… إلى فرصة حقيقية",
       heroSub: "تغطية احترافية لنصوص الأفلام القصيرة والطويلة بالعربية، وفق معايير غرف القراءة العالمية، مع ملاحظات عملية وخطة تطوير واضحة وفرصة وصول للنصوص المتميزة إلى صناع القرار",
       btnViewCoverage: "عرض التغطيات", btnGuide: "ما هي تغطية النصوص؟",
-      heroNda: "جميع النصوص تخضع لاتفاقيات عدم إفصاح (NDA)، ولا يطّلع عليها سوى القارئ المكلّف بتقييمها.",
+      heroNdaHtml: "نصك محمي هنا في Scene One، لكننا نشجعك على حماية نصك بزيارة <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"hero__nda-link\">SAIP</a>.",
       partnerBadge: "شريك معتمد",
 
       introP1: "حيث لا تقف الكلمة عند حدود الصفحة، بل تنبض حياةً لتفتح آفاقًا جديدة أمام كل كاتب يحمل حلمًا يستحق أن يُروى",
@@ -357,7 +357,7 @@
       heroTitle: "From a promising script… to a real opportunity",
       heroSub: "Professional coverage for short and feature scripts in Arabic, held to the standards of international reading rooms, with practical notes, a clear development plan, and a route to decision-makers for the scripts that stand out",
       btnViewCoverage: "View Coverages", btnGuide: "What is script coverage?",
-      heroNda: "All submissions are protected under non-disclosure agreements (NDA) and are only accessed by the assigned reader.",
+      heroNdaHtml: "Your script is protected here at Scene One, but we encourage you to protect it yourself by registering with <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"hero__nda-link\">SAIP</a>.",
       partnerBadge: "Accredited partner",
 
       introP1: "Where the word does not stop at the edge of the page, but comes alive to open new horizons for every writer carrying a dream worth telling",
