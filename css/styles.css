@@ -547,7 +547,11 @@ html[dir="ltr"] .audience { direction: ltr; }
    One card, copy on the start side and the button on the end side, stacking
    below 720px. Padding is the section rhythm like everything else; the card
    supplies its own inner padding on top of that. */
-.submit-cta { padding: var(--sec-y) var(--sec-x); direction: rtl; }
+/* No top padding, deliberately breaking the section rhythm: this card is the
+   audience block's call to action, not a section in its own right, and paying
+   both edges put 2x--sec-y between the last card and it. The audience section's
+   own bottom padding is the whole gap now. */
+.submit-cta { padding: 0 var(--sec-x) var(--sec-y); direction: rtl; }
 .submit-cta__card {
   max-width: 1140px;
   margin: 0 auto;
