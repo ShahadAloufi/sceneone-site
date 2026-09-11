@@ -1046,6 +1046,14 @@ html[dir="ltr"] .ctype-card__launch {
     rgba(244,119,33,.95) 0%,
     rgba(120,48,11,.54) 55%,
     rgba(5,5,5,0) 100%);
+  /* The gradient is anchored at the top-right corner, so the section's own top
+     edge slices through the brightest part of it and meets the band above as a
+     hard horizontal line. Mask both ends rather than move the gradient: the
+     falloff stays exactly as drawn, it just arrives and leaves instead of
+     starting and stopping. Percentages, so the ramp scales with the section
+     rather than being a fixed slab at one viewport size. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 26%, #000 82%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 26%, #000 82%, transparent 100%);
 }
 .journey > *:not(.journey__glow) { position: relative; z-index: 1; }
 .journey__title { font-family: var(--font-head); font-size: 40px; font-weight: 700; color: #fff; margin-bottom: 64px; text-align: center; }
