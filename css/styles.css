@@ -28,6 +28,10 @@
   /* The card surface, shared by the packages cards, the audience cards and the
      submit CTA. One token because they are meant to be the same colour — three
      copies of the hex is how they stop being. */
+  /* One height for every CTA button. Buttons here run 14-18px type, so padding
+     alone cannot land them on a common height — min-height plus centring does,
+     whatever the font metrics. Matches .svc__btn, the reference. */
+  --btn-h: 43px;
   --card: #2d2a27;
   --card-hover: #353230;
   --bg: #0e0202;
@@ -415,9 +419,13 @@ a, button {
 /* buttons */
 .btn-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: 12px; }
 .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--btn-h);
   font-size: 16px;
   font-weight: 500;
-  padding: 10px 24px;
+  padding: 0 24px;
   border-radius: 8px;
 }
 .btn--white { background: #fff; color: #000; }
@@ -438,13 +446,12 @@ a, button {
   align-items: center;
   gap: 12px;
   /* Geometry matched to .btn, its neighbour in the row — same 8px radius, same
-     16px/500 type, same outer height — so the pair reads as one control set.
-     Only the colour treatment and the dot are this button's own.
-
-     The padding is 10px minus the border: .btn has no border, so matching its
-     padding literally would sit this button 2px taller. line-height follows
-     .btn's `normal` for the same reason — 1.5 added another 5px. */
-  padding-block: calc(10px - 1px);
+     16px/500 type, same height off the shared --btn-h. Only the colour
+     treatment and the dot are this button's own. min-height with centring
+     rather than padding, so the border does not push it past its neighbour. */
+  min-height: var(--btn-h);
+  justify-content: center;
+  padding-block: 0;
   padding-inline: 24px;
   border: 1px solid rgba(244, 242, 238, .55);
   border-radius: 8px;
@@ -654,8 +661,12 @@ html[dir="ltr"] .audience { direction: ltr; }
   font-family: var(--font-head);
   font-weight: 700;
   font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--btn-h);
   text-align: center;
-  padding: 14px 28px;
+  padding: 0 28px;
   border-radius: 8px;
   flex-shrink: 0;
   transition: background-color .2s ease, transform .2s ease;
@@ -744,7 +755,9 @@ html[dir="ltr"] .perks { direction: ltr; }
   margin-top: 36px; line-height: 1.7;
 }
 .partnership__cta {
-  display: inline-block; margin-top: 24px; padding: 16px 40px; border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: var(--btn-h);
+  margin-top: 24px; padding: 0 40px; border-radius: 8px;
   background: #fff; color: #0e0202;
   font-family: var(--font-head); font-size: 17px; font-weight: 700;
   transition: background-color .2s ease, transform .2s ease;
@@ -757,7 +770,7 @@ html[dir="ltr"] .perks { direction: ltr; }
   .partnership__title { font-size: 52px; }
   .partnership__body { font-size: 18px; }
   .partnership__offer { font-size: 18px; }
-  .partnership__cta { font-size: 18px; padding: 18px 48px; }
+  .partnership__cta { font-size: 18px; padding-inline: 48px; }
 }
 @media (max-width: 520px) {
   /* Stacked: side by side at this width each mark is too small to read. */
@@ -768,7 +781,7 @@ html[dir="ltr"] .perks { direction: ltr; }
   .partnership__eyebrow { font-size: 11px; gap: 10px; }
   .partnership__eyebrow::before, .partnership__eyebrow::after { width: 24px; }
   .partnership__offer { font-size: 15.5px; }
-  .partnership__cta { padding: 15px 26px; font-size: 15.5px; }
+  .partnership__cta { padding-inline: 26px; font-size: 15.5px; }
 }
 
 /* SERVICES LIST (writers' panel)
@@ -812,7 +825,10 @@ html[dir="ltr"] .perks { direction: ltr; }
 .svc__desc strong { color: rgba(255,255,255,.9); font-weight: 700; }
 .svc__actions { display: flex; flex-direction: column; gap: 12px; }
 .svc__btn {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--btn-h);
   text-align: center;
   font-family: var(--font-head);
   font-size: 14px;
@@ -821,7 +837,7 @@ html[dir="ltr"] .perks { direction: ltr; }
   background: transparent;
   border: 1px solid #fff;
   border-radius: 8px;
-  padding: 12px 18px;
+  padding: 0 18px;
   transition: background-color .2s ease, border-color .2s ease, color .2s ease;
 }
 .svc__btn:hover { background: rgba(255,255,255,.12); }
@@ -1243,9 +1259,10 @@ html[dir="ltr"] .ctype-card__launch {
 .cta__h { font-family: var(--font-head); font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 40px; line-height: 1.625; }
 .cta__sub { font-family: var(--font-head); font-size: 24px; font-weight: 500; color: #fff; margin-bottom: 40px; line-height: 1.625; }
 .cta__btn {
-  display: inline-flex; align-items: center; gap: 12px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+  min-height: var(--btn-h);
   border: 1px solid var(--gold); border-radius: 8px;
-  padding: 12px 32px; color: var(--gold); font-size: 18px; direction: ltr;
+  padding: 0 32px; color: var(--gold); font-size: 18px; direction: ltr;
 }
 .cta__btn:hover { background: var(--gold); color: #000; }
 @media (min-width: 640px) {
