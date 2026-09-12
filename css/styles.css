@@ -602,7 +602,7 @@ a, button {
    the same step up the packages card takes, about +8 a channel. Two columns
    from 900px, one below. Card order is left to `direction`, which puts the first in
    the markup top-right in Arabic and top-left in English. */
-.audience { padding: var(--sec-y) var(--sec-x); direction: rtl; }
+.audience { padding: var(--sec-y) var(--sec-x) 0; direction: rtl; }
 .audience__title {
   font-family: var(--font-head);
   font-size: 34px;
@@ -649,7 +649,16 @@ html[dir="ltr"] .audience { direction: ltr; }
    audience block's call to action, not a section in its own right, and paying
    both edges put 2x--sec-y between the last card and it. The audience section's
    own bottom padding is the whole gap now. */
-.submit-cta { padding: 0 var(--sec-x) var(--sec-y); direction: rtl; }
+/* The top padding is the audience grid's own card gap, not the section rhythm:
+   this card is the last row of that block, so it should sit off the cards above
+   it by the same distance they sit off each other. Tracks the grid's 24/32. */
+.submit-cta { padding: 24px var(--sec-x) var(--sec-y); direction: rtl; }
+/* Declared after the base rule on purpose: the audience block's own 900px
+   media query sits earlier in the file, and at equal specificity source order
+   decides, so an override up there would lose. */
+@media (min-width: 900px) {
+  .submit-cta { padding-top: 32px; }
+}
 .submit-cta__card {
   max-width: var(--container);
   margin: 0 auto;
