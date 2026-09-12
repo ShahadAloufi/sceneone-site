@@ -656,7 +656,7 @@ html[dir="ltr"] .audience { direction: ltr; }
   font-size: 16px;
   text-align: center;
   padding: 14px 28px;
-  border-radius: 4px;
+  border-radius: 8px;
   flex-shrink: 0;
   transition: background-color .2s ease, transform .2s ease;
 }
@@ -820,7 +820,7 @@ html[dir="ltr"] .perks { direction: ltr; }
   color: #fff;
   background: transparent;
   border: 1px solid #fff;
-  border-radius: 6px;
+  border-radius: 8px;
   padding: 12px 18px;
   transition: background-color .2s ease, border-color .2s ease, color .2s ease;
 }
@@ -2360,7 +2360,7 @@ button.adm-av:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0
   font-weight: 600;
   font-size: 16px;
   padding: 14px;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 .sub-submit:hover { background: #000; }
 .sub-submit:disabled { opacity: .6; cursor: default; }
