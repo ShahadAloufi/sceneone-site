@@ -1138,7 +1138,6 @@ html[dir="ltr"] .ctype-card__launch {
     letter-spacing: .08em;
     color: rgba(255,255,255,.85);
     background: #1c1512;
-    border: 1px solid rgba(255,255,255,.09);
     border-radius: 6px;
     padding: 4px 12px;
   }
