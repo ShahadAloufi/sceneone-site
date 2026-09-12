@@ -14,7 +14,11 @@
   /* One vertical rhythm for every landing section, so the gaps between them are
      a single decision rather than nine. Sections set `padding: var(--sec-y)
      var(--sec-x)`; anything that needs to break the rhythm (the hero, which is
-     100vh, and .intro, which butts against the hero) says so explicitly. */
+     100vh, and .submit-cta, which belongs to the audience block above it) says
+     so explicitly.
+
+     Every section pays the token on BOTH edges, so the space between any two is
+     2x it: 110 here is a 220px gap. Change the token, not the sections. */
   --sec-y: 56px;
   --sec-x: 24px;
   /* One content width for the whole landing page. Section wrappers cap at this
@@ -41,7 +45,7 @@ html[dir="ltr"] {
 }
 
 @media (min-width: 640px) {
-  :root { --sec-y: 88px; }
+  :root { --sec-y: 110px; }
 }
 @media (min-width: 1024px) {
   :root { --sec-x: 32px; }
@@ -740,7 +744,7 @@ html[dir="ltr"] .perks { direction: ltr; }
   margin-top: 36px; line-height: 1.7;
 }
 .partnership__cta {
-  display: inline-block; margin-top: 24px; padding: 16px 40px; border-radius: 999px;
+  display: inline-block; margin-top: 24px; padding: 16px 40px; border-radius: 8px;
   background: #fff; color: #0e0202;
   font-family: var(--font-head); font-size: 17px; font-weight: 700;
   transition: background-color .2s ease, transform .2s ease;
