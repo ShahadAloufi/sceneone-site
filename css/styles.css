@@ -734,6 +734,10 @@ html[dir="ltr"] .perks { direction: ltr; }
 
 .partnership__logos { display: flex; align-items: center; justify-content: center; gap: 28px; margin-top: 56px; }
 .partnership__logo { height: 64px; width: auto; }
+/* The Scene One lockup is stacked (mark over سين ون) where the association's
+   mark is wide, so matching them on height alone would leave ours reading
+   half the size. Taller, to put the two marks on a comparable footprint. */
+.partnership__logo--lockup { height: 92px; }
 /* Both marks are now wordmark-beside-symbol lockups of similar weight, so their
    heights sit close together. Ours is the wider of the two at any given height
    (2.7:1 against their 1.7:1), which is why it is set slightly SHORTER than the
