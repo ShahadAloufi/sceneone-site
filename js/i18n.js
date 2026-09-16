@@ -366,8 +366,8 @@
       overlayBlurb: "A specialized platform for screenplay evaluation, offering professional feedback that helps writers develop and refine their work before their next step.",
       overlayContact: "Contact", overlaySocial: "Follow Us",
 
-      heroTitle: "From a promising script… to a real opportunity",
-      heroSub: "Professional coverage for short and feature scripts in Arabic, held to the standards of international reading rooms, with practical notes, a clear development plan, and a route to decision-makers for the scripts that stand out",
+      heroTitle: "From script… to opportunity.",
+      heroSub: "Industry-ready scripts start here. We identify promising scripts, develop them to professional standards, and open real pathways into the film industry.",
       btnViewCoverage: "View Coverages", btnGuide: "How the story began",
       heroNdaHtml: "Your script is protected here at Scene One, but we encourage you to protect it yourself by registering with <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"hero__nda-link\">SAIP</a>.",
       partnerBadge: "Accredited partner",
