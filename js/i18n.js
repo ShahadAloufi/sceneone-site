@@ -33,7 +33,8 @@
       overlayContact: "تواصل", overlaySocial: "حساباتنا",
 
       heroTitle: "من سيناريو واعد… إلى فرصة حقيقية",
-      heroSub: "تغطية احترافية لنصوص الأفلام القصيرة والطويلة بالعربية، وفق معايير غرف القراءة العالمية، مع ملاحظات عملية وخطة تطوير واضحة وفرصة وصول للنصوص المتميزة إلى صناع القرار",
+      heroLede: "تغطية احترافية لنصوص الأفلام القصيرة والطويلة بالعربية، وفق معايير غرف القراءة العالمية.",
+      heroSub: "مع ملاحظات عملية وخطة تطوير واضحة وفرصة وصول للنصوص المتميزة إلى صناع القرار",
       btnViewCoverage: "عرض التغطيات", btnGuide: "كيف بدأت الحكاية",
       heroNdaHtml: "نصك محمي هنا في Scene One، لكننا نشجعك على حماية نصك بزيارة <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"hero__nda-link\">SAIP</a>.",
       partnerBadge: "شريك معتمد",
@@ -367,7 +368,8 @@
       overlayContact: "Contact", overlaySocial: "Follow Us",
 
       heroTitle: "From script… to opportunity.",
-      heroSub: "Industry-ready scripts start here. We identify promising scripts, develop them to professional standards, and open real pathways into the film industry.",
+      heroLede: "Industry-ready scripts start here.",
+      heroSub: "We identify promising scripts, develop them to professional standards, and open real pathways into the film industry.",
       btnViewCoverage: "View Coverages", btnGuide: "How the story began",
       heroNdaHtml: "Your script is protected here at Scene One, but we encourage you to protect it yourself by registering with <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"hero__nda-link\">SAIP</a>.",
       partnerBadge: "Accredited partner",
