@@ -70,6 +70,8 @@
       commentPh: "What needs work in this point?",
       commentLblWrite: "Your note on this point", commentLblRead: "Review note",
       noteSaveFailed: "Couldn't save that note. Check your connection and try again.",
+      noteCount: function (n, max) { return n.toLocaleString("en") + " / " + max.toLocaleString("en"); },
+      noteTooLong: "This note is over the limit, so nothing is being saved. Shorten it — and don't close this page until you do, or the text will be lost.",
       // Lead readers deliver their own coverage themselves — it skips quality review.
       leadDeliver: "Send Coverage to Writer",
       leadDeliverConfirm: "Send this coverage to the writer now? As a lead reader your coverage isn't reviewed by anyone else, and this can't be undone.",
@@ -141,6 +143,8 @@
       commentPh: "ما الذي يحتاج إلى تعديل في هذه النقطة؟",
       commentLblWrite: "ملاحظتك على هذه النقطة", commentLblRead: "ملاحظة المراجعة",
       noteSaveFailed: "تعذّر حفظ الملاحظة. تحقق من الاتصال وحاول مرة أخرى.",
+      noteCount: function (n, max) { return n.toLocaleString("en") + " / " + max.toLocaleString("en"); },
+      noteTooLong: "هذه الملاحظة تجاوزت الحد المسموح، ولم يتم حفظ أي شيء. اختصرها — ولا تغلق الصفحة قبل ذلك حتى لا يضيع النص.",
       // Lead readers deliver their own coverage themselves — it skips quality review.
       leadDeliver: "إرسال التغطية إلى الكاتب",
       leadDeliverConfirm: "إرسال هذه التغطية إلى الكاتب الآن؟ بصفتك قارئًا رئيسيًا لا تخضع تغطيتك لمراجعة أحد، ولا يمكن التراجع عن هذا الإجراء.",
@@ -529,10 +533,26 @@
 
      Goes through /api/review-coverage for the same reason the attachment does:
      RLS forbids anyone but the assignee from writing the coverage row. */
+  // Mirrors MAX_COMMENT_LEN in /api/review-coverage. The server is the authority
+  // and now REFUSES an over-long note rather than truncating it; this copy exists
+  // only so the workspace can show the budget while typing and hold back a save
+  // that is certain to be rejected. Keep the two numbers in step.
+  var MAX_NOTE_LEN = 20000;
+
+  function noteOverLimit() {
+    return Object.keys(reviewComments).some(function (k) {
+      return (reviewComments[k] || "").trim().length > MAX_NOTE_LEN;
+    });
+  }
+
   var noteSaveT = null;
   function scheduleNoteSave() {
     if (!canReview) return;
     clearTimeout(noteSaveT);
+    // An over-long note would 413 on every keystroke's save. The inline warning
+    // under the textarea is the signal instead — it stays on screen, where a
+    // toast would flash past while the reviewer is still typing.
+    if (noteOverLimit()) return;
     noteSaveT = setTimeout(saveNotes, 500);
   }
 
@@ -723,7 +743,11 @@
       '<div class="eval-note__box" hidden>' +
         '<span class="eval-note__lbl"></span>' +
         "<textarea rows='2'></textarea>" +
-        '<button type="button" class="eval-note__del"></button>' +
+        '<div class="eval-note__foot">' +
+          '<button type="button" class="eval-note__del"></button>' +
+          '<span class="eval-note__count"></span>' +
+          '<p class="eval-note__warn" hidden></p>' +
+        '</div>' +
       "</div>";
     block.appendChild(wrap);
 
@@ -734,6 +758,8 @@
       lbl: wrap.querySelector(".eval-note__lbl"),
       ta: wrap.querySelector("textarea"),
       del: wrap.querySelector(".eval-note__del"),
+      count: wrap.querySelector(".eval-note__count"),
+      warn: wrap.querySelector(".eval-note__warn"),
       open: !!(reviewComments[name] || "").trim()
     };
     evalNoteEls[name] = els;
@@ -748,9 +774,27 @@
       var v = els.ta.value;
       if (v.trim()) reviewComments[name] = v; else delete reviewComments[name];
       autoGrow(els.ta);
+      updateNoteCount(els);
       scheduleNoteSave();
     });
     els.ta.value = reviewComments[name] || "";
+  }
+
+  // Shows the character budget, and says plainly when a note has stopped saving.
+  // Quiet below 90% of the cap, amber above it, red and explicit past it.
+  function updateNoteCount(els) {
+    if (!els.count) return;
+    var u = UI[UILANG];
+    var n = (els.ta.value || "").trim().length;
+    var over = n > MAX_NOTE_LEN;
+    els.count.textContent = u.noteCount(n, MAX_NOTE_LEN);
+    els.count.classList.toggle("is-near", !over && n > MAX_NOTE_LEN * 0.9);
+    els.count.classList.toggle("is-over", over);
+    els.warn.textContent = u.noteTooLong;
+    els.warn.hidden = !over;
+    // A reviewer over the cap must not be able to leave with the note unsaved
+    // without being told; only they can act on it, so keep it in front of them.
+    els.count.hidden = !!els.ta.readOnly;
   }
 
   // Single source of truth for what each note looks like right now. Re-run on
@@ -796,6 +840,7 @@
       els.add.disabled = false;
       els.del.disabled = false;
       if (open) autoGrow(els.ta);
+      updateNoteCount(els);
     });
   }
 

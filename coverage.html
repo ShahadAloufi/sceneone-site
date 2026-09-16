@@ -287,6 +287,20 @@
                   color:var(--label);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
   .eval-note__del[hidden]{display:none}
 
+  /* Live character budget for the note. Sits under the textarea, quiet until the
+     note is close to the cap, then loud — because the cap used to be enforced by
+     a silent truncation on the server and a reviewer lost half a note to it. */
+  .eval-note__foot > .eval-note__del{margin-top:0}
+  .eval-note__foot{display:flex;align-items:center;justify-content:space-between;
+                   gap:12px;margin-top:6px;flex-wrap:wrap}
+  .eval-note__count{font-size:12px;color:var(--label);font-variant-numeric:tabular-nums;
+                    unicode-bidi:plaintext}
+  .eval-note__count.is-near{color:#b4771f}
+  .eval-note__count.is-over{color:#cd2e07;font-weight:700}
+  .eval-note__warn{flex:1 1 100%;margin-top:4px;font-size:13px;line-height:1.5;
+                   color:#cd2e07;font-weight:600}
+  .eval-note__warn[hidden]{display:none}
+
   .stack > .field{margin-bottom:18px}
 
   /* ---------- report ---------- */

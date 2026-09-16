@@ -62,19 +62,39 @@ const MAX_COMMENT_KEY = 80;
 // 40 x 20,000 is still a bounded payload the jsonb column takes comfortably.
 const MAX_COMMENT_LEN = 20000;
 
+// Refuses rather than truncates. An over-long note used to be sliced silently,
+// so a reviewer could write for twenty minutes, see "saved", and lose half of it
+// with nothing to indicate anything had gone wrong — which is exactly what
+// happened once. A rejected save keeps the full text sitting in the textarea
+// where the reviewer can still act on it; a truncated save destroys it.
+function tooLong(message) {
+  const err = new Error(message);
+  err.code = "COMMENT_REJECTED";
+  return err;
+}
+
 function sanitizeComments(raw) {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
   const out = {};
-  let n = 0;
-  for (const key of Object.keys(raw)) {
-    if (n >= MAX_COMMENTS) break;
+  const keys = Object.keys(raw);
+  if (keys.length > MAX_COMMENTS) {
+    throw tooLong("عدد الملاحظات تجاوز الحد المسموح (" + MAX_COMMENTS + " ملاحظة).");
+  }
+  for (const key of keys) {
     if (typeof key !== "string" || !key || key.length > MAX_COMMENT_KEY) continue;
     const val = raw[key];
     if (typeof val !== "string") continue;
     const text = val.trim();
     if (!text) continue;
-    out[key] = text.slice(0, MAX_COMMENT_LEN);
-    n++;
+    if (text.length > MAX_COMMENT_LEN) {
+      throw tooLong(
+        "ملاحظتك على \"" + key + "\" تجاوزت الحد المسموح: " +
+        text.length.toLocaleString("en") + " حرفًا من أصل " +
+        MAX_COMMENT_LEN.toLocaleString("en") + ". " +
+        "لم يتم الحفظ — اختصر الملاحظة ولا تغلق الصفحة حتى لا يضيع النص."
+      );
+    }
+    out[key] = text;
   }
   return Object.keys(out).length ? out : null;
 }
@@ -238,13 +258,20 @@ module.exports = async (req, res) => {
   // part of the PATCH, so a note can never land on an in-progress coverage the
   // reader is still writing, nor on one already approved and delivered.
   if (action === "set_comments") {
+    let comments;
+    try {
+      comments = sanitizeComments(b.comments);
+    } catch (e) {
+      if (e.code === "COMMENT_REJECTED") return res.status(413).json({ message: e.message });
+      throw e;
+    }
     const patch = await fetch(
       url + "/rest/v1/coverages?submission_id=eq." + encodeURIComponent(subId) +
       "&status=eq.submitted",
       {
         method: "PATCH",
         headers: Object.assign({}, headers, { "Content-Type": "application/json", Prefer: "return=minimal" }),
-        body: JSON.stringify({ review_comments: sanitizeComments(b.comments) }),
+        body: JSON.stringify({ review_comments: comments }),
       }
     );
     if (!patch.ok) {
@@ -353,6 +380,13 @@ module.exports = async (req, res) => {
   if (action === "request_revision") {
     const note = (b.note || "").toString().trim();
     if (!note) return res.status(400).json({ message: "ملاحظة التعديل مطلوبة" });
+    let comments;
+    try {
+      comments = sanitizeComments(b.comments);
+    } catch (e) {
+      if (e.code === "COMMENT_REJECTED") return res.status(413).json({ message: e.message });
+      throw e;
+    }
     const patch = await fetch(
       url + "/rest/v1/coverages?submission_id=eq." + encodeURIComponent(subId),
       {
@@ -361,7 +395,7 @@ module.exports = async (req, res) => {
         body: JSON.stringify({
           status: "revision_requested",
           review_note: note,
-          review_comments: sanitizeComments(b.comments),
+          review_comments: comments,
         }),
       }
     );
