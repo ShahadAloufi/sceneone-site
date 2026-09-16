@@ -56,7 +56,11 @@ function escapeHtml(v) {
 // silently dropping the notes past the limit.
 const MAX_COMMENTS = 40;
 const MAX_COMMENT_KEY = 80;
-const MAX_COMMENT_LEN = 2000;
+// 20,000 chars ≈ 2,500 Arabic words, enough for a full scene-by-scene critique on
+// a single point. Was 2,000, which a lead reader hit and lost half a note to —
+// the slice below is silent, so the shortfall only showed up after the fact.
+// 40 x 20,000 is still a bounded payload the jsonb column takes comfortably.
+const MAX_COMMENT_LEN = 20000;
 
 function sanitizeComments(raw) {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
