@@ -47,26 +47,30 @@ function escapeHtml(v) {
 
 // Per-point review notes arrive as { "<evaluation point>": "<note>" }. This is
 // browser-supplied and lands in a jsonb column that is later rendered back into
-// the reader's workspace, so it is bounded here rather than trusted: keys and
-// values are capped, blanks are dropped, and anything that isn't a plain string
-// is ignored. Escaping is still the renderer's job — this only limits the size
-// and shape of what can be stored.
-// 8 evaluation points + 6 market subsections + synopsis + strengths + to-develop
-// + verdict = 18 today, so this leaves room for a schema to grow rather than
-// silently dropping the notes past the limit.
+// the reader's workspace, so it is bounded here rather than trusted: keys are
+// capped, blanks are dropped, and anything that isn't a plain string is ignored.
+// Escaping is still the renderer's job — this only limits the shape of what can
+// be stored.
+//
+// THERE IS NO PER-NOTE LENGTH LIMIT. A reviewer writes as much as the work needs.
+// A cap of 2,000 once truncated a lead reader's note silently and cost her half a
+// scene-by-scene critique; the lesson taken was not "pick a bigger number" but
+// "stop rationing the reviewer". jsonb holds up to 1GB, so the database is not
+// the constraint and never was.
+//
+// The one guard left is on the size of the whole payload, and it is not a policy
+// choice — Vercel refuses a request body over ~4.5MB before this function is even
+// invoked, with a platform error that names no note and speaks no Arabic. Failing
+// here instead, well under that ceiling, means a runaway paste gets a message the
+// reviewer can act on. At 1,000,000 characters (~2MB as UTF-8 Arabic, ~125,000
+// Arabic words across all notes combined) nothing a person types can reach it.
 const MAX_COMMENTS = 40;
 const MAX_COMMENT_KEY = 80;
-// 20,000 chars ≈ 2,500 Arabic words, enough for a full scene-by-scene critique on
-// a single point. Was 2,000, which a lead reader hit and lost half a note to —
-// the slice below is silent, so the shortfall only showed up after the fact.
-// 40 x 20,000 is still a bounded payload the jsonb column takes comfortably.
-const MAX_COMMENT_LEN = 20000;
+const MAX_TOTAL_LEN = 1000000;
 
-// Refuses rather than truncates. An over-long note used to be sliced silently,
-// so a reviewer could write for twenty minutes, see "saved", and lose half of it
-// with nothing to indicate anything had gone wrong — which is exactly what
-// happened once. A rejected save keeps the full text sitting in the textarea
-// where the reviewer can still act on it; a truncated save destroys it.
+// Refuses rather than truncates. A rejected save keeps the full text sitting in
+// the textarea where the reviewer can still act on it; a truncated save destroys
+// it silently, which is the failure this whole path was rewritten to prevent.
 function tooLong(message) {
   const err = new Error(message);
   err.code = "COMMENT_REJECTED";
@@ -80,18 +84,18 @@ function sanitizeComments(raw) {
   if (keys.length > MAX_COMMENTS) {
     throw tooLong("عدد الملاحظات تجاوز الحد المسموح (" + MAX_COMMENTS + " ملاحظة).");
   }
+  let total = 0;
   for (const key of keys) {
     if (typeof key !== "string" || !key || key.length > MAX_COMMENT_KEY) continue;
     const val = raw[key];
     if (typeof val !== "string") continue;
     const text = val.trim();
     if (!text) continue;
-    if (text.length > MAX_COMMENT_LEN) {
+    total += text.length;
+    if (total > MAX_TOTAL_LEN) {
       throw tooLong(
-        "ملاحظتك على \"" + key + "\" تجاوزت الحد المسموح: " +
-        text.length.toLocaleString("en") + " حرفًا من أصل " +
-        MAX_COMMENT_LEN.toLocaleString("en") + ". " +
-        "لم يتم الحفظ — اختصر الملاحظة ولا تغلق الصفحة حتى لا يضيع النص."
+        "مجموع الملاحظات تجاوز الحد التقني (" + MAX_TOTAL_LEN.toLocaleString("en") +
+        " حرف). لم يتم الحفظ — لا تغلق الصفحة حتى لا يضيع النص."
       );
     }
     out[key] = text;
