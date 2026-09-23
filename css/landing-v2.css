@@ -284,27 +284,24 @@
    intro's square photo only asked for 800. Out of flow, the row is sized by the
    copy and this min-height, and object-fit crops the picture to whatever that
    turns out to be — the same height behaviour as .lx-intro__media. */
-/* `contain`, so the whole photograph is shown rather than cropped to the band.
-   The trade-off is that a portrait picture cannot fill a landscape half, so the
-   backdrop is the section's own cream instead of a dark plate — the leftover
-   space reads as margin rather than as letterbox bars. */
-.lx-read__media { position: relative; min-block-size: var(--lx-media-h); background: var(--lx-cream); }
+.lx-read__media { position: relative; min-block-size: var(--lx-media-h); background: #1a1613; }
 .lx-read__media img {
   position: absolute;
   inset: 0;
   inline-size: 100%;
   block-size: 100%;
-  object-fit: contain;
-  /* Anchored to the page's outer edge rather than centred. `contain` leaves
-     ~70px spare in a landscape half, and centring it split that into two
-     gutters — one of which broke the full-bleed edge. Pushed outward, the
-     photograph still meets the edge of the page and the slack falls on the
-     inner side, where it reads as breathing room before the copy. The pair of
-     rules is the mirror: object-position takes no logical keywords. */
-  object-position: left center;
+  /* Fills the band, exactly as the intro photograph does, so the two render at
+     the same width and height at every viewport.
+
+     The band has a fixed height and a fluid width, so its shape changes as the
+     window does while the picture's does not — there is no fit that both fills
+     the cell and shows the whole frame. Filling wins here, and the crop is
+     anchored to the bottom so what it takes is wall and shadow at the top,
+     never the chair and the papers. */
+  object-fit: cover;
+  object-position: center bottom;
   display: block;
 }
-html[dir="ltr"] .lx-read__media img { object-position: right center; }
 .lx-read__copy {
   display: flex;
   flex-direction: column;
