@@ -369,7 +369,11 @@
 .lx-svc__t { margin: 0; font-family: var(--font-head); font-size: 21px; font-weight: 800; }
 .lx-svc__meta { margin: 8px 0 0; font-size: 13px; color: var(--lx-muted-2); }
 /* Price and its unit share a baseline; the unit must not inherit the display size. */
-.lx-svc__price { display: flex; align-items: center; gap: 10px; margin: 24px 0 0; font-size: clamp(30px, 4vw, 38px); }
+/* baseline, not center: centring the mark's box against the numerals' box
+   lines up two rectangles, not the two shapes inside them, and the mark read
+   as sitting low. On the baseline it sits on the digits' feet, the way a
+   currency glyph should. */
+.lx-svc__price { display: flex; align-items: baseline; gap: 10px; margin: 24px 0 0; font-size: clamp(30px, 4vw, 38px); }
 /* `isolate` is load-bearing. "100 - 400" is two Latin runs either side of a
    neutral hyphen; in an RTL paragraph the bidi algorithm reorders them and the
    price reads "400 - 100". Isolating the span fixes the order in Arabic and
@@ -388,8 +392,12 @@
    price beside it. */
 .lx-svc__riyal {
   display: inline-block;
-  inline-size: .62em;
-  block-size: .72em;
+  /* Box matches the artwork's own 37:41 proportions, so `contain` has nothing
+     to letterbox and the glyph fills the box exactly. An empty inline-block
+     takes its bottom edge as its baseline, which is what seats it on the
+     digits' baseline in the flex row above. */
+  inline-size: .63em;
+  block-size: .70em;
   background-color: var(--lx-muted);
   -webkit-mask: url('../assets/riyal.svg') no-repeat center / contain;
   mask: url('../assets/riyal.svg') no-repeat center / contain;
