@@ -436,7 +436,20 @@
 @media (min-width: 860px) { .lx-part__logo { justify-self: end; } }
 
 /* ---- 10. closing CTA over a photo -------------------------------------- */
-.lx-cta { position: relative; overflow: hidden; text-align: center; }
+.lx-cta {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  /* The design gives this band 620px at a 1440px page — a 43:100 ratio, which
+     is what the vw term keeps as the window changes. Section padding alone left
+     it at 423px, too shallow for the photograph to read as anything but a dark
+     strip. Centred rather than top-aligned, so the extra height falls evenly
+     above and below the copy. */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-block-size: clamp(440px, 43vw, 620px);
+}
 .lx-cta__bg { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; z-index: 0; }
 .lx-cta__shade { position: absolute; inset: 0; z-index: 1; background: rgba(0,0,0,.72); }
 .lx-cta__in { position: relative; z-index: 2; }
