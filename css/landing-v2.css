@@ -133,32 +133,13 @@
 @media (max-width: 767px) { .nav__cta { display: none; } }
 
 /* ---- hero: text only --------------------------------------------------- */
-/* The eyebrow and the bottom strip are new elements; the title, sub, buttons
-   and video all keep their styles from styles.css untouched. */
+/* The bottom strip is the only new element here; the title, sub, buttons and
+   video all keep their styles from styles.css untouched. */
 /* styles.css deliberately gives .hero__content no bottom padding, because the
    old partner badge + quote rule below it spent that space. Both are gone and
    the trust strip is absolutely positioned, so the content needs to clear it
    itself or the CTAs sit behind the strip (measured: 55px of overlap). */
 .hero__content { padding-block-end: 104px; }
-
-.hero__eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0 0 18px;
-  font-family: var(--font-head);
-  font-size: 13px;
-  font-weight: 700;
-  color: rgba(255,255,255,.72);
-}
-.hero__eyebrow::before {
-  content: "";
-  inline-size: 7px;
-  block-size: 7px;
-  border-radius: 50%;
-  background: var(--lx-red);
-  flex: 0 0 auto;
-}
 
 /* The trust strip pinned to the foot of the hero: accreditation on one side,
    the SAIP note on the other. Replaces the old stacked badge + NDA line. */
@@ -304,9 +285,31 @@
 .lx-svc__t { margin: 0; font-family: var(--font-head); font-size: 21px; font-weight: 800; }
 .lx-svc__meta { margin: 8px 0 0; font-size: 13px; color: var(--lx-muted-2); }
 /* Price and its unit share a baseline; the unit must not inherit the display size. */
-.lx-svc__price { display: flex; align-items: baseline; gap: 8px; margin: 24px 0 0; }
-.lx-svc__num { font-family: var(--font-head); font-size: clamp(30px, 4vw, 38px); font-weight: 800; line-height: 1; }
-.lx-svc__unit { font-size: 14px; color: var(--lx-muted); }
+.lx-svc__price { display: flex; align-items: center; gap: 10px; margin: 24px 0 0; font-size: clamp(30px, 4vw, 38px); }
+/* `isolate` is load-bearing. "100 - 400" is two Latin runs either side of a
+   neutral hyphen; in an RTL paragraph the bidi algorithm reorders them and the
+   price reads "400 - 100". Isolating the span fixes the order in Arabic and
+   changes nothing in English. */
+.lx-svc__num {
+  font-family: var(--font-head);
+  font-size: clamp(30px, 4vw, 38px);
+  font-weight: 800;
+  line-height: 1;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+/* The riyal mark, not the word. The source SVG has its fill baked in, so it is
+   painted as a mask off currentColor instead of being loaded as an image —
+   the same technique the old pricing block used. Sized in em so it tracks the
+   price beside it. */
+.lx-svc__riyal {
+  display: inline-block;
+  inline-size: .62em;
+  block-size: .72em;
+  background-color: var(--lx-muted);
+  -webkit-mask: url('../assets/riyal.svg') no-repeat center / contain;
+  mask: url('../assets/riyal.svg') no-repeat center / contain;
+}
 .lx-svc__b { margin: 20px 0 0; font-size: 14px; line-height: 1.9; color: var(--lx-muted); }
 /* Pushes the rule + duration + button to the card's foot, so three cards with
    unequal copy still line their buttons up. */
@@ -379,7 +382,9 @@
 .lx-part { display: grid; gap: 40px; align-items: center; }
 @media (min-width: 860px) { .lx-part { grid-template-columns: 1fr 1fr; } }
 .lx-part__logo { inline-size: 100%; max-inline-size: 300px; block-size: auto; display: block; }
-@media (min-width: 860px) { .lx-part__logo { justify-self: start; } }
+/* `end`, not `start`: in RTL that is the page's left edge, which is where the
+   design puts the mark — and it mirrors to the right in English on its own. */
+@media (min-width: 860px) { .lx-part__logo { justify-self: end; } }
 
 /* ---- 10. closing CTA over a photo -------------------------------------- */
 .lx-cta { position: relative; overflow: hidden; text-align: center; }
@@ -435,3 +440,54 @@
 .lx-foot__soc { display: flex; gap: 20px; }
 .lx-foot__soc a { font-size: 12.5px; color: rgba(255,255,255,.5); }
 .lx-foot__soc a:hover { color: #fff; }
+
+/* ---- 12. FAQ ------------------------------------------------------------
+   Kept by request though the design has none, and dropped in just before the
+   closing CTA. The markup is the previous page's, so js/main.js still drives
+   the accordion and the category filter with no changes. What it needed was a
+   palette: every rule in styles.css paints it for a dark page, and here it
+   sits between the cream partnerships band and the dark CTA.
+
+   Scoped under .landing so the original dark treatment survives untouched if
+   the FAQ is ever reused on another page. Loaded after styles.css, so equal
+   specificity resolves this way on source order. */
+.landing .faq { padding-block: var(--lx-y); padding-inline: var(--lx-x); background: var(--lx-cream); }
+.landing .faq__wrap { max-width: var(--lx-w); }
+.landing .faq__eyebrow {
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--lx-red);
+  margin-bottom: 14px;
+}
+.landing .faq__title {
+  font-family: var(--font-head);
+  font-size: clamp(28px, 4.4vw, 46px);
+  font-weight: 800;
+  line-height: 1.28;
+  letter-spacing: -.01em;
+  color: var(--lx-ink);
+  margin-bottom: 36px;
+}
+.landing .faq-cat {
+  background: transparent;
+  border: 1px solid var(--lx-line);
+  border-radius: 999px;          /* the pill shape the services tag uses */
+  padding: 10px 20px;
+  color: var(--lx-muted);
+}
+.landing .faq-cat:hover { color: var(--lx-ink); border-color: var(--lx-muted-2); }
+.landing .faq-cat.is-active { background: var(--lx-ink); border-color: var(--lx-ink); color: var(--lx-cream); }
+.landing .faq-cat:focus-visible { outline: 2px solid var(--lx-red); outline-offset: 2px; }
+.landing .faq-item { border-bottom: 1px solid var(--lx-line); }
+.landing .faq-item__q { font-size: 17px; color: var(--lx-ink); }
+.landing .faq-item__a { color: var(--lx-muted); }
+/* The +/- glyph is drawn from currentColor on the button, so recolouring the
+   button is enough — no need to touch the two pseudo-element bars. */
+.landing .faq-item__btn { color: var(--lx-ink); }
+/* The +/- box is a dark chip with white bars in styles.css. On cream it has to
+   invert: a hairline square with ink bars, matching the card borders. */
+.landing .faq-item__sign { border-color: var(--lx-line); background: transparent; border-radius: 999px; }
+.landing .faq-item__sign::before,
+.landing .faq-item__sign::after { background: var(--lx-ink); }
+.landing .faq-item__btn:hover .faq-item__sign { border-color: var(--lx-ink); }

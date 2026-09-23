@@ -111,7 +111,6 @@
     </video>
     <div class="hero__shade"></div>
     <div class="hero__content">
-      <p class="hero__eyebrow" data-i18n="heroEyebrow">دار اكتشاف وتطوير سينمائي</p>
       <h1 class="hero__title" data-i18n="heroTitle">نكتشف الأصوات التي تستحق أن تصل إلى الشاشة</h1>
       <p class="hero__sub" data-i18n="heroSub">سين ون دار سعودية لاكتشاف المواهب السينمائية الناشئة وتطوير مشاريعها.</p>
       <div class="btn-row">
@@ -228,7 +227,7 @@
         <div class="lx-svc__card">
           <h3 class="lx-svc__t" data-i18n="svc1T">تغطية النصوص القصيرة</h3>
           <p class="lx-svc__meta" data-i18n="svc1Meta">من ١٠ إلى ٤٠ صفحة</p>
-          <p class="lx-svc__price"><span class="lx-svc__num" data-i18n="svc1Num">١٠٠ إلى ٤٠٠</span><span class="lx-svc__unit" data-i18n="riyal">ريال</span></p>
+          <p class="lx-svc__price"><span class="lx-svc__num" data-i18n="svc1Num">100 - 400</span><span class="lx-svc__riyal" role="img" aria-label="ريال سعودي"></span></p>
           <p class="lx-svc__b" data-i18n="svc1B">تقرير تغطية احترافي يحدد موقع نصك بدقة، بملاحظات عملية قابلة للتطبيق.</p>
           <div class="lx-svc__foot">
             <p class="lx-svc__dur" data-i18n="svc1Dur">١٠ إلى ١٥ يوم عمل</p>
@@ -238,7 +237,7 @@
         <div class="lx-svc__card">
           <h3 class="lx-svc__t" data-i18n="svc2T">تغطية النصوص الطويلة</h3>
           <p class="lx-svc__meta" data-i18n="svc2Meta">من ٨٠ إلى ١٢٠ صفحة</p>
-          <p class="lx-svc__price"><span class="lx-svc__num" data-i18n="svc2Num">٨٠٠ إلى ١٢٠٠</span><span class="lx-svc__unit" data-i18n="riyal">ريال</span></p>
+          <p class="lx-svc__price"><span class="lx-svc__num" data-i18n="svc2Num">800 - 1,200</span><span class="lx-svc__riyal" role="img" aria-label="ريال سعودي"></span></p>
           <p class="lx-svc__b" data-i18n="svc2B">تقرير تغطية احترافي لفيلم طويل، مع إمكانية ترشيح النصوص المتميزة إلى جهات في الصناعة.</p>
           <div class="lx-svc__foot">
             <p class="lx-svc__dur" data-i18n="svc2Dur">حتى ٤ أسابيع</p>
@@ -248,7 +247,7 @@
         <div class="lx-svc__card">
           <h3 class="lx-svc__t" data-i18n="svc3T">تغطية المعالجة</h3>
           <p class="lx-svc__meta" data-i18n="svc3Meta">قبل أن يصبح سيناريو</p>
-          <p class="lx-svc__price"><span class="lx-svc__num" data-i18n="svc3Num">١٥٠</span><span class="lx-svc__unit" data-i18n="riyal">ريال</span></p>
+          <p class="lx-svc__price"><span class="lx-svc__num" data-i18n="svc3Num">150</span><span class="lx-svc__riyal" role="img" aria-label="ريال سعودي"></span></p>
           <p class="lx-svc__b" data-i18n="svc3B">تقييم مبكر للمعالجة يحدد مدى جاهزيتها للتحول إلى سيناريو مكتمل.</p>
           <div class="lx-svc__foot">
             <p class="lx-svc__dur" data-i18n="svc3Dur">٧ إلى ١٢ يومًا</p>
@@ -366,6 +365,74 @@
       <a href="https://www.cinemaassoc.com" target="_blank" rel="noopener noreferrer">
         <img class="lx-part__logo" src="assets/partner-cinema-association-dark.png" alt="جمعية السينما — Cinema Association" loading="lazy" decoding="async" width="420" height="245">
       </a>
+    </div>
+  </section>
+
+  <!-- ── FAQ ──
+       Not in the new design, kept by request and placed before the closing CTA.
+       The markup is the previous page's verbatim, so js/main.js drives the
+       accordion and the category filter unchanged; only the palette is restated
+       in css/landing-v2.css, because the original was written for a dark page
+       and this one sits between two cream sections. -->
+  <section class="faq" id="faq">
+    <div class="faq__wrap">
+      <p class="faq__eyebrow" data-i18n="faqEyebrow">لديك أسئلة؟</p>
+      <h2 class="faq__title" data-i18n="faqTitle">الأسئلة الشائعة</h2>
+
+      <!-- Category filter. The pills are a filter, not tabs: each one narrows the
+           list below rather than swapping panels, so they are plain buttons with
+           aria-pressed and the list keeps its own semantics. -->
+      <div class="faq-cats" id="faqCats">
+        <button type="button" class="faq-cat is-active" data-faq-filter="general" aria-pressed="true" data-i18n="faqCatGeneral">أسئلة عامة</button>
+        <button type="button" class="faq-cat" data-faq-filter="services" aria-pressed="false" data-i18n="faqCatServices">عن الخدمات</button>
+        <button type="button" class="faq-cat" data-faq-filter="pricing" aria-pressed="false" data-i18n="faqCatPricing">عن الأسعار</button>
+        <button type="button" class="faq-cat" data-faq-filter="process" aria-pressed="false" data-i18n="faqCatProcess">عن آلية العمل</button>
+      </div>
+
+      <div class="faq__list" id="faqList">
+        <div class="faq-item" data-faq-cat="general">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ1">ما هي تغطية النصوص السينمائية؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA1">تغطية النصوص السينمائية (Script Coverage) هي تحليل مفصّل يقدّمه قارئ/ناقد مختص لعمل الكاتب. نشأت هذه الخدمة في الاستوديوهات حيث كان يُوظَّف قرّاء لقراءة عدد كبير من السيناريوهات نيابةً عن المنتجين. لكن خدمتنا في التغطية النقدية تختلف عن ذلك؛ فهدفنا الأساسي هو مساعدة الكتّاب على تطوير نصوصهم والوصول بها إلى مرحلة تجعلها جاهزة للإرسال إلى شركاء الصناعة، مع تقييم صريح لما ينجح وما لا ينجح وأسباب واضحة لكل رأي.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="services">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ2">ما هي خدمات التغطية التي نقدمها؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA2">نقدّم حاليًا نوعين من الملاحظات النقدية: تغطية النصوص السينمائية، حيث يدوّن الناقد ملاحظات بنّاءة تشمل الفكرة والموضوع (Premise & Theme)، عنصر الجذب (Hook)، المخاطر وتطور الحبكة (Stakes & Plot)، الشخصيات، الحوار (Dialogue)، البنية والإيقاع (Structure & Pace)، قابلية الإنتاج (Producibility)، والعرض العام، مع خاتمة تلخّص أبرز نقاط القوة والجوانب التي تحتاج إلى تحسين. وتغطية المعالجات (Treatments)، حيث يدوّن الناقد ملاحظات تمتد إلى صفحتين تشمل المحتوى، والـ logline، وبنية القصة، وأدوار الشخصيات، واقتراحات لتحسين عرضك التقديمي (Pitch).</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="general">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ3">لماذا أحتاج إلى خدمة التغطية (Coverage)؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA3">من الصعب النظر إلى عملك بموضوعية تامة عندما تكون أنت المؤلف، لذلك توفّر خدمة التغطية نظرة موضوعية من شخص يفهم متطلبات الصناعة. وعند إرسال نصّك إلى استوديو أو وكيل أو منتج، فلن تتمكّن من الاطلاع على ملاحظات القارئ، مما يعني أنك لن تحصل على فرصة لمعالجة نقاط الضعف — أما من خلال هذه الخدمة فستحصل على هذه الفرصة.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="general">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ4">من هم Scene One؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA4">تأسست Scene One بهدف مساعدة كتّاب السيناريو الصاعدين على دخول صناعة الأفلام.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="pricing">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ5">كيف تُحتسب أسعار التغطية؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA5">تختلف التغطية القصيرة عن الطويلة: النص القصير (من 10 إلى 40 صفحة) يُحتسب بالصفحة، والنص الطويل (من 80 إلى 120 صفحة) ضمن نطاق سعري حسب حجمه. الأسعار المعروضة في قسم الباقات هي أسعار الإطلاق، ويمكنك إعادة تقديم نسخة مطوّرة من العمل نفسه (Draft 2) مجانًا بعد استلام التقييم الأولي.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="process">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ6">كم تستغرق التغطية، وماذا يحدث بعد التسليم؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA6">مدة التسليم عادةً من 10 إلى 15 يومًا، وتبدأ من لحظة إسناد نصك إلى أحد القرّاء، وتصلك رسالة عبر البريد عند الإسناد. بعد التسليم تستكمل رحلة النص خطواتها: النصوص الأعلى تقييمًا تُرشَّح للاستضافة بموافقة الكاتب الكتابية، ثم تُشارك مع جهات الصناعة والشركاء.</p></div></div>
+        </div>
+      </div>
     </div>
   </section>
 

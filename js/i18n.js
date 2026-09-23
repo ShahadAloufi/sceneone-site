@@ -74,11 +74,11 @@
 
       svcEyebrow: "الخدمات", svcH: "من أين تبدأ", svcPill: "أسعار إطلاق مؤقتة",
       svcBtn: "حجز التقييم",
-      svc1T: "تغطية النصوص القصيرة", svc1Meta: "من ١٠ إلى ٤٠ صفحة", svc1Num: "١٠٠ إلى ٤٠٠",
+      svc1T: "تغطية النصوص القصيرة", svc1Meta: "من ١٠ إلى ٤٠ صفحة", svc1Num: "100 - 400",
       svc1B: "تقرير تغطية احترافي يحدد موقع نصك بدقة، بملاحظات عملية قابلة للتطبيق.", svc1Dur: "١٠ إلى ١٥ يوم عمل",
-      svc2T: "تغطية النصوص الطويلة", svc2Meta: "من ٨٠ إلى ١٢٠ صفحة", svc2Num: "٨٠٠ إلى ١٢٠٠",
+      svc2T: "تغطية النصوص الطويلة", svc2Meta: "من ٨٠ إلى ١٢٠ صفحة", svc2Num: "800 - 1,200",
       svc2B: "تقرير تغطية احترافي لفيلم طويل، مع إمكانية ترشيح النصوص المتميزة إلى جهات في الصناعة.", svc2Dur: "حتى ٤ أسابيع",
-      svc3T: "تغطية المعالجة", svc3Meta: "قبل أن يصبح سيناريو", svc3Num: "١٥٠",
+      svc3T: "تغطية المعالجة", svc3Meta: "قبل أن يصبح سيناريو", svc3Num: "150",
       svc3B: "تقييم مبكر للمعالجة يحدد مدى جاهزيتها للتحول إلى سيناريو مكتمل.", svc3Dur: "٧ إلى ١٢ يومًا",
       svcNote: "يمكنك إعادة تقديم نسخة مطوّرة من العمل نفسه (Draft 2) مجانًا بعد استلام التقييم الأول.",
 
@@ -480,9 +480,9 @@
 
       svcEyebrow: "Services", svcH: "Where to begin", svcPill: "Introductory pricing",
       svcBtn: "Book an evaluation",
-      svc1T: "Short script coverage", svc1Meta: "10 to 40 pages", svc1Num: "100 to 400",
+      svc1T: "Short script coverage", svc1Meta: "10 to 40 pages", svc1Num: "100 - 400",
       svc1B: "A professional coverage report that places your script precisely, with practical notes you can act on.", svc1Dur: "10 to 15 working days",
-      svc2T: "Feature script coverage", svc2Meta: "80 to 120 pages", svc2Num: "800 to 1,200",
+      svc2T: "Feature script coverage", svc2Meta: "80 to 120 pages", svc2Num: "800 - 1,200",
       svc2B: "A professional coverage report for a feature, with the option to nominate standout scripts to industry parties.", svc2Dur: "Up to 4 weeks",
       svc3T: "Treatment coverage", svc3Meta: "Before it becomes a screenplay", svc3Num: "150",
       svc3B: "An early read on the treatment, judging how ready it is to become a full screenplay.", svc3Dur: "7 to 12 days",
