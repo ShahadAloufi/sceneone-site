@@ -33,7 +33,7 @@
       overlayContact: "تواصل", overlaySocial: "حساباتنا",
 
       heroTitle: "نكتشف الأصوات التي تستحق أن تصل إلى الشاشة",
-      heroSub: "سين ون دار سعودية لاكتشاف المواهب السينمائية الناشئة وتطوير مشاريعها.",
+      heroSub: "في سين ون، نبحث عن كتّاب وصنّاع أفلام موهوبين ومشاريع تستحق أن تُرى، ونساعدهم على تطوير أعمالهم، وصقل رؤيتهم، والوصول إلى الفرص المناسبة في صناعة السينما<br>من النص إلى الفيلم، ومن الموهبة إلى الشاشة.",
       btnViewCoverage: "عرض التغطيات", btnGuide: "كيف بدأت الحكاية",
       heroNdaHtml: "نصك محمي هنا، ونشجعك على تسجيله لدى <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\">SAIP</a>.",
       partnerBadge: "شريك معتمد لدى جمعية السينما",
@@ -439,7 +439,7 @@
       overlayContact: "Contact", overlaySocial: "Follow Us",
 
       heroTitle: "We find the voices that deserve to reach the screen",
-      heroSub: "Scene One is a Saudi house for discovering emerging film talent and developing their projects.",
+      heroSub: "At Scene One we look for gifted writers and filmmakers, and for projects that deserve to be seen — then we help them develop the work, sharpen the vision, and reach the right opportunities in the film industry.<br>From script to film, from talent to screen.",
       btnViewCoverage: "View Coverages", btnGuide: "How the story began",
       heroNdaHtml: "Your script is protected here, and we encourage you to register it with <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\">SAIP</a>.",
       partnerBadge: "Accredited partner",
