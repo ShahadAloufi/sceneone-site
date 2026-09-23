@@ -18,13 +18,13 @@
   // each page just names its own key (see T.ar/T.en "docTitle*" entries).
   // Falls back to the landing page's title if a page doesn't opt in.
   var TITLES = {
-    ar: "Scene One | حيث تبدأ رحلة النص",
-    en: "Scene One | Where Your Script's Journey Begins"
+    ar: "Scene One | دار اكتشاف وتطوير سينمائي",
+    en: "Scene One | A Film Discovery & Development House"
   };
 
   var T = {
     ar: {
-      navHome: "الرئيسية", navAbout: "Scene One", navReaders: "من يقرأ نصك؟",
+      navHome: "الرئيسية", navAbout: "Scene One", navReaders: "من يقرأ نصك",
       navJourney: "رحلة النص", navGuide: "ما هي تغطية النصوص؟", navContact: "تواصل معنا",
       menuLabel: "القائمة", closeLabel: "إغلاق",
 
@@ -32,12 +32,82 @@
       overlayBlurb: "منصة متخصصة في تقييم النصوص السينمائية وتقديم ملاحظات احترافية تساعد الكتّاب على تطوير أعمالهم وصقلها قبل خطوتهم التالية.",
       overlayContact: "تواصل", overlaySocial: "حساباتنا",
 
-      heroTitle: "من سيناريو واعد… إلى فرصة حقيقية",
-      heroLede: "تغطية احترافية لنصوص الأفلام القصيرة والطويلة بالعربية، وفق معايير غرف القراءة العالمية.",
-      heroSub: "مع ملاحظات عملية وخطة تطوير واضحة وفرصة وصول للنصوص المتميزة إلى صناع القرار",
+      heroTitle: "نكتشف الأصوات التي تستحق أن تصل إلى الشاشة",
+      heroSub: "سين ون دار سعودية لاكتشاف المواهب السينمائية الناشئة وتطوير مشاريعها.",
       btnViewCoverage: "عرض التغطيات", btnGuide: "كيف بدأت الحكاية",
-      heroNdaHtml: "نصك محمي هنا في Scene One، لكننا نشجعك على حماية نصك بزيارة <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"hero__nda-link\">SAIP</a>.",
-      partnerBadge: "شريك معتمد",
+      heroNdaHtml: "نصك محمي هنا، ونشجعك على تسجيله لدى <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\">SAIP</a>.",
+      partnerBadge: "شريك معتمد لدى جمعية السينما",
+
+      /* ---- landing v2 ------------------------------------------------- */
+      navAboutUs: "من نحن", navCoverage: "تغطية النصوص",
+      btnSubmit: "قدّم نصك", brand: "سين ون", riyal: "ريال",
+
+      heroEyebrow: "دار اكتشاف وتطوير سينمائي",
+      heroPartner: "شريك معتمد لدى جمعية السينما السعودية",
+
+      introEyebrow: "البداية",
+      introH: "هناك كتّاب موهوبون،<br>وقصص تستحق أن تُروى",
+      introP: "توجد أفكار ونصوص واعدة، لكن بعض الكتّاب لا يجدون من يقرأ أعمالهم بجدية، أو يساعدهم على تطويرها، أو يوضح لهم الخطوة التالية.",
+      introKicker: "من هنا بدأت سين ون",
+      introLink: "اقرأ الحكاية كاملة",
+      introImgAlt: "آلة عرض سينمائي تدور في قاعة",
+
+      doEyebrow: "ما نفعله", doH: "نكتشف. نطوّر. نربط.",
+      do1T: "نكتشف", do1B: "نبحث عن الأصوات والقصص قبل أن تلتفت إليها الصناعة.",
+      do2T: "نطوّر", do2B: "نقرأ المشروع كفيلم لا كنص، ونعمل مع الكاتب على أقوى نسخة منه.",
+      do3T: "نربط", do3B: "نأخذ المشاريع القوية إلى الجهات التي تستطيع أن تصنعها.",
+
+      lookEyebrow: "قبل أن تُرسل نصك", lookH: "ما الذي نبحث عنه",
+      look1: "أصوات جديدة لها بصمة خاصة",
+      look2: "قصص تستحق أن تُرى على الشاشة الآن",
+      look3: "أنواع وزوايا وطرق سرد غير مألوفة",
+      look4: "مشاريع بفكرة قوية ما زالت تحتاج تطويرًا",
+      look5: "صنّاع أفلام لديهم ما يريدون قوله، ويريدون بناء هوية سينمائية حوله",
+
+      readEyebrow: "القراءة", readH: "كل شيء يبدأ من النص",
+      readP: "نقرأ النص لنفهم ما يميّزه وما يحتاج إلى تطوير، ثم نحدد معه الخطوة التالية، سواء كانت إعادة كتابة، أو تطويرًا أعمق للمشروع، أو الوصول إلى فرصة مناسبة في الصناعة.",
+      readLbl: "وتبدأ القراءة بتقرير مفصّل يكتبه قارئ متخصص عبر ثمانية محاور:",
+      readLink: "اطّلع على نموذج تقرير",
+      readImgAlt: "كرسي إخراج في ضوء بعد الظهيرة",
+      axis1: "الفكرة والموضوع", axis2: "عنصر الجذب", axis3: "الرهانات والحبكة", axis4: "الشخصيات",
+      axis5: "الحوار", axis6: "البناء والإيقاع", axis7: "قابلية الإنتاج", axis8: "العرض والتنسيق",
+
+      svcEyebrow: "الخدمات", svcH: "من أين تبدأ", svcPill: "أسعار إطلاق مؤقتة",
+      svcBtn: "حجز التقييم",
+      svc1T: "تغطية النصوص القصيرة", svc1Meta: "من ١٠ إلى ٤٠ صفحة", svc1Num: "١٠٠ إلى ٤٠٠",
+      svc1B: "تقرير تغطية احترافي يحدد موقع نصك بدقة، بملاحظات عملية قابلة للتطبيق.", svc1Dur: "١٠ إلى ١٥ يوم عمل",
+      svc2T: "تغطية النصوص الطويلة", svc2Meta: "من ٨٠ إلى ١٢٠ صفحة", svc2Num: "٨٠٠ إلى ١٢٠٠",
+      svc2B: "تقرير تغطية احترافي لفيلم طويل، مع إمكانية ترشيح النصوص المتميزة إلى جهات في الصناعة.", svc2Dur: "حتى ٤ أسابيع",
+      svc3T: "تغطية المعالجة", svc3Meta: "قبل أن يصبح سيناريو", svc3Num: "١٥٠",
+      svc3B: "تقييم مبكر للمعالجة يحدد مدى جاهزيتها للتحول إلى سيناريو مكتمل.", svc3Dur: "٧ إلى ١٢ يومًا",
+      svcNote: "يمكنك إعادة تقديم نسخة مطوّرة من العمل نفسه (Draft 2) مجانًا بعد استلام التقييم الأول.",
+
+      jnEyebrow: "الرحلة", jnH: "من النص إلى المشروع",
+      jnSub: "ست خطوات يمرّ بها كل مشروع عندنا، من لحظة وصوله حتى طاولة المنتج.",
+      jn1N: "٠١", jn1T: "تقديم النص", jn1B: "يرفع الكاتب نصه ومعلومات مشروعه الأساسية.",
+      jn2N: "٠٢", jn2T: "القراءة والتقييم", jn2B: "يقرأ النصّ قارئ متخصص ويعدّ تقييمًا احترافيًا لعناصره.",
+      jn3N: "٠٣", jn3T: "استلام النتائج", jn3B: "يتسلّم الكاتب تقريره ويبدأ تطوير نصه بناءً عليه.",
+      jn4N: "٠٤", jn4T: "الترشيح للاستضافة", jn4B: "تُرشَّح النصوص الأعلى تقييمًا بموافقة الكاتب الكتابية.",
+      jn5N: "٠٥", jn5T: "الاستضافة والمشاركة", jn5B: "يُضاف المشروع إلى مكتبة خاصة ويُشارك مع جهات الصناعة.",
+      jn6N: "٠٦", jn6T: "التطوير والإنتاج", jn6B: "فرص فعلية لتطوير المشروع أو نقله إلى مراحل إنتاجية.",
+
+      wrEyebrow: "للكتّاب", wrH: "أنت لا تحتاج فقط<br>إلى من يقرأ نصك",
+      wrP1: "تحتاج إلى من يفهم لماذا تريد أن تصنع هذا الفيلم.",
+      wrP2: "نحن لا نخبرك بما يجب أن يكون عليه فيلمك، بل نساعدك على الوصول إلى أقوى نسخة مما تحاول قوله أنت.",
+      indEyebrow: "للصناعة", indH: "لا نرسل إليك نصًّا،<br>بل مشروعًا",
+      indP1: "حين يصلك مشروع منّا، يكون قد قُرئ وفُهم، وعُرف ما يحتاجه وما يميّزه.",
+      indP2: "نختصر عليك وقت التقييم الأول: قصة أوضح، واتجاه إبداعي أقوى، وفهم مكتوب لما هو هذا الفيلم ولمن.",
+
+      teamEyebrow: "الفريق", teamH: "من يقرأ نصك",
+      teamSub: "قرّاء من صنّاع الأفلام وكتّاب السيناريو، ومنتج تطوير إبداعي يتولّى المشاريع بعد التوصية.",
+
+      partEyebrow: "شراكاتنا", partH: "نتعاون مع جهات في قطاع السينما",
+      partSub: "يحصل أعضاء جمعية السينما السعودية على مزايا خاصة في خدمات تغطية النصوص.",
+
+      footBlurb: "دار سعودية لاكتشاف المواهب السينمائية الناشئة وتطوير مشاريعها.",
+      footCoverage: "تغطية النصوص", footReaders: "من يقرأ نصك", footStory: "حكاية سين ون",
+      footContact: "للتواصل",
+      footCr: "© ٢٠٢٦ جميع الحقوق محفوظة لـ سين ون · الرقم الموحد ٧٠٥٤٧٩١٢٩٣",
 
       introP1: "تهدف سين ون إلى سد الفجوة بين الكتابة والإنتاج، من خلال تقارير تغطية واضحة (موصى به / يستحق النظر / لا يُوصى به حاليًا) وملاحظات تفصيلية قابلة للتنفيذ، تغطي الفكرة، البنية، الشخصيات، الحوار، الإيقاع، وقابلية الإنتاج. كما تتيح الخدمة بعد الحصول على التقرير برنامج إستضافة النصوص وهي خدمة لترشيح النصوص ذات التقييمات العالية إلى جهات في الصناعة، ما يزيد فرص وصولها إلى صناع القرار",
       introImgAlt: "كاتب يدوّن ملاحظاته على مسودة نص",
@@ -171,7 +241,8 @@
       faqQ4: "من هم Scene One؟",
       faqA4: "تأسست Scene One بهدف مساعدة كتّاب السيناريو الصاعدين على دخول صناعة الأفلام.",
 
-      ctaH: "تواصل معنا", ctaSub: "للإستفسارات والأسئلة المتعلقة بالخدمة",
+      ctaH: "الجيل القادم من صنّاع الأفلام<br>لا ينبغي أن ينتظر حتى يكتشفه أحد",
+      ctaSub: "هل كتبت قصة تستحق أن تُرى؟ ابدأ من المشهد الأول.",
 
       footerCopyHtml: "© 2026 جميع الحقوق محفوظة لـSCENE ONE.<br><span class=\"footer__cr\">الرقم الموحد: 7054791293</span>",
       footerPrivacy: "سياسة الخصوصية", footerTerms: "الشروط والأحكام",
@@ -193,9 +264,9 @@
       haifaBio: "كاتبة سيناريو متخصصة في الدراما النفسية والاجتماعية. تضم أعمالها مشاريع حائزة على جوائز وعُرضت في مهرجانات ومنصات دولية، مع خبرة في تطوير أفلام ومسلسلات ترتكز على الشخصيات والعمق الإنساني.",
       widName: "ود القبلان", widRole: "قارئة رئيسية",
       widBio: "كاتبة سيناريو، منتجة تطوير، وقائدة عمل (showrunner) تهتم بالمحتوى المرئي ومدى تأثيره عاطفيًا على الجمهور. بشغفها بالأفلام وفن صناعة القصص، تقرأ ود النصوص بعينٍ تبحث عما ينجح في القصة، وما يمكن تطويره، وأين تكمن قوتها سرديًا، إيمانًا منها بدور القصة الجيدة في إثراء السينما السعودية.",
-      fajrName: "فجر الفرحان", fajrRole: "قارئة نصوص سينمائية",
+      fajrName: "فجر الفرحان", fajrRole: "قارئة نصوص",
       fajrBio: "متخصصة في السينما والفنون الأدائية، بخبرة في كتابة السيناريو والإنتاج الإبداعي والسرد البصري. تركّز في قراءاتها على بناء القصة، واللغة البصرية، والأثر العاطفي للنص.",
-      hasanName: "حسن زروق", hasanRole: "مسؤول تطوير إبداعي ومنتج تطوير",
+      hasanName: "حسن زروق", hasanRole: "قائد التطوير الإبداعي",
       hasanBio: "مخرج سينمائي بخبرة تتجاوز 15 عامًا في السينما والتلفزيون. مهتم بتطوير القصص والاستراتيجية والإنتاج، ويساعد الأفكار على التحول إلى مشاريع مؤثرة وموجهة للجمهور. حاصل على درجة الماجستير المتخصص في الكتابة والإنتاج السينمائي الدوليين من ميلانو، ويهتم بالتواصل والتعاون مع الكُتّاب والمخرجين والمنتجين والفرق الإبداعية التي تعمل على تطوير قصص طموحة موجهة إلى جماهير معاصرة. مستندًا إلى خبرة متنوعة عبر أفريقيا والشرق الأوسط وأوروبا.",
 
       // ---- about-coverage.html ----
@@ -367,12 +438,82 @@
       overlayBlurb: "A specialized platform for screenplay evaluation, offering professional feedback that helps writers develop and refine their work before their next step.",
       overlayContact: "Contact", overlaySocial: "Follow Us",
 
-      heroTitle: "From script… to opportunity.",
-      heroLede: "Industry-ready scripts start here.",
-      heroSub: "We identify promising scripts, develop them to professional standards, and open real pathways into the film industry.",
+      heroTitle: "We find the voices that deserve to reach the screen",
+      heroSub: "Scene One is a Saudi house for discovering emerging film talent and developing their projects.",
       btnViewCoverage: "View Coverages", btnGuide: "How the story began",
-      heroNdaHtml: "Your script is protected here at Scene One, but we encourage you to protect it yourself by registering with <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"hero__nda-link\">SAIP</a>.",
+      heroNdaHtml: "Your script is protected here, and we encourage you to register it with <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\">SAIP</a>.",
       partnerBadge: "Accredited partner",
+
+      /* ---- landing v2 ------------------------------------------------- */
+      navAboutUs: "About", navCoverage: "Coverage",
+      btnSubmit: "Submit your script", brand: "Scene One", riyal: "SAR",
+
+      heroEyebrow: "A film discovery and development house",
+      heroPartner: "Accredited partner of the Saudi Cinema Association",
+
+      introEyebrow: "The beginning",
+      introH: "There are gifted writers,<br>and stories that deserve telling",
+      introP: "Promising ideas and scripts are out there, but some writers never find anyone who will read their work seriously, help them develop it, or show them the next step.",
+      introKicker: "That is where Scene One began",
+      introLink: "Read the whole story",
+      introImgAlt: "A film projector running in a screening room",
+
+      doEyebrow: "What we do", doH: "We discover. We develop. We connect.",
+      do1T: "Discover", do1B: "We look for the voices and the stories before the industry turns to them.",
+      do2T: "Develop", do2B: "We read the project as a film rather than a document, and work with the writer towards its strongest version.",
+      do3T: "Connect", do3B: "We take strong projects to the people who can actually make them.",
+
+      lookEyebrow: "Before you send your script", lookH: "What we are looking for",
+      look1: "New voices with a signature of their own",
+      look2: "Stories that deserve the screen now",
+      look3: "Genres, angles and ways of telling that are not the usual ones",
+      look4: "Projects with a strong idea that still need development",
+      look5: "Filmmakers with something to say, who want to build a cinematic identity around it",
+
+      readEyebrow: "The read", readH: "Everything starts with the script",
+      readP: "We read the script to understand what sets it apart and what needs work, then settle the next step with you — a rewrite, deeper development of the project, or the right opportunity in the industry.",
+      readLbl: "The read begins with a detailed report, written by a specialist reader across eight axes:",
+      readLink: "See a sample report",
+      readImgAlt: "A director's chair in afternoon light",
+      axis1: "Concept & theme", axis2: "Hook", axis3: "Stakes & plot", axis4: "Characters",
+      axis5: "Dialogue", axis6: "Structure & pace", axis7: "Producibility", axis8: "Presentation & formatting",
+
+      svcEyebrow: "Services", svcH: "Where to begin", svcPill: "Introductory pricing",
+      svcBtn: "Book an evaluation",
+      svc1T: "Short script coverage", svc1Meta: "10 to 40 pages", svc1Num: "100 to 400",
+      svc1B: "A professional coverage report that places your script precisely, with practical notes you can act on.", svc1Dur: "10 to 15 working days",
+      svc2T: "Feature script coverage", svc2Meta: "80 to 120 pages", svc2Num: "800 to 1,200",
+      svc2B: "A professional coverage report for a feature, with the option to nominate standout scripts to industry parties.", svc2Dur: "Up to 4 weeks",
+      svc3T: "Treatment coverage", svc3Meta: "Before it becomes a screenplay", svc3Num: "150",
+      svc3B: "An early read on the treatment, judging how ready it is to become a full screenplay.", svc3Dur: "7 to 12 days",
+      svcNote: "You can resubmit a developed version of the same work (Draft 2) free of charge once you have your first evaluation.",
+
+      jnEyebrow: "The journey", jnH: "From script to project",
+      jnSub: "Six steps every project goes through with us, from the moment it arrives to the producer's table.",
+      jn1N: "01", jn1T: "Submission", jn1B: "The writer uploads the script and the essentials of the project.",
+      jn2N: "02", jn2T: "The read and the evaluation", jn2B: "A specialist reader reads the script and writes a professional evaluation of its elements.",
+      jn3N: "03", jn3T: "Receiving the results", jn3B: "The writer receives the report and begins developing the script from it.",
+      jn4N: "04", jn4T: "Nomination for hosting", jn4B: "The highest-rated scripts are nominated, with the writer's written consent.",
+      jn5N: "05", jn5T: "Hosting and sharing", jn5B: "The project joins a private library and is shared with industry parties.",
+      jn6N: "06", jn6T: "Development and production", jn6B: "Real opportunities to develop the project or move it into production.",
+
+      wrEyebrow: "For writers", wrH: "You don't just need<br>someone to read your script",
+      wrP1: "You need someone who understands why you want to make this film.",
+      wrP2: "We don't tell you what your film should be. We help you reach the strongest version of what you are already trying to say.",
+      indEyebrow: "For the industry", indH: "We don't send you a script,<br>we send you a project",
+      indP1: "By the time a project reaches you from us, it has been read and understood, and what it needs and what sets it apart are both known.",
+      indP2: "We save you the first evaluation: a clearer story, a stronger creative direction, and a written account of what this film is and who it is for.",
+
+      teamEyebrow: "The team", teamH: "Who reads your script",
+      teamSub: "Readers drawn from filmmakers and screenwriters, and a creative development producer who takes projects on after the recommendation.",
+
+      partEyebrow: "Partnerships", partH: "We work with organisations across the film sector",
+      partSub: "Members of the Saudi Cinema Association receive special benefits on script coverage services.",
+
+      footBlurb: "A Saudi house for discovering emerging film talent and developing their projects.",
+      footCoverage: "Coverage", footReaders: "Who reads your script", footStory: "The Scene One story",
+      footContact: "Contact",
+      footCr: "© 2026 All rights reserved to Scene One · Unified number 7054791293",
 
       introP1: "Scene One exists to close the gap between writing and production, through clear coverage reports (Recommend / Consider / Pass for now) and detailed, actionable notes covering concept, structure, character, dialogue, pace and producibility. Once the report is in hand, the service also opens the script hosting programme, which nominates the highest-rated scripts to industry parties and improves their chances of reaching decision-makers.",
       introImgAlt: "A writer marking up a script draft",
@@ -503,7 +644,8 @@
       faqQ4: "Who are Scene One?",
       faqA4: "Scene One was founded to help emerging screenwriters break into the film industry.",
 
-      ctaH: "Get in Touch", ctaSub: "For inquiries and questions about our services",
+      ctaH: "The next generation of filmmakers<br>should not have to wait to be discovered",
+      ctaSub: "Have you written a story that deserves to be seen? Start with the first scene.",
 
       footerCopyHtml: "© 2026 All rights reserved to SCENE ONE.<br><span class=\"footer__cr\">Unified National Number: 7054791293</span>",
       footerPrivacy: "Privacy Policy", footerTerms: "Terms & Conditions",
@@ -525,7 +667,7 @@
       widBio: "A screenwriter, development producer, and showrunner who cares deeply for visual storytelling and its emotional influence on audience. Driven by her passion for film and the craft behind every story, Wid reads screenplays with an eye for what works, what could work better, and where its potential lies, all with the aim of enriching Saudi cinema.",
       fajrName: "Fajr Alfarhan", fajrRole: "Script Reader",
       fajrBio: "Specialized in film and performing arts, with experience in screenwriting, creative production, and visual storytelling. Her analysis focuses on story structure, visual language, and the emotional impact of the script.",
-      hasanName: "Hasan Zarroug", hasanRole: "Creative Development Lead & Development Producer",
+      hasanName: "Hasan Zarroug", hasanRole: "Head of Creative Development",
       hasanBio: "A film director with over 15 years of experience across cinema and television. He is deeply engaged in story development, creative strategy, and production, helping ideas evolve into impactful and audience-driven projects. He holds a specialized Master’s degree in International Screenwriting and Film Production from Milan, and is passionate about collaborating with writers, directors, producers, and creative teams working on ambitious stories for contemporary audiences. Bringing in diverse experience across Africa, the Middle East, and Europe.",
 
       // ---- about-coverage.html ----
