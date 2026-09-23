@@ -257,9 +257,13 @@
 
 /* ---- 4. the read: photo, copy, the eight axes -------------------------- */
 .lx-read { display: grid; gap: 0; }
-/* The copy carries a heading, a paragraph, a label and an eight-cell grid, so
-   it needs appreciably more room than the photograph beside it. */
-@media (min-width: 900px) { .lx-read { grid-template-columns: 1.45fr 1fr; } }
+/* Two equal halves, and they split earlier than the other full-bleed sections:
+   from 600px the copy and the photograph each take exactly half the row. */
+/* minmax(0, 1fr), not a bare 1fr: a plain fr track floors at its content's
+   min-content width, and the axes grid inside the copy is wide enough to push
+   that past half the row (measured 518 / 182 instead of 350 / 350). Zeroing the
+   floor makes the halves genuinely equal and lets the axes reflow instead. */
+@media (min-width: 600px) { .lx-read { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
 .lx-read__media { min-block-size: 300px; background: #1a1613; }
 .lx-read__media img { inline-size: 100%; block-size: 100%; object-fit: cover; display: block; }
 .lx-read__copy {
@@ -272,24 +276,34 @@
   padding-block: clamp(48px, 5vw, 64px);
   padding-inline: var(--lx-x);
 }
-@media (min-width: 900px) {
+@media (min-width: 600px) {
   /* Copy first in the DOM, so in RTL it takes the near column and the photo
      bleeds off the far edge — the same arrangement as .lx-intro, and it
      mirrors on its own in LTR. Doing this with `order` instead looked right
-     in RTL and put the photo on the wrong side in English. */
+     in RTL and put the photo on the wrong side in English.
+
+     Matches the split breakpoint above: below 1400px viewport this resolves to
+     --lx-x anyway, so it only starts doing real work once the container is
+     capped. */
   .lx-read__copy { padding-inline-start: max(var(--lx-x), calc((100vw - var(--lx-w)) / 2)); }
 }
 .lx-read__p { margin: 22px 0 0; font-size: 15px; line-height: 1.95; color: var(--lx-muted); max-inline-size: 52ch; }
 .lx-read__lbl { margin: 40px 0 0; font-size: 13px; color: var(--lx-muted-2); }
+/* auto-fit, not a viewport breakpoint. The constraint is how wide THIS column
+   is, which is half the row — a `min-width: 620px` query counted the whole
+   window and put four columns in a 286px space, wrapping every label onto two
+   lines. The track minimum is set just above the longest label
+   ("الفكرة والموضوع"), and the max width caps it at the design's four across
+   so a wide window gets 4x2 rather than 5+3. */
 .lx-read__axes {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px 24px;
+  grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
+  gap: 14px 18px;
   margin: 20px 0 0;
   padding: 0;
+  max-inline-size: 560px;
   list-style: none;
 }
-@media (min-width: 620px) { .lx-read__axes { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .lx-read__axes li { font-size: 13.5px; font-weight: 500; color: var(--lx-ink); }
 
 /* ---- 5. services: three price cards ------------------------------------ */
