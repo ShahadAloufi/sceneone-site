@@ -245,14 +245,15 @@
   font-weight: 700;
   line-height: 1.5;
 }
-/* A rotated square, not a bullet glyph — the design's diamond. */
+/* A drawn dot rather than a bullet glyph, so its size and colour are ours and
+   it does not shift with the font. */
 .lx-look__item::before {
   content: "";
   flex: 0 0 auto;
   inline-size: 9px;
   block-size: 9px;
+  border-radius: 50%;
   background: var(--lx-red);
-  transform: rotate(45deg);
 }
 
 /* ---- 4. the read: photo, copy, the eight axes -------------------------- */
