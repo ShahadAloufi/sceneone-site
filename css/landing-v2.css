@@ -44,8 +44,15 @@
      styles.css and the nav and every section here move together. */
   --lx-x: var(--sec-x);
   --lx-w: var(--container);
+
+  /* Height of the two full-bleed photo bands (the intro and the read). One
+     token so they match: left to themselves each was sized by its own picture's
+     aspect ratio — the intro's square crop gave 800px at a 1600px window, the
+     read's portrait crop 1108 — and the two sections looked unrelated. */
+  --lx-media-h: 320px;
 }
 
+@media (min-width: 600px)  { .landing { --lx-media-h: 680px; } }
 @media (min-width: 768px)  { .landing { --lx-y: 88px;  } }
 @media (min-width: 1100px) { .landing { --lx-y: 110px; } }
 
@@ -215,9 +222,15 @@
 }
 .lx-intro__p { margin: 22px 0 0; font-size: 15px; line-height: 1.95; color: var(--lx-muted); max-inline-size: 46ch; }
 .lx-intro__kicker { margin: 22px 0 0; font-family: var(--font-head); font-size: 15px; font-weight: 700; color: var(--lx-ink); }
-.lx-intro__media { min-block-size: 320px; background: #1a1613; }
-.lx-intro__media img { inline-size: 100%; block-size: 100%; object-fit: cover; display: block; }
-@media (min-width: 900px) { .lx-intro__media { min-block-size: 560px; } }
+.lx-intro__media { position: relative; min-block-size: var(--lx-media-h); background: #1a1613; }
+.lx-intro__media img {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  display: block;
+}
 
 /* ---- 2. what we do: three columns under hairlines ---------------------- */
 .lx-do__grid {
@@ -265,8 +278,21 @@
    that past half the row (measured 518 / 182 instead of 350 / 350). Zeroing the
    floor makes the halves genuinely equal and lets the axes reflow instead. */
 @media (min-width: 600px) { .lx-read { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
-.lx-read__media { min-block-size: 300px; background: #1a1613; }
-.lx-read__media img { inline-size: 100%; block-size: 100%; object-fit: cover; display: block; }
+/* The photograph is absolutely positioned so it cannot set the row's height.
+   Left in flow it does: it is a portrait crop (520x720), so at an 800px column
+   it demanded 1108px and dragged the copy beside it down with it, while the
+   intro's square photo only asked for 800. Out of flow, the row is sized by the
+   copy and this min-height, and object-fit crops the picture to whatever that
+   turns out to be — the same height behaviour as .lx-intro__media. */
+.lx-read__media { position: relative; min-block-size: var(--lx-media-h); background: #1a1613; }
+.lx-read__media img {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  display: block;
+}
 .lx-read__copy {
   display: flex;
   flex-direction: column;
