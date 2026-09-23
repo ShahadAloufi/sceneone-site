@@ -35,12 +35,19 @@
   /* Rhythm. One knob for the gap between sections; every lx- section pays it
      on both edges, so the visible gap between any two is twice the token. */
   --lx-y: 64px;
-  --lx-x: 24px;
-  --lx-w: 1240px;   /* the design's content column at 1440 */
+
+  /* The horizontal container is NOT a number of its own: it aliases the two
+     tokens the fixed nav is built from, so the page body and the bar can never
+     drift apart. .nav pads itself by max(--sec-x, (100% - --container)/2); a
+     section padded by --lx-x with an inner box capped at --lx-w and centred
+     resolves to exactly the same content edges. Change --container in
+     styles.css and the nav and every section here move together. */
+  --lx-x: var(--sec-x);
+  --lx-w: var(--container);
 }
 
-@media (min-width: 768px)  { .landing { --lx-y: 88px;  --lx-x: 32px; } }
-@media (min-width: 1100px) { .landing { --lx-y: 110px; --lx-x: 40px; } }
+@media (min-width: 768px)  { .landing { --lx-y: 88px;  } }
+@media (min-width: 1100px) { .landing { --lx-y: 110px; } }
 
 /* ---- shared section scaffolding ---------------------------------------- */
 
@@ -139,7 +146,29 @@
    old partner badge + quote rule below it spent that space. Both are gone and
    the trust strip is absolutely positioned, so the content needs to clear it
    itself or the CTAs sit behind the strip (measured: 55px of overlap). */
-.hero__content { padding-block-end: 104px; }
+/* `.landing .hero .hero__content` and not the bare class: styles.css corrects
+   this box for English with `html[dir="ltr"] .hero__content`, which outranks a
+   single class and put the margin back to 40px (measured: 8px adrift in EN,
+   flush in AR). Three classes clears it in both directions. */
+.landing .hero .hero__content {
+  padding-block-end: 104px;
+
+  /* Put the hero copy on the same container as the nav and every section.
+     styles.css positions this box with PHYSICAL margins (margin-right in
+     Arabic, mirrored to margin-left in a separate html[dir="ltr"] rule) plus a
+     40px inline padding, which left its text edge 48px inside the container.
+     Clearing both and re-stating the offset as a logical margin does two
+     things: it lands the text exactly on the container edge, and it mirrors on
+     its own, so the dir="ltr" rule has nothing left to correct.
+
+     The gutter is a margin rather than padding on purpose — max-width is 768px
+     here, and padding would eat into that column, narrowing the headline as
+     the window grows. */
+  margin: 0;
+  margin-inline-start: max(var(--sec-x), calc((100vw - var(--container)) / 2));
+  margin-inline-end: auto;
+  padding-inline: 0;
+}
 
 /* The trust strip pinned to the foot of the hero: accreditation on one side,
    the SAIP note on the other. Replaces the old stacked badge + NDA line. */
