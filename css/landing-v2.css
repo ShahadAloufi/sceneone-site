@@ -430,10 +430,21 @@
 /* ---- 9. partnerships --------------------------------------------------- */
 .lx-part { display: grid; gap: 40px; align-items: center; }
 @media (min-width: 860px) { .lx-part { grid-template-columns: 1fr 1fr; } }
-.lx-part__logo { inline-size: 100%; max-inline-size: 300px; block-size: auto; display: block; }
-/* `end`, not `start`: in RTL that is the page's left edge, which is where the
-   design puts the mark — and it mirrors to the right in English on its own. */
-@media (min-width: 860px) { .lx-part__logo { justify-self: end; } }
+/* Pushed to the far side by an auto margin, not by justify-self: the grid item
+   here is the <a> wrapping this image, so justify-self on the image itself was
+   inert — and it was scoped to the two-column layout besides, which left the
+   mark flush RIGHT once the grid stacked below 860px.
+
+   margin-inline-start:auto puts it at the page's left edge in Arabic and its
+   right edge in English, in both the two-column and the stacked layout. */
+.lx-part__logo {
+  display: block;
+  inline-size: 100%;
+  max-inline-size: 300px;
+  block-size: auto;
+  margin-inline-start: auto;
+  margin-inline-end: 0;
+}
 
 /* ---- 10. closing CTA over a photo -------------------------------------- */
 .lx-cta {
