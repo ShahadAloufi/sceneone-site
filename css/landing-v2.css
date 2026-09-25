@@ -117,7 +117,9 @@
    single class and put the margin back to 40px (measured: 8px adrift in EN,
    flush in AR). Three classes clears it in both directions. */
 .landing .hero .hero__content {
-  padding-block-end: 104px;
+  /* Clears the trust strip. Below 960 the badge sits under this in the flow and
+     carries its own bottom margin, so the column only needs a small gap. */
+  padding-block-end: 28px;
 
   /* Put the hero copy on the same container as the nav and every section.
      styles.css positions this box with PHYSICAL margins (margin-right in
@@ -135,13 +137,44 @@
   margin-inline-end: auto;
   padding-inline: 0;
 }
+@media (min-width: 960px) { .landing .hero .hero__content { padding-block-end: 104px; } }
 
-/* styles.css gives .partner a 96px top margin, tuned for the old layout where
-   it sat above the quote rule with nothing between. Under the CTAs it only
-   needs to clear them, and the hero is 100vh — the old figure pushed the badge
-   into the strip on shorter windows. */
-.landing .hero .partner { margin-top: 44px; }
-@media (max-width: 640px) { .landing .hero .partner { margin-top: 32px; } }
+/* The accreditation badge. It is a direct child of .hero, not of
+   .hero__content, and that placement is the whole trick: .hero__content is
+   positioned, so a badge inside it could only ever anchor to the copy column's
+   edge (measured 228px short of the page gutter). Out here it anchors to the
+   hero itself.
+
+   Wide screens put it in the far corner, opposite the copy — left in Arabic,
+   right in English, since the inset is logical and mirrors. 960px, not a round
+   1024: the copy caps at 768 and the badge is ~96 wide, so side by side they
+   need about 888 inside the container, which a ~936px viewport gives.
+
+   Narrower than that they would collide, so the badge drops back into the flow
+   directly under the CTAs, on the same gutter as the copy — which is what
+   keeps it on a phone, where .hero__strip is dropped entirely. */
+.landing .hero .partner {
+  /* position + z-index even in the flow case: .hero__shade is an absolutely
+     positioned sibling, and a static element paints below positioned ones —
+     the badge was laid out correctly and rendered underneath the shade, i.e.
+     invisible. .hero__content escapes the same trap with its own z-index: 10. */
+  position: relative;
+  z-index: 3;
+  align-self: flex-start;
+  margin-inline-start: max(var(--sec-x), calc((100vw - var(--container)) / 2));
+  margin-block-end: 76px;
+}
+@media (max-width: 640px) { .landing .hero .partner { margin-block-end: 40px; } }
+
+@media (min-width: 960px) {
+  .landing .hero .partner {
+    position: absolute;
+    inset-block-end: 88px;
+    inset-inline-end: max(var(--sec-x), calc((100% - var(--container)) / 2));
+    margin: 0;
+    z-index: 3;
+  }
+}
 
 /* The trust strip pinned to the foot of the hero: accreditation on one side,
    the SAIP note on the other. Replaces the old stacked badge + NDA line. */
