@@ -136,6 +136,13 @@
   padding-inline: 0;
 }
 
+/* styles.css gives .partner a 96px top margin, tuned for the old layout where
+   it sat above the quote rule with nothing between. Under the CTAs it only
+   needs to clear them, and the hero is 100vh — the old figure pushed the badge
+   into the strip on shorter windows. */
+.landing .hero .partner { margin-top: 44px; }
+@media (max-width: 640px) { .landing .hero .partner { margin-top: 32px; } }
+
 /* The trust strip pinned to the foot of the hero: accreditation on one side,
    the SAIP note on the other. Replaces the old stacked badge + NDA line. */
 .hero__strip {
