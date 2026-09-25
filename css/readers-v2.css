@@ -132,6 +132,9 @@
 }
 
 .rd2-reader {
+  /* Landing on #wad etc. from the home page's team strip: the nav is fixed, so
+     without this the row's top sits under the bar. */
+  scroll-margin-block-start: 124px;
   display: grid;
   gap: 32px;
   padding-block: clamp(44px, 5vw, 62px);

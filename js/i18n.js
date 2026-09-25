@@ -120,7 +120,7 @@
       indP1: "حين يصلك مشروع منّا، يكون قد قُرئ وفُهم، وعُرف ما يحتاجه وما يميّزه.",
       indP2: "نختصر عليك وقت التقييم الأول: قصة أوضح، واتجاه إبداعي أقوى، وفهم مكتوب لما هو هذا الفيلم ولمن.",
 
-      teamEyebrow: "الفريق", teamH: "من يقرأ نصك",
+      teamEyebrow: "الفريق", teamH: "من يقرأ نصك", teamMore: "المزيد",
       teamSub: "قرّاء من صنّاع الأفلام وكتّاب السيناريو، ومنتج تطوير إبداعي يتولّى المشاريع بعد التوصية.",
 
       partEyebrow: "شراكاتنا", partH: "نتعاون مع جهات في قطاع السينما",
@@ -285,11 +285,11 @@
       haifaName: "هيفاء السيد", haifaRole: "قارئة نصوص ومستشارة تطوير",
       haifaBio: "كاتبة سيناريو متخصصة في الدراما النفسية والاجتماعية. تضم أعمالها مشاريع حائزة على جوائز وعُرضت في مهرجانات ومنصات دولية، مع خبرة في تطوير أفلام ومسلسلات ترتكز على الشخصيات والعمق الإنساني.",
       widName: "ود القبلان", widRole: "قارئة رئيسية",
-      widBio: "كاتبة سيناريو، منتجة تطوير، وقائدة عمل (showrunner) تهتم بالمحتوى المرئي ومدى تأثيره عاطفيًا على الجمهور. بشغفها بالأفلام وفن صناعة القصص، تقرأ ود النصوص بعينٍ تبحث عما ينجح في القصة، وما يمكن تطويره، وأين تكمن قوتها سرديًا، إيمانًا منها بدور القصة الجيدة في إثراء السينما السعودية.",
+      widBio: "كاتبة سيناريو، منتجة تطوير، وقائدة عمل (showrunner) تهتم بالمحتوى المرئي ومدى تأثيره عاطفيًا على الجمهور. تقرأ ود النصوص بعينٍ تبحث عما ينجح في القصة، وما يمكن تطويره، وأين تكمن قوتها سرديًا، إيمانًا منها بدور القصة الجيدة في إثراء السينما السعودية.",
       fajrName: "فجر الفرحان", fajrRole: "قارئة نصوص",
       fajrBio: "متخصصة في السينما والفنون الأدائية، بخبرة في كتابة السيناريو والإنتاج الإبداعي والسرد البصري. تركّز في قراءاتها على بناء القصة، واللغة البصرية، والأثر العاطفي للنص.",
       hasanName: "حسن زروق", hasanRole: "قائد التطوير الإبداعي",
-      hasanBio: "مخرج سينمائي بخبرة تتجاوز 15 عامًا في السينما والتلفزيون. مهتم بتطوير القصص والاستراتيجية والإنتاج، ويساعد الأفكار على التحول إلى مشاريع مؤثرة وموجهة للجمهور. حاصل على درجة الماجستير المتخصص في الكتابة والإنتاج السينمائي الدوليين من ميلانو، ويهتم بالتواصل والتعاون مع الكُتّاب والمخرجين والمنتجين والفرق الإبداعية التي تعمل على تطوير قصص طموحة موجهة إلى جماهير معاصرة. مستندًا إلى خبرة متنوعة عبر أفريقيا والشرق الأوسط وأوروبا.",
+      hasanBio: "مخرج سينمائي بخبرة تتجاوز 15 عامًا في السينما والتلفزيون، حاصل على ماجستير في الكتابة والإنتاج السينمائي الدوليين من ميلانو. يعمل على تحويل الأفكار إلى مشاريع مؤثرة موجهة للجمهور، بخبرة تمتد عبر أفريقيا والشرق الأوسط وأوروبا.",
 
       // ---- about-coverage.html ----
       docTitleCoverage: "عن تغطية النصوص السينمائية | Scene One",
@@ -548,7 +548,7 @@
       indP1: "By the time a project reaches you from us, it has been read and understood, and what it needs and what sets it apart are both known.",
       indP2: "We save you the first evaluation: a clearer story, a stronger creative direction, and a written account of what this film is and who it is for.",
 
-      teamEyebrow: "The team", teamH: "Who reads your script",
+      teamEyebrow: "The team", teamH: "Who reads your script", teamMore: "More",
       teamSub: "Readers drawn from filmmakers and screenwriters, and a creative development producer who takes projects on after the recommendation.",
 
       partEyebrow: "Partnerships", partH: "We work with organisations across the film sector",
@@ -708,11 +708,11 @@
       haifaName: "Haifa Alsaeed", haifaRole: "Script Reader & Development Consultant",
       haifaBio: "Screenwriter specializing in psychological and social narratives. Her work has been featured in festivals and international platforms, with experience in developing both films and series. Her approach focuses on character depth and human-driven storytelling.",
       widName: "Wid AlQublan", widRole: "Lead Reader",
-      widBio: "A screenwriter, development producer, and showrunner who cares deeply for visual storytelling and its emotional influence on audience. Driven by her passion for film and the craft behind every story, Wid reads screenplays with an eye for what works, what could work better, and where its potential lies, all with the aim of enriching Saudi cinema.",
+      widBio: "Screenwriter, development producer and showrunner, drawn to visual storytelling and how deeply it lands with an audience. Wad reads for what is working in a story, what can be developed, and where its narrative strength lies, out of a belief in what a good story does for Saudi cinema.",
       fajrName: "Fajr Alfarhan", fajrRole: "Script Reader",
       fajrBio: "Specialized in film and performing arts, with experience in screenwriting, creative production, and visual storytelling. Her analysis focuses on story structure, visual language, and the emotional impact of the script.",
       hasanName: "Hasan Zarroug", hasanRole: "Head of Creative Development",
-      hasanBio: "A film director with over 15 years of experience across cinema and television. He is deeply engaged in story development, creative strategy, and production, helping ideas evolve into impactful and audience-driven projects. He holds a specialized Master’s degree in International Screenwriting and Film Production from Milan, and is passionate about collaborating with writers, directors, producers, and creative teams working on ambitious stories for contemporary audiences. Bringing in diverse experience across Africa, the Middle East, and Europe.",
+      hasanBio: "Film director with over 15 years in film and television, holding a master's in international screenwriting and film production from Milan. He turns ideas into affecting, audience-facing projects, drawing on experience across Africa, the Middle East and Europe.",
 
       // ---- about-coverage.html ----
       docTitleCoverage: "About Screenplay Coverage | Scene One",

@@ -429,6 +429,57 @@
   display: block;
   background: #211d1a;
 }
+/* The photo is a link, and the brief rides over it. Hover is the trigger, but
+   never the only one: :focus-visible opens it for a keyboard, and where there
+   is no hover at all (a phone) the overlay is suppressed entirely and the tap
+   simply follows the link — so nothing is reachable only by hovering. */
+.lx-team__card {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 4px;
+}
+.lx-team__over {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 14px;
+  padding: 18px;
+  background: linear-gradient(to top, rgba(0, 0, 0, .94) 30%, rgba(0, 0, 0, .55));
+  color: #fff;
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+.lx-team__card:hover .lx-team__over,
+.lx-team__card:focus-visible .lx-team__over { opacity: 1; }
+.lx-team__card:focus-visible { outline: 2px solid var(--lx-red); outline-offset: 3px; }
+/* The opening of the bio, not a second piece of copy: clamped so the card shows
+   as much as it has room for and /readers carries the rest. */
+.lx-team__brief {
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, .88);
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.lx-team__more {
+  align-self: flex-start;
+  padding: 7px 18px;
+  border: 1px solid rgba(255, 255, 255, .6);
+  border-radius: 999px;
+  font-family: var(--font-head);
+  font-size: 12.5px;
+  font-weight: 700;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+.lx-team__card:hover .lx-team__more { background: var(--lx-cream); border-color: var(--lx-cream); color: #000; }
+@media (hover: none) { .lx-team__over { display: none; } }
+@media (prefers-reduced-motion: reduce) { .lx-team__over { transition: none; } }
+
 .lx-team__n { margin: 16px 0 0; font-family: var(--font-head); font-size: 16px; font-weight: 800; text-align: center; }
 .lx-team__r { margin: 6px 0 0; font-size: 13px; color: var(--lx-red); text-align: center; }
 
