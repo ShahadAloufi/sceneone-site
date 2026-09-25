@@ -126,7 +126,7 @@
       partEyebrow: "شراكاتنا", partH: "نتعاون مع جهات في قطاع السينما",
       partSub: "يحصل أعضاء جمعية السينما السعودية على مزايا خاصة في خدمات تغطية النصوص.",
 
-      footBlurb: "دار سعودية لاكتشاف المواهب السينمائية الناشئة وتطوير مشاريعها.",
+      footBlurb: "نكتشف الأصوات الجديدة، نطوّر أفلامها، ونبني لها طريقًا إلى الشاشة",
       footCoverage: "تغطية النصوص", footReaders: "من يقرأ نصك", footStory: "حكاية سين ون",
       footContact: "للتواصل",
       footCr: "© 2026 جميع الحقوق محفوظة لـ سين ون · الرقم الموحد 7054791293",
@@ -554,7 +554,7 @@
       partEyebrow: "Partnerships", partH: "We work with organisations across the film sector",
       partSub: "Members of the Saudi Cinema Association receive special benefits on script coverage services.",
 
-      footBlurb: "A Saudi house for discovering emerging film talent and developing their projects.",
+      footBlurb: "We find new voices, develop their films, and build them a road to the screen",
       footCoverage: "Coverage", footReaders: "Who reads your script", footStory: "The Scene One story",
       footContact: "Contact",
       footCr: "© 2026 All rights reserved to Scene One · Unified number 7054791293",
