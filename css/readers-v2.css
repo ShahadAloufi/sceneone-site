@@ -145,8 +145,17 @@
   .rd2-reader { grid-template-columns: minmax(0, 1fr) 340px; gap: clamp(40px, 5vw, 80px); }
   /* Alternating sides. The portrait is always second in the DOM, so reading
      order stays name-then-face; `order` only moves it visually, and it mirrors
-     with the writing direction on its own. */
-  .rd2-reader:nth-child(even) .rd2-reader__photo { order: -1; }
+     with the writing direction on its own.
+
+     nth-of-type, NOT nth-child: the heading block is the first child of this
+     container, so the four articles are children 2-5 and nth-child(even)
+     selected readers 1 and 3 — the whole sequence ran a row out of phase with
+     the design. Counting articles only puts 02 and 04 on the flipped side. */
+  .rd2-reader:nth-of-type(even) .rd2-reader__photo { order: -1; }
+  /* The track sizes have to travel with the photo. `order` alone moved the
+     picture into the wide track and squeezed the bio into the 340px one —
+     measured 340px of text where 583 was intended. */
+  .rd2-reader:nth-of-type(even) { grid-template-columns: 340px minmax(0, 1fr); }
 }
 
 .rd2-reader__meta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
