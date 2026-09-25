@@ -10,11 +10,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/site-chrome.css">
+  <link rel="stylesheet" href="css/readers-v2.css">
   <!-- Vercel Web Analytics — served by Vercel's edge at this path; no npm/build needed. -->
   <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
-<div class="au page">
+<div class="rd2 page">
 
   <!-- ── NAV ── -->
   <nav class="nav">
@@ -23,13 +26,14 @@
          hamburger's overlay carries the same six destinations. -->
     <ul class="nav__links">
       <li><a href="/" data-i18n="navHome">الرئيسية</a></li>
-      <li><a href="/#about" data-i18n="navAbout">Scene One</a></li>
-      <li><a href="/about-coverage" data-i18n="navGuide">ما هي تغطية النصوص؟</a></li>
-      <li><a href="/readers" data-i18n="navReaders">من يقرأ نصك؟</a></li>
+      <li><a href="/#about" data-i18n="navAboutUs">من نحن</a></li>
+      <li><a href="/#coverage-types" data-i18n="navCoverage">تغطية النصوص</a></li>
+      <li><a href="/readers" data-i18n="navReaders">من يقرأ نصك</a></li>
       <li><a href="/#journey" data-i18n="navJourney">رحلة النص</a></li>
       <li><a href="/#contact" data-i18n="navContact">تواصل معنا</a></li>
     </ul>
     <div class="nav__end">
+      <a class="nav__cta" href="/submit" data-i18n="btnSubmit">قدّم نصك</a>
       <div class="lang-toggle-group" role="group" aria-label="Language"><button class="lang-btn" type="button" data-lang="en">EN</button><button class="lang-btn" type="button" data-lang="ar">AR</button></div>
       <button class="menu-btn" data-menu-open data-i18n-aria="menuLabel" aria-label="القائمة">
         <span></span><span></span><span></span>
@@ -71,109 +75,213 @@
       </div>
       <div class="overlay__links">
         <a href="/" data-menu-close data-i18n="navHome">الرئيسية</a>
-        <a href="/#about" data-menu-close data-i18n="navAbout">Scene One</a>
-        <a href="/about-coverage" data-menu-close data-i18n="navGuide">ما هي تغطية النصوص؟</a>
-        <a href="/readers" data-menu-close data-i18n="navReaders">من يقرأ نصك؟</a>
+        <a href="/#about" data-menu-close data-i18n="navAboutUs">من نحن</a>
+        <a href="/#coverage-types" data-menu-close data-i18n="navCoverage">تغطية النصوص</a>
+        <a href="/readers" data-menu-close data-i18n="navReaders">من يقرأ نصك</a>
         <a href="/#journey" data-menu-close data-i18n="navJourney">رحلة النص</a>
         <a href="/#contact" data-menu-close data-i18n="navContact">تواصل معنا</a>
       </div>
     </div>
   </div>
 
-  <!-- ── HERO ──
-       Background is a muted, looping video (autoplay needs BOTH `muted` and
-       `playsinline`, or iOS refuses and opens fullscreen instead). `poster`
-       covers the gap before the first frame decodes, so the hero is never
-       empty. The .mp4 is a web encode of the 4K master — see .gitignore. -->
-  <header class="au-hero">
-    <!-- Deliberately NO `poster` attribute: on iOS a paused <video> with a poster
-         draws a native play glyph over it, so any autoplay refusal (Low Power
-         Mode is the usual one) left a play button sitting in the hero. The still
-         frame is a CSS background on .au-hero instead, and the video starts
-         transparent and only fades in once it is genuinely playing. -->
-    <video class="au-hero__bg" autoplay muted loop playsinline preload="auto" poster="assets/hero-reader-poster.jpg"
-           disablepictureinpicture disableremoteplayback
-           aria-hidden="true" tabindex="-1">
-      <source src="assets/hero-reader.mp4" type="video/mp4">
-    </video>
-    <div class="au-hero__shade" aria-hidden="true"></div>
-
-    <div class="au-hero__row">
-      <p class="au-hero__badge" data-i18n-html="auHeroBadge">تغطية سينمائية احترافية<br>لكتّاب السيناريو</p>
-      <h1 class="au-hero__title" data-i18n-html="auHeroTitle">هنا<br>Scene One</h1>
-    </div>
-  </header>
-  <div class="au-hero__rule" aria-hidden="true"></div>
-
-  <!-- ── ABOUT / STORY ── -->
-  <section class="au-about" id="about">
-    <div class="au-about__inner">
-      <p class="au-about__label"><span data-i18n="auAboutLabelWord">عن</span><br><span>SCENE ONE</span></p>
-      <div class="au-about__body">
-        <p data-i18n="auAboutP1">لأن النص هو أغلى ما تملك. يتكوّن فريقنا من قرّاء محترفين في تطوير وتقييم النصوص السينمائية، يجمعون بين الخبرة العملية في قراءة المشاريع وفهم عميق لمتطلبات السوق العربي والعالمي</p>
-        <p data-i18n="auAboutP2">لا نقدّم قراءة انطباعية، بل تقييمًا صناعيًا مبنيًا على معايير غرف القراءة الاحترافية، يساعد الكتّاب على فهم موقع نصوصهم بدقة واتخاذ قرارات تطوير واضحة</p>
-        <p data-i18n="auAboutP3">نحن نعمل كحلقة وصل بين النصوص الواعدة والفرص الحقيقية في صناعة السينما، عبر قراءة دقيقة، تحليل عملي، ورؤية تساعد المشاريع على الانتقال من المسودة إلى الجاهزية</p>
+  <!-- ── 01 · HERO ──
+       Black slab, no video: the design replaces the old looping hero with type
+       and three figures. The figures use Latin numerals like the rest of the
+       site — the mockup's Arabic-Indic ones predate that change. -->
+  <section class="rd2-hero" id="top">
+    <div class="rd2-in">
+      <p class="rd2-eyebrow" data-i18n="rdEyebrow">الفريق</p>
+      <h1 class="rd2-hero__h" data-i18n="rdTitle">من يقرأ نصك</h1>
+      <p class="rd2-hero__p" data-i18n="rdLede">لا نقدّم قراءة انطباعية، بل تقييمًا صناعيًا مبنيًا على معايير غرف القراءة الاحترافية. من يقرأ نصك هنا صانع أفلام أو كاتب سيناريو، يعرف ما الذي يجعل المشروع ينجح.</p>
+      <div class="rd2-stats">
+        <div class="rd2-stat">
+          <p class="rd2-stat__n">4</p>
+          <p class="rd2-stat__l" data-i18n="rdStat1">قرّاء</p>
+        </div>
+        <div class="rd2-stat">
+          <p class="rd2-stat__n">8</p>
+          <p class="rd2-stat__l" data-i18n="rdStat2">محاور في كل تقرير</p>
+        </div>
+        <div class="rd2-stat">
+          <p class="rd2-stat__n">1</p>
+          <p class="rd2-stat__l" data-i18n="rdStat3">تقرير مكتوب لكل نص</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ── READERS TEAM ── -->
-  <section class="au-team" id="team">
-    <h2 class="au-team__title" data-i18n="auTeamTitle">فريق القرّاء</h2>
-
-    <div class="au-cards">
-
-      <article class="au-card">
-        <div class="au-card__photo">
-          <img src="assets/reader-3.png" data-i18n-alt="widName" alt="ود القبلان">
+  <!-- ── 02 · THE METHOD ── -->
+  <section class="rd2-sec" id="method">
+    <div class="rd2-in">
+      <p class="rd2-eyebrow" data-i18n="rdMethodEyebrow">المنهج</p>
+      <h2 class="rd2-h" data-i18n="rdMethodH">كيف نقرأ نصك</h2>
+      <div class="rd2-method__grid">
+        <div class="rd2-method__col">
+          <h3 class="rd2-method__t" data-i18n="rdM1T">خبرة عملية</h3>
+          <p class="rd2-method__b" data-i18n="rdM1B">قرّاء يجمعون بين العمل الفعلي في الكتابة والإخراج والإنتاج، وفهم عميق لمتطلبات السوق العربي والعالمي.</p>
         </div>
-        <p class="au-card__role" data-i18n="widRole">قارئة رئيسية</p>
-        <h3 class="au-card__name" data-i18n="widName">ود القبلان</h3>
-        <p class="au-card__bio" data-i18n="widBio">كاتبة سيناريو، منتجة تطوير، وقائدة عمل (showrunner) تهتم بالمحتوى المرئي ومدى تأثيره عاطفيًا على الجمهور. بشغفها بالأفلام وفن صناعة القصص، تقرأ ود النصوص بعينٍ تبحث عما ينجح في القصة، وما يمكن تطويره، وأين تكمن قوتها سرديًا، إيمانًا منها بدور القصة الجيدة في إثراء السينما السعودية.</p>
-      </article>
-
-      <article class="au-card">
-        <div class="au-card__photo">
-          <img src="assets/reader-hasan.png" data-i18n-alt="hasanName" alt="حسن زروق">
+        <div class="rd2-method__col">
+          <h3 class="rd2-method__t" data-i18n="rdM2T">معايير واضحة</h3>
+          <p class="rd2-method__b" data-i18n="rdM2B">كل نص يُقرأ عبر ثمانية محاور ثابتة، فتعرف موقع نصك بدقة وتتخذ قرارات تطوير واضحة.</p>
         </div>
-        <p class="au-card__role" data-i18n="hasanRole">مسؤول تطوير إبداعي ومنتج تطوير</p>
-        <h3 class="au-card__name" data-i18n="hasanName">حسن زروق</h3>
-        <p class="au-card__bio" data-i18n="hasanBio">مخرج سينمائي بخبرة تتجاوز 15 عامًا في السينما والتلفزيون. مهتم بتطوير القصص والاستراتيجية والإنتاج، ويساعد الأفكار على التحول إلى مشاريع مؤثرة وموجهة للجمهور. حاصل على درجة الماجستير المتخصص في الكتابة والإنتاج السينمائي الدوليين من ميلانو، ويهتم بالتواصل والتعاون مع الكُتّاب والمخرجين والمنتجين والفرق الإبداعية التي تعمل على تطوير قصص طموحة موجهة إلى جماهير معاصرة. مستندًا إلى خبرة متنوعة عبر أفريقيا والشرق الأوسط وأوروبا.</p>
-      </article>
-
-      <article class="au-card">
-        <div class="au-card__photo">
-          <img src="assets/reader-2.png" data-i18n-alt="haifaName" alt="هيفاء السيد">
+        <div class="rd2-method__col">
+          <h3 class="rd2-method__t" data-i18n="rdM3T">ما بعد القراءة</h3>
+          <p class="rd2-method__b" data-i18n="rdM3B">التقرير ليس نهاية الطريق. المشاريع التي تصل إلى الجاهزية نأخذها إلى جهات في الصناعة.</p>
         </div>
-        <p class="au-card__role" data-i18n="haifaRole">قارئة نصوص ومستشارة تطوير</p>
-        <h3 class="au-card__name" data-i18n="haifaName">هيفاء السيد</h3>
-        <p class="au-card__bio" data-i18n="haifaBio">كاتبة سيناريو متخصصة في الدراما النفسية والاجتماعية. تضم أعمالها مشاريع حائزة على جوائز وعُرضت في مهرجانات ومنصات دولية، مع خبرة في تطوير أفلام ومسلسلات ترتكز على الشخصيات والعمق الإنساني.</p>
-      </article>
-
-      <article class="au-card">
-        <div class="au-card__photo">
-          <img src="assets/reader-1.png" data-i18n-alt="fajrName" alt="فجر الفرحان">
-        </div>
-        <p class="au-card__role" data-i18n="fajrRole">قارئة نصوص سينمائية</p>
-        <h3 class="au-card__name" data-i18n="fajrName">فجر الفرحان</h3>
-        <p class="au-card__bio" data-i18n="fajrBio">متخصصة في السينما والفنون الأدائية، بخبرة في كتابة السيناريو والإنتاج الإبداعي والسرد البصري. تركّز في قراءاتها على بناء القصة، واللغة البصرية، والأثر العاطفي للنص.</p>
-      </article>
-
+      </div>
     </div>
   </section>
 
-  <!-- ── FOOTER ── -->
-  <footer class="footer">
-    <div class="footer__row">
-      <p class="footer__copy" dir="rtl" data-i18n-html="footerCopyHtml">© 2026 جميع الحقوق محفوظة لـSCENE ONE.<br><span class="footer__cr">الرقم الموحد: 7054791293</span></p>
-      <div class="footer__links">
-        <a href="/privacy" data-i18n="footerPrivacy">سياسة الخصوصية</a>
-        <a href="/terms" data-i18n="footerTerms">الشروط والأحكام</a>
+  <!-- ── 03 · THE READERS ──
+       Four rows, the portrait alternating sides. The name/role/bio come from
+       the keys /readers already shared with the landing's team strip, so the
+       two pages cannot describe the same person differently. -->
+  <section class="rd2-sec" id="readers">
+    <div class="rd2-in">
+      <div class="rd2-team__head">
+        <h2 class="rd2-h" data-i18n="auTeamTitle">فريق القرّاء</h2>
       </div>
-      <div class="footer__social">
-        <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer"><img src="assets/icon_x.png" alt="X"></a>
-        <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer"><img src="assets/icon_instagram.png" alt="Instagram"></a>
-        <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer"><img src="assets/icon_linkedin.png" alt="LinkedIn"></a>
+
+      <article class="rd2-reader">
+        <div>
+          <div class="rd2-reader__meta">
+            <span class="rd2-reader__n">01</span>
+            <span class="rd2-reader__rule" aria-hidden="true"></span>
+            <span class="rd2-reader__role" data-i18n="widRole">قارئة رئيسية</span>
+          </div>
+          <h3 class="rd2-reader__name" data-i18n="widName">ود القبلان</h3>
+          <p class="rd2-reader__bio" data-i18n="widBio">كاتبة سيناريو، منتجة تطوير، وقائدة عمل (showrunner) تهتم بالمحتوى المرئي ومدى تأثيره عاطفيًا على الجمهور. تقرأ ود النصوص بعينٍ تبحث عما ينجح في القصة، وما يمكن تطويره، وأين تكمن قوتها سرديًا، إيمانًا منها بدور القصة الجيدة في إثراء السينما السعودية.</p>
+          <div class="rd2-reader__tags">
+            <span class="rd2-reader__tag" data-i18n="widTag1">الأثر العاطفي</span>
+            <span class="rd2-reader__tag" data-i18n="widTag2">البناء السردي</span>
+          </div>
+        </div>
+        <img class="rd2-reader__photo" src="assets/reader-wad.webp" alt="ود القبلان" data-i18n-alt="widName" loading="lazy" decoding="async" width="600" height="800">
+      </article>
+
+      <article class="rd2-reader">
+        <div>
+          <div class="rd2-reader__meta">
+            <span class="rd2-reader__n">02</span>
+            <span class="rd2-reader__rule" aria-hidden="true"></span>
+            <span class="rd2-reader__role" data-i18n="hasanRole">قائد التطوير الإبداعي</span>
+          </div>
+          <h3 class="rd2-reader__name" data-i18n="hasanName">حسن زروق</h3>
+          <p class="rd2-reader__bio" data-i18n="hasanBio">مخرج سينمائي بخبرة تتجاوز 15 عامًا في السينما والتلفزيون، حاصل على ماجستير في الكتابة والإنتاج السينمائي الدوليين من ميلانو. يعمل على تحويل الأفكار إلى مشاريع مؤثرة موجهة للجمهور، بخبرة تمتد عبر أفريقيا والشرق الأوسط وأوروبا.</p>
+          <div class="rd2-reader__tags">
+            <span class="rd2-reader__tag" data-i18n="hasanTag1">تطوير المشاريع</span>
+            <span class="rd2-reader__tag" data-i18n="hasanTag2">الاستراتيجية والإنتاج</span>
+          </div>
+        </div>
+        <img class="rd2-reader__photo" src="assets/reader-hasan-v2.webp" alt="حسن زروق" data-i18n-alt="hasanName" loading="lazy" decoding="async" width="600" height="800">
+      </article>
+
+      <article class="rd2-reader">
+        <div>
+          <div class="rd2-reader__meta">
+            <span class="rd2-reader__n">03</span>
+            <span class="rd2-reader__rule" aria-hidden="true"></span>
+            <span class="rd2-reader__role" data-i18n="haifaRole">قارئة نصوص ومستشارة تطوير</span>
+          </div>
+          <h3 class="rd2-reader__name" data-i18n="haifaName">هيفاء السيد</h3>
+          <p class="rd2-reader__bio" data-i18n="haifaBio">كاتبة سيناريو متخصصة في الدراما النفسية والاجتماعية. تضم أعمالها مشاريع حائزة على جوائز وعُرضت في مهرجانات ومنصات دولية، مع خبرة في تطوير أفلام ومسلسلات ترتكز على الشخصيات والعمق الإنساني.</p>
+          <div class="rd2-reader__tags">
+            <span class="rd2-reader__tag" data-i18n="haifaTag1">الدراما النفسية والاجتماعية</span>
+            <span class="rd2-reader__tag" data-i18n="haifaTag2">الشخصيات</span>
+          </div>
+        </div>
+        <img class="rd2-reader__photo" src="assets/reader-haifa.webp" alt="هيفاء السيد" data-i18n-alt="haifaName" loading="lazy" decoding="async" width="600" height="800">
+      </article>
+
+      <article class="rd2-reader">
+        <div>
+          <div class="rd2-reader__meta">
+            <span class="rd2-reader__n">04</span>
+            <span class="rd2-reader__rule" aria-hidden="true"></span>
+            <span class="rd2-reader__role" data-i18n="fajrRole">قارئة نصوص</span>
+          </div>
+          <h3 class="rd2-reader__name" data-i18n="fajrName">فجر الفرحان</h3>
+          <p class="rd2-reader__bio" data-i18n="fajrBio">متخصصة في السينما والفنون الأدائية، بخبرة في كتابة السيناريو والإنتاج الإبداعي والسرد البصري. تركّز في قراءاتها على بناء القصة، واللغة البصرية، والأثر العاطفي للنص.</p>
+          <div class="rd2-reader__tags">
+            <span class="rd2-reader__tag" data-i18n="fajrTag1">بناء القصة</span>
+            <span class="rd2-reader__tag" data-i18n="fajrTag2">اللغة البصرية</span>
+          </div>
+        </div>
+        <img class="rd2-reader__photo" src="assets/reader-fajr.webp" alt="فجر الفرحان" data-i18n-alt="fajrName" loading="lazy" decoding="async" width="600" height="800">
+      </article>
+    </div>
+  </section>
+
+  <!-- ── 04 · THE EIGHT AXES ──
+       The same eight the coverage report is written against (see
+       js/report-render.js), named here rather than summarised, and numbered
+       down each column so the pairs read 01-04 then 05-08 in source order. -->
+  <section class="rd2-sec rd2-sec--dark" id="axes">
+    <div class="rd2-in rd2-axes">
+      <div>
+        <p class="rd2-eyebrow" data-i18n="rdAxesEyebrow">ما الذي يصلك</p>
+        <h2 class="rd2-h" data-i18n="rdAxesH">تقرير مفصّل عبر ثمانية محاور</h2>
+        <a class="rd2-axes__link" href="/sample-report" data-i18n="readLink">اطّلع على نموذج تقرير</a>
+      </div>
+      <ul class="rd2-axes__list">
+        <li class="rd2-axes__item"><span class="rd2-axes__t" data-i18n="axis1">الفكرة والموضوع</span><span class="rd2-axes__n">01</span></li>
+        <li class="rd2-axes__item"><span class="rd2-axes__t" data-i18n="axis2">عنصر الجذب</span><span class="rd2-axes__n">02</span></li>
+        <li class="rd2-axes__item"><span class="rd2-axes__t" data-i18n="axis3">الرهانات والحبكة</span><span class="rd2-axes__n">03</span></li>
+        <li class="rd2-axes__item"><span class="rd2-axes__t" data-i18n="axis4">الشخصيات</span><span class="rd2-axes__n">04</span></li>
+        <li class="rd2-axes__item"><span class="rd2-axes__t" data-i18n="axis5">الحوار</span><span class="rd2-axes__n">05</span></li>
+        <li class="rd2-axes__item"><span class="rd2-axes__t" data-i18n="axis6">البناء والإيقاع</span><span class="rd2-axes__n">06</span></li>
+        <li class="rd2-axes__item"><span class="rd2-axes__t" data-i18n="axis7">قابلية الإنتاج</span><span class="rd2-axes__n">07</span></li>
+        <li class="rd2-axes__item"><span class="rd2-axes__t" data-i18n="axis8">العرض والتنسيق</span><span class="rd2-axes__n">08</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── 05 · CLOSING CTA ──
+       Shade is 76% black, the opacity the design paints over this photograph. -->
+  <section class="rd2-cta" id="submit">
+    <img class="rd2-cta__bg" src="assets/cta-seats-screen.webp" alt="" loading="lazy" decoding="async" width="1600" height="620">
+    <div class="rd2-cta__shade"></div>
+    <div class="rd2-cta__in">
+      <span class="rd2-cta__dot" aria-hidden="true"></span>
+      <h2 class="rd2-cta__h" data-i18n="rdCtaH">نصك يستحق أن يقرأه من يعرف ما الذي تحاول قوله</h2>
+      <a class="rd2-cta__btn" href="/submit" data-i18n="btnSubmit">قدّم نصك</a>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ──
+       The landing's footer, styled by the shared css/site-chrome.css. -->
+  <footer class="lx-foot">
+    <div class="lx-foot__in">
+      <div class="lx-foot__top">
+        <div>
+          <div class="lx-foot__brand">
+            <img src="assets/scene-one-logo-v3.svg" alt="Scene One">
+            <span data-i18n="brand">سين ون</span>
+          </div>
+          <p class="lx-foot__blurb" data-i18n="footBlurb">دار سعودية لاكتشاف المواهب السينمائية الناشئة وتطوير مشاريعها.</p>
+        </div>
+        <div class="lx-foot__col">
+          <a href="/#coverage-types" data-i18n="footCoverage">تغطية النصوص</a>
+          <a href="/readers" data-i18n="footReaders">من يقرأ نصك</a>
+          <a href="/#journey" data-i18n="navJourney">رحلة النص</a>
+        </div>
+        <div class="lx-foot__col">
+          <a href="/privacy" data-i18n="footerPrivacy">سياسة الخصوصية</a>
+          <a href="/terms" data-i18n="footerTerms">الشروط والأحكام</a>
+          <a href="/assets/scene-one-booklet-ar.pdf" target="_blank" rel="noopener" data-i18n="footStory">حكاية سين ون</a>
+        </div>
+        <div class="lx-foot__col">
+          <p class="lx-foot__lbl" data-i18n="footContact">للتواصل</p>
+          <a class="lx-foot__mail" href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
+        </div>
+      </div>
+      <div class="lx-foot__bar">
+        <p class="lx-foot__cr" data-i18n="footCr">© 2026 جميع الحقوق محفوظة لـ سين ون · الرقم الموحد 7054791293</p>
+        <div class="lx-foot__soc">
+          <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X</a>
+          <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
       </div>
     </div>
   </footer>

@@ -1,0 +1,63 @@
+/* ============================================================================
+   Shared chrome for the redesigned pages (the landing and /readers): the nav's
+   CTA pill and the footer.
+
+   Extracted from css/landing-v2.css when /readers was rebuilt: both pages carry
+   these, and one component styled in two files is one component that eventually
+   stops matching. styles.css keeps its own .footer and the rest of .nav for
+   every other page, untouched.
+   ========================================================================= */
+
+/* ---- nav: the one addition to the shared bar --------------------------- */
+/* The design puts a solid pill at the far end of the nav. It is only on this
+   page, so it is defined here; the rest of .nav still comes from styles.css. */
+.nav__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 38px;
+  padding-inline: 22px;
+  border-radius: 999px;
+  background: var(--lx-cream);
+  color: #000;
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background-color 200ms ease, transform 200ms ease;
+}
+.nav__cta:hover { background: #fff; }
+/* Below the inline-links breakpoint the hamburger already carries every
+   destination, and the pill would crowd it. */
+@media (max-width: 767px) { .nav__cta { display: none; } }
+
+/* New markup rather than the shared .footer, which stays as it is for the
+   other pages. */
+.lx-foot { background: var(--lx-black); color: #fff; padding-block: 64px 0; padding-inline: var(--lx-x); }
+.lx-foot__in { inline-size: 100%; max-inline-size: var(--lx-w); margin-inline: auto; }
+.lx-foot__top { display: grid; gap: 40px; }
+@media (min-width: 860px) { .lx-foot__top { grid-template-columns: 1.6fr 1fr 1fr 1fr; } }
+.lx-foot__brand { display: flex; align-items: center; gap: 12px; }
+.lx-foot__brand img { block-size: 40px; inline-size: auto; }
+.lx-foot__brand span { font-family: var(--font-head); font-size: 17px; font-weight: 800; }
+.lx-foot__blurb { margin: 16px 0 0; font-size: 13.5px; line-height: 1.9; color: rgba(255,255,255,.5); max-inline-size: 46ch; }
+.lx-foot__col { display: flex; flex-direction: column; gap: 12px; }
+.lx-foot__col a, .lx-foot__col p { margin: 0; font-size: 13.5px; color: rgba(255,255,255,.62); }
+.lx-foot__col a:hover { color: #fff; }
+.lx-foot__lbl { color: rgba(255,255,255,.38) !important; font-size: 12px !important; }
+.lx-foot__mail { color: var(--lx-red) !important; word-break: break-all; }
+.lx-foot__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px 24px;
+  margin-block-start: 52px;
+  padding-block: 22px;
+  border-block-start: 1px solid rgba(255,255,255,.1);
+}
+.lx-foot__cr { margin: 0; font-size: 12px; color: rgba(255,255,255,.38); font-variant-numeric: tabular-nums; }
+.lx-foot__soc { display: flex; gap: 20px; }
+.lx-foot__soc a { font-size: 12.5px; color: rgba(255,255,255,.5); }
+.lx-foot__soc a:hover { color: #fff; }
+

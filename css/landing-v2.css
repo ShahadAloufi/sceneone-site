@@ -20,30 +20,12 @@
    styles them. The hero's TEXT is new; its chrome is untouched.
    ========================================================================= */
 
+/* Palette and rhythm tokens live in css/tokens.css now, shared with the
+   readers page so the two pages cannot drift apart. */
 .landing {
-  /* Palette, straight from the design file's swatches. */
-  --lx-cream:      #f9f4ef;  /* the page ground for every light section      */
-  --lx-white:      #ffffff;  /* raised cards only, so they lift off the cream */
-  --lx-black:      #000000;
-  --lx-ink:        #2a2622;  /* headings and body on light                    */
-  --lx-red:        #cd2e07;  /* eyebrows, roles, the one accent rule          */
-  --lx-muted:      #7a736a;  /* body copy that sits under a heading           */
-  --lx-muted-2:    #8c877f;  /* captions, the quietest tier                   */
-  --lx-line:       #d9d4cc;  /* rules over columns, card borders              */
-  --lx-line-soft:  #e2dcd3;  /* separators inside a card                      */
-
   /* Rhythm. One knob for the gap between sections; every lx- section pays it
      on both edges, so the visible gap between any two is twice the token. */
   --lx-y: 64px;
-
-  /* The horizontal container is NOT a number of its own: it aliases the two
-     tokens the fixed nav is built from, so the page body and the bar can never
-     drift apart. .nav pads itself by max(--sec-x, (100% - --container)/2); a
-     section padded by --lx-x with an inner box capped at --lx-w and centred
-     resolves to exactly the same content edges. Change --container in
-     styles.css and the nav and every section here move together. */
-  --lx-x: var(--sec-x);
-  --lx-w: var(--container);
 
   /* Height of the two full-bleed photo bands (the intro and the read). One
      token so they match: left to themselves each was sized by its own picture's
@@ -122,29 +104,6 @@
 .lx-link--red:hover { color: var(--lx-ink); }
 .lx--dark .lx-link { color: #fff; }
 .lx--dark .lx-link:hover { color: var(--lx-red); border-color: var(--lx-red); }
-
-/* ---- nav: the one addition to the shared bar --------------------------- */
-/* The design puts a solid pill at the far end of the nav. It is only on this
-   page, so it is defined here; the rest of .nav still comes from styles.css. */
-.nav__cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-block-size: 38px;
-  padding-inline: 22px;
-  border-radius: 999px;
-  background: var(--lx-cream);
-  color: #000;
-  font-family: var(--font-head);
-  font-size: 14px;
-  font-weight: 700;
-  white-space: nowrap;
-  transition: background-color 200ms ease, transform 200ms ease;
-}
-.nav__cta:hover { background: #fff; }
-/* Below the inline-links breakpoint the hamburger already carries every
-   destination, and the pill would crowd it. */
-@media (max-width: 767px) { .nav__cta { display: none; } }
 
 /* ---- hero: text only --------------------------------------------------- */
 /* The bottom strip is the only new element here; the title, sub, buttons and
@@ -463,6 +422,9 @@
 .lx-team__photo {
   aspect-ratio: 292 / 300;
   inline-size: 100%;
+  /* Same trap as the readers page: the width/height attributes make the height
+     definite and aspect-ratio is ignored without this. */
+  block-size: auto;
   object-fit: cover;
   display: block;
   background: #211d1a;
@@ -525,37 +487,6 @@
   transition: background-color 200ms ease;
 }
 .lx-cta__btn:hover { background: #fff; }
-
-/* ---- 11. footer -------------------------------------------------------- */
-/* New markup rather than the shared .footer, which stays as it is for the
-   other pages. */
-.lx-foot { background: var(--lx-black); color: #fff; padding-block: 64px 0; padding-inline: var(--lx-x); }
-.lx-foot__in { inline-size: 100%; max-inline-size: var(--lx-w); margin-inline: auto; }
-.lx-foot__top { display: grid; gap: 40px; }
-@media (min-width: 860px) { .lx-foot__top { grid-template-columns: 1.6fr 1fr 1fr 1fr; } }
-.lx-foot__brand { display: flex; align-items: center; gap: 12px; }
-.lx-foot__brand img { block-size: 40px; inline-size: auto; }
-.lx-foot__brand span { font-family: var(--font-head); font-size: 17px; font-weight: 800; }
-.lx-foot__blurb { margin: 16px 0 0; font-size: 13.5px; line-height: 1.9; color: rgba(255,255,255,.5); max-inline-size: 46ch; }
-.lx-foot__col { display: flex; flex-direction: column; gap: 12px; }
-.lx-foot__col a, .lx-foot__col p { margin: 0; font-size: 13.5px; color: rgba(255,255,255,.62); }
-.lx-foot__col a:hover { color: #fff; }
-.lx-foot__lbl { color: rgba(255,255,255,.38) !important; font-size: 12px !important; }
-.lx-foot__mail { color: var(--lx-red) !important; word-break: break-all; }
-.lx-foot__bar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px 24px;
-  margin-block-start: 52px;
-  padding-block: 22px;
-  border-block-start: 1px solid rgba(255,255,255,.1);
-}
-.lx-foot__cr { margin: 0; font-size: 12px; color: rgba(255,255,255,.38); font-variant-numeric: tabular-nums; }
-.lx-foot__soc { display: flex; gap: 20px; }
-.lx-foot__soc a { font-size: 12.5px; color: rgba(255,255,255,.5); }
-.lx-foot__soc a:hover { color: #fff; }
 
 /* ---- 12. FAQ ------------------------------------------------------------
    Kept by request though the design has none, and dropped in just before the

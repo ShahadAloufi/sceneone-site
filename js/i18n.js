@@ -38,6 +38,28 @@
       heroNdaHtml: "نصك محمي هنا، ونشجعك على تسجيله لدى <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\">SAIP</a>.",
       partnerBadge: "شريك معتمد لدى جمعية السينما",
 
+      /* ---- readers v2 -------------------------------------------------- */
+      rdEyebrow: "الفريق",
+      rdTitle: "من يقرأ نصك",
+      rdLede: "لا نقدّم قراءة انطباعية، بل تقييمًا صناعيًا مبنيًا على معايير غرف القراءة الاحترافية. من يقرأ نصك هنا صانع أفلام أو كاتب سيناريو، يعرف ما الذي يجعل المشروع ينجح.",
+      rdStat1: "قرّاء", rdStat2: "محاور في كل تقرير", rdStat3: "تقرير مكتوب لكل نص",
+
+      rdMethodEyebrow: "المنهج", rdMethodH: "كيف نقرأ نصك",
+      rdM1T: "خبرة عملية",
+      rdM1B: "قرّاء يجمعون بين العمل الفعلي في الكتابة والإخراج والإنتاج، وفهم عميق لمتطلبات السوق العربي والعالمي.",
+      rdM2T: "معايير واضحة",
+      rdM2B: "كل نص يُقرأ عبر ثمانية محاور ثابتة، فتعرف موقع نصك بدقة وتتخذ قرارات تطوير واضحة.",
+      rdM3T: "ما بعد القراءة",
+      rdM3B: "التقرير ليس نهاية الطريق. المشاريع التي تصل إلى الجاهزية نأخذها إلى جهات في الصناعة.",
+
+      widTag1: "الأثر العاطفي", widTag2: "البناء السردي",
+      hasanTag1: "تطوير المشاريع", hasanTag2: "الاستراتيجية والإنتاج",
+      haifaTag1: "الدراما النفسية والاجتماعية", haifaTag2: "الشخصيات",
+      fajrTag1: "بناء القصة", fajrTag2: "اللغة البصرية",
+
+      rdAxesEyebrow: "ما الذي يصلك", rdAxesH: "تقرير مفصّل عبر ثمانية محاور",
+      rdCtaH: "نصك يستحق أن يقرأه من يعرف ما الذي تحاول قوله",
+
       /* ---- landing v2 ------------------------------------------------- */
       navAboutUs: "من نحن", navCoverage: "تغطية النصوص",
       btnSubmit: "قدّم نصك", brand: "سين ون", riyal: "ريال",
@@ -249,7 +271,7 @@
 
 
       // ---- readers.html (About Us / Reader Team) ----
-      docTitleReaders: "تعرّف على قصتنا | Scene One",
+      docTitleReaders: "من يقرأ نصك | Scene One",
       // Video hero (2026-08-13). auHeroTitleHtml is the PREVIOUS title, kept
       // because nothing references it now — delete it if the hero settles.
       auHeroTitleHtml: "تعرف على<br>قصتنا",
@@ -443,6 +465,28 @@
       btnViewCoverage: "View Coverages", btnGuide: "How the story began",
       heroNdaHtml: "Your script is protected here, and we encourage you to register it with <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\">SAIP</a>.",
       partnerBadge: "Accredited partner",
+
+      /* ---- readers v2 -------------------------------------------------- */
+      rdEyebrow: "The team",
+      rdTitle: "Who reads your script",
+      rdLede: "We don't offer an impressionistic read. We offer an industry evaluation held to the standards of professional reading rooms. Whoever reads your script here is a filmmaker or a screenwriter, and knows what makes a project work.",
+      rdStat1: "readers", rdStat2: "axes in every report", rdStat3: "written report per script",
+
+      rdMethodEyebrow: "The method", rdMethodH: "How we read your script",
+      rdM1T: "Working experience",
+      rdM1B: "Readers who combine real work in writing, directing and producing with a close understanding of what the Arab and international markets ask for.",
+      rdM2T: "Clear standards",
+      rdM2B: "Every script is read across the same eight axes, so you know exactly where yours stands and can make clear decisions about developing it.",
+      rdM3T: "After the read",
+      rdM3B: "The report is not the end of the road. Projects that reach readiness are taken to parties in the industry.",
+
+      widTag1: "Emotional impact", widTag2: "Narrative structure",
+      hasanTag1: "Project development", hasanTag2: "Strategy & production",
+      haifaTag1: "Psychological & social drama", haifaTag2: "Character",
+      fajrTag1: "Story construction", fajrTag2: "Visual language",
+
+      rdAxesEyebrow: "What you receive", rdAxesH: "A detailed report across eight axes",
+      rdCtaH: "Your script deserves a reader who understands what you are trying to say",
 
       /* ---- landing v2 ------------------------------------------------- */
       navAboutUs: "About", navCoverage: "Coverage",
@@ -652,7 +696,7 @@
 
 
       // ---- readers.html (About Us / Reader Team) ----
-      docTitleReaders: "About Us | Scene One",
+      docTitleReaders: "Who Reads Your Script | Scene One",
       auHeroTitleHtml: "About Us",
       auHeroTitle: "Here<br>Scene One",
       auHeroBadge: "Professional script coverage<br>for screenwriters",

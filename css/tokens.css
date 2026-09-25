@@ -1,0 +1,28 @@
+/* ============================================================================
+   Shared design tokens for the redesigned pages (the landing and /readers).
+
+   These used to sit inside css/landing-v2.css. They moved here when the readers
+   page was rebuilt to the same design language: two copies of a palette is how
+   two pages stop matching, and the accent in particular has to be one value —
+   it is the only colour a reader notices moving between pages.
+
+   The horizontal container is deliberately NOT a number of its own. It aliases
+   --sec-x and --container from styles.css, which is what the fixed nav is built
+   from, so a page's body and the bar above it cannot drift apart.
+   ========================================================================= */
+
+.landing,
+.rd2 {
+  --lx-cream:      #f9f4ef;  /* the page ground for every light section       */
+  --lx-white:      #ffffff;  /* raised cards only, so they lift off the cream */
+  --lx-black:      #000000;
+  --lx-ink:        #2a2622;  /* headings and body on light                    */
+  --lx-red:        #cd2e07;  /* eyebrows, roles, the one accent rule          */
+  --lx-muted:      #7a736a;  /* body copy that sits under a heading           */
+  --lx-muted-2:    #8c877f;  /* captions, the quietest tier                   */
+  --lx-line:       #d9d4cc;  /* rules over columns, card borders              */
+  --lx-line-soft:  #e2dcd3;  /* separators inside a card                      */
+
+  --lx-x: var(--sec-x);
+  --lx-w: var(--container);
+}
