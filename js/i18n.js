@@ -41,7 +41,7 @@
       /* ---- readers v2 -------------------------------------------------- */
       rdEyebrow: "الفريق",
       rdTitle: "من يقرأ نصك",
-      rdLede: "لا نقدّم قراءة انطباعية، بل تقييمًا صناعيًا مبنيًا على معايير غرف القراءة الاحترافية. من يقرأ نصك هنا صانع أفلام أو كاتب سيناريو، يعرف ما الذي يجعل المشروع ينجح.",
+      rdLede: "يقرأ نصك صانع أفلام أو كاتب سيناريو، بالمعايير نفسها التي تُقرأ بها المشاريع في غرف التطوير، ويكتب لك أين تكمن قوة نصك وما الذي يحتاج تطويرًا. وبعد التقرير، نكمل تطوير المشاريع التي تستحق مع الكاتب والمخرج، ثم نقدّمها لجهات الإنتاج لدعم كاتبها.",
       rdStat1: "قرّاء", rdStat2: "محاور في كل تقرير", rdStat3: "تقرير مكتوب لكل نص",
 
       rdMethodEyebrow: "المنهج", rdMethodH: "كيف نقرأ نصك",
@@ -469,7 +469,7 @@
       /* ---- readers v2 -------------------------------------------------- */
       rdEyebrow: "The team",
       rdTitle: "Who reads your script",
-      rdLede: "We don't offer an impressionistic read. We offer an industry evaluation held to the standards of professional reading rooms. Whoever reads your script here is a filmmaker or a screenwriter, and knows what makes a project work.",
+      rdLede: "Your script is read by a filmmaker or a screenwriter, against the same standards projects meet in development rooms, and they write down where its strength lies and what needs work. After the report, we carry on developing the projects that earn it with the writer and the director, then take them to production companies to back the writer.",
       rdStat1: "readers", rdStat2: "axes in every report", rdStat3: "written report per script",
 
       rdMethodEyebrow: "The method", rdMethodH: "How we read your script",
