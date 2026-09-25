@@ -45,7 +45,16 @@
 .lx-foot__col a, .lx-foot__col p { margin: 0; font-size: 13.5px; color: rgba(255,255,255,.62); }
 .lx-foot__col a:hover { color: #fff; }
 .lx-foot__lbl { color: rgba(255,255,255,.38) !important; font-size: 12px !important; }
-.lx-foot__mail { color: var(--lx-red) !important; word-break: break-all; }
+/* The address carries dir="ltr" so the string is never reordered, which also
+   makes its text align left inside a box the flex column stretches to full
+   width — leaving it 37px adrift of the label above it in Arabic. Shrinking
+   the box to its text puts the two on the same edge, and mirrors on its own. */
+.lx-foot__mail {
+  color: var(--lx-red) !important;
+  align-self: flex-start;
+  max-inline-size: 100%;
+  word-break: break-all;
+}
 .lx-foot__bar {
   display: flex;
   flex-wrap: wrap;
