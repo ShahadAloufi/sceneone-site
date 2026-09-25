@@ -33,7 +33,7 @@
       overlayContact: "تواصل", overlaySocial: "حساباتنا",
 
       heroTitle: "نكتشف الأصوات التي تستحق أن تصل إلى الشاشة",
-      heroSub: "نرافق الكتّاب وصنّاع الأفلام في تطوير أعمالهم، وتوضيح رؤيتهم، وفتح الطريق أمامهم نحو الفرص الحقيقية داخل الصناعة.<br>من النص… إلى الفيلم<br>ومن الموهبة… إلى الشاشة",
+      heroSub: "نرافق الكتّاب وصنّاع الأفلام في تطوير أعمالهم، وصقل رؤيتهم، وتهيئة نصوصهم لتكون جاهزة للصناعة، وفتح الطريق أمامهم نحو الفرص الحقيقية داخل الصناعة.<br>من النص… إلى الفيلم<br>ومن الموهبة… إلى الشاشة",
       btnViewCoverage: "عرض التغطيات", btnGuide: "كيف بدأت الحكاية",
       heroNdaHtml: "نصك محمي هنا، ونشجعك على تسجيله لدى <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\">SAIP</a>.",
       partnerBadge: "شريك معتمد لدى جمعية السينما",
@@ -461,7 +461,7 @@
       overlayContact: "Contact", overlaySocial: "Follow Us",
 
       heroTitle: "We find the voices that deserve to reach the screen",
-      heroSub: "We work alongside writers and filmmakers to develop their work, clarify their vision, and open the way to real opportunities inside the industry.<br>From script… to film<br>From talent… to screen",
+      heroSub: "We work alongside writers and filmmakers to develop their work, sharpen their vision, and get their scripts industry-ready, opening the way to real opportunities inside the industry.<br>From script… to film<br>From talent… to screen",
       btnViewCoverage: "View Coverages", btnGuide: "How the story began",
       heroNdaHtml: "Your script is protected here, and we encourage you to register it with <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\">SAIP</a>.",
       partnerBadge: "Accredited partner",
