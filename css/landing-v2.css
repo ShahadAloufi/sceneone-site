@@ -190,10 +190,11 @@
   gap: 10px 28px;
   padding-block: 16px;
   padding-inline: max(var(--lx-x), calc((100% - var(--lx-w)) / 2));
-  background: rgba(0,0,0,.55);
-  border-block-start: 1px solid rgba(255,255,255,.08);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  /* No plate, no hairline, no blur: the line sits on the video itself.
+     .hero__shade already ends at an opaque --bg, so the foot of the hero is
+     dark and the text is legible on it — the strip's own 55% black on top of
+     that was a second darkening, and its hard top edge read as a black band
+     cut across the picture. */
 }
 .hero__strip p { margin: 0; font-size: 13px; line-height: 1.7; color: rgba(255,255,255,.62); }
 .hero__strip a { color: rgba(255,255,255,.92); text-decoration: underline; text-underline-offset: 3px; }
