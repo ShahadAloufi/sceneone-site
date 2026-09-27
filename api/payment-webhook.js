@@ -128,7 +128,7 @@ module.exports = async (req, res) => {
   const expectLive = String(process.env.MOYASAR_SECRET_KEY || "").startsWith("sk_live_");
   if (typeof payment.live === "boolean" && payment.live !== expectLive) {
     console.log("payment-webhook: ignoring " + (payment.live ? "LIVE" : "TEST") +
-                " payment " + payment.id + " — this deployment handles " +
+                " payment " + payment.id + ", this deployment handles " +
                 (expectLive ? "live" : "test") + " only");
     return res.status(200).json({ ok: true, ignored: "wrong_environment" });
   }

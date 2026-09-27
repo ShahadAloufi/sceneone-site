@@ -341,7 +341,7 @@ module.exports = async (req, res) => {
       return res.status(400).json({
         message: row.film_type === "feature"
           ? "الحد الأدنى لتغطية الفيلم الطويل " + rule.min + " صفحة. ملفك " + billablePages +
-            " صفحة — اختر تغطية الفيلم القصير."
+            " صفحة، اختر تغطية الفيلم القصير."
           : "الحد الأدنى " + rule.min + " صفحات. ملفك " + billablePages + " صفحة.",
       });
     }
@@ -349,7 +349,7 @@ module.exports = async (req, res) => {
       return res.status(400).json({
         message: row.film_type === "short"
           ? "الحد الأقصى للفيلم القصير " + rule.max + " صفحة. ملفك " + billablePages +
-            " صفحة — اختر تغطية الفيلم الطويل."
+            " صفحة، اختر تغطية الفيلم الطويل."
           : "الحد الأقصى " + rule.max + " صفحة. ملفك " + billablePages + " صفحة.",
       });
     }

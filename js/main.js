@@ -1,5 +1,5 @@
 /* ===========================================================
-   Scene One — interactions
+   Scene One, interactions
    Menu overlay · FAQ accordion · cards hover · about-coverage TOC scroll-spy
    =========================================================== */
 (function () {
@@ -166,7 +166,7 @@
      always: iOS Low Power Mode refuses outright, and per-site "Auto-Play: Never"
      and some data savers do the same.
 
-     There used to be a reveal step here — the video sat at opacity:0 until the
+     There used to be a reveal step here, the video sat at opacity:0 until the
      `playing` event. That was the bug: WebKit gates muted autoplay on the
      element actually being rendered, so hiding it until it played meant it never
      played, and only a click could start it. The element is visible from the

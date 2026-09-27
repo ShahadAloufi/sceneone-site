@@ -201,7 +201,7 @@ async function readThread(req, res, headers, url) {
 }
 
 /* ---------- POST { q, upload }: mint a signed upload URL ----------
-   The reader answering is not signed in — they arrive on a tokenised link — so
+   The reader answering is not signed in, they arrive on a tokenised link, so
    they cannot satisfy the `attachments` bucket's admin-only RLS. The service
    role mints a one-shot upload URL instead and the browser PUTs straight to
    Storage, which keeps the file off this function entirely: a 10MB body would
@@ -409,7 +409,7 @@ async function answerQuestion(req, res, headers, url, token, answer, attachment)
     // this database. Nothing the reader does will fix that, so say so here
     // rather than leaving it as a generic "try again" in the logs.
     if (detail && detail.indexOf("answer_attachment") !== -1) {
-      console.error("answer patch: report_questions.answer_attachment is missing — " +
+      console.error("answer patch: report_questions.answer_attachment is missing, " +
                     "run the ALTER TABLE in supabase/schema.sql");
       return res.status(502).json({ message: "تعذّر إرفاق الملف، أرسل ردك بدون مرفق" });
     }

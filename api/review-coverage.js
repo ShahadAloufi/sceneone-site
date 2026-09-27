@@ -95,7 +95,7 @@ function sanitizeComments(raw) {
     if (total > MAX_TOTAL_LEN) {
       throw tooLong(
         "مجموع الملاحظات تجاوز الحد التقني (" + MAX_TOTAL_LEN.toLocaleString("en") +
-        " حرف). لم يتم الحفظ — لا تغلق الصفحة حتى لا يضيع النص."
+        " حرف). لم يتم الحفظ، ولا تغلق الصفحة حتى لا يضيع النص."
       );
     }
     out[key] = text;
@@ -437,7 +437,7 @@ module.exports = async (req, res) => {
         delivered_at: new Date().toISOString(),
         delivered_by: gate.user.id,
         review_note: null,
-        review_comments: null, // spent — the revision they described is done
+        review_comments: null, // spent, the revision they described is done
       }),
     }
   );

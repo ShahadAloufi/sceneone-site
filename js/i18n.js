@@ -1,5 +1,5 @@
 /* ===========================================================
-   Scene One — public-site i18n (landing page first; other public
+   Scene One, public-site i18n (landing page first; other public
    pages follow the same data-i18n pattern once translated).
    Mirrors the dict + data-i18n + applyLang() convention already
    used in js/admin.js / js/coverage.js, with its own storage key
@@ -259,7 +259,7 @@
       faqQ2: "ما هي خدمات التغطية التي نقدمها؟",
       faqA2: "نقدّم حاليًا نوعين من الملاحظات النقدية: تغطية النصوص السينمائية، حيث يدوّن الناقد ملاحظات بنّاءة تشمل الفكرة والموضوع (Premise & Theme)، عنصر الجذب (Hook)، المخاطر وتطور الحبكة (Stakes & Plot)، الشخصيات، الحوار (Dialogue)، البنية والإيقاع (Structure & Pace)، قابلية الإنتاج (Producibility)، والعرض العام، مع خاتمة تلخّص أبرز نقاط القوة والجوانب التي تحتاج إلى تحسين. وتغطية المعالجات (Treatments)، حيث يدوّن الناقد ملاحظات تمتد إلى صفحتين تشمل المحتوى، والـ logline، وبنية القصة، وأدوار الشخصيات، واقتراحات لتحسين عرضك التقديمي (Pitch).",
       faqQ3: "لماذا أحتاج إلى خدمة التغطية (Coverage)؟",
-      faqA3: "من الصعب النظر إلى عملك بموضوعية تامة عندما تكون أنت المؤلف، لذلك توفّر خدمة التغطية نظرة موضوعية من شخص يفهم متطلبات الصناعة. وعند إرسال نصّك إلى استوديو أو وكيل أو منتج، فلن تتمكّن من الاطلاع على ملاحظات القارئ، مما يعني أنك لن تحصل على فرصة لمعالجة نقاط الضعف — أما من خلال هذه الخدمة فستحصل على هذه الفرصة.",
+      faqA3: "من الصعب النظر إلى عملك بموضوعية تامة عندما تكون أنت المؤلف، لذلك توفّر خدمة التغطية نظرة موضوعية من شخص يفهم متطلبات الصناعة. وعند إرسال نصّك إلى استوديو أو وكيل أو منتج، فلن تتمكّن من الاطلاع على ملاحظات القارئ، مما يعني أنك لن تحصل على فرصة لمعالجة نقاط الضعف، أما من خلال هذه الخدمة فستحصل على هذه الفرصة.",
       faqQ4: "من هم Scene One؟",
       faqA4: "تأسست Scene One بهدف مساعدة كتّاب السيناريو الصاعدين على دخول صناعة الأفلام.",
 
@@ -406,7 +406,7 @@
       privDataTitle: "البيانات التي نجمعها",
       privDataHtml: "<p><span class=\"gold\" style=\"font-weight:500\">بيانات تقدّمها أنت مباشرة: </span>الاسم، البريد الإلكتروني، رقم الجوال، والنصّ السينمائي الذي تقدّمه، إضافةً إلى أيّ معلومات إضافية تختار مشاركتها معنا في الملف الشخصي أو عبر التواصل.</p>" +
         "<p><span class=\"gold\" style=\"font-weight:500\">بيانات تُجمَع تلقائياً: </span>عنوان IP، نوع الجهاز والمتصفّح، وقت الزيارة، الصفحات التي اطّلعت عليها، وذلك لأغراض تحسين تجربة الاستخدام والأمن السيبراني فقط.</p>" +
-        "<p><span class=\"gold\" style=\"font-weight:500\">بطاقة العضوية: </span>إذا اخترت طلب خصم أعضاء جمعية السينما، نحفظ رقم عضويتك وصورة البطاقة التي ترفعها. تُستخدم للتحقق من العضوية فقط، ويطّلع عليها فريق Scene One وحده — لا يراها القارئ المكلَّف بنصّك — ويمكنك طلب حذفها في أيّ وقت.</p>",
+        "<p><span class=\"gold\" style=\"font-weight:500\">بطاقة العضوية: </span>إذا اخترت طلب خصم أعضاء جمعية السينما، نحفظ رقم عضويتك وصورة البطاقة التي ترفعها. تُستخدم للتحقق من العضوية فقط، ويطّلع عليها فريق Scene One وحده، ولا يراها القارئ المكلَّف بنصّك، ويمكنك طلب حذفها في أيّ وقت.</p>",
       privUseTitle: "كيف نستخدم بياناتك",
       privUseLead: "نستخدم بياناتك للأغراض التالية فقط:",
       privUseHtml: "<li>تقديم الخدمة لك وقراءة نصّك وإصدار تقريرك.</li>" +
@@ -461,7 +461,7 @@
       overlayContact: "Contact", overlaySocial: "Follow Us",
 
       heroTitle: "We find the voices and stories that deserve to reach the screen",
-      heroSub: "We work alongside writers and filmmakers to develop their work, sharpen their vision, and prepare their projects for the industry — opening the way to real opportunities.",
+      heroSub: "We work alongside writers and filmmakers to develop their work, sharpen their vision, and prepare their projects for the industry, opening the way to real opportunities.",
       btnViewCoverage: "View Coverages", btnGuide: "How the story began",
       heroNdaHtml: "Your script is protected here. We also encourage you to register your work with the <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\">Saudi Authority for Intellectual Property (SAIP)</a>.",
       partnerBadge: "Accredited partner",
@@ -504,7 +504,7 @@
 
       doEyebrow: "What we do", doH: "We discover. We develop. We connect.",
       do1T: "Discover", do1B: "We look for distinctive voices and compelling stories before the industry discovers them.",
-      do2T: "Develop", do2B: "We read each project as a film — not merely as a document — and work with the writer toward its strongest version.",
+      do2T: "Develop", do2B: "We read each project as a film, not merely as a document, and work with the writer toward its strongest version.",
       do3T: "Connect", do3B: "We bring strong projects to the people who can help bring them to life.",
 
       lookEyebrow: "Before you send your script", lookH: "What we are looking for",
@@ -530,10 +530,10 @@
       svc2B: "A professional coverage report for your feature screenplay that gives you a clear assessment of its strengths, development needs and industry readiness, with practical notes you can act on. Outstanding scripts may also be nominated for sharing with industry partners.", svc2Dur: "Up to four weeks",
       svc3T: "Treatment coverage", svc3Meta: "Before it becomes a screenplay", svc3Num: "150",
       svc3B: "An early assessment of your treatment, focused on how ready it is to become a full screenplay.", svc3Dur: "7–12 working days",
-      svcNote: "Once you receive your first report, you may resubmit a developed version of the same project — Draft 2 — free of charge.",
+      svcNote: "Once you receive your first report, you may resubmit a developed version of the same project (Draft 2) free of charge.",
 
       jnEyebrow: "The journey", jnH: "From script to project",
-      jnSub: "Six steps every project takes with us — from the moment it arrives to the producer's table.",
+      jnSub: "Six steps every project takes with us, from the moment it arrives to the producer's table.",
       jn1N: "01", jn1T: "Submission", jn1B: "The writer uploads the script and provides the essential details about the project.",
       jn2N: "02", jn2T: "Reading and coverage", jn2B: "A specialist reader reads the script and prepares a professional report on its key elements.",
       jn3N: "03", jn3T: "Receiving the report", jn3B: "The writer receives the report and begins developing the script based on its recommendations.",
@@ -676,9 +676,9 @@
       faqCatPricing: "About Pricing",
       faqCatProcess: "About Process",
       faqQ6: "How long does coverage take, and what happens after delivery?",
-      faqA6: "Delivery is usually 10 to 15 days, counted from the moment your script is assigned to a reader — you get an email when that happens. After delivery the script's journey continues: the highest-rated scripts are nominated for hosting, with the writer's explicit written consent, then shared with industry partners.",
+      faqA6: "Delivery is usually 10 to 15 days, counted from the moment your script is assigned to a reader, and you get an email when that happens. After delivery the script's journey continues: the highest-rated scripts are nominated for hosting, with the writer's explicit written consent, then shared with industry partners.",
       faqQ5: "How is coverage priced?",
-      faqA5: "Short and feature screenplays are priced differently: a short (10-40 pages) is charged per page, while a feature (80-120 pages) falls into a range set by its length. The figures shown in the packages section are launch prices, and you may resubmit a developed version of the same project — Draft 2 — free of charge once you receive your first report.",
+      faqA5: "Short and feature screenplays are priced differently: a short (10-40 pages) is charged per page, while a feature (80-120 pages) falls into a range set by its length. The figures shown in the packages section are launch prices, and you may resubmit a developed version of the same project (Draft 2) free of charge once you receive your first report.",
       faqQ1: "What is script coverage?",
       faqA1: "Script coverage is a detailed analysis of a writer's work, prepared by a specialized reader. The practice began in studios, where readers were hired to read large volumes of scripts on behalf of producers. Our coverage service is different: our core goal is to help writers develop their scripts to a stage where they're ready to send to industry partners, with a candid assessment of what's working, what isn't, and clear reasoning behind every note.",
       faqQ2: "What coverage services do we offer?",
@@ -826,7 +826,7 @@
       privDataTitle: "Data We Collect",
       privDataHtml: "<p><span class=\"gold\" style=\"font-weight:500\">Data you provide directly: </span>Your name, email address, mobile number, the screenplay you submit, and any additional information you choose to share in your profile or through communications with us.</p>" +
         "<p><span class=\"gold\" style=\"font-weight:500\">Data collected automatically: </span>IP address, device and browser type, access time, and pages visited, strictly for improving user experience and ensuring cybersecurity.</p>" +
-        "<p><span class=\"gold\" style=\"font-weight:500\">Membership card: </span>If you request the Cinema Association member discount, we store your membership number and the card image you upload. It is used only to verify membership, is visible to the Scene One team alone — never to the reader assigned to your script — and you may ask us to delete it at any time.</p>",
+        "<p><span class=\"gold\" style=\"font-weight:500\">Membership card: </span>If you request the Cinema Association member discount, we store your membership number and the card image you upload. It is used only to verify membership, is visible to the Scene One team alone, never to the reader assigned to your script, and you may ask us to delete it at any time.</p>",
       privUseTitle: "How We Use Your Data",
       privUseLead: "We use your data solely for the following purposes:",
       privUseHtml: "<li>Providing the Service, including reading your script and issuing your report.</li>" +

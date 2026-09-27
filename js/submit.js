@@ -1,5 +1,5 @@
 /* ===========================================================
-   Scene One — Submission pages (script AND treatment)
+   Scene One, Submission pages (script AND treatment)
    Menu overlay · toasts · IP toggle · file dropzone · upload
 
    Flow: the browser uploads the script file DIRECTLY to the private
@@ -93,7 +93,7 @@
   /* ---------- CONSTANTS (mirror the server allowlists) ---------- */
   var ALLOWED_EXT = ((formEl && formEl.getAttribute("data-accept")) || "pdf,fdx,fountain,docx,txt")
     .split(",").map(function (x) { return x.trim().toLowerCase(); }).filter(Boolean);
-  var MAX_BYTES = 25 * 1024 * 1024; // 25 MiB — matches the bucket's file_size_limit
+  var MAX_BYTES = 25 * 1024 * 1024; // 25 MiB, matches the bucket's file_size_limit
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   function fileExt(name) {
@@ -198,7 +198,7 @@
   }
 
   /* ---------- MEMBERSHIP CARD (Cinema Association) ----------
-     Optional, and present on the SCRIPT form only — js/submit.js also runs the
+     Optional, and present on the SCRIPT form only, js/submit.js also runs the
      treatment form, where none of these elements exist and every block below
      no-ops.
 
@@ -291,7 +291,7 @@
   /* ---------- IMMEDIATE FILE FEEDBACK ----------
      Tell the writer the moment the file lands, not after they have filled the
      rest of the form and pressed submit. Two things are checked here, and both
-     are re-checked server-side — this is only about WHEN the writer finds out.
+     are re-checked server-side, this is only about WHEN the writer finds out.
 
        • the extension, against the form's own data-accept list
        • the page count, against the cap on the selected tier (data-cap on the
@@ -350,7 +350,7 @@
     var exts = acceptedExts();
     if (fileInput) fileInput.setAttribute("accept", exts.map(function (e) { return "." + e; }).join(","));
     var hint = document.querySelector('.sub-field[data-field="file"] .sub-drop__hint');
-    if (hint) hint.textContent = exts.join(" · ").toUpperCase() + " — بحد أقصى 25MB";
+    if (hint) hint.textContent = exts.join(" · ").toUpperCase() + ", بحد أقصى 25MB";
   }
   function showFileError(msg) {
     if (fileErrEl) fileErrEl.textContent = msg || FILE_ERR_DEFAULT;
@@ -405,7 +405,7 @@
             listTotal + " ريال");
         }
         return showQuote("نصك " + billable + " صفحة × " + perPage.rate + " ريال = " +
-          listTotal + " ريال — بعد خصم العضوية " + MEMBER_DISCOUNT_PCT + "%: " +
+          listTotal + " ريال، بعد خصم العضوية " + MEMBER_DISCOUNT_PCT + "%: " +
           riyals(listTotal * (100 - MEMBER_DISCOUNT_PCT) / 100) + " ريال");
       }
 

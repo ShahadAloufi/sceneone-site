@@ -1,5 +1,5 @@
 /* ===========================================================
-   Scene One — shared coverage-report renderer
+   Scene One, shared coverage-report renderer
    Single source of truth for the bilingual report markup, used by
    BOTH the reader workspace (coverage.js) and the public, read-only
    report page the writer receives a link to (report.js). Data in →
@@ -25,7 +25,7 @@
     });
   }
   function val(x, empty) {
-    return x && String(x).trim() ? esc(x) : '<span class="empty">' + (empty || "—") + "</span>";
+    return x && String(x).trim() ? esc(x) : '<span class="empty">' + (empty || "–") + "</span>";
   }
   function today() {
     return new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" });

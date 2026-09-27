@@ -1,5 +1,5 @@
 /* ===========================================================
-   Scene One — public Supabase configuration (single source of truth)
+   Scene One, public Supabase configuration (single source of truth)
    -----------------------------------------------------------
    Loaded by admin.html BEFORE any page script (and by the submission
    page once its frontend is rebuilt).

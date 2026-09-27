@@ -1,5 +1,5 @@
 /* ===========================================================
-   Scene One — public report page (report.html)
+   Scene One, public report page (report.html)
    Read-only. Loads a completed coverage by its unguessable token
    (?t=…) via /api/report and renders it with the shared renderer.
    No login: the token in the emailed link is the authorization.
@@ -47,7 +47,7 @@
 
   /* ---------- NOTICE ----------
      Trouble that is not fatal: the report is intact, something the writer asked
-     for failed. Replaces the alert() this page used for both cases — unstyled
+     for failed. Replaces the alert() this page used for both cases, unstyled
      browser chrome, blocking, and for the download it fired on arrival, which is
      the worst moment for a modal.
 
@@ -91,7 +91,7 @@
   // with headless Chrome — the only path that renders Arabic correctly.
   function fileName(u) {
     var t = data && data.submission ? (data.submission.titleEn || data.submission.titleAr) : "";
-    var base = t ? u.fileBase + " — " + t : u.fileBase;
+    var base = t ? u.fileBase + ", " + t : u.fileBase;
     return base.replace(/[\\/:*?"<>|]+/g, "").trim() + ".pdf";
   }
   $("saveBtn").addEventListener("click", async function () {

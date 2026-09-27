@@ -1,5 +1,5 @@
 /* ===========================================================
-   Scene One — Coverage workspace
+   Scene One, Coverage workspace
    Opened from the admin dashboard (coverage.html?id=<submission id>).
    The orange-edged panel is pulled read-only from the writer's
    submission; the reader writes the evaluation below, which autosaves
@@ -90,7 +90,7 @@
       attachmentHint: "Optional. A guide or reference the writer can download with their report.",
       attachAdd: "Add attachment", attachRemove: "Remove",
       attachTooBig: "That file is over 10MB.", attachFailed: "Could not upload that file.",
-      ipYes: "Registered", ipNo: "Not registered", dl: "Download script", untitled: "Untitled", dash: "—", pagesUnit: "pages",
+      ipYes: "Registered", ipNo: "Not registered", dl: "Download script", untitled: "Untitled", dash: "–", pagesUnit: "pages",
       fileLocked: "Locked", fileLockedTip: "Another reader is assigned to this script.",
       saving: "Saving…", saved: "Saved", saveFailed: "Save failed", loaded: "Loaded", newCov: "New coverage", viewOnly: "View only",
       hintOverride: function (a) { return "Overriding the suggested " + a; }, hintManual: "Manual rating", hintAuto: "Using the suggested score",
@@ -158,7 +158,7 @@
       attachmentHint: "اختياري. دليل أو مرجع يمكن للكاتب تحميله مع تقريره.",
       attachAdd: "إضافة مرفق", attachRemove: "إزالة",
       attachTooBig: "حجم الملف يتجاوز 10 ميغابايت.", attachFailed: "تعذّر رفع الملف.",
-      ipYes: "مسجل", ipNo: "غير مسجل", dl: "تحميل النص", untitled: "بدون عنوان", dash: "—", pagesUnit: "صفحة",
+      ipYes: "مسجل", ipNo: "غير مسجل", dl: "تحميل النص", untitled: "بدون عنوان", dash: "–", pagesUnit: "صفحة",
       fileLocked: "مقفل", fileLockedTip: "هذا النص مُسند إلى قارئ آخر.",
       saving: "جارٍ الحفظ…", saved: "تم الحفظ", saveFailed: "فشل الحفظ", loaded: "تم التحميل", newCov: "تقييم جديد", viewOnly: "عرض فقط",
       hintOverride: function (a) { return "يتجاوز الدرجة المقترحة " + a; }, hintManual: "تقييم يدوي", hintAuto: "استخدام الدرجة المقترحة",
@@ -294,8 +294,8 @@
   // back to the reader against the exact point each one is about.
   var reviewComments = {};
   var evalNoteEls = {};          // name → { wrap, add, box, lbl, ta, del }
-  var isStaff = false;           // admin / super_admin — the quality reviewer
-  var isLead = false;            // lead_reader — reviews others' work, self-delivers their own
+  var isStaff = false;           // admin / super_admin, the quality reviewer
+  var isLead = false;            // lead_reader, reviews others' work, self-delivers their own
   var canReview = false;         // may I approve / bounce THIS coverage?
   var assignedToMe = false;      // I'm the primary assignee or co-reader of this script
   var scriptReadable = false;    // may I open the writer's script file? (staff / assigned / unclaimed)
@@ -390,14 +390,14 @@
   }
 
   /* ---------- ATTACHMENT FOR THE WRITER ----------
-     A reader can attach one resource to the coverage — a screenwriting guide, a
-     formatting reference — which travels with the delivered report: named in the
+     A reader can attach one resource to the coverage, a screenwriting guide, a
+     formatting reference, which travels with the delivered report: named in the
      writer's email and downloadable from their report page.
 
      Stored in its OWN private bucket, never in `scripts`: that bucket holds the
      writer's IP under per-assignment RLS, and a shared guide has neither the same
      owner nor the same access rule. The writer has no account, so they never read
-     the bucket directly — /api/report mints a short-lived signed URL against
+     the bucket directly, /api/report mints a short-lived signed URL against
      their report token.
 
      The reference lives in `coverages.data.attachment` ({name, path}), so it
@@ -525,8 +525,8 @@
 
   /* ---------- per-point notes: autosave ----------
      The notes used to live only in this tab until Request Revision carried them
-     across, so a reviewer who wrote several and then approved — or just closed
-     the tab — lost them. They now persist as they are typed, debounced the same
+     across, so a reviewer who wrote several and then approved, or just closed
+     the tab, lost them. They now persist as they are typed, debounced the same
      500ms as the reader's own coverage save.
 
      Goes through /api/review-coverage for the same reason the attachment does:
@@ -604,7 +604,7 @@
   function updateRating() {
     var auto = autoScore();
     var el = $("autoScore");
-    if (el) el.innerHTML = (auto == null ? "—" : auto) + '<span class="den"> / 10</span>';
+    if (el) el.innerHTML = (auto == null ? "–" : auto) + '<span class="den"> / 10</span>';
     var hint = $("overrideHint");
     if (hint) {
       var u = UI[UILANG];
@@ -707,12 +707,12 @@
      Attached to EVERY authored section: each evaluation point, each market
      subsection, the synopsis, the two overall fields and the verdict summary.
      They used to be on the evaluation points alone, on the reasoning that a note
-     elsewhere had nothing specific to attach to — which real use disproved. A
+     elsewhere had nothing specific to attach to, which real use disproved. A
      reviewer with notes on the synopsis and three market subsections had nowhere
      to put them, so they wrote the lot into the single revision note and the
      reader got a wall of text instead of feedback beside the thing it was about.
 
-     Collapsed by default — the reviewer sees only an "Add comment" link until
+     Collapsed by default, the reviewer sees only an "Add comment" link until
      they decide a point needs one. A note that already exists always shows,
      expanded, whether it's the reviewer re-reading their own or the reader
      seeing what came back.
@@ -1074,7 +1074,7 @@
       if (!resp.ok) throw new Error(data.message || UI[UILANG].reviewFail);
       covStatus = data.status || (action === "approve" ? "approved" : "revision_requested");
       if (action === "request_revision") reviewNote = note;
-      else reviewComments = {}; // approved — the notes are spent, mirroring the server
+      else reviewComments = {}; // approved, the notes are spent, mirroring the server
       configureWorkspaceState();
       // The approve path can succeed while the writer's email fails — the server
       // says so with `emailed: false`. That needs a blocking alert, not a 2.2s

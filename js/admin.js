@@ -1,5 +1,5 @@
 /* ===========================================================
-   Scene One — Admin panel
+   Scene One, Admin panel
    Supabase Auth (email/password) · submissions inbox · claim/assign
    · super-admin management of admins.
    =========================================================== */
@@ -18,8 +18,8 @@
     en: { drama: "Drama", comedy: "Comedy", romance: "Romance", crime: "Crime", thriller: "Thriller", horror: "Horror", action: "Action", documentary: "Documentary", other: "Other" }
   };
   var FILM = {
-    ar: { feature: "روائي طويل", short: "قصير", short_under_30: "قصير (<30ص)", treatment_feature: "معالجة — طويل", treatment_short: "معالجة — قصير" },
-    en: { feature: "Feature", short: "Short", short_under_30: "Short (<30p)", treatment_feature: "Treatment — feature", treatment_short: "Treatment — short" }
+    ar: { feature: "روائي طويل", short: "قصير", short_under_30: "قصير (<30ص)", treatment_feature: "معالجة · طويل", treatment_short: "معالجة · قصير" },
+    en: { feature: "Feature", short: "Short", short_under_30: "Short (<30p)", treatment_feature: "Treatment · feature", treatment_short: "Treatment · short" }
   };
   var DRAFT = {
     ar: { first: "الأولى", revised: "مُنقّحة", final: "نهائية" },
@@ -50,7 +50,7 @@
   // Rows predating the field carry no level; the column shows an em dash.
   function levelCell(s) {
     var key = s.writer_level;
-    if (!key) return "<td class='adm-muted'>—</td>";
+    if (!key) return "<td class='adm-muted'>–</td>";
     var label = (LEVEL[ULANG] && LEVEL[ULANG][key]) || key;
     var tip = (LEVEL_TIP[ULANG] && LEVEL_TIP[ULANG][key]) || "";
     return "<td><span class='adm-level adm-level--" + esc(key) + "'" +
@@ -91,13 +91,13 @@
       thPayment: "الدفع",
       payPaid: "مدفوع", payUnpaid: "بانتظار الدفع", payRefunded: "مُسترد",
       payStale: "متروك", payStaleTip: "لم يُكمل الكاتب الدفع منذ أكثر من ٤٨ ساعة",
-      payRefundedFlag: "مُسترد — يحتاج قرارًا",
+      payRefundedFlag: "مُسترد، يحتاج قرارًا",
       // Cinema Association membership claim. "غير مُتحقَّق" is the point of the
       // column: the number is whatever the writer typed, so the card is the only
       // evidence and someone has to open it.
-      thMember: "العضوية", memberNone: "—", memberCard: "عرض البطاقة",
-      memberUnverified: "خصم 15% مُطبَّق — غير مُتحقَّق",
-      memberUnverifiedTip: "طُبِّق الخصم عند الرفع دون تحقق. افتح البطاقة للتأكد — المبلغ مدفوع بالفعل ولا يمكن تصحيحه تلقائيًا.",
+      thMember: "العضوية", memberNone: "–", memberCard: "عرض البطاقة",
+      memberUnverified: "خصم 15% مُطبَّق، غير مُتحقَّق",
+      memberUnverifiedTip: "طُبِّق الخصم عند الرفع دون تحقق. افتح البطاقة للتأكد، المبلغ مدفوع بالفعل ولا يمكن تصحيحه تلقائيًا.",
       memberRepeat: "رقم مستخدم في طلب آخر",
       memberCardFail: "تعذّر فتح البطاقة",
       payRefundedTip: "تم استرداد المبلغ والنص ما زال مُسندًا لقارئ. لم يُغيَّر الإسناد تلقائيًا.",
@@ -105,7 +105,7 @@
       subEmptyFilter: "لا توجد نصوص تطابق هذا العرض.",
       adminsTitle: "المشرفون", thName: "الاسم", thRole: "الدور", createTitle: "إضافة مشرف جديد",
       thAccess: "الدخول (٣٠ يوم)", accessNone: "لا يوجد", accessIps: function (n) { return n + " عنوان IP"; },
-      accessFlagTip: "عدد كبير من عناوين IP — قد يكون الحساب مُشاركًا", accessMore: "…والمزيد",
+      accessFlagTip: "عدد كبير من عناوين IP، قد يكون الحساب مُشاركًا", accessMore: "…والمزيد",
       fName: "الاسم", fRole: "الدور", roleAdmin: "مشرف", roleSuper: "مشرف أعلى", createBtn: "إنشاء المشرف",
       roleLeadReader: "قارئ رئيسي",
       roleSeniorReader: "قارئ أول", roleJuniorReader: "قارئ مبتدئ", assignCo: "إضافة قارئ مشارك",
@@ -130,7 +130,7 @@
       resetSubmit: "حفظ كلمة المرور", resetSaving: "جارٍ الحفظ...",
       resetShort: "كلمة المرور يجب أن تكون ٨ أحرف على الأقل.",
       resetMismatch: "كلمتا المرور غير متطابقتين.",
-      resetFail: "تعذّر تغيير كلمة المرور. قد يكون الرابط منتهي الصلاحية — اطلب رابطًا جديدًا.",
+      resetFail: "تعذّر تغيير كلمة المرور. قد يكون الرابط منتهي الصلاحية، اطلب رابطًا جديدًا.",
       resetExpired: "انتهت صلاحية رابط التعيين. اطلب رابطًا جديدًا من \"نسيت كلمة المرور؟\".",
       loadFail: "تعذّر تحميل النصوص.", loadingSubs: "جارٍ تحميل النصوص…", download: "تحميل", assignMe: "أسند إليّ",
       filmTypeConfirm: "تغيير نوع العمل لهذا النص؟ سيتغيّر معه عنوان التقرير ومدة التسليم. المبلغ المفوتر لا يتغيّر.",
@@ -187,10 +187,10 @@
       thPayment: "Payment",
       payPaid: "Paid", payUnpaid: "Awaiting payment", payRefunded: "Refunded",
       payStale: "Abandoned", payStaleTip: "The writer hasn't completed payment in over 48 hours",
-      payRefundedFlag: "Refunded — needs a decision",
-      thMember: "Membership", memberNone: "—", memberCard: "View card",
-      memberUnverified: "15% applied — unverified",
-      memberUnverifiedTip: "The discount was applied on upload, unchecked. Open the card to verify — the amount is already charged and cannot be corrected automatically.",
+      payRefundedFlag: "Refunded, needs a decision",
+      thMember: "Membership", memberNone: "–", memberCard: "View card",
+      memberUnverified: "15% applied, unverified",
+      memberUnverifiedTip: "The discount was applied on upload, unchecked. Open the card to verify, the amount is already charged and cannot be corrected automatically.",
       memberRepeat: "Number also used on another submission",
       memberCardFail: "Couldn't open the card",
       payRefundedTip: "This was refunded while still assigned to a reader. The assignment was deliberately left untouched.",
@@ -198,13 +198,13 @@
       subEmptyFilter: "No scripts match this view.",
       adminsTitle: "Admins", thName: "Name", thRole: "Role", createTitle: "Add a new admin",
       thAccess: "Logins (30d)", accessNone: "None", accessIps: function (n) { return n + (n === 1 ? " IP" : " IPs"); },
-      accessFlagTip: "Many distinct IPs — the account may be shared", accessMore: "…and more",
+      accessFlagTip: "Many distinct IPs, the account may be shared", accessMore: "…and more",
       fName: "Name", fRole: "Role", roleAdmin: "Admin", roleSuper: "Super admin", createBtn: "Create admin",
       roleLeadReader: "Lead Reader",
       roleSeniorReader: "Senior Reader", roleJuniorReader: "Junior Reader", assignCo: "Add co-reader",
       assignTwice: "You cannot assign yourself twice",
       assignBlocked: "You can't take a new assignment until you send your current coverage for quality review.",
-      claimBlockedLevel: "This script is from a professional or veteran writer — reserved for senior readers.",
+      claimBlockedLevel: "This script is from a professional or veteran writer, reserved for senior readers.",
       claimConfirm: "The writer will be notified that you started working on their script after 1 hour. You can release it before then. Continue?",
       covLocked: "Assign yourself first", covDenied: "You can only view this coverage after assigning yourself to the script.",
       phName: "Admin name", phPassword: "At least 8 characters",
@@ -220,7 +220,7 @@
       resetSubmit: "Save password", resetSaving: "Saving...",
       resetShort: "Password must be at least 8 characters.",
       resetMismatch: "The two passwords don't match.",
-      resetFail: "Couldn't change the password. The link may have expired — request a new one.",
+      resetFail: "Couldn't change the password. The link may have expired, request a new one.",
       resetExpired: "That reset link has expired. Request a new one from \"Forgot your password?\".",
       loadFail: "Failed to load submissions.", loadingSubs: "Loading submissions…", download: "Download", assignMe: "Assign to me",
       filmTypeConfirm: "Change this submission’s film type? The report header and the deadline follow it. The amount already invoiced is not changed.",
@@ -349,11 +349,11 @@
   // Single source of truth for both renderers below (they used to duplicate this).
   function deadlineParts(s, completed) {
     var due = deadlineDue(s);
-    var dateStr = due ? esc(fmtDate(due.toISOString())) : "—";
+    var dateStr = due ? esc(fmtDate(due.toISOString())) : "–";
     if (completed) return { dateStr: dateStr, cls: "adm-due--done", badge: t("dueDone") };
     // Claimed but still inside the release window, or not claimed at all.
     if (!due) {
-      return { dateStr: "—", cls: "adm-due--idle", badge: t("dueNotStarted"), tip: t("dueNotStartedTip") };
+      return { dateStr: "–", cls: "adm-due--idle", badge: t("dueNotStarted"), tip: t("dueNotStartedTip") };
     }
     // Whole days between today (midnight) and the due date (midnight).
     var d0 = new Date(); d0.setHours(0, 0, 0, 0);
@@ -827,7 +827,7 @@
           lock.title = t("fileLockedTip");
           fileCell.appendChild(lock);
         }
-      } else { fileCell.textContent = "—"; }
+      } else { fileCell.textContent = "–"; }
       // Assignee dropdown cell (tag with its submission so we can re-render the
       // whole column when my active-assignment state changes).
       var assigneeCell = tr.querySelector(".adm-assignee");
@@ -841,7 +841,7 @@
   // Uploaded PDF page count minus the title page (em dash when unavailable),
   // matching the coverage panel's convention.
   function pagesCount(s) {
-    if (!s.pages) return "—";
+    if (!s.pages) return "–";
     return String(s.pages > 1 ? s.pages - 1 : s.pages);
   }
 
@@ -981,7 +981,7 @@
     av.style.background = avatarColor(id);
     av.textContent = initial(name);
     av.title = !mine ? name
-      : name + " " + t("meParen") + " — " + t(releasable ? "releaseHint" : "lockedHint");
+      : name + " " + t("meParen") + ", " + t(releasable ? "releaseHint" : "lockedHint");
     av.setAttribute("aria-label", av.title);
     if (releasable) av.addEventListener("click", function () {
       if (which === "co") assignCo(s.id, null, cell, s);
@@ -1387,7 +1387,7 @@
     // Rows predating the payment gate carry no invoice at all. They were handled
     // under the old arrangement, so there is no payment to report on.
     if (!s.paid_at && !s.payment_invoice_id && s.status !== "pending_payment") {
-      return "<td class='adm-muted'>—</td>";
+      return "<td class='adm-muted'>–</td>";
     }
     var badge, cls, tip = "";
     if (s.refunded_at || s.status === "refunded") {
@@ -1446,7 +1446,7 @@
     var num = document.createElement("div");
     num.className = "adm-member__num";
     num.dir = "ltr";
-    num.textContent = s.member_number || "—";
+    num.textContent = s.member_number || "–";
     cell.appendChild(num);
 
     if (s.member_card_path) {
@@ -1517,7 +1517,7 @@
         "<td>" + esc(DRAFT[ULANG][s.draft] || s.draft) + "</td>" +
         "<td>" + esc(pagesCount(s)) + "</td>" +
         "<td class='adm-file'></td>" +
-        (readerNameCol ? "<td>" + esc(readerNameCol[s.id] || "—") + "</td>" : "<td class='adm-assignee2'>" + esc(adminsById[s.assigned_to] || "—") + "</td>") +
+        (readerNameCol ? "<td>" + esc(readerNameCol[s.id] || "–") + "</td>" : "<td class='adm-assignee2'>" + esc(adminsById[s.assigned_to] || "–") + "</td>") +
         (showPayment ? paymentCell(s) : "") +
         (showMember ? "<td class='adm-member'></td>" : "") +
         "<td class='adm-cov'></td>";
@@ -1534,7 +1534,7 @@
           lk.className = "adm-muted"; lk.textContent = t("fileLocked"); lk.title = t("fileLockedTip");
           fileCell.appendChild(lk);
         }
-      } else { fileCell.textContent = "—"; }
+      } else { fileCell.textContent = "–"; }
       // Coverage: an approved report is viewable; otherwise show the status label.
       var covCell = tr.querySelector(".adm-cov");
       if (st === "approved" || delivered) {
@@ -1610,7 +1610,7 @@
         levelCell(s) +
         "<td>" + esc(FILM[ULANG][s.film_type] || s.film_type) + "</td>" +
         "<td>" + esc(pagesCount(s)) + "</td>" +
-        "<td class='adm-assignee2'>" + esc(adminsById[s.assigned_to] || "—") + "</td>" +
+        "<td class='adm-assignee2'>" + esc(adminsById[s.assigned_to] || "–") + "</td>" +
         "<td class='adm-cov'></td>";
       var link = document.createElement("a");
       link.className = "adm-link adm-link--gold";
@@ -1792,7 +1792,7 @@
       .map(function (s) {
         dlvCov[s.id] = "approved";
         dlvDelivered[s.id] = true;
-        dlvReader[s.id] = nameById[s.assigned_to] || nameById[deliveredBy[s.id]] || "—";
+        dlvReader[s.id] = nameById[s.assigned_to] || nameById[deliveredBy[s.id]] || "–";
         return { s: s, at: deliveredOn[s.id] };
       })
       .sort(function (a, b) { return new Date(b.at) - new Date(a.at); }); // newest delivery first
