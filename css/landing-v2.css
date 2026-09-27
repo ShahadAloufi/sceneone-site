@@ -458,7 +458,13 @@
 .lx-split__p { margin: 22px 0 0; font-size: 14.5px; line-height: 1.95; color: var(--lx-muted); max-inline-size: 44ch; }
 
 /* ---- 8. team ----------------------------------------------------------- */
-.lx-team__grid { display: grid; gap: 28px 24px; margin-block-start: 48px; grid-template-columns: repeat(2, 1fr); }
+/* One card per row on a phone. Two-up leaves a 156px card, and once its
+   padding, the More button and the gap are taken out there are 73px left for
+   the brief — three lines, cut mid-sentence. Full width gives the card ~350px
+   and the brief room to end on its own ellipsis, which is what makes the
+   always-open overlay worth having on touch. */
+.lx-team__grid { display: grid; gap: 28px 24px; margin-block-start: 48px; grid-template-columns: 1fr; }
+@media (min-width: 600px) { .lx-team__grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 860px) { .lx-team__grid { grid-template-columns: repeat(4, 1fr); } }
 .lx-team__photo {
   aspect-ratio: 292 / 300;
@@ -518,7 +524,13 @@
   transition: background-color 200ms ease, color 200ms ease;
 }
 .lx-team__card:hover .lx-team__more { background: var(--lx-cream); border-color: var(--lx-cream); color: #000; }
-@media (hover: none) { .lx-team__over { display: none; } }
+/* Touch has no hover to reveal it, so the brief is simply always open there —
+   it used to be hidden outright, which left the card silent on a phone. The
+   More button takes its hovered fill for the same reason: it never gets one. */
+@media (hover: none) {
+  .lx-team__over { opacity: 1; }
+  .lx-team__more { background: var(--lx-cream); border-color: var(--lx-cream); color: #000; }
+}
 @media (prefers-reduced-motion: reduce) { .lx-team__over { transition: none; } }
 
 .lx-team__n { margin: 16px 0 0; font-family: var(--font-head); font-size: 16px; font-weight: 800; text-align: center; }
