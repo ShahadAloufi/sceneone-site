@@ -133,11 +133,11 @@
 .tm2-body ul.tm2-defs strong { font-size: 16px; }
 .tm2-body ul.tm2-defs span { font-size: 16px; font-weight: 400; line-height: 1.9; color: var(--lx-ink); }
 
-/* A clause worth stopping on: an accent rule on the reading edge. */
+/* A clause worth stopping on. It used to carry an accent rule on its reading
+   edge; the tint alone now sets it apart. */
 .tm2-note {
   margin: 4px 0 22px;
   padding: 22px 26px;
-  border-inline-start: 2px solid var(--lx-red);
   background: rgba(0, 0, 0, .03);
 }
 .tm2-note:last-child { margin-bottom: 0; }
