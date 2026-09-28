@@ -9,11 +9,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/site-chrome.css">
+  <link rel="stylesheet" href="css/terms-v2.css">
   <!-- Vercel Web Analytics — served by Vercel's edge at this path; no npm/build needed. -->
   <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
-<div class="docpage page">
+<div class="tm2 page">
 
   <!-- ── NAV ── -->
   <nav class="nav center">
@@ -22,13 +25,14 @@
          hamburger's overlay carries the same six destinations. -->
     <ul class="nav__links">
       <li><a href="/" data-i18n="navHome">الرئيسية</a></li>
-      <li><a href="/#about" data-i18n="navAbout">Scene One</a></li>
-      <li><a href="/readers" data-i18n="navReaders">من يقرأ نصك؟</a></li>
+      <li><a href="/#about" data-i18n="navAboutUs">من نحن</a></li>
+      <li><a href="/#coverage-types" data-i18n="navCoverage">تغطية النصوص</a></li>
+      <li><a href="/readers" data-i18n="navReaders">من يقرأ نصك</a></li>
       <li><a href="/#journey" data-i18n="navJourney">رحلة النص</a></li>
-      <li><a href="/about-coverage" data-i18n="navGuide">ما هي تغطية النصوص؟</a></li>
       <li><a href="/#contact" data-i18n="navContact">تواصل معنا</a></li>
     </ul>
     <div class="nav__end">
+      <a class="nav__cta" href="/submit" data-i18n="btnSubmit">قدّم نصك</a>
       <div class="lang-toggle-group" role="group" aria-label="Language"><button class="lang-btn" type="button" data-lang="en">EN</button><button class="lang-btn" type="button" data-lang="ar">AR</button></div>
       <button class="menu-btn" data-menu-open data-i18n-aria="menuLabel" aria-label="القائمة"><span></span><span></span><span></span></button>
     </div>
@@ -67,147 +71,179 @@
       </div>
       <div class="overlay__links">
         <a href="/" data-menu-close data-i18n="navHome">الرئيسية</a>
-        <a href="/#about" data-menu-close data-i18n="navAbout">Scene One</a>
-        <a href="/readers" data-menu-close data-i18n="navReaders">من يقرأ نصك؟</a>
+        <a href="/#about" data-menu-close data-i18n="navAboutUs">من نحن</a>
+        <a href="/#coverage-types" data-menu-close data-i18n="navCoverage">تغطية النصوص</a>
+        <a href="/readers" data-menu-close data-i18n="navReaders">من يقرأ نصك</a>
         <a href="/#journey" data-menu-close data-i18n="navJourney">رحلة النص</a>
-        <a href="/about-coverage" data-menu-close data-i18n="navGuide">ما هي تغطية النصوص؟</a>
         <a href="/#contact" data-menu-close data-i18n="navContact">تواصل معنا</a>
       </div>
     </div>
   </div>
 
   <!-- ── HERO ── -->
-  <div class="doc-hero">
-    <img src="assets/privacy_hero_bg.jpg" alt="">
-    <div class="doc-hero__shade"></div>
-    <h1 data-i18n="privHeroTitle">سياسة الخصوصية</h1>
-  </div>
-
-  <!-- ── CONTENT ── -->
-  <div class="doc-body">
-
-    <section>
-      <h2 data-i18n="privIntroTitle">المقدمة</h2>
-      <div data-i18n-html="privIntroHtml">
-        <p>توضح سياسة الخصوصية هذه كيفية قيام منصة (Scene One) بجمع البيانات الشخصية ومعالجتها وتخزينها وحمايتها عند استخدامك للمنصة والخدمات المرتبطة بها، بما في ذلك خدمات قراءة النصوص السينمائية وتقييمها وربطها بفرص الإنتاج.</p>
-        <p>باستخدامك للمنصة، فإنك توافق على الممارسات الواردة في هذه السياسة. إذا كنت لا توافق على أي بند منها، يُرجى عدم استخدام الخدمة.</p>
-        <p>تسري هذه السياسة على جميع المستخدمين، بمن فيهم الكتّاب المقدّمون للنصوص، والمنتجون الشركاء، وزوار المنصة.</p>
-      </div>
-    </section>
-
-    <section>
-      <h2 data-i18n="privCommitTitle">التزامنا تجاهك</h2>
-      <div data-i18n-html="privCommitHtml">
-        <p>نحن في (Scene One) نعتبر خصوصيتك أمانة. هذه السياسة توضّح كيف نجمع بياناتك، وكيف نستخدمها، ومتى نشاركها، وكيف نحميها، وما هي حقوقك تجاهها.</p>
-        <p>نلتزم بأحكام نظام حماية البيانات الشخصية الصادر في المملكة العربية السعودية، وبأفضل الممارسات الدولية في حماية البيانات.</p>
-      </div>
-    </section>
-
-    <section>
-      <h2 data-i18n="privDataTitle">البيانات التي نجمعها</h2>
-      <div data-i18n-html="privDataHtml">
-        <p><span class="gold" style="font-weight:500">بيانات تقدّمها أنت مباشرة: </span>الاسم، البريد الإلكتروني، رقم الجوال، والنصّ السينمائي الذي تقدّمه، إضافةً إلى أيّ معلومات إضافية تختار مشاركتها معنا في الملف الشخصي أو عبر التواصل.</p>
-        <p><span class="gold" style="font-weight:500">بيانات تُجمَع تلقائياً: </span>عنوان IP، نوع الجهاز والمتصفّح، وقت الزيارة، الصفحات التي اطّلعت عليها، وذلك لأغراض تحسين تجربة الاستخدام والأمن السيبراني فقط.</p>
-        <p><span class="gold" style="font-weight:500">بطاقة العضوية: </span>إذا اخترت طلب خصم أعضاء جمعية السينما، نحفظ رقم عضويتك وصورة البطاقة التي ترفعها. تُستخدم للتحقق من العضوية فقط، ويطّلع عليها فريق Scene One وحده، ولا يراها القارئ المكلَّف بنصّك، ويمكنك طلب حذفها في أيّ وقت.</p>
-      </div>
-    </section>
-
-    <section>
-      <h2 data-i18n="privUseTitle">كيف نستخدم بياناتك</h2>
-      <p class="lead" data-i18n="privUseLead">نستخدم بياناتك للأغراض التالية فقط:</p>
-      <ol data-i18n-html="privUseHtml">
-        <li>تقديم الخدمة لك وقراءة نصّك وإصدار تقريرك.</li>
-        <li>التواصل معك بشأن طلبك، التقرير، أو أيّ تحديث يتعلّق بحسابك.</li>
-        <li>تحسين الخدمة وتطوير ميزات جديدة بناءً على سلوك الاستخدام المُجمَّع (دون كشف هويتك).</li>
-        <li>حماية الخدمة والمستخدمين من إساءة الاستخدام والاحتيال.</li>
-        <li>الالتزام بأيّ متطلّبات قانونية في المملكة العربية السعودية.</li>
-      </ol>
-    </section>
-
-    <section>
-      <h2 data-i18n="privNotTitle">نحن لا نقوم بـ</h2>
-      <ol data-i18n-html="privNotHtml">
-        <li>لا نبيع بياناتك.</li>
-        <li>لا نشاركها مع جهات تسويقية.</li>
-        <li>لا نستخدم نصّك لتدريب أنظمة ذكاء اصطناعي.</li>
-      </ol>
-      <p style="margin-top:16px" data-i18n-html="privNotNote"><span class="gold" style="font-weight:500">نصّك </span>هو ملكٌ لك. نتعامل معه كما نتعامل مع أيّ وثيقة سرّية، ولا يطّلع عليه إلّا الفريق المعنيّ بقراءته فقط.</p>
-    </section>
-
-    <section>
-      <h2 data-i18n="privProtectTitle">حماية نصّك</h2>
-      <p class="lead light" style="font-size:20px;margin-bottom:4px" data-i18n="privProtectHead">أهمّ من كلّ شيء</p>
-      <p class="gold-soft" data-i18n="privProtectLead1">نصّك هو ملكٌ لك. نتعامل معه كما نتعامل مع أيّ وثيقة سرّية، ولا يطّلع عليه إلّا الفريق المعنيّ بقراءته فقط.</p>
-      <p class="gold-soft" data-i18n="privProtectLead2">الإجراءات التي نتبعها لحماية نصّك:</p>
-      <ol data-i18n-html="privProtectHtml">
-        <li><strong>تشفير كامل:</strong> النصّ مُشفَّر أثناء الإرسال والتخزين.</li>
-        <li><strong>وصول محدود:</strong> القارئ الناقد المعنيّ بنصّك هو الشخص الوحيد الذي يطّلع عليه، إضافةً إلى مسؤول مراجعة محدَّد.</li>
-        <li><strong>اتفاقيات سرّية:</strong> جميع القرّاء يوقّعون اتفاقيات سرّية ملزِمة قبل العمل مع (Scene One).</li>
-        <li><strong>حذف عند الطلب:</strong> يمكنك طلب حذف نصّك ومرفقاته من خوادمنا في أيّ وقت.</li>
-        <li><strong>مشاركة بإذن فقط:</strong> النصّ لا يُشارَك مع أيّ شريك إنتاجي إلّا بعد موافقتك الكتابية الصريحة.</li>
-      </ol>
-    </section>
-
-    <section>
-      <h2 data-i18n="privStorageTitle">مكان تخزين بياناتك</h2>
-      <div data-i18n-html="privStorageHtml">
-        <p>جميع بياناتك ونصوصك تُخزَّن على خوادم آمنة داخل المملكة العربية السعودية أو على بنية تحتية سحابية معتمَدة تلتزم بأنظمة حماية البيانات السعودية والمعايير الدولية.</p>
-        <p>في حال تطلّب الأمر استخدام خوادم خارجية لأسباب تقنية، نضمن أن تكون هذه الخوادم في دول توفّر مستوى حماية مكافئ، ولا تتمّ أيّ مشاركة دون اتخاذ كافّة الاحتياطات اللازمة.</p>
-      </div>
-    </section>
-
-    <section>
-      <h2 data-i18n="privRightsTitle">حقوقك الكاملة</h2>
-      <ol data-i18n-html="privRightsHtml">
-        <li>الاطّلاع على البيانات التي نحتفظ بها عنك.</li>
-        <li>تصحيح أيّ بيانات غير دقيقة.</li>
-        <li>طلب حذف بياناتك ونصوصك بالكامل.</li>
-        <li>سحب موافقتك على مشاركة نصّك مع الشركاء الإنتاجيين في أيّ وقت قبل إتمام الترشيح.</li>
-        <li>طلب نسخة من بياناتك بصيغة قابلة للاستخدام.</li>
-        <li>تقديم شكوى إلى الجهة المختصّة بحماية البيانات في المملكة العربية السعودية.</li>
-      </ol>
-      <p style="margin-top:16px" data-i18n-html="privRightsContact">لممارسة أيّ من هذه الحقوق، تواصل معنا على: <a href="mailto:sceneone.info@gmail.com">sceneone.info@gmail.com</a></p>
-    </section>
-
-    <section>
-      <h2 data-i18n="privRetentionTitle">مدة الاحتفاظ</h2>
-      <p class="gold-soft" data-i18n="privRetentionLead1">نحتفظ ببياناتك ونصوصك طوال المدّة التي يكون فيها حسابك فعّالاً، أو طالما كان ذلك ضرورياً لتقديم الخدمة لك.</p>
-      <p class="gold-soft" data-i18n="privRetentionLead2">عند طلبك حذف حسابك:</p>
-      <ol data-i18n-html="privRetentionHtml">
-        <li>تُحذَف بياناتك الشخصية ونصوصك من خوادمنا الفعّالة خلال ثلاثين يوماً.</li>
-        <li>قد نحتفظ ببعض البيانات لمدّة أطول إذا اقتضت ذلك متطلّبات قانونية أو محاسبية.</li>
-        <li>التقارير الصادرة قد تُحفَظ بصيغة مجهَّلة لأغراض تطوير الخدمة فقط، دون أيّ معلومات تربطها بك.</li>
-      </ol>
-    </section>
-
-    <section>
-      <h2 data-i18n="privUpdatesTitle">تعديل هذه السياسة</h2>
-      <div data-i18n-html="privUpdatesHtml">
-        <p>قد نُحدّث هذه السياسة من وقت لآخر بما يتوافق مع تطوّر الخدمة أو متطلّبات الأنظمة. سنُخطرك بأيّ تعديل جوهري عبر البريد الإلكتروني أو عبر إشعار داخل المنصّة، قبل سريانه بمدّة معقولة.</p>
-        <p>استمرارك في استخدام الخدمة بعد التعديل يعني موافقتك على النسخة الجديدة.</p>
-      </div>
-    </section>
-
-    <section>
-      <h2 data-i18n="privContactTitle">تواصل معنا</h2>
-      <p class="gold-soft" style="font-size:20px" data-i18n="privContactLead">لأيّ استفسار يتعلّق بخصوصيتك أو ببياناتك أو بهذه السياسة، تواصل معنا عبر:</p>
-      <p data-i18n-html="privContactEmail">البريد الإلكتروني: <a href="mailto:sceneone.info@gmail.com">sceneone.info@gmail.com</a></p>
-      <p data-i18n="privContactClosing">نلتزم بالردّ على أيّ استفسار خلال مدّة معقولة، ونرحّب بأيّ ملاحظة تساعدنا على تحسين حماية بيانات مستخدمينا.</p>
-    </section>
-
-  </div>
-
-  <!-- ── FOOTER ── -->
-  <footer class="footer--doc">
-    <p class="footer__copy" dir="rtl" style="text-align:center" data-i18n-html="footerCopyHtml">© 2026 جميع الحقوق محفوظة لـSCENE ONE.<br><span class="footer__cr">الرقم الموحد: 7054791293</span></p>
-    <div class="footer__links" style="display:flex;align-items:center;gap:24px">
-      <a href="/privacy" data-i18n="footerPrivacy">سياسة الخصوصية</a>
-      <a href="/terms" data-i18n="footerTerms">الشروط والأحكام</a>
+  <section class="tm2-hero">
+    <div class="tm2-in">
+      <p class="tm2-eyebrow" data-i18n="tmEyebrow">المستندات</p>
+      <h1 class="tm2-hero__h" data-i18n="privHeroTitle">سياسة الخصوصية</h1>
+      <p class="tm2-hero__p" data-i18n="pvLede">ما البيانات التي نجمعها، وكيف نستخدمها، ومتى نشاركها، وكيف نحمي نصّك. وحقوقك في كل ذلك.</p>
+      <p class="tm2-hero__meta" data-i18n="tmUpdated">آخر تحديث · سبتمبر 2026</p>
     </div>
-    <div class="footer__social" style="display:flex;align-items:center;gap:16px">
-      <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer"><img src="assets/icon_x.png" alt="X"></a>
-      <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer"><img src="assets/icon_instagram.png" alt="Instagram"></a>
-      <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer"><img src="assets/icon_linkedin.png" alt="LinkedIn"></a>
+  </section>
+
+  <!-- ── THE CLAUSES ──
+       Shares css/terms-v2.css with /terms: the two documents are the same
+       design, so they are the same components. -->
+  <main class="tm2-main">
+    <div class="tm2-in tm2-grid">
+      <div>
+        <section class="tm2-sec" id="s1">
+          <span class="tm2-sec__n">01</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="pvT1">المقدمة</h2>
+            <div class="tm2-body" data-i18n-html="pvB1"><p>توضح سياسة الخصوصية هذه كيفية قيام منصة سين ون بجمع البيانات الشخصية ومعالجتها وتخزينها وحمايتها عند استخدامك للمنصة والخدمات المرتبطة بها، بما في ذلك خدمات قراءة النصوص السينمائية وتقييمها وربطها بفرص الإنتاج.</p><p>باستخدامك للمنصة، فإنك توافق على الممارسات الواردة في هذه السياسة. إذا كنت لا توافق على أي بند منها، يُرجى عدم استخدام الخدمة.</p><p>تسري هذه السياسة على جميع المستخدمين، بمن فيهم الكتّاب المقدّمون للنصوص، والمنتجون الشركاء، وزوار المنصة.</p></div>
+          </div>
+        </section>
+        <section class="tm2-sec" id="s2">
+          <span class="tm2-sec__n">02</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="pvT2">التزامنا تجاهك</h2>
+            <div class="tm2-body" data-i18n-html="pvB2"><p>نحن في سين ون نعتبر خصوصيتك أمانة. هذه السياسة توضّح كيف نجمع بياناتك، وكيف نستخدمها، ومتى نشاركها، وكيف نحميها، وما هي حقوقك تجاهها.</p><p>نلتزم بأحكام نظام حماية البيانات الشخصية الصادر في المملكة العربية السعودية، وبأفضل الممارسات الدولية في حماية البيانات.</p></div>
+          </div>
+        </section>
+        <section class="tm2-sec" id="s3">
+          <span class="tm2-sec__n">03</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="pvT3">البيانات التي نجمعها</h2>
+            <div class="tm2-body" data-i18n-html="pvB3"><ul class="tm2-defs"><li><strong>بيانات تقدّمها أنت</strong><span>الاسم، البريد الإلكتروني، رقم الجوال، والنصّ السينمائي الذي تقدّمه، إضافةً إلى أيّ معلومات إضافية تختار مشاركتها معنا في الملف الشخصي أو عبر التواصل.</span></li><li><strong>بيانات تُجمَع تلقائيًا</strong><span>عنوان IP، نوع الجهاز والمتصفّح، وقت الزيارة، والصفحات التي اطّلعت عليها، لأغراض تحسين تجربة الاستخدام والأمن السيبراني فقط.</span></li><li><strong>بطاقة العضوية</strong><span>إذا اخترت طلب خصم أعضاء جمعية السينما، نحفظ رقم عضويتك وصورة البطاقة التي ترفعها. تُستخدم للتحقق من العضوية فقط، ويطّلع عليها فريق سين ون وحده، ولا يراها القارئ المكلَّف بنصّك، ويمكنك طلب حذفها في أيّ وقت.</span></li></ul></div>
+          </div>
+        </section>
+        <section class="tm2-sec" id="s4">
+          <span class="tm2-sec__n">04</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="pvT4">كيف نستخدم بياناتك</h2>
+            <div class="tm2-body" data-i18n-html="pvB4"><ul><li>تقديم الخدمة لك وقراءة نصّك وإصدار تقريرك.</li><li>التواصل معك بشأن طلبك، التقرير، أو أيّ تحديث يتعلّق بحسابك.</li><li>تحسين الخدمة وتطوير ميزات جديدة بناءً على سلوك الاستخدام المُجمَّع، دون كشف هويتك.</li><li>حماية الخدمة والمستخدمين من إساءة الاستخدام والاحتيال.</li><li>الالتزام بأيّ متطلّبات قانونية في المملكة العربية السعودية.</li></ul></div>
+          </div>
+        </section>
+        <section class="tm2-sec" id="s5">
+          <span class="tm2-sec__n">05</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="pvT5">ما لا نفعله</h2>
+            <div class="tm2-body" data-i18n-html="pvB5"><ul><li>لا نبيع بياناتك.</li><li>لا نشاركها مع جهات تسويقية.</li><li>لا نستخدم نصّك لتدريب أنظمة ذكاء اصطناعي.</li></ul></div>
+          </div>
+        </section>
+
+        <!-- The design lifts the ownership promise out of the clauses and
+             states it on its own black card, after §05. -->
+        <div class="tm2-card">
+          <p class="tm2-card__label" data-i18n="pvCardLabel">أهمّ من كلّ شيء</p>
+          <h3 class="tm2-card__h" data-i18n="pvCardH">نصّك مِلكٌ لك</h3>
+          <p class="tm2-card__p" data-i18n="pvCardP">نتعامل معه كما نتعامل مع أيّ وثيقة سرّية، ولا يطّلع عليه إلّا الفريق المعنيّ بقراءته. لا يُستخدم لتدريب أي نظام، ولا يُشارَك مع أحد دون إذنك الكتابي.</p>
+        </div>
+
+        <section class="tm2-sec" id="s6">
+          <span class="tm2-sec__n">06</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="pvT6">حماية نصّك</h2>
+            <div class="tm2-body" data-i18n-html="pvB6"><p>الإجراءات التي نتبعها لحماية نصّك:</p><ul><li><strong>تشفير كامل</strong>: النصّ مُشفَّر أثناء الإرسال والتخزين.</li><li><strong>وصول محدود</strong>: القارئ الناقد المعنيّ بنصّك هو الشخص الوحيد الذي يطّلع عليه، إضافةً إلى مسؤول مراجعة محدَّد.</li><li><strong>اتفاقيات سرّية</strong>: جميع القرّاء يوقّعون اتفاقيات سرّية ملزِمة قبل العمل مع سين ون.</li><li><strong>حذف عند الطلب</strong>: يمكنك طلب حذف نصّك ومرفقاته من خوادمنا في أيّ وقت.</li><li><strong>مشاركة بإذن فقط</strong>: النصّ لا يُشارَك مع أيّ شريك إنتاجي إلّا بعد موافقتك الكتابية الصريحة.</li></ul></div>
+          </div>
+        </section>
+        <section class="tm2-sec" id="s7">
+          <span class="tm2-sec__n">07</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="pvT7">مكان تخزين بياناتك</h2>
+            <div class="tm2-body" data-i18n-html="pvB7"><p>جميع بياناتك ونصوصك تُخزَّن على خوادم آمنة داخل المملكة العربية السعودية أو على بنية تحتية سحابية معتمَدة تلتزم بأنظمة حماية البيانات السعودية والمعايير الدولية.</p><p>في حال تطلّب الأمر استخدام خوادم خارجية لأسباب تقنية، نضمن أن تكون هذه الخوادم في دول توفّر مستوى حماية مكافئ، ولا تتمّ أيّ مشاركة دون اتخاذ كافّة الاحتياطات اللازمة.</p></div>
+          </div>
+        </section>
+        <section class="tm2-sec" id="s8">
+          <span class="tm2-sec__n">08</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="pvT8">حقوقك الكاملة</h2>
+            <div class="tm2-body" data-i18n-html="pvB8"><ul><li>الاطّلاع على البيانات التي نحتفظ بها عنك.</li><li>تصحيح أيّ بيانات غير دقيقة.</li><li>طلب حذف بياناتك ونصوصك بالكامل.</li><li>سحب موافقتك على مشاركة نصّك مع الشركاء الإنتاجيين في أيّ وقت قبل إتمام الترشيح.</li><li>طلب نسخة من بياناتك بصيغة قابلة للاستخدام.</li><li>تقديم شكوى إلى الجهة المختصّة بحماية البيانات في المملكة العربية السعودية.</li></ul><div class="tm2-note"><p>لممارسة أيّ من هذه الحقوق، تواصل معنا على <a href="mailto:sceneone.info@gmail.com">sceneone.info@gmail.com</a></p></div></div>
+          </div>
+        </section>
+        <section class="tm2-sec" id="s9">
+          <span class="tm2-sec__n">09</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="pvT9">مدة الاحتفاظ</h2>
+            <div class="tm2-body" data-i18n-html="pvB9"><p>نحتفظ ببياناتك ونصوصك طوال المدّة التي يكون فيها حسابك فعّالًا، أو طالما كان ذلك ضروريًا لتقديم الخدمة لك. عند طلبك حذف حسابك:</p><ul><li>تُحذَف بياناتك الشخصية ونصوصك من خوادمنا الفعّالة خلال ثلاثين يومًا.</li><li>قد نحتفظ ببعض البيانات لمدّة أطول إذا اقتضت ذلك متطلّبات قانونية أو محاسبية.</li><li>التقارير الصادرة قد تُحفَظ بصيغة مجهَّلة لأغراض تطوير الخدمة فقط، دون أيّ معلومات تربطها بك.</li></ul></div>
+          </div>
+        </section>
+        <section class="tm2-sec" id="s10">
+          <span class="tm2-sec__n">10</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="pvT10">تعديل هذه السياسة</h2>
+            <div class="tm2-body" data-i18n-html="pvB10"><p>قد نُحدّث هذه السياسة من وقت لآخر بما يتوافق مع تطوّر الخدمة أو متطلّبات الأنظمة. سنُخطرك بأيّ تعديل جوهري عبر البريد الإلكتروني أو عبر إشعار داخل المنصّة، قبل سريانه بمدّة معقولة.</p><p>استمرارك في استخدام الخدمة بعد التعديل يعني موافقتك على النسخة الجديدة.</p></div>
+          </div>
+        </section>
+        <section class="tm2-sec" id="s11">
+          <span class="tm2-sec__n">11</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="pvT11">تواصل معنا</h2>
+            <div class="tm2-body" data-i18n-html="pvB11"><p>لأيّ استفسار يتعلّق بخصوصيتك أو ببياناتك أو بهذه السياسة، تواصل معنا على <a href="mailto:sceneone.info@gmail.com">sceneone.info@gmail.com</a></p><p>نلتزم بالردّ على أيّ استفسار خلال مدّة معقولة، ونرحّب بأيّ ملاحظة تساعدنا على تحسين حماية بيانات مستخدمينا.</p></div>
+          </div>
+        </section>
+      </div>
+
+      <aside class="tm2-toc">
+        <div class="tm2-toc__inner">
+          <p class="tm2-toc__title" data-i18n="tmToc">المحتويات</p>
+          <nav class="tm2-toc__nav">
+            <a href="#s1"><span>01</span><span data-i18n="pvT1">المقدمة</span></a>
+            <a href="#s2"><span>02</span><span data-i18n="pvT2">التزامنا تجاهك</span></a>
+            <a href="#s3"><span>03</span><span data-i18n="pvT3">البيانات التي نجمعها</span></a>
+            <a href="#s4"><span>04</span><span data-i18n="pvT4">كيف نستخدم بياناتك</span></a>
+            <a href="#s5"><span>05</span><span data-i18n="pvT5">ما لا نفعله</span></a>
+            <a href="#s6"><span>06</span><span data-i18n="pvT6">حماية نصّك</span></a>
+            <a href="#s7"><span>07</span><span data-i18n="pvT7">مكان تخزين بياناتك</span></a>
+            <a href="#s8"><span>08</span><span data-i18n="pvT8">حقوقك الكاملة</span></a>
+            <a href="#s9"><span>09</span><span data-i18n="pvT9">مدة الاحتفاظ</span></a>
+            <a href="#s10"><span>10</span><span data-i18n="pvT10">تعديل هذه السياسة</span></a>
+            <a href="#s11"><span>11</span><span data-i18n="pvT11">تواصل معنا</span></a>
+          </nav>
+          <div class="tm2-toc__ask">
+            <p data-i18n="tmAsk">سؤال عن أي بند؟</p>
+            <a href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- ── FOOTER ──
+       The landing's footer, styled by the shared css/site-chrome.css. -->
+  <footer class="lx-foot">
+    <div class="lx-foot__in">
+      <div class="lx-foot__top">
+        <div>
+          <div class="lx-foot__brand">
+            <img src="assets/scene-one-logo-v3.svg" alt="Scene One">
+            <span data-i18n="brand">سين ون</span>
+          </div>
+          <p class="lx-foot__blurb" data-i18n="footBlurb">نكتشف الأصوات الجديدة، نطوّر أفلامها، ونبني لها طريقًا إلى الشاشة</p>
+        </div>
+        <div class="lx-foot__col">
+          <a href="/#coverage-types" data-i18n="footCoverage">تغطية النصوص</a>
+          <a href="/readers" data-i18n="footReaders">من يقرأ نصك</a>
+          <a href="/#journey" data-i18n="navJourney">رحلة النص</a>
+        </div>
+        <div class="lx-foot__col">
+          <a href="/privacy" data-i18n="footerPrivacy">سياسة الخصوصية</a>
+          <a href="/terms" data-i18n="footerTerms">الشروط والأحكام</a>
+          <a href="/assets/scene-one-booklet-ar.pdf" target="_blank" rel="noopener" data-i18n="footStory">حكاية سين ون</a>
+        </div>
+        <div class="lx-foot__col">
+          <p class="lx-foot__lbl" data-i18n="footContact">للتواصل</p>
+          <a class="lx-foot__mail" href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
+        </div>
+      </div>
+      <div class="lx-foot__bar">
+        <p class="lx-foot__cr" data-i18n="footCr">© 2026 جميع الحقوق محفوظة لـ سين ون · الرقم الموحد 7054791293</p>
+        <div class="lx-foot__soc">
+          <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X</a>
+          <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+      </div>
     </div>
   </footer>
 </div>

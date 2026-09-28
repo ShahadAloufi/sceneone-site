@@ -182,6 +182,11 @@
 
 /* ---- contents ------------------------------------------------------------ */
 
+/* The aside has to span the whole row for the sticky inside it to have
+   anywhere to travel: with the grid's `align-items: start` it was only as tall
+   as its own content, so the contents list scrolled away with it after a few
+   hundred pixels instead of staying put. */
+.tm2-toc { align-self: stretch; }
 .tm2-toc__inner { position: sticky; top: 124px; }
 .tm2-toc__title {
   margin: 0 0 20px;
