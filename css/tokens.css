@@ -12,7 +12,8 @@
    ========================================================================= */
 
 .landing,
-.rd2 {
+.rd2,
+.tm2 {
   --lx-cream:      #f9f4ef;  /* the page ground for every light section       */
   --lx-white:      #ffffff;  /* raised cards only, so they lift off the cream */
   --lx-black:      #000000;

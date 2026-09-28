@@ -9,11 +9,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/site-chrome.css">
+  <link rel="stylesheet" href="css/terms-v2.css">
   <!-- Vercel Web Analytics — served by Vercel's edge at this path; no npm/build needed. -->
   <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
-<div class="docpage page">
+<div class="tm2 page">
 
   <!-- ── NAV ── -->
   <nav class="nav center">
@@ -22,13 +25,14 @@
          hamburger's overlay carries the same six destinations. -->
     <ul class="nav__links">
       <li><a href="/" data-i18n="navHome">الرئيسية</a></li>
-      <li><a href="/#about" data-i18n="navAbout">Scene One</a></li>
-      <li><a href="/readers" data-i18n="navReaders">من يقرأ نصك؟</a></li>
+      <li><a href="/#about" data-i18n="navAboutUs">من نحن</a></li>
+      <li><a href="/#coverage-types" data-i18n="navCoverage">تغطية النصوص</a></li>
+      <li><a href="/readers" data-i18n="navReaders">من يقرأ نصك</a></li>
       <li><a href="/#journey" data-i18n="navJourney">رحلة النص</a></li>
-      <li><a href="/about-coverage" data-i18n="navGuide">ما هي تغطية النصوص؟</a></li>
       <li><a href="/#contact" data-i18n="navContact">تواصل معنا</a></li>
     </ul>
     <div class="nav__end">
+      <a class="nav__cta" href="/submit" data-i18n="btnSubmit">قدّم نصك</a>
       <div class="lang-toggle-group" role="group" aria-label="Language"><button class="lang-btn" type="button" data-lang="en">EN</button><button class="lang-btn" type="button" data-lang="ar">AR</button></div>
       <button class="menu-btn" data-menu-open data-i18n-aria="menuLabel" aria-label="القائمة"><span></span><span></span><span></span></button>
     </div>
@@ -67,164 +71,187 @@
       </div>
       <div class="overlay__links">
         <a href="/" data-menu-close data-i18n="navHome">الرئيسية</a>
-        <a href="/#about" data-menu-close data-i18n="navAbout">Scene One</a>
-        <a href="/readers" data-menu-close data-i18n="navReaders">من يقرأ نصك؟</a>
+        <a href="/#about" data-menu-close data-i18n="navAboutUs">من نحن</a>
+        <a href="/#coverage-types" data-menu-close data-i18n="navCoverage">تغطية النصوص</a>
+        <a href="/readers" data-menu-close data-i18n="navReaders">من يقرأ نصك</a>
         <a href="/#journey" data-menu-close data-i18n="navJourney">رحلة النص</a>
-        <a href="/about-coverage" data-menu-close data-i18n="navGuide">ما هي تغطية النصوص؟</a>
         <a href="/#contact" data-menu-close data-i18n="navContact">تواصل معنا</a>
       </div>
     </div>
   </div>
 
   <!-- ── HERO ── -->
-  <div class="doc-hero">
-    <img src="assets/terms_hero_bg.jpg" alt="">
-    <div class="doc-hero__shade"></div>
-    <h1 data-i18n="termsHeroTitle">الشروط والأحكام</h1>
-  </div>
-
-  <!-- ── CONTENT ── -->
-  <div class="doc-body">
-
-    <section>
-      <h2 data-i18n="termsDefsTitle">التعريفات</h2>
-      <ol data-i18n-html="termsDefsHtml">
-        <li>الخدمة | المنصّة: منصّة (Scene One) الإلكترونية المعنيّة بتقييم النصوص السينمائية وربط الكتّاب بفرص التطوير والإنتاج.</li>
-        <li>المستخدم / الكاتب: أي شخص يقوم بإنشاء حساب أو تقديم نصّ عبر المنصّة.</li>
-        <li>القارئ الناقد: المختصّ الذي تعتمده الخدمة لقراءة النصوص وتقييمها.</li>
-        <li>التقرير: الوثيقة الكتابية التي يصدرها القارئ الناقد بعد قراءة النص.</li>
-        <li>النص: أي عمل سينمائي مكتوب يُقدَّم للخدمة (سيناريو فيلم قصير أو روائي طويل).</li>
-        <li>الشريك الإنتاجي: جهة إنتاجية متعاقدة مع (Scene One) لاستلام النصوص المرشَّحة.</li>
-      </ol>
-    </section>
-
-    <section>
-      <h2 data-i18n="termsUseTitle">شروط الاستخدام</h2>
-      <ol data-i18n-html="termsUseHtml">
-        <li>باستخدامك لمنصّة (Scene One) أو تقديم نصّك عبرها، فإنك تُقرّ بأنك قرأت هذه الشروط وفهمتها ووافقت عليها بالكامل. إذا كنت لا توافق على أيّ بند من بنودها، يُرجى عدم استخدام الخدمة.</li>
-        <li>يجب أن يكون عمر المستخدم ثمانية عشر عاماً فأكثر، أو أن يحصل على موافقة وليّه القانوني قبل استخدام الخدمة.</li>
-        <li>تحتفظ (Scene One) بحقّ تعديل هذه الشروط في أيّ وقت، وستُبلّغ التعديلات عبر البريد الإلكتروني أو عبر إشعار داخل المنصّة قبل سريانها بمدّة معقولة.</li>
-        <li>بإرسالك أي محتوى أو سيناريو عبر منصة (Scene One)، فإنك تقرّ بالتزامك بجميع الأنظمة واللوائح المعمول بها في المملكة العربية السعودية، بما في ذلك نظام الإعلام المرئي والمسموع، وتتحمّل كامل المسؤولية عن توافق المحتوى المقدم مع هذه الأنظمة. للاطلاع على النظام <a href="https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/ed5fdbc0-c183-4a8a-a8b7-a9ed004b5900/1?utm_source" target="_blank" rel="noopener noreferrer">انقر هنا</a></li>
-      </ol>
-    </section>
-
-    <section>
-      <h2 data-i18n="termsServiceTitle">تعريف الخدمة</h2>
-      <p class="lead" data-i18n="termsServiceLead">تقدّم (Scene One) خدمة قراءة احترافية ونقدية للنصوص السينمائية، تشمل:</p>
-      <ol data-i18n-html="termsServiceHtml">
-        <li>قراءة كاملة للنصّ من قِبَل قارئ ناقد مؤهَّل.</li>
-        <li>إصدار تقرير تقييم تفصيلي يشمل الفكرة والحبكة والشخصيات والحوار والإيقاع والإمكانية الإنتاجية.</li>
-        <li>تصنيف صريح للنصّ ضمن إحدى الفئات الثلاث: <strong>موصى به</strong>، <strong>يستحق النظر</strong>، أو <strong>لا يُوصى به حاليًا</strong>.</li>
-        <li>ترشيح النصوص الحاصلة على توصية قوية إلى الشركاء الإنتاجيين، بعد موافقة الكاتب الصريحة.</li>
-      </ol>
-      <p style="margin-top:16px" data-i18n-html="termsServiceNote"><strong>الخدمة لا تشمل</strong>: إعادة كتابة النصّ، أو تطويره، أو تحريره، أو ضمان قبوله من قبل أيّ جهة إنتاجية. Scene One تقدّم قراءة نقدية احترافية فقط.</p>
-    </section>
-
-    <section>
-      <h2 data-i18n="termsIpTitle">الملكية الفكرية</h2>
-      <p class="lead light" data-i18n-html="termsIpLead">بند جوهري: الكاتب هو المالك الكامل والوحيد لجميع حقوق الملكية الفكرية للنصّ الذي يقدّمه. لا تدّعي Scene One أيّ ملكية على النصّ في أيّ مرحلة من مراحل الخدمة. عند تقديم النصّ، يمنح الكاتب Scene One ترخيصاً محدوداً وغير حصري، يقتصر استخدامه على:</p>
-      <ol data-i18n-html="termsIpHtml">
-        <li>قراءة النصّ وتقييمه من قبل القارئ الناقد المعتمَد.</li>
-        <li>تخزينه بصورة آمنة على خوادم الخدمة طوال مدّة الاشتراك أو حتى يطلب الكاتب حذفه.</li>
-        <li>مشاركة النصّ مع الشركاء الإنتاجيين فقط بعد موافقة الكاتب الكتابية الصريحة، وذلك في حال حصوله على توصية ودخوله مرحلة الترشيح.</li>
-      </ol>
-      <p style="margin-top:16px;font-weight:700;color:#fff" data-i18n="termsIpNote1">لا يحقّ لمقدم الخدمة استخدام النصّ لأيّ غرض آخر، ولا نشره، ولا توزيعه، ولا اقتباس أيّ جزء منه دون إذن صريح ومسبق من الكاتب.</p>
-      <p style="font-weight:700;color:#fff" data-i18n="termsIpNote2">يُنصح الكاتب بشدّة بتسجيل نصّه لدى الهيئة السعودية للملكية الفكرية (SAIP) قبل تقديمه لأيّ جهة كانت.</p>
-    </section>
-
-    <section>
-      <h2 data-i18n="termsConfTitle">سرية النصوص والمواد المقدمة</h2>
-      <div data-i18n-html="termsConfHtml">
-        <p>تُدرك Scene One أن النصوص المقدمة عبر المنصة قد تتضمن أعمالًا أصلية وأفكارًا إبداعية تتمتع بالحماية بموجب أنظمة الملكية الفكرية المعمول بها. وعليه، تلتزم المنصة باتخاذ الإجراءات المعقولة للحفاظ على سرية النصوص وعدم إتاحتها إلا للأشخاص المخولين بالاطلاع عليها لغرض تقديم الخدمة.</p>
-        <p>كما يلتزم جميع القرّاء النقاد والمتعاونين المعتمدين من قبل Scene One بالحفاظ على سرية النصوص والمواد المقدمة، وعدم نسخها أو تداولها أو نشرها أو الإفصاح عنها أو إتاحتها لأي طرف ثالث خارج نطاق التقييم أو تقديم الخدمة.</p>
-        <p>وفي حال قيام أي قارئ ناقد أو متعاون بالإفصاح عن النص أو تسريبه أو استغلاله أو استخدامه أو مشاركته بأي صورة غير مصرح بها، فإنه يتحمل المسؤولية القانونية الكاملة تجاه صاحب النص عن أي أضرار أو مطالبات أو حقوق قد تنشأ نتيجة لذلك، دون الإخلال بحق Scene One في اتخاذ الإجراءات المناسبة، بما في ذلك إنهاء التعاون معه أو منعه من استخدام المنصة مستقبلاً.</p>
-        <p>ولا يُفسر تمكين القارئ الناقد أو المتعاون من الاطلاع على النص على أنه نقل أو تنازل أو ترخيص بأي حق من حقوق الملكية الفكرية المتعلقة به، والتي تبقى مملوكة بالكامل لصاحب النص.</p>
-      </div>
-    </section>
-
-    <section>
-      <h2 data-i18n="termsAiTitle">استخدام أدوات الذكاء الاصطناعي</h2>
-      <div data-i18n-html="termsAiHtml">
-        <p>يلتزم القارئ الناقد بعدم إدخال النصوص أو أي جزء منها في أي أداة أو خدمة تعتمد على الذكاء الاصطناعي أو معالجة المحتوى الآلية، سواء لأغراض التقييم أو التلخيص أو التحليل أو إعادة الصياغة أو لأي غرض آخر، ما لم يحصل على موافقة كتابية مسبقة من Scene One.</p>
-        <p>ويهدف هذا الالتزام إلى حماية سرية النصوص والحقوق الفكرية الخاصة بأصحابها، وضمان أن تستند التقييمات المقدمة من خلال المنصة إلى القراءة والتحليل المهني المباشر للقارئ الناقد.</p>
-        <p>ويُعد أي استخدام غير مصرح به لأدوات الذكاء الاصطناعي فيما يتعلق بالنصوص المقدمة عبر المنصة مخالفة جوهرية لهذه الشروط، ويمنح Scene One الحق في إنهاء التعاون مع القارئ الناقد واتخاذ الإجراءات المناسبة وفق الأنظمة المعمول بها.</p>
-      </div>
-    </section>
-
-    <section>
-      <h2 data-i18n="termsFeesTitle">الرسوم والدفع</h2>
-      <p class="lead light" data-i18n="termsFeesLead">تعمل (Scene One) وفق النموذج التالي:</p>
-      <ol data-i18n-html="termsFeesHtml">
-        <li>تُحدَّد رسوم القراءة بحسب نوع النصّ (قصير / روائي) وتُعلَن بوضوح على المنصّة قبل تقديم النصّ.</li>
-        <li>تُدفع الرسوم عبر وسائل الدفع المعتمَدة في المملكة العربية السعودية، وتُصدر فواتير نظامية لكلّ عملية.</li>
-        <li><strong>سياسة الاسترداد:</strong> يحقّ للكاتب طلب استرجاع كامل رسوم الخدمة قبل إسناد النصّ إلى أحد القرّاء. ولا يمكن استرداد الرسوم بعد إسناد النصّ وبدء العمل عليه. وإذا تعذّر تنفيذ الخدمة لأسباب تخصّ المنصّة، فيتمّ ردّ المبلغ كاملاً خلال أربعة عشر يوم عمل.</li>
-      </ol>
-    </section>
-
-    <section>
-      <h2 data-i18n="termsDeliveryTitle">مدة التسليم</h2>
-      <div data-i18n-html="termsDeliveryHtml">
-        <p>تلتزم (Scene One) بتسليم التقرير خلال المدّة الزمنية المُعلَنة عند التقديم، وتتراوح عادةً بين أسبوع إلى ثلاثة أسابيع بحسب نوع النصّ وحجمه.</p>
-        <p>في حال تأخّر التسليم لأيّ سبب، يُبلَّغ الكاتب فوراً عبر البريد الإلكتروني مع توضيح الأسباب والمدّة المتوقّعة الجديدة.</p>
-      </div>
-    </section>
-
-    <section>
-      <h2 data-i18n="termsWriterTitle">التزامات الكاتب</h2>
-      <p class="lead light" data-i18n="termsWriterLead">عند استخدام (Scene One)، يلتزم الكاتب بما يلي:</p>
-      <ol data-i18n-html="termsWriterHtml">
-        <li>أن يكون النصّ المُقدَّم من تأليفه الأصلي، وأن يكون مالكاً لجميع حقوقه.</li>
-        <li>أن لا يحتوي النصّ على أيّ محتوى مخالف للأنظمة السعودية، أو محرّض على الكراهية، أو يخالف الذوق العام، أو ينتهك حقوق الغير.</li>
-        <li>أن يقدّم معلومات صحيحة عن نفسه عند إنشاء الحساب.</li>
-        <li>أن لا يحاول التحايل على الخدمة أو إساءة استخدامها بأيّ صورة.</li>
-      </ol>
-      <p style="margin-top:16px;font-weight:600;color:#fff" data-i18n="termsWriterNote">تتحمّل (Scene One) مسؤولية القراءة المهنية فقط، ولا تتحمّل أيّ مسؤولية عن مدى أصالة النصّ أو خلوّه من المخالفات. هذه مسؤولية الكاتب وحده.</p>
-    </section>
-
-    <section>
-      <h2 data-i18n="termsProviderTitle">التزامات مقدم الخدمة</h2>
-      <p class="lead light" data-i18n="termsProviderLead">تلتزم (Scene One) تجاه المستخدم بما يلي:</p>
-      <ol data-i18n-html="termsProviderHtml">
-        <li>قراءة النصّ بعناية ومهنية من قِبَل قارئ مؤهّل.</li>
-        <li>إصدار تقرير تقييم نزيه وصادق ومفصَّل.</li>
-        <li>حفظ سرّية النصّ التامّة، وعدم مشاركته مع أيّ طرف خارجي إلّا بإذن الكاتب الصريح.</li>
-        <li>حماية البيانات الشخصية للمستخدم وفقاً لسياسة الخصوصية.</li>
-        <li>الالتزام بالمدّة الزمنية المُعلَنة لتسليم التقرير.</li>
-      </ol>
-    </section>
-
-    <section>
-      <h2 data-i18n="termsLiabilityTitle">المسؤوليات</h2>
-      <p class="lead light" data-i18n="termsLiabilityLead">التقرير الصادر من (Scene One) يعبّر عن الرأي المهني للقارئ الناقد فقط، ولا يعتبر ضماناً لجودة النصّ، ولا تعهّداً بقبوله من قِبَل أيّ جهة إنتاجية أو مهرجان أو مسابقة. لا تتحمّل Scene One أيّ مسؤولية عن:</p>
-      <ol data-i18n-html="termsLiabilityHtml">
-        <li>قرارات الكاتب المبنية على التقرير.</li>
-        <li>عدم اهتمام شركات الإنتاج بالنصّ بعد ترشيحه.</li>
-        <li>أيّ نزاعات قد تنشأ بين الكاتب والشركاء الإنتاجيين.</li>
-        <li>أيّ ضرر غير مباشر أو فقدان أرباح ناتج عن استخدام الخدمة.</li>
-      </ol>
-    </section>
-
-    <section>
-      <h2 data-i18n="termsLawTitle">القانون المختص</h2>
-      <div data-i18n-html="termsLawHtml">
-        <p>تخضع هذه الشروط لأنظمة المملكة العربية السعودية وتُفسَّر وفقاً لها. تختصّ المحاكم السعودية بالنظر في أيّ نزاع قد ينشأ عن استخدام الخدمة.</p>
-        <p>نسعى دائماً لحلّ أيّ خلاف ودّياً قبل اللجوء إلى القضاء، ويُشجَّع المستخدم على التواصل معنا مباشرة عند وجود أيّ ملاحظة أو نزاع.</p>
-      </div>
-    </section>
-
-  </div>
-
-  <!-- ── FOOTER ── -->
-  <footer class="footer--doc">
-    <p class="footer__copy" dir="rtl" style="text-align:center" data-i18n-html="footerCopyHtml">© 2026 جميع الحقوق محفوظة لـSCENE ONE.<br><span class="footer__cr">الرقم الموحد: 7054791293</span></p>
-    <div class="footer__links" style="display:flex;align-items:center;gap:24px">
-      <a href="/privacy" data-i18n="footerPrivacy">سياسة الخصوصية</a>
-      <a href="/terms" data-i18n="footerTerms">الشروط والأحكام</a>
+  <section class="tm2-hero">
+    <div class="tm2-in">
+      <p class="tm2-eyebrow" data-i18n="tmEyebrow">المستندات</p>
+      <h1 class="tm2-hero__h" data-i18n="termsHeroTitle">الشروط والأحكام</h1>
+      <p class="tm2-hero__p" data-i18n="tmLede">ما الذي تلتزم به سين ون تجاهك، وما الذي تلتزم به أنت عند تقديم نصّك. مكتوبة بلغة واضحة قدر ما تسمح به الصياغة النظامية.</p>
+      <p class="tm2-hero__meta" data-i18n="tmUpdated">آخر تحديث · سبتمبر 2026</p>
     </div>
-    <div class="footer__social" style="display:flex;align-items:center;gap:16px">
-      <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer"><img src="assets/icon_x.png" alt="X"></a>
-      <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer"><img src="assets/icon_instagram.png" alt="Instagram"></a>
-      <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer"><img src="assets/icon_linkedin.png" alt="LinkedIn"></a>
+  </section>
+
+  <!-- ── THE CLAUSES ──
+       Each clause's body is one HTML string from js/i18n.js, so both locales
+       render from the same element rules in css/terms-v2.css. -->
+  <main class="tm2-main">
+    <div class="tm2-in tm2-grid">
+      <div>
+        <section class="tm2-sec" id="s1">
+          <span class="tm2-sec__n">01</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="tmT1">التعريفات</h2>
+            <div class="tm2-body" data-i18n-html="tmB1"><ul class="tm2-defs"><li><strong>الخدمة | المنصّة</strong><span>منصّة سين ون الإلكترونية المعنيّة بتقييم النصوص السينمائية وربط الكتّاب بفرص التطوير والإنتاج.</span></li><li><strong>المستخدم / الكاتب</strong><span>أي شخص يقوم بإنشاء حساب أو تقديم نصّ عبر المنصّة.</span></li><li><strong>القارئ الناقد</strong><span>المختصّ الذي تعتمده الخدمة لقراءة النصوص وتقييمها.</span></li><li><strong>التقرير</strong><span>الوثيقة الكتابية التي يصدرها القارئ الناقد بعد قراءة النص.</span></li><li><strong>النص</strong><span>أي عمل سينمائي مكتوب يُقدَّم للخدمة (سيناريو فيلم قصير أو روائي طويل).</span></li><li><strong>الشريك الإنتاجي</strong><span>جهة إنتاجية متعاقدة مع سين ون لاستلام النصوص المرشَّحة.</span></li></ul></div>
+          </div>
+        </section>
+        <section class="tm2-sec" id="s2">
+          <span class="tm2-sec__n">02</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="tmT2">شروط الاستخدام</h2>
+            <div class="tm2-body" data-i18n-html="tmB2"><p>باستخدامك لمنصّة سين ون أو تقديم نصّك عبرها، فإنك تُقرّ بأنك قرأت هذه الشروط وفهمتها ووافقت عليها بالكامل. إذا كنت لا توافق على أيّ بند من بنودها، يُرجى عدم استخدام الخدمة.</p><ul><li>يجب أن يكون عمر المستخدم ثمانية عشر عامًا فأكثر، أو أن يحصل على موافقة وليّه القانوني قبل استخدام الخدمة.</li><li>تحتفظ سين ون بحقّ تعديل هذه الشروط في أيّ وقت، وستُبلّغ التعديلات عبر البريد الإلكتروني أو عبر إشعار داخل المنصّة قبل سريانها بمدّة معقولة.</li><li>بإرسالك أي محتوى أو سيناريو عبر المنصّة، فإنك تقرّ بالتزامك بجميع الأنظمة واللوائح المعمول بها في المملكة العربية السعودية، بما في ذلك نظام الإعلام المرئي والمسموع، وتتحمّل كامل المسؤولية عن توافق المحتوى المقدم مع هذه الأنظمة.</li></ul></div>
+          </div>
+        </section>
+        <section class="tm2-sec" id="s3">
+          <span class="tm2-sec__n">03</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="tmT3">تعريف الخدمة</h2>
+            <div class="tm2-body" data-i18n-html="tmB3"><p>تقدّم سين ون خدمة قراءة احترافية ونقدية للنصوص السينمائية، تشمل:</p><ul><li>قراءة كاملة للنصّ من قِبَل قارئ ناقد مؤهَّل.</li><li>إصدار تقرير تقييم تفصيلي يشمل الفكرة والحبكة والشخصيات والحوار والإيقاع والإمكانية الإنتاجية.</li><li>تصنيف صريح للنصّ ضمن إحدى الفئات الثلاث: موصى به، يستحق النظر، أو لا يُوصى به حاليًا.</li><li>ترشيح النصوص الحاصلة على توصية قوية إلى الشركاء الإنتاجيين، بعد موافقة الكاتب الصريحة.</li></ul><div class="tm2-note"><p>الخدمة لا تشمل إعادة كتابة النصّ، أو تطويره، أو تحريره، أو ضمان قبوله من قبل أيّ جهة إنتاجية. سين ون تقدّم قراءة نقدية احترافية فقط.</p></div></div>
+          </div>
+        </section>
+        <section class="tm2-sec" id="s4">
+          <span class="tm2-sec__n">04</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="tmT4">الملكية الفكرية</h2>
+            <div class="tm2-body" data-i18n-html="tmB4"><p>عند تقديم النصّ، يمنح الكاتب سين ون <strong>ترخيصًا محدودًا وغير حصري</strong>، يقتصر استخدامه على:</p><ul><li>قراءة النصّ وتقييمه من قبل القارئ الناقد المعتمَد.</li><li>تخزينه بصورة آمنة على خوادم الخدمة طوال مدّة الاشتراك أو حتى يطلب الكاتب حذفه.</li><li>مشاركة النصّ مع الشركاء الإنتاجيين فقط بعد موافقة الكاتب الكتابية الصريحة، وذلك في حال حصوله على توصية ودخوله مرحلة الترشيح.</li></ul><p>لا يحقّ لمقدم الخدمة استخدام النصّ لأيّ غرض آخر، ولا نشره، ولا توزيعه، ولا اقتباس أيّ جزء منه دون إذن صريح ومسبق من الكاتب.</p><div class="tm2-note"><p>يُنصح الكاتب بشدّة بتسجيل نصّه لدى الهيئة السعودية للملكية الفكرية (SAIP) قبل تقديمه لأيّ جهة كانت.</p></div></div>
+          </div>
+        </section>
+
+        <!-- The design pulls the ownership clause out of §04 and states it on
+             its own black card, immediately after that section. -->
+        <div class="tm2-card">
+          <p class="tm2-card__label" data-i18n="tmCardLabel">بند جوهري</p>
+          <h3 class="tm2-card__h" data-i18n="tmCardH">الكاتب هو المالك الكامل والوحيد لنصّه</h3>
+          <p class="tm2-card__p" data-i18n="tmCardP">لا تدّعي سين ون أيّ ملكية على النصّ في أيّ مرحلة من مراحل الخدمة. ما يُمنح لنا هو إذن محدود بالقراءة والتخزين، وينتهي متى طلبت ذلك.</p>
+        </div>
+
+        <section class="tm2-sec" id="s5">
+          <span class="tm2-sec__n">05</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="tmT5">سرية النصوص والمواد المقدمة</h2>
+            <div class="tm2-body" data-i18n-html="tmB5"><p>تُدرك سين ون أن النصوص المقدمة عبر المنصة قد تتضمن أعمالًا أصلية وأفكارًا إبداعية تتمتع بالحماية بموجب أنظمة الملكية الفكرية المعمول بها. وعليه، تلتزم المنصة باتخاذ الإجراءات المعقولة للحفاظ على سرية النصوص وعدم إتاحتها إلا للأشخاص المخولين بالاطلاع عليها لغرض تقديم الخدمة.</p><p>كما يلتزم جميع القرّاء النقاد والمتعاونين المعتمدين بالحفاظ على سرية النصوص والمواد المقدمة، وعدم نسخها أو تداولها أو نشرها أو الإفصاح عنها أو إتاحتها لأي طرف ثالث خارج نطاق التقييم أو تقديم الخدمة.</p><p>وفي حال قيام أي قارئ ناقد أو متعاون بالإفصاح عن النص أو تسريبه أو استغلاله أو مشاركته بأي صورة غير مصرح بها، فإنه يتحمل المسؤولية القانونية الكاملة تجاه صاحب النص عن أي أضرار أو مطالبات قد تنشأ نتيجة لذلك، دون الإخلال بحق سين ون في اتخاذ الإجراءات المناسبة، بما في ذلك إنهاء التعاون معه أو منعه من استخدام المنصة مستقبلًا.</p><div class="tm2-note"><p>لا يُفسر تمكين القارئ الناقد من الاطلاع على النص على أنه نقل أو تنازل أو ترخيص بأي حق من حقوق الملكية الفكرية المتعلقة به، والتي تبقى مملوكة بالكامل لصاحب النص.</p></div></div>
+          </div>
+        </section>
+        <section class="tm2-sec" id="s6">
+          <span class="tm2-sec__n">06</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="tmT6">استخدام أدوات الذكاء الاصطناعي</h2>
+            <div class="tm2-body" data-i18n-html="tmB6"><p>يلتزم القارئ الناقد بعدم إدخال النصوص أو أي جزء منها في أي أداة أو خدمة تعتمد على الذكاء الاصطناعي أو معالجة المحتوى الآلية، سواء لأغراض التقييم أو التلخيص أو التحليل أو إعادة الصياغة أو لأي غرض آخر، ما لم يحصل على موافقة كتابية مسبقة من سين ون.</p><p>ويهدف هذا الالتزام إلى حماية سرية النصوص والحقوق الفكرية الخاصة بأصحابها، وضمان أن تستند التقييمات المقدمة من خلال المنصة إلى القراءة والتحليل المهني المباشر للقارئ الناقد.</p><div class="tm2-note"><p>أي استخدام غير مصرح به لأدوات الذكاء الاصطناعي فيما يتعلق بالنصوص المقدمة عبر المنصة يُعد مخالفة جوهرية لهذه الشروط، ويمنح سين ون الحق في إنهاء التعاون مع القارئ الناقد واتخاذ الإجراءات المناسبة وفق الأنظمة المعمول بها.</p></div></div>
+          </div>
+        </section>
+        <section class="tm2-sec" id="s7">
+          <span class="tm2-sec__n">07</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="tmT7">الرسوم والدفع</h2>
+            <div class="tm2-body" data-i18n-html="tmB7"><ul><li>تُحدَّد رسوم القراءة بحسب نوع النصّ (قصير / روائي) وتُعلَن بوضوح على المنصّة قبل تقديم النصّ.</li><li>تُدفع الرسوم عبر وسائل الدفع المعتمَدة في المملكة العربية السعودية، وتُصدر فواتير نظامية لكلّ عملية.</li><li><strong>سياسة الاسترداد</strong>: يحقّ للكاتب طلب استرجاع كامل رسوم الخدمة قبل إسناد النصّ إلى أحد القرّاء. ولا يمكن استرداد الرسوم بعد إسناد النصّ وبدء العمل عليه. وإذا تعذّر تنفيذ الخدمة لأسباب تخصّ المنصّة، فيتمّ ردّ المبلغ كاملًا خلال أربعة عشر يوم عمل.</li></ul></div>
+          </div>
+        </section>
+        <section class="tm2-sec" id="s8">
+          <span class="tm2-sec__n">08</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="tmT8">مدة التسليم</h2>
+            <div class="tm2-body" data-i18n-html="tmB8"><p>تلتزم سين ون بتسليم التقرير خلال المدّة الزمنية المُعلَنة عند التقديم، وتتراوح عادةً بين أسبوع إلى ثلاثة أسابيع بحسب نوع النصّ وحجمه.</p><p>في حال تأخّر التسليم لأيّ سبب، يُبلَّغ الكاتب فورًا عبر البريد الإلكتروني مع توضيح الأسباب والمدّة المتوقّعة الجديدة.</p></div>
+          </div>
+        </section>
+        <section class="tm2-sec" id="s9">
+          <span class="tm2-sec__n">09</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="tmT9">التزامات الكاتب</h2>
+            <div class="tm2-body" data-i18n-html="tmB9"><ul><li>أن يكون النصّ المُقدَّم من تأليفه الأصلي، وأن يكون مالكًا لجميع حقوقه.</li><li>أن لا يحتوي النصّ على أيّ محتوى مخالف للأنظمة السعودية، أو محرّض على الكراهية، أو يخالف الذوق العام، أو ينتهك حقوق الغير.</li><li>أن يقدّم معلومات صحيحة عن نفسه عند إنشاء الحساب.</li><li>أن لا يحاول التحايل على الخدمة أو إساءة استخدامها بأيّ صورة.</li></ul><div class="tm2-note"><p>تتحمّل سين ون مسؤولية القراءة المهنية فقط، ولا تتحمّل أيّ مسؤولية عن مدى أصالة النصّ أو خلوّه من المخالفات. هذه مسؤولية الكاتب وحده.</p></div></div>
+          </div>
+        </section>
+        <section class="tm2-sec" id="s10">
+          <span class="tm2-sec__n">10</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="tmT10">التزامات مقدم الخدمة</h2>
+            <div class="tm2-body" data-i18n-html="tmB10"><ul><li>قراءة النصّ بعناية ومهنية من قِبَل قارئ مؤهّل.</li><li>إصدار تقرير تقييم نزيه وصادق ومفصَّل.</li><li>حفظ سرّية النصّ التامّة، وعدم مشاركته مع أيّ طرف خارجي إلّا بإذن الكاتب الصريح.</li><li>حماية البيانات الشخصية للمستخدم وفقًا لسياسة الخصوصية.</li><li>الالتزام بالمدّة الزمنية المُعلَنة لتسليم التقرير.</li></ul></div>
+          </div>
+        </section>
+        <section class="tm2-sec" id="s11">
+          <span class="tm2-sec__n">11</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="tmT11">المسؤوليات</h2>
+            <div class="tm2-body" data-i18n-html="tmB11"><p>التقرير الصادر من سين ون يعبّر عن الرأي المهني للقارئ الناقد فقط، ولا يعتبر ضمانًا لجودة النصّ، ولا تعهّدًا بقبوله من قِبَل أيّ جهة إنتاجية أو مهرجان أو مسابقة. لا تتحمّل سين ون أيّ مسؤولية عن:</p><ul><li>قرارات الكاتب المبنية على التقرير.</li><li>عدم اهتمام شركات الإنتاج بالنصّ بعد ترشيحه.</li><li>أيّ نزاعات قد تنشأ بين الكاتب والشركاء الإنتاجيين.</li><li>أيّ ضرر غير مباشر أو فقدان أرباح ناتج عن استخدام الخدمة.</li></ul></div>
+          </div>
+        </section>
+        <section class="tm2-sec" id="s12">
+          <span class="tm2-sec__n">12</span>
+          <div>
+            <h2 class="tm2-sec__h" data-i18n="tmT12">القانون المختص</h2>
+            <div class="tm2-body" data-i18n-html="tmB12"><p>تخضع هذه الشروط لأنظمة المملكة العربية السعودية وتُفسَّر وفقًا لها. تختصّ المحاكم السعودية بالنظر في أيّ نزاع قد ينشأ عن استخدام الخدمة.</p><p>نسعى دائمًا لحلّ أيّ خلاف ودّيًا قبل اللجوء إلى القضاء، ونشجّع المستخدم على التواصل معنا مباشرة عند وجود أيّ ملاحظة أو نزاع.</p></div>
+          </div>
+        </section>
+      </div>
+
+      <aside class="tm2-toc">
+        <div class="tm2-toc__inner">
+          <p class="tm2-toc__title" data-i18n="tmToc">المحتويات</p>
+          <nav class="tm2-toc__nav">
+            <a href="#s1"><span>01</span><span data-i18n="tmT1">التعريفات</span></a>
+            <a href="#s2"><span>02</span><span data-i18n="tmT2">شروط الاستخدام</span></a>
+            <a href="#s3"><span>03</span><span data-i18n="tmT3">تعريف الخدمة</span></a>
+            <a href="#s4"><span>04</span><span data-i18n="tmT4">الملكية الفكرية</span></a>
+            <a href="#s5"><span>05</span><span data-i18n="tmT5">سرية النصوص والمواد المقدمة</span></a>
+            <a href="#s6"><span>06</span><span data-i18n="tmT6">استخدام أدوات الذكاء الاصطناعي</span></a>
+            <a href="#s7"><span>07</span><span data-i18n="tmT7">الرسوم والدفع</span></a>
+            <a href="#s8"><span>08</span><span data-i18n="tmT8">مدة التسليم</span></a>
+            <a href="#s9"><span>09</span><span data-i18n="tmT9">التزامات الكاتب</span></a>
+            <a href="#s10"><span>10</span><span data-i18n="tmT10">التزامات مقدم الخدمة</span></a>
+            <a href="#s11"><span>11</span><span data-i18n="tmT11">المسؤوليات</span></a>
+            <a href="#s12"><span>12</span><span data-i18n="tmT12">القانون المختص</span></a>
+          </nav>
+          <div class="tm2-toc__ask">
+            <p data-i18n="tmAsk">سؤال عن أي بند؟</p>
+            <a href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- ── FOOTER ──
+       The landing's footer, styled by the shared css/site-chrome.css. -->
+  <footer class="lx-foot">
+    <div class="lx-foot__in">
+      <div class="lx-foot__top">
+        <div>
+          <div class="lx-foot__brand">
+            <img src="assets/scene-one-logo-v3.svg" alt="Scene One">
+            <span data-i18n="brand">سين ون</span>
+          </div>
+          <p class="lx-foot__blurb" data-i18n="footBlurb">نكتشف الأصوات الجديدة، نطوّر أفلامها، ونبني لها طريقًا إلى الشاشة</p>
+        </div>
+        <div class="lx-foot__col">
+          <a href="/#coverage-types" data-i18n="footCoverage">تغطية النصوص</a>
+          <a href="/readers" data-i18n="footReaders">من يقرأ نصك</a>
+          <a href="/#journey" data-i18n="navJourney">رحلة النص</a>
+        </div>
+        <div class="lx-foot__col">
+          <a href="/privacy" data-i18n="footerPrivacy">سياسة الخصوصية</a>
+          <a href="/terms" data-i18n="footerTerms">الشروط والأحكام</a>
+          <a href="/assets/scene-one-booklet-ar.pdf" target="_blank" rel="noopener" data-i18n="footStory">حكاية سين ون</a>
+        </div>
+        <div class="lx-foot__col">
+          <p class="lx-foot__lbl" data-i18n="footContact">للتواصل</p>
+          <a class="lx-foot__mail" href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
+        </div>
+      </div>
+      <div class="lx-foot__bar">
+        <p class="lx-foot__cr" data-i18n="footCr">© 2026 جميع الحقوق محفوظة لـ سين ون · الرقم الموحد 7054791293</p>
+        <div class="lx-foot__soc">
+          <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X</a>
+          <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+      </div>
     </div>
   </footer>
 </div>

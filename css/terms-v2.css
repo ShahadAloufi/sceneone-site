@@ -1,0 +1,215 @@
+/* ============================================================================
+   TERMS v2 — /terms rebuilt to the supplied design.
+
+   Same arrangement as the landing and readers rebuilds: its own file, every
+   selector prefixed (`tm2-`), css/styles.css untouched. Shares css/tokens.css
+   (palette + container) and css/site-chrome.css (the nav pill and the footer).
+
+   Two departures from the mockup, both for consistency with the rest of the
+   site rather than disagreement with it: the accent is #cd2e07 (--lx-red), the
+   site's red, not the mockup's default #ea6e30 — which lists #cd2e07 among its
+   own options; and type stays Tajawal, the family every other page uses.
+   Section numbers are Latin, matching the numerals the landing page now uses.
+   ========================================================================= */
+
+.tm2 { background: var(--lx-cream); color: var(--lx-ink); }
+
+/* ---- hero ---------------------------------------------------------------- */
+
+.tm2-hero {
+  /* The nav is fixed and overlays the page, so the hero pays for its 104px. */
+  padding-block-start: calc(104px + clamp(40px, 5vw, 72px));
+  padding-block-end: clamp(56px, 7vw, 88px);
+  padding-inline: var(--lx-x);
+  background: var(--lx-black);
+  color: var(--lx-cream);
+}
+.tm2-in { inline-size: 100%; max-inline-size: var(--lx-w); margin-inline: auto; }
+.tm2-eyebrow {
+  margin: 0 0 18px;
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--lx-red);
+}
+.tm2-hero__h {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(34px, 5vw, 56px);
+  font-weight: 700;
+  line-height: 1.35;
+}
+.tm2-hero__p {
+  margin: 22px 0 0;
+  max-inline-size: 66ch;
+  font-size: clamp(16px, 1.4vw, 19px);
+  font-weight: 400;
+  line-height: 1.9;
+  color: rgba(249, 244, 239, .72);
+}
+.tm2-hero__meta { margin: 20px 0 0; font-size: 14px; color: rgba(249, 244, 239, .42); }
+
+/* ---- the two-column body ------------------------------------------------- */
+
+.tm2-main {
+  padding-block: clamp(48px, 6vw, 76px) clamp(64px, 8vw, 100px);
+  padding-inline: var(--lx-x);
+}
+.tm2-grid { display: grid; gap: 48px; align-items: start; }
+@media (min-width: 1000px) {
+  /* Contents sits second in the DOM so a small screen gets the terms first,
+     and `order` only moves it beside them once there is room. */
+  .tm2-grid { grid-template-columns: minmax(0, 1fr) 300px; gap: 80px; }
+}
+
+/* ---- a clause ------------------------------------------------------------ */
+
+.tm2-sec {
+  display: grid;
+  gap: 16px;
+  padding-block: clamp(36px, 4vw, 52px);
+  border-block-start: 1px solid rgba(0, 0, 0, .12);
+  /* Landing from the contents list: clear the fixed bar. */
+  scroll-margin-block-start: 120px;
+}
+@media (min-width: 720px) { .tm2-sec { grid-template-columns: 44px minmax(0, 1fr); gap: 48px; } }
+.tm2-sec__n {
+  padding-block-start: 8px;
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--lx-red);
+  font-variant-numeric: tabular-nums;
+}
+.tm2-sec__h {
+  margin: 0 0 24px;
+  font-family: var(--font-head);
+  font-size: clamp(22px, 2.4vw, 28px);
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--lx-black);
+}
+
+/* ---- the prose inside a clause ------------------------------------------ */
+/* Styled by element, because the body of each clause arrives from i18n as one
+   HTML string — the two locales have to render from the same rules. */
+
+.tm2-body > p { margin: 0 0 20px; font-size: 17px; font-weight: 400; line-height: 2; color: var(--lx-ink); }
+.tm2-body > p:last-child { margin-bottom: 0; }
+.tm2-body strong { font-weight: 700; color: var(--lx-black); }
+
+.tm2-body ul { margin: 0 0 22px; padding: 0; list-style: none; }
+.tm2-body ul:last-child { margin-bottom: 0; }
+.tm2-body ul > li {
+  display: flex;
+  gap: 16px;
+  padding-block: 14px;
+  border-block-end: 1px solid rgba(0, 0, 0, .08);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.95;
+  color: var(--lx-ink);
+}
+/* A drawn dot, so its size and colour are ours and it does not shift with the
+   font the way a list marker does. */
+.tm2-body ul > li::before {
+  content: "";
+  flex: 0 0 auto;
+  inline-size: 6px;
+  block-size: 6px;
+  margin-block-start: 13px;
+  border-radius: 50%;
+  background: var(--lx-red);
+}
+
+/* Definitions: term and meaning side by side. The <strong> is the first child,
+   so it takes the first track and the meaning follows in the second. */
+.tm2-body ul.tm2-defs > li { gap: 22px; padding-block: 18px; }
+.tm2-body ul.tm2-defs > li::before { content: none; }
+@media (min-width: 640px) {
+  .tm2-body ul.tm2-defs > li { display: grid; grid-template-columns: 190px minmax(0, 1fr); }
+}
+.tm2-body ul.tm2-defs strong { font-size: 16px; }
+.tm2-body ul.tm2-defs span { font-size: 16px; font-weight: 400; line-height: 1.9; color: var(--lx-ink); }
+
+/* A clause worth stopping on: an accent rule on the reading edge. */
+.tm2-note {
+  margin: 4px 0 22px;
+  padding: 22px 26px;
+  border-inline-start: 2px solid var(--lx-red);
+  background: rgba(0, 0, 0, .03);
+}
+.tm2-note:last-child { margin-bottom: 0; }
+.tm2-note > p { margin: 0; font-size: 16px; font-weight: 500; line-height: 1.95; color: var(--lx-ink); }
+
+/* ---- the essential-clause card ------------------------------------------ */
+
+.tm2-card {
+  margin-block-start: 52px;
+  padding: clamp(32px, 4vw, 52px) clamp(26px, 4vw, 56px);
+  border-radius: 18px;
+  background: var(--lx-black);
+  color: var(--lx-cream);
+}
+.tm2-card__label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 20px;
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--lx-red);
+}
+.tm2-card__label::before {
+  content: "";
+  inline-size: 10px;
+  block-size: 10px;
+  border-radius: 50%;
+  background: var(--lx-red);
+  flex: 0 0 auto;
+}
+.tm2-card__h {
+  margin: 0 0 18px;
+  font-family: var(--font-head);
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 700;
+  line-height: 1.5;
+}
+.tm2-card__p { margin: 0; max-inline-size: 62ch; font-size: 18px; font-weight: 400; line-height: 1.95; color: rgba(249, 244, 239, .74); }
+
+/* ---- contents ------------------------------------------------------------ */
+
+.tm2-toc__inner { position: sticky; top: 124px; }
+.tm2-toc__title {
+  margin: 0 0 20px;
+  padding-block-end: 16px;
+  border-block-end: 1px solid rgba(0, 0, 0, .14);
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--lx-muted);
+}
+.tm2-toc__nav { display: flex; flex-direction: column; }
+.tm2-toc__nav a {
+  display: flex;
+  gap: 14px;
+  padding-block: 11px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--lx-ink);
+  transition: color 200ms ease;
+}
+.tm2-toc__nav a:hover { color: var(--lx-red); }
+.tm2-toc__nav a span:first-child { color: var(--lx-muted); font-size: 13px; padding-block-start: 2px; font-variant-numeric: tabular-nums; }
+.tm2-toc__ask {
+  margin-block-start: 36px;
+  padding-block-start: 26px;
+  border-block-start: 1px solid rgba(0, 0, 0, .14);
+}
+.tm2-toc__ask p { margin: 0 0 10px; font-size: 14px; color: var(--lx-muted); }
+.tm2-toc__ask a { font-family: var(--font-head); font-size: 16px; font-weight: 600; color: var(--lx-red); word-break: break-all; }
+.tm2-toc__ask a:hover { color: var(--lx-ink); }
