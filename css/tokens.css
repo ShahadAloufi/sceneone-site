@@ -1,5 +1,6 @@
 /* ============================================================================
-   Shared design tokens for the redesigned pages (the landing and /readers).
+   Shared design tokens for the redesigned pages (the landing, /readers,
+   /terms, /privacy and /submit).
 
    These used to sit inside css/landing-v2.css. They moved here when the readers
    page was rebuilt to the same design language: two copies of a palette is how
@@ -13,7 +14,8 @@
 
 .landing,
 .rd2,
-.tm2 {
+.tm2,
+.sb2 {
   --lx-cream:      #f9f4ef;  /* the page ground for every light section       */
   --lx-white:      #ffffff;  /* raised cards only, so they lift off the cream */
   --lx-black:      #000000;

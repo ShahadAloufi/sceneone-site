@@ -1,0 +1,419 @@
+/* ============================================================================
+   SUBMIT v2 — /submit rebuilt to the supplied design.
+
+   Loaded AFTER css/styles.css, and this is the one page rebuild that overrides
+   an existing component rather than replacing it: the form is wired to
+   js/submit.js through .sub-field[data-field], .req, .sub-err, .sub-drop, the
+   drop-zone ids and the select names. Every one of those hooks is kept exactly
+   as it was; what changes is the surface they are drawn on. Renaming them to a
+   fresh prefix would have meant rewriting the validator, the uploader and the
+   live price quote on the page that takes payment — a much larger risk than a
+   stylesheet that reaches back into the old names deliberately.
+
+   Shares css/tokens.css (palette + container) and css/site-chrome.css (the nav
+   pill and the footer).
+
+   Two departures from the mockup, as on the other rebuilds: the accent stays
+   #cd2e07 (the mockup lists it among its own options) and type stays Tajawal.
+   Numerals are Latin, matching the rest of the site.
+   ========================================================================= */
+
+.sb2 { background: var(--lx-cream); color: var(--lx-ink); }
+
+/* ---- hero ---------------------------------------------------------------- */
+
+.sb2-hero {
+  /* The nav is fixed and 104px tall; the hero pays for it. */
+  padding-block-start: calc(104px + clamp(40px, 5vw, 72px));
+  padding-block-end: clamp(48px, 6vw, 80px);
+  padding-inline: var(--lx-x);
+  background: var(--lx-black);
+  color: var(--lx-cream);
+}
+.sb2-hero__in {
+  inline-size: 100%;
+  max-inline-size: var(--lx-w);
+  margin-inline: auto;
+  display: grid;
+  gap: 40px;
+  align-items: center;
+}
+@media (min-width: 900px) { .sb2-hero__in { grid-template-columns: minmax(0, 1fr) 380px; gap: 80px; } }
+.sb2-eyebrow {
+  margin: 0 0 20px;
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--lx-red);
+}
+.sb2-hero__h {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(34px, 5vw, 58px);
+  font-weight: 700;
+  line-height: 1.35;
+}
+.sb2-hero__p {
+  margin: 22px 0 0;
+  max-inline-size: 52ch;
+  font-size: clamp(16px, 1.4vw, 19px);
+  line-height: 1.9;
+  color: rgba(249, 244, 239, .72);
+}
+
+/* The reassurance card beside the title. */
+.sb2-safe { padding: 30px; border-radius: 16px; background: rgba(255, 255, 255, .055); }
+.sb2-safe__label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 14px;
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--lx-red);
+}
+.sb2-safe__label::before {
+  content: "";
+  inline-size: 9px;
+  block-size: 9px;
+  border-radius: 50%;
+  background: var(--lx-red);
+  flex: 0 0 auto;
+}
+.sb2-safe__h { margin: 0 0 10px; font-family: var(--font-head); font-size: 20px; font-weight: 700; line-height: 1.5; color: var(--lx-cream); }
+.sb2-safe__p { margin: 0; font-size: 15px; line-height: 1.8; color: rgba(249, 244, 239, .66); }
+
+/* ---- the form column ----------------------------------------------------- */
+
+.sb2-main { padding-block: clamp(36px, 5vw, 52px) clamp(48px, 6vw, 70px); padding-inline: var(--lx-x); }
+.sb2-col { inline-size: 100%; max-inline-size: 920px; margin-inline: auto; }
+
+.sb2-sec { padding-block: clamp(36px, 4vw, 56px); }
+.sb2-sec + .sb2-sec { border-block-start: 1px solid rgba(0, 0, 0, .1); }
+.sb2-sec__head { display: flex; align-items: baseline; gap: 20px; margin-block-end: 8px; }
+.sb2-sec__n { font-family: var(--font-head); font-size: 16px; font-weight: 700; color: var(--lx-red); font-variant-numeric: tabular-nums; }
+.sb2-sec__h { margin: 0; font-family: var(--font-head); font-size: clamp(22px, 2.6vw, 30px); font-weight: 700; color: var(--lx-black); }
+.sb2-sec__body { margin-block-start: 34px; }
+@media (min-width: 720px) { .sb2-sec__body { margin-inline-start: 36px; } }
+
+/* ---- the fields ---------------------------------------------------------- */
+/* These reach back into the markup js/submit.js depends on. The dark-card
+   treatment in styles.css is overridden here rather than deleted, because that
+   sheet also dresses /treatment-submit, which this design does not cover. */
+
+.sb2 .sub-grid { display: grid; gap: 30px 28px; grid-template-columns: 1fr; }
+@media (min-width: 720px) { .sb2 .sub-grid { grid-template-columns: 1fr 1fr; } }
+.sb2 .sub-field { display: flex; flex-direction: column; }
+.sb2 .sub-field--full { grid-column: 1 / -1; }
+
+.sb2 .sub-field label {
+  margin-block-end: 12px;
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--lx-black);
+}
+.sb2 .sub-field label .req { color: var(--lx-red); }
+
+.sb2 .sub-field input[type="text"],
+.sb2 .sub-field input[type="email"],
+.sb2 .sub-field select,
+.sb2 .sub-field textarea {
+  inline-size: 100%;
+  box-sizing: border-box;
+  min-block-size: 58px;
+  padding-inline: 20px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: var(--lx-white);
+  color: var(--lx-black);
+  font-family: var(--font-body);
+  font-size: 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+.sb2 .sub-field textarea {
+  min-block-size: 132px;
+  padding-block: 18px;
+  line-height: 1.85;
+  resize: vertical;
+}
+.sb2 .sub-field select { appearance: none; padding-inline-end: 44px; cursor: pointer; }
+/* The chevron sits on the end edge in both directions. */
+.sb2 .sub-field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237a736a' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 18px;
+  background-position: left 18px center;
+}
+html[dir="ltr"] .sb2 .sub-field select { background-position: right 18px center; }
+
+.sb2 .sub-field input::placeholder,
+.sb2 .sub-field textarea::placeholder { color: #a8a29a; }
+.sb2 .sub-field input:focus,
+.sb2 .sub-field select:focus,
+.sb2 .sub-field textarea:focus {
+  outline: none;
+  border-color: var(--lx-red);
+  box-shadow: 0 0 0 3px rgba(205, 46, 7, .12);
+}
+
+.sb2 .sub-hint { margin: 10px 0 0; max-inline-size: 60ch; font-size: 14px; line-height: 1.7; color: var(--lx-muted); }
+.sb2 .sub-err { margin: 8px 0 0; font-size: 14px; color: var(--lx-red); display: none; }
+.sb2 .sub-field.invalid .sub-err { display: block; }
+.sb2 .sub-field.invalid input,
+.sb2 .sub-field.invalid select,
+.sb2 .sub-field.invalid textarea,
+.sb2 .sub-field.invalid .sub-drop { border-color: var(--lx-red); }
+
+/* ---- the yes / no pair --------------------------------------------------- */
+
+.sb2 .sub-ipbox { display: flex; gap: 14px; max-inline-size: 420px; }
+.sb2 .sub-radio {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-block-size: 58px;
+  padding-inline: 20px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: var(--lx-white);
+  cursor: pointer;
+  transition: border-color 180ms ease;
+}
+.sb2 .sub-radio input { position: absolute; opacity: 0; pointer-events: none; }
+.sb2 .sub-radio__dot {
+  flex: 0 0 auto;
+  inline-size: 18px;
+  block-size: 18px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .1);
+  transition: background-color 180ms ease, box-shadow 180ms ease;
+}
+.sb2 .sub-radio input:checked ~ .sub-radio__dot {
+  background: var(--lx-red);
+  box-shadow: inset 0 0 0 3px var(--lx-white);
+}
+.sb2 .sub-radio input:checked ~ .sub-radio__label { font-weight: 600; }
+.sb2 .sub-radio:has(input:checked) { border-color: var(--lx-red); }
+.sb2 .sub-radio input:focus-visible ~ .sub-radio__dot { box-shadow: 0 0 0 3px rgba(205, 46, 7, .3); }
+.sb2 .sub-radio__label { font-size: 16px; color: var(--lx-black); }
+
+/* ---- drop zones ---------------------------------------------------------- */
+
+.sb2 .sub-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-block-size: 104px;
+  padding: 20px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: var(--lx-white);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 180ms ease, background-color 180ms ease;
+}
+.sb2 .sub-drop:hover,
+.sb2 .sub-drop.is-over { border-color: var(--lx-red); }
+.sb2 .sub-drop:focus-visible { outline: 2px solid var(--lx-red); outline-offset: 2px; }
+.sb2 .sub-drop__icon { display: none; }
+.sb2 .sub-drop__text { margin: 0; font-family: var(--font-head); font-size: 17px; font-weight: 600; color: var(--lx-black); }
+.sb2 .sub-drop__hint { margin: 0; font-size: 14px; color: var(--lx-muted); }
+
+/* ---- the membership block ------------------------------------------------ */
+
+.sb2 .sub-member { margin-block-start: 30px; }
+.sb2 .sub-member__toggle {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  font-family: var(--font-head);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--lx-black);
+}
+.sb2 .sub-member__intro { padding: 30px 32px; border-radius: 14px; background: rgba(0, 0, 0, .04); }
+.sb2 .sub-member__toggle input { position: absolute; opacity: 0; pointer-events: none; }
+.sb2 .sub-member__box {
+  flex: 0 0 auto;
+  inline-size: 22px;
+  block-size: 22px;
+  border-radius: 6px;
+  background: var(--lx-white);
+  position: relative;
+  transition: background-color 180ms ease;
+}
+.sb2 .sub-member__toggle input:checked ~ .sub-member__box { background: var(--lx-red); }
+.sb2 .sub-member__toggle input:checked ~ .sub-member__box::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: 7px;
+  inset-block-start: 3px;
+  inline-size: 6px;
+  block-size: 11px;
+  border: solid var(--lx-white);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.sb2 .sub-member__toggle input:focus-visible ~ .sub-member__box { outline: 2px solid var(--lx-red); outline-offset: 2px; }
+.sb2 .sub-member__note { margin: 16px 0 0; max-inline-size: 72ch; font-size: 15px; line-height: 1.85; color: var(--lx-ink); }
+.sb2 .sub-member__fields { display: grid; gap: 30px 28px; margin-block-start: 30px; }
+@media (min-width: 720px) { .sb2 .sub-member__fields { grid-template-columns: 1fr 1fr; } }
+.sb2 .sub-member__fields > .sub-field[data-field="memberCard"],
+.sb2 .sub-member__privacy { grid-column: 1 / -1; }
+.sb2 .sub-note { margin: 10px 0 0; display: flex; gap: 10px; max-inline-size: 62ch; font-size: 14px; line-height: 1.7; color: var(--lx-muted); }
+.sb2 .sub-note__icon { flex: 0 0 auto; inline-size: 17px; block-size: 17px; margin-block-start: 2px; }
+.sb2 .sub-note__link { color: var(--lx-red); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---- the turnaround strip ------------------------------------------------ */
+
+.sb2-times {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 32px;
+  padding: 28px 36px;
+  border-radius: 16px;
+  background: var(--lx-white);
+}
+.sb2-times__label { margin: 0; font-family: var(--font-head); font-size: 14px; font-weight: 600; letter-spacing: .06em; color: var(--lx-muted); }
+.sb2-times p { margin: 0; font-size: 18px; font-weight: 600; color: var(--lx-black); }
+.sb2-times span { font-weight: 400; color: var(--lx-muted); }
+
+/* ---- the closing card ---------------------------------------------------- */
+
+.sb2-send { margin-block-start: 24px; padding: clamp(28px, 4vw, 40px) clamp(24px, 4vw, 44px); border-radius: 20px; background: var(--lx-white); }
+.sb2-consent { display: flex; align-items: flex-start; gap: 16px; padding-block-end: 28px; cursor: pointer; }
+.sb2-consent input { position: absolute; opacity: 0; pointer-events: none; }
+.sb2-consent__box {
+  flex: 0 0 auto;
+  inline-size: 22px;
+  block-size: 22px;
+  margin-block-start: 3px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, .06);
+  position: relative;
+  transition: background-color 180ms ease;
+}
+.sb2-consent input:checked ~ .sb2-consent__box { background: var(--lx-red); }
+.sb2-consent input:checked ~ .sb2-consent__box::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: 7px;
+  inset-block-start: 3px;
+  inline-size: 6px;
+  block-size: 11px;
+  border: solid var(--lx-white);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.sb2-consent input:focus-visible ~ .sb2-consent__box { outline: 2px solid var(--lx-red); outline-offset: 2px; }
+.sb2-consent__text { margin: 0; font-size: 17px; line-height: 1.75; color: var(--lx-ink); }
+.sb2-consent__text a { color: var(--lx-red); text-decoration: underline; text-underline-offset: 3px; }
+
+.sb2-send__row {
+  padding-block-start: 28px;
+  border-block-start: 1px solid rgba(0, 0, 0, .1);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px 40px;
+}
+.sb2 .sub-submit {
+  flex: 0 0 auto;
+  /* styles.css sizes this button to fill the old card (width: 100%, margin-top).
+     Here it sits in a row beside the total, so both are reset outright. */
+  inline-size: auto;
+  margin: 0;
+  min-block-size: 62px;
+  padding-inline: 52px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--lx-red);
+  color: var(--lx-white);
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 180ms ease, opacity 180ms ease;
+}
+.sb2 .sub-submit:hover { background: #b32806; }
+.sb2 .sub-submit:disabled { opacity: .55; cursor: default; }
+.sb2 .sub-submit:focus-visible { outline: 2px solid var(--lx-black); outline-offset: 3px; }
+.sb2-total { text-align: start; }
+.sb2-total__label { margin: 0 0 6px; font-size: 14px; color: var(--lx-muted); }
+.sb2 .sub-quote { margin: 0; font-family: var(--font-head); font-size: clamp(18px, 2.2vw, 24px); font-weight: 700; color: var(--lx-black); }
+.sb2 .sub-quote[hidden] { display: none; }
+.sb2-total__empty { margin: 0; font-size: 16px; color: var(--lx-muted); }
+
+/* ---- the delivery-journey strip ------------------------------------------ */
+/* Sits between the hero and the form: what happens after the writer sends. */
+
+.sb2-journey { padding-block-start: clamp(36px, 4vw, 52px); padding-inline: var(--lx-x); }
+.sb2-journey__card {
+  inline-size: 100%;
+  max-inline-size: 920px;
+  margin-inline: auto;
+  box-sizing: border-box;
+  padding: 32px clamp(22px, 3vw, 36px);
+  border-radius: 16px;
+  background: var(--lx-white);
+}
+.sb2-journey__label { margin: 0 0 24px; font-family: var(--font-head); font-size: 14px; font-weight: 600; letter-spacing: .06em; color: var(--lx-muted); }
+.sb2-journey__steps { display: grid; gap: 22px 28px; grid-template-columns: 1fr; }
+@media (min-width: 560px) { .sb2-journey__steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 900px) { .sb2-journey__steps { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.sb2-journey__step { display: flex; flex-direction: column; gap: 8px; }
+.sb2-journey__n { font-family: var(--font-head); font-size: 14px; font-weight: 700; color: var(--lx-red); font-variant-numeric: tabular-nums; }
+.sb2-journey__t { font-size: 15px; line-height: 1.7; color: var(--lx-ink); }
+
+/* ---- the consent row ----------------------------------------------------- */
+/* Not a .sub-field: requiredFields() in js/submit.js builds its generic list
+   from `.sub-field[data-field]` wrappers carrying a `.req` star, and this row
+   has no star. It still carries data-field so markInvalid("consent", …) can
+   find it, exactly as it finds the membership fields it also checks by hand. */
+
+.sb2-consent-wrap { padding-block-end: 28px; }
+.sb2-consent__err { margin: 12px 0 0; padding-inline-start: 38px; font-size: 14px; color: var(--lx-red); display: none; }
+.sb2-consent-wrap.invalid .sb2-consent__err { display: block; }
+.sb2-consent-wrap.invalid .sb2-consent__box { box-shadow: 0 0 0 2px var(--lx-red); }
+
+/* ---- Arabic placeholders ------------------------------------------------- */
+/* The page is RTL, so `text-align: start` SHOULD put a placeholder on the right
+   edge — but a placeholder is its own bidi context, and Arabic text left to
+   `start` was landing on the left. Stated outright: the fields are Arabic, and
+   the placeholder follows the field. The two dir="ltr" inputs (the English
+   title, the email, the membership number) set their own alignment inline. */
+.sb2 .sub-field textarea { direction: rtl; text-align: right; }
+.sb2 .sub-field input::placeholder,
+.sb2 .sub-field textarea::placeholder { direction: rtl; text-align: right; }
+.sb2 .sub-field input[dir="ltr"]::placeholder { direction: ltr; text-align: right; }
+
+/* The quote is driven by js/submit.js, which only toggles the element's
+   `hidden` — so the placeholder line beside it is hidden by CSS instead. */
+.sb2 .sub-quote:not([hidden]) + .sb2-total__empty { display: none; }
+
+/* ---- resets against css/styles.css --------------------------------------- */
+/* The old form was a bordered light card; this one is a flat column on cream.
+   These undo the base sheet's borders and sizes on the parts the design draws
+   differently, rather than editing styles.css, which still dresses the
+   treatment form (/treatment-submit) with exactly those rules. */
+
+.sb2 .sub-ipbox { background: none; border: 0; border-radius: 0; padding: 0; }
+.sb2 .sub-radio__dot { border: 0; }
+.sb2 .sub-member__box { inline-size: 22px; block-size: 22px; border: 0; border-radius: 6px; }
+.sb2 .sub-member__text { font-size: 17px; font-weight: 600; color: var(--lx-black); }
+/* The base sheet lets the file name break mid-word so a long one cannot widen
+   the card. That is right for a file name and wrong for the Arabic prompt that
+   sits there until one is chosen, so it applies only once a file is picked. */
+.sb2 .sub-drop__text { word-break: normal; overflow-wrap: anywhere; }

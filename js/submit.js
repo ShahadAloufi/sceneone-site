@@ -499,6 +499,13 @@
     // would make them required for everyone. Their stars are still in the markup
     // — they are honest about what a member must fill in — which is exactly why
     // requiredFields() has to skip them above.
+    // The design's consent tick. It is optional markup, not a required field:
+    // the treatment form has no such box, so the check only runs where one
+    // exists. No .req star, so requiredFields() never sees it — the row carries
+    // data-field purely so markInvalid() can flag it, as with membership.
+    var consentEl = document.getElementById("consent");
+    if (consentEl && !consentEl.checked) { markInvalid("consent", true); ok = false; }
+    else if (consentEl) { markInvalid("consent", false); }
     if (v.isMember) {
       req("memberNumber", MEMBER_RE.test(v.memberNumber));
       var card = cardFile();
