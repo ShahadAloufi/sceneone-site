@@ -34,11 +34,7 @@
   inline-size: 100%;
   max-inline-size: var(--lx-w);
   margin-inline: auto;
-  display: grid;
-  gap: 40px;
-  align-items: center;
 }
-@media (min-width: 900px) { .sb2-hero__in { grid-template-columns: minmax(0, 1fr) 380px; gap: 80px; } }
 .sb2-eyebrow {
   margin: 0 0 20px;
   font-family: var(--font-head);
@@ -61,30 +57,6 @@
   line-height: 1.9;
   color: rgba(249, 244, 239, .72);
 }
-
-/* The reassurance card beside the title. */
-.sb2-safe { padding: 30px; border-radius: 16px; background: rgba(255, 255, 255, .055); }
-.sb2-safe__label {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 0 0 14px;
-  font-family: var(--font-head);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: .06em;
-  color: var(--lx-red);
-}
-.sb2-safe__label::before {
-  content: "";
-  inline-size: 9px;
-  block-size: 9px;
-  border-radius: 50%;
-  background: var(--lx-red);
-  flex: 0 0 auto;
-}
-.sb2-safe__h { margin: 0 0 10px; font-family: var(--font-head); font-size: 20px; font-weight: 700; line-height: 1.5; color: var(--lx-cream); }
-.sb2-safe__p { margin: 0; font-size: 15px; line-height: 1.8; color: rgba(249, 244, 239, .66); }
 
 /* ---- the form column ----------------------------------------------------- */
 
