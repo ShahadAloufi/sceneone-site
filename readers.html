@@ -21,14 +21,14 @@
 
   <!-- ── NAV ── -->
   <nav class="nav">
-    <a href="/"><img class="nav__logo" src="assets/scene-one-logo-v3.svg" alt="Scene One"></a>
+    <a class="nav__brand" href="/"><img class="nav__logo" src="assets/scene-one-logo-v3.svg" alt="Scene One"><span class="nav__wordmark" data-i18n="brand">سين ون</span></a>
     <!-- Inline links on desktop; below the breakpoint they collapse and the
          hamburger's overlay carries the same six destinations. -->
     <ul class="nav__links">
       <li><a href="/" data-i18n="navHome">الرئيسية</a></li>
       <li><a href="/#about" data-i18n="navAboutUs">من نحن</a></li>
       <li><a href="/#coverage-types" data-i18n="navCoverage">تغطية النصوص</a></li>
-      <li><a href="/readers" data-i18n="navReaders">من يقرأ نصك</a></li>
+      <li><a href="/readers" aria-current="page" data-i18n="navReaders">من يقرأ نصك</a></li>
       <li><a href="/#journey" data-i18n="navJourney">رحلة النص</a></li>
       <li><a href="/#contact" data-i18n="navContact">تواصل معنا</a></li>
     </ul>
@@ -77,7 +77,7 @@
         <a href="/" data-menu-close data-i18n="navHome">الرئيسية</a>
         <a href="/#about" data-menu-close data-i18n="navAboutUs">من نحن</a>
         <a href="/#coverage-types" data-menu-close data-i18n="navCoverage">تغطية النصوص</a>
-        <a href="/readers" data-menu-close data-i18n="navReaders">من يقرأ نصك</a>
+        <a href="/readers" aria-current="page" data-menu-close data-i18n="navReaders">من يقرأ نصك</a>
         <a href="/#journey" data-menu-close data-i18n="navJourney">رحلة النص</a>
         <a href="/#contact" data-menu-close data-i18n="navContact">تواصل معنا</a>
       </div>

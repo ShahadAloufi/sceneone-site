@@ -118,6 +118,29 @@ a, button {
 .nav.center { align-items: center; }
 .nav__logo { height: 56px; width: auto; }
 
+/* The mark and the wordmark are one lockup, as the design has them. The mark
+   keeps its 56px: the nav's height is load-bearing elsewhere — the readers,
+   terms and privacy heroes each pay for a 104px bar, and the in-page anchors
+   are offset by it — so shrinking it to the mockup's 34px would move four
+   pages' worth of spacing for a cosmetic gain. */
+.nav__brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.nav__wordmark {
+  font-family: var(--font-head);
+  font-size: 22px;
+  font-weight: 700;
+  color: #f9f4ef;
+  white-space: nowrap;
+}
+/* Below this the bar is mark + toggle + hamburger, and the word crowds them. */
+@media (max-width: 520px) { .nav__wordmark { display: none; } }
+
+/* The page you are on, in the accent. The literal hex rather than --lx-red:
+   this rule also serves /submit and /about-coverage, which do not load the
+   token sheet. */
+.nav__links a[aria-current="page"],
+.nav__links a[aria-current="page"]:hover,
+.overlay__links a[aria-current="page"] { color: #cd2e07; }
+
 /* The bar is fixed, so an in-page jump would otherwise land with the section's
    heading tucked underneath it. Applies to every linked section on the landing page
    — the hero's "عرض التغطيات" and the nav's #about / #journey / #contact all rely
