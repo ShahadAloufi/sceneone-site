@@ -423,6 +423,31 @@
     syncAcceptUi();
   }
 
+  /* ---------- CONSENT GATE ----------
+     The submission form carries a consent tick; the treatment form does not,
+     so everything here is skipped when the box is absent and that page keeps
+     its always-live button.
+
+     Holding the button disabled is the honest reading of the design: the tick
+     is not a field to be corrected after the fact, it is the permission the
+     whole submission rests on. validate() still checks it as a backstop, for
+     implicit submission (Enter in a text field) and for anything that re-enables
+     the button without going through here. */
+  (function consentGate() {
+    var box = document.getElementById("consent");
+    var btn = document.querySelector("#submitForm .sub-submit");
+    if (!box || !btn) return;
+    function sync() {
+      btn.disabled = !box.checked;
+      // Says WHY the button is dead, for anyone who cannot see the tick's state.
+      btn.setAttribute("aria-disabled", String(!box.checked));
+      if (box.checked) btn.removeAttribute("title");
+      else btn.setAttribute("title", "يلزم الموافقة قبل إرسال النص.");
+    }
+    box.addEventListener("change", sync);
+    sync();
+  })();
+
   /* ---------- VALIDATION ---------- */
   var form = document.getElementById("submitForm");
   function fieldEl(name) { return form.querySelector('[data-field="' + name + '"]'); }

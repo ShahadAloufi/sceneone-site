@@ -345,10 +345,16 @@ html[dir="ltr"] .sb2 .sub-field select { background-position: right 18px center;
   font-size: 18px;
   font-weight: 700;
   cursor: pointer;
-  transition: background-color 180ms ease, opacity 180ms ease;
+  /* Colour eases; the dimming does not. Whether the button is live is a state
+     the writer should read instantly, not watch fade in. */
+  transition: background-color 180ms ease;
 }
 .sb2 .sub-submit:hover { background: #b32806; }
-.sb2 .sub-submit:disabled { opacity: .55; cursor: default; }
+/* Dead until the consent above it is ticked (see consentGate in js/submit.js).
+   not-allowed rather than default: the button is not merely busy, it is waiting
+   on something the writer has to do, and the tick is the only thing above it. */
+.sb2 .sub-submit:disabled { opacity: .5; cursor: not-allowed; }
+.sb2 .sub-submit:disabled:hover { background: var(--lx-red); }
 .sb2 .sub-submit:focus-visible { outline: 2px solid var(--lx-black); outline-offset: 3px; }
 .sb2-total { text-align: start; }
 .sb2-total__label { margin: 0 0 6px; font-size: 14px; color: var(--lx-muted); }
