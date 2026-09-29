@@ -89,15 +89,21 @@
 /* ---- the form column ----------------------------------------------------- */
 
 .sb2-main { padding-block: clamp(36px, 5vw, 52px) clamp(48px, 6vw, 70px); padding-inline: var(--lx-x); }
-.sb2-col { inline-size: 100%; max-inline-size: 920px; margin-inline: auto; }
+/* The design draws this column at 920px, but every other page on the site puts
+   its body on the same container as the fixed nav, and a form that starts and
+   ends a hundred pixels inside the bar above it reads as a mistake. The column
+   takes --lx-w, which aliases --container, so the fields line up with the nav,
+   the hero and the footer at both edges. */
+.sb2-col { inline-size: 100%; max-inline-size: var(--lx-w); margin-inline: auto; }
 
 .sb2-sec { padding-block: clamp(36px, 4vw, 56px); }
 .sb2-sec + .sb2-sec { border-block-start: 1px solid rgba(0, 0, 0, .1); }
 .sb2-sec__head { display: flex; align-items: baseline; gap: 20px; margin-block-end: 8px; }
 .sb2-sec__n { font-family: var(--font-head); font-size: 16px; font-weight: 700; color: var(--lx-red); font-variant-numeric: tabular-nums; }
 .sb2-sec__h { margin: 0; font-family: var(--font-head); font-size: clamp(22px, 2.6vw, 30px); font-weight: 700; color: var(--lx-black); }
+/* No inline indent under the number: the fields have to start on the container
+   edge, so the heading row hangs its number outside instead (below). */
 .sb2-sec__body { margin-block-start: 34px; }
-@media (min-width: 720px) { .sb2-sec__body { margin-inline-start: 36px; } }
 
 /* ---- the fields ---------------------------------------------------------- */
 /* These reach back into the markup js/submit.js depends on. The dark-card
@@ -368,7 +374,7 @@ html[dir="ltr"] .sb2 .sub-field select { background-position: right 18px center;
 .sb2-journey { padding-block-start: clamp(36px, 4vw, 52px); padding-inline: var(--lx-x); }
 .sb2-journey__card {
   inline-size: 100%;
-  max-inline-size: 920px;
+  max-inline-size: var(--lx-w);
   margin-inline: auto;
   box-sizing: border-box;
   padding: 32px clamp(22px, 3vw, 36px);
