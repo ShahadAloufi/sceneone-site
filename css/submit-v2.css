@@ -167,7 +167,10 @@ html[dir="ltr"] .sb2 .sub-field select { background-position: right 18px center;
   box-shadow: 0 0 0 3px rgba(205, 46, 7, .12);
 }
 
-.sb2 .sub-hint { margin: 10px 0 0; max-inline-size: 60ch; font-size: 14px; line-height: 1.7; color: var(--lx-muted); }
+/* 60ch capped the measure at 464px, which broke the longest hint (the writer
+   level) onto a second line although its field was 960px wide. 72ch clears it
+   with room to spare and still stops a hint running the container's full width. */
+.sb2 .sub-hint { margin: 10px 0 0; max-inline-size: 72ch; font-size: 14px; line-height: 1.7; color: var(--lx-muted); }
 .sb2 .sub-err { margin: 8px 0 0; font-size: 14px; color: var(--lx-red); display: none; }
 .sb2 .sub-field.invalid .sub-err { display: block; }
 .sb2 .sub-field.invalid input,
