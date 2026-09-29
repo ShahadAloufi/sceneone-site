@@ -400,13 +400,11 @@
         // and is charged 212.50 at the gateway. Same arithmetic as
         // memberDiscounted() in lib/moyasar.js, which is what actually invoices.
         var listTotal = billable * perPage.rate;
-        if (!isMemberClaimed()) {
-          return showQuote("نصك " + billable + " صفحة × " + perPage.rate + " ريال = " +
-            listTotal + " ريال");
-        }
-        return showQuote("نصك " + billable + " صفحة × " + perPage.rate + " ريال = " +
-          listTotal + " ريال، بعد خصم العضوية " + MEMBER_DISCOUNT_PCT + "%: " +
-          riyals(listTotal * (100 - MEMBER_DISCOUNT_PCT) / 100) + " ريال");
+        if (!isMemberClaimed()) return showQuote(riyals(listTotal) + " ريال");
+        // The discount is still named. Without it the figure would silently
+        // differ from the list price on the page that takes the payment.
+        return showQuote(riyals(listTotal * (100 - MEMBER_DISCOUNT_PCT) / 100) +
+          " ريال بعد خصم العضوية");
       }
 
       showQuote(null);
