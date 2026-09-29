@@ -416,6 +416,12 @@ html[dir="ltr"] .sb2 .sub-field select { background-position: right 18px center;
    treatment form (/treatment-submit) with exactly those rules. */
 
 .sb2 .sub-ipbox { background: none; border: 0; border-radius: 0; padding: 0; }
+/* The base sheet makes the whole membership block one white bordered panel.
+   Here only the tinted intro is a panel, and the fields below it sit on the
+   page's cream — left white, they were white controls on a white ground with
+   nothing to mark their edges. */
+.sb2 .sub-member { background: none; border: 0; border-radius: 0; padding: 0; }
+.sb2 .sub-member__fields { padding-block-start: 0; border-block-start: 0; }
 .sb2 .sub-radio__dot { border: 0; }
 .sb2 .sub-member__box { inline-size: 22px; block-size: 22px; border: 0; border-radius: 6px; }
 .sb2 .sub-member__text { font-size: 17px; font-weight: 600; color: var(--lx-black); }
