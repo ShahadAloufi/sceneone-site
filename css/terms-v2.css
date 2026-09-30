@@ -21,8 +21,10 @@
   padding-block-start: calc(104px + clamp(40px, 5vw, 72px));
   padding-block-end: clamp(56px, 7vw, 88px);
   padding-inline: var(--lx-x);
-  background: var(--lx-black);
-  color: var(--lx-cream);
+  /* Light, like the landing's bar and the readers hero. Everything below was
+     already cream and is unchanged; only this band and the bar invert. */
+  background: var(--lx-white);
+  color: var(--lx-ink);
 }
 .tm2-in { inline-size: 100%; max-inline-size: var(--lx-w); margin-inline: auto; }
 .tm2-eyebrow {
@@ -39,6 +41,7 @@
   font-size: clamp(34px, 5vw, 56px);
   font-weight: 700;
   line-height: 1.35;
+  color: var(--lx-black);
 }
 .tm2-hero__p {
   margin: 22px 0 0;
@@ -46,9 +49,9 @@
   font-size: clamp(16px, 1.4vw, 19px);
   font-weight: 400;
   line-height: 1.9;
-  color: rgba(249, 244, 239, .72);
+  color: var(--lx-ink);
 }
-.tm2-hero__meta { margin: 20px 0 0; font-size: 14px; color: rgba(249, 244, 239, .42); }
+.tm2-hero__meta { margin: 20px 0 0; font-size: 14px; color: var(--lx-muted); }
 
 /* ---- the two-column body ------------------------------------------------- */
 
