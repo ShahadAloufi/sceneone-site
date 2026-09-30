@@ -667,22 +667,28 @@
 
    Mirrored for the English page, where the copy sits on the other side.
    A second layer fades the last stretch to solid cream so the hero meets the
-   section under it without a cut. */
+   section under it without a cut. That layer is also what gives the
+   accreditation badge in the bottom corner a ground to sit on — it is out on
+   the open side, where the horizontal veil has nearly cleared.
+
+   The stops are the lightest that still hold: measured over eight points in
+   the loop, the headline keeps 7.9:1 and the badge 6.3:1, while the luminance
+   range left in the film half rises from 0.80 to 0.86. */
 .landing .hero__shade {
   background:
-    linear-gradient(to top, var(--lx-cream) 0%, rgba(249, 244, 239, 0) 24%),
+    linear-gradient(to top, var(--lx-cream) 0%, rgba(249, 244, 239, 0) 26%),
     linear-gradient(to left,
       rgba(249, 244, 239, .98) 0%,
-      rgba(249, 244, 239, .90) 50%,
-      rgba(249, 244, 239, .38) 100%);
+      rgba(249, 244, 239, .88) 58%,
+      rgba(249, 244, 239, .30) 100%);
 }
 html[dir="ltr"] .landing .hero__shade {
   background:
-    linear-gradient(to top, var(--lx-cream) 0%, rgba(249, 244, 239, 0) 24%),
+    linear-gradient(to top, var(--lx-cream) 0%, rgba(249, 244, 239, 0) 26%),
     linear-gradient(to right,
       rgba(249, 244, 239, .98) 0%,
-      rgba(249, 244, 239, .90) 50%,
-      rgba(249, 244, 239, .38) 100%);
+      rgba(249, 244, 239, .88) 58%,
+      rgba(249, 244, 239, .30) 100%);
 }
 /* On a phone the copy is under the film rather than beside it, so the veil
    turns vertical — the design's own second gradient. */
@@ -717,7 +723,7 @@ html[dir="ltr"] .landing .hero__shade {
 /* The accreditation badge stays exactly where it is. Only its ink changes: it
    is white line art, and the ground under it is cream now. */
 .landing .partner__logo img { filter: invert(1); }
-.landing .partner__text { color: var(--lx-muted); }
+.landing .partner__text { color: var(--lx-ink); }
 
 /* The SAIP line at the foot of the hero. Still no plate behind it — it sits on
    the veil, which is at its heaviest on this side. */
