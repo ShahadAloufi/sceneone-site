@@ -56,8 +56,11 @@
   padding-block-start: calc(104px + clamp(48px, 6vw, 92px));
   padding-block-end: clamp(72px, 9vw, 116px);
   padding-inline: var(--lx-x);
-  background: var(--lx-black);
-  color: var(--lx-cream);
+  /* The hero is light now, like the landing's. Everything below it was already
+     cream or black and is unchanged; only this band and the bar above it
+     invert. */
+  background: var(--lx-white);
+  color: var(--lx-ink);
 }
 .rd2-hero__h {
   margin: 0;
@@ -66,6 +69,7 @@
   font-weight: 700;
   line-height: 1.35;
   max-inline-size: 20ch;
+  color: var(--lx-black);
 }
 .rd2-hero__p {
   margin: 26px 0 0;
@@ -73,7 +77,7 @@
   font-size: clamp(16px, 1.5vw, 20px);
   font-weight: 400;
   line-height: 1.9;
-  color: rgba(249, 244, 239, .72);
+  color: var(--lx-ink);
 }
 
 /* Three figures divided by hairlines. The dividers are borders on the items
@@ -82,7 +86,7 @@
 .rd2-stats { display: flex; flex-wrap: wrap; margin-block-start: 40px; }
 .rd2-stat {
   padding-inline: clamp(24px, 3.6vw, 52px);
-  border-inline-end: 1px solid rgba(249, 244, 239, .18);
+  border-inline-end: 1px solid rgba(0, 0, 0, .14);
 }
 .rd2-stat:first-child { padding-inline-start: 0; }
 .rd2-stat:last-child { border-inline-end: 0; padding-inline-end: 0; }
@@ -95,7 +99,7 @@
     padding-inline: 0;
     padding-block: 18px;
     border-inline-end: 0;
-    border-block-start: 1px solid rgba(249, 244, 239, .18);
+    border-block-start: 1px solid rgba(0, 0, 0, .14);
   }
   .rd2-stat:first-child { border-block-start: 0; padding-block-start: 0; }
   .rd2-stat__n { margin-bottom: 2px; }
@@ -105,10 +109,10 @@
   font-family: var(--font-head);
   font-size: clamp(26px, 3vw, 34px);
   font-weight: 700;
-  color: var(--lx-cream);
+  color: var(--lx-black);
   font-variant-numeric: tabular-nums;
 }
-.rd2-stat__l { margin: 0; font-size: 15px; font-weight: 400; color: rgba(249, 244, 239, .55); }
+.rd2-stat__l { margin: 0; font-size: 15px; font-weight: 400; color: var(--lx-muted); }
 
 /* ---- 02 · method: three columns under rules ----------------------------- */
 

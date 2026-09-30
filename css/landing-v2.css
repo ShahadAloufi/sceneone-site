@@ -657,36 +657,6 @@
    never drift apart.
    ========================================================================= */
 
-/* ---- the bar ------------------------------------------------------------ */
-
-/* styles.css starts the landing's bar as a dark gradient and turns it solid on
-   scroll. On a light hero the gradient reads as a smudge, so the bar is simply
-   white from the first paint, with a hairline instead of the dark page's drop
-   shadow. .scrolled is kept in step so the scroll handler in js/main.js has
-   nothing to undo. */
-.landing .nav,
-.landing .nav.scrolled {
-  background: var(--lx-white);
-  box-shadow: 0 1px 0 rgba(0, 0, 0, .08);
-}
-/* No filter here: invert(1) flips the accent dot from #CD2E07 to cyan along
-   with everything else, so the mark ships a dark-ink cut instead
-   (assets/scene-one-logo-v3-ink.svg, referenced from index.html). The
-   accreditation badge below is safe to invert, being flat white art. */
-.landing .nav__wordmark { color: var(--lx-black); }
-@media (min-width: 1000px) {
-  .landing .nav__links a { color: var(--lx-ink); }
-  .landing .nav__links a:hover { color: var(--lx-black); }
-}
-.landing .menu-btn span { background: var(--lx-black); }
-.landing .lang-toggle-group { border-color: rgba(0, 0, 0, .22); }
-.landing .lang-btn { color: rgba(0, 0, 0, .55); }
-.landing .lang-btn:hover { color: var(--lx-black); }
-.landing .lang-btn.active { background: var(--lx-black); color: var(--lx-white); }
-/* The pill inverts with everything else: cream on black becomes black on cream. */
-.landing .nav__cta { background: var(--lx-black); color: var(--lx-cream); }
-.landing .nav__cta:hover { background: #241f1b; }
-
 /* ---- the hero ----------------------------------------------------------- */
 
 .landing .hero { background-color: var(--lx-white); }

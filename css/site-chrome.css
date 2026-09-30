@@ -70,3 +70,50 @@
 .lx-foot__soc a { font-size: 12.5px; color: rgba(255,255,255,.5); }
 .lx-foot__soc a:hover { color: #fff; }
 
+
+/* ============================================================================
+   THE LIGHT BAR — shared by the pages whose hero is light.
+
+   css/styles.css dresses the nav for a dark page, because /terms, /privacy,
+   /submit, /treatment-submit and /about-coverage all still open on black. So
+   none of it is edited there. This block opts in by page wrapper instead, and
+   it loads after styles.css, so equal specificity is enough to win.
+
+   The mark itself is not inverted here: invert(1) would flip its accent dot
+   from #CD2E07 to cyan along with everything else. The light pages point at
+   assets/scene-one-logo-v3-ink.svg, a dark-ink cut of the same drawing.
+   ========================================================================= */
+
+/* styles.css starts the landing's bar as a dark gradient and turns it solid on
+   scroll. On a light hero the gradient reads as a smudge, so the bar is white
+   from the first paint, with a hairline instead of the dark page's drop shadow.
+   .scrolled is kept in step so the scroll handler in js/main.js has nothing to
+   undo. */
+.landing .nav, .landing .nav.scrolled,
+.rd2 .nav,     .rd2 .nav.scrolled {
+  background: var(--lx-white);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .08);
+}
+.landing .nav__wordmark,
+.rd2 .nav__wordmark { color: var(--lx-black); }
+@media (min-width: 1000px) {
+  .landing .nav__links a,
+  .rd2 .nav__links a { color: var(--lx-ink); }
+  .landing .nav__links a:hover,
+  .rd2 .nav__links a:hover { color: var(--lx-black); }
+}
+.landing .menu-btn span,
+.rd2 .menu-btn span { background: var(--lx-black); }
+.landing .lang-toggle-group,
+.rd2 .lang-toggle-group { border-color: rgba(0, 0, 0, .22); }
+.landing .lang-btn,
+.rd2 .lang-btn { color: rgba(0, 0, 0, .55); }
+.landing .lang-btn:hover,
+.rd2 .lang-btn:hover { color: var(--lx-black); }
+.landing .lang-btn.active,
+.rd2 .lang-btn.active { background: var(--lx-black); color: var(--lx-white); }
+/* The pill inverts with everything else: cream on black becomes black on cream. */
+.landing .nav__cta,
+.rd2 .nav__cta { background: var(--lx-black); color: var(--lx-cream); }
+.landing .nav__cta:hover,
+.rd2 .nav__cta:hover { background: #241f1b; }
