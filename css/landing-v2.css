@@ -46,7 +46,10 @@
   background: var(--lx-cream);
   color: var(--lx-ink);
 }
-.lx--dark { background: var(--lx-black); color: #fff; }
+/* The one section that lifts off the cream. It was a black slab before the
+   light hero; white keeps the same break in the rhythm without the page
+   going dark halfway down. */
+.lx--white { background: var(--lx-white); color: var(--lx-ink); }
 .lx--flush { padding-block: 0; padding-inline: 0; }
 
 .lx__in {
@@ -81,7 +84,6 @@
   color: var(--lx-muted);
   max-inline-size: 62ch;
 }
-.lx--dark .lx-sub { color: rgba(255,255,255,.62); }
 
 /* Underlined text link — the design's only inline call to action. */
 .lx-link {
@@ -102,8 +104,6 @@
 .lx-link:hover { color: var(--lx-red); }
 .lx-link--red { color: var(--lx-red); }
 .lx-link--red:hover { color: var(--lx-ink); }
-.lx--dark .lx-link { color: #fff; }
-.lx--dark .lx-link:hover { color: var(--lx-red); border-color: var(--lx-red); }
 
 /* ---- hero: text only --------------------------------------------------- */
 /* The bottom strip is the only new element here; the title, sub, buttons and
@@ -245,14 +245,14 @@
 .lx-do__t { margin: 0 0 12px; font-family: var(--font-head); font-size: 19px; font-weight: 800; }
 .lx-do__b { margin: 0; font-size: 14px; line-height: 1.9; color: var(--lx-muted); }
 
-/* ---- 3. what we look for: rows on black -------------------------------- */
-.lx-look__list { margin: 52px 0 0; padding: 0; list-style: none; border-block-start: 1px solid rgba(255,255,255,.14); }
+/* ---- 3. what we look for: rows on white -------------------------------- */
+.lx-look__list { margin: 52px 0 0; padding: 0; list-style: none; border-block-start: 1px solid rgba(0,0,0,.1); }
 .lx-look__item {
   display: flex;
   align-items: center;
   gap: 16px;
   padding-block: 26px;
-  border-block-end: 1px solid rgba(255,255,255,.14);
+  border-block-end: 1px solid rgba(0,0,0,.1);
   font-family: var(--font-head);
   font-size: clamp(17px, 2.2vw, 24px);
   font-weight: 700;
@@ -435,7 +435,7 @@
 .lx-jn__t { margin: 10px 0 10px; font-family: var(--font-head); font-size: 18px; font-weight: 800; }
 .lx-jn__b { margin: 0; font-size: 14px; line-height: 1.9; color: var(--lx-muted); max-inline-size: 34ch; }
 
-/* ---- 7. two audiences: a light panel and a black one ------------------- */
+/* ---- 7. two audiences: cream beside white ------------------------------ */
 .lx-split { display: grid; gap: 0; background: var(--lx-cream); }
 @media (min-width: 900px) { .lx-split { grid-template-columns: 1fr 1fr; align-items: stretch; } }
 .lx-split__panel {
@@ -449,12 +449,11 @@
   /* The light half is the page's own ground, so its copy lines up with the
      container; the black half is a slab and pads itself evenly. */
   .lx-split__panel--light { padding-inline-start: max(var(--lx-x), calc((100vw - var(--lx-w)) / 2)); }
-  .lx-split__panel--dark  { padding-inline: clamp(40px, 5vw, 72px); }
+  .lx-split__panel--white { padding-inline: clamp(40px, 5vw, 72px); }
 }
-.lx-split__panel--dark { background: var(--lx-black); color: #fff; }
-.lx-split__panel--dark .lx-split__p { color: rgba(255,255,255,.66); }
-.lx-split__panel--dark .lx-link { color: var(--lx-red); border-color: var(--lx-red); }
-.lx-split__panel--dark .lx-link:hover { color: #fff; border-color: #fff; }
+.lx-split__panel--white { background: var(--lx-white); color: var(--lx-ink); }
+.lx-split__panel--white .lx-link { color: var(--lx-black); border-color: rgba(0,0,0,.28); }
+.lx-split__panel--white .lx-link:hover { color: var(--lx-red); border-color: var(--lx-red); }
 .lx-split__p { margin: 22px 0 0; font-size: 14.5px; line-height: 1.95; color: var(--lx-muted); max-inline-size: 44ch; }
 
 /* ---- 8. team ----------------------------------------------------------- */
@@ -642,3 +641,88 @@
 .landing .faq-item__sign::before,
 .landing .faq-item__sign::after { background: var(--lx-ink); }
 .landing .faq-item__btn:hover .faq-item__sign { border-color: var(--lx-ink); }
+
+/* ============================================================================
+   LIGHT HERO — the landing's own colour scheme.
+
+   css/styles.css dresses the nav and the hero for a dark page, because that is
+   what every OTHER page here still is: /submit, /readers, /terms, /privacy and
+   /about-coverage all open on black. So none of it is edited there. These
+   overrides are scoped to .landing and live in this sheet, which only
+   index.html loads, and they load after styles.css so equal specificity is
+   enough to win.
+
+   The artwork is white line art (the mark, the accreditation badge), so it is
+   inverted rather than swapped for a second asset: one file, and the two can
+   never drift apart.
+   ========================================================================= */
+
+/* ---- the bar ------------------------------------------------------------ */
+
+/* styles.css starts the landing's bar as a dark gradient and turns it solid on
+   scroll. On a light hero the gradient reads as a smudge, so the bar is simply
+   white from the first paint, with a hairline instead of the dark page's drop
+   shadow. .scrolled is kept in step so the scroll handler in js/main.js has
+   nothing to undo. */
+.landing .nav,
+.landing .nav.scrolled {
+  background: var(--lx-white);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .08);
+}
+.landing .nav__logo { filter: invert(1); }
+.landing .nav__wordmark { color: var(--lx-black); }
+@media (min-width: 1000px) {
+  .landing .nav__links a { color: var(--lx-ink); }
+  .landing .nav__links a:hover { color: var(--lx-black); }
+}
+.landing .menu-btn span { background: var(--lx-black); }
+.landing .lang-toggle-group { border-color: rgba(0, 0, 0, .22); }
+.landing .lang-btn { color: rgba(0, 0, 0, .55); }
+.landing .lang-btn:hover { color: var(--lx-black); }
+.landing .lang-btn.active { background: var(--lx-black); color: var(--lx-white); }
+/* The pill inverts with everything else: cream on black becomes black on cream. */
+.landing .nav__cta { background: var(--lx-black); color: var(--lx-cream); }
+.landing .nav__cta:hover { background: #241f1b; }
+
+/* ---- the hero ----------------------------------------------------------- */
+
+.landing .hero { background-color: var(--lx-white); }
+/* The veil over the video, inverted. It still thickens toward the foot, where
+   the copy sits, and still lands on the page's own ground at the bottom edge so
+   the hero and the section under it meet without a seam — the ground is just
+   cream now instead of near-black. */
+.landing .hero__shade {
+  background: linear-gradient(
+    to bottom,
+    rgba(249, 244, 239, .28) 0%,
+    rgba(249, 244, 239, .62) 38%,
+    rgba(249, 244, 239, .92) 74%,
+    var(--lx-cream) 100%
+  );
+}
+.landing .hero__title { color: var(--lx-black); }
+.landing .hero__sub { color: var(--lx-ink); }
+
+/* Both hero buttons keep their geometry — the radius, the height, the REC dot
+   — and change only their colour treatment, which a light ground forces: a
+   white fill and a white hairline are both invisible on it. */
+.landing .btn--white { background: var(--lx-black); color: var(--lx-cream); }
+.landing .btn--white:hover { background: #241f1b; }
+.landing .s1-booklet-btn { border-color: rgba(0, 0, 0, .35); color: var(--lx-black); }
+.landing .s1-booklet-btn:hover,
+.landing .s1-booklet-btn:focus-visible {
+  background-color: var(--lx-black);
+  border-color: var(--lx-black);
+  color: var(--lx-cream);
+}
+
+/* The accreditation badge stays exactly where it is. Only its ink changes: the
+   mark is white line art, so on cream it was a white shape on a white ground. */
+.landing .partner__logo img { filter: invert(1); }
+.landing .partner__text { color: var(--lx-muted); }
+
+/* The SAIP line at the foot of the hero. Still no plate behind it, as before —
+   it sits on the video and takes the video's own ground. */
+.landing .hero__strip p { color: var(--lx-muted); }
+.landing .hero__strip a { color: var(--lx-ink); }
+.landing .hero__strip a:hover { color: var(--lx-black); }
