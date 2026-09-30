@@ -331,6 +331,22 @@
       overHint: opt.getAttribute("data-over-hint") || ""
     };
   }
+  // Flat-priced tiers (the treatment coverages) carry their whole price on the
+  // <option> instead of a rate, and it is knowable the moment the tier is picked
+  // — no file, no page count. Must match PRICES in lib/moyasar.js.
+  function flatQuote() {
+    var opt = selectedOption();
+    var raw = opt && opt.getAttribute("data-price");
+    if (!raw) return null;
+    var amount = Number(raw);
+    // Same discount the server applies to a list price, flat or per-page, so the
+    // figure here cannot drift from the invoice if this form ever gains the
+    // membership claim.
+    if (isMemberClaimed()) {
+      return riyals(amount * (100 - MEMBER_DISCOUNT_PCT) / 100) + " ريال بعد خصم العضوية";
+    }
+    return riyals(amount) + " ريال";
+  }
   var quoteEl = document.getElementById("priceQuote");
   function showQuote(msg) {
     if (!quoteEl) return;
@@ -363,7 +379,7 @@
   function checkFileNow() {
     var ticket = ++checkTicket;
     var file = fileInput && fileInput.files ? fileInput.files[0] : null;
-    if (!file) { showQuote(null); return showFileError(null); }
+    if (!file) { showQuote(flatQuote()); return showFileError(null); }
 
     var exts = acceptedExts();
     if (exts.indexOf(fileExt(file.name)) === -1) {
@@ -376,10 +392,10 @@
 
     var cap = selectedCap();
     var perPage = selectedRate();
-    if (!cap && !perPage) { showQuote(null); return; }   // not sold by length
+    if (!cap && !perPage) { showQuote(flatQuote()); return; }   // not sold by length
     countPdfPages(file).then(function (pages) {
       if (ticket !== checkTicket) return;   // a newer file is being checked
-      if (!pages) { showQuote(null); return; }
+      if (!pages) { showQuote(flatQuote()); return; }
       // Same arithmetic as the server: the count includes a title page.
       var billable = pages > 1 ? pages - 1 : pages;
 
@@ -407,7 +423,9 @@
           " ريال بعد خصم العضوية");
       }
 
-      showQuote(null);
+      // A price for a tier the file does not fit would be a figure the writer
+      // cannot actually be charged, so it only stands while the file fits.
+      showQuote(billable > cap ? null : flatQuote());
       if (billable > cap) {
         showFileError("هذا الملف " + pages + " صفحة، ويتجاوز حد الفئة المختارة (" + cap +
           " صفحات). اختر فئة أطول أو ارفع ملفًا أقصر.");
@@ -422,9 +440,8 @@
   }
 
   /* ---------- CONSENT GATE ----------
-     The submission form carries a consent tick; the treatment form does not,
-     so everything here is skipped when the box is absent and that page keeps
-     its always-live button.
+     Both submission forms carry a consent tick. Everything here is skipped when
+     the box is absent, so a form without one keeps its always-live button.
 
      Holding the button disabled is the honest reading of the design: the tick
      is not a field to be corrected after the fact, it is the permission the
@@ -523,9 +540,9 @@
     // — they are honest about what a member must fill in — which is exactly why
     // requiredFields() has to skip them above.
     // The design's consent tick. It is optional markup, not a required field:
-    // the treatment form has no such box, so the check only runs where one
-    // exists. No .req star, so requiredFields() never sees it — the row carries
-    // data-field purely so markInvalid() can flag it, as with membership.
+    // the check only runs on a form that has one. No .req star, so
+    // requiredFields() never sees it — the row carries data-field purely so
+    // markInvalid() can flag it, as with membership.
     var consentEl = document.getElementById("consent");
     if (consentEl && !consentEl.checked) { markInvalid("consent", true); ok = false; }
     else if (consentEl) { markInvalid("consent", false); }

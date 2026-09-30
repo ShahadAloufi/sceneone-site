@@ -11,11 +11,17 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/site-chrome.css">
+  <link rel="stylesheet" href="css/submit-v2.css">
   <!-- Vercel Web Analytics — served by Vercel's edge at this path; no npm/build needed. -->
   <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
-<div class="submit-page page">
+<!-- The page is Arabic only: it does not load js/i18n.js, so it carries no
+     language toggle. The data-i18n attributes on the shared chrome below are
+     inert here and kept only so the bar matches the pages that do translate. -->
+<div class="sb2 page">
 
   <!-- ── NAV ── -->
   <nav class="nav">
@@ -23,16 +29,19 @@
     <!-- Inline links on desktop; below the breakpoint they collapse and the
          hamburger's overlay carries the same six destinations. -->
     <ul class="nav__links">
-      <li><a href="/">الرئيسية</a></li>
-      <li><a href="/#about">Scene One</a></li>
-      <li><a href="/readers">من يقرأ نصك؟</a></li>
-      <li><a href="/#journey">رحلة النص</a></li>
-      <li><a href="/about-coverage">ما هي تغطية النصوص؟</a></li>
-      <li><a href="/#contact">تواصل معنا</a></li>
+      <li><a href="/" data-i18n="navHome">الرئيسية</a></li>
+      <li><a href="/#about" data-i18n="navAboutUs">من نحن</a></li>
+      <li><a href="/#coverage-types" data-i18n="navCoverage">تغطية النصوص</a></li>
+      <li><a href="/readers" data-i18n="navReaders">من يقرأ نصك</a></li>
+      <li><a href="/#journey" data-i18n="navJourney">رحلة النص</a></li>
+      <li><a href="/#contact" data-i18n="navContact">تواصل معنا</a></li>
     </ul>
-    <button class="menu-btn" data-menu-open aria-label="القائمة">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="nav__end">
+      <a class="nav__cta" href="/submit" data-i18n="btnSubmit">قدّم نصك</a>
+      <button class="menu-btn" data-menu-open aria-label="القائمة">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </nav>
 
   <!-- ── MENU OVERLAY ── -->
@@ -68,181 +77,286 @@
       </div>
       <div class="overlay__links">
         <a href="/" data-menu-close>الرئيسية</a>
-        <a href="/#about" data-menu-close>Scene One</a>
-        <a href="/readers" data-menu-close>من يقرأ نصك؟</a>
+        <a href="/#about" data-menu-close>من نحن</a>
+        <a href="/#coverage-types" data-menu-close>تغطية النصوص</a>
+        <a href="/readers" data-menu-close>من يقرأ نصك</a>
         <a href="/#journey" data-menu-close>رحلة النص</a>
-        <a href="/about-coverage" data-menu-close>ما هي تغطية النصوص؟</a>
         <a href="/#contact" data-menu-close>تواصل معنا</a>
       </div>
     </div>
   </div>
 
-  <!-- ── FORM ── -->
-  <main class="sub-wrap">
-    <div class="sub-decor" aria-hidden="true">
-      <img class="sub-decor-img sub-decor-reel"    src="assets/menu-reel.svg"    alt="">
-      <img class="sub-decor-img sub-decor-chair"   src="assets/menu-chair.svg"   alt="">
-      <img class="sub-decor-img sub-decor-clapper" src="assets/menu-clapper.svg" alt="">
-      <img class="sub-decor-img sub-decor-camera"  src="assets/menu-camera.svg"  alt="">
+  <!-- ── HERO ── -->
+  <section class="sb2-hero" id="top">
+    <div class="sb2-hero__in">
+      <p class="sb2-eyebrow">تقديم المعالجة</p>
+      <h1 class="sb2-hero__h">أرسل معالجتك</h1>
+      <p class="sb2-hero__p">قراءة مبكرة لقصتك قبل أن تصبح سيناريو. ما تكتبه هنا يصل إلى القارئ وحده، ويساعده على قراءة معالجتك في سياقها الصحيح.</p>
     </div>
+  </section>
 
-    <!-- Same script as the script form: js/submit.js reads the required fields off
-     the .req stars and the accepted extensions off data-accept. -->
-    <form class="sub-card" id="submitForm" data-kind="treatment" data-accept="pdf" novalidate>
-      <div class="sub-card__head">
-        <p class="sub-card__eyebrow">TREATMENT SUBMISSION</p>
-        <h1 class="sub-card__title">تقديم المعالجة السينمائية</h1>
+  <!-- ── WHAT HAPPENS AFTER SENDING ── -->
+  <section class="sb2-journey">
+    <div class="sb2-journey__card">
+      <p class="sb2-journey__label">رحلة التسليم</p>
+      <div class="sb2-journey__steps">
+        <div class="sb2-journey__step"><span class="sb2-journey__n">01</span><span class="sb2-journey__t">يصلك تأكيد الاستلام على بريدك.</span></div>
+        <div class="sb2-journey__step"><span class="sb2-journey__n">02</span><span class="sb2-journey__t">تُسنَد المعالجة إلى قارئ مختص.</span></div>
+        <div class="sb2-journey__step"><span class="sb2-journey__n">03</span><span class="sb2-journey__t">يصلك تقييم مكتوب لمعالجتك.</span></div>
+        <div class="sb2-journey__step"><span class="sb2-journey__n">04</span><span class="sb2-journey__t">نحدد معك الخطوة التالية.</span></div>
       </div>
+    </div>
+  </section>
 
-      <div class="sub-card__body">
-        <div class="sub-grid">
+  <!-- ── FORM ──
+       Same script as the script form: js/submit.js reads the required fields off
+       the .req stars and the accepted extensions off data-accept. Every hook it
+       depends on (the `name` attributes, the .sub-field[data-field] wrappers,
+       the .req stars, the .sub-err messages, the drop-zone ids and the <option>
+       data-* attributes) is unchanged; the design changes the surface only. -->
+  <main class="sb2-main">
+    <form class="sb2-col" id="submitForm" data-kind="treatment" data-accept="pdf" novalidate>
 
-          <div class="sub-field" data-field="titleAr">
-            <label>العنوان بالعربية <span class="req">*</span></label>
-            <input type="text" name="titleAr" placeholder="أدخل العنوان بالعربية">
-            <p class="sub-err">هذا الحقل مطلوب</p>
-          </div>
+      <!-- ── 01 · ABOUT THE TREATMENT ── -->
+      <section class="sb2-sec">
+        <div class="sb2-sec__head">
+          <span class="sb2-sec__n">01</span>
+          <h2 class="sb2-sec__h">عن المعالجة</h2>
+        </div>
+        <div class="sb2-sec__body">
+          <p class="sb2-sec__p sub-hint">ما نحتاج معرفته عن المشروع نفسه.</p>
+          <div class="sub-grid" style="margin-top:34px">
 
-          <div class="sub-field" data-field="titleEn">
-            <label>العنوان (بالإنجليزية) <span class="req">*</span></label>
-            <input type="text" name="titleEn" dir="ltr" style="text-align:right" placeholder="أدخل العنوان بالإنجليزية">
-            <p class="sub-err">هذا الحقل مطلوب</p>
-          </div>
-
-          <div class="sub-field" data-field="email">
-            <label>البريد الإلكتروني <span class="req">*</span></label>
-            <input type="email" name="email" dir="ltr" style="text-align:right" placeholder="أدخل بريدك الإلكتروني">
-            <p class="sub-err">البريد الإلكتروني غير صحيح</p>
-          </div>
-
-          <div class="sub-field" data-field="writer">
-            <label>اسم الكاتب <span class="req">*</span></label>
-            <input type="text" name="writer" placeholder="الاسم الكامل للكاتب">
-            <p class="sub-err">هذا الحقل مطلوب</p>
-          </div>
-
-          <div class="sub-field" data-field="writerLevel">
-            <label>مستوى الكاتب <span class="req">*</span></label>
-            <select name="writerLevel">
-              <option value="" disabled selected>اختر مستواك</option>
-              <option value="new">كاتب جديد · لم يُنتج لي عمل بعد</option>
-              <option value="emerging">كاتب ناشئ · أفلام قصيرة منتجة</option>
-              <option value="professional">كاتب محترف · عمل منتج أو مشارك في مهرجانات</option>
-              <option value="veteran">كاتب متمرّس · أعمال طويلة أو جوائز</option>
-            </select>
-            <p class="sub-hint">يساعد القارئ على ضبط مستوى التغطية ولغتها. لا يؤثر على السعر ولا على قبول النص.</p>
-            <p class="sub-err">اختر مستواك</p>
-          </div>
-
-          <div class="sub-field" data-field="filmType">
-            <label>نوع المشروع <span class="req">*</span></label>
-            <select name="filmType">
-              <option value="" disabled selected>اختر نوع المشروع</option>
-              <option value="treatment_short" data-cap="5">فيلم قصير (معالجة حتى 5 صفحات) · 70 ريال</option>
-              <option value="treatment_feature" data-cap="15">فيلم طويل (معالجة حتى 15 صفحة) · 150 ريال</option>
-            </select>
-            <p class="sub-err">اختر نوع المشروع</p>
-          </div>
-
-          <div class="sub-field" data-field="genre">
-            <label>النوع <span class="req">*</span></label>
-            <select name="genre">
-              <option value="" disabled selected>اختر النوع</option>
-              <option value="drama">دراما</option>
-              <option value="comedy">كوميديا</option>
-              <option value="romance">رومانسي</option>
-              <option value="crime">جريمة</option>
-              <option value="thriller">إثارة</option>
-              <option value="horror">رعب</option>
-              <option value="action">أكشن</option>
-              <option value="documentary">وثائقي</option>
-              <option value="other">أخرى</option>
-            </select>
-            <p class="sub-err">اختر النوع</p>
-          </div>
-
-          <div class="sub-field sub-field--full" data-field="treatmentText">
-            <label>نص المعالجة</label>
-            <textarea name="treatmentText" placeholder="مثال: اكتب ملخصًا سرديًا للقصة يوضح تطور الأحداث والشخصيات بدون تنسيق سيناريو."></textarea>
-            <p class="sub-hint">اختياري. ملخّص سردي للقصة دون تقسيم مشهدي أو تنسيق سيناريو، والملف المرفق في الأسفل هو الأساس.</p>
-          </div>
-
-          <div class="sub-field sub-field--full" data-field="logline">
-            <label>الفكرة المختصرة/Logline <span class="req">*</span></label>
-            <textarea name="logline" placeholder="مثال: حين يختفي طفل في ظروف غامضة، يُجبر أبٌ محطم على مواجهة أسرار مدينته لإنقاذه."></textarea>
-            <p class="sub-hint">جملة واحدة فقط.</p>
-            <p class="sub-err">هذا الحقل مطلوب</p>
-          </div>
-
-          <div class="sub-field sub-field--full" data-field="characters">
-            <label>نبذة عن الشخصيات <span class="req">*</span></label>
-            <textarea name="characters" placeholder="مثال: سعيد: رجل منطوي يحاول الهروب من ماضيه، لكن قراراته تقوده لمواجهته."></textarea>
-            <p class="sub-hint">وصف قصير لكل شخصية رئيسية (الدافع + الدور).</p>
-            <p class="sub-err">هذا الحقل مطلوب</p>
-          </div>
-
-          <div class="sub-field sub-field--full" data-field="theme">
-            <label>الثيم <span class="req">*</span></label>
-            <input type="text" name="theme" placeholder="مثال: ثمن السعي وراء العدالة، خداع النفس">
-            <p class="sub-err">هذا الحقل مطلوب</p>
-          </div>
-
-          <div class="sub-field sub-field--full" data-field="toneRef">
-            <label>النبرة والأسلوب <span class="req">*</span></label>
-            <input type="text" name="toneRef" placeholder="مثال: مزيج بين الدراما النفسية والتشويق.">
-            <p class="sub-hint">أفلام مرجعية أو كلمات مفتاحية تصف النبرة والمزاج.</p>
-            <p class="sub-err">هذا الحقل مطلوب</p>
-          </div>
-
-          <div class="sub-field sub-field--full" data-field="vision">
-            <label>رؤية الكاتب <span class="req">*</span></label>
-            <textarea name="vision" placeholder="صف رؤيتك ودوافعك لهذا المشروع."></textarea>
-            <p class="sub-hint">لماذا تود اخراج هذا الفيلم؟</p>
-            <p class="sub-err">هذا الحقل مطلوب</p>
-          </div>
-
-          <div class="sub-field sub-field--full" data-field="file">
-            <label>ملف المعالجة <span class="req">*</span></label>
-            <div class="sub-drop" id="dropZone" tabindex="0" role="button" aria-label="أرفق ملف المعالجة">
-              <input type="file" id="fileInput" name="file" accept=".pdf" hidden>
-              <svg class="sub-drop__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0 4 4m-4-4-4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
-              <p class="sub-drop__text" id="dropText">اسحب ملفك هنا أو اضغط للاختيار</p>
-              <p class="sub-drop__hint">PDF فقط · بحد أقصى 25MB</p>
+            <div class="sub-field" data-field="titleAr">
+              <label>العنوان بالعربية<span class="req"> *</span></label>
+              <input type="text" name="titleAr" placeholder="أدخل العنوان بالعربية">
+              <p class="sub-err">هذا الحقل مطلوب</p>
             </div>
-            <p class="sub-hint">يجب أن يكون عدد صفحات المعالجة ضمن حدود الفئة المختارة (5 صفحات للفيلم القصير، 15 للفيلم الطويل)، ويُتحقق من ذلك تلقائيًا قبل الدفع.</p>
-            <p class="sub-err">ملف المعالجة مطلوب</p>
+
+            <div class="sub-field" data-field="titleEn">
+              <label>العنوان بالإنجليزية<span class="req"> *</span></label>
+              <input type="text" name="titleEn" dir="ltr" style="text-align:right" placeholder="أدخل العنوان بالإنجليزية">
+              <p class="sub-err">هذا الحقل مطلوب</p>
+            </div>
+
+            <div class="sub-field" data-field="filmType">
+              <label>نوع المشروع<span class="req"> *</span></label>
+              <select name="filmType">
+                <option value="" disabled selected>اختر نوع المشروع</option>
+                <!-- data-cap = the page limit checked before payment; data-price is
+                     the whole fee, since these tiers are flat rather than per page.
+                     Both must match PRICES in lib/moyasar.js. -->
+                <option value="treatment_short" data-cap="5" data-price="70">فيلم قصير (معالجة حتى 5 صفحات)</option>
+                <option value="treatment_feature" data-cap="15" data-price="150">فيلم طويل (معالجة حتى 15 صفحة)</option>
+              </select>
+              <p class="sub-err">اختر نوع المشروع</p>
+            </div>
+
+            <div class="sub-field" data-field="genre">
+              <label>النوع<span class="req"> *</span></label>
+              <select name="genre">
+                <option value="" disabled selected>اختر النوع</option>
+                <option value="drama">دراما</option>
+                <option value="comedy">كوميديا</option>
+                <option value="romance">رومانسي</option>
+                <option value="crime">جريمة</option>
+                <option value="thriller">إثارة</option>
+                <option value="horror">رعب</option>
+                <option value="action">أكشن</option>
+                <option value="documentary">وثائقي</option>
+                <option value="other">أخرى</option>
+              </select>
+              <p class="sub-err">اختر النوع</p>
+            </div>
+
           </div>
+        </div>
+      </section>
 
+      <!-- ── 02 · ABOUT YOU ── -->
+      <section class="sb2-sec">
+        <div class="sb2-sec__head">
+          <span class="sb2-sec__n">02</span>
+          <h2 class="sb2-sec__h">عنك</h2>
+        </div>
+        <div class="sb2-sec__body">
+          <p class="sb2-sec__p sub-hint">اسمك ومستواك يساعدان القارئ على ضبط لغة التقييم.</p>
+          <div class="sub-grid" style="margin-top:34px">
+
+            <div class="sub-field" data-field="writer">
+              <label>اسم الكاتب<span class="req"> *</span></label>
+              <input type="text" name="writer" placeholder="الاسم الكامل">
+              <p class="sub-err">هذا الحقل مطلوب</p>
+            </div>
+
+            <div class="sub-field" data-field="email">
+              <label>البريد الإلكتروني<span class="req"> *</span></label>
+              <input type="email" name="email" dir="ltr" style="text-align:right" placeholder="الذي يصلك عليه التقييم">
+              <p class="sub-err">البريد الإلكتروني غير صحيح</p>
+            </div>
+
+            <div class="sub-field sub-field--full" data-field="writerLevel">
+              <label>مستوى الكاتب<span class="req"> *</span></label>
+              <select name="writerLevel">
+                <option value="" disabled selected>اختر مستواك</option>
+                <option value="new">كاتب جديد · لم يُنتج لي عمل بعد</option>
+                <option value="emerging">كاتب ناشئ · أفلام قصيرة منتجة</option>
+                <option value="professional">كاتب محترف · عمل منتج أو مشارك في مهرجانات</option>
+                <option value="veteran">كاتب متمرّس · أعمال طويلة أو جوائز</option>
+              </select>
+              <p class="sub-hint">يساعد القارئ على ضبط مستوى التغطية ولغتها. لا يؤثر على السعر ولا على قبول النص.</p>
+              <p class="sub-err">اختر مستواك</p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 03 · THE STORY ── -->
+      <section class="sb2-sec">
+        <div class="sb2-sec__head">
+          <span class="sb2-sec__n">03</span>
+          <h2 class="sb2-sec__h">القصة</h2>
+        </div>
+        <div class="sb2-sec__body">
+          <p class="sb2-sec__p sub-hint">ما يكفي القارئ ليعرف ما الذي تحاول قوله قبل أن يفتح المعالجة.</p>
+          <div class="sub-grid" style="margin-top:34px">
+
+            <div class="sub-field sub-field--full" data-field="theme">
+              <label>الثيم<span class="req"> *</span></label>
+              <input type="text" name="theme" placeholder="مثال: ثمن السعي وراء العدالة، خداع النفس">
+              <p class="sub-err">هذا الحقل مطلوب</p>
+            </div>
+
+            <div class="sub-field sub-field--full" data-field="toneRef">
+              <label>النبرة والأسلوب<span class="req"> *</span></label>
+              <input type="text" name="toneRef" placeholder="مثال: مزيج بين الدراما النفسية والتشويق.">
+              <p class="sub-hint">أفلام مرجعية أو كلمات مفتاحية تصف النبرة والمزاج.</p>
+              <p class="sub-err">هذا الحقل مطلوب</p>
+            </div>
+
+            <div class="sub-field sub-field--full" data-field="logline">
+              <label>الفكرة المختصرة<span class="req"> *</span></label>
+              <textarea name="logline" placeholder="مثال: حين يختفي طفل في ظروف غامضة، يُجبر أبٌ محطم على مواجهة أسرار مدينته لإنقاذه."></textarea>
+              <p class="sub-hint">جملة واحدة فقط.</p>
+              <p class="sub-err">هذا الحقل مطلوب</p>
+            </div>
+
+            <div class="sub-field sub-field--full" data-field="characters">
+              <label>نبذة عن الشخصيات<span class="req"> *</span></label>
+              <textarea name="characters" placeholder="مثال: سعيد: رجل منطوي يحاول الهروب من ماضيه، لكن قراراته تقوده لمواجهته."></textarea>
+              <p class="sub-hint">وصف قصير لكل شخصية رئيسية (الدافع + الدور).</p>
+              <p class="sub-err">هذا الحقل مطلوب</p>
+            </div>
+
+            <div class="sub-field sub-field--full" data-field="vision">
+              <label>رؤية الكاتب<span class="req"> *</span></label>
+              <textarea name="vision" style="min-block-size:142px" placeholder="لماذا تريد أن يُصنع هذا الفيلم؟"></textarea>
+              <p class="sub-err">هذا الحقل مطلوب</p>
+            </div>
+
+            <div class="sub-field sub-field--full" data-field="treatmentText">
+              <label>نص المعالجة</label>
+              <textarea name="treatmentText" placeholder="مثال: اكتب ملخصًا سرديًا للقصة يوضح تطور الأحداث والشخصيات بدون تنسيق سيناريو."></textarea>
+              <p class="sub-hint">اختياري. ملخّص سردي للقصة دون تقسيم مشهدي أو تنسيق سيناريو، والملف المرفق في الأسفل هو الأساس.</p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 04 · THE FILE ── -->
+      <section class="sb2-sec">
+        <div class="sb2-sec__head">
+          <span class="sb2-sec__n">04</span>
+          <h2 class="sb2-sec__h">الملف والحقوق</h2>
+        </div>
+        <div class="sb2-sec__body">
+          <div class="sub-grid">
+
+            <div class="sub-field sub-field--full" data-field="file">
+              <label>ملف المعالجة<span class="req"> *</span></label>
+              <div class="sub-drop" id="dropZone" tabindex="0" role="button" aria-label="أرفق ملف المعالجة">
+                <input type="file" id="fileInput" name="file" accept=".pdf" hidden>
+                <svg class="sub-drop__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0 4 4m-4-4-4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+                <p class="sub-drop__text" id="dropText">اسحب الملف هنا أو اختر من جهازك</p>
+                <!-- Rewritten on load by syncAcceptUi() in js/submit.js to match
+                     the extensions the selected tier actually accepts. -->
+                <p class="sub-drop__hint">PDF فقط · بحد أقصى 25MB</p>
+              </div>
+              <p class="sub-hint">يجب أن يكون عدد صفحات المعالجة ضمن حدود الفئة المختارة (5 صفحات للفيلم القصير، 15 للفيلم الطويل)، ويُتحقق من ذلك تلقائيًا قبل الدفع.</p>
+              <p class="sub-err">ملف المعالجة مطلوب</p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ── CONSENT + SEND ── -->
+      <div class="sb2-send" id="submit">
+        <!-- Not a .sub-field: requiredFields() builds its generic list from
+             .sub-field[data-field] wrappers carrying a .req star, and this row
+             has none. It still carries data-field so markInvalid("consent", …)
+             can reach it. -->
+        <div class="sb2-consent-wrap" data-field="consent">
+          <label class="sb2-consent">
+            <input type="checkbox" id="consent" name="consent" value="yes">
+            <span class="sb2-consent__box" aria-hidden="true"></span>
+            <span class="sb2-consent__text">أوافق على معالجة العمل وفق <a href="/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a>، وأقرّ بأن المعالجة من تأليفي وأنني أملك كامل حقوق الملكية الفكرية الخاصة بها، وأن تسجيل هذه الحقوق مسؤوليتي. تبقى المعالجة ملكي بالكامل في كل مراحل الخدمة.</span>
+          </label>
+          <p class="sb2-consent__err">يلزم الموافقة قبل إرسال المعالجة.</p>
         </div>
 
-        <div class="sub-assure">
-          <svg class="sub-assure__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3"/></svg>
-          <span>فقط القارئ المخصص لك سيتمكن من الوصول إلى معالجتك. لن تتم مشاركتها مع أي شخص آخر.</span>
+        <div class="sb2-send__row">
+          <button type="submit" class="sub-submit">إرسال المعالجة والدفع</button>
+          <div class="sb2-total">
+            <p class="sb2-total__label">الإجمالي</p>
+            <!-- Filled and unhidden by showQuote() in js/submit.js. These tiers
+                 are flat-priced, so it appears as soon as one is chosen. -->
+            <p class="sub-quote" id="priceQuote" hidden></p>
+            <p class="sb2-total__empty">يظهر بعد اختيار نوع المشروع.</p>
+          </div>
         </div>
-
-        <button type="submit" class="sub-submit">إرسال المعالجة والدفع</button>
-
-        <div class="sub-assure">
-          <svg class="sub-assure__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>نصك خاص ومحمي. لن نشارك عملك مع أي طرف ثالث دون موافقتك الصريحة.</span>
-        </div>
-
-        <p class="sub-foot">بإرسالك المعالجة فإنك توافق على معالجتها وفق سياسة الخصوصية واتفاقية عدم الإفصاح.</p>
       </div>
+
     </form>
   </main>
 
-  <!-- ── FOOTER ── -->
-  <footer class="footer--doc">
-    <p dir="rtl" style="text-align:center">© 2026 جميع الحقوق محفوظة لـSCENE ONE.<br><span class="footer__cr">الرقم الموحد: 7054791293</span></p>
-    <div class="footer__links" style="direction:rtl;display:flex;align-items:center;gap:24px">
-      <a href="/privacy">سياسة الخصوصية</a>
-      <a href="/terms">الشروط والأحكام</a>
-    </div>
-    <div class="footer__social" style="display:flex;align-items:center;gap:16px">
-      <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer"><img src="assets/icon_x.png" alt="X"></a>
-      <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer"><img src="assets/icon_instagram.png" alt="Instagram"></a>
-      <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer"><img src="assets/icon_linkedin.png" alt="LinkedIn"></a>
+  <!-- ── FOOTER ──
+       The landing's footer, styled by the shared css/site-chrome.css. -->
+  <footer class="lx-foot" id="contact">
+    <div class="lx-foot__in">
+      <div class="lx-foot__top">
+        <div>
+          <div class="lx-foot__brand">
+            <img src="assets/scene-one-logo-v3.svg" alt="Scene One">
+            <span>سين ون</span>
+          </div>
+          <p class="lx-foot__blurb">نكتشف الأصوات الجديدة، نطوّر أفلامها، ونبني لها طريقًا إلى الشاشة</p>
+        </div>
+        <div class="lx-foot__col">
+          <a href="/#coverage-types">تغطية النصوص</a>
+          <a href="/readers">من يقرأ نصك</a>
+          <a href="/#journey">رحلة النص</a>
+        </div>
+        <div class="lx-foot__col">
+          <a href="/privacy">سياسة الخصوصية</a>
+          <a href="/terms">الشروط والأحكام</a>
+          <a href="/assets/scene-one-booklet-ar.pdf" target="_blank" rel="noopener">حكاية سين ون</a>
+        </div>
+        <div class="lx-foot__col">
+          <p class="lx-foot__lbl">للتواصل</p>
+          <a class="lx-foot__mail" href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
+        </div>
+      </div>
+      <div class="lx-foot__bar">
+        <p class="lx-foot__cr">© 2026 جميع الحقوق محفوظة لـ سين ون · الرقم الموحد 7054791293</p>
+        <div class="lx-foot__soc">
+          <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X</a>
+          <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+      </div>
     </div>
   </footer>
 
