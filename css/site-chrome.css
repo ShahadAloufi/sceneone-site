@@ -74,9 +74,8 @@
 /* ============================================================================
    THE LIGHT BAR — shared by the pages whose hero is light.
 
-   css/styles.css dresses the nav for a dark page, because /submit,
-   /treatment-submit and /about-coverage all still open on black. So none of it
-   is edited there. This block opts in by page wrapper instead, and
+   css/styles.css dresses the nav for a dark page, because /about-coverage
+   still opens on black. So none of it is edited there. This block opts in by page wrapper instead, and
    it loads after styles.css, so equal specificity is enough to win.
 
    The mark itself is not inverted here: invert(1) would flip its accent dot
@@ -91,40 +90,51 @@
    undo. */
 .landing .nav, .landing .nav.scrolled,
 .rd2 .nav,     .rd2 .nav.scrolled,
-.tm2 .nav,     .tm2 .nav.scrolled {
+.tm2 .nav,     .tm2 .nav.scrolled,
+.sb2 .nav,     .sb2 .nav.scrolled {
   background: var(--lx-white);
   box-shadow: 0 1px 0 rgba(0, 0, 0, .08);
 }
 .landing .nav__wordmark,
 .rd2 .nav__wordmark,
-.tm2 .nav__wordmark { color: var(--lx-black); }
+.tm2 .nav__wordmark,
+.sb2 .nav__wordmark { color: var(--lx-black); }
 @media (min-width: 1000px) {
   .landing .nav__links a,
   .rd2 .nav__links a,
-  .tm2 .nav__links a { color: var(--lx-ink); }
+  .tm2 .nav__links a,
+  .sb2 .nav__links a { color: var(--lx-ink); }
   .landing .nav__links a:hover,
   .rd2 .nav__links a:hover,
-  .tm2 .nav__links a:hover { color: var(--lx-black); }
+  .tm2 .nav__links a:hover,
+  .sb2 .nav__links a:hover { color: var(--lx-black); }
 }
 .landing .menu-btn span,
 .rd2 .menu-btn span,
-.tm2 .menu-btn span { background: var(--lx-black); }
+.tm2 .menu-btn span,
+.sb2 .menu-btn span { background: var(--lx-black); }
 .landing .lang-toggle-group,
 .rd2 .lang-toggle-group,
-.tm2 .lang-toggle-group { border-color: rgba(0, 0, 0, .22); }
+.tm2 .lang-toggle-group,
+.sb2 .lang-toggle-group { border-color: rgba(0, 0, 0, .22); }
 .landing .lang-btn,
 .rd2 .lang-btn,
-.tm2 .lang-btn { color: rgba(0, 0, 0, .55); }
+.tm2 .lang-btn,
+.sb2 .lang-btn { color: rgba(0, 0, 0, .55); }
 .landing .lang-btn:hover,
 .rd2 .lang-btn:hover,
-.tm2 .lang-btn:hover { color: var(--lx-black); }
+.tm2 .lang-btn:hover,
+.sb2 .lang-btn:hover { color: var(--lx-black); }
 .landing .lang-btn.active,
 .rd2 .lang-btn.active,
-.tm2 .lang-btn.active { background: var(--lx-black); color: var(--lx-white); }
+.tm2 .lang-btn.active,
+.sb2 .lang-btn.active { background: var(--lx-black); color: var(--lx-white); }
 /* The pill inverts with everything else: cream on black becomes black on cream. */
 .landing .nav__cta,
 .rd2 .nav__cta,
-.tm2 .nav__cta { background: var(--lx-black); color: var(--lx-cream); }
+.tm2 .nav__cta,
+.sb2 .nav__cta { background: var(--lx-black); color: var(--lx-cream); }
 .landing .nav__cta:hover,
 .rd2 .nav__cta:hover,
-.tm2 .nav__cta:hover { background: #241f1b; }
+.tm2 .nav__cta:hover,
+.sb2 .nav__cta:hover { background: #241f1b; }
