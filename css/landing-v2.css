@@ -671,24 +671,26 @@
    accreditation badge in the bottom corner a ground to sit on — it is out on
    the open side, where the horizontal veil has nearly cleared.
 
-   The stops are the lightest that still hold: measured over eight points in
-   the loop, the headline keeps 7.9:1 and the badge 6.3:1, while the luminance
-   range left in the film half rises from 0.80 to 0.86. */
+   The stops are the lightest that still hold. Measured over eight points in
+   the loop, with every pixel under each element sampled: the headline keeps
+   6.0:1, the lede 6.1:1 and the badge 5.2:1, all above WCAG AA, while enough
+   of the picture survives behind the copy to read as film rather than as a
+   cream panel. Going lighter still drops the badge's caption under AA. */
 .landing .hero__shade {
   background:
-    linear-gradient(to top, var(--lx-cream) 0%, rgba(249, 244, 239, 0) 26%),
+    linear-gradient(to top, var(--lx-cream) 0%, rgba(249, 244, 239, 0) 24%),
     linear-gradient(to left,
-      rgba(249, 244, 239, .98) 0%,
-      rgba(249, 244, 239, .88) 58%,
-      rgba(249, 244, 239, .30) 100%);
+      rgba(249, 244, 239, .86) 0%,
+      rgba(249, 244, 239, .76) 58%,
+      rgba(249, 244, 239, .26) 100%);
 }
 html[dir="ltr"] .landing .hero__shade {
   background:
-    linear-gradient(to top, var(--lx-cream) 0%, rgba(249, 244, 239, 0) 26%),
+    linear-gradient(to top, var(--lx-cream) 0%, rgba(249, 244, 239, 0) 24%),
     linear-gradient(to right,
-      rgba(249, 244, 239, .98) 0%,
-      rgba(249, 244, 239, .88) 58%,
-      rgba(249, 244, 239, .30) 100%);
+      rgba(249, 244, 239, .86) 0%,
+      rgba(249, 244, 239, .76) 58%,
+      rgba(249, 244, 239, .26) 100%);
 }
 /* On a phone the copy is under the film rather than beside it, so the veil
    turns vertical — the design's own second gradient. */
