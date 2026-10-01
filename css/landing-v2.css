@@ -538,20 +538,21 @@
 /* ---- 9. partnerships --------------------------------------------------- */
 .lx-part { display: grid; gap: 40px; align-items: center; }
 @media (min-width: 860px) { .lx-part { grid-template-columns: 1fr 1fr; } }
-/* Pushed to the far side by an auto margin, not by justify-self: the grid item
-   here is the <a> wrapping this image, so justify-self on the image itself was
-   inert — and it was scoped to the two-column layout besides, which left the
-   mark flush RIGHT once the grid stacked below 860px.
+/* Positioned by auto margins, not by justify-self: the grid item here is the
+   <a> wrapping this image, so justify-self on the image itself was inert.
 
-   margin-inline-start:auto puts it at the page's left edge in Arabic and its
-   right edge in English, in both the two-column and the stacked layout. */
+   Stacked, the mark sits on its own row under the copy and is centred in it.
+   Beside the copy it goes to the far side instead — margin-inline-start:auto
+   puts that at the page's left edge in Arabic and its right edge in English. */
 .lx-part__logo {
   display: block;
   inline-size: 100%;
   max-inline-size: 300px;
   block-size: auto;
-  margin-inline-start: auto;
-  margin-inline-end: 0;
+  margin-inline: auto;
+}
+@media (min-width: 860px) {
+  .lx-part__logo { margin-inline-start: auto; margin-inline-end: 0; }
 }
 
 /* ---- 10. closing CTA over a photo -------------------------------------- */
