@@ -683,6 +683,12 @@
       rgba(249, 244, 239, .86) 0%,
       rgba(249, 244, 239, .76) 58%,
       rgba(249, 244, 239, .26) 100%);
+  /* The wash is held off the top of the frame, where nothing is written: the
+     copy does not start until 56% of the hero's height, so above that the veil
+     buys no legibility and only costs picture. The mask fades it in from
+     nothing at the top to full by 44%, just before the headline. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 44%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 44%);
 }
 html[dir="ltr"] .landing .hero__shade {
   background:
