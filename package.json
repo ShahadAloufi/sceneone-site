@@ -2,9 +2,9 @@
   "name": "sceneone-site",
   "version": "1.0.0",
   "private": true,
-  "description": "Scene One — serverless dependencies only (the frontend stays buildless).",
+  "description": "Scene One — serverless dependencies only (the frontend stays buildless). Node is pinned to 22.x deliberately: @sparticuz/chromium v131 fails to extract its bundled libs on Node 24 (libnss3.so never lands in /tmp), which kills the PDF function. Do not bump to 24 without upgrading that package and re-testing /api/report-pdf on a deployment.",
   "engines": {
-    "node": "20.x"
+    "node": "22.x"
   },
   "dependencies": {
     "@sparticuz/chromium": "^131.0.1",
