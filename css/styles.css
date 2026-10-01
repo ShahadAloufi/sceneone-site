@@ -2711,3 +2711,160 @@ html[dir="ltr"] .cov-hero__head { text-align: left; }
 html[dir="ltr"] .toc ul { border-right: 0; border-left: 1px solid rgba(255,255,255,.1); padding-right: 0; padding-left: 20px; }
 html[dir="ltr"] .toc__bar { right: auto; left: -20px; }
 html[dir="ltr"] .toc button { text-align: left; }
+
+/* ===========================================================
+   MENU OVERLAY v2 — rebuilt to the supplied mobile design.
+
+   Appended rather than edited in place: the .overlay rules above still load
+   first and these override them, which keeps the change additive in a sheet
+   seven pages depend on. Colours are literal rather than --lx-* tokens,
+   because /about-coverage does not load css/tokens.css and the overlay has to
+   look the same everywhere.
+
+   The overlay only ever appears below 1000px — .menu-btn is hidden above it —
+   so this is phone and tablet sizing.
+   =========================================================== */
+
+.overlay {
+  /* The design's surface is white, not the page's black. */
+  background: #fff;
+  /* Was forced to ltr, with every child flipped back. The menu reads in the
+     page's own direction instead. */
+  direction: inherit;
+  padding: 0;
+  overflow-y: auto;
+}
+
+.overlay__top {
+  align-items: center;
+  padding: 10px 20px;
+}
+.overlay__brand { display: flex; align-items: center; gap: 11px; }
+.overlay__brand img { height: 28px; width: auto; }
+.overlay__brand span {
+  font-family: var(--font-head);
+  font-size: 17px;
+  font-weight: 700;
+  color: #000;
+  white-space: nowrap;
+}
+.overlay__close {
+  inline-size: 44px;
+  block-size: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  padding: 0;
+}
+.overlay__close:hover { color: #000; opacity: .6; }
+.overlay__close svg { height: 22px; width: 22px; }
+
+/* ---- the destinations ---- */
+
+.overlay__links {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  justify-content: flex-start;
+  gap: 0;
+  padding: 4px 24px 0;
+  border-block-start: 1px solid rgba(0, 0, 0, .1);
+  margin-block-start: 4px;
+}
+.overlay__links a {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-block-size: 66px;
+  border-block-end: 1px solid rgba(0, 0, 0, .1);
+  letter-spacing: normal;
+  color: #000;
+}
+.overlay__links a:hover { color: #000; }
+.overlay__links a:hover .overlay__label { color: var(--s1-accent, #cd2e07); }
+.overlay__n {
+  inline-size: 28px;
+  flex: 0 0 auto;
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 600;
+  color: #7a736a;
+  font-variant-numeric: tabular-nums;
+}
+.overlay__label {
+  font-family: var(--font-head);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #000;
+  transition: color .2s ease;
+}
+/* The page you are already on: the accent, plus a dot, as the design has it.
+   The dot is drawn here rather than set in the markup so the six rows stay
+   identical and only this rule knows which one is current. */
+.overlay__links a[aria-current="page"] .overlay__label { color: #cd2e07; }
+.overlay__links a[aria-current="page"] .overlay__label::after {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  inline-size: 8px;
+  block-size: 8px;
+  margin-inline-start: 10px;
+  border-radius: 50%;
+  background: #cd2e07;
+}
+.overlay__go {
+  margin-inline-start: auto;
+  font-size: 18px;
+  font-weight: 300;
+  color: #7a736a;
+  line-height: 1;
+}
+/* The glyph points the way the page reads, so it turns with the direction. */
+html[dir="ltr"] .overlay__go { transform: scaleX(-1); display: inline-block; }
+
+/* ---- the foot ---- */
+
+/* auto margin rather than a spacer element: it pins the block to the bottom
+   when the rows leave room, and simply follows them when they do not. */
+.overlay__foot {
+  margin-block-start: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding: 32px 24px;
+}
+.overlay__actions { display: flex; align-items: center; gap: 12px; }
+.overlay__cta {
+  flex: 1 1 auto;
+  text-align: center;
+  padding-block: 17px;
+  border-radius: 999px;
+  background: #000;
+  color: #f9f4ef;
+  font-family: var(--font-head);
+  font-size: 17px;
+  font-weight: 700;
+  transition: background-color .2s ease;
+}
+.overlay__cta:hover { background: #241f1b; }
+.overlay__contact { display: flex; flex-direction: column; gap: 14px; }
+.overlay__mail { align-self: flex-start; font-size: 16px; font-weight: 600; color: #cd2e07; }
+.overlay__mail:hover { color: #000; }
+.overlay__soc { display: flex; gap: 24px; font-size: 14px; color: #7a736a; }
+.overlay__soc a { color: #7a736a; }
+.overlay__soc a:hover { color: #000; }
+
+/* The toggle sits beside the CTA on the design's bottom row, so it loses the
+   top margin the old stacked layout gave it and takes the light treatment. */
+.lang-toggle-group--overlay {
+  align-self: auto;
+  margin-top: 0;
+  flex: 0 0 auto;
+  border-color: rgba(0, 0, 0, .35);
+  padding: 4px;
+}
+.lang-toggle-group--overlay .lang-btn { color: rgba(0, 0, 0, .55); padding: 9px 12px; }
+.lang-toggle-group--overlay .lang-btn:hover { color: #000; }
+.lang-toggle-group--overlay .lang-btn.active { background: #000; color: #fff; }

@@ -47,44 +47,63 @@
 
   <!-- ── MENU OVERLAY ── -->
   <div class="overlay" id="menu">
-    <div class="overlay__decor" aria-hidden="true">
-      <img class="overlay__decor-img overlay__decor-chair"   src="assets/menu-chair.svg"   alt="">
-      <img class="overlay__decor-img overlay__decor-reel"    src="assets/menu-reel.svg"    alt="">
-      <img class="overlay__decor-img overlay__decor-camera"  src="assets/menu-camera.svg"  alt="">
-      <img class="overlay__decor-img overlay__decor-clapper" src="assets/menu-clapper.svg" alt="">
-    </div>
     <div class="overlay__top">
-      <img src="assets/scene-one-logo-v3.svg" alt="Scene One">
-      <button class="overlay__close" data-menu-close aria-label="إغلاق">
+      <a class="overlay__brand" href="/" data-menu-close>
+        <img src="assets/scene-one-logo-v3-ink.svg" alt="Scene One">
+        <span data-i18n="brand">سين ون</span>
+      </a>
+      <button class="overlay__close" data-menu-close data-i18n-aria="closeLabel" aria-label="إغلاق">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
     </div>
-    <div class="overlay__body">
-      <div class="overlay__info">
-        <div>
-          <p class="overlay__muted">Scene One / 2026</p>
-          <p style="margin-top:4px">منصة متخصصة في تقييم النصوص السينمائية وتقديم ملاحظات احترافية تساعد الكتّاب على تطوير أعمالهم وصقلها قبل خطوتهم التالية.</p>
-        </div>
-        <div class="overlay__group">
-          <p class="overlay__muted" style="margin-bottom:4px">تواصل</p>
-          <p>sceneone.info@gmail.com</p>
-        </div>
-        <div class="overlay__group">
-          <p class="overlay__muted" style="margin-bottom:4px">حساباتنا</p>
+    <!-- One row per destination: its number, its name, and an arrow pointing the
+         way the page reads. The numbers are decorative, hence aria-hidden. -->
+    <nav class="overlay__links">
+        <a href="/" data-menu-close>
+          <span class="overlay__n" aria-hidden="true">01</span>
+          <span class="overlay__label">الرئيسية</span>
+          <span class="overlay__go" aria-hidden="true">←</span>
+        </a>
+        <a href="/#about" data-menu-close>
+          <span class="overlay__n" aria-hidden="true">02</span>
+          <span class="overlay__label">من نحن</span>
+          <span class="overlay__go" aria-hidden="true">←</span>
+        </a>
+        <a href="/#coverage-types" data-menu-close>
+          <span class="overlay__n" aria-hidden="true">03</span>
+          <span class="overlay__label">تغطية النصوص</span>
+          <span class="overlay__go" aria-hidden="true">←</span>
+        </a>
+        <a href="/readers" data-menu-close>
+          <span class="overlay__n" aria-hidden="true">04</span>
+          <span class="overlay__label">من يقرأ نصك</span>
+          <span class="overlay__go" aria-hidden="true">←</span>
+        </a>
+        <a href="/#journey" data-menu-close>
+          <span class="overlay__n" aria-hidden="true">05</span>
+          <span class="overlay__label">رحلة النص</span>
+          <span class="overlay__go" aria-hidden="true">←</span>
+        </a>
+        <a href="/#contact" data-menu-close>
+          <span class="overlay__n" aria-hidden="true">06</span>
+          <span class="overlay__label">تواصل معنا</span>
+          <span class="overlay__go" aria-hidden="true">←</span>
+        </a>
+    </nav>
+    <div class="overlay__foot">
+      <div class="overlay__actions">
+        <a class="overlay__cta" href="/submit" data-menu-close data-i18n="btnSubmit">قدّم نصك</a>
+      </div>
+      <div class="overlay__contact">
+        <a class="overlay__mail" href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
+        <div class="overlay__soc">
+          <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X</a>
           <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
-          <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X / Twitter</a>
           <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </div>
       </div>
-      <div class="overlay__links">
-        <a href="/" data-menu-close>الرئيسية</a>
-        <a href="/#about" data-menu-close>من نحن</a>
-        <a href="/#coverage-types" data-menu-close>تغطية النصوص</a>
-        <a href="/readers" data-menu-close>من يقرأ نصك</a>
-        <a href="/#journey" data-menu-close>رحلة النص</a>
-        <a href="/#contact" data-menu-close>تواصل معنا</a>
-      </div>
     </div>
+  </div>
   </div>
 
   <!-- ── HERO ── -->
