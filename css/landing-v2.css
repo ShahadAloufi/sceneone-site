@@ -535,6 +535,96 @@
 .lx-team__n { margin: 16px 0 0; font-family: var(--font-head); font-size: 16px; font-weight: 800; text-align: center; }
 .lx-team__r { margin: 6px 0 0; font-size: 13px; color: var(--lx-red); text-align: center; }
 
+/* ---- 8b. what the writers said ----------------------------------------- */
+
+.lx-vox { display: grid; gap: 48px; align-items: center; }
+@media (min-width: 1000px) { .lx-vox { grid-template-columns: 380px minmax(0, 1fr); gap: 72px; } }
+.lx-vox__head { display: flex; flex-direction: column; gap: 14px; }
+.lx-vox__head .lx-sub { margin: 0; max-inline-size: 42ch; }
+
+.lx-vox__cards { display: grid; gap: 24px; align-items: stretch; }
+/* The long message earns the wider card. */
+@media (min-width: 760px) { .lx-vox__cards { grid-template-columns: 1.35fr 1fr; } }
+
+.lx-vox__card {
+  margin: 0;
+  min-inline-size: 0;
+  box-sizing: border-box;
+  padding: clamp(32px, 4vw, 48px) clamp(28px, 4vw, 52px);
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.lx-vox__card--wide { background: var(--lx-cream); }
+.lx-vox__card--dark { background: var(--lx-black); gap: 22px; }
+
+.lx-vox__mark {
+  font-size: 112px;
+  line-height: .5;
+  block-size: 56px;
+  font-weight: 800;
+  color: var(--lx-red);
+}
+
+.lx-vox__card p { margin: 0 0 14px; font-size: 17px; line-height: 2; color: var(--lx-ink); }
+.lx-vox__card p:last-child { margin-bottom: 0; }
+.lx-vox__card--dark blockquote { margin: 0; display: flex; flex-direction: column; gap: 14px; text-align: left; }
+.lx-vox__card--dark p { margin: 0; font-size: 16px; line-height: 1.85; color: rgba(249, 244, 239, .8); }
+.lx-vox__lead { font-size: 24px !important; font-weight: 700; line-height: 1.6 !important; color: var(--lx-cream) !important; }
+
+/* The message runs long, so the card shows a fixed stretch of it and fades the
+   cut rather than slicing a line in half. Ticking the box drops the mask and
+   lets the box scroll — no script, so it works with JS off and there is no
+   handler to bind. */
+.lx-vox__box {
+  position: relative;
+  block-size: 300px;
+  flex: none;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(#000 70%, transparent);
+  mask-image: linear-gradient(#000 70%, transparent);
+}
+.lx-vox__t:checked ~ .lx-vox__box {
+  overflow-y: auto;
+  -webkit-mask-image: none;
+  mask-image: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, .25) transparent;
+}
+.lx-vox__btn {
+  align-self: flex-start;
+  cursor: pointer;
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--lx-black);
+  border-block-end: 1px solid rgba(0, 0, 0, .3);
+  padding-block-end: 4px;
+}
+.lx-vox__btn:hover { color: var(--lx-red); border-block-end-color: var(--lx-red); }
+.lx-vox__c { display: none; }
+.lx-vox__t:checked ~ .lx-vox__btn .lx-vox__o { display: none; }
+.lx-vox__t:checked ~ .lx-vox__btn .lx-vox__c { display: inline; }
+/* Keyboard users get the same affordance: the box is hidden, so the ring has
+   to land on the label it drives. */
+.lx-vox__t:focus-visible ~ .lx-vox__btn { outline: 2px solid var(--lx-red); outline-offset: 4px; }
+
+.lx-vox__card figcaption {
+  margin-block-start: auto;
+  padding-block-start: 18px;
+  border-block-start: 1px solid rgba(0, 0, 0, .1);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.lx-vox__card--dark figcaption { border-block-start-color: rgba(249, 244, 239, .16); }
+.lx-vox__name { font-family: var(--font-head); font-size: 18px; font-weight: 800; color: var(--lx-black); }
+.lx-vox__card--dark .lx-vox__name { color: var(--lx-cream); }
+.lx-vox__role { font-size: 14px; color: var(--lx-red); }
+
 /* ---- 9. partnerships --------------------------------------------------- */
 .lx-part { display: grid; gap: 40px; align-items: center; }
 @media (min-width: 860px) { .lx-part { grid-template-columns: 1fr 1fr; } }

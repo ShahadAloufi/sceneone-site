@@ -182,6 +182,13 @@
       teamEyebrow: "الفريق", teamH: "من يقرأ نصك", teamMore: "المزيد",
       teamSub: "قرّاء من صنّاع الأفلام وكتّاب السيناريو، ومنتج تطوير إبداعي يتولّى المشاريع بعد التوصية.",
 
+      // The two quotes themselves stay in the markup, in the language each was
+      // written in. Only the chrome around them is translated.
+      voxEyebrow: "من الكتّاب", voxH: "ماذا قال كتّابنا",
+      voxSub: "من ردودهم بعد أن وصلتهم تقاريرهم.",
+      voxMore: "عرض الرسالة كاملة ↓", voxLess: "إخفاء ↑",
+      voxName1: "سكينة", voxRole1: "كاتبة «ليس حرج»",
+      voxName2: "أحمد كردي", voxRole2: "كاتب «غشنة»",
       partEyebrow: "شراكاتنا", partH: "نتعاون مع جهات في قطاع السينما",
       partSub: "يحصل أعضاء جمعية السينما السعودية على مزايا خاصة في خدمات تغطية النصوص.",
 
@@ -669,6 +676,11 @@
       teamEyebrow: "The team", teamH: "Who reads your script?", teamMore: "More",
       teamSub: "Our readers come from the worlds of filmmaking and screenwriting. Projects that receive a recommendation are then taken forward by a creative development producer.",
 
+      voxEyebrow: "From the writers", voxH: "What our writers said",
+      voxSub: "From their replies, after their reports reached them.",
+      voxMore: "Read the full message ↓", voxLess: "Hide ↑",
+      voxName1: "Sakeena", voxRole1: "Writer of “Laysa Haraj”",
+      voxName2: "Ahmed Kurdi", voxRole2: "Writer of “Ghashna”",
       partEyebrow: "Partnerships", partH: "We work with organizations across the film sector",
       partSub: "Members of the Saudi Cinema Association receive special benefits on script coverage services.",
 
