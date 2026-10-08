@@ -270,7 +270,12 @@
 }
 
 /* ---- 4. the read: photo, copy, the eight axes -------------------------- */
-.lx-read { display: grid; gap: 0; }
+/* The single column needs minmax(0, 1fr) for the same reason the two-column
+   rule below does: an implicit track floors at min-content, and the axes grid
+   inside the copy measures 518px there. Below 600px that floor was wider than
+   the phone, so the whole section hung 126px off the edge and took the page's
+   horizontal scroll with it. */
+.lx-read { display: grid; gap: 0; grid-template-columns: minmax(0, 1fr); }
 /* Two equal halves, and they split earlier than the other full-bleed sections:
    from 600px the copy and the photograph each take exactly half the row. */
 /* minmax(0, 1fr), not a bare 1fr: a plain fr track floors at its content's
@@ -624,6 +629,24 @@
 .lx-vox__name { font-family: var(--font-head); font-size: 18px; font-weight: 800; color: var(--lx-black); }
 .lx-vox__card--dark .lx-vox__name { color: var(--lx-cream); }
 .lx-vox__role { font-size: 14px; color: var(--lx-red); }
+
+/* The phone cut of the same block: the two cards stack (they already do, from
+   the grid above), and every fixed measure steps down to the mobile design's
+   own numbers. The headings are left to the page's shared type scale rather
+   than pinned here, so this section keeps step with the sections around it. */
+@media (max-width: 760px) {
+  .lx-vox { gap: 28px; }
+  .lx-vox__cards { gap: 16px; }
+  .lx-vox__card { padding: 30px 24px; border-radius: 18px; gap: 14px; }
+  .lx-vox__card--dark { padding: 28px 24px; gap: 16px; }
+  .lx-vox__mark { font-size: 80px; block-size: 40px; }
+  .lx-vox__card p { font-size: 16px; margin-block-end: 12px; }
+  .lx-vox__card--dark p { font-size: 15px; }
+  .lx-vox__lead { font-size: 20px !important; }
+  .lx-vox__box { block-size: 230px; }
+  .lx-vox__card figcaption { padding-block-start: 10px; }
+  .lx-vox__name { font-size: 17px; }
+}
 
 /* ---- 9. partnerships --------------------------------------------------- */
 .lx-part { display: grid; gap: 40px; align-items: center; }
