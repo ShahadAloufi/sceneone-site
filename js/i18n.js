@@ -679,8 +679,11 @@
       voxEyebrow: "From the writers", voxH: "What our writers said",
       voxSub: "From their replies, after their reports reached them.",
       voxMore: "Read the full message ↓", voxLess: "Hide ↑",
-      voxName1: "Sakeena", voxRole1: "Writer of “Laysa Haraj”",
-      voxName2: "Ahmed Kurdi", voxRole2: "Writer of “Ghashna”",
+      // Names and film titles stay in Arabic in both locales, like the quotes
+      // themselves: they are what these people and these films are called, not
+      // copy to be rendered.
+      voxName1: "سكينة", voxRole1: "كاتبة «ليس حرج»",
+      voxName2: "أحمد كردي", voxRole2: "كاتب «غشنة»",
       partEyebrow: "Partnerships", partH: "We work with organizations across the film sector",
       partSub: "Members of the Saudi Cinema Association receive special benefits on script coverage services.",
 
