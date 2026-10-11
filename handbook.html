@@ -2,172 +2,61 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-  <title data-i18n-doctitle="docTitleHandbook">حكاية سين ون | Scene One</title>
-  <meta name="description" content="حكاية سين ون: كيف بدأت الدار، ولماذا، وإلى أين تتجه.">
-  <meta name="robots" content="index, follow">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>حكاية سين ون | Scene One</title>
+  <!-- Not a destination, so it must not collect search traffic of its own. -->
+  <meta name="robots" content="noindex, nofollow">
   <link rel="icon" type="image/png" href="assets/favicon-v2.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/tokens.css">
-  <link rel="stylesheet" href="css/site-chrome.css">
-  <link rel="stylesheet" href="css/terms-v2.css">
-  <link rel="stylesheet" href="css/handbook.css">
-  <!-- Vercel Web Analytics — served by Vercel's edge at this path; no npm/build needed. -->
+  <!-- Warm the connection; the booklet is 2MB and the hand-off is immediate. -->
+  <link rel="prefetch" href="/assets/scene-one-booklet-ar.pdf">
+  <!--
+    WHY THIS PAGE EXISTS
+
+    The story used to be linked straight at /assets/scene-one-booklet-ar.pdf.
+    A static asset is not a page view, so Vercel's analytics never saw it and
+    there was no way to tell how many people opened it.
+
+    This page is the thing that gets counted. It shows nothing of its own: it
+    waits only as long as the analytics beacon needs, then hands over to the
+    PDF. A reader sees the booklet, the same as before.
+  -->
   <script defer src="/_vercel/insights/script.js"></script>
+  <style>
+    body {
+      margin: 0; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      background: #f9f4ef; color: #7a736a;
+      font-family: Tajawal, system-ui, sans-serif; font-size: 16px;
+      text-align: center; padding: 24px;
+    }
+    a { color: #cd2e07; }
+  </style>
 </head>
 <body>
-<div class="tm2 page">
+  <!-- Visible only if the hand-off is slow, or if scripting is off — in which
+       case this link is the whole page and still works. -->
+  <p>جارٍ فتح الكتيّب…<br><a href="/assets/scene-one-booklet-ar.pdf">افتحه يدويًا إن لم يبدأ</a></p>
 
-  <!-- ── NAV ── -->
-  <nav class="nav center">
-    <a class="nav__brand" href="/"><!-- The dark-ink cut: this page's bar is white. -->
-      <img class="nav__logo" src="assets/scene-one-logo-v3-ink.svg" alt="Scene One"><span class="nav__wordmark" data-i18n="brand">سين ون</span></a>
-    <!-- Inline links on desktop; below the breakpoint they collapse and the
-         hamburger's overlay carries the same six destinations. -->
-    <ul class="nav__links">
-      <li><a href="/" data-i18n="navHome">الرئيسية</a></li>
-      <li><a href="/#about" data-i18n="navAboutUs">من نحن</a></li>
-      <li><a href="/#coverage-types" data-i18n="navCoverage">تغطية النصوص</a></li>
-      <li><a href="/readers" data-i18n="navReaders">من يقرأ نصك</a></li>
-      <li><a href="/#journey" data-i18n="navJourney">رحلة النص</a></li>
-      <li><a href="/#contact" data-i18n="navContact">تواصل معنا</a></li>
-    </ul>
-    <div class="nav__end">
-      <a class="nav__cta" href="/submit" data-i18n="btnSubmit">قدّم نصك</a>
-      <div class="lang-toggle-group" role="group" aria-label="Language"><button class="lang-btn" type="button" data-lang="en">EN</button><button class="lang-btn" type="button" data-lang="ar">AR</button></div>
-      <button class="menu-btn" data-menu-open data-i18n-aria="menuLabel" aria-label="القائمة"><span></span><span></span><span></span></button>
-    </div>
-  </nav>
+  <script>
+    (function () {
+      "use strict";
+      var PDF = "/assets/scene-one-booklet-ar.pdf";
+      var gone = false;
 
-  <!-- ── MENU OVERLAY ── -->
-  <div class="overlay" id="menu">
-    <div class="overlay__top">
-      <a class="overlay__brand" href="/" data-menu-close>
-        <img src="assets/scene-one-logo-v3-ink.svg" alt="Scene One">
-        <span data-i18n="brand">سين ون</span>
-      </a>
-      <button class="overlay__close" data-menu-close data-i18n-aria="closeLabel" aria-label="إغلاق">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
-    <!-- One row per destination: its number, its name, and an arrow pointing the
-         way the page reads. The numbers are decorative, hence aria-hidden. -->
-    <nav class="overlay__links">
-        <a href="/" data-menu-close>
-          <span class="overlay__n" aria-hidden="true">01</span>
-          <span class="overlay__label" data-i18n="navHome">الرئيسية</span>
-          <span class="overlay__go" aria-hidden="true">←</span>
-        </a>
-        <a href="/#about" data-menu-close>
-          <span class="overlay__n" aria-hidden="true">02</span>
-          <span class="overlay__label" data-i18n="navAboutUs">من نحن</span>
-          <span class="overlay__go" aria-hidden="true">←</span>
-        </a>
-        <a href="/#coverage-types" data-menu-close>
-          <span class="overlay__n" aria-hidden="true">03</span>
-          <span class="overlay__label" data-i18n="navCoverage">تغطية النصوص</span>
-          <span class="overlay__go" aria-hidden="true">←</span>
-        </a>
-        <a href="/readers" data-menu-close>
-          <span class="overlay__n" aria-hidden="true">04</span>
-          <span class="overlay__label" data-i18n="navReaders">من يقرأ نصك</span>
-          <span class="overlay__go" aria-hidden="true">←</span>
-        </a>
-        <a href="/#journey" data-menu-close>
-          <span class="overlay__n" aria-hidden="true">05</span>
-          <span class="overlay__label" data-i18n="navJourney">رحلة النص</span>
-          <span class="overlay__go" aria-hidden="true">←</span>
-        </a>
-        <a href="/#contact" data-menu-close>
-          <span class="overlay__n" aria-hidden="true">06</span>
-          <span class="overlay__label" data-i18n="navContact">تواصل معنا</span>
-          <span class="overlay__go" aria-hidden="true">←</span>
-        </a>
-    </nav>
-    <div class="overlay__foot">
-      <div class="overlay__actions">
-        <a class="overlay__cta" href="/submit" data-menu-close data-i18n="btnSubmit">قدّم نصك</a>
-      </div>
-      <div class="overlay__contact">
-        <a class="overlay__mail" href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
-        <div class="overlay__soc">
-          <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X</a>
-          <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
-          <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        </div>
-      </div>
-    </div>
-  </div>
+      // replace(), not assign(): the booklet takes this entry in the history,
+      // so Back returns to the page the reader came from rather than bouncing
+      // them through here again.
+      function open() { if (!gone) { gone = true; location.replace(PDF); } }
 
-  <!-- ── HERO ── -->
-  <section class="tm2-hero">
-    <div class="tm2-in">
-      <p class="tm2-eyebrow" data-i18n="hbEyebrow">الحكاية</p>
-      <h1 class="tm2-hero__h" data-i18n="hbH">حكاية سين ون</h1>
-      <p class="tm2-hero__p" data-i18n="hbLede">كيف بدأت الدار، ولماذا، وإلى أين تتجه. الكتيّب كاملًا، تقرأه هنا أو تحمّله معك.</p>
-    </div>
-  </section>
+      // The beacon is the only reason to pause at all, so wait for the
+      // analytics script to load and give it a moment to report — then go.
+      var s = document.querySelector('script[src*="insights"]');
+      if (s) { s.addEventListener("load", function () { setTimeout(open, 250); }); }
 
-  <!-- ── THE BOOKLET ──
-       Two ways in, because a phone browser will not render a PDF in a frame
-       reliably: the buttons work everywhere, the reader appears from 900px. -->
-  <section class="hb-read">
-    <div class="hb-read__in">
-      <div class="hb-actions">
-        <a class="hb-btn" href="/assets/scene-one-booklet-ar.pdf" target="_blank" rel="noopener" data-i18n="hbOpen">افتح الكتيّب</a>
-        <a class="hb-btn hb-btn--ghost" href="/assets/scene-one-booklet-ar.pdf" download data-i18n="hbDownload">تحميل PDF</a>
-      </div>
-
-      <iframe class="hb-frame" src="/assets/scene-one-booklet-ar.pdf#view=FitH"
-              title="حكاية سين ون" loading="lazy"></iframe>
-
-      <p class="hb-note" data-i18n="hbNote">إن لم يظهر الكتيّب هنا، افتحه في تبويب جديد من الزر أعلاه.</p>
-    </div>
-  </section>
-
-  <!-- ── FOOTER ──
-       The landing's footer, styled by the shared css/site-chrome.css. -->
-  <footer class="lx-foot">
-    <div class="lx-foot__in">
-      <div class="lx-foot__top">
-        <div>
-          <div class="lx-foot__brand">
-            <img src="assets/scene-one-logo-v3.svg" alt="Scene One">
-            <span data-i18n="brand">سين ون</span>
-          </div>
-          <p class="lx-foot__blurb" data-i18n="footBlurb">نكتشف الأصوات الجديدة، نطوّر أفلامها، ونبني لها طريقًا إلى الشاشة</p>
-        </div>
-        <div class="lx-foot__col">
-          <a href="/#coverage-types" data-i18n="footCoverage">تغطية النصوص</a>
-          <a href="/readers" data-i18n="footReaders">من يقرأ نصك</a>
-          <a href="/#journey" data-i18n="navJourney">رحلة النص</a>
-        </div>
-        <div class="lx-foot__col">
-          <a href="/privacy" data-i18n="footerPrivacy">سياسة الخصوصية</a>
-          <a href="/terms" data-i18n="footerTerms">الشروط والأحكام</a>
-          <a href="/assets/scene-one-booklet-ar.pdf" target="_blank" rel="noopener" data-i18n="footStory">حكاية سين ون</a>
-        </div>
-        <div class="lx-foot__col">
-          <p class="lx-foot__lbl" data-i18n="footContact">للتواصل</p>
-          <a class="lx-foot__mail" href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
-        </div>
-      </div>
-      <div class="lx-foot__bar">
-        <p class="lx-foot__cr" data-i18n="footCr">© 2026 جميع الحقوق محفوظة لـ سين ون · الرقم الموحد 7054791293</p>
-        <div class="lx-foot__soc">
-          <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X</a>
-          <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
-          <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-</div>
-
-<script src="js/i18n.js"></script>
-<script src="js/main.js"></script>
+      // And go regardless. Analytics must never be what keeps a reader from
+      // the booklet: if the script is blocked, slow or missing, this fires.
+      setTimeout(open, 1200);
+    })();
+  </script>
 </body>
 </html>
