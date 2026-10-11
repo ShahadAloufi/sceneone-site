@@ -103,9 +103,7 @@
   background: transparent;
   border: 1.5px solid #cd2e07;
 }
-/* A Latin run inside an Arabic line: isolated so the slashes, which are
-   direction-neutral, cannot drag the three grades out of order. */
-.ck-sum__list [dir="ltr"] { unicode-bidi: isolate; }
+
 
 .ck-sum__dur {
   margin: 28px 0 0;
