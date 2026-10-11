@@ -637,6 +637,7 @@
               titleAr: v.titleAr,
               titleEn: v.titleEn,
               email: v.email,
+              phone: v.phone,
               writer: v.writer,
               writerLevel: v.writerLevel,
               genre: v.genre,
