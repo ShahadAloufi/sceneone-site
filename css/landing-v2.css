@@ -785,18 +785,24 @@
    accreditation badge in the bottom corner a ground to sit on — it is out on
    the open side, where the horizontal veil has nearly cleared.
 
-   The stops are the lightest that still hold. Measured over eight points in
-   the loop, with every pixel under each element sampled: the headline keeps
-   6.0:1, the lede 6.1:1 and the badge 5.2:1, all above WCAG AA, while enough
-   of the picture survives behind the copy to read as film rather than as a
-   cream panel. Going lighter still drops the badge's caption under AA. */
+   The stops are the lightest that still hold, re-measured after this was
+   asked to come down again. Eight points across the loop, every pixel under
+   each element sampled against the real composite: headline 5.4:1, lede
+   6.1:1, badge 4.6:1, SAIP line 12.0:1 — all above WCAG AA, with mean veil
+   coverage down from 57% to 42%.
+
+   The badge's caption is what sets the floor. It sits out on the open side
+   where the horizontal veil has nearly cleared, so it leans on the bottom
+   fade instead, and one step lighter puts it at 4.4:1, under AA. The headline
+   and lede still have room (they are at 5.4 and 6.1 against a 4.5 floor); the
+   badge does not. */
 .landing .hero__shade {
   background:
     linear-gradient(to top, var(--lx-cream) 0%, rgba(249, 244, 239, 0) 24%),
     linear-gradient(to left,
-      rgba(249, 244, 239, .86) 0%,
-      rgba(249, 244, 239, .76) 58%,
-      rgba(249, 244, 239, .26) 100%);
+      rgba(249, 244, 239, .62) 0%,
+      rgba(249, 244, 239, .50) 58%,
+      rgba(249, 244, 239, .16) 100%);
   /* The wash is held off the top of the frame, where nothing is written: the
      copy does not start until 56% of the hero's height, so above that the veil
      buys no legibility and only costs picture. The mask fades it in from
@@ -808,20 +814,26 @@ html[dir="ltr"] .landing .hero__shade {
   background:
     linear-gradient(to top, var(--lx-cream) 0%, rgba(249, 244, 239, 0) 24%),
     linear-gradient(to right,
-      rgba(249, 244, 239, .86) 0%,
-      rgba(249, 244, 239, .76) 58%,
-      rgba(249, 244, 239, .26) 100%);
+      rgba(249, 244, 239, .62) 0%,
+      rgba(249, 244, 239, .50) 58%,
+      rgba(249, 244, 239, .16) 100%);
 }
 /* On a phone the copy is under the film rather than beside it, so the veil
-   turns vertical — the design's own second gradient. */
+   turns vertical — the design's own second gradient.
+
+   This one could not come down as far as the desktop veil. With the copy ON
+   the film rather than beside it, the headline is the binding element, not
+   the badge: at 28px/700 it is WCAG large text and needs 3:1, and these stops
+   leave it at 3.6:1 with the lede at 5.8:1. One step lighter puts the
+   headline at 3.0:1, on the line. Measured the same way, at 375x812. */
 @media (max-width: 860px) {
   .landing .hero__shade,
   html[dir="ltr"] .landing .hero__shade {
     background: linear-gradient(to top,
       var(--lx-cream) 0%,
-      rgba(249, 244, 239, .93) 26%,
-      rgba(249, 244, 239, .58) 62%,
-      rgba(249, 244, 239, .22) 100%);
+      rgba(249, 244, 239, .86) 26%,
+      rgba(249, 244, 239, .50) 62%,
+      rgba(249, 244, 239, .18) 100%);
   }
 }
 
