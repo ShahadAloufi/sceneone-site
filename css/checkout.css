@@ -277,9 +277,10 @@ html[dir="ltr"] select.ck-input { background-position: right 16px center; }
    Apple Pay mark at all). Same box as the card marks; the asset supplies its
    own card shape. */
 .ck-networks__mark {
-  inline-size: 54px;
+  /* Height matched to the card marks; width follows the artwork's own 1.562:1
+     so the mark is never stretched. */
   block-size: 36px;
-  object-fit: contain;
+  inline-size: auto;
 }
 
 /* ---- states ------------------------------------------------------------- */
