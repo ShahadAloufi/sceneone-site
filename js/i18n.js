@@ -184,6 +184,11 @@
 
       // The two quotes themselves stay in the markup, in the language each was
       // written in. Only the chrome around them is translated.
+      docTitleHandbook: "حكاية سين ون | Scene One",
+      hbEyebrow: "الحكاية", hbH: "حكاية سين ون",
+      hbLede: "كيف بدأت الدار، ولماذا، وإلى أين تتجه. الكتيّب كاملًا، تقرأه هنا أو تحمّله معك.",
+      hbOpen: "افتح الكتيّب", hbDownload: "تحميل PDF",
+      hbNote: "إن لم يظهر الكتيّب هنا، افتحه في تبويب جديد من الزر أعلاه.",
       voxEyebrow: "من الكتّاب", voxH: "ماذا قال كتّابنا",
       voxSub: "من ردودهم بعد أن وصلتهم تقاريرهم.",
       voxMore: "عرض الرسالة كاملة ↓", voxLess: "إخفاء ↑",
@@ -676,6 +681,11 @@
       teamEyebrow: "The team", teamH: "Who reads your script?", teamMore: "More",
       teamSub: "Our readers come from the worlds of filmmaking and screenwriting. Projects that receive a recommendation are then taken forward by a creative development producer.",
 
+      docTitleHandbook: "The Scene One story | Scene One",
+      hbEyebrow: "The story", hbH: "The Scene One story",
+      hbLede: "How the house began, why, and where it is going. The whole booklet, to read here or take with you.",
+      hbOpen: "Open the booklet", hbDownload: "Download PDF",
+      hbNote: "If the booklet does not appear here, open it in a new tab with the button above.",
       voxEyebrow: "From the writers", voxH: "What our writers said",
       voxSub: "From their replies, after their reports reached them.",
       voxMore: "Read the full message ↓", voxLess: "Hide ↑",
