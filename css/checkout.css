@@ -249,6 +249,29 @@ html[dir="ltr"] select.ck-input { background-position: right 16px center; }
   border: 0 !important;
 }
 .ck-form .mysr-form .mysr-form-button:hover { background: #b32806 !important; }
+
+/* The amount label inside that button. Moyasar renders it as
+
+     <span style="display:inline-flex;align-items:center;gap:4px"><svg/>120</span>
+
+   where the riyal is an inline SVG pinned to height:19px — half again taller
+   than Tajawal's 11.6px digits — and centred on the line box instead of sat on
+   the digits' baseline. That is why the symbol read as oversized and hanging
+   low. Inline styles lose to !important, which is how these override it.
+
+   The 4px lift fixes a second effect: Tajawal reserves deep descender space,
+   and a label of digits only has no descenders, so its ink floated above the
+   button's centre. Measured at this font-size and button height, where it
+   lands dead centre; both are fixed in the rule above, so the figure holds. */
+.ck-form .mysr-form .mysr-form-button > span {
+  align-items: baseline !important;
+  position: relative;
+  inset-block-start: 4px;
+}
+.ck-form .mysr-form .mysr-form-button > span > svg {
+  /* Matched to the digits' ink height so the symbol reads as the same size. */
+  block-size: 0.74em !important;
+}
 .ck-form .mysr-form .mysr-form-footer { margin-block-start: 16px; }
 
 /* The accepted-card row. The marks come from Moyasar's own classes (see the
