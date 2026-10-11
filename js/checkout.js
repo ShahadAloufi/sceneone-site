@@ -151,6 +151,38 @@
   // standing instruction, so it starts hidden.
   hint.style.display = "none";
 
+  /* ---- the accepted-card marks --------------------------------------------
+     Moyasar carries mada, Visa and Mastercard as base64 SVG, but scoped to
+     inside its own form — the classes alone paint nothing on our badge row,
+     which is why it was three empty plates. Their stylesheet is cross-origin
+     so the rules cannot be read either.
+
+     So the art is copied off the widget's own icons once they exist. Still
+     the official marks, still no new assets, and if a brand is absent from
+     the widget its plate is dropped rather than left blank. */
+  (function paintNetworkMarks(attempt) {
+    var row = document.querySelector(".ck-networks");
+    if (!row) return;
+    var want = ["Mada", "Visa", "Mastercard"];
+    var painted = 0;
+    want.forEach(function (name) {
+      var source = document.querySelector(".mysr-form .mysr-form-ccIcon" + name);
+      var target = row.querySelector(".mysr-form-ccIcon" + name);
+      if (!source || !target) return;
+      var art = getComputedStyle(source).backgroundImage;
+      if (!art || art === "none") return;
+      target.style.backgroundImage = art;
+      painted++;
+    });
+    if (painted === want.length) return;
+    // The widget renders asynchronously; give it a few frames before giving up.
+    if ((attempt || 0) < 20) return setTimeout(function () { paintNetworkMarks((attempt || 0) + 1); }, 250);
+    // Never leave empty plates behind.
+    row.querySelectorAll(".mysr-form-ccIcon").forEach(function (el) {
+      if (!el.style.backgroundImage) el.closest("li").remove();
+    });
+  })(0);
+
   /* ---- Apple Pay, when it is ready ----------------------------------------
      Moyasar's form wants three more keys before it will show the button:
 
