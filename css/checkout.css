@@ -91,6 +91,22 @@
 }
 .ck-sum__list strong { font-weight: 700; color: #2a2622; }
 
+/* The seven report axes, nested under the second point. Hollow dots so the
+   two levels are told apart by weight rather than by indent alone, which is
+   easy to lose in a narrow rail. */
+.ck-sum__sub { margin: 12px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 9px; }
+.ck-sum__sub li { padding-inline-start: 16px; font-size: 14.5px; line-height: 1.8; }
+.ck-sum__sub li::before {
+  inset-block-start: 11px;
+  inline-size: 5px;
+  block-size: 5px;
+  background: transparent;
+  border: 1.5px solid #cd2e07;
+}
+/* A Latin run inside an Arabic line: isolated so the slashes, which are
+   direction-neutral, cannot drag the three grades out of order. */
+.ck-sum__list [dir="ltr"] { unicode-bidi: isolate; }
+
 .ck-sum__dur {
   margin: 28px 0 0;
   padding-block-start: 20px;
