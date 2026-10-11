@@ -26,7 +26,12 @@
   body{background:var(--page);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.7;
        -webkit-font-smoothing:antialiased;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:34px 14px}
   .card{background:#fff;border-radius:20px;max-width:600px;width:100%;padding:46px 44px;text-align:center}
-  .wm{height:64px;width:auto;display:block;margin:0 auto 30px}
+  /* The mark with the wordmark beside it, as the bar sets it — not the
+     combined bilingual artwork, which carried its own "Scene One" line. The
+     ink cut, because this card is white. */
+  .wm{display:flex;align-items:center;justify-content:center;gap:12px;margin:0 auto 30px;direction:rtl}
+  .wm img{height:52px;width:auto;display:block}
+  .wm span{font-family:var(--font);font-size:22px;font-weight:700;color:var(--ink);white-space:nowrap}
   h1{margin:0 0 14px;font-size:25px;line-height:1.3;font-weight:700}
   .body{margin:0 auto;max-width:440px;color:#4a453f}
   hr{border:0;border-top:1px solid #ece7df;width:78%;margin:26px auto}
@@ -36,7 +41,10 @@
 </style>
 
 <div class="card">
-  <img class="wm" src="assets/scene-one-logo-light-v3.svg" alt="Scene One">
+  <div class="wm">
+    <img src="assets/scene-one-logo-v3-ink.svg" alt="Scene One">
+    <span>سين ون</span>
+  </div>
   <h1 id="ar-title"></h1>
   <p class="body" id="ar-body" dir="rtl"></p>
   <hr>
