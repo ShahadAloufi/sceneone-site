@@ -84,13 +84,9 @@
   el("ckTotal").textContent = total;
   if (RANGE[filmType]) el("ckRange").textContent = RANGE[filmType];
   if (TURNAROUND[filmType]) el("ckTurnaround").textContent = TURNAROUND[filmType];
-  if (pages > 0) {
-    el("ckOrderMeta").textContent = pages + " صفحة";
-    // Only the per-page products have a rate to show.
-    if (filmType === "short" || filmType === "feature") {
-      el("ckRate").textContent = pages + " صفحة × 10 ريال للصفحة";
-    }
-  }
+  // The page count stays as a plain figure under the product name; the
+  // "N صفحة × 10 ريال" arithmetic is gone, as it is from the invoice line.
+  if (pages > 0) el("ckOrderMeta").textContent = pages + " صفحة";
   document.title = product + " | Scene One";
 
   // The terms gate. The widget carries its own pay button, so the only way to

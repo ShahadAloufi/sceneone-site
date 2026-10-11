@@ -62,8 +62,6 @@
 .ck-sum__price { margin: 18px 0 0; display: flex; align-items: baseline; gap: 10px; }
 .ck-sum__price b { font-family: var(--font-head); font-size: clamp(42px, 4.6vw, 60px); font-weight: 700; line-height: 1; color: #000; }
 .ck-sum__price span { font-size: 22px; color: #7a736a; }
-.ck-sum__rate { margin: 10px 0 0; font-size: 14px; color: #7a736a; }
-.ck-sum__rate:empty { display: none; }
 .ck-sum__blurb { margin: 36px 0 0; font-size: 17px; line-height: 1.95; color: #7a736a; }
 
 .ck-sum__list { margin: 40px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 20px; }
