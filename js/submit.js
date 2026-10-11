@@ -95,6 +95,11 @@
     .split(",").map(function (x) { return x.trim().toLowerCase(); }).filter(Boolean);
   var MAX_BYTES = 25 * 1024 * 1024; // 25 MiB, matches the bucket's file_size_limit
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // Mirrors PHONE_RE in api/submissions.js, which is the authority. Separators
+  // are stripped first so a writer may type 05 123 456 78 and still pass; the
+  // server normalises to one shape on the way in.
+  var PHONE_RE = /^\+?[0-9]{7,15}$/;
+  function phoneDigits(v) { return String(v || "").replace(/[\s()\-.]/g, ""); }
 
   function fileExt(name) {
     var i = String(name).lastIndexOf(".");
@@ -477,6 +482,7 @@
       titleAr: (data.get("titleAr") || "").toString().trim(),
       titleEn: (data.get("titleEn") || "").toString().trim(),
       email: (data.get("email") || "").toString().trim(),
+      phone: (data.get("phone") || "").toString().trim(),
       writer: (data.get("writer") || "").toString().trim(),
       writerLevel: (data.get("writerLevel") || "").toString().trim(),
       genre: (data.get("genre") || "").toString().trim(),
@@ -523,6 +529,7 @@
       if (name === "titleAr" || name === "titleEn" || name === "file" ||
           name === "memberNumber" || name === "memberCard") return;
       if (name === "email") { req("email", EMAIL_RE.test(v.email)); return; }
+      if (name === "phone") { req("phone", PHONE_RE.test(phoneDigits(v.phone))); return; }
       req(name, String(v[name] == null ? "" : v[name]).length > 0);
     });
     if (requiredFields().indexOf("file") > -1 || file) req("file", !!file);

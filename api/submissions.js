@@ -58,12 +58,26 @@ function isTreatment(t) { return String(t || "").indexOf("treatment") === 0; }
 // values — add a level in all three or the table falls back to the raw key.
 const WRITER_LEVELS = ["new", "emerging", "professional", "veteran"];
 const ALLOWED_EXT = ["pdf", "fdx", "fountain", "docx", "txt"];
-const MAX = { title: 200, email: 254, writer: 120, duration: 60, theme: 200, logline: 1000, vision: 5000, path: 300, fileName: 255,
+const MAX = { title: 200, email: 254, phone: 32, writer: 120, duration: 60, theme: 200, logline: 1000, vision: 5000, path: 300, fileName: 255,
   // Treatment-only fields. `treatment_text` is the whole document when a writer
   // pastes it instead of relying on the upload, so its cap is generous.
   characters: 5000, toneRef: 500, treatmentText: 60000 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// Phone. Deliberately permissive: a writer may be outside Saudi, and a rule
+// tight enough to reject a real number is worse than one that stores an odd
+// one. Separators are dropped, then 7-15 digits with an optional leading + is
+// the whole test — the E.164 range.
+const PHONE_RE = /^\+?[0-9]{7,15}$/;
+// Stored in one shape so two writers who typed 0512345678 and +966512345678
+// are not two different strings in the table. Saudi local and bare-country
+// forms fold to +966…; anything else keeps what was typed, minus separators.
+function normalizePhone(raw) {
+  const cleaned = String(raw || "").replace(/[\s()\-.]/g, "");
+  if (/^05[0-9]{8}$/.test(cleaned)) return "+966" + cleaned.slice(1);
+  if (/^9665[0-9]{8}$/.test(cleaned)) return "+" + cleaned;
+  return cleaned;
+}
 // Each title must be in its own script. The form says so as the writer types,
 // but that is UX — a title reaches the reader, the report header and the invoice
 // description, so the rule is enforced here too. Digits and punctuation are fine
@@ -168,6 +182,7 @@ function validate(row) {
   if (row.tone_ref && row.tone_ref.length > MAX.toneRef) return "بيانات غير صحيحة";
   if (row.treatment_text && row.treatment_text.length > MAX.treatmentText) return "بيانات غير صحيحة";
   if (!row.email || row.email.length > MAX.email || !EMAIL_RE.test(row.email)) return "بريد إلكتروني غير صحيح";
+  if (!row.phone || row.phone.length > MAX.phone || !PHONE_RE.test(row.phone)) return "رقم جوال غير صحيح";
   if (GENRES.indexOf(row.genre) === -1) return "بيانات غير صحيحة";
   if (FILM_TYPES.indexOf(row.film_type) === -1) return "بيانات غير صحيحة";
   // `draft` is a script concept: the treatment form has no such field, so it is
@@ -236,6 +251,7 @@ module.exports = async (req, res) => {
     title_ar: (b.titleAr || "").toString().trim(),
     title_en: (b.titleEn || "").toString().trim(),
     email: (b.email || "").toString().trim(),
+    phone: normalizePhone(b.phone),
     writer: (b.writer || "").toString().trim(),
     writer_level: (b.writerLevel || "").toString().trim(),
     genre: (b.genre || "").toString().trim(),

@@ -213,6 +213,13 @@
               <input type="email" name="email" dir="ltr" style="text-align:right" placeholder="الذي يصلك عليه التقييم">
               <p class="sub-err">البريد الإلكتروني غير صحيح</p>
             </div>
+            <div class="sub-field" data-field="phone">
+              <label>رقم الجوال<span class="req"> *</span></label>
+              <!-- dir=ltr so a number is never reordered, right-aligned so it
+                   still sits on the Arabic edge, like the email above it. -->
+              <input type="tel" name="phone" dir="ltr" style="text-align:right" inputmode="tel" autocomplete="tel" placeholder="05xxxxxxxx">
+              <p class="sub-err">أدخل رقم جوال صحيح</p>
+            </div>
 
             <div class="sub-field sub-field--full" data-field="writerLevel">
               <label>مستوى الكاتب<span class="req"> *</span></label>

@@ -801,7 +801,11 @@
         "<td><strong>" + esc(s.title_ar) + "</strong><br><span class='adm-muted' dir='ltr'>" + esc(s.title_en) + "</span></td>" +
         "<td>" + esc(s.writer) + "</td>" +
         levelCell(s) +
-        "<td dir='ltr'>" + esc(s.email) + "</td>" +
+        "<td dir='ltr'>" + esc(s.email) +
+          // Under the address rather than in a column of its own: three
+          // tables share these headers, so a new <th> would have to land
+          // in all of them in step or the rows shift under wrong labels.
+          (s.phone ? "<br><span class='adm-muted'>" + esc(s.phone) + "</span>" : "") + "</td>" +
         "<td>" + esc(GENRES[ULANG][s.genre] || s.genre) + "</td>" +
         "<td>" + esc(FILM[ULANG][s.film_type] || s.film_type) + "</td>" +
         "<td>" + esc(DRAFT[ULANG][s.draft] || s.draft) + "</td>" +
@@ -1511,7 +1515,11 @@
         "<td><strong>" + esc(s.title_ar) + "</strong><br><span class='adm-muted' dir='ltr'>" + esc(s.title_en) + "</span></td>" +
         "<td>" + esc(s.writer) + "</td>" +
         levelCell(s) +
-        "<td dir='ltr'>" + esc(s.email) + "</td>" +
+        "<td dir='ltr'>" + esc(s.email) +
+          // Under the address rather than in a column of its own: three
+          // tables share these headers, so a new <th> would have to land
+          // in all of them in step or the rows shift under wrong labels.
+          (s.phone ? "<br><span class='adm-muted'>" + esc(s.phone) + "</span>" : "") + "</td>" +
         "<td>" + esc(GENRES[ULANG][s.genre] || s.genre) + "</td>" +
         filmTypeCell(s) +
         "<td>" + esc(DRAFT[ULANG][s.draft] || s.draft) + "</td>" +
@@ -1732,7 +1740,11 @@
       "<td>" + esc(fmtDate(s.created_at)) + "</td>" +
       "<td><strong>" + esc(s.title_ar) + "</strong><br><span class='adm-muted' dir='ltr'>" + esc(s.title_en) + "</span></td>" +
       "<td>" + esc(s.writer) + "</td>" +
-      "<td dir='ltr'>" + esc(s.email) + "</td>" +
+      "<td dir='ltr'>" + esc(s.email) +
+          // Under the address rather than in a column of its own: three
+          // tables share these headers, so a new <th> would have to land
+          // in all of them in step or the rows shift under wrong labels.
+          (s.phone ? "<br><span class='adm-muted'>" + esc(s.phone) + "</span>" : "") + "</td>" +
       "<td>" + esc(fmtDate(r.at)) + "</td>" +
       "<td class='adm-report'></td>";
     // Open the exact report the writer received (hosted, read-only), not the
