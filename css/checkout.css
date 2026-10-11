@@ -67,19 +67,25 @@
 /* A drawn dot rather than a list marker, so its size and colour are ours and
    it holds its place against the long fifth item, which runs to four lines. */
 .ck-sum__list { margin: 20px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; }
+/* The item is a BLOCK with the dot positioned out of flow, not a flex row.
+   As a flex container every child became a flex item, so the <strong> lead on
+   the last point was laid out as its own column and wrapped three lines deep
+   beside the rest of the sentence. Keeping the text in normal flow lets the
+   bold run inline where it belongs. */
 .ck-sum__list li {
-  display: flex;
-  gap: 12px;
+  position: relative;
+  padding-inline-start: 18px;
   font-size: 15.5px;
   line-height: 1.85;
   color: #7a736a;
 }
 .ck-sum__list li::before {
   content: "";
-  flex: 0 0 auto;
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 12px;
   inline-size: 6px;
   block-size: 6px;
-  margin-block-start: 12px;
   border-radius: 50%;
   background: #cd2e07;
 }
