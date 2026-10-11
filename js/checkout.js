@@ -123,12 +123,22 @@
     // has to learn a second shape of payment.
     invoice_id: invoiceId,
     callback_url: location.origin + "/payment-status",
-    // Card only, for now. Adding "applepay" makes the form demand an Apple
-    // Pay label, a country and a validate_merchant_url, and WITHOUT them it
-    // refuses to render anything at all — card fields included. An
-    // unconfigured Apple Pay does not degrade to a card form, it takes the
-    // card form down with it. See the note at the foot of this file.
-    methods: ["creditcard"],
+    // All three apple_pay keys are mandatory the moment "applepay" is listed.
+    // Without them the form refuses to render ANYTHING, card fields included —
+    // an unconfigured Apple Pay does not degrade, it takes the card form with
+    // it. That is what happened the first time this was switched on.
+    methods: ["creditcard", "applepay"],
+    apple_pay: {
+      country: "SA",
+      // What Apple's sheet shows beside the total.
+      label: "Scene One",
+      // Moyasar host the merchant-session handshake themselves, so this needs
+      // no endpoint of ours — which was the reason it stayed off. The domain
+      // side is already done: .well-known/apple-developer-merchantid-domain-
+      // association is in this repo and served, and sceneone.info is
+      // registered under Settings → Apple Pay Domains.
+      validate_merchant_url: "https://api.moyasar.com/v1/applepay/initiate"
+    },
     supported_networks: ["mada", "visa", "mastercard"],
     language: "ar",
     // Off, so the form fills this column instead of sitting in a 360px box.
@@ -163,7 +173,9 @@
   (function paintNetworkMarks(attempt) {
     var row = document.querySelector(".ck-networks");
     if (!row) return;
-    var want = ["Mada", "Visa", "Mastercard"];
+    // Apple Pay's plate is dropped by the cleanup below on any device where
+    // the widget does not offer it, so a non-Apple browser never sees it.
+    var want = ["Mada", "Visa", "Mastercard", "ApplePay"];
     var painted = 0;
     want.forEach(function (name) {
       var source = document.querySelector(".mysr-form .mysr-form-ccIcon" + name);
@@ -183,19 +195,4 @@
     });
   })(0);
 
-  /* ---- Apple Pay, when it is ready ----------------------------------------
-     Moyasar's form wants three more keys before it will show the button:
-
-       apple_pay: {
-         label: "Scene One",            // what the sheet says you are paying
-         country: "SA",
-         validate_merchant_url: "..."   // an endpoint that performs Apple's
-                                        // merchant session handshake
-       }
-
-     The last one is the work. Apple validates the merchant from the server,
-     not the browser, so it needs an endpoint of our own — and this project is
-     at 11 of Vercel Hobby's 12 functions, so that is the final slot. Check
-     first whether Moyasar hosts a validation URL for registered domains; if
-     they do, this is three lines and no function at all. */
 })();
