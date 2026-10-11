@@ -121,8 +121,7 @@ select.ck-input {
   background-position: left 16px center;
 }
 html[dir="ltr"] select.ck-input { background-position: right 16px center; }
-.ck-input:read-only, .ck-input:disabled { background: rgba(0, 0, 0, .03); color: #7a736a; cursor: default; }
-.ck-billing__note { margin: 10px 0 0; font-size: 13px; color: #7a736a; }
+
 
 /* ---- the terms gate ----------------------------------------------------- */
 
@@ -145,12 +144,10 @@ html[dir="ltr"] select.ck-input { background-position: right 16px center; }
 /* ---- the payment widget ------------------------------------------------- */
 
 .ck-form { margin-block-start: 28px; position: relative; }
-/* Until the terms are accepted the widget is visibly out of reach. A writer
-   cannot be allowed to pay before agreeing, and the widget owns its own
-   button, so the gate has to sit on the outside of it. */
-.ck-form[data-locked="true"] { opacity: .45; pointer-events: none; filter: grayscale(.4); }
-.ck-form__hint { margin: 14px 0 0; font-size: 13px; color: #cd2e07; }
-.ck-form[data-locked="false"] ~ .ck-form__hint { display: none; }
+/* The refusal from on_initiating, shown only when the pay button is turned
+   away. The form itself is never dimmed: it is live from the first paint. */
+.ck-form__hint { margin: 14px 0 0; font-size: 14px; font-weight: 600; color: #cd2e07; }
+.ck-form__hint:empty { display: none !important; }
 
 /* Moyasar's own markup. Its form is a fixed 360px box by default; fixed_width
    is turned off in the page so it fills this column, and these rules bring its
