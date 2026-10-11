@@ -11,7 +11,7 @@
     {
       "source": "/handbook",
       "destination": "/booklet",
-      "permanent": false
+      "permanent": true
     }
   ],
   "rewrites": [
