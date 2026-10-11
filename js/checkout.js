@@ -166,9 +166,16 @@
   (function paintNetworkMarks(attempt) {
     var row = document.querySelector(".ck-networks");
     if (!row) return;
-    // Apple Pay's plate is dropped by the cleanup below on any device where
-    // the widget does not offer it, so a non-Apple browser never sees it.
-    var want = ["Mada", "Visa", "Mastercard", "ApplePay"];
+    // Apple Pay is not in this list: Moyasar's stylesheet has no Apple Pay mark
+    // (they render Apple's own apple-pay-button element instead), so that badge
+    // is a plain <img> of Apple's official artwork, handled just below.
+    var ap = document.getElementById("ckApplePayMark");
+    if (ap) ap.addEventListener("error", function () {
+      // No broken-image icon on a payment page if the asset is ever missing.
+      var li = ap.closest("li");
+      if (li) li.remove();
+    });
+    var want = ["Mada", "Visa", "Mastercard"];
     var painted = 0;
     want.forEach(function (name) {
       var source = document.querySelector(".mysr-form .mysr-form-ccIcon" + name);

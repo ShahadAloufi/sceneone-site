@@ -260,17 +260,26 @@ html[dir="ltr"] select.ck-input { background-position: right 16px center; }
    checking these three still render. */
 .ck-networks { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 14px 0 0; padding: 0; list-style: none; }
 .ck-networks li { display: flex; }
+/* No plate of our own. Each brand mark is drawn on its own white card with a
+   grey stroke (fill:#fff; stroke:#7e7e7e inside the SVG), so a bordered box
+   around it put a card inside a card — the doubled outline. These rules only
+   size the artwork; its own 96x64 viewBox supplies the shape. */
 .ck-networks .mysr-form-ccIcon {
-  inline-size: 46px;
-  block-size: 30px;
-  padding: 4px 8px;
-  border: 1px solid rgba(0, 0, 0, .12);
-  border-radius: 6px;
-  background-color: #fff;
+  inline-size: 54px;
+  block-size: 36px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: 50% 50%;
-  box-sizing: content-box;
+}
+
+/* Apple forbids re-drawing the Apple Pay mark, so it ships as their official
+   artwork rather than a span painted from Moyasar (whose stylesheet carries no
+   Apple Pay mark at all). Same box as the card marks; the asset supplies its
+   own card shape. */
+.ck-networks__mark {
+  inline-size: 54px;
+  block-size: 36px;
+  object-fit: contain;
 }
 
 /* ---- states ------------------------------------------------------------- */
