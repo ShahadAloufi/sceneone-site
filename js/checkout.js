@@ -36,12 +36,6 @@
     treatment_short: "تغطية معالجة فيلم قصير",
     treatment_feature: "تغطية معالجة فيلم طويل"
   };
-  var RANGE = {
-    short: "نصوص من 10 إلى 40 صفحة",
-    feature: "نصوص من 80 إلى 120 صفحة",
-    treatment_short: "معالجة حتى 5 صفحات",
-    treatment_feature: "معالجة حتى 15 صفحة"
-  };
   var TURNAROUND = {
     short: "10 إلى 15 يوم عمل",
     feature: "حتى 4 أسابيع",
@@ -82,7 +76,6 @@
   el("ckAmount").textContent = riyals(amount);
   el("ckOrderAmt").textContent = total;
   el("ckTotal").textContent = total;
-  if (RANGE[filmType]) el("ckRange").textContent = RANGE[filmType];
   if (TURNAROUND[filmType]) el("ckTurnaround").textContent = TURNAROUND[filmType];
   // The page count stays as a plain figure under the product name; the
   // "N صفحة × 10 ريال" arithmetic is gone, as it is from the invoice line.

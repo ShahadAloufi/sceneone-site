@@ -62,11 +62,38 @@
 .ck-sum__price { margin: 18px 0 0; display: flex; align-items: baseline; gap: 10px; }
 .ck-sum__price b { font-family: var(--font-head); font-size: clamp(42px, 4.6vw, 60px); font-weight: 700; line-height: 1; color: #000; }
 .ck-sum__price span { font-size: 22px; color: #7a736a; }
-.ck-sum__blurb { margin: 36px 0 0; font-size: 17px; line-height: 1.95; color: #7a736a; }
+.ck-sum__q { margin: 36px 0 0; font-family: var(--font-head); font-size: 20px; font-weight: 700; color: #000; }
 
-.ck-sum__list { margin: 40px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 20px; }
-.ck-sum__list li { display: flex; align-items: center; gap: 14px; font-size: 16px; color: #7a736a; }
-.ck-sum__list svg { inline-size: 20px; block-size: 20px; flex: none; }
+/* A drawn dot rather than a list marker, so its size and colour are ours and
+   it holds its place against the long fifth item, which runs to four lines. */
+.ck-sum__list { margin: 20px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.ck-sum__list li {
+  display: flex;
+  gap: 12px;
+  font-size: 15.5px;
+  line-height: 1.85;
+  color: #7a736a;
+}
+.ck-sum__list li::before {
+  content: "";
+  flex: 0 0 auto;
+  inline-size: 6px;
+  block-size: 6px;
+  margin-block-start: 12px;
+  border-radius: 50%;
+  background: #cd2e07;
+}
+.ck-sum__list strong { font-weight: 700; color: #2a2622; }
+
+.ck-sum__dur {
+  margin: 28px 0 0;
+  padding-block-start: 20px;
+  border-block-start: 1px solid rgba(0, 0, 0, .1);
+  font-size: 16px;
+  color: #7a736a;
+}
+.ck-sum__dur b { font-family: var(--font-head); font-weight: 700; color: #000; }
+
 .ck-safe { margin: 40px 0 0; display: flex; align-items: center; gap: 8px; font-size: 13px; color: #7a736a; }
 @media (min-width: 1000px) { .ck-safe { margin-block-start: auto; padding-block-start: 40px; } }
 .ck-safe svg { inline-size: 14px; block-size: 14px; flex: none; }
