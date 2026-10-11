@@ -30,5 +30,5 @@ window.SCENEONE_SUPABASE = {
    pk_test_… puts the form in sandbox mode and takes the test cards;
    pk_live_… takes real money. Swapping this one line swaps the whole page. */
 window.SCENEONE_MOYASAR = {
-  publishableKey: "PASTE_MOYASAR_PUBLISHABLE_KEY_HERE"
+  publishableKey: "pk_live_RXt3BKt55CNtG8E4pVgTJ4UWHCbE6BYUL6AVwfnt"
 };
