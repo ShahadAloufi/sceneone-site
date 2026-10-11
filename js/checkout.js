@@ -113,10 +113,31 @@
     // has to learn a second shape of payment.
     invoice_id: invoiceId,
     callback_url: location.origin + "/payment-status",
-    methods: ["creditcard", "applepay"],
+    // Card only, for now. Adding "applepay" makes the form demand an Apple Pay
+    // label, a country and a validate_merchant_url, and WITHOUT them it
+    // refuses to render anything at all — card fields included. An
+    // unconfigured Apple Pay does not degrade to a card form, it takes the
+    // card form down with it. See the note at the foot of this file.
+    methods: ["creditcard"],
     supported_networks: ["mada", "visa", "mastercard"],
     language: "ar",
     // Off, so the form fills this column instead of sitting in a 360px box.
     fixed_width: false
   });
+
+  /* ---- Apple Pay, when it is ready ----------------------------------------
+     Moyasar's form wants three more keys before it will show the button:
+
+       apple_pay: {
+         label: "Scene One",            // what the sheet says you are paying
+         country: "SA",
+         validate_merchant_url: "..."   // an endpoint that performs Apple's
+                                        // merchant session handshake
+       }
+
+     The last one is the work. Apple validates the merchant from the server,
+     not the browser, so it needs an endpoint of our own — and this project is
+     at 11 of Vercel Hobby's 12 functions, so that is the final slot. Check
+     first whether Moyasar hosts a validation URL for registered domains; if
+     they do, this is three lines and no function at all. */
 })();
