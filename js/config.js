@@ -21,3 +21,14 @@ window.SCENEONE_SUPABASE = {
   // `scripts` on purpose: staff-only on read, never visible to readers.
   cardBucket: "member-cards"
 };
+
+/* Moyasar's PUBLISHABLE key, used by the checkout page to mount the payment
+   form. Publishable by design, exactly like the anon key above: it can start a
+   payment and nothing else. The SECRET key stays in server env vars, where it
+   creates invoices and reads payments back.
+
+   pk_test_… puts the form in sandbox mode and takes the test cards;
+   pk_live_… takes real money. Swapping this one line swaps the whole page. */
+window.SCENEONE_MOYASAR = {
+  publishableKey: "PASTE_MOYASAR_PUBLISHABLE_KEY_HERE"
+};

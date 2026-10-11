@@ -1,0 +1,159 @@
+/* ============================================================================
+   CHECKOUT — /checkout, the page a writer lands on after "إرسال النص والدفع".
+
+   Built to the supplied design, with one deliberate difference: the card
+   fields are NOT ours. Moyasar's form library renders them, and the card
+   number never touches this page's JavaScript or our server. Their own docs
+   are explicit: "you are not allowed to post user details to your own server".
+   Hand-rolling the inputs the mockup draws would move this site from the
+   lightest PCI scope to the heaviest, to gain nothing a writer can see.
+
+   So the page owns everything around the payment widget — the summary rail,
+   the headings, the order total, the terms gate — and the widget owns the
+   card fields and the pay button. The rules at the foot reach into Moyasar's
+   own markup to make its box sit in this design rather than beside it.
+
+   Light, like the rest of the site. The design file defaults to its dark
+   variant and ships both; a light submission form handing off to a dark
+   checkout is a seam in the one flow that must feel safest.
+   ========================================================================= */
+
+.ck {
+  min-block-size: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  background: var(--lx-cream, #f9f4ef);
+  color: #2a2622;
+}
+@media (min-width: 1000px) { .ck { grid-template-columns: 560px minmax(0, 1fr); } }
+
+/* ---- the summary rail --------------------------------------------------- */
+
+.ck-sum {
+  box-sizing: border-box;
+  padding: clamp(32px, 4vw, 48px) clamp(24px, 4vw, 56px) 40px;
+  background: #fff;
+  border-block-end: 1px solid rgba(0, 0, 0, .1);
+  display: flex;
+  flex-direction: column;
+}
+@media (min-width: 1000px) {
+  .ck-sum { border-block-end: 0; border-inline-end: 1px solid rgba(0, 0, 0, .1); }
+}
+.ck-sum__top { display: flex; align-items: center; justify-content: space-between; }
+.ck-brand { display: flex; align-items: center; gap: 12px; }
+.ck-brand img { block-size: 34px; inline-size: auto; }
+.ck-brand span { font-family: var(--font-head); font-size: 19px; font-weight: 700; color: #000; }
+
+.ck-sum__tag {
+  align-self: flex-start;
+  margin-block-start: clamp(32px, 6vw, 72px);
+  padding: 9px 16px;
+  border: 1.5px solid #000;
+  border-radius: 8px;
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 700;
+  color: #000;
+  max-inline-size: 100%;
+  overflow-wrap: anywhere;
+}
+.ck-sum__h { margin: 32px 0 0; font-family: var(--font-head); font-size: clamp(30px, 3.4vw, 44px); font-weight: 700; line-height: 1.35; color: #000; }
+.ck-sum__price { margin: 18px 0 0; display: flex; align-items: baseline; gap: 10px; }
+.ck-sum__price b { font-family: var(--font-head); font-size: clamp(42px, 4.6vw, 60px); font-weight: 700; line-height: 1; color: #000; }
+.ck-sum__price span { font-size: 22px; color: #7a736a; }
+.ck-sum__rate { margin: 10px 0 0; font-size: 14px; color: #7a736a; }
+.ck-sum__rate:empty { display: none; }
+.ck-sum__blurb { margin: 36px 0 0; font-size: 17px; line-height: 1.95; color: #7a736a; }
+
+.ck-sum__list { margin: 40px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 20px; }
+.ck-sum__list li { display: flex; align-items: center; gap: 14px; font-size: 16px; color: #7a736a; }
+.ck-sum__list svg { inline-size: 20px; block-size: 20px; flex: none; }
+.ck-safe { margin: 40px 0 0; display: flex; align-items: center; gap: 8px; font-size: 13px; color: #7a736a; }
+@media (min-width: 1000px) { .ck-safe { margin-block-start: auto; padding-block-start: 40px; } }
+.ck-safe svg { inline-size: 14px; block-size: 14px; flex: none; }
+
+/* ---- the payment column ------------------------------------------------- */
+
+.ck-pay { box-sizing: border-box; padding: clamp(32px, 5vw, 64px) clamp(20px, 4vw, 40px) 56px; display: flex; justify-content: center; }
+.ck-pay__in { inline-size: 100%; max-inline-size: 580px; }
+.ck-eyebrow { margin: 0 0 6px; font-family: var(--font-head); font-size: 13px; font-weight: 700; color: #cd2e07; }
+.ck-h { margin: 0 0 28px; font-family: var(--font-head); font-size: clamp(24px, 2.6vw, 28px); font-weight: 700; color: #000; }
+
+.ck-order { padding: 24px 22px; border-radius: 12px; background: #fff; border: 1px solid rgba(0, 0, 0, .08); }
+.ck-order__row { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
+.ck-order__row p { margin: 0; }
+.ck-order__name { font-size: 16px; font-weight: 600; color: #2a2622; }
+.ck-order__meta { margin-block-start: 4px !important; font-size: 13px; color: #7a736a; }
+.ck-order__amt { font-size: 17px; font-weight: 600; color: #2a2622; white-space: nowrap; }
+.ck-order__rule { block-size: 1px; background: rgba(0, 0, 0, .1); margin: 20px 0; }
+.ck-order__total { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.ck-order__total span:first-child { font-family: var(--font-head); font-size: 17px; font-weight: 700; color: #000; }
+.ck-order__total span:last-child { font-family: var(--font-head); font-size: 26px; font-weight: 700; color: #000; white-space: nowrap; }
+
+/* ---- the terms gate ----------------------------------------------------- */
+
+.ck-terms { margin-block-start: 28px; display: flex; gap: 14px; align-items: flex-start; cursor: pointer; }
+.ck-terms input { position: absolute; opacity: 0; pointer-events: none; }
+.ck-terms__box {
+  inline-size: 22px; block-size: 22px; flex: none; box-sizing: border-box;
+  border: 1.5px solid rgba(0, 0, 0, .35); border-radius: 6px; margin-block-start: 3px; position: relative;
+  transition: background-color .15s ease, border-color .15s ease;
+}
+.ck-terms input:checked ~ .ck-terms__box { background: #cd2e07; border-color: #cd2e07; }
+.ck-terms input:checked ~ .ck-terms__box::after {
+  content: ""; position: absolute; inset-inline-start: 7px; inset-block-start: 3px;
+  inline-size: 5px; block-size: 10px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg);
+}
+.ck-terms input:focus-visible ~ .ck-terms__box { outline: 2px solid #cd2e07; outline-offset: 2px; }
+.ck-terms__text { font-size: 14px; line-height: 1.85; color: #7a736a; }
+.ck-terms__text a { color: #2a2622; text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---- the payment widget ------------------------------------------------- */
+
+.ck-form { margin-block-start: 28px; position: relative; }
+/* Until the terms are accepted the widget is visibly out of reach. A writer
+   cannot be allowed to pay before agreeing, and the widget owns its own
+   button, so the gate has to sit on the outside of it. */
+.ck-form[data-locked="true"] { opacity: .45; pointer-events: none; filter: grayscale(.4); }
+.ck-form__hint { margin: 14px 0 0; font-size: 13px; color: #cd2e07; }
+.ck-form[data-locked="false"] ~ .ck-form__hint { display: none; }
+
+/* Moyasar's own markup. Its form is a fixed 360px box by default; fixed_width
+   is turned off in the page so it fills this column, and these rules bring its
+   controls to the same height, radius and border as the rest of the site. */
+.ck-form .mysr-form { inline-size: 100% !important; max-inline-size: none !important; }
+.ck-form .mysr-form input,
+.ck-form .mysr-form select {
+  min-block-size: 56px !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(0, 0, 0, .14) !important;
+  background: #fff !important;
+  font-family: var(--font-body), system-ui, sans-serif !important;
+  font-size: 16px !important;
+  color: #000 !important;
+}
+.ck-form .mysr-form input:focus,
+.ck-form .mysr-form select:focus { border-color: #cd2e07 !important; box-shadow: 0 0 0 3px rgba(205, 46, 7, .12) !important; outline: none !important; }
+.ck-form .mysr-form button[type="submit"],
+.ck-form .mysr-form .mysr-pay-button {
+  min-block-size: 60px !important;
+  border-radius: 10px !important;
+  background: #cd2e07 !important;
+  color: #fff !important;
+  font-family: var(--font-head), system-ui, sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  border: 0 !important;
+}
+.ck-form .mysr-form button[type="submit"]:hover { background: #b32806 !important; }
+
+.ck-networks { display: flex; flex-wrap: wrap; gap: 8px; margin-block-start: 14px; }
+.ck-networks span { padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(0, 0, 0, .14); font-size: 12px; font-weight: 600; color: #7a736a; }
+
+/* ---- states ------------------------------------------------------------- */
+
+.ck-state { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; min-block-size: 60vh; padding: 40px 24px; text-align: center; }
+.ck-state h1 { margin: 0; font-family: var(--font-head); font-size: 26px; font-weight: 700; color: #000; }
+.ck-state p { margin: 0; font-size: 16px; line-height: 1.9; color: #7a736a; max-inline-size: 46ch; }
+.ck-state a { margin-block-start: 10px; display: inline-flex; align-items: center; min-block-size: 52px; padding-inline: 34px; border-radius: 999px; background: #000; color: #f9f4ef; font-family: var(--font-head); font-weight: 700; }

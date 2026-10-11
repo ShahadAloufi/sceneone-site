@@ -464,9 +464,22 @@ module.exports = async (req, res) => {
     console.error("invoice patch error:", err);
   }
 
+  // Our own checkout page rather than Moyasar's hosted one. It pays the SAME
+  // invoice — Moyasar's form takes an invoice_id — so the webhook still matches
+  // on payment_invoice_id and nothing downstream changes.
+  //
+  // Everything here is display copy; the amount is fixed on the invoice, and
+  // Moyasar refuses a form whose amount disagrees with it, so a tampered query
+  // string fails at the gateway rather than charging the wrong figure.
+  const checkoutUrl = SITE_URL + "/checkout?i=" + encodeURIComponent(payment.id) +
+    "&a=" + encodeURIComponent(payment.amount) +
+    "&f=" + encodeURIComponent(row.film_type) +
+    "&t=" + encodeURIComponent((row.title_ar || "").slice(0, 80)) +
+    (row.pages ? "&p=" + encodeURIComponent(row.pages) : "");
+
   // The browser redirects to checkout straight away; this is the fallback for a
   // writer who abandons that page. Non-blocking — the invoice already exists.
-  await sendPaymentPrompt(row, payment.url);
+  await sendPaymentPrompt(row, checkoutUrl);
 
-  return res.status(201).json({ ok: true, paymentUrl: payment.url });
+  return res.status(201).json({ ok: true, paymentUrl: checkoutUrl });
 };
