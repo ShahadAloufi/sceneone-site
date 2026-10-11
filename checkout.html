@@ -68,6 +68,27 @@
       <p class="ck-eyebrow">الدفع</p>
       <h2 class="ck-h">أكمل طلبك</h2>
 
+      <!-- Billing address. Not card data, so these are ours rather than
+           Moyasar's — but they are still never posted to our own server: they
+           ride to Moyasar as metadata on the payment. -->
+      <p class="ck-label">عنوان الفاتورة</p>
+      <div class="ck-billing">
+        <input class="ck-input" type="text" id="ckCity" name="city" autocomplete="address-level2" placeholder="المدينة" maxlength="60">
+        <select class="ck-input" id="ckCountry" name="country" autocomplete="country-name">
+          <option value="SA" selected>المملكة العربية السعودية</option>
+          <option value="AE">الإمارات العربية المتحدة</option>
+          <option value="KW">الكويت</option>
+          <option value="QA">قطر</option>
+          <option value="BH">البحرين</option>
+          <option value="OM">عُمان</option>
+          <option value="EG">مصر</option>
+          <option value="JO">الأردن</option>
+          <option value="LB">لبنان</option>
+          <option value="OTHER">دولة أخرى</option>
+        </select>
+      </div>
+      <p class="ck-billing__note" id="ckBillingNote" hidden>أُرفق العنوان بعملية الدفع. لتغييره، حدّث الصفحة.</p>
+
       <div class="ck-order">
         <div class="ck-order__row">
           <div>
@@ -91,7 +112,7 @@
 
       <!-- Moyasar mounts the card fields and the Apple Pay button in here. -->
       <div class="ck-form" id="ckForm" data-locked="true"><div class="mysr-form"></div></div>
-      <p class="ck-form__hint" id="ckHint">وافق على الشروط لتتمكن من إتمام الدفع.</p>
+      <p class="ck-form__hint" id="ckHint">أدخل المدينة ووافق على الشروط لتتمكن من إتمام الدفع.</p>
 
       <div class="ck-networks">
         <span>مدى</span><span>Visa</span><span>Mastercard</span>

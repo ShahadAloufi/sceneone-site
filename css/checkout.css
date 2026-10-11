@@ -89,6 +89,41 @@
 .ck-order__total span:first-child { font-family: var(--font-head); font-size: 17px; font-weight: 700; color: #000; }
 .ck-order__total span:last-child { font-family: var(--font-head); font-size: 26px; font-weight: 700; color: #000; white-space: nowrap; }
 
+/* ---- billing address ---------------------------------------------------- */
+/* Ours, not Moyasar's: a city is not card data. It still never reaches our
+   server — it travels to Moyasar as metadata on the payment. */
+
+.ck-label { margin: 28px 0 12px; font-family: var(--font-head); font-size: 15px; font-weight: 600; color: #2a2622; }
+.ck-billing { display: grid; gap: 14px; grid-template-columns: 1fr; }
+@media (min-width: 560px) { .ck-billing { grid-template-columns: 1fr 1fr; } }
+.ck-input {
+  inline-size: 100%;
+  box-sizing: border-box;
+  min-block-size: 56px;
+  padding-inline: 18px;
+  border: 1px solid rgba(0, 0, 0, .14);
+  border-radius: 10px;
+  background: #fff;
+  color: #000;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 16px;
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+.ck-input::placeholder { color: #a39c93; }
+.ck-input:focus { outline: none; border-color: #cd2e07; box-shadow: 0 0 0 3px rgba(205, 46, 7, .12); }
+select.ck-input {
+  appearance: none;
+  padding-inline-end: 44px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a39c93' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 16px;
+  background-position: left 16px center;
+}
+html[dir="ltr"] select.ck-input { background-position: right 16px center; }
+.ck-input:read-only, .ck-input:disabled { background: rgba(0, 0, 0, .03); color: #7a736a; cursor: default; }
+.ck-billing__note { margin: 10px 0 0; font-size: 13px; color: #7a736a; }
+
 /* ---- the terms gate ----------------------------------------------------- */
 
 .ck-terms { margin-block-start: 28px; display: flex; gap: 14px; align-items: flex-start; cursor: pointer; }

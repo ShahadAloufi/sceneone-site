@@ -89,37 +89,73 @@
   if (pages > 0) el("ckOrderMeta").textContent = pages + " صفحة";
   document.title = product + " | Scene One";
 
-  // The terms gate. The widget carries its own pay button, so the only way to
-  // hold the writer back is to put the gate outside it.
+  /* ---- the gate -----------------------------------------------------------
+     Moyasar's form owns its own pay button, so the only way to hold a writer
+     back is from outside it. Two things must be true before it mounts: the
+     terms accepted, and a billing city given.
+
+     Mounting LATE rather than locking a mounted form is deliberate. Moyasar
+     fixes a payment's metadata when the form initialises, so the city has to
+     be known by then — initialising on load would send an empty one. The cost
+     is that the card fields appear once the two above are done rather than
+     sitting there greyed out, which is also the clearer instruction. */
   var form = el("ckForm");
   var agree = el("ckAgree");
-  agree.addEventListener("change", function () {
-    form.setAttribute("data-locked", agree.checked ? "false" : "true");
-    el("ckHint").style.display = agree.checked ? "none" : "";
-  });
+  var city = el("ckCity");
+  var country = el("ckCountry");
+  var mounted = false;
 
-  Moyasar.init({
-    element: ".mysr-form",
-    amount: amount,
-    currency: "SAR",
-    description: product + (titleAr ? "، " + titleAr : ""),
-    publishable_api_key: CFG.publishableKey,
-    // Pays the invoice the server already created, so the webhook keeps
-    // matching on invoice_id exactly as it does today and nothing downstream
-    // has to learn a second shape of payment.
-    invoice_id: invoiceId,
-    callback_url: location.origin + "/payment-status",
-    // Card only, for now. Adding "applepay" makes the form demand an Apple Pay
-    // label, a country and a validate_merchant_url, and WITHOUT them it
-    // refuses to render anything at all — card fields included. An
-    // unconfigured Apple Pay does not degrade to a card form, it takes the
-    // card form down with it. See the note at the foot of this file.
-    methods: ["creditcard"],
-    supported_networks: ["mada", "visa", "mastercard"],
-    language: "ar",
-    // Off, so the form fills this column instead of sitting in a 360px box.
-    fixed_width: false
-  });
+  function ready() { return agree.checked && city.value.trim().length > 0; }
+
+  function mount() {
+    if (mounted) return;
+    mounted = true;
+    Moyasar.init({
+      element: ".mysr-form",
+      amount: amount,
+      currency: "SAR",
+      description: product + (titleAr ? "، " + titleAr : ""),
+      publishable_api_key: CFG.publishableKey,
+      // Pays the invoice the server already created, so the webhook keeps
+      // matching on invoice_id exactly as it does today and nothing downstream
+      // has to learn a second shape of payment.
+      invoice_id: invoiceId,
+      callback_url: location.origin + "/payment-status",
+      // Where the billing address ends up: on the payment in Moyasar's
+      // dashboard, beside the charge it belongs to. It is never posted to our
+      // own server, and nothing here stores it.
+      metadata: {
+        billing_city: city.value.trim().slice(0, 60),
+        billing_country: country.value
+      },
+      // Card only, for now. Adding "applepay" makes the form demand an Apple
+      // Pay label, a country and a validate_merchant_url, and WITHOUT them it
+      // refuses to render anything at all — card fields included. An
+      // unconfigured Apple Pay does not degrade to a card form, it takes the
+      // card form down with it. See the note at the foot of this file.
+      methods: ["creditcard"],
+      supported_networks: ["mada", "visa", "mastercard"],
+      language: "ar",
+      // Off, so the form fills this column instead of sitting in a 360px box.
+      fixed_width: false
+    });
+    // Moyasar has the address now and will not re-read it, so the fields are
+    // closed rather than left editable and quietly ignored. The note says so,
+    // and says how to change it, instead of leaving a writer to wonder.
+    city.readOnly = true;
+    country.disabled = true;
+    el("ckBillingNote").hidden = false;
+  }
+
+  function sync() {
+    var ok = ready();
+    form.setAttribute("data-locked", ok ? "false" : "true");
+    el("ckHint").style.display = ok ? "none" : "";
+    if (ok) mount();
+  }
+  agree.addEventListener("change", sync);
+  city.addEventListener("input", sync);
+  sync();
 
   /* ---- Apple Pay, when it is ready ----------------------------------------
      Moyasar's form wants three more keys before it will show the button:
