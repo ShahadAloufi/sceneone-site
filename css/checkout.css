@@ -153,24 +153,46 @@ html[dir="ltr"] select.ck-input { background-position: right 16px center; }
 .ck-form__hint:empty { display: none !important; }
 
 /* Moyasar's own markup. Its form is a fixed 360px box by default; fixed_width
-   is turned off in the page so it fills this column, and these rules bring its
-   controls to the same height, radius and border as the rest of the site. */
+   is turned off in the page so it fills this column.
+
+   Their card block is deliberately ONE box: the number on top, the expiry and
+   CVC sharing the row beneath, with the touching corners squared off by their
+   own *Radius0 classes. A blanket `border-radius: 10px !important` beat those
+   classes and left three fully rounded boxes colliding, which is what the
+   seams were. The radius is set at normal weight here and their corner classes
+   are re-asserted after it, so the group reads as one control again. */
 .ck-form .mysr-form { inline-size: 100% !important; max-inline-size: none !important; }
-.ck-form .mysr-form input,
-.ck-form .mysr-form select {
-  min-block-size: 56px !important;
-  border-radius: 10px !important;
-  border: 1px solid rgba(0, 0, 0, .14) !important;
-  background: #fff !important;
-  font-family: var(--font-body), system-ui, sans-serif !important;
-  font-size: 16px !important;
-  color: #000 !important;
+.ck-form .mysr-form .mysr-form-input {
+  min-block-size: 56px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, .14);
+  background: #fff;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 16px;
+  color: #000;
 }
-.ck-form .mysr-form input:focus,
-.ck-form .mysr-form select:focus { border-color: #cd2e07 !important; box-shadow: 0 0 0 3px rgba(205, 46, 7, .12) !important; outline: none !important; }
-.ck-form .mysr-form button[type="submit"],
-.ck-form .mysr-form .mysr-pay-button {
+/* Physical, not logical: these are Moyasar's own class names and they already
+   account for the form's direction. */
+.ck-form .mysr-form .mysr-form-topLeftRadius0 { border-top-left-radius: 0; }
+.ck-form .mysr-form .mysr-form-topRightRadius0 { border-top-right-radius: 0; }
+.ck-form .mysr-form .mysr-form-bottomLeftRadius0 { border-bottom-left-radius: 0; }
+.ck-form .mysr-form .mysr-form-bottomRightRadius0 { border-bottom-right-radius: 0; }
+.ck-form .mysr-form .mysr-form-input:focus {
+  border-color: #cd2e07;
+  box-shadow: 0 0 0 3px rgba(205, 46, 7, .12);
+  outline: none;
+  /* Above its neighbours, so the ring is not clipped by the field joined to it. */
+  position: relative;
+  z-index: 1;
+}
+/* The name field and the card block are separate groups and were flush. */
+.ck-form .mysr-form .mysr-form-inputGroup + .mysr-form-inputGroup { margin-block-start: 18px; }
+
+/* The pay button is .mysr-form-button, not a [type=submit] — the old selector
+   missed it entirely, which is why it stayed Moyasar's blue. */
+.ck-form .mysr-form .mysr-form-button {
   min-block-size: 60px !important;
+  margin-block-start: 24px !important;
   border-radius: 10px !important;
   background: #cd2e07 !important;
   color: #fff !important;
@@ -179,7 +201,8 @@ html[dir="ltr"] select.ck-input { background-position: right 16px center; }
   font-weight: 700 !important;
   border: 0 !important;
 }
-.ck-form .mysr-form button[type="submit"]:hover { background: #b32806 !important; }
+.ck-form .mysr-form .mysr-form-button:hover { background: #b32806 !important; }
+.ck-form .mysr-form .mysr-form-footer { margin-block-start: 16px; }
 
 .ck-networks { display: flex; flex-wrap: wrap; gap: 8px; margin-block-start: 14px; }
 .ck-networks span { padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(0, 0, 0, .14); font-size: 12px; font-weight: 600; color: #7a736a; }
