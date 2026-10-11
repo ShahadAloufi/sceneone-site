@@ -137,16 +137,15 @@
     // Off, so the form fills this column instead of sitting in a 360px box.
     fixed_width: false,
     on_initiating: async function () {
-      if (!city.value.trim()) return refuse("أدخل المدينة في عنوان الفاتورة.", city);
       if (!agree.checked) return refuse("وافق على الشروط لإتمام الدفع.", agree);
       hint.style.display = "none";
       // Read now, not at init: this is the only moment the fields are final.
-      return {
-        metadata: {
-          billing_city: city.value.trim().slice(0, 60),
-          billing_country: country.value
-        }
-      };
+      // The city is optional, so an empty one is left out of the metadata
+      // rather than recorded against the payment as an empty string.
+      var meta = { billing_country: country.value };
+      var cityValue = city.value.trim();
+      if (cityValue) { meta.billing_city = cityValue.slice(0, 60); }
+      return { metadata: meta };
     }
   });
 
