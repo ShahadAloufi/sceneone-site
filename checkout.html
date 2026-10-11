@@ -113,9 +113,16 @@
       <div class="ck-form" id="ckForm"><div class="mysr-form"></div></div>
       <p class="ck-form__hint" id="ckHint" role="alert"></p>
 
-      <div class="ck-networks">
-        <span>مدى</span><span>Visa</span><span>Mastercard</span>
-      </div>
+      <!-- The real marks, not our lettering. Moyasar's stylesheet is already
+           on this page and carries all three as base64 SVG on these classes,
+           so the official artwork comes free and stays in step with the
+           widget. Decorative: the accepted networks are already named to a
+           screen reader by the line beneath. -->
+      <ul class="ck-networks" aria-label="بطاقات مقبولة">
+        <li><span class="mysr-form-ccIcon mysr-form-ccIconMada" role="img" aria-label="مدى"></span></li>
+        <li><span class="mysr-form-ccIcon mysr-form-ccIconVisa" role="img" aria-label="Visa"></span></li>
+        <li><span class="mysr-form-ccIcon mysr-form-ccIconMastercard" role="img" aria-label="Mastercard"></span></li>
+      </ul>
     </div>
   </main>
 

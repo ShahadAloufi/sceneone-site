@@ -204,8 +204,27 @@ html[dir="ltr"] select.ck-input { background-position: right 16px center; }
 .ck-form .mysr-form .mysr-form-button:hover { background: #b32806 !important; }
 .ck-form .mysr-form .mysr-form-footer { margin-block-start: 16px; }
 
-.ck-networks { display: flex; flex-wrap: wrap; gap: 8px; margin-block-start: 14px; }
-.ck-networks span { padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(0, 0, 0, .14); font-size: 12px; font-weight: 600; color: #7a736a; }
+/* The accepted-card row. The marks come from Moyasar's own classes (see the
+   markup); this only sets the plates they sit on, at a size that reads at a
+   glance without shouting over the pay button above them.
+
+   Those class names are Moyasar's internals, so they are only as stable as
+   the CDN version pinned in checkout.html. Bumping that version means
+   checking these three still render. */
+.ck-networks { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 14px 0 0; padding: 0; list-style: none; }
+.ck-networks li { display: flex; }
+.ck-networks .mysr-form-ccIcon {
+  inline-size: 46px;
+  block-size: 30px;
+  padding: 4px 8px;
+  border: 1px solid rgba(0, 0, 0, .12);
+  border-radius: 6px;
+  background-color: #fff;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  box-sizing: content-box;
+}
 
 /* ---- states ------------------------------------------------------------- */
 
