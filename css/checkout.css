@@ -78,7 +78,10 @@
 .ck-eyebrow { margin: 0 0 6px; font-family: var(--font-head); font-size: 13px; font-weight: 700; color: #cd2e07; }
 .ck-h { margin: 0 0 28px; font-family: var(--font-head); font-size: clamp(24px, 2.6vw, 28px); font-weight: 700; color: #000; }
 
-.ck-order { padding: 24px 22px; border-radius: 12px; background: #fff; border: 1px solid rgba(0, 0, 0, .08); }
+/* 28px is the column's rhythm — the gap above the billing label, above the
+   terms and above the form. This box was the one block without it, so it sat
+   flush against the address fields. */
+.ck-order { margin-block-start: 28px; padding: 24px 22px; border-radius: 12px; background: #fff; border: 1px solid rgba(0, 0, 0, .08); }
 .ck-order__row { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
 .ck-order__row p { margin: 0; }
 .ck-order__name { font-size: 16px; font-weight: 600; color: #2a2622; }
