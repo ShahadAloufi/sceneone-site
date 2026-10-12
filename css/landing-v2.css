@@ -467,16 +467,23 @@
   -webkit-mask: url('../assets/riyal.svg') no-repeat center / contain;
   mask: url('../assets/riyal.svg') no-repeat center / contain;
 }
-.lx-svc__b { margin: 20px 0 0; font-size: 14px; line-height: 1.9; color: var(--lx-muted); }
+/* The auto BOTTOM margin is what lines the cards up. The slack in a card has
+   to be absorbed in exactly one place; it used to be absorbed under the link,
+   by .lx-svc__foot, which left the link itself floating at whatever height
+   each card's copy happened to end — high on the short treatment blurb, low
+   on the two long ones. Taking the slack here instead drops the link to the
+   foot of the body in every card, so the three line up. */
+.lx-svc__b { margin: 20px 0 auto; font-size: 14px; line-height: 1.9; color: var(--lx-muted); }
 /* The sample-report link lives in the cards now rather than up in THE READ:
    it answers "what do I actually get" where the reader is weighing a price,
    not three sections earlier. Trimmed off .lx-link's 26px top margin, which
    was spacing it from a section's worth of copy; here it only has to clear
    the paragraph above it. */
 .lx-svc__what { margin-block-start: 14px; font-size: 13.5px; }
-/* Pushes the rule + duration + button to the card's foot, so three cards with
-   unequal copy still line their buttons up. */
-.lx-svc__foot { margin-block-start: auto; padding-block-start: 22px; }
+/* No auto margin here any more — .lx-svc__b above has it. Two autos in one
+   column SPLIT the free space between them, which would float the link to the
+   middle of the gap instead of seating it above this block. */
+.lx-svc__foot { padding-block-start: 22px; }
 .lx-svc__dur { padding-block-start: 18px; border-block-start: 1px solid var(--lx-line-soft); font-size: 13px; font-weight: 500; }
 .lx-svc__btn {
   display: flex;
