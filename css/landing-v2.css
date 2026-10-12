@@ -800,10 +800,14 @@
   color: var(--lx-ink);
   margin-bottom: 36px;
 }
+/* No border-radius here on purpose: these were pills, and they now inherit
+   the 8px that .faq-cat already carries, so the filters sit in the same shape
+   language as every button on the page. Their quieter weight stays — body
+   font, muted ink, a hairline border — because a filter should not read as
+   loudly as a CTA beside it. */
 .landing .faq-cat {
   background: transparent;
   border: 1px solid var(--lx-line);
-  border-radius: 999px;          /* the pill shape the services tag uses */
   padding: 10px 20px;
   color: var(--lx-muted);
 }
