@@ -155,9 +155,9 @@
 
       svcEyebrow: "الخدمات", svcH: "من أين تبدأ", svcPill: "أسعار إطلاق مؤقتة",
       svcBtn: "قدّم نصك",
-      svc1T: "ملاحظات على النصوص القصيرة", svc1Meta: "من 10 إلى 40 صفحة", svc1Num: "100 - 400",
+      svc1T: "ملاحظات على النصوص القصيرة", svc1Meta: "للسيناريو من 10 إلى 40 صفحة", svc1Num: "100 - 400",
       svc1B: "تقرير ملاحظات احترافي لفيلمك القصير يحدد موقع نصك بدقة، بملاحظات عملية قابلة للتطبيق مع إمكانية ترشيح النصوص المتميزة إلى جهات في الصناعة.", svc1Dur: "10 إلى 15 يوم عمل",
-      svc2T: "ملاحظات على النصوص الطويلة", svc2Meta: "من 80 إلى 120 صفحة", svc2Num: "800 - 1,200",
+      svc2T: "ملاحظات على النصوص الطويلة", svc2Meta: "للسيناريو من 80 إلى 120 صفحة", svc2Num: "800 - 1,200",
       svc2B: "تقرير ملاحظات احترافي لفيلمك الطويل يحدد موقع نصك بدقة، بملاحظات عملية قابلة للتطبيق مع إمكانية ترشيح النصوص المتميزة إلى جهات في الصناعة.", svc2Dur: "حتى 4 أسابيع",
       svc3T: "ملاحظات على المعالجة", svc3Meta: "قبل أن يصبح سيناريو", svc3Num: "150",
       svc3B: "تقييم مبكر للمعالجة يحدد مدى جاهزيتها للتحول إلى سيناريو مكتمل.", svc3Dur: "7 إلى 12 يومًا",
@@ -649,9 +649,9 @@
 
       svcEyebrow: "Services", svcH: "Where to begin", svcPill: "Introductory pricing",
       svcBtn: "Submit your script",
-      svc1T: "Notes on short scripts", svc1Meta: "10–40 pages", svc1Num: "100 - 400",
+      svc1T: "Notes on short scripts", svc1Meta: "For a screenplay of 10–40 pages", svc1Num: "100 - 400",
       svc1B: "A professional notes report for your short film that gives you a clear assessment of where your screenplay stands, with practical notes you can act on. Outstanding scripts may also be nominated for sharing with industry partners.", svc1Dur: "10–15 working days",
-      svc2T: "Notes on feature scripts", svc2Meta: "80–120 pages", svc2Num: "800 - 1,200",
+      svc2T: "Notes on feature scripts", svc2Meta: "For a screenplay of 80–120 pages", svc2Num: "800 - 1,200",
       svc2B: "A professional notes report for your feature screenplay that gives you a clear assessment of its strengths, development needs and industry readiness, with practical notes you can act on. Outstanding scripts may also be nominated for sharing with industry partners.", svc2Dur: "Up to four weeks",
       svc3T: "Notes on the treatment", svc3Meta: "Before it becomes a screenplay", svc3Num: "150",
       svc3B: "An early assessment of your treatment, focused on how ready it is to become a full screenplay.", svc3Dur: "7–12 working days",
