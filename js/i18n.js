@@ -719,7 +719,7 @@
 
       svcEyebrow: "Services", svcH: "Where to begin", svcPill: "Introductory pricing",
       svcBtn: "Submit your script",
-      svcWhat: "What will I get?",
+      svcWhat: "What will I receive?",
       svcFlag: "Introductory price",
       svcByPages: "The price is set by your script's page count.",
       voxVia1: "Received by email", voxVia2: "Received via Instagram",
