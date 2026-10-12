@@ -121,15 +121,12 @@
 .landing .lang-btn,
 .rd2 .lang-btn,
 .tm2 .lang-btn,
-.sb2 .lang-btn { color: rgba(0, 0, 0, .55); }
+.sb2 .lang-btn { color: var(--lx-ink); }
 .landing .lang-btn:hover,
 .rd2 .lang-btn:hover,
 .tm2 .lang-btn:hover,
 .sb2 .lang-btn:hover { color: var(--lx-black); }
-.landing .lang-btn.active,
-.rd2 .lang-btn.active,
-.tm2 .lang-btn.active,
-.sb2 .lang-btn.active { background: var(--lx-black); color: var(--lx-white); }
+
 /* The pill inverts with everything else: cream on black becomes black on cream. */
 .landing .nav__cta,
 .rd2 .nav__cta,

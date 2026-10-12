@@ -178,8 +178,9 @@ a, button {
   .nav__links a:hover::after { transform: scaleX(1); }
 }
 .nav__end { display: flex; align-items: center; gap: 16px; }
-/* Both languages shown at once; js/i18n.js toggles .active on whichever
-   .lang-btn matches the current language rather than swapping text. */
+/* One language only: js/i18n.js hides whichever .lang-btn matches the current
+   language, so what is left is the one you can switch TO. The wrapper keeps
+   its border and becomes the button's outline. */
 .lang-toggle-group {
   display: inline-flex; align-items: center; gap: 2px;
   border: 1px solid rgba(255,255,255,.35);
@@ -195,11 +196,15 @@ a, button {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: .04em;
-  color: rgba(255,255,255,.6);
+  /* Was .6 while this was one of a pair and the other was filled white: grey
+     read as "not selected". On its own that same grey reads as disabled, so
+     the single button carries the full weight. */
+  color: rgba(255,255,255,.88);
   background: transparent;
 }
+/* Without this the display above would defeat the hidden attribute. */
+.lang-btn[hidden] { display: none; }
 .lang-btn:hover { color: #fff; }
-.lang-btn.active { background: #fff; color: #000; }
 .lang-toggle-group--overlay { align-self: flex-start; margin-top: 28px; }
 
 .menu-btn {
@@ -2872,6 +2877,6 @@ html[dir="ltr"] .overlay__go { transform: scaleX(-1); display: inline-block; }
   border-color: rgba(0, 0, 0, .35);
   padding: 4px;
 }
-.lang-toggle-group--overlay .lang-btn { color: rgba(0, 0, 0, .55); padding: 9px 12px; }
+.lang-toggle-group--overlay .lang-btn { color: var(--lx-ink, #2a2622); padding: 9px 12px; }
 .lang-toggle-group--overlay .lang-btn:hover { color: #000; }
-.lang-toggle-group--overlay .lang-btn.active { background: #000; color: #fff; }
+

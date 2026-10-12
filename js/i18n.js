@@ -1052,10 +1052,21 @@
       el.setAttribute("dir", LANG === "ar" ? "rtl" : "ltr");
     });
 
-    // Both languages are always shown (.lang-btn[data-lang]); mark whichever
-    // matches the current one active rather than swapping button text.
+    // Only the language you are NOT reading is offered: Arabic is the default,
+    // so an Arabic reader sees a single EN button and vice versa. Both buttons
+    // stay in the markup and the current one is hidden, which keeps this a
+    // behaviour change rather than seven files of markup to edit — and means
+    // the pair is still here if the site ever gains a third language.
     document.querySelectorAll(".lang-btn").forEach(function (btn) {
-      btn.classList.toggle("active", btn.getAttribute("data-lang") === LANG);
+      var target = btn.getAttribute("data-lang");
+      var isCurrent = target === LANG;
+      btn.hidden = isCurrent;
+      // The label is two letters, so the control says what it switches TO
+      // only to a sighted reader. Spell it out for a screen reader.
+      btn.setAttribute("aria-label", target === "en" ? "English" : "العربية");
+      // Nothing is "active" any more — there is only ever one button — but the
+      // class is cleared so a stale one cannot leave the old filled styling on.
+      btn.classList.remove("active");
     });
   }
 
