@@ -394,14 +394,22 @@
 .lx-read__axes {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  /* The design spaced these with 18px of padding inside each chip plus a 10px
+     gap. That reads the same BETWEEN chips, but it also indents the first one
+     by 18px, so the row no longer started where the line above it does. The
+     same 46px of air now lives entirely in the column gap, which leaves the
+     first chip flush with the paragraph. Row rhythm is unchanged: the 9px of
+     block padding stays and carries it. */
+  column-gap: 46px;
+  row-gap: 10px;
   margin: 20px 0 0;
   padding: 0;
   max-inline-size: 620px;
   list-style: none;
 }
 .lx-read__axes li {
-  padding: 9px 18px;
+  padding-block: 9px;
+  padding-inline: 0;
   font-size: clamp(13.5px, 1.1vw, 15px);
   font-weight: 400;
   color: var(--lx-ink);
