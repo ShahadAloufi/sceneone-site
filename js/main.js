@@ -125,7 +125,14 @@
       });
     });
 
-    applyFaqFilter("general");
+    /* The opening category comes from the markup — whichever pill ships with
+       .is-active, else the first one. It used to be the hard-coded string
+       "general"; when the categories were rewritten that name stopped
+       existing, so this matched no item, hid all of them and left the list
+       blank. Reading it from the pills means the markup stays the one place
+       the categories are defined. */
+    var firstPill = faqCats.querySelector(".faq-cat.is-active") || pills[0];
+    if (firstPill) applyFaqFilter(firstPill.getAttribute("data-faq-filter"));
   }
 
   document.addEventListener("keydown", function (e) {

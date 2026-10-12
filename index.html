@@ -552,54 +552,275 @@
            list below rather than swapping panels, so they are plain buttons with
            aria-pressed and the list keeps its own semantics. -->
       <div class="faq-cats" id="faqCats">
-        <button type="button" class="faq-cat is-active" data-faq-filter="general" aria-pressed="true" data-i18n="faqCatGeneral">أسئلة عامة</button>
-        <button type="button" class="faq-cat" data-faq-filter="services" aria-pressed="false" data-i18n="faqCatServices">عن الخدمات</button>
-        <button type="button" class="faq-cat" data-faq-filter="pricing" aria-pressed="false" data-i18n="faqCatPricing">عن الأسعار</button>
-        <button type="button" class="faq-cat" data-faq-filter="process" aria-pressed="false" data-i18n="faqCatProcess">عن آلية العمل</button>
+        <button type="button" class="faq-cat is-active" data-faq-filter="about" aria-pressed="true" data-i18n="faqCatAbout">عن الخدمة</button>
+        <button type="button" class="faq-cat" data-faq-filter="receive" aria-pressed="false" data-i18n="faqCatReceive">ما الذي تحصل عليه</button>
+        <button type="button" class="faq-cat" data-faq-filter="submit" aria-pressed="false" data-i18n="faqCatSubmit">تقديم المشروع</button>
+        <button type="button" class="faq-cat" data-faq-filter="reader" aria-pressed="false" data-i18n="faqCatReader">القارئ والمدة</button>
+        <button type="button" class="faq-cat" data-faq-filter="privacy" aria-pressed="false" data-i18n="faqCatPrivacy">الخصوصية والملكية</button>
+        <button type="button" class="faq-cat" data-faq-filter="referrals" aria-pressed="false" data-i18n="faqCatReferrals">التطوير والترشيح</button>
+        <button type="button" class="faq-cat" data-faq-filter="pricing" aria-pressed="false" data-i18n="faqCatPricing">الأسعار والاسترداد</button>
+        <button type="button" class="faq-cat" data-faq-filter="limits" aria-pressed="false" data-i18n="faqCatLimits">ما لا تشمله الخدمة</button>
       </div>
 
       <div class="faq__list" id="faqList">
-        <div class="faq-item" data-faq-cat="general">
+        <div class="faq-item" data-faq-cat="about">
           <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ1">ما هي تغطية النصوص السينمائية؟</span>
+            <span class="faq-item__q" data-i18n="faqQ1">من هم Scene One؟</span>
             <span class="faq-item__sign" aria-hidden="true"></span>
           </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA1">تغطية النصوص السينمائية (Script Coverage) هي تحليل مفصّل يقدّمه قارئ/ناقد مختص لعمل الكاتب. نشأت هذه الخدمة في الاستوديوهات حيث كان يُوظَّف قرّاء لقراءة عدد كبير من السيناريوهات نيابةً عن المنتجين. لكن خدمتنا في التغطية النقدية تختلف عن ذلك؛ فهدفنا الأساسي هو مساعدة الكتّاب على تطوير نصوصهم والوصول بها إلى مرحلة تجعلها جاهزة للإرسال إلى شركاء الصناعة، مع تقييم صريح لما ينجح وما لا ينجح وأسباب واضحة لكل رأي.</p></div></div>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA1">تأسست Scene One بهدف مساعدة كتّاب السيناريو الصاعدين على دخول صناعة الأفلام.</p></div></div>
         </div>
-        <div class="faq-item" data-faq-cat="services">
+        <div class="faq-item" data-faq-cat="about">
           <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ2">ما هي خدمات التغطية التي نقدمها؟</span>
+            <span class="faq-item__q" data-i18n="faqQ2">ماذا أحصل عليه؟</span>
             <span class="faq-item__sign" aria-hidden="true"></span>
           </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA2">نقدّم حاليًا نوعين من الملاحظات النقدية: تغطية النصوص السينمائية، حيث يدوّن الناقد ملاحظات بنّاءة تشمل الفكرة والموضوع (Premise & Theme)، عنصر الجذب (Hook)، المخاطر وتطور الحبكة (Stakes & Plot)، الشخصيات، الحوار (Dialogue)، البنية والإيقاع (Structure & Pace)، قابلية الإنتاج (Producibility)، والعرض العام، مع خاتمة تلخّص أبرز نقاط القوة والجوانب التي تحتاج إلى تحسين. وتغطية المعالجات (Treatments)، حيث يدوّن الناقد ملاحظات تمتد إلى صفحتين تشمل المحتوى، والـ logline، وبنية القصة، وأدوار الشخصيات، واقتراحات لتحسين عرضك التقديمي (Pitch).</p></div></div>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA2">تحصل على تقرير مكتوب ومفصل من قارئ متخصص. يوضح التقرير نقاط قوة السيناريو، والجوانب التي يمكن تطويرها، ويقدم اقتراحات عملية للمسودة التالية.</p></div></div>
         </div>
-        <div class="faq-item" data-faq-cat="general">
+        <div class="faq-item" data-faq-cat="about">
           <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ3">لماذا أحتاج إلى خدمة التغطية (Coverage)؟</span>
+            <span class="faq-item__q" data-i18n="faqQ3">ما اسم هذه الخدمة في صناعة السينما؟</span>
             <span class="faq-item__sign" aria-hidden="true"></span>
           </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA3">من الصعب النظر إلى عملك بموضوعية تامة عندما تكون أنت المؤلف، لذلك توفّر خدمة التغطية نظرة موضوعية من شخص يفهم متطلبات الصناعة. وعند إرسال نصّك إلى استوديو أو وكيل أو منتج، فلن تتمكّن من الاطلاع على ملاحظات القارئ، مما يعني أنك لن تحصل على فرصة لمعالجة نقاط الضعف، أما من خلال هذه الخدمة فستحصل على هذه الفرصة.</p></div></div>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA3">يُعرف هذا النوع من التقارير في صناعة السينما والتلفزيون باسم Script Coverage. ونقدمه في سين ون بوصفه قراءة احترافية متأنية تتضمن ملاحظات عملية تساعد الكاتب على تطوير نصه.</p></div></div>
         </div>
-        <div class="faq-item" data-faq-cat="general">
+        <div class="faq-item" data-faq-cat="about">
           <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ4">من هم Scene One؟</span>
+            <span class="faq-item__q" data-i18n="faqQ4">لمن هذه الخدمة؟</span>
             <span class="faq-item__sign" aria-hidden="true"></span>
           </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA4">تأسست Scene One بهدف مساعدة كتّاب السيناريو الصاعدين على دخول صناعة الأفلام.</p></div></div>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA4">هذه الخدمة مخصصة لكتّاب السيناريو وصنّاع الأفلام في مختلف مراحل العمل، ممن يرغبون في الحصول على نظرة خارجية متخصصة قبل إعادة الكتابة، أو تقديم النص، أو طرح المشروع، أو تطويره بشكل أعمق.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="about">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ5">لماذا أطلب ملاحظات على سيناريوهي؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA5">من الصعب أن ترى عملك بموضوعية كاملة عندما تكون أنت مؤلفه. يساعدك القارئ المتخصص على فهم ما ينجح في النص، وما قد يحتاج إلى توضيح، وأين تضعف القصة، وما التغييرات التي قد تحقق أكبر أثر.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="receive">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ6">ماذا يتناول التقرير؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA6">بحسب نوع الخدمة، قد يتناول التقرير الفكرة والموضوع، وعنصر الجذب، والرهانات والحبكة، والشخصيات، والحوار، والبناء والإيقاع، وقابلية الإنتاج، والعرض العام.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="receive">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ7">هل سأحصل على ملخص لقصتي؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA7">نعم. يتضمن التقرير عرضًا واضحًا لفكرة المشروع وقصته الأساسية، إلى جانب ملاحظات حول نقاط قوته الإبداعية والجوانب التي يمكن تطويرها.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="receive">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ8">هل سيقترح القارئ تغييرات على نصي؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA8">قد يقدم القارئ اقتراحات عملية ويحدد مسارات محتملة لإعادة الكتابة. لكن التقرير لا يتضمن إعادة كتابة السيناريو، ولا يفترض وجود طريقة واحدة صحيحة لتطويره.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="receive">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ9">هل يتضمن التقرير درجة أو تقييمًا نهائيًا؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA9">يركز التقرير أساسًا على ملاحظات واضحة وبنّاءة، بدل اختزال السيناريو في رقم واحد. وعند الاقتضاء، قد تقدم سين ون توصية داخلية أو تحدد مدى ملاءمة المشروع للترشيح.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="submit">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ10">كيف أقدّم سيناريوهي؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA10">اختر الخدمة الأنسب لمشروعك، وأكمل بيانات التقديم، وارفع ملفك، ثم ادفع باستخدام إحدى وسائل الدفع المعتمدة. ستصلك رسالة تأكيد بعد استلام طلبك.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="submit">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ11">ما صيغة الملف التي ينبغي استخدامها؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA11">يرجى تقديم السيناريو بصيغة PDF، ما لم يذكر نموذج التقديم صيغة أخرى. تأكد من أن الملف كامل، وواضح، وجاهز للقراءة.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="submit">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ12">هل يمكنني تقديم معالجة بدل سيناريو كامل؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA12">نعم. تقدم سين ون خدمة منفصلة للمعالجات التي لم تتحول بعد إلى سيناريو مكتمل. وينبغي أن توضح المعالجة القصة، والشخصيات الرئيسية، والمسار الدرامي، والفيلم الذي يتجه المشروع إلى أن يصبحه.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="submit">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ13">ما أعداد الصفحات المقبولة؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA13">نستقبل حاليًا النصوص القصيرة التي تتراوح تقريبًا بين 10 و40 صفحة، ونصوص الأفلام الطويلة التي تتراوح تقريبًا بين 80 و120 صفحة، إضافة إلى المعالجات المقدمة عبر خدمة المعالجة.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="submit">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ14">هل يمكنني تقديم أكثر من مشروع؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA14">نعم. يجب تقديم كل مشروع بشكل منفصل حتى يمكن إسناده ومعالجته وقراءته بصورة مستقلة.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="reader">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ15">من يقرأ سيناريوهي؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA15">يقرأ نصك قارئ متخصص لديه خبرة في كتابة السيناريو، أو صناعة الأفلام، أو تطوير المشاريع، أو مجالات ذات صلة بالصناعة. وقد يختلف القارئ بحسب طبيعة المشروع وتوافر القرّاء.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="reader">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ16">هل يمكنني اختيار القارئ؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA16">تتولى سين ون إسناد النص إلى القارئ المناسب بحسب طبيعة المشروع. وإذا أصبح اختيار القارئ متاحًا، فسيُوضح ذلك بجلاء أثناء التقديم.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="reader">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ17">كم تستغرق العملية؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA17">تستغرق ملاحظات النصوص القصيرة عادةً من 10 إلى 15 يوم عمل. وقد تستغرق ملاحظات نصوص الأفلام الطويلة حتى أربعة أسابيع، بينما تستغرق ملاحظات المعالجات عادةً من 7 إلى 12 يومًا. وتبدأ المدة من لحظة إسناد المشروع إلى أحد القرّاء.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="reader">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ18">كيف سأستلم تقريري؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA18">يُرسل التقرير إلكترونيًا إلى عنوان البريد المرتبط بطلبك.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="reader">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ19">هل يمكنني طرح أسئلة بعد استلام التقرير؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA19">يمكنك التواصل مع سين ون بشأن أي استفسار يتعلق بالخدمة أو التقرير. أما الاستشارات الإضافية أو مناقشة التقرير بشكل موسع فتخضع للخدمة المتاحة، وسيتم توضيح ذلك بشكل منفصل.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="privacy">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ20">هل يبقى سيناريوهي سريًا؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA20">نعم. يُتعامل مع نصك بوصفه مادة سرية، ولا يُشارك إلا مع الأشخاص المخولين بتقديم الخدمة. ولا يُشارك مع الشركاء الإنتاجيين دون موافقتك الكتابية الصريحة.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="privacy">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ21">لمن تعود ملكية سيناريوهي؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA21">تحتفظ بكامل ملكية نصك وجميع حقوق الملكية الفكرية المرتبطة به. ويمنح تقديم العمل سين ون إذنًا محدودًا بالقدر اللازم لقراءته وتخزينه ومعالجته من أجل تقديم الخدمة المطلوبة.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="privacy">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ22">هل يُستخدم سيناريوهي لتدريب أنظمة الذكاء الاصطناعي؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA22">لا. لا تستخدم سين ون النصوص المقدمة لتدريب أنظمة الذكاء الاصطناعي. كما يُمنع القرّاء من إدخال المواد المقدمة في أدوات الذكاء الاصطناعي دون موافقة كتابية مسبقة.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="privacy">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ23">هل ينبغي تسجيل النص قبل تقديمه؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA23">توصي سين ون بالنظر في تسجيل النص لدى الهيئة السعودية للملكية الفكرية أو الجهة المناسبة لتسجيل الحقوق قبل مشاركته. ولا يغني التسجيل عن الاحتفاظ بسجلات واضحة أو طلب المشورة القانونية المناسبة.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="referrals">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ24">هل تشمل الخدمة إعادة الكتابة أو التحرير؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA24">لا. تقدم الخدمة قراءة وملاحظات تطويرية، ولا تشمل إعادة كتابة السيناريو، أو التحرير التفصيلي، أو التدقيق اللغوي، أو تنسيق النص، أو ضمان قبوله من منتج، أو استوديو، أو مهرجان، أو مسابقة.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="referrals">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ25">هل تساعدني سين ون في إعادة كتابة النص؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA25">قد تساعدك الملاحظات على تحديد ما يحتاج إلى إعادة كتابة، والطريقة التي يمكنك من خلالها العمل على مسودتك التالية. أما خدمات إعادة الكتابة أو الإرشاد أو التطوير المستقلة فسيتم توضيحها وتسعيرها بشكل منفصل.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="referrals">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ26">هل يُرسل مشروعي إلى المنتجين؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA26">قد تُنظر بعض المشاريع المختارة للترشيح إلى جهات في الصناعة. ولا يتم الترشيح تلقائيًا، بل بعد الحصول على موافقة الكاتب الكتابية الصريحة. ولا تضمن سين ون اهتمام أي جهة بالمشروع، أو تطويره، أو تمويله، أو إنتاجه.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="referrals">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ27">هل يضمن شراء الخدمة الترشيح؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA27">لا. يضمن شراء الخدمة تقديم خدمة القراءة والتقرير المتفق عليهما، لكنه لا يضمن التوصية، أو الترشيح، أو عقد اجتماع، أو إبرام صفقة، أو الحصول على تمويل، أو فرصة إنتاج.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="referrals">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ28">هل يمكنني رفض الترشيح؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA28">نعم. لن يُشارك نصك مع أي شريك إنتاجي دون موافقتك الكتابية الصريحة.</p></div></div>
         </div>
         <div class="faq-item" data-faq-cat="pricing">
           <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ5">كيف تُحتسب أسعار التغطية؟</span>
+            <span class="faq-item__q" data-i18n="faqQ29">كم تكلفة الخدمة؟</span>
             <span class="faq-item__sign" aria-hidden="true"></span>
           </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA5">تختلف التغطية القصيرة عن الطويلة: النص القصير (من 10 إلى 40 صفحة) يُحتسب بالصفحة، والنص الطويل (من 80 إلى 120 صفحة) ضمن نطاق سعري حسب حجمه. الأسعار المعروضة في قسم الباقات هي أسعار الإطلاق، ويمكنك إعادة تقديم نسخة مطوّرة من العمل نفسه (Draft 2) مجانًا بعد استلام التقييم الأولي.</p></div></div>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA29">تختلف الأسعار بحسب نوع المشروع وحجمه. وتُعرض أسعار الإطلاق الحالية بوضوح في صفحة الخدمات قبل تقديم الطلب.</p></div></div>
         </div>
-        <div class="faq-item" data-faq-cat="process">
+        <div class="faq-item" data-faq-cat="pricing">
           <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ6">كم تستغرق التغطية، وماذا يحدث بعد التسليم؟</span>
+            <span class="faq-item__q" data-i18n="faqQ30">متى أدفع؟</span>
             <span class="faq-item__sign" aria-hidden="true"></span>
           </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA6">مدة التسليم عادةً من 10 إلى 15 يومًا، وتبدأ من لحظة إسناد نصك إلى أحد القرّاء، وتصلك رسالة عبر البريد عند الإسناد. بعد التسليم تستكمل رحلة النص خطواتها: النصوص الأعلى تقييمًا تُرشَّح للاستضافة بموافقة الكاتب الكتابية، ثم تُشارك مع جهات الصناعة والشركاء.</p></div></div>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA30">يتم الدفع عند تقديم المشروع، باستخدام إحدى وسائل الدفع المعتمدة الموضحة على المنصة.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="pricing">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ31">هل يمكنني طلب استرداد الرسوم؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA31">يمكنك طلب استرداد كامل الرسوم قبل إسناد نصك إلى أحد القرّاء. وبعد إسناد النص وبدء العمل عليه، لا يمكن عادةً استرداد الرسوم. وإذا تعذر على سين ون تقديم الخدمة لأسباب تعود إلى المنصة، فسيُرد المبلغ كاملًا خلال 14 يوم عمل.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="pricing">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ32">هل يمكنني تقديم مسودة ثانية؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA32">نعم. يمكنك تقديم نسخة مطوّرة من المشروع نفسه — المسودة الثانية — مجانًا بعد استلام التقرير الأول، وفقًا للشروط الموضحة للخدمة المعنية.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="pricing">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ33">هل تحصل المسودة الثانية على تقرير جديد كليًا؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA33">تهدف خدمة المسودة الثانية إلى قراءة مدى تطور المشروع استجابةً للتقرير الأول. وسيتم توضيح نطاق القراءة الثانية عند تقديم النسخة المطوّرة.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="limits">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ34">هل تضمنون إنتاج سيناريوهي؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA34">لا. لا تضمن سين ون إنتاج السيناريو، أو الحصول على تمثيل، أو تمويل، أو قبول في مهرجان، أو الفوز في مسابقة، أو قبوله من أي شريك في الصناعة.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="limits">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ35">هل سيخبرني القارئ إن كان سيناريوهي جيدًا أم سيئًا؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA35">لا تهدف الخدمة إلى تصنيف السيناريو ببساطة على أنه جيد أو سيئ. يوضح القارئ ما ينجح في النص، وما قد يحد من إمكاناته، وما يمكن أن يساعد على تقويته.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="limits">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ36">هل تشمل الخدمة التدقيق اللغوي؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA36">لا. قد يشير التقرير إلى بعض الأخطاء الكبيرة التي تؤثر في الوضوح أو سهولة القراءة، لكنه ليس خدمة تدقيق لغوي أو تحرير نصي شامل.</p></div></div>
+        </div>
+        <div class="faq-item" data-faq-cat="limits">
+          <button class="faq-item__btn" aria-expanded="false">
+            <span class="faq-item__q" data-i18n="faqQ37">هل تشمل الخدمة ملاحظات على العرض التقديمي أو الـLogline؟</span>
+            <span class="faq-item__sign" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA37">ليس ضمن الخدمة الأساسية. وإذا تضمنت إحدى الخدمات ملاحظات على الـLogline أو العرض التقديمي أو طريقة تقديم المشروع، فسيتم توضيح ذلك في وصف الخدمة.</p></div></div>
         </div>
       </div>
     </div>
