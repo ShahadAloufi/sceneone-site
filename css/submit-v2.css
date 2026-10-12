@@ -322,7 +322,7 @@ html[dir="ltr"] .sb2 .sub-field select { background-position: right 18px center;
   min-block-size: 62px;
   padding-inline: 52px;
   border: 0;
-  border-radius: 999px;
+  border-radius: 8px;
   background: var(--lx-red);
   color: var(--lx-white);
   font-family: var(--font-head);

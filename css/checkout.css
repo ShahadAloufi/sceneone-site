@@ -240,7 +240,7 @@ html[dir="ltr"] select.ck-input { background-position: right 16px center; }
 .ck-form .mysr-form .mysr-form-button {
   min-block-size: 60px !important;
   margin-block-start: 24px !important;
-  border-radius: 10px !important;
+  border-radius: 8px !important;
   background: #cd2e07 !important;
   color: #fff !important;
   font-family: var(--font-head), system-ui, sans-serif !important;

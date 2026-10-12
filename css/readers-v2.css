@@ -203,7 +203,7 @@
      to auto lets the ratio decide. */
   block-size: auto;
   object-fit: cover;
-  border-radius: 14px;
+  border-radius: 8px;
   display: block;
   background: #211d1a;
 }
@@ -271,7 +271,7 @@
   min-block-size: 56px;
   margin-block-start: 8px;
   padding-inline: 48px;
-  border-radius: 999px;
+  border-radius: 8px;
   background: var(--lx-cream);
   color: #000;
   font-family: var(--font-head);

@@ -369,7 +369,7 @@
   padding: 30px 26px;
   background: var(--lx-white);
   border: 1px solid var(--lx-line);
-  border-radius: 14px;
+  border-radius: 8px;
 }
 .lx-svc__t { margin: 0; font-family: var(--font-head); font-size: 21px; font-weight: 800; }
 .lx-svc__meta { margin: 8px 0 0; font-size: 13px; color: var(--lx-muted-2); }
@@ -420,7 +420,7 @@
   margin-block-start: 18px;
   padding-inline: 18px;
   border: 1px solid var(--lx-ink);
-  border-radius: 999px;
+  border-radius: 8px;
   font-family: var(--font-head);
   font-size: 14px;
   font-weight: 700;
@@ -488,7 +488,7 @@
   position: relative;
   display: block;
   overflow: hidden;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 .lx-team__over {
   position: absolute;
@@ -519,9 +519,10 @@
 }
 .lx-team__more {
   align-self: flex-start;
+  text-align: center;
   padding: 7px 18px;
   border: 1px solid rgba(255, 255, 255, .6);
-  border-radius: 999px;
+  border-radius: 8px;
   font-family: var(--font-head);
   font-size: 12.5px;
   font-weight: 700;
@@ -556,7 +557,7 @@
   min-inline-size: 0;
   box-sizing: border-box;
   padding: clamp(32px, 4vw, 48px) clamp(28px, 4vw, 52px);
-  border-radius: 24px;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -637,7 +638,7 @@
 @media (max-width: 760px) {
   .lx-vox { gap: 28px; }
   .lx-vox__cards { gap: 16px; }
-  .lx-vox__card { padding: 30px 24px; border-radius: 18px; gap: 14px; }
+  .lx-vox__card { padding: 30px 24px; border-radius: 8px; gap: 14px; }
   .lx-vox__card--dark { padding: 28px 24px; gap: 16px; }
   .lx-vox__mark { font-size: 80px; block-size: 40px; }
   .lx-vox__card p { font-size: 16px; margin-block-end: 12px; }
@@ -695,7 +696,7 @@
   min-block-size: 50px;
   margin-block-start: 34px;
   padding-inline: 38px;
-  border-radius: 999px;
+  border-radius: 8px;
   background: var(--lx-cream);
   color: #000;
   font-family: var(--font-head);
