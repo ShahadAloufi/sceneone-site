@@ -682,6 +682,17 @@
    to land on the label it drives. */
 .lx-vox__t:focus-visible ~ .lx-vox__btn { outline: 2px solid var(--lx-red); outline-offset: 4px; }
 
+/* Where the message reached us — Gmail on one card, Instagram on the other.
+   It sits directly under the quote mark at the head of the card, so the pair
+   reads as one unit: a quotation, and where the quotation came from. Small on
+   purpose: a provenance mark, not a logo placement. */
+.lx-vox__via {
+  display: block;
+  inline-size: 26px;
+  block-size: auto;
+  margin-block-start: 14px;
+}
+
 .lx-vox__card figcaption {
   margin-block-start: auto;
   padding-block-start: 18px;
