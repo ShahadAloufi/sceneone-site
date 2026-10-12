@@ -441,6 +441,20 @@
 }
 .lx-svc__t { margin: 0; font-family: var(--font-head); font-size: 21px; font-weight: 800; }
 .lx-svc__meta { margin: 8px 0 0; font-size: 13px; color: var(--lx-muted-2); }
+/* Flags the launch pricing on the card itself, where the number is, rather
+   than only in the section's header pill. Uses the site's own accent: the
+   mockup's orange is its design tool's default colour-picker value, and that
+   picker's options include this red. */
+.lx-svc__flag {
+  margin: 20px 0 0;
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--lx-red);
+}
+/* The price carries its own 24px top margin for the case with no flag above
+   it; after one, it only has to clear the line. */
+.lx-svc__flag + .lx-svc__price { margin-block-start: 6px; }
 /* Price and its unit share a baseline; the unit must not inherit the display size. */
 /* baseline, not center: centring the mark's box against the numerals' box
    lines up two rectangles, not the two shapes inside them, and the mark read
