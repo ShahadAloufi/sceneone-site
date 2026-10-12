@@ -245,28 +245,71 @@
 .lx-do__t { margin: 0 0 12px; font-family: var(--font-head); font-size: 19px; font-weight: 800; }
 .lx-do__b { margin: 0; font-size: 14px; line-height: 1.9; color: var(--lx-muted); }
 
-/* ---- 3. what we look for: rows on white -------------------------------- */
-.lx-look__list { margin: 52px 0 0; padding: 0; list-style: none; border-block-start: 1px solid rgba(0,0,0,.1); }
-.lx-look__item {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding-block: 26px;
-  border-block-end: 1px solid rgba(0,0,0,.1);
-  font-family: var(--font-head);
-  font-size: clamp(17px, 2.2vw, 24px);
-  font-weight: 700;
-  line-height: 1.5;
+/* ---- 4. what we look for: five numbered cards on white ------------------ */
+/* Was a stack of ruled rows with a red dot. The design turns it into cards,
+   and the row it wants is three then two — so the grid is SIX columns and the
+   cards span 2 and 3 rather than being a three-up grid with an orphan row. */
+.lx-look__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+  margin: 48px 0 0;
+  padding: 0;
+  list-style: none;
 }
-/* A drawn dot rather than a bullet glyph, so its size and colour are ours and
-   it does not shift with the font. */
-.lx-look__item::before {
-  content: "";
-  flex: 0 0 auto;
-  inline-size: 9px;
-  block-size: 9px;
-  border-radius: 50%;
-  background: var(--lx-red);
+.lx-look__card {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  /* The number rides at the top and the statement sits on the floor of the
+     card, which is what gives the row its common baseline even though the
+     statements run to different lengths. */
+  justify-content: space-between;
+  gap: 20px;
+  padding: 26px 24px;
+  border-radius: 8px;
+  background: var(--lx-cream);
+}
+/* On white, the cards are cream; the fifth inverts to close the block. */
+.lx-look__card--dark { background: var(--lx-black); }
+
+.lx-look__head { display: flex; align-items: center; gap: 14px; }
+.lx-look__n {
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--lx-red);
+}
+/* The rule runs from the number to the card's edge, so it has to be the
+   flexible one in the row rather than a fixed width. */
+.lx-look__rule { flex: 1 1 auto; block-size: 1px; background: rgba(0, 0, 0, .1); }
+.lx-look__card--dark .lx-look__rule { background: rgba(249, 244, 239, .2); }
+
+.lx-look__t {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(19px, 1.9vw, 28px);
+  font-weight: 600;
+  line-height: 1.55;
+  color: var(--lx-black);
+}
+.lx-look__card--dark .lx-look__t { color: var(--lx-cream); }
+
+/* Two up, with the fifth taking the full width rather than sitting alone in
+   half a row. */
+@media (min-width: 700px) {
+  .lx-look__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+  .lx-look__card { padding: 30px 30px; }
+  .lx-look__card--dark { grid-column: 1 / -1; }
+}
+/* The design's own arrangement, once there is room for three across. */
+@media (min-width: 1040px) {
+  .lx-look__grid { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 24px; }
+  .lx-look__card { grid-column: span 2; min-block-size: 230px; padding: 32px 36px; gap: 28px; }
+  /* The bottom row is two cards over the same six columns. */
+  .lx-look__card:nth-child(4),
+  .lx-look__card:nth-child(5) { grid-column: span 3; }
 }
 
 /* ---- 4. the read: photo, copy, the eight axes -------------------------- */
@@ -328,24 +371,41 @@
      capped. */
   .lx-read__copy { padding-inline-start: max(var(--lx-x), calc((100vw - var(--lx-w)) / 2)); }
 }
-.lx-read__p { margin: 22px 0 0; font-size: 15px; line-height: 1.95; color: var(--lx-muted); max-inline-size: 52ch; }
-.lx-read__lbl { margin: 40px 0 0; font-size: 13px; color: var(--lx-muted-2); }
-/* auto-fit, not a viewport breakpoint. The constraint is how wide THIS column
-   is, which is half the row — a `min-width: 620px` query counted the whole
-   window and put four columns in a 286px space, wrapping every label onto two
-   lines. The track minimum is set just above the longest label
-   ("الفكرة والموضوع"), and the max width caps it at the design's four across
-   so a wide window gets 4x2 rather than 5+3. */
+/* The design sets this copy a tier darker and larger than it was — ink rather
+   than muted, 18px rather than 15 — and drops the label to the muted tier the
+   paragraph just left. Clamped rather than fixed: the design is a 1440 board,
+   and 18px of Arabic in a half-width column is too much on a phone. */
+.lx-read__p {
+  margin: 22px 0 0;
+  font-size: clamp(15px, 1.3vw, 18px);
+  line-height: 1.95;
+  color: var(--lx-ink);
+  max-inline-size: 48ch;
+}
+.lx-read__lbl { margin: 36px 0 0; font-size: clamp(13px, 1.2vw, 17px); line-height: 1.95; color: var(--lx-muted); }
+/* The design lays these out as chips that wrap, not as a fixed grid: the row
+   breaks where it runs out of width, which is how it lands 5 + 3 rather than
+   4 + 4. Wrapping also removes the old overflow trap — a grid's min-content
+   was 518px wide and hung the whole section off a phone's edge.
+
+   The design gives each chip a background of #F9F4EF, which is the section's
+   own ground, so the plate draws nothing. Left off rather than set to a colour
+   that cannot be seen; the padding is what does the spacing work. */
 .lx-read__axes {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
-  gap: 14px 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   margin: 20px 0 0;
   padding: 0;
-  max-inline-size: 560px;
+  max-inline-size: 620px;
   list-style: none;
 }
-.lx-read__axes li { font-size: 13.5px; font-weight: 500; color: var(--lx-ink); }
+.lx-read__axes li {
+  padding: 9px 18px;
+  font-size: clamp(13.5px, 1.1vw, 15px);
+  font-weight: 400;
+  color: var(--lx-ink);
+}
 
 /* ---- 5. services: three price cards ------------------------------------ */
 .lx-svc__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; }

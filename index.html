@@ -214,22 +214,11 @@
     </div>
   </section>
 
-  <!-- ── 3. WHAT WE LOOK FOR ── -->
-  <section class="lx lx--white" id="looking">
-    <div class="lx__in">
-      <p class="lx-eyebrow" data-i18n="lookEyebrow">قبل أن تُرسل نصك</p>
-      <h2 class="lx-h" data-i18n="lookH">ما الذي نبحث عنه</h2>
-      <ul class="lx-look__list">
-        <li class="lx-look__item" data-i18n="look1">أصوات جديدة لها بصمة خاصة</li>
-        <li class="lx-look__item" data-i18n="look2">قصص تستحق أن تُرى على الشاشة الآن</li>
-        <li class="lx-look__item" data-i18n="look3">أنواع وزوايا وطرق سرد غير مألوفة</li>
-        <li class="lx-look__item" data-i18n="look4">مشاريع بفكرة قوية ما زالت تحتاج تطويرًا</li>
-        <li class="lx-look__item" data-i18n="look5">صنّاع أفلام لديهم ما يريدون قوله، ويريدون بناء هوية سينمائية حوله</li>
-      </ul>
-    </div>
-  </section>
+  <!-- ── 3. THE READ ──
+       Ahead of WHAT WE LOOK FOR, which is the order the new design sets: the
+       reading is what the service IS, so it is introduced before the list of
+       what a script needs to show.
 
-  <!-- ── 4. THE READ ──
        The eight axes are the same eight the real coverage report is written
        against (see js/report-render.js) — they are the product, so they are
        named here rather than summarised. -->
@@ -250,11 +239,49 @@
           <li data-i18n="axis7">قابلية الإنتاج</li>
           <li data-i18n="axis8">العرض والتنسيق</li>
         </ul>
-        <a class="lx-link lx-link--red" href="/sample-report" data-i18n="readLink">اطّلع على نموذج تقرير</a>
+        <a class="lx-link" href="/sample-report" data-i18n="readLink">اطّلع على نموذج تقرير</a>
       </div>
       <div class="lx-read__media">
         <img src="assets/reading-chair.webp" alt="" data-i18n-alt="readImgAlt" loading="lazy" decoding="async" width="520" height="720">
       </div>
+    </div>
+  </section>
+
+
+  <!-- ── 4. WHAT WE LOOK FOR ──
+       Five numbered cards on a six-column grid: three across the top at two
+       columns each, then two at three. The fifth is the dark one, which is how
+       the design closes the block.
+
+       The numbers are decorative ordinals, not content — the list already
+       carries the order — so they are hidden from a screen reader along with
+       the rule beside them. -->
+  <section class="lx lx--white" id="looking">
+    <div class="lx__in">
+      <p class="lx-eyebrow" data-i18n="lookEyebrow">قبل أن تُرسل نصك</p>
+      <h2 class="lx-h" data-i18n="lookH">ما الذي نبحث عنه</h2>
+      <ul class="lx-look__grid">
+        <li class="lx-look__card">
+          <span class="lx-look__head" aria-hidden="true"><span class="lx-look__n">01</span><span class="lx-look__rule"></span></span>
+          <p class="lx-look__t" data-i18n="look1">أصوات جديدة لها بصمة خاصة</p>
+        </li>
+        <li class="lx-look__card">
+          <span class="lx-look__head" aria-hidden="true"><span class="lx-look__n">02</span><span class="lx-look__rule"></span></span>
+          <p class="lx-look__t" data-i18n="look2">قصص تستحق أن تُرى على الشاشة الآن</p>
+        </li>
+        <li class="lx-look__card">
+          <span class="lx-look__head" aria-hidden="true"><span class="lx-look__n">03</span><span class="lx-look__rule"></span></span>
+          <p class="lx-look__t" data-i18n="look3">أنواع وزوايا وطرق سرد غير مألوفة</p>
+        </li>
+        <li class="lx-look__card">
+          <span class="lx-look__head" aria-hidden="true"><span class="lx-look__n">04</span><span class="lx-look__rule"></span></span>
+          <p class="lx-look__t" data-i18n="look4">مشاريع بفكرة قوية ما زالت تحتاج تطويرًا</p>
+        </li>
+        <li class="lx-look__card lx-look__card--dark">
+          <span class="lx-look__head" aria-hidden="true"><span class="lx-look__n">05</span><span class="lx-look__rule"></span></span>
+          <p class="lx-look__t" data-i18n="look5">صنّاع أفلام لديهم ما يريدون قوله، ويريدون بناء هوية سينمائية حوله</p>
+        </li>
+      </ul>
     </div>
   </section>
 
