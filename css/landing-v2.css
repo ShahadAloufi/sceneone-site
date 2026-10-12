@@ -468,6 +468,12 @@
   mask: url('../assets/riyal.svg') no-repeat center / contain;
 }
 .lx-svc__b { margin: 20px 0 0; font-size: 14px; line-height: 1.9; color: var(--lx-muted); }
+/* The sample-report link lives in the cards now rather than up in THE READ:
+   it answers "what do I actually get" where the reader is weighing a price,
+   not three sections earlier. Trimmed off .lx-link's 26px top margin, which
+   was spacing it from a section's worth of copy; here it only has to clear
+   the paragraph above it. */
+.lx-svc__what { margin-block-start: 14px; font-size: 13.5px; }
 /* Pushes the rule + duration + button to the card's foot, so three cards with
    unequal copy still line their buttons up. */
 .lx-svc__foot { margin-block-start: auto; padding-block-start: 22px; }

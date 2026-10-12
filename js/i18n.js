@@ -155,6 +155,7 @@
 
       svcEyebrow: "الخدمات", svcH: "من أين تبدأ", svcPill: "أسعار إطلاق مؤقتة",
       svcBtn: "قدّم نصك",
+      svcWhat: "ماذا سأحصل عليه؟",
       svc1T: "ملاحظات على النصوص القصيرة", svc1Meta: "للسيناريو من 10 إلى 40 صفحة", svc1Num: "100 - 400",
       svc1B: "تقرير ملاحظات احترافي لفيلمك القصير يحدد موقع نصك بدقة، بملاحظات عملية قابلة للتطبيق مع إمكانية ترشيح النصوص المتميزة إلى جهات في الصناعة.", svc1Dur: "10 إلى 15 يوم عمل",
       svc2T: "ملاحظات على النصوص الطويلة", svc2Meta: "للسيناريو من 80 إلى 120 صفحة", svc2Num: "800 - 1,200",
@@ -649,6 +650,7 @@
 
       svcEyebrow: "Services", svcH: "Where to begin", svcPill: "Introductory pricing",
       svcBtn: "Submit your script",
+      svcWhat: "What will I get?",
       svc1T: "Notes on short scripts", svc1Meta: "For a screenplay of 10–40 pages", svc1Num: "100 - 400",
       svc1B: "A professional notes report for your short film that gives you a clear assessment of where your screenplay stands, with practical notes you can act on. Outstanding scripts may also be nominated for sharing with industry partners.", svc1Dur: "10–15 working days",
       svc2T: "Notes on feature scripts", svc2Meta: "For a screenplay of 80–120 pages", svc2Num: "800 - 1,200",
