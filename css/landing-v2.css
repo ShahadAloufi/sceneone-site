@@ -471,7 +471,7 @@
    `feature` at 10 SAR a page — the advertised ranges ARE the page bounds times
    that rate — while the treatments are fixed amounts, so this line would be
    false on the third card and it does not carry one. */
-.lx-svc__by { margin: 10px 0 0; font-size: 12.5px; line-height: 1.75; color: var(--lx-muted-2); }
+.lx-svc__by { margin: 10px 0 0; font-size: 12.5px; font-weight: 700; line-height: 1.75; color: var(--lx-muted-2); }
 
 /* The auto BOTTOM margin is what lines the cards up. The slack in a card has
    to be absorbed in exactly one place; it used to be absorbed under the link,
