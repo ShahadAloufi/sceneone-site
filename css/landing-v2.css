@@ -240,8 +240,6 @@
 }
 @media (min-width: 760px) { .lx-do__grid { grid-template-columns: repeat(3, 1fr); } }
 .lx-do__col { padding-block-start: 20px; border-block-start: 1px solid var(--lx-ink); }
-/* The design accents the LAST column — the end of the promise, not the start. */
-.lx-do__col:last-child { border-block-start-color: var(--lx-red); }
 .lx-do__t { margin: 0 0 12px; font-family: var(--font-head); font-size: 19px; font-weight: 800; }
 .lx-do__b { margin: 0; font-size: 14px; line-height: 1.9; color: var(--lx-muted); }
 
@@ -544,7 +542,6 @@
 @media (min-width: 700px)  { .lx-jn__grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1000px) { .lx-jn__grid { grid-template-columns: repeat(3, 1fr); } }
 .lx-jn__step { padding-block-start: 18px; border-block-start: 1px solid var(--lx-line); }
-.lx-jn__step:last-child { border-block-start-color: var(--lx-red); }
 .lx-jn__n { display: block; font-size: 12px; font-weight: 700; color: var(--lx-muted-2); font-variant-numeric: tabular-nums; }
 .lx-jn__t { margin: 10px 0 10px; font-family: var(--font-head); font-size: 18px; font-weight: 800; }
 .lx-jn__b { margin: 0; font-size: 14px; line-height: 1.9; color: var(--lx-muted); max-inline-size: 34ch; }
