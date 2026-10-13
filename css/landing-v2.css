@@ -296,6 +296,14 @@
 }
 .lx-look__card--dark .lx-look__t { color: var(--lx-cream); }
 
+/* The break is placed, not left to the box width: wrapping on its own split
+   "غير مألوفة" across two lines on the third card and gave each card a
+   different shape. It is a real <br>, so it only helps where there IS room
+   for two lines — off on a phone, where the card is full width and the text
+   finds its own breaks, and on from the two-up layout upwards. */
+.lx-look__br { display: none; }
+@media (min-width: 700px) { .lx-look__br { display: inline; } }
+
 /* Two up, with the fifth taking the full width rather than sitting alone in
    half a row. */
 @media (min-width: 700px) {
