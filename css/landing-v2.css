@@ -423,18 +423,6 @@
 
 /* ---- 5. services: three price cards ------------------------------------ */
 .lx-svc__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; }
-.lx-svc__pill {
-  display: inline-flex;
-  align-items: center;
-  min-block-size: 40px;
-  padding-inline: 20px;
-  border: 1px solid var(--lx-line);
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--lx-ink);
-  white-space: nowrap;
-}
 .lx-svc__grid { display: grid; gap: 20px; margin-block-start: 44px; }
 @media (min-width: 860px) { .lx-svc__grid { grid-template-columns: repeat(3, 1fr); } }
 .lx-svc__card {
