@@ -123,8 +123,6 @@
 }
 @media (min-width: 780px) { .rd2-method__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .rd2-method__col { padding-block-start: 26px; border-block-start: 2px solid var(--lx-black); }
-/* The design accents the last of the three — the promise after the report. */
-.rd2-method__col:last-child { border-block-start-color: var(--lx-red); }
 .rd2-method__t { margin: 0 0 18px; font-family: var(--font-head); font-size: clamp(20px, 2vw, 24px); font-weight: 700; }
 .rd2-method__b { margin: 0; font-size: 16px; font-weight: 400; line-height: 1.95; color: var(--lx-ink); }
 
@@ -188,7 +186,7 @@
 .rd2-reader__tag {
   padding: 9px 20px;
   border: 1px solid rgba(0, 0, 0, .16);
-  border-radius: 999px;
+  border-radius: 8px;
   font-size: 14px;
   font-weight: 400;
   color: #252525;
