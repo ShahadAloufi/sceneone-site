@@ -124,15 +124,7 @@ a, button {
    are offset by it — so shrinking it to the mockup's 34px would move four
    pages' worth of spacing for a cosmetic gain. */
 .nav__brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-.nav__wordmark {
-  font-family: var(--font-head);
-  font-size: 22px;
-  font-weight: 700;
-  color: #f9f4ef;
-  white-space: nowrap;
-}
 /* Below this the bar is mark + toggle + hamburger, and the word crowds them. */
-@media (max-width: 520px) { .nav__wordmark { display: none; } }
 
 /* The page you are on, in the accent. The literal hex rather than --lx-red:
    this rule also serves /submit and /about-coverage, which do not load the
@@ -1630,9 +1622,9 @@ html[data-theme="dark"] .adm-login__panel { background: #000000; }
 .adm-login__title { text-align: center; font-size: 22px; font-weight: 700; margin: 0 0 34px; color: var(--adm-text); }
 .adm-login__logo {
   display: block; height: 64px; width: 64px; margin: 0 auto;
-  background: no-repeat center / contain url(../assets/scene-one-mark-light-v3.svg);
+  background: no-repeat center / contain url(../assets/scene-one-mark-v4-ink.svg);
 }
-html[data-theme="dark"] .adm-login__logo { background-image: url(../assets/scene-one-mark-v3.svg); }
+html[data-theme="dark"] .adm-login__logo { background-image: url(../assets/scene-one-mark-v4.svg); }
 
 /* password field + show/hide eye */
 .adm-pass { position: relative; }
@@ -1743,9 +1735,9 @@ html[data-theme="dark"] .adm-login__submit { background: #ffffff; color: #111418
    sidebar, black+orange mark on the light sidebar. */
 .adm-brand-logo {
   display: block; height: 46px; width: 46px;
-  background: no-repeat center / contain url(../assets/scene-one-mark-light-v3.svg);
+  background: no-repeat center / contain url(../assets/scene-one-mark-v4-ink.svg);
 }
-html[data-theme="dark"] .adm-brand-logo { background-image: url(../assets/scene-one-mark-v3.svg); }
+html[data-theme="dark"] .adm-brand-logo { background-image: url(../assets/scene-one-mark-v4.svg); }
 
 .adm-nav { display: flex; flex-direction: column; gap: 4px; }
 .adm-navitem {
@@ -2752,14 +2744,7 @@ html[dir="ltr"] .toc button { text-align: left; }
   padding: 10px 20px;
 }
 .overlay__brand { display: flex; align-items: center; gap: 11px; }
-.overlay__brand img { height: 28px; width: auto; }
-.overlay__brand span {
-  font-family: var(--font-head);
-  font-size: 17px;
-  font-weight: 700;
-  color: #000;
-  white-space: nowrap;
-}
+.overlay__brand img { height: 44px; width: auto; }
 .overlay__close {
   inline-size: 44px;
   block-size: 44px;

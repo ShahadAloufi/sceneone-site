@@ -38,8 +38,7 @@
 .lx-foot__top { display: grid; gap: 40px; }
 @media (min-width: 860px) { .lx-foot__top { grid-template-columns: 1.6fr 1fr 1fr 1fr; } }
 .lx-foot__brand { display: flex; align-items: center; gap: 12px; }
-.lx-foot__brand img { block-size: 40px; inline-size: auto; }
-.lx-foot__brand span { font-family: var(--font-head); font-size: 17px; font-weight: 800; }
+.lx-foot__brand img { block-size: 48px; inline-size: auto; }
 .lx-foot__blurb { margin: 16px 0 0; font-size: 13.5px; line-height: 1.9; color: rgba(255,255,255,.5); max-inline-size: 46ch; }
 .lx-foot__col { display: flex; flex-direction: column; gap: 12px; }
 .lx-foot__col a, .lx-foot__col p { margin: 0; font-size: 13.5px; color: rgba(255,255,255,.62); }
@@ -79,9 +78,9 @@
    still opens on black. So none of it is edited there. This block opts in by page wrapper instead, and
    it loads after styles.css, so equal specificity is enough to win.
 
-   The mark itself is not inverted here: invert(1) would flip its accent dot
+   The logo itself is not inverted here: invert(1) would flip its accent dot
    from #CD2E07 to cyan along with everything else. The light pages point at
-   assets/scene-one-logo-v3-ink.svg, a dark-ink cut of the same drawing.
+   assets/scene-one-logo-v4-ink.svg, a dark-ink cut of the same drawing.
    ========================================================================= */
 
 /* styles.css starts the landing's bar as a dark gradient and turns it solid on
@@ -96,10 +95,6 @@
   background: var(--lx-white);
   box-shadow: 0 1px 0 rgba(0, 0, 0, .08);
 }
-.landing .nav__wordmark,
-.rd2 .nav__wordmark,
-.tm2 .nav__wordmark,
-.sb2 .nav__wordmark { color: var(--lx-black); }
 @media (min-width: 1000px) {
   .landing .nav__links a,
   .rd2 .nav__links a,
