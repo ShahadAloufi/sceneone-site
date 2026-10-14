@@ -220,3 +220,48 @@
     }
   }
 })();
+
+/* Reveal on scroll — the landing's card groups.
+ *
+ * The decision to animate at all was already made in <head>: index.html puts
+ * .js-reveal on <html> only when IntersectionObserver exists and the reader has
+ * not asked for reduced motion. This reads that class rather than re-testing,
+ * so the two can never disagree and leave cards hidden with nothing to reveal
+ * them.
+ *
+ * Groups are observed, not individual cards: a row should come in as a row,
+ * staggered by --rv in reading order, rather than each card firing on its own
+ * edge and arriving out of order on a wide screen.
+ *
+ * One-shot. Each group is unobserved the moment it lands, so scrolling back up
+ * does not replay it and the observer empties itself as the reader goes down
+ * the page.
+ */
+(function () {
+  if (!document.documentElement.classList.contains("js-reveal")) return;
+
+  var groups = document.querySelectorAll("[data-reveal]");
+  if (!groups.length) return;
+
+  Array.prototype.forEach.call(groups, function (group) {
+    Array.prototype.forEach.call(group.children, function (child, i) {
+      child.style.setProperty("--rv", i);
+    });
+  });
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("is-in");
+      io.unobserve(entry.target);
+    });
+  }, {
+    /* A touch of the group has to be on screen, and the bottom 12% of the
+       viewport does not count — otherwise a group "arrives" while still at the
+       very edge and the stagger has played out before it is properly in view. */
+    threshold: 0.1,
+    rootMargin: "0px 0px -12% 0px"
+  });
+
+  Array.prototype.forEach.call(groups, function (group) { io.observe(group); });
+})();

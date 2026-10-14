@@ -33,6 +33,22 @@
        overrides the shared sheet (nothing in .hero) win on source order. -->
   <link rel="stylesheet" href="css/site-chrome.css">
   <link rel="stylesheet" href="css/landing-v2.css">
+  <!-- Reveal-on-scroll gate. Inline and in <head> on purpose: the hidden state
+       lives behind this class, so it has to be set before the first paint or a
+       deep link to a card section flashes the cards and then hides them.
+
+       It is also the failure switch. No class means no hidden state, so if this
+       script is blocked, or the browser has no IntersectionObserver, or the
+       reader asked for reduced motion, every card is simply visible. Content
+       must never depend on an animation to exist. -->
+  <script>
+    try {
+      if ("IntersectionObserver" in window &&
+          !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("js-reveal");
+      }
+    } catch (e) { /* leave everything visible */ }
+  </script>
   <!-- Vercel Web Analytics — served by Vercel's edge at this path; no npm/build needed. -->
   <script defer src="/_vercel/insights/script.js"></script>
 </head>
@@ -193,7 +209,7 @@
     <div class="lx__in">
       <p class="lx-eyebrow" data-i18n="doEyebrow">ما نفعله</p>
       <h2 class="lx-h" data-i18n="doH">نكتشف. نطوّر. نربط.</h2>
-      <div class="lx-do__grid">
+      <div class="lx-do__grid" data-reveal>
         <div class="lx-do__col">
           <h3 class="lx-do__t" data-i18n="do1T">نكتشف</h3>
           <p class="lx-do__b" data-i18n="do1B">نبحث عن الأصوات والقصص قبل أن تلتفت إليها الصناعة.</p>
@@ -256,7 +272,7 @@
     <div class="lx__in">
       <p class="lx-eyebrow" data-i18n="lookEyebrow">قبل أن تُرسل نصك</p>
       <h2 class="lx-h" data-i18n="lookH">ما الذي نبحث عنه</h2>
-      <ul class="lx-look__grid">
+      <ul class="lx-look__grid" data-reveal>
         <li class="lx-look__card">
           <span class="lx-look__head" aria-hidden="true"><span class="lx-look__n">01</span><span class="lx-look__rule"></span></span>
           <p class="lx-look__t" data-i18n-html="look1">أصوات جديدة<br class='lx-look__br'>لها بصمة خاصة</p>
@@ -290,7 +306,7 @@
           <h2 class="lx-h" data-i18n="svcH">من أين تبدأ</h2>
         </div>
       </div>
-      <div class="lx-svc__grid">
+      <div class="lx-svc__grid" data-reveal>
         <div class="lx-svc__card">
           <h3 class="lx-svc__t" data-i18n="svc1T">ملاحظات على النصوص القصيرة</h3>
           <p class="lx-svc__meta" data-i18n="svc1Meta">للسيناريو من 10 إلى 40 صفحة</p>
@@ -340,7 +356,7 @@
       <p class="lx-eyebrow" data-i18n="jnEyebrow">الرحلة</p>
       <h2 class="lx-h" data-i18n="jnH">من النص إلى المشروع</h2>
       <p class="lx-sub" data-i18n="jnSub">ست خطوات يمرّ بها كل مشروع عندنا، من لحظة وصوله حتى طاولة المنتج.</p>
-      <div class="lx-jn__grid">
+      <div class="lx-jn__grid" data-reveal>
         <div class="lx-jn__step">
           <span class="lx-jn__n" data-i18n="jn1N">01</span>
           <h3 class="lx-jn__t" data-i18n="jn1T">تقديم النص</h3>
@@ -404,7 +420,7 @@
       <p class="lx-eyebrow" data-i18n="teamEyebrow">الفريق</p>
       <h2 class="lx-h" data-i18n="teamH">من يقرأ نصك</h2>
       <p class="lx-sub" data-i18n="teamSub">قرّاء من صنّاع الأفلام وكتّاب السيناريو، ومنتج تطوير إبداعي يتولّى المشاريع بعد التوصية.</p>
-      <div class="lx-team__grid">
+      <div class="lx-team__grid" data-reveal>
         <div>
           <!-- The photo is a link into the reader's row on /readers; the brief
                rides on hover and focus, and is the opening of the same bio that
@@ -481,7 +497,7 @@
         <p class="lx-sub" data-i18n="voxSub">من ردودهم بعد أن وصلتهم تقاريرهم.</p>
       </div>
 
-      <div class="lx-vox__cards">
+      <div class="lx-vox__cards" data-reveal>
         <figure class="lx-vox__card lx-vox__card--wide">
           <span class="lx-vox__mark" aria-hidden="true">&rdquo;</span>
           <img class="lx-vox__via" src="assets/source-gmail.webp" alt="وصلتنا عبر البريد الإلكتروني" data-i18n-alt="voxVia1" loading="lazy" decoding="async" width="96" height="96">
