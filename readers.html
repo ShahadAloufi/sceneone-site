@@ -13,6 +13,22 @@
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/site-chrome.css">
   <link rel="stylesheet" href="css/readers-v2.css">
+  <!-- Reveal-on-scroll gate. Inline and in <head> on purpose: the hidden state
+       lives behind this class, so it has to be set before the first paint or a
+       deep link to a card section flashes the cards and then hides them.
+
+       It is also the failure switch. No class means no hidden state, so if this
+       script is blocked, or the browser has no IntersectionObserver, or the
+       reader asked for reduced motion, every card is simply visible. Content
+       must never depend on an animation to exist. -->
+  <script>
+    try {
+      if ("IntersectionObserver" in window &&
+          !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("js-reveal");
+      }
+    } catch (e) { /* leave everything visible */ }
+  </script>
   <!-- Vercel Web Analytics — served by Vercel's edge at this path; no npm/build needed. -->
   <script defer src="/_vercel/insights/script.js"></script>
 </head>
@@ -111,7 +127,7 @@
       <p class="rd2-eyebrow" data-i18n="rdEyebrow">الفريق</p>
       <h1 class="rd2-hero__h" data-i18n="rdTitle">من يقرأ نصك</h1>
       <p class="rd2-hero__p" data-i18n="rdLede">يقرأ نصك صانع أفلام أو كاتب سيناريو، بالمعايير نفسها التي تُقرأ بها المشاريع في غرف التطوير، ويكتب لك أين تكمن قوة نصك وما الذي يحتاج تطويرًا. وبعد التقرير، نكمل تطوير المشاريع التي تستحق مع الكاتب والمخرج، ثم نقدّمها لجهات الإنتاج لدعم كاتبها.</p>
-      <div class="rd2-stats">
+      <div class="rd2-stats" data-reveal>
         <div class="rd2-stat">
           <p class="rd2-stat__n">4</p>
           <p class="rd2-stat__l" data-i18n="rdStat1">قرّاء</p>
@@ -133,7 +149,7 @@
     <div class="rd2-in">
       <p class="rd2-eyebrow" data-i18n="rdMethodEyebrow">المنهج</p>
       <h2 class="rd2-h" data-i18n="rdMethodH">كيف نقرأ نصك</h2>
-      <div class="rd2-method__grid">
+      <div class="rd2-method__grid" data-reveal>
         <div class="rd2-method__col">
           <h3 class="rd2-method__t" data-i18n="rdM1T">خبرة عملية</h3>
           <p class="rd2-method__b" data-i18n="rdM1B">قرّاء يجمعون بين العمل الفعلي في الكتابة والإخراج والإنتاج، وفهم عميق لمتطلبات السوق العربي والعالمي.</p>
@@ -160,7 +176,7 @@
         <h2 class="rd2-h" data-i18n="auTeamTitle">فريق القرّاء</h2>
       </div>
 
-      <article class="rd2-reader" id="wad">
+      <article class="rd2-reader" data-reveal id="wad">
         <div>
           <div class="rd2-reader__meta">
             <span class="rd2-reader__n">01</span>
@@ -177,7 +193,7 @@
         <img class="rd2-reader__photo" src="assets/reader-wad.webp" alt="ود القبلان" data-i18n-alt="widName" loading="lazy" decoding="async" width="600" height="800">
       </article>
 
-      <article class="rd2-reader" id="hasan">
+      <article class="rd2-reader" data-reveal id="hasan">
         <div>
           <div class="rd2-reader__meta">
             <span class="rd2-reader__n">02</span>
@@ -194,7 +210,7 @@
         <img class="rd2-reader__photo" src="assets/reader-hasan-v2.webp" alt="حسن زروق" data-i18n-alt="hasanName" loading="lazy" decoding="async" width="600" height="800">
       </article>
 
-      <article class="rd2-reader" id="haifa">
+      <article class="rd2-reader" data-reveal id="haifa">
         <div>
           <div class="rd2-reader__meta">
             <span class="rd2-reader__n">03</span>
@@ -211,7 +227,7 @@
         <img class="rd2-reader__photo" src="assets/reader-haifa.webp" alt="هيفاء السيد" data-i18n-alt="haifaName" loading="lazy" decoding="async" width="600" height="800">
       </article>
 
-      <article class="rd2-reader" id="fajr">
+      <article class="rd2-reader" data-reveal id="fajr">
         <div>
           <div class="rd2-reader__meta">
             <span class="rd2-reader__n">04</span>
@@ -241,7 +257,7 @@
         <h2 class="rd2-h" data-i18n="rdAxesH">تقرير مفصّل عبر ثمانية محاور</h2>
         <a class="rd2-axes__link" href="/sample-report" data-i18n="readLink">اطّلع على نموذج تقرير</a>
       </div>
-      <ul class="rd2-axes__list">
+      <ul class="rd2-axes__list" data-reveal>
         <li class="rd2-axes__item"><span class="rd2-axes__t" data-i18n="axis1">الفكرة والموضوع</span><span class="rd2-axes__n">01</span></li>
         <li class="rd2-axes__item"><span class="rd2-axes__t" data-i18n="axis2">عنصر الجذب</span><span class="rd2-axes__n">02</span></li>
         <li class="rd2-axes__item"><span class="rd2-axes__t" data-i18n="axis3">الرهانات والحبكة</span><span class="rd2-axes__n">03</span></li>
