@@ -38,7 +38,7 @@
 .lx-foot__top { display: grid; gap: 40px; }
 @media (min-width: 860px) { .lx-foot__top { grid-template-columns: 1.6fr 1fr 1fr 1fr; } }
 .lx-foot__brand { display: flex; align-items: center; gap: 12px; }
-.lx-foot__brand img { block-size: 48px; inline-size: auto; }
+.lx-foot__brand img { block-size: 92px; inline-size: auto; }
 .lx-foot__blurb { margin: 16px 0 0; font-size: 13.5px; line-height: 1.9; color: rgba(255,255,255,.5); max-inline-size: 46ch; }
 .lx-foot__col { display: flex; flex-direction: column; gap: 12px; }
 .lx-foot__col a, .lx-foot__col p { margin: 0; font-size: 13.5px; color: rgba(255,255,255,.62); }
@@ -80,7 +80,7 @@
 
    The logo itself is not inverted here: invert(1) would flip its accent dot
    from #CD2E07 to cyan along with everything else. The light pages point at
-   assets/scene-one-logo-v4-ink.svg, a dark-ink cut of the same drawing.
+   assets/scene-one-mark-v5-ink.svg, a dark-ink cut of the same drawing.
    ========================================================================= */
 
 /* styles.css starts the landing's bar as a dark gradient and turns it solid on
