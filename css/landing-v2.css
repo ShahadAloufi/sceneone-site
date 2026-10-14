@@ -459,6 +459,16 @@
    neutral hyphen; in an RTL paragraph the bidi algorithm reorders them and the
    price reads "400 - 100". Isolating the span fixes the order in Arabic and
    changes nothing in English. */
+/* Sits on the number's baseline at body size — the price line sets a display
+   size for the numerals, and a phrase inherited at 38px would read as the
+   price rather than as a qualifier on it. */
+.lx-svc__from {
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--lx-muted);
+  white-space: nowrap;
+}
 .lx-svc__num {
   font-family: var(--font-head);
   font-size: clamp(30px, 4vw, 38px);
