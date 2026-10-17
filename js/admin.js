@@ -89,6 +89,7 @@
       dueDays: function (n) { return "متبقٍّ " + n + " يوم"; },
       thCoverage: "التقييم", subEmpty: "لا توجد نصوص مقدَّمة بعد.",
       thPayment: "الدفع",
+      thAmount: "المبلغ",
       payPaid: "مدفوع", payUnpaid: "بانتظار الدفع", payRefunded: "مُسترد",
       payStale: "متروك", payStaleTip: "لم يُكمل الكاتب الدفع منذ أكثر من ٤٨ ساعة",
       payRefundedFlag: "مُسترد، يحتاج قرارًا",
@@ -185,6 +186,7 @@
       dueDays: function (n) { return n + (n === 1 ? " day left" : " days left"); },
       thCoverage: "Coverage", subEmpty: "No submissions yet.",
       thPayment: "Payment",
+      thAmount: "Amount",
       payPaid: "Paid", payUnpaid: "Awaiting payment", payRefunded: "Refunded",
       payStale: "Abandoned", payStaleTip: "The writer hasn't completed payment in over 48 hours",
       payRefundedFlag: "Refunded, needs a decision",
@@ -810,6 +812,9 @@
         "<td>" + esc(FILM[ULANG][s.film_type] || s.film_type) + "</td>" +
         "<td>" + esc(DRAFT[ULANG][s.draft] || s.draft) + "</td>" +
         "<td>" + esc(pagesCount(s)) + "</td>" +
+        // Beside the page count on purpose: for the two script products the
+        // amount IS the page count times the rate, so the two read together.
+        amountCell(s) +
         "<td class='adm-file'></td>" +
         "<td class='adm-assignee'></td>" +
         "<td class='adm-cov'></td>";
@@ -1385,6 +1390,27 @@
   // in-progress. Nothing expires it — this is a label, not a state change.
   var PAYMENT_STALE_MS = 48 * 60 * 60 * 1000;
 
+  // payment_amount is stored in halalas, like everything Moyasar returns.
+  // Shared by the staff payment column and the readers' amount column so the
+  // two can never show the same payment differently.
+  function amountSar(s) {
+    return s.payment_amount != null ? (s.payment_amount / 100).toFixed(2) + " SAR" : "";
+  }
+
+  // What the writer paid, for the readers' table.
+  //
+  // No badge here, unlike the staff column: loadSubmissions() drops
+  // pending_payment and refunded before this table is built, so every row a
+  // reader sees is paid already and a paid/unpaid chip would have exactly one
+  // possible value. Rows older than the payment gate carry no invoice at all,
+  // and those get the same dash the staff column gives them.
+  function amountCell(s) {
+    var amount = amountSar(s);
+    return amount
+      ? "<td class='adm-amount' dir='ltr'>" + esc(amount) + "</td>"
+      : "<td class='adm-muted'>–</td>";
+  }
+
   // Payment state, shown only in the All-submissions tab: the Deliveries tab
   // lists reports that already shipped, which are paid by definition.
   function paymentCell(s) {
@@ -1407,7 +1433,7 @@
     } else {
       badge = t("payPaid"); cls = "adm-pay--paid";
     }
-    var amount = s.payment_amount != null ? (s.payment_amount / 100).toFixed(2) + " SAR" : "";
+    var amount = amountSar(s);
     return "<td class='adm-pay'>" +
       "<span class='adm-pay__badge " + cls + "'" + (tip ? " title='" + esc(tip) + "'" : "") + ">" +
         esc(badge) +
