@@ -276,7 +276,12 @@
     <img class="rd2-cta__bg" src="assets/cta-readers-set.webp" alt="" loading="lazy" decoding="async" width="2000" height="722">
     <div class="rd2-cta__shade"></div>
     <div class="rd2-cta__in">
-      <h2 class="rd2-cta__h" data-i18n="rdCtaH">نصك يستحق أن يقرأه من يعرف ما الذي تحاول قوله</h2>
+      <!-- Same keys as the landing's closing CTA, not a copy of its words:
+           the two are meant to say the same thing, and two sets of strings
+           is how they start not to. data-i18n-html because the heading
+           carries its own line break. -->
+      <h2 class="rd2-cta__h" data-i18n-html="ctaH">الجيل القادم من صنّاع الأفلام<br>لا ينبغي أن ينتظر حتى يكتشفه أحد</h2>
+      <p class="rd2-cta__sub" data-i18n="ctaSub">هل كتبت قصة تستحق أن تُرى؟ ابدأ من المشهد الأول.</p>
       <a class="rd2-cta__btn" href="/submit" data-i18n="btnSubmit">قدّم نصك</a>
     </div>
   </section>

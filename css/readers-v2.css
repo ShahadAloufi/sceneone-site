@@ -262,6 +262,16 @@
   line-height: 1.6;
   color: var(--lx-cream);
 }
+/* Matches .lx-cta__sub on the landing. Margin is 0, not the landing's
+   24px: .rd2-cta__in is a flex column with its own 28px gap, and a margin on
+   top of that would space this one line differently from the same line there. */
+.rd2-cta__sub {
+  margin: 0;
+  max-inline-size: 52ch;
+  font-size: 15px;
+  line-height: 1.85;
+  color: rgba(255, 255, 255, .66);
+}
 .rd2-cta__btn {
   display: inline-flex;
   align-items: center;
