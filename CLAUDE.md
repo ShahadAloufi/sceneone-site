@@ -21,6 +21,26 @@ Two audiences:
 
 ---
 
+## Sibling Project: The Story Challenge
+
+The Saudi Film Forum booth game (`play.sceneone.info`) is a **separate repo and
+a separate Vercel project** at `~/story-challenge` — not part of this one. It
+shares this project's Supabase (its tables are namespaced `story_*`, RLS-isolated
+from `submissions`/`coverages`) and reuses the `admins` table, so staff sign in
+to its dashboard with the accounts they already have. It also carries its own
+copy of `lib/email-brand.js`, whose logo URLs deliberately still point at
+sceneone.info.
+
+Nothing in this repo depends on it, and it must stay that way. It was split out
+so a booth fix during a two-day forum can never redeploy the site that takes real
+money, and so the two have independent deploy histories and rollbacks. (A second
+reason at the time — that it would eat this project's last serverless function
+slot — turned out to rest on the Hobby cap, which no longer applies; see the note
+under Deployment & Environment. The isolation argument stands on its own.)
+Don't rebuild any of it here.
+
+---
+
 ## Current Development Phase
 
 Core product is live in production: submission intake, admin dashboard, reader
@@ -393,6 +413,8 @@ Actively iterating on UX polish and workflow features.
   the same number, in four places that must agree. **DB trigger changed too**
   (`interval '1 hour'`), applied.
 - **⚠️ Vercel Hobby caps the project at 12 serverless functions**, and we hit it.
+  **(Superseded 2026-10-20 — the team now shows Pro; see the cap note under
+  Deployment & Environment before treating 12 as a live constraint.)**
   `/api/sweep-notices` lived for a day before being folded into `log-access`.
   **Now at 11**: `/api/registrations` was retired with the pre-launch interest form
   on 2026-08-30. Anything new under `/api` must still be counted before it is
@@ -1372,7 +1394,11 @@ must be in the `supabase_realtime` publication for live updates to fire.
   CRON_SECRET, because the sweep can only ever send what is already due.
   **Vercel Hobby caps cron at once per day — a more frequent expression fails
   deployment** — which is why the piggyback exists at all; on Pro the cron could be
-  the sole trigger. Sending *late* is harmless (the reader's cancellation window only
+  the sole trigger. **The team now shows Pro (2026-10-20), so that simplification may
+  be available**: a frequent cron could replace the piggyback in `/api/claim-script`
+  entirely. Nobody has tried it. Confirm the plan first, and treat it as a deliberate
+  change with its own testing, not a tidy-up — the piggyback is what currently keeps
+  writers notified. Sending *late* is harmless (the reader's cancellation window only
   widens); sending *early* would be damaging and is impossible, since the cutoff is
   enforced in both the query and the claiming UPDATE. The writer is notified **once
   per script** — a later reassignment leaves `assigned_at` alone, so the notice still
@@ -1692,7 +1718,8 @@ must be in the `supabase_realtime` publication for live updates to fire.
   since together they were why no reader could ever reset a password.
 - ~~Set `CRON_SECRET`~~ — **done 2026-08-04**, confirmed by `/api/send-notices`
   answering 401 rather than 500 to an unauthenticated call. **Still worth one glance:**
-  check a Vercel log around 06:00 (Hobby cron has ±59 min precision) shows
+  check a Vercel log around 06:00 (Hobby cron has ±59 min precision; Pro is punctual,
+  and the team now shows Pro) shows
   `{"ok":true,"sent":N}` and not a 401. If it 401s the daily backstop is silently dead
   and nobody would notice, because the piggyback in `/api/claim-script` keeps working.
 - **Hero photo resolution.** `assets/aboutus-hero-v2.jpg` is 1672×941 — a **1.72×
@@ -2311,11 +2338,24 @@ privileged reads/writes.
   **The `.html` form still resolves, but via a 308 redirect** — so linking it costs
   every visitor an extra round trip. Every internal link was converted on 2026-08-07;
   see the rule under Coding Standards.
-- **⚠️ HARD CAP: 12 Serverless Functions per deployment (Hobby plan).** Every `.js`
-  file under `/api` is one function — **the count, not the traffic, is what fails the
-  build**, with `No more than 12 Serverless Functions can be added to a Deployment on
-  the Hobby plan`. The project sits at **11** (2026-08-08), so there is **one slot
-  left**. Adding a feature that needs several endpoints means **folding them into one
+- **⚠️ THE 12-FUNCTION CAP IS A *HOBBY* LIMIT, AND THE TEAM IS NOW ON PRO.**
+  Observed 2026-10-20: the **SceneOne** Vercel team displays **Pro**. Pro's function
+  allowance is far higher than 12, so the hard cap described below **probably no
+  longer binds** — but this was read off the dashboard sidebar, not from billing, and
+  nobody has tested it by adding a thirteenth function. **Check Vercel → Settings →
+  Billing before relying on either answer.** Everything from here to the end of this
+  bullet is the Hobby-era rule, kept because it explains why several handlers are
+  shaped the way they are:
+  Every `.js` file under `/api` is one function — **the count, not the traffic, is what
+  fails the build**, with `No more than 12 Serverless Functions can be added to a
+  Deployment on the Hobby plan`. The project sits at **11** (2026-08-08), so there was
+  **one slot left**.
+  **Even with the cap lifted, do not go and split the folded handlers back apart.**
+  `api/questions.js` and the booth game's single handler are coherent units — they
+  share their auth, their token checks and their data access — and splitting them
+  would mean several copies of that and several places for it to drift. The cap forced
+  a shape that turned out to be the right one; keep it on its merits.
+  Adding a feature that needs several endpoints means **folding them into one
   handler** that branches on method/payload, the way `api/questions.js` carries the
   whole writer↔reader Q&A (GET thread + POST ask + POST answer). This bit once: the
   Q&A shipped as three files, hit 13, and failed the production build. Check
