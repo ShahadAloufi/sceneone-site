@@ -164,6 +164,12 @@
    the travel only opens a band of backing colour above the photo. */
 .js-reveal [data-reveal="fade"] > * { transform: none; }
 
+/* Holds a closing CTA's backdrop photograph so the reveal engine has a group
+   containing only the photo — the shade over it and the copy above it stay
+   out of the stagger. It takes the box the photo had, and the photo's own
+   inset:0 then resolves against this instead of the section. */
+.cta-bgwrap { position: absolute; inset: 0; z-index: 0; }
+
 .js-reveal [data-reveal].is-in > * {
   opacity: 1;
   transform: translateY(0);
