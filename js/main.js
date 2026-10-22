@@ -244,9 +244,18 @@
   if (!groups.length) return;
 
   Array.prototype.forEach.call(groups, function (group) {
-    Array.prototype.forEach.call(group.children, function (child, i) {
-      child.style.setProperty("--rv", i);
+    /* Numbered in reading order, not DOM order. The alternating reader rows
+       move the portrait to the front of the row with `order: -1`, so numbering
+       by DOM index staggered those rows backwards: the photo led the row for
+       the eye but faded in last. Sorting on the computed `order` first makes
+       the stagger follow what is seen. A group that sets no `order` keeps the
+       numbering it already had. */
+    var kids = Array.prototype.slice.call(group.children).map(function (el, i) {
+      var ord = parseInt(window.getComputedStyle(el).order, 10);
+      return { el: el, order: isNaN(ord) ? 0 : ord, i: i };
     });
+    kids.sort(function (a, b) { return (a.order - b.order) || (a.i - b.i); });
+    kids.forEach(function (k, i) { k.el.style.setProperty("--rv", i); });
   });
 
   var io = new IntersectionObserver(function (entries) {
