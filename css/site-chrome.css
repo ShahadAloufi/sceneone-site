@@ -159,6 +159,11 @@
               transform 760ms cubic-bezier(.22, .61, .36, 1);
   transition-delay: calc(var(--rv, 0) * 115ms);
 }
+/* Fade with no rise, for a block whose child is a position:absolute inset:0
+   image filling it. Moving one of those does not move the panel behind it, so
+   the travel only opens a band of backing colour above the photo. */
+.js-reveal [data-reveal="fade"] > * { transform: none; }
+
 .js-reveal [data-reveal].is-in > * {
   opacity: 1;
   transform: translateY(0);
