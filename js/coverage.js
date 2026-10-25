@@ -587,7 +587,9 @@
     refresh();
   }
   function glanceClass(v) { return v === "Excellent" || v === "Good" ? "good" : (v === "Fair" ? "ok" : "bad"); }
-  function recClass(v) { return v === "Recommend" ? "good" : (v === "Consider" ? "ok" : "bad"); }
+  /* Not "bad" for the third: it reads "Development Recommended" now, a stage
+     rather than a rejection. glanceClass keeps "bad" for a Poor rating. */
+  function recClass(v) { return v === "Recommend" ? "good" : (v === "Consider" ? "ok" : "dev"); }
 
   /* overall /10: average of the set evaluation scores (1-5), scaled to 10 */
   function autoScore() {

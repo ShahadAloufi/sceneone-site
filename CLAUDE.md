@@ -323,8 +323,10 @@ Actively iterating on UX polish and workflow features.
 - **`about-coverage` shows the verdicts in the reader's own language.** The
   Arabic page carries «لا يُوصى به حاليًا» / «يستحق النظر» / «موصى به» alone — no
   Latin term, no parenthetical gloss — and the English page keeps PASS / CONSIDER
-  / RECOMMEND. Same red/gold/green either way: the colour is an inline style on
-  the element, not part of the string. `.grade__label`'s `.18em` tracking moved
+  / RECOMMEND. Same slate/gold/green either way — slate `#8aa0b4` for the third
+  since the 2026-10-25 rewording, as the brand red read as a rejection under
+  wording that is no longer one, and managed only 3.88:1 there. The colour is
+  an inline style on the element, not part of the string. `.grade__label`'s `.18em` tracking moved
   to `html[dir="ltr"]`; it exists for the Latin term and pulls Arabic letterforms
   apart.
 

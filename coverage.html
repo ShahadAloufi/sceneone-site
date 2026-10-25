@@ -20,7 +20,7 @@
     --paper:#ffffff; --card:#ffffff; --line:#e7e2da; --line2:#efebe3;
     --muted:#8a8178; --label:#6f665e; --soft:#f3efe8;
     --field-bg:#ffffff; --field-dim:#d8d2c8; --body-txt:#3f3a35;
-    --good:#2f7d4f; --ok:#b7892b; --bad:#b14a3a;
+    --good:#2f7d4f; --ok:#b7892b; --bad:#b14a3a; --dev:#5a7084;
     --toast-bg:#15110f; --toast-txt:#ffffff;
     /* landing-style action buttons: solid (primary) + ghost outline (secondary) */
     --btn-solid-bg:#141414; --btn-solid-bg-hover:#000000; --btn-solid-text:#ffffff;
@@ -48,7 +48,7 @@
     --paper:#000000; --card:#262626; --line:#363636; --line2:#303030;
     --muted:#9a9a9a; --label:#b5b5b5; --soft:#2f2f2f;
     --field-bg:#1c1c1c; --field-dim:#3a3a3a; --body-txt:#c2c2c2;
-    --good:#2f9d5e; --ok:#bd8a2a; --bad:#c0392b;
+    --good:#2f9d5e; --ok:#bd8a2a; --bad:#c0392b; --dev:#5a7084;
     --toast-bg:#2f2f2f; --toast-txt:#f5f5f5;
     /* white solid + light ghost, matching the hero CTAs */
     --btn-solid-bg:#ffffff; --btn-solid-bg-hover:#eaeaea; --btn-solid-text:#000000;
@@ -223,6 +223,10 @@
   .seg.rate button.on[data-v="Excellent"],.seg button.on.good{background:var(--good)}
   .seg button.on.ok{background:var(--ok)}
   .seg button.on.bad{background:var(--bad)}
+  /* "Development Recommended" is a stage, not a failing mark, so it does not
+     take --bad. One slate for both themes: the lifted variant a dark theme
+     would normally use drops the white label to 4.44:1. */
+  .seg button.on.dev{background:var(--dev)}
 
   /* ---------- "pulled from submission" panel ---------- */
   /* Orange edge all the way round — replaces a grey border with a heavy 3px orange
