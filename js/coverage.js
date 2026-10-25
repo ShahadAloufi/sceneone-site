@@ -616,7 +616,12 @@
   }
 
   function glanceLabel(o) { return T[UILANG][GLANCE_OPT_KEY[o]] || o; }
-  function recLabel(o) { return o; } // verdict stays English in every language
+  /* The picker shows the English label, not the raw stored key. The two were
+     the same string until the verdicts were reworded, and a reader picking
+     "Pass" would now send a writer a report headed "Development Recommended".
+     Still English in every language, and the value written to the row is
+     `o` itself — see REC_OPTS. */
+  function recLabel(o) { return (R.T.en.decision && R.T.en.decision[o]) || o; }
 
   function buildCoverageInputs() {
     var tl = T[UILANG];

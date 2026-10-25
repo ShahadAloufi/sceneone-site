@@ -268,6 +268,33 @@ Actively iterating on UX polish and workflow features.
     left in place deliberately rather than deleted.
 
 
+**Recently shipped (2026-10-25):**
+- **The three verdicts were reworded**, to a constructive framing that no longer
+  tells a writer their script is "not recommended":
+
+  | stored key | English | Arabic |
+  |---|---|---|
+  | `Recommend` | Recommend | «موصى به» |
+  | `Consider` | Consider with Development | «يستحق النظر مع التطوير» |
+  | `Pass` | Development Recommended | «يُوصى بتطويره» |
+
+  - **The stored keys are UNCHANGED** — still `Recommend` / `Consider` / `Pass`.
+    No migration, and `recClass()` and `REC_OPTS` still key on them. Only the
+    display wording moved, exactly as in the 2026-08-31 change below.
+  - **This rewrites already-delivered reports.** They render live from stored
+    coverage data, not from a snapshot taken at delivery, so every report ever
+    sent now reads the new wording. That was the point, but it is worth knowing.
+  - **`recLabel()` in `js/coverage.js` no longer returns the raw key.** The note
+    below says not to "fix" the picker, and that still holds for the *stored*
+    value — but the picker's *label* had been the raw key only because the key
+    and the English label were the same string. They are not any more, so a
+    reader clicking "Pass" would have sent a report headed "Development
+    Recommended". It now reads `T.en.decision`, and still writes `o`.
+  - **`checkout.html` carried a FOURTH wording** that escaped the unification
+    below — «بحاجة إلى تطوير / جدير بالنظر / موصى به». Now aligned.
+  - Each verdict also gained a one-line description, carried by the existing
+    `covGrade*` keys on `about-coverage`.
+
 **Recently shipped (2026-08-31):**
 - **The three verdicts now read in Arabic, everywhere, and from ONE wording:**
   `Recommend` → «موصى به», `Consider` → «يستحق النظر», `Pass` → «لا يُوصى به

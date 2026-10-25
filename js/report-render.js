@@ -60,7 +60,7 @@
       glance_l: { "Premise & Theme": "Premise & Theme", "Hook": "Hook", "Stakes & Plot": "Stakes & Plot", "Character": "Character", "Dialogue": "Dialogue", "Structure & Pace": "Structure & Pace", "Producibility": "Producibility", "Overall presentation": "Overall presentation",
                  "Narrative Clarity": "Narrative clarity", "Character Basics": "Character (fundamentals)", "Emotional Journey": "Emotional journey",
                  "Story Structure": "Overall story structure", "Screenplay Potential": "Screenplay development potential", "Market Viability": "Market viability" },
-      decision: { Recommend: "Recommend", Consider: "Consider", Pass: "Pass" },
+      decision: { Recommend: "Recommend", Consider: "Consider with Development", Pass: "Development Recommended" },
       fmt: {}, drf: {}, genreMap: {}, lenMap: {}, writerMap: {}, months: {}, lvl: {}
     },
     ar: {
@@ -85,7 +85,7 @@
       // (about-coverage), the terms, and this, the report the writer reads. They
       // used to differ («يستحق الدراسة» here, «معتبر» in the terms), so a writer
       // met two names for the same verdict.
-      decision: { Recommend: "موصى به", Consider: "يستحق النظر", Pass: "لا يُوصى به حاليًا" },
+      decision: { Recommend: "موصى به", Consider: "يستحق النظر مع التطوير", Pass: "يُوصى بتطويره" },
       fmt: { "Short film": "فيلم قصير", "Feature": "فيلم طويل", "Feature film": "فيلم طويل", "TV Pilot": "حلقة تجريبية", "Web Series": "مسلسل ويب", "Series": "مسلسل", "Other": "أخرى" },
       drf: { "First draft": "المسودة الأولى", "Second draft": "المسودة الثانية", "Revised draft": "المسودة الثانية", "Final draft": "النسخة النهائية" },
       months: { January: "يناير", February: "فبراير", March: "مارس", April: "أبريل", May: "مايو", June: "يونيو", July: "يوليو", August: "أغسطس", September: "سبتمبر", October: "أكتوبر", November: "نوفمبر", December: "ديسمبر" },
