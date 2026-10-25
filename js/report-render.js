@@ -335,8 +335,10 @@
     // raw value so a decision outside the map still renders.
     var dec = c.verdict.decision ? (t.decision[c.verdict.decision] || c.verdict.decision) : t.pending;
     /* What the verdict MEANS, in the report's own language and in the same
-       words as the guide. A verdict outside the map has no definition, and a
-       report still being written has no verdict yet — both render nothing. */
+       words as the guide. It sits beside the grade, where the reader's own
+       context used to; that context moved to the line under them both. A
+       verdict outside the map has no definition, and a report still being
+       written has no verdict yet — both render nothing. */
     var decDesc = c.verdict.decision ? (t.decisionDesc[c.verdict.decision] || "") : "";
 
     var header = '<div class="rep-header">' +
@@ -358,10 +360,10 @@
         attachmentHtml(c, t) + "</div>" +
       '<div class="verdict"><div class="vh">' + t.verdict + "</div>" +
         '<div style="display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:8px">' +
-          '<div class="vd" style="margin:0">' + dec + (c.verdict.context ? ' <span class="ctx">· ' + esc(c.verdict.context) + "</span>" : "") + "</div>" +
+          '<div class="vd" style="margin:0">' + dec + (decDesc ? ' <span class="ctx">· ' + esc(decDesc) + "</span>" : "") + "</div>" +
           (fs != null ? '<div class="score10"><span class="n">' + fs + "</span> " + t.outof + "</div>" : "") +
         "</div>" +
-        (decDesc ? '<p class="vdesc">' + esc(decDesc) + "</p>" : "") +
+        (c.verdict.context ? '<p class="vdesc">' + esc(c.verdict.context) + "</p>" : "") +
         '<p style="margin:0;color:#3f3a35">' + val(c.verdict.text, nw) + "</p></div>" +
       '<div class="rep-foot"><span>Scene One · sceneone.info</span><span>' + (isT ? t.footT : t.foot) + "</span></div>";
   }

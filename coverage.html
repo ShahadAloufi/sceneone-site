@@ -361,6 +361,11 @@
   .verdict .vh{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);font-weight:600;margin-bottom:8px}
   .verdict .vd{font-size:18px;font-weight:600;margin-bottom:8px}
   .verdict .vd .ctx{font-size:13px;font-weight:400;color:var(--label)}
+  /* The definition now sits in .ctx beside the grade and can run long, so the
+     row wraps. Without a basis the score was pushed onto a line of its own
+     and read as orphaned; this keeps it at the end of the grade line and lets
+     the definition wrap within its own column instead. */
+  .verdict .vd{flex:1 1 60%;min-width:0}
   /* The verdict's fixed definition, between the grade and the reader's own
      words. Lighter and smaller than the prose below it so the two do not read
      as one paragraph, and NOT pre-wrap — it is a fixed string, not typed. */

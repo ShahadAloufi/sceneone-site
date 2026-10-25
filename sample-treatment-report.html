@@ -89,6 +89,11 @@
   .verdict .vh{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);font-weight:600;margin-bottom:8px}
   .verdict .vd{font-size:18px;font-weight:600;margin-bottom:8px}
   .verdict .vd .ctx{font-size:13px;font-weight:400;color:var(--label)}
+  /* The definition now sits in .ctx beside the grade and can run long, so the
+     row wraps. Without a basis the score was pushed onto a line of its own
+     and read as orphaned; this keeps it at the end of the grade line and lets
+     the definition wrap within its own column instead. */
+  .verdict .vd{flex:1 1 60%;min-width:0}
   /* The verdict's fixed definition, between the grade and the reader's own
      words. Lighter and smaller than the prose below it so the two do not read
      as one paragraph, and NOT pre-wrap — it is a fixed string, not typed. */
@@ -367,10 +372,10 @@
       '<div class="verdict"><div class="vh">' + t.verdict + "</div>" +
         '<div style="display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:8px">' +
           '<div class="vd" style="margin:0">' + esc(t.decision[d.verdict.decision] || d.verdict.decision) +
-            ' <span class="ctx">· ' + esc(d.verdict.context) + "</span></div>" +
+            ' <span class="ctx">· ' + esc(t.decisionDesc[d.verdict.decision] || "") + "</span></div>" +
           '<div class="score10"><span class="n">' + esc(d.verdict.score) + "</span> " + t.outof + "</div>" +
         "</div>" +
-        '<p class="vdesc">' + esc(t.decisionDesc[d.verdict.decision] || "") + "</p>" +
+        '<p class="vdesc">' + esc(d.verdict.context) + "</p>" +
         '<p style="margin:0;color:#3f3a35">' + esc(d.verdict.text) + "</p></div>" +
       '<div class="rep-foot"><span>Scene One · sceneone.info</span><span>' + t.foot + "</span></div>";
   }
