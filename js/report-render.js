@@ -61,6 +61,11 @@
                  "Narrative Clarity": "Narrative clarity", "Character Basics": "Character (fundamentals)", "Emotional Journey": "Emotional journey",
                  "Story Structure": "Overall story structure", "Screenplay Potential": "Screenplay development potential", "Market Viability": "Market viability" },
       decision: { Recommend: "Recommend", Consider: "Consider with Development", Pass: "Development Recommended" },
+      decisionDesc: {
+        Recommend: "Ready for industry consideration.",
+        Consider: "Shows strong potential, with specific areas requiring further development.",
+        Pass: "Would benefit from substantial creative development before industry consideration."
+      },
       fmt: {}, drf: {}, genreMap: {}, lenMap: {}, writerMap: {}, months: {}, lvl: {}
     },
     ar: {
@@ -86,6 +91,11 @@
       // used to differ («يستحق الدراسة» here, «معتبر» in the terms), so a writer
       // met two names for the same verdict.
       decision: { Recommend: "موصى به", Consider: "يستحق النظر مع التطوير", Pass: "يُوصى بتطويره" },
+      decisionDesc: {
+        Recommend: "النص جاهز للعرض على جهات الصناعة.",
+        Consider: "يُظهر النص إمكانات قوية، مع مواضع محددة تحتاج إلى مزيد من التطوير.",
+        Pass: "سيستفيد النص من تطوير إبداعي جوهري قبل عرضه على جهات الصناعة."
+      },
       fmt: { "Short film": "فيلم قصير", "Feature": "فيلم طويل", "Feature film": "فيلم طويل", "TV Pilot": "حلقة تجريبية", "Web Series": "مسلسل ويب", "Series": "مسلسل", "Other": "أخرى" },
       drf: { "First draft": "المسودة الأولى", "Second draft": "المسودة الثانية", "Revised draft": "المسودة الثانية", "Final draft": "النسخة النهائية" },
       months: { January: "يناير", February: "فبراير", March: "مارس", April: "أبريل", May: "مايو", June: "يونيو", July: "يوليو", August: "أغسطس", September: "سبتمبر", October: "أكتوبر", November: "نوفمبر", December: "ديسمبر" },
@@ -324,6 +334,10 @@
     // guide, the terms, the treatment sample — said «موصى به». Falls back to the
     // raw value so a decision outside the map still renders.
     var dec = c.verdict.decision ? (t.decision[c.verdict.decision] || c.verdict.decision) : t.pending;
+    /* What the verdict MEANS, in the report's own language and in the same
+       words as the guide. A verdict outside the map has no definition, and a
+       report still being written has no verdict yet — both render nothing. */
+    var decDesc = c.verdict.decision ? (t.decisionDesc[c.verdict.decision] || "") : "";
 
     var header = '<div class="rep-header">' +
       '<img class="rep-logo" src="' + LOGO + '" alt="Scene One">' +
@@ -347,6 +361,7 @@
           '<div class="vd" style="margin:0">' + dec + (c.verdict.context ? ' <span class="ctx">· ' + esc(c.verdict.context) + "</span>" : "") + "</div>" +
           (fs != null ? '<div class="score10"><span class="n">' + fs + "</span> " + t.outof + "</div>" : "") +
         "</div>" +
+        (decDesc ? '<p class="vdesc">' + esc(decDesc) + "</p>" : "") +
         '<p style="margin:0;color:#3f3a35">' + val(c.verdict.text, nw) + "</p></div>" +
       '<div class="rep-foot"><span>Scene One · sceneone.info</span><span>' + (isT ? t.footT : t.foot) + "</span></div>";
   }

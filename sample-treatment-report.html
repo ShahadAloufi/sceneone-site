@@ -89,6 +89,10 @@
   .verdict .vh{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);font-weight:600;margin-bottom:8px}
   .verdict .vd{font-size:18px;font-weight:600;margin-bottom:8px}
   .verdict .vd .ctx{font-size:13px;font-weight:400;color:var(--label)}
+  /* The verdict's fixed definition, between the grade and the reader's own
+     words. Lighter and smaller than the prose below it so the two do not read
+     as one paragraph, and NOT pre-wrap — it is a fixed string, not typed. */
+  .verdict .vdesc{margin:0 0 10px;font-size:12.5px;line-height:1.6;color:var(--label)}
   .score10{font-weight:600;color:var(--orange);white-space:nowrap;font-variant-numeric:tabular-nums;font-size:16px;direction:ltr}
   .score10 .n{font-size:30px}
   .rep-foot{border-top:1px solid var(--line2);margin-top:34px;padding-top:14px;display:flex;justify-content:space-between;font-size:11px;color:var(--muted);letter-spacing:.04em}
@@ -181,6 +185,11 @@
       // report view that is NOT renderer-driven, so the map has to be repeated
       // here — change one, change the other.
       decision: { Recommend: "موصى به", Consider: "يستحق النظر مع التطوير", Pass: "يُوصى بتطويره" },
+      decisionDesc: {
+        Recommend: "النص جاهز للعرض على جهات الصناعة.",
+        Consider: "يُظهر النص إمكانات قوية، مع مواضع محددة تحتاج إلى مزيد من التطوير.",
+        Pass: "سيستفيد النص من تطوير إبداعي جوهري قبل عرضه على جهات الصناعة."
+      },
       foot: "سري، لا يُتداول خارج نطاق المرسل إليه"
     },
     en: {
@@ -201,6 +210,11 @@
       strengths: "Strengths", develop: "What needs development",
       verdict: "Verdict", outof: "/ 10",
       decision: { Recommend: "Recommend", Consider: "Consider with Development", Pass: "Development Recommended" },
+      decisionDesc: {
+        Recommend: "Ready for industry consideration.",
+        Consider: "Shows strong potential, with specific areas requiring further development.",
+        Pass: "Would benefit from substantial creative development before industry consideration."
+      },
       foot: "Confidential, not for circulation beyond the addressee"
     }
   };
@@ -356,6 +370,7 @@
             ' <span class="ctx">· ' + esc(d.verdict.context) + "</span></div>" +
           '<div class="score10"><span class="n">' + esc(d.verdict.score) + "</span> " + t.outof + "</div>" +
         "</div>" +
+        '<p class="vdesc">' + esc(t.decisionDesc[d.verdict.decision] || "") + "</p>" +
         '<p style="margin:0;color:#3f3a35">' + esc(d.verdict.text) + "</p></div>" +
       '<div class="rep-foot"><span>Scene One · sceneone.info</span><span>' + t.foot + "</span></div>";
   }
