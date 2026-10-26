@@ -905,55 +905,82 @@
    accreditation badge in the bottom corner a ground to sit on — it is out on
    the open side, where the horizontal veil has nearly cleared.
 
-   The stops are the lightest that still hold, re-measured after this was
-   asked to come down again. Eight points across the loop, every pixel under
-   each element sampled against the real composite: headline 5.4:1, lede
-   6.1:1, badge 4.6:1, SAIP line 12.0:1 — all above WCAG AA, with mean veil
-   coverage down from 57% to 42%.
+   The stops are SHAPED to the copy rather than a plain ramp, re-measured after
+   this was asked to come down a second time. The heavy band holds to 66% —
+   where the headline ends at the narrowest desktop width — then dips to .08
+   across the open middle, then lifts again at the last 14% for the
+   accreditation badge, which sits right out in that corner at 91–97%.
 
-   The badge's caption is what sets the floor. It sits out on the open side
-   where the horizontal veil has nearly cleared, so it leans on the bottom
-   fade instead, and one step lighter puts it at 4.4:1, under AA. The headline
-   and lede still have room (they are at 5.4 and 6.1 against a 4.5 floor); the
-   badge does not. */
+   A plain ramp could not do this. The badge and the headline are at opposite
+   ends of the same axis, so lightening for one darkened the other; the dip
+   between them is what buys back the picture. Mean veil 42.5% -> 42.0%, but
+   the open middle of the frame goes from .50 to .08, which is what the eye
+   actually reads.
+
+   The mask also starts later, 44% -> 50%: on desktop the copy does not begin
+   until 54% of the hero's height, so the veil above that bought no legibility
+   and only cost picture.
+
+   Measured on the real composite, six frames across the loop, every pixel
+   under each element, at 1280 / 1440 / 1680:
+     headline 6.36 / 6.47 / 6.50 (36px/700, large text, floor 3)
+     lede     4.57 / 4.65 / 4.63 (22px/500, floor 4.5)
+     badge    5.18 / 5.68 / 4.78 (14px/400, floor 4.5)
+     SAIP     11.6 / 11.7 / 11.8
+   All above WCAG AA. The lede is the one to watch: at 22px/500 it is NOT
+   large text, so it needs 4.5, and under the old stops it sat at 4.00-4.15 —
+   marginally UNDER AA at every width. Shaping the band to the copy fixed that
+   while taking the wash off the picture. */
 .landing .hero__shade {
   background:
     linear-gradient(to top, var(--lx-cream) 0%, rgba(249, 244, 239, 0) 24%),
     linear-gradient(to left,
       rgba(249, 244, 239, .62) 0%,
-      rgba(249, 244, 239, .50) 58%,
-      rgba(249, 244, 239, .16) 100%);
+      rgba(249, 244, 239, .54) 66%,
+      rgba(249, 244, 239, .08) 80%,
+      rgba(249, 244, 239, .14) 86%,
+      rgba(249, 244, 239, .56) 100%);
   /* The wash is held off the top of the frame, where nothing is written: the
-     copy does not start until 56% of the hero's height, so above that the veil
+     copy does not start until 54% of the hero's height, so above that the veil
      buys no legibility and only costs picture. The mask fades it in from
-     nothing at the top to full by 44%, just before the headline. */
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 44%);
-  mask-image: linear-gradient(to bottom, transparent 0%, #000 44%);
+     nothing at the top to full by 50%, just before the headline. Mobile keeps
+     44% — see the media query, where the headline sits much higher. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 50%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 50%);
 }
 html[dir="ltr"] .landing .hero__shade {
   background:
     linear-gradient(to top, var(--lx-cream) 0%, rgba(249, 244, 239, 0) 24%),
     linear-gradient(to right,
       rgba(249, 244, 239, .62) 0%,
-      rgba(249, 244, 239, .50) 58%,
-      rgba(249, 244, 239, .16) 100%);
+      rgba(249, 244, 239, .54) 66%,
+      rgba(249, 244, 239, .08) 80%,
+      rgba(249, 244, 239, .14) 86%,
+      rgba(249, 244, 239, .56) 100%);
 }
 /* On a phone the copy is under the film rather than beside it, so the veil
    turns vertical — the design's own second gradient.
 
-   This one could not come down as far as the desktop veil. With the copy ON
-   the film rather than beside it, the headline is the binding element, not
-   the badge: at 28px/700 it is WCAG large text and needs 3:1, and these stops
-   leave it at 3.6:1 with the lede at 5.8:1. One step lighter puts the
-   headline at 3.0:1, on the line. Measured the same way, at 375x812. */
+   This one still cannot come down as far as the desktop veil, and the shaping
+   that works there does not apply: with the copy ON the film rather than
+   beside it there is no open side to clear. The headline binds — at 28px/700
+   it is WCAG large text and needs 3:1 — and it now sits at 3.22:1, with the
+   lede at 5.25:1 and the badge at 12.5:1. Measured the same way at 375x812.
+   Lightening the mid stop another two points puts the headline at 2.64:1,
+   under the floor, so this is close to as far as a phone goes. */
 @media (max-width: 860px) {
   .landing .hero__shade,
   html[dir="ltr"] .landing .hero__shade {
     background: linear-gradient(to top,
       var(--lx-cream) 0%,
-      rgba(249, 244, 239, .86) 26%,
-      rgba(249, 244, 239, .50) 62%,
-      rgba(249, 244, 239, .18) 100%);
+      rgba(249, 244, 239, .85) 26%,
+      rgba(249, 244, 239, .47) 62%,
+      rgba(249, 244, 239, .04) 100%);
+    /* The mask stays at 44% here. On a phone the headline starts at 36% of the
+       hero, ABOVE where the desktop mask now fades in, so moving it down takes
+       the ground out from under the headline: measured 2.60:1 at 52%. */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 44%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 44%);
   }
 }
 
