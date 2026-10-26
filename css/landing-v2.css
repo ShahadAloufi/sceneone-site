@@ -918,99 +918,71 @@
 
 /* ---- the hero ----------------------------------------------------------- */
 
-/* The veil is no longer a wash across the frame. It was asked to come down
-   three times, and a wash cannot keep going: the headline, the lede and the
-   accreditation badge all drew their contrast from one sheet of cream, so
-   every point taken off the picture came off all three at once.
+/* The veil is HORIZONTAL, which is the whole trick and what I had wrong twice.
+   The copy sits on one side of the frame, so the cream is heaviest there and
+   clears almost to nothing on the other: black type gets a near-solid ground to
+   sit on while the film stays visible beside it. A vertical veil cannot do both
+   — it either washes the whole frame or leaves the copy on bare footage.
 
-   So the sheet is gone, and each thing that needs a ground carries its own —
-   a soft panel under the copy column, a fainter one under the badge. The rest
-   of the frame is film. What is left on .hero__shade is the bottom fade, which
-   was never legibility: it is the join to the cream section below, and what
-   the SAIP strip sits on.
+   Mirrored for the English page, where the copy sits on the other side.
+   A second layer fades the last stretch to solid cream so the hero meets the
+   section under it without a cut. That layer is also what gives the
+   accreditation badge in the bottom corner a ground to sit on — it is out on
+   the open side, where the horizontal veil has nearly cleared.
 
-   A blurred rect, NOT a radial gradient. The copy is a wide block and an
-   ellipse large enough to reach its corners is far larger than the block, so
-   it washes the frame again to cover four corners. A blurred rounded rect is
-   the shape of the thing it is covering.
+   The stops are SHAPED to the copy rather than a plain ramp, re-measured after
+   this was asked to come down a second time. The heavy band holds to 66% —
+   where the headline ends at the narrowest desktop width — then dips to .08
+   across the open middle, then lifts again at the last 14% for the
+   accreditation badge, which sits right out in that corner at 91–97%.
 
-   It also hangs off .hero__content rather than the hero, so it tracks the copy
-   column instead of a fixed percentage of the frame. That matters: the column
-   is capped at 768px, which is 53% of a 1440 frame but 85% of a 900 one, and
-   a fixed ellipse slid off the text as the window narrowed.
+   A plain ramp could not do this. The badge and the headline are at opposite
+   ends of the same axis, so lightening for one darkened the other; the dip
+   between them is what buys back the picture. Mean veil 42.5% -> 42.0%, but
+   the open middle of the frame goes from .50 to .08, which is what the eye
+   actually reads.
 
-   Which is how this turned up a live bug. At ~900px in English the headline
-   fills the column and its tail ran past the old veil onto the dark thumb in
-   the footage: measured 1.19:1, far under the 3:1 a 36px/700 headline needs.
-   It is 6.29:1 now.
+   The mask also starts later, 44% -> 50%: on desktop the copy does not begin
+   until 54% of the hero's height, so the veil above that bought no legibility
+   and only cost picture.
 
-   The panel is at .78, set to match the cream the PHONE hero puts under its
-   copy — the desktop headline was not reading at .45. The phone's vertical
-   veil lands about .49 alpha under its headline, and the panel has to go
-   higher than that to match, because it is the only cream under the desktop
-   copy whereas the phone also has the bottom fade stacked beneath.
-
-   This is the third setting for this panel, so for whoever tunes it next:
-   .45 is too light (the lede fell to 2.83 at 1440 en, the headline to 4.30),
-   .62 is the floor at which the lede still holds AA (4.61 at 1440 en), and
-   .78 is where the copy reads comfortably rather than just passing.
-
-   Mean cream coverage, measured against the real composite with the video
-   cropped the way object-fit: cover crops it, six frames across the loop,
-   every pixel under each element. The old full-frame wash was a flat 42%:
-
-              900     1280    1440
-     .45       37.2    28.9    26.0
-     .78       55.8    41.0    36.2
-
-   900 is the width where the copy column fills the frame, so the panel covers
-   most of it; that is also the width whose headline was failing outright
-   before the panel existed.
-
-     element   900    1280   1440   floor
-     headline  9.53  10.03   9.99    3    (36px/700, large text)
-     lede      7.01   6.90   6.91    4.5  (22px/500, NOT large)
-     badge     5.80   5.09   5.38    4.5
-     SAIP      9.27  12.08  12.16    4.5
-   Both directions; the figures above are the worse of the two. */
+   Measured on the real composite, six frames across the loop, every pixel
+   under each element, at 1280 / 1440 / 1680:
+     headline 6.36 / 6.47 / 6.50 (36px/700, large text, floor 3)
+     lede     4.57 / 4.65 / 4.63 (22px/500, floor 4.5)
+     badge    5.18 / 5.68 / 4.78 (14px/400, floor 4.5)
+     SAIP     11.6 / 11.7 / 11.8
+   All above WCAG AA. The lede is the one to watch: at 22px/500 it is NOT
+   large text, so it needs 4.5, and under the old stops it sat at 4.00-4.15 —
+   marginally UNDER AA at every width. Shaping the band to the copy fixed that
+   while taking the wash off the picture. */
 .landing .hero__shade {
-  background: linear-gradient(to top, var(--lx-cream) 0%, rgba(249, 244, 239, 0) 24%);
-  /* Held off the top of the frame, where nothing is written. Mobile keeps 44%
-     — see the media query, where the headline sits much higher. */
+  background:
+    linear-gradient(to top, var(--lx-cream) 0%, rgba(249, 244, 239, 0) 24%),
+    linear-gradient(to left,
+      rgba(249, 244, 239, .62) 0%,
+      rgba(249, 244, 239, .54) 66%,
+      rgba(249, 244, 239, .08) 80%,
+      rgba(249, 244, 239, .14) 86%,
+      rgba(249, 244, 239, .56) 100%);
+  /* The wash is held off the top of the frame, where nothing is written: the
+     copy does not start until 54% of the hero's height, so above that the veil
+     buys no legibility and only costs picture. The mask fades it in from
+     nothing at the top to full by 50%, just before the headline. Mobile keeps
+     44% — see the media query, where the headline sits much higher. */
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 50%);
   mask-image: linear-gradient(to bottom, transparent 0%, #000 50%);
 }
-
-/* The copy's ground and the badge's. Both are pseudo-elements rather than a
-   background on the element itself: a background is clipped to the box, and
-   these have to finish fading OUTSIDE the text they cover or the clip shows as
-   a rectangle. z-index -1 keeps them behind their own element's text while
-   staying above the film.
-
-   Only above 860px. Below that the hero falls back to the phone's vertical
-   veil, which puts cream under the whole lower half already. */
-@media (min-width: 861px) {
-  .landing .hero__content::before,
-  .landing .hero .partner::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    pointer-events: none;
-  }
-  .landing .hero__content::before {
-    inset: -36px -56px;
-    border-radius: 48px;
-    background: rgba(249, 244, 239, .78);
-    filter: blur(46px);
-  }
-  .landing .hero .partner::before {
-    inset: -12px -14px;
-    border-radius: 24px;
-    background: rgba(249, 244, 239, .34);
-    filter: blur(22px);
-  }
+html[dir="ltr"] .landing .hero__shade {
+  background:
+    linear-gradient(to top, var(--lx-cream) 0%, rgba(249, 244, 239, 0) 24%),
+    linear-gradient(to right,
+      rgba(249, 244, 239, .62) 0%,
+      rgba(249, 244, 239, .54) 66%,
+      rgba(249, 244, 239, .08) 80%,
+      rgba(249, 244, 239, .14) 86%,
+      rgba(249, 244, 239, .56) 100%);
 }
-
 /* On a phone the copy is under the film rather than beside it, so the veil
    turns vertical — the design's own second gradient.
 
