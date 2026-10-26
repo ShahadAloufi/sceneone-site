@@ -182,7 +182,15 @@
   position: absolute;
   inset-inline: 0;
   inset-block-end: 0;
-  z-index: 2;
+  /* Above .hero__content, which is z-index 10 and — despite ending its copy at
+     the CTA — stretches its box all the way to the foot of the hero. That empty
+     tail was painting over this strip and swallowing every click on the SAIP
+     link: the link was reachable at narrow widths only because the strip is
+     hidden under 600px and the copy column is shorter above it.
+     Safe to lift: this band holds nothing else interactive — the CTA ends at
+     796px and the accreditation badge at 812px, well clear of the strip's top
+     at 846px. */
+  z-index: 11;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -197,7 +205,24 @@
      cut across the picture. */
 }
 .hero__strip p { margin: 0; font-size: 13px; line-height: 1.7; color: rgba(255,255,255,.62); }
-.hero__strip a { color: rgba(255,255,255,.92); text-decoration: underline; text-underline-offset: 3px; }
+.hero__strip a {
+  color: rgba(255,255,255,.92);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  /* The hit area, not the ink. "SAIP" sets at 24x13 CSS px, under WCAG 2.2
+     Target Size (Minimum)'s 24x24, and it is a four-letter word inside a
+     sentence — easy to miss by a pixel or two. The pseudo-element grows the
+     clickable box to 36x29 without touching the line box, so the sentence does
+     not reflow and the underline stays the width of the word. It fits inside
+     the strip's own 16px padding, so it reaches no other control. */
+  position: relative;
+}
+.hero__strip a::after {
+  content: "";
+  position: absolute;
+  inset-block: -8px;
+  inset-inline: -6px;
+}
 .hero__strip a:hover { color: #fff; }
 @media (max-width: 600px) { .hero__strip { display: none; } }
 
