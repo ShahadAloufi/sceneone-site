@@ -532,6 +532,14 @@
 
       // ---- privacy.html ----
       docTitlePrivacy: "سياسة الخصوصية | Scene One",
+
+      /* /partners — the page exists to host a form that has not landed yet,
+         so this copy is a placeholder and should be replaced with the real
+         wording when it does. */
+      docTitlePartners: "شركاء سين ون | Scene One",
+      pnEyebrow: "شركاء",
+      pnHeroTitle: "شركاء سين ون",
+      pnLede: "املأ النموذج أدناه وسنعود إليك.",
       privHeroTitle: "سياسة الخصوصية",
       privIntroTitle: "المقدمة",
       privIntroHtml: "<p>توضح سياسة الخصوصية هذه كيفية قيام منصة (Scene One) بجمع البيانات الشخصية ومعالجتها وتخزينها وحمايتها عند استخدامك للمنصة والخدمات المرتبطة بها، بما في ذلك خدمات قراءة النصوص السينمائية وتقييمها وربطها بفرص الإنتاج.</p>" +
@@ -1090,6 +1098,12 @@
 
       // ---- privacy.html ----
       docTitlePrivacy: "Privacy Policy | Scene One",
+
+      /* /partners — placeholder, see the Arabic side. */
+      docTitlePartners: "Partners | Scene One",
+      pnEyebrow: "Partners",
+      pnHeroTitle: "Scene One Partners",
+      pnLede: "Fill in the form below and we will get back to you.",
       privHeroTitle: "Privacy Policy",
       privIntroTitle: "Introduction",
       privIntroHtml: "<p>This Privacy Policy explains how the Scene One platform collects, processes, stores, and protects personal data when you use the platform and its related services, including screenplay reading, evaluation, and connecting scripts with production opportunities.</p>" +
