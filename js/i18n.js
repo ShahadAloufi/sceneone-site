@@ -198,7 +198,7 @@
       partSub: "يحصل أعضاء جمعية السينما السعودية على مزايا خاصة في خدمات تغطية النصوص.",
 
       footBlurb: "نكتشف الأصوات الجديدة، نطوّر أفلامها، ونبني لها طريقًا إلى الشاشة",
-      footCoverage: "تغطية النصوص", footReaders: "من يقرأ نصك", footStory: "حكاية سين ون",
+      footCoverage: "تغطية النصوص", footReaders: "من يقرأ نصك", footStory: "حكاية سين ون", footPartners: "شركاء",
       footContact: "للتواصل",
       footWa: "واتساب",
       footCallAria: "اتصل بنا على 966580503970",
@@ -795,7 +795,7 @@
       partSub: "Members of the Saudi Cinema Association receive special benefits on script coverage services.",
 
       footBlurb: "We find new voices, develop their films, and build them a road to the screen",
-      footCoverage: "Coverage", footReaders: "Who reads your script", footStory: "The Scene One story",
+      footCoverage: "Coverage", footReaders: "Who reads your script", footStory: "The Scene One story", footPartners: "Partners",
       footContact: "Contact",
       footWa: "WhatsApp",
       footCallAria: "Call us on 966580503970",
