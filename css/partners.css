@@ -1,43 +1,182 @@
-/* /partners — the embedded meeting-request form.
+/* /partners — the meeting-request form.
    Page-specific, like checkout.css and readers-v2.css: the page's chrome and
-   type come from terms-v2.css, and only the embed is new. */
+   type come from terms-v2.css, and only the form is new. The field treatment
+   deliberately echoes /submit (white card on cream, 12px radius, red focus
+   ring) so the two forms on the site read as one hand — but it is written out
+   here rather than borrowed, because submit-v2.css scopes everything to .sb2
+   and carries a whole page's worth of layout with it. */
 
 .pn-form {
-  /* Google caps the form itself at 640px and centres it inside the frame, so
-     a wider iframe only adds its own white margins. Matching that width lets
-     the embed sit on the page's own measure instead of floating in a band. */
+  /* The same measure the embed used, kept so the page's rhythm is unchanged. */
   max-inline-size: 640px;
   margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
+/* display:flex outranks the hidden attribute, so the thank-you swap needs
+   this to actually take the form off the page. */
+.pn-form[hidden] { display: none; }
 
-.pn-form__frame {
-  display: block;
+/* ---- fields -------------------------------------------------------------- */
+
+.pn-field { display: flex; flex-direction: column; }
+
+.pn-field label,
+.pn-field .pn-label {
+  margin-block-end: 12px;
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--lx-black);
+}
+.pn-field .req { color: var(--lx-red); }
+/* Quieter than the label it trails, so "optional" never competes with the
+   question itself. */
+.pn-field .pn-opt { font-weight: 400; color: var(--lx-muted, #8a8178); }
+
+.pn-field input[type="text"],
+.pn-field input[type="email"],
+.pn-field textarea {
   inline-size: 100%;
-  border: 0;
-  /* Cross-origin, so the parent cannot read the form's height and resize to
-     it — the number has to be set here. Measured: 1025px at >=640 wide, with
-     ~80px of headroom for the "this question is required" lines, which only
-     appear after a failed submit. If it ever overflows the frame scrolls. */
-  block-size: 1105px;
-  color-scheme: light;
+  box-sizing: border-box;
+  min-block-size: 58px;
+  padding-inline: 20px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: var(--lx-white, #fff);
+  color: var(--lx-black);
+  font-family: var(--font-body);
+  font-size: 16px;                 /* below 16 and iOS zooms the page on focus */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
 }
-@media (max-width: 600px) {
-  /* The questions wrap on a phone, which costs about 95px. Measured at 375. */
-  .pn-form__frame { block-size: 1225px; }
+.pn-field textarea {
+  min-block-size: 132px;
+  padding-block: 18px;
+  line-height: 1.85;
+  resize: vertical;
+}
+/* The email field is dir="ltr" so the address never reorders, but in Arabic it
+   still has to start on the right edge like every other field. */
+html[dir="rtl"] .pn-field input[dir="ltr"] { text-align: right; }
+
+.pn-field input::placeholder,
+.pn-field textarea::placeholder { color: #a8a29a; }
+.pn-field input:focus,
+.pn-field textarea:focus {
+  outline: none;
+  border-color: var(--lx-red);
+  box-shadow: 0 0 0 3px rgba(205, 46, 7, .12);
 }
 
-/* Shown under the frame, always — a browser blocking third-party frames gives
-   no error, just an empty box, and this is the only way out of that. */
-.pn-form__fallback {
-  margin-block-start: 18px;
+/* ---- the one-of-three choice --------------------------------------------- */
+
+.pn-choices { display: flex; flex-direction: column; gap: 12px; }
+.pn-choice {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-block-size: 58px;
+  padding-inline: 20px;
+  padding-block: 12px;             /* a wrapped option grows instead of clipping */
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: var(--lx-white, #fff);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+  cursor: pointer;
+  transition: border-color 180ms ease;
+}
+/* The native control is hidden, not removed: it still carries the name, the
+   value and the keyboard behaviour. */
+.pn-choice input { position: absolute; opacity: 0; pointer-events: none; }
+.pn-choice__dot {
+  flex: 0 0 auto;
+  inline-size: 18px;
+  block-size: 18px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .1);
+  transition: background-color 180ms ease, box-shadow 180ms ease;
+}
+.pn-choice input:checked ~ .pn-choice__dot {
+  background: var(--lx-red);
+  box-shadow: inset 0 0 0 3px var(--lx-white, #fff);
+}
+.pn-choice:has(input:checked) { border-color: var(--lx-red); }
+.pn-choice input:checked ~ .pn-choice__label { font-weight: 600; }
+/* Keyboard focus has to be visible even though the input itself is not. */
+.pn-choice input:focus-visible ~ .pn-choice__dot { box-shadow: 0 0 0 3px rgba(205, 46, 7, .3); }
+.pn-choice__label { font-size: 16px; line-height: 1.6; color: var(--lx-black); }
+
+/* ---- validation ---------------------------------------------------------- */
+
+.pn-err { margin: 8px 0 0; font-size: 14px; color: var(--lx-red); display: none; }
+.pn-field.invalid .pn-err { display: block; }
+.pn-field.invalid input,
+.pn-field.invalid textarea,
+.pn-field.invalid .pn-choice { border-color: var(--lx-red); }
+
+/* ---- send ---------------------------------------------------------------- */
+
+.pn-submit {
+  align-self: flex-start;
+  min-block-size: 58px;
+  padding-inline: 38px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--lx-black, #15110f);
+  color: var(--lx-white, #fff);
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 180ms ease, opacity 180ms ease;
+}
+.pn-submit:hover { background: var(--lx-red); }
+.pn-submit:focus-visible { outline: 2px solid var(--lx-red); outline-offset: 3px; }
+.pn-submit[disabled] { opacity: .55; cursor: default; }
+.pn-submit[disabled]:hover { background: var(--lx-black, #15110f); }
+@media (max-width: 600px) {
+  /* A thumb on a phone should not have to find a 200px target in the corner. */
+  .pn-submit { align-self: stretch; }
+}
+
+.pn-fail {
+  display: none;
+  margin: 0;
   font-size: 14px;
   line-height: 1.7;
-  color: var(--lx-muted, #8a8178);
+  color: var(--lx-red);
+}
+.pn-form.failed .pn-fail { display: block; }
+.pn-fail a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---- the thank-you ------------------------------------------------------- */
+/* Replaces the form in the same column, so the page does not jump or reflow
+   around it. */
+
+.pn-done {
+  max-inline-size: 640px;
+  margin-inline: auto;
+  padding-block: clamp(28px, 5vw, 48px);
   text-align: center;
 }
-.pn-form__fallback a {
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+.pn-done__tick {
+  inline-size: 44px;
+  block-size: 44px;
+  margin-block-end: 18px;
+  color: var(--lx-red);
 }
-.pn-form__fallback a:hover { color: var(--lx-black, #15110f); }
+.pn-done__h {
+  margin: 0 0 10px;
+  font-family: var(--font-head);
+  font-size: clamp(22px, 2.6vw, 28px);
+  font-weight: 700;
+  color: var(--lx-black);
+}
+.pn-done__p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--lx-muted, #8a8178);
+}

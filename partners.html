@@ -114,21 +114,79 @@
 
   <main class="tm2-main">
     <div class="tm2-in">
-      <!-- The meeting-request form, embedded from Google Forms.
-           ?embedded=true drops Google's own page chrome and leaves the form.
-           The iframe's height is hard-coded because the frame is cross-origin:
-           the page cannot measure the form and size to it. See css/partners.css
-           for the measurements. -->
-      <div class="pn-form" id="form">
-        <iframe class="pn-form__frame"
-                src="https://docs.google.com/forms/d/e/1FAIpQLSdwW_mNvJtyLb9hGKb-Pmgn9f-_GIKBobl5qcMupETe2Ezk3A/viewform?embedded=true"
-                title="Request a meeting with Scene One"
-                data-i18n-aria="pnFormLabel">النموذج قيد التحميل…</iframe>
-        <p class="pn-form__fallback">
-          <span data-i18n="pnFallback">لا يظهر النموذج؟</span>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSdwW_mNvJtyLb9hGKb-Pmgn9f-_GIKBobl5qcMupETe2Ezk3A/viewform" target="_blank" rel="noopener noreferrer"
-             data-i18n="pnFallbackLink">افتحه في نافذة جديدة</a>
+      <!-- The meeting-request form. The fields are ours; the answers still land
+           in the same Google Form responses sheet, posted by js/partners.js to
+           the form's own /formResponse endpoint. The entry.* names below are
+           Google's field ids and must not be renamed — they are the only thing
+           tying a field here to a column there. The radio VALUES are likewise
+           the exact option strings Google stores, so the English form writes
+           Arabic values on purpose. -->
+      <form class="pn-form" id="form" novalidate
+            data-form-action="https://docs.google.com/forms/d/e/1FAIpQLSdwW_mNvJtyLb9hGKb-Pmgn9f-_GIKBobl5qcMupETe2Ezk3A/formResponse">
+
+        <div class="pn-field" data-field="name">
+          <label for="pn-name"><span data-i18n="pnQName">الاسم واسم شركة الإنتاج</span><span class="req"> *</span></label>
+          <input type="text" id="pn-name" name="entry.222620959" autocomplete="organization"
+                 data-i18n-ph="pnPhName" placeholder="الاسم، واسم الشركة">
+          <p class="pn-err" data-i18n="pnErrRequired">هذا الحقل مطلوب.</p>
+        </div>
+
+        <div class="pn-field" data-field="email">
+          <label for="pn-email"><span data-i18n="pnQEmail">البريد الإلكتروني للتواصل</span><span class="req"> *</span></label>
+          <input type="email" id="pn-email" name="entry.418305176" dir="ltr" autocomplete="email"
+                 data-i18n-ph="pnPhEmail" placeholder="name@company.com">
+          <p class="pn-err" data-i18n="pnErrEmail">يرجى إدخال بريد إلكتروني صحيح.</p>
+        </div>
+
+        <div class="pn-field" data-field="interest">
+          <span class="pn-label"><span data-i18n="pnQInterest">ما مجال التعاون الذي يهمكم؟</span><span class="req"> *</span></span>
+          <div class="pn-choices">
+            <label class="pn-choice">
+              <input type="radio" name="entry.1651544575" value="تقييم النصوص الواردة إلى شركتنا">
+              <span class="pn-choice__dot" aria-hidden="true"></span>
+              <span class="pn-choice__label" data-i18n="pnOpt1">تقييم النصوص الواردة إلى شركتنا</span>
+            </label>
+            <label class="pn-choice">
+              <input type="radio" name="entry.1651544575" value="الاطلاع على مشاريع سينمائية مطوّرة">
+              <span class="pn-choice__dot" aria-hidden="true"></span>
+              <span class="pn-choice__label" data-i18n="pnOpt2">الاطلاع على مشاريع سينمائية مطوّرة</span>
+            </label>
+            <label class="pn-choice">
+              <input type="radio" name="entry.1651544575" value="فرص تعاون أخرى">
+              <span class="pn-choice__dot" aria-hidden="true"></span>
+              <span class="pn-choice__label" data-i18n="pnOpt3">فرص تعاون أخرى</span>
+            </label>
+          </div>
+          <p class="pn-err" data-i18n="pnErrChoose">يرجى اختيار أحد الخيارات.</p>
+        </div>
+
+        <div class="pn-field" data-field="notes">
+          <label for="pn-notes"><span data-i18n="pnQNotes">ما الذي ترغبون بمناقشته؟</span>
+            <span class="pn-opt" data-i18n="pnOptional">(اختياري)</span></label>
+          <textarea id="pn-notes" name="entry.162389323" rows="4"
+                    data-i18n-ph="pnPhNotes" placeholder="سطر أو سطران يكفيان."></textarea>
+        </div>
+
+        <button class="pn-submit" type="submit">
+          <span data-i18n="pnSend">أرسل الطلب</span>
+        </button>
+
+        <!-- Shown only when the post itself fails (offline, or the network
+             blocks docs.google.com). The mail link is the way out. -->
+        <p class="pn-fail" role="alert">
+          <span data-i18n="pnFailText">تعذّر إرسال الطلب.</span>
+          <a href="mailto:sceneone.info@gmail.com" data-i18n="pnFailLink">راسلنا على البريد الإلكتروني</a>
         </p>
+      </form>
+
+      <!-- Replaces the form in place once the post goes through. -->
+      <div class="pn-done" id="pn-done" role="status" hidden>
+        <svg class="pn-done__tick" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 6 9 17l-5-5"/>
+        </svg>
+        <h2 class="pn-done__h" data-i18n="pnDoneH">وصلنا طلبك</h2>
+        <p class="pn-done__p" data-i18n="pnDoneP">شكرًا لاهتمامكم بالتعاون مع سين ون. سيتواصل معكم فريقنا لترتيب الخطوة التالية.</p>
       </div>
     </div>
   </main>
@@ -180,5 +238,6 @@
 
 <script src="js/i18n.js"></script>
 <script src="js/main.js"></script>
+<script src="js/partners.js"></script>
 </body>
 </html>
