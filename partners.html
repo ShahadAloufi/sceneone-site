@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-  <title data-i18n-doctitle="docTitlePartners">شركاء سين ون | Scene One</title>
+  <title data-i18n-doctitle="docTitlePartners">طلب اجتماع مع فريق سين ون | Scene One</title>
   <link rel="icon" type="image/png" href="assets/favicon-v2.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/site-chrome.css">
   <link rel="stylesheet" href="css/terms-v2.css">
+  <link rel="stylesheet" href="css/partners.css">
   <!-- Vercel Web Analytics — served by Vercel's edge at this path; no npm/build needed. -->
   <script defer src="/_vercel/insights/script.js"></script>
 </head>
@@ -106,19 +107,29 @@
   <section class="tm2-hero">
     <div class="tm2-in">
       <p class="tm2-eyebrow" data-i18n="pnEyebrow">شركاء</p>
-      <h1 class="tm2-hero__h" data-i18n="pnHeroTitle">شركاء سين ون</h1>
-      <p class="tm2-hero__p" data-i18n="pnLede">املأ النموذج أدناه وسنعود إليك.</p>
+      <h1 class="tm2-hero__h" data-i18n="pnHeroTitle">طلب اجتماع مع فريق سين ون</h1>
+      <p class="tm2-hero__p" data-i18n="pnLede">املأ النموذج أدناه وسنعود إليك لتحديد موعد.</p>
     </div>
   </section>
 
   <main class="tm2-main">
     <div class="tm2-in">
-      <!-- THE FORM GOES HERE.
-           Left empty on purpose: the page exists so /partners resolves, and
-           the form itself has not been handed over yet. Drop it straight into
-           this container — it is already on the site's container width and
-           inherits the document type scale. -->
-      <div class="pn-form" id="form"></div>
+      <!-- The meeting-request form, embedded from Google Forms.
+           ?embedded=true drops Google's own page chrome and leaves the form.
+           The iframe's height is hard-coded because the frame is cross-origin:
+           the page cannot measure the form and size to it. See css/partners.css
+           for the measurements. -->
+      <div class="pn-form" id="form">
+        <iframe class="pn-form__frame"
+                src="https://docs.google.com/forms/d/e/1FAIpQLSdwW_mNvJtyLb9hGKb-Pmgn9f-_GIKBobl5qcMupETe2Ezk3A/viewform?embedded=true"
+                title="Request a meeting with Scene One"
+                data-i18n-aria="pnFormLabel">النموذج قيد التحميل…</iframe>
+        <p class="pn-form__fallback">
+          <span data-i18n="pnFallback">لا يظهر النموذج؟</span>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSdwW_mNvJtyLb9hGKb-Pmgn9f-_GIKBobl5qcMupETe2Ezk3A/viewform" target="_blank" rel="noopener noreferrer"
+             data-i18n="pnFallbackLink">افتحه في نافذة جديدة</a>
+        </p>
+      </div>
     </div>
   </main>
 

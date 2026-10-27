@@ -536,10 +536,13 @@
       /* /partners — the page exists to host a form that has not landed yet,
          so this copy is a placeholder and should be replaced with the real
          wording when it does. */
-      docTitlePartners: "شركاء سين ون | Scene One",
+      docTitlePartners: "طلب اجتماع مع فريق سين ون | Scene One",
       pnEyebrow: "شركاء",
-      pnHeroTitle: "شركاء سين ون",
-      pnLede: "املأ النموذج أدناه وسنعود إليك.",
+      pnHeroTitle: "طلب اجتماع مع فريق سين ون",
+      pnLede: "املأ النموذج أدناه وسنعود إليك لتحديد موعد.",
+      pnFormLabel: "نموذج طلب اجتماع مع فريق سين ون",
+      pnFallback: "لا يظهر النموذج؟",
+      pnFallbackLink: "افتحه في نافذة جديدة",
       privHeroTitle: "سياسة الخصوصية",
       privIntroTitle: "المقدمة",
       privIntroHtml: "<p>توضح سياسة الخصوصية هذه كيفية قيام منصة (Scene One) بجمع البيانات الشخصية ومعالجتها وتخزينها وحمايتها عند استخدامك للمنصة والخدمات المرتبطة بها، بما في ذلك خدمات قراءة النصوص السينمائية وتقييمها وربطها بفرص الإنتاج.</p>" +
@@ -1100,10 +1103,15 @@
       docTitlePrivacy: "Privacy Policy | Scene One",
 
       /* /partners — placeholder, see the Arabic side. */
-      docTitlePartners: "Partners | Scene One",
+      docTitlePartners: "Request a meeting | Scene One",
       pnEyebrow: "Partners",
-      pnHeroTitle: "Scene One Partners",
-      pnLede: "Fill in the form below and we will get back to you.",
+      pnHeroTitle: "Request a meeting with Scene One",
+      pnLede: "Fill in the form below and we will get back to you to arrange a time.",
+      /* The form itself is Arabic only, so an English reader meets an Arabic
+         form. Worth knowing before anyone wonders why the page half-switches. */
+      pnFormLabel: "Meeting request form",
+      pnFallback: "Form not showing?",
+      pnFallbackLink: "Open it in a new tab",
       privHeroTitle: "Privacy Policy",
       privIntroTitle: "Introduction",
       privIntroHtml: "<p>This Privacy Policy explains how the Scene One platform collects, processes, stores, and protects personal data when you use the platform and its related services, including screenplay reading, evaluation, and connecting scripts with production opportunities.</p>" +

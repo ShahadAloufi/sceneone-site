@@ -1,0 +1,43 @@
+/* /partners — the embedded meeting-request form.
+   Page-specific, like checkout.css and readers-v2.css: the page's chrome and
+   type come from terms-v2.css, and only the embed is new. */
+
+.pn-form {
+  /* Google caps the form itself at 640px and centres it inside the frame, so
+     a wider iframe only adds its own white margins. Matching that width lets
+     the embed sit on the page's own measure instead of floating in a band. */
+  max-inline-size: 640px;
+  margin-inline: auto;
+}
+
+.pn-form__frame {
+  display: block;
+  inline-size: 100%;
+  border: 0;
+  /* Cross-origin, so the parent cannot read the form's height and resize to
+     it — the number has to be set here. Measured: 1025px at >=640 wide, with
+     ~80px of headroom for the "this question is required" lines, which only
+     appear after a failed submit. If it ever overflows the frame scrolls. */
+  block-size: 1105px;
+  color-scheme: light;
+}
+@media (max-width: 600px) {
+  /* The questions wrap on a phone, which costs about 95px. Measured at 375. */
+  .pn-form__frame { block-size: 1225px; }
+}
+
+/* Shown under the frame, always — a browser blocking third-party frames gives
+   no error, just an empty box, and this is the only way out of that. */
+.pn-form__fallback {
+  margin-block-start: 18px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--lx-muted, #8a8178);
+  text-align: center;
+}
+.pn-form__fallback a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.pn-form__fallback a:hover { color: var(--lx-black, #15110f); }
