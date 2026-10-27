@@ -55,6 +55,42 @@
   word-break: break-all;
 }
 .lx-foot__mail:hover { color: var(--lx-red) !important; }
+
+/* Call / WhatsApp. Buttons rather than another line of text: the flyer QR puts
+   people on a phone, where these two are the whole point of the column and a
+   13.5px link is a poor target. align-self keeps them on the label's edge the
+   same way the address does, and mirrors on its own. */
+.lx-foot__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-self: flex-start;
+  margin-block-start: 2px;
+}
+.lx-foot__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  /* 14px block padding, not 9: at 13.5px/1 that is a 44px box, the minimum
+     comfortable tap target. These are the two things a visitor arriving
+     from the flyer QR actually wants. */
+  padding: 14px 18px;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 8px;
+  font-size: 13.5px;
+  line-height: 1;
+  color: rgba(255,255,255,.86) !important;
+  white-space: nowrap;
+  transition: background-color .18s ease, border-color .18s ease, color .18s ease;
+}
+.lx-foot__btn:hover { background: #fff; border-color: #fff; color: var(--lx-black) !important; }
+/* The number reads left-to-right whatever the page direction, and the icon
+   still leads: the flex row mirrors, dir only pins the digits. */
+.lx-foot__btn[dir="ltr"] { direction: ltr; }
+.lx-foot__btn svg { inline-size: 16px; block-size: 16px; flex: 0 0 auto; fill: currentColor; }
+/* WhatsApp green on hover rather than the plain invert — it is the one place
+   on the site where a brand colour that is not ours is the clearer signal. */
+.lx-foot__btn--wa:hover { background: #25D366; border-color: #25D366; color: #0b1f12 !important; }
 .lx-foot__bar {
   display: flex;
   flex-wrap: wrap;

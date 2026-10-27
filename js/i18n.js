@@ -200,6 +200,9 @@
       footBlurb: "نكتشف الأصوات الجديدة، نطوّر أفلامها، ونبني لها طريقًا إلى الشاشة",
       footCoverage: "تغطية النصوص", footReaders: "من يقرأ نصك", footStory: "حكاية سين ون",
       footContact: "للتواصل",
+      footWa: "واتساب",
+      footCallAria: "اتصل بنا على 966580503970",
+      footWaAria: "راسلنا على واتساب",
       footCr: "© 2026 جميع الحقوق محفوظة لـ سين ون · الرقم الموحد 7054791293",
 
       introP1: "تهدف سين ون إلى سد الفجوة بين الكتابة والإنتاج، من خلال تقارير تغطية واضحة (موصى به / يستحق النظر مع التطوير / يُوصى بتطويره) وملاحظات تفصيلية قابلة للتنفيذ، تغطي الفكرة، البنية، الشخصيات، الحوار، الإيقاع، وقابلية الإنتاج. كما تتيح الخدمة بعد الحصول على التقرير برنامج إستضافة النصوص وهي خدمة لترشيح النصوص ذات التقييمات العالية إلى جهات في الصناعة، ما يزيد فرص وصولها إلى صناع القرار",
@@ -777,6 +780,9 @@
       footBlurb: "We find new voices, develop their films, and build them a road to the screen",
       footCoverage: "Coverage", footReaders: "Who reads your script", footStory: "The Scene One story",
       footContact: "Contact",
+      footWa: "WhatsApp",
+      footCallAria: "Call us on 966580503970",
+      footWaAria: "Message us on WhatsApp",
       footCr: "© 2026 All rights reserved to Scene One · Unified number 7054791293",
 
       introP1: "Scene One exists to close the gap between writing and production, through clear coverage reports (Recommend / Consider with Development / Development Recommended) and detailed, actionable notes covering concept, structure, character, dialogue, pace and producibility. Once the report is in hand, the service also opens the script hosting programme, which nominates the highest-rated scripts to industry parties and improves their chances of reaching decision-makers.",
