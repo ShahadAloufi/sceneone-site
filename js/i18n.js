@@ -543,8 +543,8 @@
       pnEyebrow: "شركاء",
       pnHeroTitle: "طلب اجتماع مع فريق سين ون",
       pnLede: "املأ النموذج أدناه وسنعود إليك لتحديد موعد.",
-      pnQName: "الاسم واسم شركة الإنتاج",
-      pnPhName: "الاسم، واسم الشركة",
+      pnQName: "اسم الشركة",
+      pnPhName: "اسم شركة الإنتاج",
       pnQEmail: "البريد الإلكتروني للتواصل",
       pnPhEmail: "name@company.com",
       pnQInterest: "ما مجال التعاون الذي يهمكم؟",
@@ -1132,8 +1132,8 @@
       pnLede: "Fill in the form below and we will get back to you to arrange a time.",
       /* The form itself is Arabic only, so an English reader meets an Arabic
          form. Worth knowing before anyone wonders why the page half-switches. */
-      pnQName: "Your name and production company",
-      pnPhName: "Name, and company name",
+      pnQName: "Company name",
+      pnPhName: "Your production company",
       pnQEmail: "Contact email",
       pnPhEmail: "name@company.com",
       pnQInterest: "What kind of collaboration interests you?",
