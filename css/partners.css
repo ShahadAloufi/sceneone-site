@@ -18,6 +18,26 @@
    this to actually take the form off the page. */
 .pn-form[hidden] { display: none; }
 
+/* ---- the hero ------------------------------------------------------------ */
+/* terms-v2.css sizes this band for /terms and /privacy, where a tall, quiet
+   opening is the point — those pages are a wall of text and the hero is the
+   only air in them. This page is a form: the first field should be close to
+   the fold, not below it. Scoped to .pn-page so the legal pages keep theirs. */
+
+.pn-page .tm2-hero {
+  padding-block-start: calc(104px + clamp(28px, 3vw, 44px));
+  padding-block-end: clamp(32px, 4vw, 44px);
+}
+.pn-page .tm2-eyebrow { margin-block-end: 12px; }
+/* 56px put the Arabic title on two lines at desktop widths, which cost a whole
+   line of height on its own. 42px holds it to one. */
+.pn-page .tm2-hero__h { font-size: clamp(28px, 3.6vw, 42px); line-height: 1.3; }
+.pn-page .tm2-hero__p { margin-block-start: 14px; }
+
+/* The form band opens tighter too — the hero already introduced it, so the
+   gap between the lede and the first label does not need to be a full rest. */
+.pn-page .tm2-main { padding-block-start: clamp(32px, 4vw, 48px); }
+
 /* ---- fields -------------------------------------------------------------- */
 
 .pn-field { display: flex; flex-direction: column; }
