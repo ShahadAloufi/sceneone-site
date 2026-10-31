@@ -397,6 +397,9 @@
     #backToReview{margin-inline-end:0}
   }
 
+  /* display:flex outranks the hidden attribute, so a treatment — which has no
+     numeric scoring — needs this for the row to actually go away. */
+  .rating-row[hidden]{display:none}
   .rating-row{display:flex;gap:22px;align-items:center;background:var(--soft);border-radius:11px;
               padding:16px 20px;margin-bottom:18px;flex-wrap:wrap}
   .rating-auto .big{font-size:30px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums;color:var(--ink)}
