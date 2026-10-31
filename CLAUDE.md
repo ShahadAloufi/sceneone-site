@@ -285,6 +285,10 @@ Actively iterating on UX polish and workflow features.
 - **Two scales now exist.** `GLANCE_OPTS` (Excellent/Good/Fair/Poor) for scripts,
   `TREATMENT_OPTS` (Strong/Promising/Developing/Weak) for treatments, picked by
   `optsFor(schema)`. Stored as the English key either way; labels in `T.<lang>`.
+- **A treatment LEADS with the creative assessment** (01), then Part I (02), then the
+  summary (03). The judgement comes before the retelling; a script report keeps the
+  older order, where the synopsis establishes what was read before it is judged. The
+  workspace reorders its cards to match, so a reader writes in the order that prints.
 - **Part I is treatment-only**: `readerLogline` + `assessment` on the coverage, gated
   by `overview: true`, shown by `applySchemaShape()` in `js/coverage.js`.
 - **The verdicts were reworded again, for BOTH products** (the 2026-10-25 wording is

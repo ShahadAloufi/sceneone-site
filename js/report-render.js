@@ -424,10 +424,17 @@
         (e.score && sc.scores !== false ? '<span class="sc">' + e.score + " / 5</span>" : "") + "</div>" +
         "<p>" + val(e.text, nw) + "</p></div>";
     }).join("");
+    // The creative assessment, built once: a treatment puts it first and a
+    // script keeps it third, so the markup cannot be written inline.
+    // A treatment's scorecard belongs WITH the points it summarises — the seven
+    // rows and the seven written points are the same seven judgements.
+    var evalSecHtml = '<div class="rep-sec"><h2><span class="no">' + (isT ? "01" : "02") + "</span>" + (isT ? t.evaluationT : t.evaluation) + "</h2>" +
+      (isT ? '<div class="glance"><h3>' + t.glanceT + '</h3><table class="gl">' + glHead + glHtml + "</table></div>" : "") +
+      evalHtml + "</div>";
     // Part I, treatments only: the reader's own logline and their executive
     // read, both before the scorecard so the conclusions come first.
     var overviewHtml = sc.overview
-      ? '<div class="rep-sec"><h2><span class="no">01</span>' + t.assessment + "</h2>" +
+      ? '<div class="rep-sec"><h2><span class="no">02</span>' + t.assessment + "</h2>" +
           '<div class="rep-item"><div class="ih"><span class="t">' + t.readerLogline + "</span></div>" +
             '<p dir="auto">' + val(c.readerLogline, nw) + "</p></div>" +
           '<div class="rep-item"><div class="ih"><span class="t">' + t.assessment + "</span></div>" +
@@ -462,14 +469,15 @@
       '<div class="logline"><div class="k">' + t.logline + '</div><div dir="auto">' + val(s.logline, t.nologline) + "</div></div>" +
       (isT ? "" : '<div class="glance"><h3>' + t.glance + "</h3>" +
         '<table class="gl">' + glHead + glHtml + "</table></div>") +
+      // A treatment LEADS with the creative assessment: the scorecard and the
+      // seven points are what the reader was paid for, and a producer reading
+      // this wants the judgement before the retelling. The reader's own logline
+      // and the synopsis follow it. A script report keeps the older order,
+      // where the synopsis establishes what was read before it is judged.
+      (isT ? evalSecHtml : "") +
       overviewHtml +
-      '<div class="rep-sec"><h2><span class="no">' + (isT ? "02" : "01") + "</span>" + (isT ? t.synopsisT : t.synopsis) + "</h2><p>" + val(c.synopsis, nw) + "</p></div>" +
-      // A treatment's scorecard belongs WITH the creative assessment it
-      // summarises, not up by the project facts: the seven rows and the seven
-      // written points are the same seven judgements.
-      '<div class="rep-sec"><h2><span class="no">' + (isT ? "03" : "02") + "</span>" + (isT ? t.evaluationT : t.evaluation) + "</h2>" +
-        (isT ? '<div class="glance"><h3>' + t.glanceT + '</h3><table class="gl">' + glHead + glHtml + "</table></div>" : "") +
-        evalHtml + "</div>" +
+      '<div class="rep-sec"><h2><span class="no">' + (isT ? "03" : "01") + "</span>" + (isT ? t.synopsisT : t.synopsis) + "</h2><p>" + val(c.synopsis, nw) + "</p></div>" +
+      (isT ? "" : evalSecHtml) +
       '<div class="rep-sec"><h2><span class="no">' + (isT ? "04" : "03") + "</span>" + (isT ? t.marketT : t.market) + "</h2>" + marketHtml + "</div>" +
       '<div class="rep-sec"><h2><span class="no">' + (isT ? "05" : "04") + "</span>" + t.overall + "</h2>" +
         '<div class="rep-item"><div class="ih"><span class="t">' + t.strengths + "</span></div><p>" + val(c.overall.strengths, nw) + "</p></div>" +

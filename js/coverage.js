@@ -46,8 +46,19 @@
     var t = SCHEMA.key === "treatment";
     var ov = $("overviewCard"); if (ov) ov.hidden = !t;
     var rr = $("ratingRow"); if (rr) rr.hidden = !hasScores();
-    [["noSynopsis", "02", "01"], ["noEval", "03", "02"], ["noMarket", "04", "03"], ["noOverall", "05", "04"]]
+    [["noSynopsis", "03", "01"], ["noEval", "01", "02"], ["noMarket", "04", "03"], ["noOverall", "05", "04"]]
       .forEach(function (x) { var el = $(x[0]); if (el) el.textContent = t ? x[1] : x[2]; });
+    // A treatment LEADS with the creative assessment, so the reader writes the
+    // workspace in the order the report prints: scorecard and points, then
+    // Part I, then the summary. Moving the cards is enough — each one owns its
+    // own inputs, and nothing else reads their DOM position.
+    if (t) {
+      var host = $("overviewCard") && $("overviewCard").parentNode;
+      if (host && $("glanceCard") && $("evalCard")) {
+        host.insertBefore($("glanceCard"), $("overviewCard"));
+        host.insertBefore($("evalCard"), $("overviewCard"));
+      }
+    }
   }
   var GENRE_EN = R.GENRE_EN, FORMAT_EN = R.FORMAT_EN, DRAFT_EN = R.DRAFT_EN, LEVEL_EN = R.LEVEL_EN;
 

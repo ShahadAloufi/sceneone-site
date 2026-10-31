@@ -592,7 +592,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" id="glanceCard">
       <p class="section-title"><span class="no">–</span> <span data-i18n="glance">Assessment at a glance</span></p>
       <div id="glanceInputs"></div>
     </div>
@@ -601,7 +601,7 @@
          their own logline so it can be set against the writer's, and a short
          executive read that opens the report. -->
     <div class="card" id="overviewCard" hidden>
-      <p class="section-title"><span class="no">01</span> <span data-i18n="assessment">Overall assessment</span></p>
+      <p class="section-title"><span class="no" id="noOverview">02</span> <span data-i18n="assessment">Overall assessment</span></p>
       <div class="field">
         <label class="lbl" for="c-rlogline" data-i18n="readerLogline">Logline (as read)</label>
         <p class="hint" data-i18n="readerLoglineHint">In your own words: protagonist, central conflict, goal, stakes. A gap between this and the writer's logline is itself a finding.</p>
@@ -619,7 +619,7 @@
       <textarea id="c-synopsis" data-i18n-ph="synopsisPh" placeholder="Summarize the story in your own words."></textarea>
     </div>
 
-    <div class="card">
+    <div class="card" id="evalCard">
       <p class="section-title"><span class="no" id="noEval">02</span> <span data-i18n="evaluation">Evaluation</span></p>
       <div id="evalInputs"></div>
     </div>
