@@ -40,7 +40,7 @@
       // The treatment scorecard's own four levels. A treatment is read for
       // potential, not for execution, so "Excellent/Poor" (a verdict on a
       // finished thing) gives way to a scale about how far along each element is.
-      strong: "Strong", promising: "Promising", developing: "Developing", weak: "Weak",
+      strong: "Strong", promising: "Promising", developing: "Needs Development", weak: "Weak",
       synopsis: "Synopsis", evaluation: "Evaluation", market: "The market", overall: "Overall comments",
       coverageT: "Treatment coverage", synopsisT: "Treatment summary", evaluationT: "Creative assessment", marketT: "Development & industry outlook", footT: "Treatment coverage",
       // Part I of the treatment report. The reader writes their OWN logline so
@@ -88,7 +88,7 @@
       coverage: "تقييم النص", tagline: "حيث تبدأ رحلة النص",
       title: "العنوان", writer: "الكاتب", format: "نوع العمل", genre: "التصنيف", length: "عدد الصفحات/المدة", draft: "المسودة", reader: "القارئ", date: "التاريخ",
       logline: "الفكرة المختصرة", glance: "التقييم العام", excellent: "ممتاز", good: "جيد", fair: "مقبول", poor: "ضعيف",
-      strong: "قوي", promising: "واعد", developing: "قيد التطوير", weak: "ضعيف",
+      strong: "قوي", promising: "واعد", developing: "يحتاج إلى تطوير", weak: "ضعيف",
       synopsis: "الملخّص", evaluation: "التقييم", market: "السوق", overall: "ملاحظات عامة",
       coverageT: "تقييم المعالجة", synopsisT: "الملخّص (Treatment Summary)", evaluationT: "التقييم الإبداعي", marketT: "التطوير وأفق الصناعة", footT: "تقييم المعالجة",
       readerLogline: "الفكرة المختصرة كما قرأها القارئ", assessment: "التقييم العام للمشروع",
@@ -150,7 +150,9 @@
   // for it (see the legacy skip in render()).
   var GLANCE_OPTS = ["Excellent", "Good", "Fair", "Poor"];
   // The treatment scorecard's own levels. Stored as these English keys, like
-  // every other value in a coverage; the labels live in T.<lang>.
+  // every other value in a coverage; the labels live in T.<lang>. The third
+  // key reads "Needs Development" on the page — the KEY stays "Developing" so
+  // no stored row has to be rewritten to change what it is called.
   var TREATMENT_OPTS = ["Strong", "Promising", "Developing", "Weak"];
   // Each scale's level → the dictionary key holding its label.
   var OPT_LABEL_KEY = {
