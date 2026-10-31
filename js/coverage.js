@@ -71,7 +71,7 @@
       pulledTag: "Pulled from the writer's submission · read-only",
       reader: "Reader", readerPh: "Scene One Reader", date: "Date",
       glance: "Assessment at a glance",
-      synopsis: "Synopsis", synopsisPh: "Summarize the story in your own words.",
+      synopsis: "Synopsis",
       synopsisHint: "What happens in the story, and how does it develop?",
       evaluation: "Evaluation", market: "The market", overall: "Overall comments",
       // Treatment wording for the three sections whose subject changes with the
@@ -151,7 +151,7 @@
       pulledTag: "مستخرج من نموذج تقديم الكاتب",
       reader: "القارئ", readerPh: "قارئ Scene One", date: "التاريخ",
       glance: "التقييم العام",
-      synopsis: "الملخّص", synopsisPh: "لخّص القصة بأسلوبك.",
+      synopsis: "الملخّص",
       synopsisHint: "ماذا يحدث في القصة وكيف تتطور؟",
       evaluation: "التقييم", market: "السوق", overall: "ملاحظات عامة",
       glanceT: "التقييم الإبداعي", evaluationT: "التقييم الإبداعي", marketT: "التطوير وأفق الصناعة",
