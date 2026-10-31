@@ -77,7 +77,7 @@
       tmT2: "شروط الاستخدام",
       tmB2: "<p>باستخدامك لمنصّة سين ون أو تقديم نصّك عبرها، فإنك تُقرّ بأنك قرأت هذه الشروط وفهمتها ووافقت عليها بالكامل. إذا كنت لا توافق على أيّ بند من بنودها، يُرجى عدم استخدام الخدمة.</p><ul><li>يجب أن يكون عمر المستخدم ثمانية عشر عامًا فأكثر، أو أن يحصل على موافقة وليّه القانوني قبل استخدام الخدمة.</li><li>تحتفظ سين ون بحقّ تعديل هذه الشروط في أيّ وقت، وستُبلّغ التعديلات عبر البريد الإلكتروني أو عبر إشعار داخل المنصّة قبل سريانها بمدّة معقولة.</li><li>بإرسالك أي محتوى أو سيناريو عبر المنصّة، فإنك تقرّ بالتزامك بجميع الأنظمة واللوائح المعمول بها في المملكة العربية السعودية، بما في ذلك نظام الإعلام المرئي والمسموع، وتتحمّل كامل المسؤولية عن توافق المحتوى المقدم مع هذه الأنظمة.</li></ul>",
       tmT3: "تعريف الخدمة",
-      tmB3: "<p>تقدّم سين ون خدمة قراءة احترافية ونقدية للنصوص السينمائية، تشمل:</p><ul><li>قراءة كاملة للنصّ من قِبَل قارئ ناقد مؤهَّل.</li><li>إصدار تقرير تقييم تفصيلي يشمل الفكرة والحبكة والشخصيات والحوار والإيقاع والإمكانية الإنتاجية.</li><li>تصنيف صريح للنصّ ضمن إحدى الفئات الثلاث: موصى به، يستحق النظر مع التطوير، أو يُوصى بتطويره.</li><li>ترشيح النصوص الحاصلة على توصية قوية إلى الشركاء الإنتاجيين، بعد موافقة الكاتب الصريحة.</li></ul><div class=\"tm2-note\"><p>الخدمة لا تشمل إعادة كتابة النصّ، أو تطويره، أو تحريره، أو ضمان قبوله من قبل أيّ جهة إنتاجية. سين ون تقدّم قراءة نقدية احترافية فقط.</p></div>",
+      tmB3: "<p>تقدّم سين ون خدمة قراءة احترافية ونقدية للنصوص السينمائية، تشمل:</p><ul><li>قراءة كاملة للنصّ من قِبَل قارئ ناقد مؤهَّل.</li><li>إصدار تقرير تقييم تفصيلي يشمل الفكرة والحبكة والشخصيات والحوار والإيقاع والإمكانية الإنتاجية.</li><li>تصنيف صريح للنصّ ضمن إحدى الفئات الثلاث: قويّ بما يكفي لعرضه على جهات الصناعة، يستحق النظر مع التطوير، أو يحتاج إلى تطوير إضافي.</li><li>ترشيح النصوص الحاصلة على توصية قوية إلى الشركاء الإنتاجيين، بعد موافقة الكاتب الصريحة.</li></ul><div class=\"tm2-note\"><p>الخدمة لا تشمل إعادة كتابة النصّ، أو تطويره، أو تحريره، أو ضمان قبوله من قبل أيّ جهة إنتاجية. سين ون تقدّم قراءة نقدية احترافية فقط.</p></div>",
       tmT4: "الملكية الفكرية",
       tmB4: "<p>عند تقديم النصّ، يمنح الكاتب سين ون <strong>ترخيصًا محدودًا وغير حصري</strong>، يقتصر استخدامه على:</p><ul><li>قراءة النصّ وتقييمه من قبل القارئ الناقد المعتمَد.</li><li>تخزينه بصورة آمنة على خوادم الخدمة طوال مدّة الاشتراك أو حتى يطلب الكاتب حذفه.</li><li>مشاركة النصّ مع الشركاء الإنتاجيين فقط بعد موافقة الكاتب الكتابية الصريحة، وذلك في حال حصوله على توصية ودخوله مرحلة الترشيح.</li></ul><p>لا يحقّ لمقدم الخدمة استخدام النصّ لأيّ غرض آخر، ولا نشره، ولا توزيعه، ولا اقتباس أيّ جزء منه دون إذن صريح ومسبق من الكاتب.</p><div class=\"tm2-note\"><p>يُنصح الكاتب بشدّة بتسجيل نصّه لدى الهيئة السعودية للملكية الفكرية (SAIP) قبل تقديمه لأيّ جهة كانت.</p></div>",
       tmT5: "سرية النصوص والمواد المقدمة",
@@ -205,7 +205,7 @@
       footWaAria: "راسلنا على واتساب",
       footCr: "© 2026 جميع الحقوق محفوظة لـ سين ون · الرقم الموحد 7054791293",
 
-      introP1: "تهدف سين ون إلى سد الفجوة بين الكتابة والإنتاج، من خلال تقارير تغطية واضحة (موصى به / يستحق النظر مع التطوير / يُوصى بتطويره) وملاحظات تفصيلية قابلة للتنفيذ، تغطي الفكرة، البنية، الشخصيات، الحوار، الإيقاع، وقابلية الإنتاج. كما تتيح الخدمة بعد الحصول على التقرير برنامج إستضافة النصوص وهي خدمة لترشيح النصوص ذات التقييمات العالية إلى جهات في الصناعة، ما يزيد فرص وصولها إلى صناع القرار",
+      introP1: "تهدف سين ون إلى سد الفجوة بين الكتابة والإنتاج، من خلال تقارير تغطية واضحة (قويّ بما يكفي لعرضه على جهات الصناعة / يستحق النظر مع التطوير / يحتاج إلى تطوير إضافي) وملاحظات تفصيلية قابلة للتنفيذ، تغطي الفكرة، البنية، الشخصيات، الحوار، الإيقاع، وقابلية الإنتاج. كما تتيح الخدمة بعد الحصول على التقرير برنامج إستضافة النصوص وهي خدمة لترشيح النصوص ذات التقييمات العالية إلى جهات في الصناعة، ما يزيد فرص وصولها إلى صناع القرار",
       introImgAlt: "كاتب يدوّن ملاحظاته على مسودة نص",
 
       goalsTitle: "أهداف سين ون",
@@ -288,10 +288,10 @@
 
 
       pkgDevTitle: "مسار تطوير المشاريع والإنتاج",
-      pkgDevDesc1Html: "يقدّم هذا البكج مسارًا متكاملًا لتطوير النصوص السينمائية المختارة، حيث يتم العمل على المشاريع الحاصلة على تقييم <strong>«موصى به»</strong> للانتقال بها من مرحلة النص إلى مشروع جاهز للتقديم للسوق وجهات الإنتاج.",
+      pkgDevDesc1Html: "يقدّم هذا البكج مسارًا متكاملًا لتطوير النصوص السينمائية المختارة، حيث يتم العمل على المشاريع الحاصلة على تقييم <strong>«قويّ بما يكفي لعرضه على جهات الصناعة»</strong> للانتقال بها من مرحلة النص إلى مشروع جاهز للتقديم للسوق وجهات الإنتاج.",
       pkgDevDesc2: "يشمل ذلك تقييمًا وتطويرًا على مستوى المشروع، يغطي الجوانب الإبداعية والسردية، بالإضافة إلى جاهزية المشروع من ناحية السوق والإنتاج، وتحديد أولويات التطوير وبناء مسار واضح للتقدم.",
       pkgDevLi1: "جميع ما يشمله «الوصول إلى النصوص المختارة»",
-      pkgDevLi2: "اختيار المشاريع الحاصلة على تقييم «موصى به»",
+      pkgDevLi2: "اختيار المشاريع الحاصلة على تقييم «قويّ بما يكفي لعرضه على جهات الصناعة»",
       pkgDevLi3: "تقييم جاهزية المشروع للسوق والإنتاج",
       pkgDevLi4: "تحديد أولويات التطوير وبناء خارطة طريق واضحة",
       pkgDevLi5: "تطوير مواد التقديم (Pitch) وتموضع المشروع في السوق",
@@ -310,7 +310,7 @@
         "<strong>الفكرة، والموضوع وعنصر الجذب (Hook)، والرهانات الدرامية والحبكة، والشخصيات، والحوار، والبناء الدرامي، والإيقاع، وقابلية الإنتاج، والتقدير التقريبي للميزانية، بالإضافة إلى التقييم العام.</strong>",
       shortLi1Html: "مدة التسليم: عادةً من 10 إلى 15 يومًا <span class=\"ctype-card__note\">(سيتم احتساب مدة التسليم بعد اسناد نصك الى احد القراء وستصلك رسالة عبر الايميل حين الاسناد)</span>",
 
-      li2: "تقييمات وفق معايير الصناعة: يُوصى بتطويره / يستحق النظر مع التطوير / موصى به",
+      li2: "تقييمات وفق معايير الصناعة: يحتاج إلى تطوير إضافي / يستحق النظر مع التطوير / قويّ بما يكفي لعرضه على جهات الصناعة",
       li3: "ملاحظات تفصيلية تتضمن اقتراحات عملية لتحسين النص السينمائي",
       li4: "منح النصوص السينمائية ذات التقييمات العالية فرصة إضافية للظهور والوصول إلى جهات في الصناعة",
       btnRequest: "اطلب التغطية", btnSample: "إطلع على نموذج التقرير",
@@ -454,12 +454,12 @@
       // The verdict reads in the reader's own language: Arabic on the Arabic
       // page, the industry's PASS / CONSIDER / RECOMMEND on the English one. The
       // colour is on the element, so it carries across either way.
-      covGradePassLabel: "يُوصى بتطويره",
+      covGradePassLabel: "يحتاج إلى تطوير إضافي",
       covGradeConsiderLabel: "يستحق النظر مع التطوير",
-      covGradeRecommendLabel: "موصى به",
-      covGradePass: "سيستفيد النص من تطوير إبداعي جوهري قبل عرضه على جهات الصناعة.",
-      covGradeConsider: "يُظهر النص إمكانات قوية، مع مواضع محددة تحتاج إلى مزيد من التطوير.",
-      covGradeRecommend: "النص جاهز للعرض على جهات الصناعة.",
+      covGradeRecommendLabel: "قويّ بما يكفي لعرضه على جهات الصناعة",
+      covGradePass: "في العمل أسئلة سردية تأسيسية ينبغي حلّها قبل أن يمكن تقدير إمكاناته بثقة.",
+      covGradeConsider: "يُظهر العمل إمكانات إبداعية حقيقية، مع مواضع ضعف محددة يجب معالجتها بتطوير مركّز قبل المضي قدمًا.",
+      covGradeRecommend: "العمل مطوَّر بما يكفي لطرحه على جهات الصناعة أو للانتقال إلى المرحلة التالية المناسبة، وهذا لا يعني أنه جاهز للإنتاج.",
       covReportImgAlt: "نموذج تقرير التغطية السينمائية من Scene One", covReportCaption: "مثال بصري يوضح شكل التقرير",
       covTocLabel: "في هذه الصفحة", covTocGrades: "درجات التقييم",
 
@@ -482,7 +482,7 @@
       termsServiceLead: "تقدّم (Scene One) خدمة قراءة احترافية ونقدية للنصوص السينمائية، تشمل:",
       termsServiceHtml: "<li>قراءة كاملة للنصّ من قِبَل قارئ ناقد مؤهَّل.</li>" +
         "<li>إصدار تقرير تقييم تفصيلي يشمل الفكرة والحبكة والشخصيات والحوار والإيقاع والإمكانية الإنتاجية.</li>" +
-        "<li>تصنيف صريح للنصّ ضمن إحدى الفئات الثلاث: <strong>موصى به</strong>، <strong>يستحق النظر مع التطوير</strong>، أو <strong>يُوصى بتطويره</strong>.</li>" +
+        "<li>تصنيف صريح للنصّ ضمن إحدى الفئات الثلاث: <strong>قويّ بما يكفي لعرضه على جهات الصناعة</strong>، <strong>يستحق النظر مع التطوير</strong>، أو <strong>يحتاج إلى تطوير إضافي</strong>.</li>" +
         "<li>ترشيح النصوص الحاصلة على توصية قوية إلى الشركاء الإنتاجيين، بعد موافقة الكاتب الصريحة.</li>",
       termsServiceNote: "<strong>الخدمة لا تشمل</strong>: إعادة كتابة النصّ، أو تطويره، أو تحريره، أو ضمان قبوله من قبل أيّ جهة إنتاجية. Scene One تقدّم قراءة نقدية احترافية فقط.",
       termsIpTitle: "الملكية الفكرية",
@@ -673,7 +673,7 @@
       tmT2: "Terms of Use",
       tmB2: "<p>By using the Scene One platform or submitting your script through it, you acknowledge that you have read, understood, and fully agree to these terms. If you do not agree to any provision, please do not use the service.</p><ul><li>Users must be at least eighteen (18) years of age, or have legal guardian consent before using the service.</li><li>Scene One reserves the right to modify these terms at any time. Amendments will be communicated via email or an in-platform notice a reasonable time before they take effect.</li><li>By submitting any content or screenplay through the platform, you affirm your compliance with all applicable laws and regulations in the Kingdom of Saudi Arabia, including the Audio-Visual Media Law, and you bear full responsibility for ensuring the submitted content complies with these regulations.</li></ul>",
       tmT3: "Service Description",
-      tmB3: "<p>Scene One provides a professional critical reading service for screenplays, including:</p><ul><li>A complete reading of the script by a qualified Critic Reader.</li><li>Issuance of a detailed evaluation report covering concept, plot, characters, dialogue, pacing, and production potential.</li><li>Clear classification of the script into one of three categories: <strong>Recommend</strong>, <strong>Consider with Development</strong>, or <strong>Development Recommended</strong>.</li><li>Nomination of scripts receiving a strong recommendation to production partners, following the writer's explicit approval.</li></ul><div class=\"tm2-note\"><p>The service <strong>does not include</strong> rewriting, developing, editing, or guaranteeing acceptance by any production entity. Scene One provides professional critical reading only.</p></div>",
+      tmB3: "<p>Scene One provides a professional critical reading service for screenplays, including:</p><ul><li>A complete reading of the script by a qualified Critic Reader.</li><li>Issuance of a detailed evaluation report covering concept, plot, characters, dialogue, pacing, and production potential.</li><li>Clear classification of the script into one of three categories: <strong>Strong Enough for Industry Consideration</strong>, <strong>Consider with Development</strong>, or <strong>Further Development Required</strong>.</li><li>Nomination of scripts receiving a strong recommendation to production partners, following the writer's explicit approval.</li></ul><div class=\"tm2-note\"><p>The service <strong>does not include</strong> rewriting, developing, editing, or guaranteeing acceptance by any production entity. Scene One provides professional critical reading only.</p></div>",
       tmT4: "Intellectual Property",
       tmB4: "<p>Upon submitting a script, the writer grants Scene One a <strong>limited, non-exclusive license</strong>, restricted to the following uses:</p><ul><li>Reading and evaluating the script by the assigned Critic Reader.</li><li>Secure storage on the service's servers for the duration of the subscription or until the writer requests deletion.</li><li>Sharing the script with production partners <strong>only after the writer's explicit written approval</strong>, in the event it receives a recommendation and enters the nomination phase.</li></ul><p>The service provider may not use the script for any other purpose, nor publish, distribute, or excerpt any part of it without the writer's prior explicit permission.</p><div class=\"tm2-note\"><p>Writers are strongly advised to register their scripts with the <strong>Saudi Authority for Intellectual Property (SAIP)</strong> before submitting them to any party.</p></div>",
       tmT5: "Confidentiality of Submitted Scripts and Materials",
@@ -802,7 +802,7 @@
       footWaAria: "Message us on WhatsApp",
       footCr: "© 2026 All rights reserved to Scene One · Unified number 7054791293",
 
-      introP1: "Scene One exists to close the gap between writing and production, through clear coverage reports (Recommend / Consider with Development / Development Recommended) and detailed, actionable notes covering concept, structure, character, dialogue, pace and producibility. Once the report is in hand, the service also opens the script hosting programme, which nominates the highest-rated scripts to industry parties and improves their chances of reaching decision-makers.",
+      introP1: "Scene One exists to close the gap between writing and production, through clear coverage reports (Strong Enough for Industry Consideration / Consider with Development / Further Development Required) and detailed, actionable notes covering concept, structure, character, dialogue, pace and producibility. Once the report is in hand, the service also opens the script hosting programme, which nominates the highest-rated scripts to industry parties and improves their chances of reaching decision-makers.",
       introImgAlt: "A writer marking up a script draft",
 
       goalsTitle: "What Scene One Is For",
@@ -904,7 +904,7 @@
         "<strong>concept and premise, hook and originality, dramatic stakes and structure, characters, dialogue, structure and pacing, production viability, an approximate budget estimate, and an overall assessment.</strong>",
       shortLi1Html: "Turnaround: typically 10–15 days <span class=\"ctype-card__note\">(the timeline begins once your script is assigned to a reader; you'll be notified by email when that happens)</span>",
 
-      li2: "Industry-standard ratings: Development Recommended / Consider with Development / Recommend",
+      li2: "Industry-standard ratings: Further Development Required / Consider with Development / Strong Enough for Industry Consideration",
       li3: "Detailed, actionable notes to improve your screenplay",
       li4: "High-rated scripts may receive additional exposure and access to industry contacts",
       btnRequest: "Request Coverage", btnSample: "View Sample Report",
@@ -1043,12 +1043,12 @@
       covAspect4Html: "<strong>4. Market Perspective:</strong> Identifies the target audience, genre positioning, and suitability for the Saudi market.",
       covGradesTitle: "Coverage Scoring System", covGradesSub: "A closer look beyond the numbers and recommendations",
       covGradesP1: "Screenplay coverage combines objective evaluation with the reader's personal response. The rating reflects how the script resonates with the reader, sometimes highlighting its strengths, and other times pointing to areas that need further development. For this reason, ratings are rarely absolute or definitive, and typically exist within a broader spectrum of interpretation and judgment.",
-      covGradePassLabel: "DEVELOPMENT RECOMMENDED",
+      covGradePassLabel: "FURTHER DEVELOPMENT REQUIRED",
       covGradeConsiderLabel: "CONSIDER WITH DEVELOPMENT",
-      covGradeRecommendLabel: "RECOMMEND",
-      covGradePass: "Would benefit from substantial creative development before industry consideration.",
-      covGradeConsider: "Shows strong potential, with specific areas requiring further development.",
-      covGradeRecommend: "Ready for industry consideration.",
+      covGradeRecommendLabel: "STRONG ENOUGH FOR INDUSTRY CONSIDERATION",
+      covGradePass: "Has foundational story questions to resolve before its potential can be reliably assessed.",
+      covGradeConsider: "Shows meaningful creative potential, with identifiable weaknesses to address through focused development before advancing.",
+      covGradeRecommend: "Developed enough to warrant industry discussion or the next appropriate stage. This does not mean the project is production-ready.",
       covReportImgAlt: "Sample screenplay coverage report from Scene One", covReportCaption: "A visual example of the report format",
       covTocLabel: "On this page", covTocGrades: "Ratings",
 
@@ -1071,7 +1071,7 @@
       termsServiceLead: "Scene One provides a professional script reading and evaluation service, including:",
       termsServiceHtml: "<li>A full reading of the script by a qualified Reader.</li>" +
         "<li>A detailed evaluation report covering concept, plot, characters, dialogue, pacing, and production potential.</li>" +
-        "<li>A clear classification of the script into one of three categories: <strong>Recommend</strong>, <strong>Consider with Development</strong>, or <strong>Development Recommended</strong>.</li>" +
+        "<li>A clear classification of the script into one of three categories: <strong>Strong Enough for Industry Consideration</strong>, <strong>Consider with Development</strong>, or <strong>Further Development Required</strong>.</li>" +
         "<li>Submission of strongly recommended scripts to Production Partners, subject to the Writer's explicit consent.</li>",
       termsServiceNote: "<strong>The Service does not include</strong> rewriting, editing, development, or any guarantee of acceptance by production companies. Scene One provides professional critical evaluation only.",
       termsIpTitle: "Intellectual Property",

@@ -151,233 +151,120 @@
   <div id="reportWrap"><div class="report" id="reportBody"></div></div>
 </main>
 
+<script src="js/report-render.js"></script>
 <script>
 (function () {
   "use strict";
 
-  /* Treatment coverage sample — deliberately NOT driven by js/report-render.js.
-     That module renders the script coverage schema (8 evaluation points, 6
-     market notes, paragraph-shaped overall notes); a treatment is a different
-     document: 9 points, 5 market notes, bulleted strengths. Generalising the
-     live renderer is the right move only once treatment coverage exists in the
-     reader workspace and there is a real data model to share — until then this
-     page carries its own small renderer, and the live one keeps serving real
-     writer reports untouched.
+  /* Treatment coverage sample.
+     Until 2026-10-31 this page carried its own miniature renderer, because the
+     shared one only knew the script schema. It now knows both, so the sample is
+     rendered by js/report-render.js against TREATMENT_SCHEMA — the same code
+     path, the same seven points and the same three-part structure a writer gets
+     in a real report. The only thing this page still owns is its chrome and its
+     content.
 
      Its own language key, so a visitor reading this sample never flips the
      script sample (or a writer's real report) into the other language. */
   var LANG_KEY = "sceneone-treatment-lang";
+  var R = window.SOReport;
+  var SCHEMA = R.TREATMENT_SCHEMA;
 
   var T = {
     ar: {
       docTitle: "Scene One | نموذج تقرير تغطية المعالجة",
       badge: "نموذج تقرير معالجة",
-      note: "هذا نموذج توضيحي لشكل تقرير تغطية المعالجة فقط، ولم يُكتب من قبل قُرّاؤنا المحترفين.",
-      cover: "تقييم المعالجة",
-      title: "العنوان", writer: "الكاتب", format: "نوع العمل", genre: "التصنيف",
-      length: "عدد الصفحات", stage: "المرحلة", reader: "القارئ", date: "التاريخ",
-      readerName: "احد قراء Scene One",
-      logline: "الفكرة المختصرة",
-      glance: "التقييم العام",
-      excellent: "ممتاز", good: "جيد", fair: "مقبول", poor: "ضعيف",
-      summary: "الملخّص (Treatment Summary)",
-      evaluation: "التقييم (Treatment Evaluation)",
-      market: "السوق (Market Notes)",
-      overall: "ملاحظات عامة",
-      strengths: "نقاط القوة", develop: "ما يحتاج إلى تطوير",
-      verdict: "الحكم", outof: "/ 10",
-      // Mirrors T.ar.decision in js/report-render.js. This page is the one
-      // report view that is NOT renderer-driven, so the map has to be repeated
-      // here — change one, change the other.
-      decision: { Recommend: "موصى به", Consider: "يستحق النظر مع التطوير", Pass: "يُوصى بتطويره" },
-      decisionDesc: {
-        Recommend: "النص جاهز للعرض على جهات الصناعة.",
-        Consider: "يُظهر النص إمكانات قوية، مع مواضع محددة تحتاج إلى مزيد من التطوير.",
-        Pass: "سيستفيد النص من تطوير إبداعي جوهري قبل عرضه على جهات الصناعة."
-      },
-      foot: "سري، لا يُتداول خارج نطاق المرسل إليه"
+      note: "هذا نموذج توضيحي لشكل تقرير تغطية المعالجة فقط، ولم يُكتب من قبل قُرّاؤنا المحترفين."
     },
     en: {
       docTitle: "Scene One | Sample treatment coverage",
       badge: "Sample treatment report",
-      note: "This is a sample of the treatment report's format only, it wasn't written by our professional readers.",
-      cover: "Treatment Evaluation",
-      title: "Title", writer: "Writer", format: "Format", genre: "Genre",
-      length: "Pages", stage: "Stage", reader: "Reader", date: "Date",
-      readerName: "Scene One Reader",
-      logline: "Logline",
-      glance: "At a glance",
-      excellent: "Excellent", good: "Good", fair: "Fair", poor: "Poor",
-      summary: "Treatment Summary",
-      evaluation: "Treatment Evaluation",
-      market: "Market Notes",
-      overall: "Overall notes",
-      strengths: "Strengths", develop: "What needs development",
-      verdict: "Verdict", outof: "/ 10",
-      decision: { Recommend: "Recommend", Consider: "Consider with Development", Pass: "Development Recommended" },
-      decisionDesc: {
-        Recommend: "Ready for industry consideration.",
-        Consider: "Shows strong potential, with specific areas requiring further development.",
-        Pass: "Would benefit from substantial creative development before industry consideration."
-      },
-      foot: "Confidential, not for circulation beyond the addressee"
+      note: "This is a sample of the treatment report's format only, it wasn't written by our professional readers."
     }
   };
 
-  /* The treatment schema. Ordered lists, same idea as EVAL/GLANCE in
-     js/report-render.js — keep the two label maps below in step with them. */
-  var POINTS = ["premise", "hook", "clarity", "character", "emotional", "structure", "potential", "market", "presentation"];
-  var MARKET = ["audience", "demand", "path", "budget", "reach"];
-
-  var L = {
-    ar: {
-      premise: "الفكرة والموضوع", hook: "عنصر الجذب (Hook)", clarity: "وضوح الرؤية السردية",
-      character: "الشخصيات (الأساسيات)", emotional: "الرحلة العاطفية", structure: "البناء العام للقصة",
-      potential: "قابلية التطوير لسيناريو", market: "الجدوى السوقية", presentation: "العرض العام",
-      audience: "الجمهور المستهدف", demand: "النوع والطلب في السوق", path: "مسار المشروع والجهات المحتملة",
-      budget: "الميزانية وسقف الإنتاج", reach: "إمكانات الانتشار"
-    },
-    en: {
-      premise: "Premise & Theme", hook: "Hook", clarity: "Narrative clarity",
-      character: "Character (fundamentals)", emotional: "Emotional journey", structure: "Overall story structure",
-      potential: "Screenplay development potential", market: "Market viability", presentation: "Overall presentation",
-      audience: "Audience", demand: "Genre and demand", path: "Path and potential partners",
-      budget: "Budget and production ceiling", reach: "Reach potential"
-    }
+  /* The submission, in the shape SOReport.render() consumes. `filmType` is what
+     makes the renderer pick the treatment schema. */
+  var SUB = {
+    ar: { titleEn: "The Darkroom", titleAr: "الغرفة المظلمة", writer: "–", format: "معالجة · فيلم قصير",
+      filmType: "treatment_short", genre: "دراما", length: "نحو 4 صفحات", draft: "معالجة (Treatment)", pages: null,
+      logline: "تجلب شابة بكرة فيلم لم تُحمَّض ورثتها عن جدتها الراحلة إلى آخر محل تصوير في مدينة ساحلية، ليجد المصوّر المسنّ الذي يدير المحل نفسه وجهاً لوجه أمام فصلٍ مدفون من ماضيه." },
+    en: { titleEn: "The Darkroom", titleAr: "الغرفة المظلمة", writer: "–", format: "Treatment · short film",
+      filmType: "treatment_short", genre: "Drama", length: "About 4 pages", draft: "Treatment", pages: null,
+      logline: "When a young woman brings an undeveloped film roll left behind by her late grandmother to the last photo studio in a coastal town, the elderly photographer who runs it is forced to confront a buried chapter of his past." }
   };
 
-  /* Reader-authored content: written once per language, exactly like the script
-     sample. Keep the two in step if either changes. */
+  /* Reader-authored content, written once per language. The keys are the
+     schema's canonical English point names — the same keys a real coverage
+     stores — so this sample and a live report cannot drift apart. */
   var AR = {
-    submission: { titleEn: "The Darkroom", titleAr: "الغرفة المظلمة", writer: "–", format: "معالجة · فيلم قصير",
-      genre: "دراما", length: "نحو 4 صفحات", stage: "معالجة (Treatment)", date: "–" },
-    logline: "تجلب شابة بكرة فيلم لم تُحمَّض ورثتها عن جدتها الراحلة إلى آخر محل تصوير في مدينة ساحلية، ليجد المصوّر المسنّ الذي يدير المحل نفسه وجهاً لوجه أمام فصلٍ مدفون من ماضيه.",
-    glance: { premise: 0, hook: 0, clarity: 0, character: 0, emotional: 1, structure: 0, potential: 0, market: 1, presentation: 0 },
-    summary: "تخسر مدينة ساحلية صغيرة ملامحها تدريجيًا أمام زحف العمران. يدير سعيد، مصوّر مسنّ، آخر محل لتحميض الأفلام. تدخل ريم، شابة في العشرينيات، حاملةً بكرة فيلم قديمة عثرت عليها بين أغراض جدتها الراحلة، وتطلب تحميضها.\n\nعلى مدار يوم واحد، ومع تَكشُّف الصور واحدةً تلو الأخرى في الغرفة المظلمة، تنكشف فصول من حياة الجدة لم تكن ريم تعرفها، وتتشابك على نحو غير متوقّع مع ماضي سعيد. تقوده تلك الصور إلى مواجهة قرار اتخذه قبل أربعين عامًا، وخسارة ظلّ يتجاهلها. في النهاية، تغادر ريم وقد رأت جدتها من زاوية جديدة، بينما يبقى سعيد وحيدًا أمام صورة، ليقرر أخيرًا طيّ صفحة طال انتظارها.",
-    evals: {
-      premise: { score: 5, text: "فكرة تقوم على استخدام «بكرة فيلم» كأداة سردية لكشف الماضي تدريجيًا، ما يمنحها طابعًا بصريًا ورمزيًا قويًا. الموضوع يشتغل على الذاكرة والمصالحة مع الماضي بطريقة بسيطة وعميقة في الوقت نفسه، ويملك هوية واضحة قابلة للتحويل إلى فيلم مؤثر." },
-      hook: { score: 5, text: "البداية تعتمد على فكرة جذابة بصريًا: عملية تحميض تكشف وجوهًا وذكريات مدفونة. هذا النوع من الـ hook مناسب جدًا للسينما لأنه يقوم على «الفضول البصري». التوتر هنا ليس حدثيًا بل اكتشافي، وهو مناسب جدًا لفيلم يعتمد على الانكشاف التدريجي." },
-      clarity: { score: 5, text: "التريتمنت واضح في خطه الأساسي: حدث بسيط + كشف تدريجي + أثر عاطفي. هناك رؤية متماسكة تعتمد على «كشف الحقيقة عبر الصور»، ما يجعل المسار السردي مفهومًا وقابلًا للتطوير بسهولة إلى سيناريو." },
-      character: { score: 5, text: "الشخصيات الرئيسية واضحة وظيفيًا وعاطفيًا: سعيد يمثل الماضي المكبوت، وريم تمثل بوابة الكشف. العلاقة بينهما ليست مباشرة لكنها تتشكل عبر الصور، وهو اختيار يخدم الفكرة المركزية دون تعقيد زائد في هذه المرحلة." },
-      emotional: { score: 4, text: "الرحلة العاطفية موجودة وواضحة الاتجاه، لكنها تعتمد بشكل كبير على الاكتشاف التدريجي أكثر من التحولات الداخلية العميقة. تحتاج لاحقًا إلى تعزيز نقطة التحول العاطفي داخل سعيد بشكل أوضح." },
-      structure: { score: 5, text: "البناء بسيط وفعّال: بداية تعريفية ← حدث محفّز (الفيلم) ← كشف تدريجي ← ذروة عاطفية. هذا النوع من البناء مناسب جدًا للتريتمنت لأنه يثبت أن الفكرة قابلة للتطوير بدون تعقيد بنيوي زائد." },
-      potential: { score: 5, text: "التريتمنت جاهز بشكل ممتاز للتحويل إلى سيناريو. يحتوي على نواة درامية قوية، ومكان محدود، وشخصيات قليلة، ما يجعله مثاليًا للتطوير الإنتاجي السريع." },
-      market: { score: 4, text: "العمل مناسب جدًا للمهرجانات والأفلام القصيرة ذات الطابع الإنساني. قوته في بساطته البصرية وموضوعه العالمي، لكنه يبقى محدودًا تجاريًا كونه يعتمد على الدراما الهادئة أكثر من الأحداث الكبيرة." },
-      presentation: { score: 5, text: "التريتمنت مكتوب بوضوح وبأسلوب سينمائي نظيف. اللغة قوية وسهلة التخيّل بصريًا، مع توازن جيد بين السرد والوصف دون إفراط." }
+    date: "أكتوبر 2026",
+    readerLogline: "يجد مصوّر مسنّ في آخر محل تحميض بمدينة ساحلية أن بكرة فيلم جلبتها شابة عن جدتها الراحلة تكشف فصلًا من ماضيه هو، فيُجبر خلال يوم واحد على مواجهة قرار اتخذه قبل أربعين عامًا.",
+    assessment: "أقوى ما في المعالجة فكرتها البصرية: الصورة التي تظهر تدريجيًا هي نفسها آلية السرد. أكثر ما يحدّها أن التحول الداخلي لسعيد يأتي من الاكتشاف أكثر مما يأتي من قرار يتخذه. المعالجة جاهزة للانتقال إلى السيناريو بعد دورة تطوير واحدة مركّزة على ذلك التحول.",
+    synopsis: "تخسر مدينة ساحلية صغيرة ملامحها تدريجيًا أمام زحف العمران. يدير سعيد، مصوّر مسنّ، آخر محل لتحميض الأفلام. تدخل ريم، شابة في العشرينيات، حاملةً بكرة فيلم قديمة عثرت عليها بين أغراض جدتها الراحلة، وتطلب تحميضها.\n\nعلى مدار يوم واحد، ومع تَكشُّف الصور واحدةً تلو الأخرى في الغرفة المظلمة، تنكشف فصول من حياة الجدة لم تكن ريم تعرفها، وتتشابك على نحو غير متوقّع مع ماضي سعيد. تقوده تلك الصور إلى مواجهة قرار اتخذه قبل أربعين عامًا، وخسارة ظلّ يتجاهلها. في النهاية، تغادر ريم وقد رأت جدتها من زاوية جديدة، بينما يبقى سعيد وحيدًا أمام صورة، ليقرر أخيرًا طيّ صفحة طال انتظارها.",
+    glance: {
+      "Premise & Theme": "Strong", "Hook & Originality": "Strong", "Stakes, Conflict & Plot": "Promising",
+      "Characters & Arcs": "Promising", "Structure & Momentum": "Strong",
+      "Genre, Tone & Cinematic Potential": "Strong", "Treatment Clarity": "Strong"
+    },
+    eval: {
+      "Premise & Theme": { text: "فكرة تقوم على استخدام «بكرة فيلم» كأداة سردية لكشف الماضي تدريجيًا، ما يمنحها طابعًا بصريًا ورمزيًا قويًا. الموضوع يشتغل على الذاكرة والمصالحة مع الماضي بطريقة بسيطة وعميقة في الوقت نفسه، والثيمة تظهر عبر ما يفعله سعيد لا عبر ما يقوله." },
+      "Hook & Originality": { text: "البداية تعتمد على فكرة جذابة بصريًا: عملية تحميض تكشف وجوهًا وذكريات مدفونة. التوتر هنا ليس حدثيًا بل اكتشافي، وهو مناسب جدًا لفيلم يقوم على الانكشاف التدريجي. الأصالة في الآلية نفسها أكثر منها في الحكاية، وهذا كافٍ في هذه المرحلة." },
+      "Stakes, Conflict & Plot": { text: "الصراع داخلي في معظمه: سعيد يقاوم ما تكشفه الصور. السلسلة السببية واضحة — كل صورة تدفع التالية — لكن ما هو على المحك يظل ضمنيًا. ما الذي يخسره سعيد إن لم يواجه؟ تحديد ذلك صراحةً هو أهم ما تحتاجه الحبكة قبل السيناريو، وهو أيضًا ما يمنع النهاية من أن تبدو هادئة أكثر مما ينبغي." },
+      "Characters & Arcs": { text: "الشخصيتان واضحتان وظيفيًا وعاطفيًا: سعيد يمثل الماضي المكبوت، وريم بوابة الكشف. العلاقة بينهما غير مباشرة وتتشكل عبر الصور، وهو اختيار يخدم الفكرة. التحول موجود واتجاهه واضح، لكنه يصل إلى سعيد بدل أن يصنعه؛ قرار يتخذه في الثلث الأخير سيحوّل الرحلة من اكتشاف إلى فعل. ريم بدورها تحتاج إلى رغبة خاصة بها تتجاوز الفضول." },
+      "Structure & Momentum": { text: "البناء بسيط وفعّال: بداية تعريفية ← حدث محفّز (الفيلم) ← كشف تدريجي ← ذروة عاطفية. كل صورة جديدة تغيّر ما نعرفه، وهذا كافٍ لحمل المدة المقصودة في فيلم قصير. الثلث الأوسط هو الموضع الذي قد يترهّل إن تشابهت الكشوف في وزنها." },
+      "Genre, Tone & Cinematic Potential": { text: "النبرة متماسكة: دراما هادئة تعتمد على الحرفة البصرية. القصة مروية بالأفعال والصور لا بالشرح، والغرفة المظلمة مكان سينمائي بطبيعته — الضوء الأحمر، الورق الذي تظهر عليه الصورة، الزمن الذي يفرضه التحميض نفسه. هذا من أوضح مواطن قوة المشروع." },
+      "Treatment Clarity": { text: "المعالجة مكتوبة بوضوح وبأسلوب سينمائي نظيف، والأحداث والعلاقات والنهاية كلها محددة بما يكفي لتقييم مُطّلع. اللغة سهلة التخيّل بصريًا، مع توازن جيد بين السرد والوصف دون إفراط." }
     },
     market: {
-      audience: "جمهور يهتم بالدراما الإنسانية والقصص العاطفية البسيطة ذات العمق الرمزي. مناسب للمشاهد المحلي والخليجي، وقابل للتقدير في المهرجانات الدولية.",
-      demand: "دراما قصيرة تعتمد على الذاكرة والهوية. هذا النوع مطلوب في برامج المهرجانات وصناديق الدعم السينمائي.",
-      path: "مناسب للمنح والمهرجانات وبرامج دعم الأفلام القصيرة. قيمته الأساسية في العرض وليس التوزيع التجاري.",
-      budget: "منخفضة إلى متوسطة، مع قابلية إنتاج عالية بسبب محدودية المواقع والشخصيات.",
-      reach: "قوي داخل دائرة المهرجانات، خصوصًا الأعمال التي تعتمد على الحرفة البصرية والذاكرة كموضوع."
+      devPriorities: "أولًا: تحديد ما هو على المحك بالنسبة لسعيد، ونقل القرار الحاسم إلى يده. ثانيًا: منح ريم رغبة خاصة بها تتجاوز الفضول. ثالثًا، وهو تفصيل يمكن تأجيله إلى مرحلة السيناريو: تمييز وزن كل صورة عن الأخرى في الثلث الأوسط.",
+      tProduction: "النطاق محدود ومُسيطَر عليه: موقع رئيسي واحد، شخصيتان، زمن حاضر، دون مشاهد حركة أو متطلبات خاصة. العبء الإنتاجي الحقيقي في الغرفة المظلمة نفسها — الإضاءة العملية والصور كعناصر ديكور يجب تصميمها مسبقًا. قابلية الإنتاج عالية ضمن ميزانية فيلم قصير.",
+      tMarketPos: "الجمهور المستهدف مهتم بالدراما الإنسانية والقصص العاطفية ذات العمق الرمزي، محليًا وخليجيًا، مع تقدير متوقع في المهرجانات الدولية. الموضع الطبيعي للمشروع هو المنح وبرامج دعم الأفلام القصيرة والمهرجانات، لا التوزيع التجاري؛ قوته في العرض. يُقرأ هذا الموضع مستقلًا عن التقييم الإبداعي: محدودية الأفق التجاري هنا ليست مأخذًا على جودة القصة."
     },
-    strengths: ["فكرة رمزية قوية وسهلة الترجمة بصريًا", "وضوح في الخط السردي", "شخصيات أساسية فعّالة", "قابلية إنتاج عالية", "هوية فنية واضحة"],
-    develop: ["تعزيز التحول الداخلي لشخصية سعيد", "إضافة طبقة عاطفية أعمق في الذروة", "رفع «الرهان العاطفي» قليلًا ليكون أكثر تأثيرًا", "تطوير الخلفية قبل وصول ريم (إن لزم لاحقًا في السيناريو)"],
-    verdict: { decision: "Recommend", context: "في سياق التطوير للأفلام القصيرة والمهرجانات", score: "8.8",
-      text: "تريتمنت قوي ومتماسك، يعتمد على فكرة بصرية ذكية وبنية بسيطة وفعّالة. مناسب جدًا للتطوير الفوري إلى سيناريو، مع فرصة عالية للقبول في برامج الدعم والمهرجانات. أبرز ما يميّزه هو قدرته على تحويل فكرة بسيطة إلى تجربة عاطفية مرئية، مع مساحة واضحة لتحسين العمق العاطفي في المرحلة القادمة." }
+    overall: {
+      strengths: "فكرة رمزية قوية وسهلة الترجمة بصريًا، ووضوح في الخط السردي، وشخصيتان أساسيتان فعّالتان، وقابلية إنتاج عالية، وهوية فنية واضحة.",
+      toDevelop: "تحديد ما هو على المحك، ونقل القرار الحاسم إلى يد سعيد، وتعميق الطبقة العاطفية في الذروة، ومنح ريم رغبة خاصة بها."
+    },
+    verdict: { decision: "Consider", context: "في سياق التطوير للأفلام القصيرة والمهرجانات",
+      text: "معالجة قوية ومتماسكة، تقوم على فكرة بصرية ذكية وبنية بسيطة وفعّالة، وتملك فرصة عالية في برامج الدعم والمهرجانات. أبرز ما يميّزها قدرتها على تحويل فكرة بسيطة إلى تجربة عاطفية مرئية. ما يمنعها اليوم من التوصية الكاملة سؤال واحد تأسيسي: القرار الحاسم يقع خارج يد البطل. دورة تطوير واحدة مركّزة على ذلك كفيلة بنقلها إلى مرحلة السيناريو." }
   };
 
   var EN = {
-    submission: { titleEn: "The Darkroom", titleAr: "الغرفة المظلمة", writer: "–", format: "Treatment · short film",
-      genre: "Drama", length: "About 4 pages", stage: "Treatment", date: "–" },
-    logline: "When a young woman brings an undeveloped film roll left behind by her late grandmother to the last photo studio in a coastal town, the elderly photographer who runs it is forced to confront a buried chapter of his past.",
-    glance: { premise: 0, hook: 0, clarity: 0, character: 0, emotional: 1, structure: 0, potential: 0, market: 1, presentation: 0 },
-    summary: "A small coastal town is slowly losing its character to encroaching development. Saeed, an elderly photographer, runs the last film-developing shop. Reem, a woman in her twenties, walks in carrying an old film roll she found among her late grandmother's belongings, and asks to have it developed.\n\nOver the course of a single day, as the photographs surface one after another in the darkroom, chapters of the grandmother's life that Reem never knew are revealed, and they intertwine unexpectedly with Saeed's own past. Those images lead him to confront a decision he made forty years ago, and a loss he has kept at arm's length. In the end, Reem leaves having seen her grandmother from a new angle, while Saeed remains alone before a photograph, finally deciding to close a chapter he has left open far too long.",
-    evals: {
-      premise: { score: 5, text: "The idea uses a film roll as a narrative device that uncovers the past piece by piece, which gives it a strong visual and symbolic character. The theme works on memory and reconciliation in a way that is at once simple and deep, and it carries a clear identity that can be carried into an affecting film." },
-      hook: { score: 5, text: "The opening rests on a visually compelling idea: a developing process that reveals buried faces and memories. This kind of hook suits cinema particularly well because it runs on visual curiosity. The tension here is not event-driven but discovery-driven, which fits a film built on gradual revelation." },
-      clarity: { score: 5, text: "The treatment is clear along its main line: a simple event, a gradual reveal, an emotional consequence. There is a coherent vision built on uncovering truth through images, which makes the narrative path easy to follow and easy to develop into a screenplay." },
-      character: { score: 5, text: "The main characters are clear both functionally and emotionally. Saeed embodies the repressed past and Reem is the doorway to its revelation. Their relationship is not direct but forms through the photographs, a choice that serves the central idea without adding unnecessary complexity at this stage." },
-      emotional: { score: 4, text: "The emotional journey is present and clearly directed, but it leans heavily on gradual discovery rather than deep internal change. The turning point inside Saeed will need to be strengthened and made more explicit at the next stage." },
-      structure: { score: 5, text: "The structure is simple and effective: an establishing opening, an inciting event (the film roll), a gradual reveal, an emotional climax. This shape suits a treatment well because it proves the idea can be developed without excess structural complexity." },
-      potential: { score: 5, text: "The treatment is exceptionally ready to become a screenplay. It has a strong dramatic core, a confined location and a small cast, which makes it ideal for rapid development toward production." },
-      market: { score: 4, text: "The work suits festivals and human-centred short films very well. Its strength lies in its visual simplicity and its universal subject, though it remains commercially limited, resting on quiet drama rather than large events." },
-      presentation: { score: 5, text: "The treatment is written clearly and in a clean cinematic style. The language is strong and easy to picture, with a good balance between narration and description and no excess." }
+    date: "October 2026",
+    readerLogline: "In the last developing shop of a fading coastal town, an elderly photographer finds that a film roll brought in by a young woman — her late grandmother's — exposes a chapter of his own past, forcing him, over a single day, to face a decision he made forty years ago.",
+    assessment: "The treatment's greatest strength is that its visual idea IS its narrative mechanism: the image surfacing in the tray is the story surfacing. Its most consequential limitation is that Saeed's turning point arrives through discovery rather than through a choice he makes. The material is ready to move toward screenplay after one focused development pass on that turn.",
+    synopsis: "A small coastal town is slowly losing its character to encroaching development. Saeed, an elderly photographer, runs the last film-developing shop. Reem, a woman in her twenties, walks in carrying an old film roll she found among her late grandmother's belongings, and asks to have it developed.\n\nOver the course of a single day, as the photographs surface one after another in the darkroom, chapters of the grandmother's life that Reem never knew are revealed, and they intertwine unexpectedly with Saeed's own past. Those images lead him to confront a decision he made forty years ago, and a loss he has kept at arm's length. In the end, Reem leaves having seen her grandmother from a new angle, while Saeed remains alone before a photograph, finally deciding to close a chapter he has left open far too long.",
+    glance: {
+      "Premise & Theme": "Strong", "Hook & Originality": "Strong", "Stakes, Conflict & Plot": "Promising",
+      "Characters & Arcs": "Promising", "Structure & Momentum": "Strong",
+      "Genre, Tone & Cinematic Potential": "Strong", "Treatment Clarity": "Strong"
+    },
+    eval: {
+      "Premise & Theme": { text: "The idea uses a film roll as a narrative device that uncovers the past piece by piece, which gives it a strong visual and symbolic character. The theme works on memory and reconciliation in a way that is at once simple and deep, and it emerges through what Saeed does rather than through anything he says." },
+      "Hook & Originality": { text: "The opening rests on a visually compelling idea: a developing process that reveals buried faces and memories. The tension is not event-driven but discovery-driven, which fits a film built on gradual revelation. The originality lies in the mechanism more than in the story, and at this stage that is enough." },
+      "Stakes, Conflict & Plot": { text: "The conflict is largely internal: Saeed resists what the photographs reveal. The causal chain is clean — each image drives the next — but what is actually at stake stays implicit. What does Saeed lose if he does not face it? Naming that is the single most important thing the plot needs before screenplay stage, and it is also what keeps the ending from reading as quieter than it should." },
+      "Characters & Arcs": { text: "Both characters are clear functionally and emotionally: Saeed embodies the repressed past, Reem is the doorway to its revelation. Their relationship is indirect, formed through the photographs, and the choice serves the central idea. The arc exists and its direction is clear, but it arrives at Saeed rather than being made by him; a decision taken in the final third would turn the journey from discovery into action. Reem, in turn, needs a want of her own beyond curiosity." },
+      "Structure & Momentum": { text: "The structure is simple and effective: an establishing opening, an inciting event (the film roll), a gradual reveal, an emotional climax. Each new photograph changes what we know, which is enough to carry the intended short-film runtime. The middle third is where it could slacken if the reveals come to feel equal in weight." },
+      "Genre, Tone & Cinematic Potential": { text: "The tone is consistent: quiet drama resting on visual craft. The story is told through action and image rather than explanation, and the darkroom is a cinematic space by nature — the red light, the paper as the image arrives, the waiting that developing itself imposes. This is among the project's clearest strengths." },
+      "Treatment Clarity": { text: "The treatment is written clearly and in a clean cinematic style, and the events, relationships and ending are all specified well enough to support an informed assessment. The language is easy to picture, with a good balance between narration and description and no excess." }
     },
     market: {
-      audience: "Readers and viewers drawn to human drama and simple emotional stories with symbolic depth. Well suited to local and Gulf audiences, and likely to be appreciated at international festivals.",
-      demand: "Short drama built on memory and identity. This kind of work is in demand across festival programmes and film support funds.",
-      path: "Suited to grants, festivals and short-film support programmes. Its primary value is in exhibition rather than commercial distribution.",
-      budget: "Low to moderate, with high production viability given the limited locations and small cast.",
-      reach: "Strong within the festival circuit, particularly among works that rest on visual craft and memory as a subject."
+      devPriorities: "First: define what is at stake for Saeed, and move the decisive choice into his hands. Second: give Reem a want of her own beyond curiosity. Third, and safely deferred to screenplay stage: differentiate the weight of each reveal across the middle third.",
+      tProduction: "The scope is contained: one principal location, two characters, present day, no action or special requirements. The real production load is the darkroom itself — practical lighting, and the photographs as designed set elements that have to exist before the shoot. Production viability is high within a short-film budget.",
+      tMarketPos: "The audience is one drawn to human drama and emotionally simple stories with symbolic depth — local and Gulf viewers, with likely appreciation at international festivals. The natural position is grants, short-film support programmes and festivals rather than commercial distribution; its value is in exhibition. This positioning is read separately from the creative assessment: a limited commercial ceiling is not a mark against the quality of the story."
     },
-    strengths: ["A strong symbolic idea that translates easily into images", "Clarity along the narrative line", "Effective core characters", "High production viability", "A clear artistic identity"],
-    develop: ["Strengthen Saeed's internal turning point", "Add a deeper emotional layer at the climax", "Raise the emotional stakes slightly for greater impact", "Develop the backstory before Reem's arrival (if needed later, at screenplay stage)"],
-    verdict: { decision: "Recommend", context: "in the context of development for short films and festivals", score: "8.8",
-      text: "A strong, coherent treatment resting on a smart visual idea and a simple, effective structure. It is well suited to immediate development into a screenplay, with a high chance of acceptance by support programmes and festivals. What distinguishes it most is its ability to turn a simple idea into a visual emotional experience, with clear room to deepen that emotion at the next stage." }
+    overall: {
+      strengths: "A strong symbolic idea that translates easily into images, clarity along the narrative line, two effective core characters, high production viability, and a clear artistic identity.",
+      toDevelop: "Define what is at stake, move the decisive choice into Saeed's hands, deepen the emotional layer at the climax, and give Reem a want of her own."
+    },
+    verdict: { decision: "Consider", context: "in the context of development for short films and festivals",
+      text: "A strong, coherent treatment resting on a smart visual idea and a simple, effective structure, with a high chance at support programmes and festivals. What distinguishes it most is its ability to turn a simple idea into a visual emotional experience. What holds it short of a full recommendation today is one foundational question: the decisive choice sits outside the protagonist's hands. One focused development pass on that would carry it to screenplay stage." }
   };
 
   function $(id) { return document.getElementById(id); }
-  function esc(v) {
-    return String(v == null ? "" : v).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  }
   function lang() {
     try { var l = localStorage.getItem(LANG_KEY); return (l === "en" || l === "ar") ? l : "ar"; }
     catch (e) { return "ar"; }
-  }
-
-  function render(d, l) {
-    var t = T[l], lb = L[l], ar = (l === "ar"), s = d.submission;
-
-    var top = [
-      [t.title, '<span class="rep-title">' + esc(s.titleEn) + ' <span class="ar">(' + esc(s.titleAr) + ")</span></span>", true],
-      [t.writer, esc(s.writer)], [t.format, esc(s.format)], [t.genre, esc(s.genre)],
-      [t.length, esc(s.length)], [t.stage, esc(s.stage)],
-      [t.reader, esc(t.readerName)], [t.date, esc(s.date)]
-    ];
-    var topHtml = top.map(function (r) {
-      return "<div" + (r[2] ? ' style="grid-column:1/-1"' : "") + '><div class="k">' + r[0] +
-        '</div><div class="v" dir="auto">' + r[1] + "</div></div>";
-    }).join("");
-
-    var opts = [t.excellent, t.good, t.fair, t.poor];
-    var glHead = "<tr><td></td>" + opts.map(function (o) { return '<td class="mark">' + o + "</td>"; }).join("") + "</tr>";
-    var glHtml = POINTS.map(function (p) {
-      var hit = d.glance[p];
-      var cells = "";
-      for (var i = 0; i < 4; i++) {
-        cells += '<td class="mark ' + (i === hit ? "hit" : "dim") + '">' + (i === hit ? "●" : "·") + "</td>";
-      }
-      return '<tr><td class="cat">' + lb[p] + "</td>" + cells + "</tr>";
-    }).join("");
-
-    var evalHtml = POINTS.map(function (p) {
-      var e = d.evals[p];
-      return '<div class="rep-item"><div class="ih"><span class="t">' + lb[p] + "</span>" +
-        '<span class="sc">' + e.score + ' / 5</span></div><p>' + esc(e.text) + "</p></div>";
-    }).join("");
-
-    var marketHtml = MARKET.map(function (k) {
-      return '<div class="rep-item"><div class="ih"><span class="t">' + lb[k] + "</span></div><p>" +
-        esc(d.market[k]) + "</p></div>";
-    }).join("");
-
-    function list(items) {
-      return '<ul class="rep-list">' + items.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>";
-    }
-
-    return '<div class="rep-header">' +
-      '<img class="rep-logo" src="assets/scene-one-logo-v5.svg" alt="Scene One">' +
-      '<div class="rep-cov">' + t.cover + "</div></div>" +
-      '<div class="rep-top">' + topHtml + "</div>" +
-      '<div class="logline"><div class="k">' + t.logline + '</div><div dir="auto">' + esc(d.logline) + "</div></div>" +
-      '<div class="glance"><h3>' + t.glance + '</h3><table class="gl">' + glHead + glHtml + "</table></div>" +
-      '<div class="rep-sec"><h2><span class="no">01</span>' + t.summary + "</h2><p>" + esc(d.summary) + "</p></div>" +
-      '<div class="rep-sec"><h2><span class="no">02</span>' + t.evaluation + "</h2>" + evalHtml + "</div>" +
-      '<div class="rep-sec"><h2><span class="no">03</span>' + t.market + "</h2>" + marketHtml + "</div>" +
-      '<div class="rep-sec"><h2><span class="no">04</span>' + t.overall + "</h2>" +
-        '<div class="rep-item"><div class="ih"><span class="t">' + t.strengths + "</span></div>" + list(d.strengths) + "</div>" +
-        '<div class="rep-item"><div class="ih"><span class="t">' + t.develop + "</span></div>" + list(d.develop) + "</div></div>" +
-      '<div class="verdict"><div class="vh">' + t.verdict + "</div>" +
-        '<div style="display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:8px">' +
-          '<div class="vd" style="margin:0">' + esc(t.decision[d.verdict.decision] || d.verdict.decision) +
-            ' <span class="ctx">· ' + esc(t.decisionDesc[d.verdict.decision] || "") + "</span></div>" +
-          '<div class="score10"><span class="n">' + esc(d.verdict.score) + "</span> " + t.outof + "</div>" +
-        "</div>" +
-        '<p class="vdesc">' + esc(d.verdict.context) + "</p>" +
-        '<p style="margin:0;color:#3f3a35">' + esc(d.verdict.text) + "</p></div>" +
-      '<div class="rep-foot"><span>Scene One · sceneone.info</span><span>' + t.foot + "</span></div>";
   }
 
   function applyLang(l) {
@@ -389,7 +276,9 @@
     $("sampleBadge").textContent = T[l].badge;
     $("langSeg").querySelectorAll("button").forEach(function (b) { b.classList.toggle("on", b.dataset.l === l); });
     var rb = $("reportBody");
-    rb.innerHTML = render(l === "ar" ? AR : EN, l);
+    // mergeCoverage fills anything this sample does not set, exactly as it does
+    // for a half-written coverage in the workspace.
+    rb.innerHTML = R.render(SUB[l], R.mergeCoverage(l === "ar" ? AR : EN, SCHEMA), l, SCHEMA);
     rb.setAttribute("dir", l === "ar" ? "rtl" : "ltr");
     rb.classList.toggle("ar", l === "ar");
   }

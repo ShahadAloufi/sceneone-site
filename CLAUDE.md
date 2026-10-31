@@ -268,6 +268,42 @@ Actively iterating on UX polish and workflow features.
     left in place deliberately rather than deleted.
 
 
+**Recently shipped (2026-10-31) — the treatment coverage restructure:**
+
+- **The treatment report is now three parts** (Project Overview / Creative Assessment /
+  Development & Industry Outlook), replacing the flat script-shaped document.
+  `TREATMENT_SCHEMA` in `js/report-render.js` is the single source: the workspace, the
+  writer's report and `sample-treatment-report.html` all drive off it.
+- **Seven creative points, not nine.** Market viability and overall presentation LEFT
+  the scorecard deliberately — production complexity and commercial fit are not
+  measures of story quality, and scoring them alongside premise and character
+  penalised difficult independent work. They are prose in Part III now.
+- **No numeric scoring on a treatment.** `scores: false` on the schema kills the 1–5
+  per point AND the /10; `autoScore`/`finalScore` return null, and the workspace hides
+  the rating row. The four-level scorecard is the only rating. **Script coverage is
+  unchanged** — 8 points, 1–5, /10, Excellent…Poor.
+- **Two scales now exist.** `GLANCE_OPTS` (Excellent/Good/Fair/Poor) for scripts,
+  `TREATMENT_OPTS` (Strong/Promising/Developing/Weak) for treatments, picked by
+  `optsFor(schema)`. Stored as the English key either way; labels in `T.<lang>`.
+- **Part I is treatment-only**: `readerLogline` + `assessment` on the coverage, gated
+  by `overview: true`, shown by `applySchemaShape()` in `js/coverage.js`.
+- **The verdicts were reworded again, for BOTH products** (the 2026-10-25 wording is
+  gone): Recommend → "Strong Enough for Industry Consideration" / «قويّ بما يكفي
+  لعرضه على جهات الصناعة», Pass → "Further Development Required" / «يحتاج إلى تطوير
+  إضافي». **Stored keys are still Recommend / Consider / Pass.** Changed in
+  `report-render.js`, `js/i18n.js`, `about-coverage.html`, `terms.html`,
+  `checkout.html`.
+- **`recLabel()` follows the workspace language now** — it used to force English, so an
+  Arabic workspace showed English verdict chips.
+- **`sample-treatment-report.html` is no longer self-rendering.** It was the one report
+  view with its own miniature renderer; it now calls `SOReport.render()` with
+  `TREATMENT_SCHEMA`, so the sample cannot drift from a real report. It keeps its own
+  chrome and its own `sceneone-treatment-lang` key.
+- **Legacy rows**: `TREATMENT_SCHEMA.legacy` / `.legacyMarket` carry a pre-restructure
+  coverage onto the new keys (Hook→Hook & Originality, Character Basics+Emotional
+  Journey→Characters & Arcs, Screenplay Potential→development priorities, …). It only
+  ever fills a blank — anything written under a current key wins.
+
 **Recently shipped (2026-10-25):**
 - **The three verdicts were reworded**, to a constructive framing that no longer
   tells a writer their script is "not recommended":

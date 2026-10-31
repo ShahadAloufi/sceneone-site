@@ -597,23 +597,40 @@
       <div id="glanceInputs"></div>
     </div>
 
+    <!-- Part I of a treatment coverage, hidden for a script. The reader writes
+         their own logline so it can be set against the writer's, and a short
+         executive read that opens the report. -->
+    <div class="card" id="overviewCard" hidden>
+      <p class="section-title"><span class="no">01</span> <span data-i18n="assessment">Overall assessment</span></p>
+      <div class="field">
+        <label class="lbl" for="c-rlogline" data-i18n="readerLogline">Logline (as read)</label>
+        <p class="hint" data-i18n="readerLoglineHint">In your own words: protagonist, central conflict, goal, stakes. A gap between this and the writer's logline is itself a finding.</p>
+        <textarea id="c-rlogline"></textarea>
+      </div>
+      <div class="field">
+        <label class="lbl" for="c-assessment" data-i18n="assessment">Overall assessment</label>
+        <p class="hint" data-i18n="assessmentHint">The most significant strength, the most consequential weakness, and how ready this is to move forward.</p>
+        <textarea id="c-assessment"></textarea>
+      </div>
+    </div>
+
     <div class="card">
-      <p class="section-title"><span class="no">01</span> <span data-i18n="synopsis">Synopsis</span></p>
+      <p class="section-title"><span class="no" id="noSynopsis">01</span> <span data-i18n="synopsis">Synopsis</span></p>
       <textarea id="c-synopsis" data-i18n-ph="synopsisPh" placeholder="Summarize the story in your own words."></textarea>
     </div>
 
     <div class="card">
-      <p class="section-title"><span class="no">02</span> <span data-i18n="evaluation">Evaluation</span></p>
+      <p class="section-title"><span class="no" id="noEval">02</span> <span data-i18n="evaluation">Evaluation</span></p>
       <div id="evalInputs"></div>
     </div>
 
     <div class="card">
-      <p class="section-title"><span class="no">03</span> <span data-i18n="market">The market</span></p>
+      <p class="section-title"><span class="no" id="noMarket">03</span> <span data-i18n="market">The market</span></p>
       <div id="marketInputs" class="stack"></div>
     </div>
 
     <div class="card">
-      <p class="section-title"><span class="no">04</span> <span data-i18n="overall">Overall comments</span></p>
+      <p class="section-title"><span class="no" id="noOverall">04</span> <span data-i18n="overall">Overall comments</span></p>
       <div class="field">
         <label class="lbl" for="c-strengths" data-i18n="strengths">Strengths</label>
         <textarea id="c-strengths"></textarea>
@@ -639,7 +656,7 @@
 
     <div class="card">
       <p class="section-title"><span class="no">★</span> <span data-i18n="verdict">Verdict</span></p>
-      <div class="rating-row">
+      <div class="rating-row" id="ratingRow">
         <div class="rating-auto">
           <div class="big" id="autoScore">–</div>
           <div class="cap" data-i18n="suggested">Suggested · from the scores</div>

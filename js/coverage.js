@@ -30,8 +30,24 @@
   // those run after the load.
   var SCHEMA = R.SCRIPT_SCHEMA;
   var GLANCE = SCHEMA.glance, EVAL = SCHEMA.eval, MARKET = SCHEMA.market;
+  // Each schema brings its own scorecard levels, and a treatment has no numeric
+  // scoring at all — no 1-5 per point, no /10. Both are read from the schema so
+  // the workspace, the report and the stored row can never disagree.
+  var SCALE = R.optsFor(SCHEMA);
+  function hasScores() { return SCHEMA.scores !== false; }
   function setSchema(sc) {
     SCHEMA = sc; GLANCE = sc.glance; EVAL = sc.eval; MARKET = sc.market;
+    SCALE = R.optsFor(sc);
+  }
+  /* The shape the schema implies: Part I appears for a treatment, the /10 pair
+     disappears with the numeric scoring, and the sections renumber around the
+     gap. Called once the submission is loaded, before any UI is built. */
+  function applySchemaShape() {
+    var t = SCHEMA.key === "treatment";
+    var ov = $("overviewCard"); if (ov) ov.hidden = !t;
+    var rr = $("ratingRow"); if (rr) rr.hidden = !hasScores();
+    [["noSynopsis", "02", "01"], ["noEval", "03", "02"], ["noMarket", "04", "03"], ["noOverall", "05", "04"]]
+      .forEach(function (x) { var el = $(x[0]); if (el) el.textContent = t ? x[1] : x[2]; });
   }
   var GENRE_EN = R.GENRE_EN, FORMAT_EN = R.FORMAT_EN, DRAFT_EN = R.DRAFT_EN, LEVEL_EN = R.LEVEL_EN;
 
@@ -46,6 +62,12 @@
       glance: "Assessment at a glance",
       synopsis: "Synopsis", synopsisPh: "Summarize the story in your own words.",
       evaluation: "Evaluation", market: "The market", overall: "Overall comments",
+      // Treatment wording for the three sections whose subject changes with the
+      // product — picked up by applyUILang when the schema says treatment.
+      glanceT: "Creative scorecard", evaluationT: "Creative assessment", marketT: "Development & industry outlook",
+      readerLogline: "Logline (as read)", assessment: "Overall assessment",
+      readerLoglineHint: "In your own words: protagonist, central conflict, goal, stakes. A gap between this and the writer's logline is itself a finding.",
+      assessmentHint: "The most significant strength, the most consequential weakness, and how ready this is to move forward.",
       strengths: "Strengths", develop: "To develop",
       verdict: "Verdict", suggested: "Suggested · from the scores",
       finalRating: "Final rating / 10", decision: "Decision",
@@ -98,6 +120,7 @@
       tComplete: "Coverage marked complete", tReopened: "Coverage reopened", tDlFail: "Couldn't create the download link.",
       finalizeHint: "Fill in every section (except Market) to finish.",
       scoresHint: "Give every evaluation point a score (1–5) first.",
+      scoresHintT: "Rate every point on the scorecard first.",
       guard: {
         link: "Go to the dashboard",
         loadT: "Loading…", loadM: "",
@@ -118,6 +141,10 @@
       glance: "التقييم العام",
       synopsis: "الملخّص", synopsisPh: "لخّص القصة بأسلوبك.",
       evaluation: "التقييم", market: "السوق", overall: "ملاحظات عامة",
+      glanceT: "بطاقة التقييم الإبداعي", evaluationT: "التقييم الإبداعي", marketT: "التطوير وأفق الصناعة",
+      readerLogline: "الفكرة المختصرة كما قرأتها", assessment: "التقييم العام للمشروع",
+      readerLoglineHint: "بأسلوبك: الشخصية الرئيسية، الصراع المركزي، الهدف، وما هو على المحك. الفرق بين ما كتبته هنا وما كتبه الكاتب هو بحد ذاته ملاحظة.",
+      assessmentHint: "أهم نقطة قوة، وأكثر نقاط الضعف أثرًا، ومدى جاهزية العمل للانتقال إلى الخطوة التالية.",
       strengths: "نقاط القوة", develop: "ما يحتاج إلى تطوير",
       verdict: "الحكم", suggested: "مقترح · من الدرجات",
       finalRating: "التقييم النهائي / ١٠", decision: "القرار",
@@ -168,6 +195,7 @@
       tComplete: "تم وضع علامة اكتمال التقييم", tReopened: "أُعيد فتح التقييم", tDlFail: "تعذّر إنشاء رابط التحميل.",
       finalizeHint: "املأ كل قسم (عدا السوق) لإكمال التقييم.",
       scoresHint: "اختر درجة (١–٥) لكل نقطة تقييم أولاً.",
+      scoresHintT: "قيّم كل نقطة في بطاقة التقييم أولاً.",
       guard: {
         link: "الذهاب إلى لوحة التحكم",
         loadT: "جارٍ التحميل", loadM: "",
@@ -181,7 +209,7 @@
     }
   };
   // maps a glance option (canonical English) to its UI translation key
-  var GLANCE_OPT_KEY = { Excellent: "excellent", Good: "good", Fair: "fair", Poor: "poor" };
+  var GLANCE_OPT_KEY = R.OPT_LABEL_KEY;
 
   /* ---------- helpers ---------- */
   function $(id) { return document.getElementById(id); }
@@ -237,6 +265,12 @@
   // reported or marked complete.
   function allScoresSet() {
     var c = state.coverage;
+    // A treatment is rated on the scorecard only, so THAT is what has to be
+    // complete before a report can be generated — the 1-5 row does not exist.
+    if (!hasScores()) {
+      for (var g = 0; g < GLANCE.length; g++) { if (!filled(c.glance[GLANCE[g]])) return false; }
+      return true;
+    }
     for (var i = 0; i < EVAL.length; i++) { if (c.eval[EVAL[i]].score == null) return false; }
     return true;
   }
@@ -244,6 +278,8 @@
     var c = state.coverage;
     if (!allScoresSet()) return false;
     if (!filled(c.synopsis)) return false;
+    // Part I, treatments only.
+    if (SCHEMA.overview && (!filled(c.readerLogline) || !filled(c.assessment))) return false;
     for (var i = 0; i < EVAL.length; i++) { if (!filled(c.eval[EVAL[i]].text)) return false; }
     if (!filled(c.overall.strengths)) return false;
     if (!filled(c.overall.toDevelop)) return false;
@@ -261,7 +297,8 @@
     // approval" button also needs every written section filled in.
     var scores = allScoresSet();
     var rep = $("genReport");
-    if (rep) { rep.disabled = !scores; tip("genReportTip", scores ? "" : UI[UILANG].scoresHint); }
+    var scoresMsg = hasScores() ? UI[UILANG].scoresHint : UI[UILANG].scoresHintT;
+    if (rep) { rep.disabled = !scores; tip("genReportTip", scores ? "" : scoresMsg); }
     var btn = $("finalizeBtn"); if (!btn) return;
     var ok = isEvalComplete();
     btn.disabled = !ok;
@@ -277,6 +314,7 @@
       coverage: {
         reader: "Scene One Reader", date: today(), glance: {},
         synopsis: "", eval: ev, market: mk, overall: { strengths: "", toDevelop: "" }, score10: "",
+        readerLogline: "", assessment: "",
         verdict: { decision: "", context: "", text: "" }
       }
     };
@@ -586,19 +624,28 @@
     });
     refresh();
   }
-  function glanceClass(v) { return v === "Excellent" || v === "Good" ? "good" : (v === "Fair" ? "ok" : "bad"); }
+  /* Top two levels read as strength, the third as a stage rather than a fault,
+     the last as a weakness — on either scale. */
+  function glanceClass(v) {
+    if (v === "Excellent" || v === "Good" || v === "Strong" || v === "Promising") return "good";
+    if (v === "Fair") return "ok";
+    if (v === "Developing") return "dev";
+    return "bad";
+  }
   /* Not "bad" for the third: it reads "Development Recommended" now, a stage
      rather than a rejection. glanceClass keeps "bad" for a Poor rating. */
   function recClass(v) { return v === "Recommend" ? "good" : (v === "Consider" ? "ok" : "dev"); }
 
   /* overall /10: average of the set evaluation scores (1-5), scaled to 10 */
   function autoScore() {
+    if (!hasScores()) return null;
     var vals = EVAL.map(function (n) { return state.coverage.eval[n] && state.coverage.eval[n].score; }).filter(function (s) { return s; });
     if (!vals.length) return null;
     var avg = vals.reduce(function (a, b) { return a + b; }, 0) / vals.length;
     return Math.round(avg * 2 * 10) / 10;
   }
   function finalScore() {
+    if (!hasScores()) return null;
     var ov = state.coverage.score10;
     if (ov !== "" && ov != null && !isNaN(+ov)) return +ov;
     return autoScore();
@@ -623,7 +670,10 @@
      "Pass" would now send a writer a report headed "Development Recommended".
      Still English in every language, and the value written to the row is
      `o` itself — see REC_OPTS. */
-  function recLabel(o) { return (R.T.en.decision && R.T.en.decision[o]) || o; }
+  function recLabel(o) {
+    var d = R.T[UILANG] && R.T[UILANG].decision;
+    return (d && d[o]) || (R.T.en.decision && R.T.en.decision[o]) || o;
+  }
 
   function buildCoverageInputs() {
     var tl = T[UILANG];
@@ -633,9 +683,11 @@
       var wrap = document.createElement("div"); wrap.className = "field";
       wrap.innerHTML = '<label class="lbl">' + esc(tl.glance_l[cat] || cat) + '</label><div class="seg rate"></div>';
       gi.appendChild(wrap);
-      buildSeg(wrap.querySelector(".seg"), GLANCE_OPTS,
+      buildSeg(wrap.querySelector(".seg"), SCALE,
         function () { return state.coverage.glance[cat] || ""; },
-        function (v) { state.coverage.glance[cat] = v; }, glanceClass, glanceLabel);
+        // The scorecard now gates the report button on a treatment, so a
+        // rating has to re-run the same check a 1-5 score does.
+        function (v) { state.coverage.glance[cat] = v; refreshFinalizeState(); }, glanceClass, glanceLabel);
     });
     // rec segs
     document.querySelectorAll(".seg.rec").forEach(function (seg) {
@@ -650,9 +702,10 @@
     EVAL.forEach(function (name) {
       var lbl = tl.eval[name] || name;
       var b = document.createElement("div"); b.className = "eval-block";
-      var sc = ""; for (var i = 1; i <= 5; i++) sc += '<button data-s="' + i + '">' + i + "</button>";
+      var sc = "";
+      if (hasScores()) { for (var i = 1; i <= 5; i++) sc += '<button data-s="' + i + '">' + i + "</button>"; }
       b.innerHTML = '<div class="eval-head"><span class="name">' + esc(lbl) + "</span>" +
-        '<span class="score">' + sc + "</span></div>" +
+        (sc ? '<span class="score">' + sc + "</span>" : "") + "</div>" +
         '<textarea placeholder="' + esc(UI[UILANG].evalPh(lbl)) + '"></textarea>';
       ei.appendChild(b);
       var ta = b.querySelector("textarea");
@@ -704,6 +757,8 @@
   // Keys are namespaced by area so they can never collide with an evaluation
   // point's name — `reviewComments` is one flat map.
   var STATIC_NOTE_HOSTS = [
+    { id: "c-rlogline", key: "section:readerLogline" },
+    { id: "c-assessment", key: "section:assessment" },
     { id: "c-synopsis", key: "section:synopsis" },
     { id: "c-strengths", key: "section:strengths" },
     { id: "c-develop", key: "section:toDevelop" },
@@ -830,6 +885,7 @@
   /* simple text fields on coverage */
   var covMap = {
     "c-reader": ["reader"], "c-date": ["date"], "c-synopsis": ["synopsis"],
+    "c-rlogline": ["readerLogline"], "c-assessment": ["assessment"],
     "c-strengths": ["overall", "strengths"], "c-develop": ["overall", "toDevelop"],
     "c-vctx": ["verdict", "context"], "c-vtext": ["verdict", "text"]
   };
@@ -905,6 +961,15 @@
     document.querySelectorAll("[data-i18n-ph]").forEach(function (el) {
       var k = el.getAttribute("data-i18n-ph"); if (u[k] != null) el.setAttribute("placeholder", u[k]);
     });
+    // Three section titles name what is being assessed, so they follow the
+    // product. Done after the generic pass, which has just written the script
+    // wording over them.
+    if (SCHEMA.key === "treatment") {
+      [["glance", "glanceT"], ["evaluation", "evaluationT"], ["market", "marketT"]].forEach(function (x) {
+        var el = document.querySelector('[data-i18n="' + x[0] + '"]');
+        if (el && u[x[1]]) el.textContent = u[x[1]];
+      });
+    }
     document.querySelectorAll("#uiLang button").forEach(function (b) { b.classList.toggle("on", b.dataset.l === lang); });
     setSaveState(currentSaveKey);
     buildCoverageInputs();
@@ -1191,6 +1256,7 @@
     // The product decides the coverage's shape — do this before the skeleton or
     // any UI is built from EVAL / GLANCE / MARKET.
     setSchema(R.schemaFor(subRes.data.film_type));
+    applySchemaShape();
     state.coverage = blank().coverage;
     state.submission = mapSubmission(subRes.data);
 
