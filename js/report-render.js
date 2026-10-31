@@ -92,7 +92,7 @@
       synopsis: "الملخّص", evaluation: "التقييم", market: "السوق", overall: "ملاحظات عامة",
       coverageT: "تقييم المعالجة", synopsisT: "الملخّص (Treatment Summary)", evaluationT: "التقييم الإبداعي", marketT: "التطوير وأفق الصناعة", footT: "تقييم المعالجة",
       readerLogline: "الفكرة المختصرة كما قرأها القارئ", assessment: "التقييم العام للمشروع",
-      glanceT: "بطاقة التقييم الإبداعي",
+      glanceT: "التقييم الإبداعي",
       strengths: "نقاط القوة", develop: "ما يحتاج إلى تطوير", attachment: "مرفق لك", verdict: "الحكم", pending: "بانتظار التقييم", notwritten: "لم يُكتب بعد.",
       nologline: "لم يزوّدنا الكاتب بالفكرة المختصرة.",
       outof: "/ 10", foot: "تقييم النصوص", pagesUnit: "صفحة",
