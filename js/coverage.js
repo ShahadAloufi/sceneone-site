@@ -76,14 +76,14 @@
       evaluation: "Evaluation", market: "The market", overall: "Overall comments",
       // Treatment wording for the three sections whose subject changes with the
       // product — picked up by applyUILang when the schema says treatment.
-      glanceT: "Creative scorecard", evaluationT: "Creative assessment", marketT: "Development & industry outlook",
+      glanceT: "Creative scorecard at a glance", evaluationT: "Creative assessment", marketT: "Development & industry outlook",
       readerLogline: "Logline (as read)", assessment: "Overall assessment",
       readerLoglineHint: "In your own words: protagonist, central conflict, goal, stakes. A gap between this and the writer's logline is itself a finding.",
       assessmentHint: "The most significant strength, the most consequential weakness, and how ready this is to move forward.",
       strengths: "Strengths", develop: "To develop",
       verdict: "Verdict", suggested: "Suggested · from the scores",
       finalRating: "Final rating / 10", decision: "Decision",
-      context: "Context (optional)", contextPh: "short-film and festival context", summary: "Summary",
+      context: "Context (optional)", contextPh: "e.g. market or festival context", summary: "Summary",
       genReport: "Generate report", finalize: "Mark coverage complete", reopen: "Reopen coverage",
       editCoverage: "Edit coverage", print: "Print / Save as PDF",
       sendReport: "Send to writer", sending: "Sending…", sent: "Sent to writer ✓",
@@ -154,14 +154,14 @@
       synopsis: "الملخّص",
       synopsisHint: "ماذا يحدث في القصة وكيف تتطور؟",
       evaluation: "التقييم", market: "السوق", overall: "ملاحظات عامة",
-      glanceT: "التقييم الإبداعي", evaluationT: "التقييم الإبداعي", marketT: "التطوير وأفق الصناعة",
+      glanceT: "التقييم الإبداعي باختصار", evaluationT: "التقييم الإبداعي", marketT: "أولويات التطوير والجاهزية للصناعة",
       readerLogline: "الفكرة المختصرة كما قرأتها", assessment: "التقييم العام للمشروع",
       readerLoglineHint: "بأسلوبك: الشخصية الرئيسية، الصراع المركزي، الهدف، وما هو على المحك. الفرق بين ما كتبته هنا وما كتبه الكاتب هو بحد ذاته ملاحظة.",
       assessmentHint: "أهم نقطة قوة، وأكثر نقاط الضعف أثرًا، ومدى جاهزية العمل للانتقال إلى الخطوة التالية.",
       strengths: "نقاط القوة", develop: "ما يحتاج إلى تطوير",
       verdict: "الحكم", suggested: "مقترح · من الدرجات",
       finalRating: "التقييم النهائي / ١٠", decision: "القرار",
-      context: "السياق (اختياري)", contextPh: "سياق الأفلام القصيرة والمهرجانات", summary: "الخلاصة",
+      context: "السياق (اختياري)", contextPh: "مثال: سياق السوق أو المهرجانات", summary: "الخلاصة",
       genReport: "إنشاء التقرير", finalize: "وضع علامة اكتمال التقييم", reopen: "إعادة فتح التقييم",
       editCoverage: "تعديل التقييم", print: "طباعة / حفظ PDF",
       sendReport: "إرسال إلى الكاتب", sending: "جارٍ الإرسال…", sent: "تم الإرسال ✓",
@@ -719,7 +719,8 @@
       if (hasScores()) { for (var i = 1; i <= 5; i++) sc += '<button data-s="' + i + '">' + i + "</button>"; }
       b.innerHTML = '<div class="eval-head"><span class="name">' + esc(lbl) + "</span>" +
         (sc ? '<span class="score">' + sc + "</span>" : "") + "</div>" +
-        '<textarea placeholder="' + esc(UI[UILANG].evalPh(lbl)) + '"></textarea>';
+        (hasScores() ? '<textarea placeholder="' + esc(UI[UILANG].evalPh(lbl)) + '"></textarea>'
+                     : "<textarea></textarea>");
       ei.appendChild(b);
       var ta = b.querySelector("textarea");
       ta.value = state.coverage.eval[name].text;

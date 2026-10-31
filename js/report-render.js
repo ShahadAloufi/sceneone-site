@@ -47,7 +47,7 @@
       // it can be set against the writer's: a gap between the two is itself the
       // finding, and it says what the treatment actually communicated.
       readerLogline: "Logline (as read)", assessment: "Overall assessment",
-      glanceT: "Creative scorecard",
+      glanceT: "Creative scorecard at a glance",
       strengths: "Strengths", develop: "To develop", attachment: "Attached for you", verdict: "Verdict", pending: "Pending", notwritten: "Not yet written.",
       // The logline comes from the WRITER, not the reader, so it needs its own
       // empty state: "not yet written" would wrongly read as the reader owing
@@ -90,9 +90,9 @@
       logline: "الفكرة المختصرة", glance: "التقييم العام", excellent: "ممتاز", good: "جيد", fair: "مقبول", poor: "ضعيف",
       strong: "قوي", promising: "واعد", developing: "يحتاج إلى تطوير", weak: "ضعيف",
       synopsis: "الملخّص", evaluation: "التقييم", market: "السوق", overall: "ملاحظات عامة",
-      coverageT: "تقييم المعالجة", synopsisT: "الملخّص (Treatment Summary)", evaluationT: "التقييم الإبداعي", marketT: "التطوير وأفق الصناعة", footT: "تقييم المعالجة",
+      coverageT: "تقييم المعالجة", synopsisT: "الملخّص (Treatment Summary)", evaluationT: "التقييم الإبداعي", marketT: "أولويات التطوير والجاهزية للصناعة", footT: "تقييم المعالجة",
       readerLogline: "الفكرة المختصرة كما قرأها القارئ", assessment: "التقييم العام للمشروع",
-      glanceT: "التقييم الإبداعي",
+      glanceT: "التقييم الإبداعي باختصار",
       strengths: "نقاط القوة", develop: "ما يحتاج إلى تطوير", attachment: "مرفق لك", verdict: "الحكم", pending: "بانتظار التقييم", notwritten: "لم يُكتب بعد.",
       nologline: "لم يزوّدنا الكاتب بالفكرة المختصرة.",
       outof: "/ 10", foot: "تقييم النصوص", pagesUnit: "صفحة",
