@@ -72,6 +72,7 @@
       reader: "Reader", readerPh: "Scene One Reader", date: "Date",
       glance: "Assessment at a glance",
       synopsis: "Synopsis", synopsisPh: "Summarize the story in your own words.",
+      synopsisHint: "What happens in the story, and how does it develop?",
       evaluation: "Evaluation", market: "The market", overall: "Overall comments",
       // Treatment wording for the three sections whose subject changes with the
       // product — picked up by applyUILang when the schema says treatment.
@@ -151,6 +152,7 @@
       reader: "القارئ", readerPh: "قارئ Scene One", date: "التاريخ",
       glance: "التقييم العام",
       synopsis: "الملخّص", synopsisPh: "لخّص القصة بأسلوبك.",
+      synopsisHint: "ماذا يحدث في القصة وكيف تتطور؟",
       evaluation: "التقييم", market: "السوق", overall: "ملاحظات عامة",
       glanceT: "التقييم الإبداعي", evaluationT: "التقييم الإبداعي", marketT: "التطوير وأفق الصناعة",
       readerLogline: "الفكرة المختصرة كما قرأتها", assessment: "التقييم العام للمشروع",
