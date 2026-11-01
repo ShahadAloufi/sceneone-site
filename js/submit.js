@@ -224,7 +224,10 @@
   var fileLockMsg = document.getElementById("fileLockMsg");
   var NDA_DROP_DEFAULT = ndaDropText ? ndaDropText.textContent : "";
   var NDA_EXT = ["pdf", "png", "jpg", "jpeg", "webp"];
-  var NDA_MAX_BYTES = 10 * 1024 * 1024;
+  // The NDA shares the `member-cards` bucket for now, so it inherits that
+  // bucket's 5MB file_size_limit. Asking for more here would pass validation
+  // and then fail at upload, after the script had already gone up.
+  var NDA_MAX_BYTES = 5 * 1024 * 1024;
 
   function ipAnswer() {
     var el = document.querySelector('input[name="ip"]:checked');
@@ -670,7 +673,7 @@
         markInvalid("nda", true); ok = false;
       }
       if (nda && nda.size > NDA_MAX_BYTES) {
-        toast("ملف الاتفاقية كبير جدًا", "الحد الأقصى لحجم الاتفاقية هو 10 ميغابايت.", "error");
+        toast("ملف الاتفاقية كبير جدًا", "الحد الأقصى لحجم الاتفاقية هو 5 ميغابايت.", "error");
         markInvalid("nda", true); ok = false;
       }
     }
@@ -733,6 +736,38 @@
       // read it, readers never do.
       var card = isMemberClaimed() ? cardFile() : null;
       var cardPath = card ? buildPath(card.name) : null;
+
+      // The signed NDA, for an unregistered script. It shares `member-cards`
+      // because that bucket already has the audience an NDA needs — anon
+      // insert, staff read, readers never — and there is no `ndas` bucket yet.
+      //
+      // There is also no `nda_path` COLUMN yet, so the path cannot be stored
+      // on the row. Instead the NDA is uploaded into the SAME folder as the
+      // script: `file_path` is "<prefix>/<script>", and the NDA is
+      // "<prefix>/nda-<file>" in member-cards. Staff find it by taking the
+      // prefix off the submission's file_path and listing it in that bucket.
+      // Replace both halves with a real column when one exists.
+      var nda = ndaRequired() ? ndaFile() : null;
+      // An all-Arabic filename sanitises down to a row of underscores, which is
+      // worse than no name at all — fall back to "nda.<ext>" in that case.
+      function ndaName(n) {
+        var safe = String(n).replace(/[^A-Za-z0-9._-]/g, "_");
+        if (/^[_.]*$/.test(safe.replace(/\.[A-Za-z0-9]+$/, ""))) {
+          var ext = fileExt(n);
+          return ext ? "nda." + ext : "nda";
+        }
+        return "nda-" + safe;
+      }
+      var ndaPath = nda ? filePath.split("/")[0] + "/" + ndaName(nda.name) : null;
+      function uploadNda() {
+        if (!nda) return Promise.resolve();
+        return sb.storage.from(CARD_BUCKET).upload(ndaPath, nda, {
+          contentType: nda.type || "application/octet-stream",
+          upsert: false
+        }).then(function (up) {
+          if (up.error) throw up.error;
+        });
+      }
       function uploadCard() {
         if (!card) return Promise.resolve();
         return sb.storage.from(CARD_BUCKET).upload(cardPath, card, {
@@ -750,6 +785,8 @@
         }).then(function (up) {
           if (up.error) throw up.error;
           return uploadCard();
+        }).then(function () {
+          return uploadNda();
         }).then(function () {
           return fetch("/api/submissions", {
             method: "POST",
