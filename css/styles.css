@@ -2035,6 +2035,10 @@ html[data-theme="light"] .so-loader{ --frame:#15110f; }  /* auto on light theme 
 .adm-link:disabled { opacity: .5; cursor: default; }
 /* Disabled coverage button: keep it visually inert (no hover feedback). */
 .adm-link:disabled:hover { background: var(--adm-outline-bg); border-color: var(--adm-outline-line); color: var(--adm-outline-ink); }
+/* The NDA sits under the script link in the same cell, quieter than it: the
+   file is what staff open every day, the agreement only when they need it. */
+.adm-link--nda { margin-block-start: 4px; font-size: 11px; opacity: .85; }
+.adm-file .adm-link--nda { display: block; }
 .adm-link--gold:disabled:hover { background: var(--adm-solid-bg); border-color: var(--adm-solid-bg); color: var(--adm-solid-text); }
 /* Primary action (assign / start-continue coverage): white solid, like the hero's white CTA. */
 .adm-link--gold { background: var(--adm-solid-bg); border-color: var(--adm-solid-bg); color: var(--adm-solid-text); font-weight: 500; }

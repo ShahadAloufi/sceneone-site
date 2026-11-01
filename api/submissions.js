@@ -108,6 +108,9 @@ const PATH_RE = /^[A-Za-z0-9]+-[A-Za-z0-9]+\/[A-Za-z0-9._-]+$/;
 // All-submissions tab.
 const MEMBER_NUMBER_RE = /^CA-\d{1,6}$/;
 const CARD_BUCKET = "member-cards";
+// Signed NDAs, for scripts submitted without registered IP.
+const NDA_BUCKET = "ndas";
+const NDA_EXT = ["docx", "doc", "pdf", "png", "jpg", "jpeg", "webp"];
 const CARD_EXT = ["png", "jpg", "jpeg", "webp", "pdf"];
 
 function fileExt(name) {
@@ -130,12 +133,12 @@ function fileExt(name) {
 //
 // Uses the list endpoint rather than downloading the object: we need existence
 // and a non-zero size, not the bytes.
-async function cardWasUploaded(supabaseUrl, serviceKey, path) {
+async function cardWasUploaded(supabaseUrl, serviceKey, path, bucket) {
   const slash = path.lastIndexOf("/");
   const prefix = slash > 0 ? path.slice(0, slash) : "";
   const name = slash > 0 ? path.slice(slash + 1) : path;
 
-  const resp = await fetch(supabaseUrl + "/storage/v1/object/list/" + CARD_BUCKET, {
+  const resp = await fetch(supabaseUrl + "/storage/v1/object/list/" + (bucket || CARD_BUCKET), {
     method: "POST",
     headers: {
       apikey: serviceKey,
@@ -220,6 +223,17 @@ function validate(row) {
       return "صيغة بطاقة العضوية غير مدعومة. أرفق صورة PNG أو JPG أو WEBP أو ملف PDF.";
     }
   }
+  // A script submitted WITHOUT registered IP is only accepted alongside a
+  // signed NDA — the form refuses it, and so does the server, which is the
+  // half that cannot be bypassed by editing the page.
+  if (row.ip_registered === false && !isTreatment(row.film_type)) {
+    if (!row.nda_path || row.nda_path.length > MAX.path || !PATH_RE.test(row.nda_path)) {
+      return "أرفق اتفاقية عدم الإفصاح الموقّعة قبل رفع النص.";
+    }
+    if (NDA_EXT.indexOf(fileExt(row.nda_path)) === -1) {
+      return "صيغة الاتفاقية غير مدعومة. أرفقها بصيغة DOCX أو PDF أو صورة.";
+    }
+  }
   return null;
 }
 
@@ -246,6 +260,9 @@ module.exports = async (req, res) => {
   const memberNumberRaw = (b.memberNumber || "").toString().trim().toUpperCase().replace(/\s+/g, "");
   const memberNumber = memberNumberRaw ? "CA-" + memberNumberRaw.replace(/^CA-?/, "") : "";
   const cardPath = (b.memberCardPath || "").toString().trim() || null;
+  const ndaPathIn = (b.ip === "yes" || b.ip === true)
+    ? null
+    : ((b.ndaPath || "").toString().trim() || null);
 
   const row = {
     title_ar: (b.titleAr || "").toString().trim(),
@@ -266,6 +283,10 @@ module.exports = async (req, res) => {
     tone_ref: (b.toneRef || "").toString().trim() || null,
     treatment_text: (b.treatmentText || "").toString().trim() || null,
     ip_registered: b.ip === "yes" || b.ip === true,
+    // The signed NDA that unlocked the upload, in the `ndas` bucket. Only read
+    // when the writer actually said the work is unregistered, so a stray path
+    // in a hand-made body cannot attach one to a registered submission.
+    nda_path: ndaPathIn,
     file_path: (b.filePath || "").toString().trim() || null,
     file_name: (b.fileName || "").toString().trim() || null,
     // Membership claim. Read ONLY when the writer actually ticked the box, so a
@@ -327,6 +348,27 @@ module.exports = async (req, res) => {
     if (!uploaded) {
       return res.status(400).json({
         message: "لم نستلم صورة بطاقة العضوية. أعد إرفاقها ثم أرسل النص.",
+      });
+    }
+  }
+
+  // ---- The NDA must really be there too ------------------------------------
+  // Same reasoning as the card: a path in a request body is a claim, not a
+  // file. An unregistered script whose NDA never arrived must not become a
+  // submission, because the agreement is the only thing covering it.
+  if (row.nda_path) {
+    let ndaUp;
+    try {
+      ndaUp = await cardWasUploaded(supabaseUrl, serviceKey, row.nda_path, NDA_BUCKET);
+    } catch (e) {
+      console.error("submissions: NDA lookup failed:", e);
+      return res.status(502).json({
+        message: "تعذّر التحقق من رفع الاتفاقية. حاول مرة أخرى بعد قليل.",
+      });
+    }
+    if (!ndaUp) {
+      return res.status(400).json({
+        message: "لم نستلم الاتفاقية الموقّعة. أعد إرفاقها ثم أرسل النص.",
       });
     }
   }

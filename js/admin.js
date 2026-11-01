@@ -97,6 +97,7 @@
       // column: the number is whatever the writer typed, so the card is the only
       // evidence and someone has to open it.
       thMember: "العضوية", memberNone: "–", memberCard: "عرض البطاقة",
+      ndaView: "الاتفاقية", ndaFail: "تعذّر فتح الاتفاقية",
       memberUnverified: "خصم 15% مُطبَّق، غير مُتحقَّق",
       memberUnverifiedTip: "طُبِّق الخصم عند الرفع دون تحقق. افتح البطاقة للتأكد، المبلغ مدفوع بالفعل ولا يمكن تصحيحه تلقائيًا.",
       memberRepeat: "رقم مستخدم في طلب آخر",
@@ -191,6 +192,7 @@
       payStale: "Abandoned", payStaleTip: "The writer hasn't completed payment in over 48 hours",
       payRefundedFlag: "Refunded, needs a decision",
       thMember: "Membership", memberNone: "–", memberCard: "View card",
+      ndaView: "NDA", ndaFail: "Couldn't open the NDA",
       memberUnverified: "15% applied, unverified",
       memberUnverifiedTip: "The discount was applied on upload, unchecked. Open the card to verify, the amount is already charged and cannot be corrected automatically.",
       memberRepeat: "Number also used on another submission",
@@ -829,6 +831,7 @@
           a.textContent = t("download");
           a.addEventListener("click", function () { downloadFile(s.file_path, a); });
           fileCell.appendChild(a);
+          addNdaLink(fileCell, s);
         } else {
           var lock = document.createElement("span");
           lock.className = "adm-muted";
@@ -1498,6 +1501,34 @@
   // Cards live in their own bucket, readable by STAFF ONLY (Storage RLS is the
   // real guard — this is just which bucket to ask). A reader who somehow reached
   // this code would get an error, not a card.
+  // The signed NDA for an unregistered script. Its own bucket, and STAFF ONLY
+  // here: the agreement is between Scene One and the writer, and a reader has
+  // no reason to read it to do their job. The Storage policy is broader than
+  // this (any row in `admins`), so this is a UI restraint, not the guard —
+  // tighten the policy too if that ever matters.
+  async function openNda(path, btn) {
+    var old = btn.textContent; btn.textContent = "..."; btn.disabled = true;
+    var res = await sb.storage.from(CFG.ndaBucket || "ndas").createSignedUrl(path, 120);
+    btn.textContent = old; btn.disabled = false;
+    if (res.error || !res.data) {
+      console.error("[nda] createSignedUrl failed for path:", path, res.error);
+      alert(t("ndaFail"));
+      return;
+    }
+    window.open(res.data.signedUrl, "_blank");
+  }
+
+  // Appends an "NDA" button under the file link, for staff, on rows that have
+  // one. Used by both tables, which build the same cell in two places.
+  function addNdaLink(cell, s) {
+    if (!cell || !s.nda_path || !isStaff(me && me.role)) return;
+    var n = document.createElement("button");
+    n.className = "adm-link adm-link--nda";
+    n.textContent = t("ndaView");
+    n.addEventListener("click", function () { openNda(s.nda_path, n); });
+    cell.appendChild(n);
+  }
+
   async function downloadCard(path, btn) {
     var old = btn.textContent; btn.textContent = "..."; btn.disabled = true;
     var res = await sb.storage.from(CFG.cardBucket || "member-cards").createSignedUrl(path, 120);
@@ -1563,6 +1594,7 @@
           b.className = "adm-link"; b.textContent = t("download");
           b.addEventListener("click", function () { downloadFile(s.file_path, b); });
           fileCell.appendChild(b);
+          addNdaLink(fileCell, s);
         } else {
           var lk = document.createElement("span");
           lk.className = "adm-muted"; lk.textContent = t("fileLocked"); lk.title = t("fileLockedTip");
