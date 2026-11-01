@@ -299,8 +299,62 @@
         <div class="sb2-sec__body">
           <div class="sub-grid">
 
+            <div class="sub-field sub-field--full" data-field="ip">
+              <label>هل سجّلت حقوق الملكية الفكرية لمعالجتك؟<span class="req"> *</span></label>
+              <div class="sub-ipbox" role="radiogroup" aria-label="تسجيل الحقوق الفكرية">
+                <label class="sub-radio">
+                  <input type="radio" name="ip" value="yes">
+                  <span class="sub-radio__dot"></span>
+                  <span class="sub-radio__label">نعم</span>
+                </label>
+                <label class="sub-radio">
+                  <input type="radio" name="ip" value="no">
+                  <span class="sub-radio__dot"></span>
+                  <span class="sub-radio__label">لا</span>
+                </label>
+              </div>
+              <p class="sub-err">اختر «نعم» أو «لا».</p>
+              <p class="sub-note">
+                <svg class="sub-note__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5" stroke-linecap="round"/><circle cx="12" cy="7.5" r="1" fill="currentColor" stroke="none"/></svg>
+                <span>معالجتك محمية هنا في سين ون، ونشجعك على تسجيلها لدى <a href="https://www.saip.gov.sa/" target="_blank" rel="noopener noreferrer" class="sub-note__link">الهيئة السعودية للملكية الفكرية (SAIP)</a>.</span>
+              </p>
+            </div>
+
+            <!-- ── NDA GATE ──
+                 Same gate as the script form: shown only while "لا" is selected
+                 above, and the treatment drop zone stays locked until the signed
+                 copy lands here. syncNdaGate() in js/submit.js owns the block and
+                 finds it by id, so both forms share one implementation. -->
+            <div class="sub-field sub-field--full sub-nda" id="ndaGate" data-field="nda" hidden>
+              <div class="sub-nda__head">
+                <svg class="sub-nda__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>
+                <div>
+                  <p class="sub-nda__title">معالجتك غير مسجّلة؟ وقّع اتفاقية عدم الإفصاح أولًا</p>
+                  <p class="sub-nda__text">
+                    لحماية سرية معالجتك وتنظيم الاطلاع عليها لأغراض التقييم، حمّل اتفاقية عدم الإفصاح،
+                    ووقّعها، ثم أرفق النسخة الموقّعة هنا. بعد إرفاق الاتفاقية، سيُتاح لك رفع معالجتك
+                    لإكمال التقديم.
+                  </p>
+                </div>
+              </div>
+
+              <a class="sub-nda__dl" id="ndaDownload" href="/assets/scene-one-nda.docx" download="Scene-One-NDA.docx">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v10m0 0 4-4m-4 4-4-4"/><path d="M5 18h14"/></svg>
+                <span>تحميل اتفاقية عدم الإفصاح (DOCX)</span>
+              </a>
+
+              <div class="sub-drop sub-drop--sm" id="ndaDrop" tabindex="0" role="button" aria-label="أرفق الاتفاقية الموقّعة">
+                <input type="file" id="ndaInput" name="nda" accept=".docx,.doc,.pdf,.png,.jpg,.jpeg,.webp" hidden>
+                <p class="sub-drop__text" id="ndaDropText">إرفاق الاتفاقية الموقّعة</p>
+                <p class="sub-drop__hint">DOCX · PDF · PNG · JPG · WEBP · بحد أقصى 5MB</p>
+              </div>
+              <p class="sub-err">أرفق الاتفاقية الموقّعة قبل رفع المعالجة.</p>
+            </div>
+
             <div class="sub-field sub-field--full" data-field="file">
               <label>ملف المعالجة<span class="req"> *</span></label>
+              <!-- Replaces the drop zone's own hint while the gate is closed. -->
+              <p class="sub-nda__lockmsg" id="fileLockMsg" hidden>يُفتح بعد إرفاق الاتفاقية الموقّعة.</p>
               <div class="sub-drop" id="dropZone" tabindex="0" role="button" aria-label="أرفق ملف المعالجة">
                 <input type="file" id="fileInput" name="file" accept=".pdf" hidden>
                 <svg class="sub-drop__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0 4 4m-4-4-4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>

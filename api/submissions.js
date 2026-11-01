@@ -223,12 +223,13 @@ function validate(row) {
       return "صيغة بطاقة العضوية غير مدعومة. أرفق صورة PNG أو JPG أو WEBP أو ملف PDF.";
     }
   }
-  // A script submitted WITHOUT registered IP is only accepted alongside a
-  // signed NDA — the form refuses it, and so does the server, which is the
-  // half that cannot be bypassed by editing the page.
-  if (row.ip_registered === false && !isTreatment(row.film_type)) {
+  // A work submitted WITHOUT registered IP — script or treatment, both forms
+  // now ask — is only accepted alongside a signed NDA. The form refuses it, and
+  // so does the server, which is the half that cannot be bypassed by editing
+  // the page.
+  if (row.ip_registered === false) {
     if (!row.nda_path || row.nda_path.length > MAX.path || !PATH_RE.test(row.nda_path)) {
-      return "أرفق اتفاقية عدم الإفصاح الموقّعة قبل رفع النص.";
+      return "أرفق اتفاقية عدم الإفصاح الموقّعة قبل رفع العمل.";
     }
     if (NDA_EXT.indexOf(fileExt(row.nda_path)) === -1) {
       return "صيغة الاتفاقية غير مدعومة. أرفقها بصيغة DOCX أو PDF أو صورة.";

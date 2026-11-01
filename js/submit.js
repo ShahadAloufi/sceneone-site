@@ -208,13 +208,13 @@
     fileInput.addEventListener("change", function () { setFileLabel(); checkFileNow(); });
   }
 
-  /* ---------- NDA GATE (unregistered scripts) ----------
-     Script form only; the treatment form has no IP question and every element
-     below is absent there, so the whole block no-ops.
+  /* ---------- NDA GATE (unregistered work) ----------
+     Both forms: submit.html and treatment-submit.html carry the same markup and
+     the same element ids, so this one implementation drives both.
 
-     Answering "لا" to the IP question means the writer is handing over a script
+     Answering "لا" to the IP question means the writer is handing over a work
      with no external registration behind it. Scene One will still read it, but
-     not before a signed NDA exists, so the script drop zone is LOCKED until the
+     not before a signed NDA exists, so the file drop zone is LOCKED until the
      signed copy is attached here. The lock is cosmetic AND real: the class greys
      it, the click handler bails, and validate() refuses a submission that
      somehow arrives with a file and no NDA. */
@@ -225,8 +225,7 @@
   var fileLockMsg = document.getElementById("fileLockMsg");
   var NDA_DROP_DEFAULT = ndaDropText ? ndaDropText.textContent : "";
   var NDA_EXT = ["docx", "doc", "pdf", "png", "jpg", "jpeg", "webp"];
-  // The NDA shares the `member-cards` bucket for now, so it inherits that
-  // bucket's 5MB file_size_limit. Asking for more here would pass validation
+  // The `ndas` bucket has a 5MB file_size_limit. Asking for more here would pass validation
   // and then fail at upload, after the script had already gone up.
   var NDA_MAX_BYTES = 5 * 1024 * 1024;
 
@@ -667,7 +666,7 @@
       var nda = ndaFile();
       req("nda", !!nda);
       if (!nda) {
-        toast("الاتفاقية مطلوبة", "حمّل اتفاقية عدم الإفصاح ووقّعها وأرفقها قبل رفع النص.", "error");
+        toast("الاتفاقية مطلوبة", "حمّل اتفاقية عدم الإفصاح ووقّعها وأرفقها قبل رفع الملف.", "error");
       }
       if (nda && NDA_EXT.indexOf(fileExt(nda.name)) === -1) {
         toast("صيغة الاتفاقية غير مدعومة", "أرفق الاتفاقية بصيغة DOCX أو PDF أو صورة PNG أو JPG أو WEBP.", "error");
