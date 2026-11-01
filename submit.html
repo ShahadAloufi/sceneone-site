@@ -310,11 +310,12 @@
                   <span class="sub-radio__label">نعم</span>
                 </label>
                 <label class="sub-radio">
-                  <input type="radio" name="ip" value="no" checked>
+                  <input type="radio" name="ip" value="no">
                   <span class="sub-radio__dot"></span>
                   <span class="sub-radio__label">لا</span>
                 </label>
               </div>
+              <p class="sub-err">اختر «نعم» أو «لا».</p>
               <p class="sub-note">
                 <svg class="sub-note__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5" stroke-linecap="round"/><circle cx="12" cy="7.5" r="1" fill="currentColor" stroke="none"/></svg>
                 <span>نصك محمي هنا في سين ون، ونشجعك على تسجيله لدى <a href="https://www.saip.gov.sa/" target="_blank" rel="noopener noreferrer" class="sub-note__link">الهيئة السعودية للملكية الفكرية (SAIP)</a>.</span>
@@ -332,9 +333,11 @@
               <div class="sub-nda__head">
                 <svg class="sub-nda__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>
                 <div>
-                  <p class="sub-nda__title">نصك غير مسجَّل — نوقّع اتفاقية عدم إفصاح أولاً</p>
+                  <p class="sub-nda__title">نصك غير مسجّل؟ وقّع اتفاقية عدم الإفصاح أولًا</p>
                   <p class="sub-nda__text">
-                    حمّل الاتفاقية، وقّعها، ثم أرفقها هنا. بعد إرفاقها مباشرةً يُفتح حقل رفع النص بالأسفل.
+                    لحماية سرية نصك وتنظيم الاطلاع عليه لأغراض التقييم، حمّل اتفاقية عدم الإفصاح،
+                    ووقّعها، ثم أرفق النسخة الموقّعة هنا. بعد إرفاق الاتفاقية، سيُتاح لك رفع نصك
+                    لإكمال التقديم.
                   </p>
                 </div>
               </div>
@@ -346,7 +349,7 @@
 
               <div class="sub-drop sub-drop--sm" id="ndaDrop" tabindex="0" role="button" aria-label="أرفق الاتفاقية الموقّعة">
                 <input type="file" id="ndaInput" name="nda" accept=".pdf,.png,.jpg,.jpeg,.webp" hidden>
-                <p class="sub-drop__text" id="ndaDropText">أرفق الاتفاقية بعد توقيعها</p>
+                <p class="sub-drop__text" id="ndaDropText">إرفاق الاتفاقية الموقّعة</p>
                 <p class="sub-drop__hint">PDF · PNG · JPG · WEBP · بحد أقصى 10MB</p>
               </div>
               <p class="sub-err">أرفق الاتفاقية الموقّعة قبل رفع النص.</p>

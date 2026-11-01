@@ -270,7 +270,12 @@
   }
 
   Array.prototype.forEach.call(document.querySelectorAll('input[name="ip"]'), function (r) {
-    r.addEventListener("change", syncNdaGate);
+    r.addEventListener("change", function () {
+      // Answering clears the "pick one" error straight away, rather than leaving
+      // it under a question the writer has just answered.
+      markInvalid("ip", false);
+      syncNdaGate();
+    });
   });
 
   if (ndaDrop && ndaInput) {
@@ -565,7 +570,11 @@
 
   /* ---------- VALIDATION ---------- */
   var form = document.getElementById("submitForm");
-  function fieldEl(name) { return form.querySelector('[data-field="' + name + '"]'); }
+  // `form` is declared here but read by code that runs earlier in this IIFE
+  // (syncNdaGate's initial pass), where the var is hoisted but still undefined.
+  // Falling back to document keeps that first call from throwing and killing
+  // the rest of the file — which silently cost the form its submit handler.
+  function fieldEl(name) { return (form || document).querySelector('[data-field="' + name + '"]'); }
   function markInvalid(name, on) {
     var f = fieldEl(name);
     if (f) f.classList.toggle("invalid", !!on);
@@ -591,7 +600,7 @@
       characters: (data.get("characters") || "").toString().trim(),
       toneRef: (data.get("toneRef") || "").toString().trim(),
       treatmentText: (data.get("treatmentText") || "").toString().trim(),
-      ip: (data.get("ip") || "no").toString(),
+      ip: (data.get("ip") || "").toString(),
       // Cinema Association claim; absent from the treatment form.
       isMember: isMemberClaimed(),
       memberNumber: isMemberClaimed() ? normalizedMemberNumber() : ""
