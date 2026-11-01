@@ -197,7 +197,7 @@ html[dir="ltr"] .sb2 .sub-field select { background-position: right 18px center;
   gap: 8px;
   min-block-size: 104px;
   padding: 20px;
-  border: 1px solid transparent;
+  border: 1px dashed var(--lx-line);
   border-radius: 12px;
   background: var(--lx-white);
   text-align: center;
@@ -216,7 +216,7 @@ html[dir="ltr"] .sb2 .sub-field select { background-position: right 18px center;
    into it, so js/submit.js drops the tabindex and the click handler bails too. */
 .sb2 .sub-drop.is-locked {
   background: var(--lx-paper, #efece6);
-  border-color: transparent;
+  border-color: var(--lx-line);
   cursor: not-allowed;
   opacity: .55;
   pointer-events: none;
