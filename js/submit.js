@@ -770,12 +770,12 @@
         if (!nda) return Promise.resolve();
         return putNda(NDA_BUCKET).then(function (up) {
           if (!up.error) return;
-          // The dedicated bucket may not exist yet. Falling back keeps a real
-          // submission from dying on infrastructure the writer cannot see, and
-          // the moment `ndas` is created this path stops being taken. Any other
-          // failure is a genuine error and still throws.
-          var msg = String((up.error && (up.error.message || up.error.error)) || "");
-          if (!/not\s*found|does not exist|404/i.test(msg)) throw up.error;
+          // ANY failure against the dedicated bucket falls back to member-cards:
+          // a missing bucket, but also a missing or wrong RLS policy, which is
+          // the likelier mistake and reports as a permissions error rather than
+          // a 404. The writer must never lose a submission over storage config
+          // they cannot see — and the NDA must never be silently dropped, so
+          // the fallback has to succeed or the whole submit fails loudly.
           return putNda(CARD_BUCKET).then(function (fb) {
             if (fb.error) throw fb.error;
           });
