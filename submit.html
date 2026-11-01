@@ -321,8 +321,41 @@
               </p>
             </div>
 
+            <!-- ── NDA GATE ──
+                 Shown only while "لا" is selected on the IP question above. An
+                 unregistered script has no external protection, so Scene One
+                 asks for a signed NDA before it will take the file at all: the
+                 script drop zone below is locked until the signed copy lands
+                 here. syncNdaGate() in js/submit.js owns the whole block, and
+                 the treatment form (which has no IP question) never sees it. -->
+            <div class="sub-field sub-field--full sub-nda" id="ndaGate" data-field="nda" hidden>
+              <div class="sub-nda__head">
+                <svg class="sub-nda__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>
+                <div>
+                  <p class="sub-nda__title">نصك غير مسجَّل — نوقّع اتفاقية عدم إفصاح أولاً</p>
+                  <p class="sub-nda__text">
+                    حمّل الاتفاقية، وقّعها، ثم أرفقها هنا. بعد إرفاقها مباشرةً يُفتح حقل رفع النص بالأسفل.
+                  </p>
+                </div>
+              </div>
+
+              <a class="sub-nda__dl" id="ndaDownload" href="/assets/scene-one-nda.pdf" download>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v10m0 0 4-4m-4 4-4-4"/><path d="M5 18h14"/></svg>
+                <span>تحميل اتفاقية عدم الإفصاح (PDF)</span>
+              </a>
+
+              <div class="sub-drop sub-drop--sm" id="ndaDrop" tabindex="0" role="button" aria-label="أرفق الاتفاقية الموقّعة">
+                <input type="file" id="ndaInput" name="nda" accept=".pdf,.png,.jpg,.jpeg,.webp" hidden>
+                <p class="sub-drop__text" id="ndaDropText">أرفق الاتفاقية بعد توقيعها</p>
+                <p class="sub-drop__hint">PDF · PNG · JPG · WEBP · بحد أقصى 10MB</p>
+              </div>
+              <p class="sub-err">أرفق الاتفاقية الموقّعة قبل رفع النص.</p>
+            </div>
+
             <div class="sub-field sub-field--full" data-field="file">
               <label>ملف النص<span class="req"> *</span></label>
+              <!-- Replaces the drop zone's own hint while the gate is closed. -->
+              <p class="sub-nda__lockmsg" id="fileLockMsg" hidden>يُفتح بعد إرفاق الاتفاقية الموقّعة.</p>
               <div class="sub-drop" id="dropZone" tabindex="0" role="button" aria-label="أرفق ملف النص">
                 <input type="file" id="fileInput" name="file" accept=".pdf,.fdx,.fountain,.docx,.txt" hidden>
                 <svg class="sub-drop__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0 4 4m-4-4-4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>

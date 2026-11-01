@@ -182,8 +182,12 @@
   }
 
   if (dropZone && fileInput) {
-    dropZone.addEventListener("click", function () { fileInput.click(); });
+    dropZone.addEventListener("click", function () {
+      if (dropZone.classList.contains("is-locked")) return;
+      fileInput.click();
+    });
     dropZone.addEventListener("keydown", function (e) {
+      if (dropZone.classList.contains("is-locked")) return;
       if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fileInput.click(); }
     });
     ["dragenter", "dragover"].forEach(function (ev) {
@@ -193,6 +197,7 @@
       dropZone.addEventListener(ev, function (e) { e.preventDefault(); dropZone.classList.remove("dragging"); });
     });
     dropZone.addEventListener("drop", function (e) {
+      if (dropZone.classList.contains("is-locked")) return;
       if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
         fileInput.files = e.dataTransfer.files;
         setFileLabel();
@@ -201,6 +206,96 @@
     });
     fileInput.addEventListener("change", function () { setFileLabel(); checkFileNow(); });
   }
+
+  /* ---------- NDA GATE (unregistered scripts) ----------
+     Script form only; the treatment form has no IP question and every element
+     below is absent there, so the whole block no-ops.
+
+     Answering "لا" to the IP question means the writer is handing over a script
+     with no external registration behind it. Scene One will still read it, but
+     not before a signed NDA exists, so the script drop zone is LOCKED until the
+     signed copy is attached here. The lock is cosmetic AND real: the class greys
+     it, the click handler bails, and validate() refuses a submission that
+     somehow arrives with a file and no NDA. */
+  var ndaGate = document.getElementById("ndaGate");
+  var ndaDrop = document.getElementById("ndaDrop");
+  var ndaInput = document.getElementById("ndaInput");
+  var ndaDropText = document.getElementById("ndaDropText");
+  var fileLockMsg = document.getElementById("fileLockMsg");
+  var NDA_DROP_DEFAULT = ndaDropText ? ndaDropText.textContent : "";
+  var NDA_EXT = ["pdf", "png", "jpg", "jpeg", "webp"];
+  var NDA_MAX_BYTES = 10 * 1024 * 1024;
+
+  function ipAnswer() {
+    var el = document.querySelector('input[name="ip"]:checked');
+    return el ? el.value : "";
+  }
+  function ndaRequired() { return !!ndaGate && ipAnswer() === "no"; }
+  function ndaFile() { return ndaInput && ndaInput.files ? ndaInput.files[0] : null; }
+  // The gate is open when it does not apply, or when a signed copy is attached.
+  function ndaSatisfied() { return !ndaRequired() || !!ndaFile(); }
+
+  function setNdaLabel() {
+    if (!ndaDrop || !ndaDropText) return;
+    var f = ndaFile();
+    if (f) { ndaDrop.classList.add("has-file"); ndaDropText.textContent = f.name; }
+    else { ndaDrop.classList.remove("has-file"); ndaDropText.textContent = NDA_DROP_DEFAULT; }
+  }
+
+  /* Show/hide the gate and lock or unlock the script drop zone to match. Called
+     on every IP change and every NDA attach, and once on load so a form restored
+     with "لا" already selected starts locked. */
+  function syncNdaGate() {
+    if (!ndaGate) return;
+    var required = ndaRequired();
+    ndaGate.hidden = !required;
+    // Leaving the gate must not strand a file nobody will ever look at.
+    if (!required && ndaInput && ndaInput.value) { ndaInput.value = ""; setNdaLabel(); }
+    if (!required) markInvalid("nda", false);
+
+    var locked = required && !ndaFile();
+    if (dropZone) {
+      dropZone.classList.toggle("is-locked", locked);
+      dropZone.setAttribute("aria-disabled", locked ? "true" : "false");
+      // Keyboard users must not be able to tab into a zone that refuses them.
+      if (locked) dropZone.removeAttribute("tabindex");
+      else dropZone.setAttribute("tabindex", "0");
+    }
+    if (fileLockMsg) fileLockMsg.hidden = !locked;
+    // A file picked BEFORE the writer switched to "لا" would sail past the lock.
+    if (locked && fileInput && fileInput.value) {
+      fileInput.value = "";
+      setFileLabel();
+    }
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('input[name="ip"]'), function (r) {
+    r.addEventListener("change", syncNdaGate);
+  });
+
+  if (ndaDrop && ndaInput) {
+    ndaDrop.addEventListener("click", function () { ndaInput.click(); });
+    ndaDrop.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); ndaInput.click(); }
+    });
+    ["dragenter", "dragover"].forEach(function (ev) {
+      ndaDrop.addEventListener(ev, function (e) { e.preventDefault(); ndaDrop.classList.add("dragging"); });
+    });
+    ["dragleave", "drop"].forEach(function (ev) {
+      ndaDrop.addEventListener(ev, function (e) { e.preventDefault(); ndaDrop.classList.remove("dragging"); });
+    });
+    ndaDrop.addEventListener("drop", function (e) {
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+        ndaInput.files = e.dataTransfer.files;
+        setNdaLabel(); markInvalid("nda", false); syncNdaGate();
+      }
+    });
+    ndaInput.addEventListener("change", function () {
+      setNdaLabel(); markInvalid("nda", false); syncNdaGate();
+    });
+  }
+
+  syncNdaGate();
 
   /* ---------- MEMBERSHIP CARD (Cinema Association) ----------
      Optional, and present on the SCRIPT form only, js/submit.js also runs the
@@ -553,6 +648,23 @@
     var consentEl = document.getElementById("consent");
     if (consentEl && !consentEl.checked) { markInvalid("consent", true); ok = false; }
     else if (consentEl) { markInvalid("consent", false); }
+    // An unregistered script cannot be submitted without the signed NDA, and the
+    // file itself is refused rather than silently accepted behind a locked zone.
+    if (ndaRequired()) {
+      var nda = ndaFile();
+      req("nda", !!nda);
+      if (!nda) {
+        toast("الاتفاقية مطلوبة", "حمّل اتفاقية عدم الإفصاح ووقّعها وأرفقها قبل رفع النص.", "error");
+      }
+      if (nda && NDA_EXT.indexOf(fileExt(nda.name)) === -1) {
+        toast("صيغة الاتفاقية غير مدعومة", "أرفق الاتفاقية بصيغة PDF أو صورة PNG أو JPG أو WEBP.", "error");
+        markInvalid("nda", true); ok = false;
+      }
+      if (nda && nda.size > NDA_MAX_BYTES) {
+        toast("ملف الاتفاقية كبير جدًا", "الحد الأقصى لحجم الاتفاقية هو 10 ميغابايت.", "error");
+        markInvalid("nda", true); ok = false;
+      }
+    }
     if (v.isMember) {
       req("memberNumber", MEMBER_RE.test(v.memberNumber));
       var card = cardFile();

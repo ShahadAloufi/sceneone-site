@@ -211,6 +211,54 @@ html[dir="ltr"] .sb2 .sub-field select { background-position: right 18px center;
 .sb2 .sub-drop__text { margin: 0; font-family: var(--font-head); font-size: 17px; font-weight: 600; color: var(--lx-black); }
 .sb2 .sub-drop__hint { margin: 0; font-size: 14px; color: var(--lx-muted); }
 
+/* The script drop zone while the NDA gate is closed: visibly out of reach, and
+   genuinely inert — pointer-events alone would still let a keyboard user tab
+   into it, so js/submit.js drops the tabindex and the click handler bails too. */
+.sb2 .sub-drop.is-locked {
+  background: var(--lx-paper, #efece6);
+  border-color: transparent;
+  cursor: not-allowed;
+  opacity: .55;
+  pointer-events: none;
+}
+.sb2 .sub-drop.is-locked .sub-drop__text,
+.sb2 .sub-drop.is-locked .sub-drop__hint { color: var(--lx-muted); }
+
+/* ---- the NDA gate -------------------------------------------------------- */
+
+.sb2 .sub-nda {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid var(--lx-red);
+  border-radius: 14px;
+  background: var(--lx-white);
+}
+.sb2 .sub-nda[hidden] { display: none; }
+.sb2 .sub-nda__head { display: flex; gap: 12px; align-items: flex-start; }
+.sb2 .sub-nda__icon { inline-size: 22px; block-size: 22px; flex: none; color: var(--lx-red); margin-block-start: 2px; }
+.sb2 .sub-nda__title { margin: 0 0 4px; font-family: var(--font-head); font-size: 17px; font-weight: 600; color: var(--lx-black); }
+.sb2 .sub-nda__text { margin: 0; font-size: 15px; line-height: 1.7; color: var(--lx-muted); }
+.sb2 .sub-nda__dl {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  padding: 10px 16px;
+  border: 1px solid var(--lx-red);
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--lx-red);
+  text-decoration: none;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+.sb2 .sub-nda__dl svg { inline-size: 18px; block-size: 18px; }
+.sb2 .sub-nda__dl:hover { background: var(--lx-red); color: var(--lx-white); }
+.sb2 .sub-nda__lockmsg { margin: 0 0 8px; font-size: 14px; color: var(--lx-red); }
+.sb2 .sub-nda__lockmsg[hidden] { display: none; }
+
 /* ---- the membership block ------------------------------------------------ */
 
 .sb2 .sub-member { margin-block-start: 30px; }
