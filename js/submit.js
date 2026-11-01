@@ -34,7 +34,7 @@
   function hasField(name) { return !!document.querySelector('.sub-field[data-field="' + name + '"]'); }
 
   // A pricing card can name the tier it is selling (…?type=treatment_short), so a
-  // writer who clicked the 70 SAR card does not have to pick short-vs-feature a
+  // writer who clicked the treatment card does not have to pick short-vs-feature a
   // second time — and cannot land on the wrong price by mistake. Only ever
   // pre-selects an option the dropdown actually offers, and the writer can still
   // change it: this is a default, not a lock.
