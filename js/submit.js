@@ -15,6 +15,7 @@
   var CFG = window.SCENEONE_SUPABASE || {};
   var BUCKET = CFG.bucket || "scripts";
   var CARD_BUCKET = CFG.cardBucket || "member-cards";
+  var NDA_BUCKET = CFG.ndaBucket || "ndas";
 
   // Both submission forms (script and treatment) run this file. What differs is
   // WHICH fields exist, which are required, and which extensions are accepted —
@@ -223,7 +224,7 @@
   var ndaDropText = document.getElementById("ndaDropText");
   var fileLockMsg = document.getElementById("fileLockMsg");
   var NDA_DROP_DEFAULT = ndaDropText ? ndaDropText.textContent : "";
-  var NDA_EXT = ["pdf", "png", "jpg", "jpeg", "webp"];
+  var NDA_EXT = ["docx", "doc", "pdf", "png", "jpg", "jpeg", "webp"];
   // The NDA shares the `member-cards` bucket for now, so it inherits that
   // bucket's 5MB file_size_limit. Asking for more here would pass validation
   // and then fail at upload, after the script had already gone up.
@@ -669,7 +670,7 @@
         toast("الاتفاقية مطلوبة", "حمّل اتفاقية عدم الإفصاح ووقّعها وأرفقها قبل رفع النص.", "error");
       }
       if (nda && NDA_EXT.indexOf(fileExt(nda.name)) === -1) {
-        toast("صيغة الاتفاقية غير مدعومة", "أرفق الاتفاقية بصيغة PDF أو صورة PNG أو JPG أو WEBP.", "error");
+        toast("صيغة الاتفاقية غير مدعومة", "أرفق الاتفاقية بصيغة DOCX أو PDF أو صورة PNG أو JPG أو WEBP.", "error");
         markInvalid("nda", true); ok = false;
       }
       if (nda && nda.size > NDA_MAX_BYTES) {
@@ -759,13 +760,25 @@
         return "nda-" + safe;
       }
       var ndaPath = nda ? filePath.split("/")[0] + "/" + ndaName(nda.name) : null;
-      function uploadNda() {
-        if (!nda) return Promise.resolve();
-        return sb.storage.from(CARD_BUCKET).upload(ndaPath, nda, {
+      function putNda(bucket) {
+        return sb.storage.from(bucket).upload(ndaPath, nda, {
           contentType: nda.type || "application/octet-stream",
           upsert: false
-        }).then(function (up) {
-          if (up.error) throw up.error;
+        });
+      }
+      function uploadNda() {
+        if (!nda) return Promise.resolve();
+        return putNda(NDA_BUCKET).then(function (up) {
+          if (!up.error) return;
+          // The dedicated bucket may not exist yet. Falling back keeps a real
+          // submission from dying on infrastructure the writer cannot see, and
+          // the moment `ndas` is created this path stops being taken. Any other
+          // failure is a genuine error and still throws.
+          var msg = String((up.error && (up.error.message || up.error.error)) || "");
+          if (!/not\s*found|does not exist|404/i.test(msg)) throw up.error;
+          return putNda(CARD_BUCKET).then(function (fb) {
+            if (fb.error) throw fb.error;
+          });
         });
       }
       function uploadCard() {

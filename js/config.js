@@ -19,7 +19,13 @@ window.SCENEONE_SUPABASE = {
   bucket: "scripts",
   // Membership cards for the Cinema Association discount. Separate from
   // `scripts` on purpose: staff-only on read, never visible to readers.
-  cardBucket: "member-cards"
+  cardBucket: "member-cards",
+  // Signed NDAs from writers submitting an unregistered script. Same policy as
+  // member-cards (anon insert, staff read, readers never), its own bucket so an
+  // NDA is never mixed in with membership photos. Until this bucket exists in
+  // Supabase, js/submit.js falls back to cardBucket rather than failing the
+  // submission — see uploadNda().
+  ndaBucket: "ndas"
 };
 
 /* Moyasar's PUBLISHABLE key, used by the checkout page to mount the payment
