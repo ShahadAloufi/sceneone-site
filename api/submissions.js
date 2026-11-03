@@ -32,13 +32,13 @@ const BUCKET = "scripts";
 // --- Allowlists & limits (server is the source of truth; never trust client) ---
 const GENRES = ["drama", "comedy", "romance", "crime", "thriller", "horror", "action", "documentary", "other"];
 // Every product is its own `film_type`. The two treatments are fixed-price; both
-// SCRIPT coverages are priced per page (10 SAR each — 10–40 pages for a short,
-// 70–150 for a feature), so their amount comes from the file itself — see
+// SCRIPT coverages are priced per page (10 SAR each — 10–60 pages for a short,
+// 60–200 for a feature), so their amount comes from the file itself — see
 // priceFor() in lib/moyasar.js.
 const FILM_TYPES = ["feature", "short", "treatment_short", "treatment_feature"];
 // Upper bound per product, in BILLABLE pages (title page excluded). The two
-// SCRIPT coverages are absent: their bounds are part of their price (10–40 and
-// 70–150 pages), enforced by priceFor() in lib/moyasar.js, so a limit and an
+// SCRIPT coverages are absent: their bounds are part of their price (10–60 and
+// 60–200 pages), enforced by priceFor() in lib/moyasar.js, so a limit and an
 // amount can never disagree. Only the fixed-price treatments need a cap here.
 const PAGE_CAPS = {
   treatment_short: 5,
