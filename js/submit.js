@@ -542,9 +542,26 @@
       }
     });
   }
+  // The turnaround strip. Only the selected tier's line is of any use to the
+  // writer, so the strip stays away until there is a tier to speak for. A form
+  // whose strip carries no data-for lines (the treatment one) is left alone.
+  var timesStrip = document.getElementById("timesStrip");
+  function syncTimes() {
+    if (!timesStrip) return;
+    var want = typeSelect ? typeSelect.value : "";
+    var shown = false;
+    Array.prototype.forEach.call(timesStrip.querySelectorAll("p[data-for]"), function (p) {
+      var match = !!want && p.getAttribute("data-for") === want;
+      p.hidden = !match;
+      if (match) shown = true;
+    });
+    timesStrip.hidden = !shown;
+  }
+
   if (typeSelect) {
-    typeSelect.addEventListener("change", function () { syncAcceptUi(); checkFileNow(); });
+    typeSelect.addEventListener("change", function () { syncAcceptUi(); syncTimes(); checkFileNow(); });
     syncAcceptUi();
+    syncTimes();
   }
 
   /* ---------- CONSENT GATE ----------

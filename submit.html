@@ -431,10 +431,13 @@
       </section>
 
       <!-- ── EXPECTED TURNAROUND ── -->
-      <div class="sb2-times">
+      <!-- Hidden until a tier is picked, then only that tier's line shows:
+           quoting both at once asks the writer to work out which one is theirs.
+           syncTimes() in js/submit.js matches data-for against the dropdown. -->
+      <div class="sb2-times" id="timesStrip" hidden>
         <p class="sb2-times__label">المدة المتوقعة</p>
-        <p>10 إلى 15 يوم عمل <span>· الفيلم القصير</span></p>
-        <p>حتى 4 أسابيع <span>· الفيلم الطويل</span></p>
+        <p data-for="short">10 إلى 15 يوم عمل <span>· الفيلم القصير</span></p>
+        <p data-for="feature">حتى 4 أسابيع <span>· الفيلم الطويل</span></p>
       </div>
 
       <!-- ── CONSENT + SEND ── -->

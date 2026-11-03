@@ -317,6 +317,9 @@ html[dir="ltr"] .sb2 .sub-field select { background-position: right 18px center;
   border-radius: 16px;
   background: var(--lx-white);
 }
+/* display:flex outranks the hidden attribute, so both need saying. */
+.sb2-times[hidden] { display: none; }
+.sb2-times p[hidden] { display: none; }
 .sb2-times__label { margin: 0; font-family: var(--font-head); font-size: 14px; font-weight: 600; letter-spacing: .06em; color: var(--lx-muted); }
 .sb2-times p { margin: 0; font-size: 18px; font-weight: 600; color: var(--lx-black); }
 .sb2-times span { font-weight: 400; color: var(--lx-muted); }
