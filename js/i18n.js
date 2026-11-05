@@ -416,7 +416,7 @@
 
       /* ---- /about — the founders page ---------------------------------- */
       abEyebrow: "وراء سين ون",
-      abH: "رؤية تؤمن بالحكاية، وخبرة تمهّد لها الطريق",
+      abH: "رؤية تؤمن بالحكاية وخبرة تمهّد لها الطريق",
       abP1: "بدأت سين ون بشغف مشترك بالحكاية، وسؤال: كيف نساعد مزيدًا من الكتّاب السعوديين على إيصال قصصهم إلى الشاشة؟ رأينا أصواتًا واعدة تحتاج إلى من يساندها في تطوير نصوصها، ويوضّح لها خطوات الانتقال من الكتابة إلى الإنتاج.",
       abP2: "أسّسنا سين ون لتقديم هذا الدعم. نجمع بين تطوير النصوص واستراتيجيات الأعمال، لنساعد الكتّاب على صقل أعمالهم، وفهم فرص تحويلها إلى أفلام، والتواصل مع شركاء يمكنهم المساهمة في تحقيقها.",
       abFoundersEyebrow: "المؤسستان",
@@ -1041,7 +1041,7 @@
 
       /* ---- /about — the founders page ---------------------------------- */
       abEyebrow: "The minds behind Scene One",
-      abH: "A vision that believes in the story, and the expertise to clear its path",
+      abH: "A vision that believes in the story and the expertise to clear its path",
       abP1: "Scene One began with a shared love of storytelling and a question: how can we help more Saudi writers bring their stories to the screen? We saw promising voices that needed dedicated support to develop their scripts and navigate the next steps.",
       abP2: "We founded Scene One to bring that support together. Combining creative development with business strategy, we help writers strengthen their work, understand its production potential, and connect with the people who can help move it forward.",
       abFoundersEyebrow: "The founders",
