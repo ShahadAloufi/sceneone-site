@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<!-- ENGLISH ONLY, deliberately.
+     Every other public page is Arabic-first with js/i18n.js swapping strings at
+     runtime. This one ships without that script: the Arabic copy does not exist
+     yet, and loading i18n.js would render the shared chrome in Arabic around an
+     English body — and its applyLang() writes the chosen language to
+     localStorage, so merely opening this page would flip the rest of the site.
+     The chrome below therefore carries plain English text and no data-i18n, and
+     the AR toggle is absent rather than broken. When the Arabic arrives this
+     page joins the dict like the others. -->
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <title>About | Scene One</title>
+  <meta name="description" content="The founders behind Scene One, and what sets the house apart: elite creative script engineering with studio-grade business strategy.">
+  <link rel="icon" type="image/png" href="assets/favicon-v2.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/site-chrome.css">
+  <link rel="stylesheet" href="css/about-v2.css">
+  <!-- Reveal-on-scroll gate; see the identical block in readers.html for why it
+       is inline, in <head>, and fails open. -->
+  <script>
+    try {
+      if ("IntersectionObserver" in window &&
+          !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("js-reveal");
+      }
+    } catch (e) { /* leave everything visible */ }
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+<div class="ab2 page">
+
+  <!-- ── NAV ── -->
+  <nav class="nav">
+    <a class="nav__brand" href="/">
+      <img class="nav__logo" src="assets/scene-one-mark-v5-ink.svg" alt="Scene One"></a>
+    <ul class="nav__links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/about" aria-current="page">About</a></li>
+      <li><a href="/#coverage-types">Coverage</a></li>
+      <li><a href="/readers">Readers</a></li>
+      <li><a href="/#journey">Journey</a></li>
+      <li><a href="/#contact">Contact</a></li>
+    </ul>
+    <div class="nav__end">
+      <a class="nav__cta" href="/submit">Submit your script</a>
+      <button class="menu-btn" data-menu-open aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── MENU OVERLAY ── -->
+  <div class="overlay" id="menu">
+    <div class="overlay__top">
+      <a class="overlay__brand" href="/" data-menu-close>
+        <img src="assets/scene-one-mark-v5-ink.svg" alt="Scene One">
+      </a>
+      <button class="overlay__close" data-menu-close aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <nav class="overlay__links">
+      <a href="/" data-menu-close>
+        <span class="overlay__n" aria-hidden="true">01</span>
+        <span class="overlay__label">Home</span>
+        <span class="overlay__go" aria-hidden="true">←</span>
+      </a>
+      <a href="/about" aria-current="page" data-menu-close>
+        <span class="overlay__n" aria-hidden="true">02</span>
+        <span class="overlay__label">About</span>
+        <span class="overlay__go" aria-hidden="true">←</span>
+      </a>
+      <a href="/#coverage-types" data-menu-close>
+        <span class="overlay__n" aria-hidden="true">03</span>
+        <span class="overlay__label">Coverage</span>
+        <span class="overlay__go" aria-hidden="true">←</span>
+      </a>
+      <a href="/readers" data-menu-close>
+        <span class="overlay__n" aria-hidden="true">04</span>
+        <span class="overlay__label">Readers</span>
+        <span class="overlay__go" aria-hidden="true">←</span>
+      </a>
+      <a href="/#journey" data-menu-close>
+        <span class="overlay__n" aria-hidden="true">05</span>
+        <span class="overlay__label">Journey</span>
+        <span class="overlay__go" aria-hidden="true">←</span>
+      </a>
+      <a href="/#contact" data-menu-close>
+        <span class="overlay__n" aria-hidden="true">06</span>
+        <span class="overlay__label">Contact</span>
+        <span class="overlay__go" aria-hidden="true">←</span>
+      </a>
+    </nav>
+    <div class="overlay__foot">
+      <div class="overlay__actions">
+        <a class="overlay__cta" href="/submit" data-menu-close>Submit your script</a>
+      </div>
+      <div class="overlay__contact">
+        <a class="overlay__mail" href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
+        <div class="overlay__soc">
+          <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X</a>
+          <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 01 · HERO ──
+       The design's quote sets the page; the two columns beneath it carry the
+       origin story, divided by the same 2px rule the trust cards use. -->
+  <section class="ab2-hero" id="top">
+    <div class="ab2-hero__in">
+      <p class="ab2-eyebrow">The minds behind Scene One</p>
+      <h1 class="ab2-hero__h">“Every masterpiece script requires two things: a fierce creative vision, and an unbreakable commercial blueprint”</h1>
+      <div class="ab2-hero__cols">
+        <p>Scene One was born out of a shared obsession with storytelling and a clear realization of what the Saudi film industry was missing. We realized that while the region overflows with brilliant, raw ideas, there was a massive structural gap preventing those ideas from reaching the screen</p>
+        <p>Together, as co-founders, we built Scene One to be the definitive bridge, combining elite creative script engineering with sharp, studio-grade business strategy to turn raw voices into production-ready cinematic assets</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 02 · FOUNDERS ── -->
+  <section class="ab2-founders" id="founders">
+    <div class="ab2-founders__in">
+      <div class="ab2-head">
+        <p class="ab2-eyebrow">The founders</p>
+        <h2 class="ab2-h">Two founders. A shared vision</h2>
+      </div>
+      <div class="ab2-founders__grid" data-reveal>
+        <article class="ab2-founder">
+          <img class="ab2-founder__photo" src="assets/founder-rawan.webp" alt="Rawan"
+               loading="lazy" decoding="async" width="800" height="800">
+          <div class="ab2-founder__id">
+            <h3 class="ab2-founder__name">Rawan</h3>
+            <p class="ab2-founder__role">Co-Founder &amp; Literary Manager</p>
+          </div>
+          <p class="ab2-founder__focus"><span>The focus</span> Talent incubation, script coverage and narrative integrity</p>
+          <p class="ab2-founder__quote">“My obsession is the pulse of the story. I look at a script not just as words on a page, but as a living, breathing cinematic experience. My role is to discover the raw, unpolished diamonds in our writing community, push their boundaries, and ensure their narrative voice is powerful enough to captivate a global audience”</p>
+        </article>
+        <article class="ab2-founder">
+          <img class="ab2-founder__photo ab2-founder__photo--right" src="assets/founder-shahad.webp" alt="Shahad"
+               loading="lazy" decoding="async" width="800" height="800">
+          <div class="ab2-founder__id">
+            <h3 class="ab2-founder__name">Shahad</h3>
+            <p class="ab2-founder__role">Co-Founder &amp; Managing Director</p>
+          </div>
+          <p class="ab2-founder__focus"><span>The focus</span> Commercial architecture, studio packaging and business strategy</p>
+          <p class="ab2-founder__quote">“My obsession is the viability and execution of the vision. A great script only matters if it gets made. I engineer the business models, structure the studio pipelines, and build the packaging agreements that protect our writers while making it effortless for production houses and elite directors to say yes”</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 03 · WHY US ── -->
+  <section class="ab2-trust">
+    <div class="ab2-trust__in">
+      <div class="ab2-head">
+        <p class="ab2-eyebrow">Why us</p>
+        <h2 class="ab2-h">What Sets Scene One Apart</h2>
+      </div>
+      <div class="ab2-trust__grid" data-reveal>
+        <div class="ab2-trust__card">
+          <h3>Talent, Thoughtfully Developed</h3>
+          <p>We discover promising writers, evaluate their scripts, and provide focused development support. This gives production partners a considered selection of stories with clear potential and a stronger foundation for development</p>
+        </div>
+        <div class="ab2-trust__card">
+          <h3>Creative Vision, Practical Direction</h3>
+          <p>We approach every project through both a creative and a commercial lens. We strengthen the story while considering its audience, budget, and production needs, helping writers move their work forward with a clear sense of direction</p>
+        </div>
+        <!-- The design accents the third rule, not the first two. -->
+        <div class="ab2-trust__card ab2-trust__card--accent">
+          <h3>Connected to Saudi Cinema</h3>
+          <p>Our work is rooted in Saudi Arabia’s growing film community. We build relationships with writers, filmmakers, and industry organizations to encourage collaboration and create opportunities for emerging talent</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 04 · CONTACT ── -->
+  <section class="ab2-contact" id="contact">
+    <div class="ab2-contact__in">
+      <div class="ab2-contact__lede">
+        <p class="ab2-eyebrow">Contact</p>
+        <h2 class="ab2-h">Let’s Build the First Scene</h2>
+        <p class="ab2-contact__p">Whether you are an ambitious director looking for your next breakthrough creative circle, a studio looking to fast-track script development without the vetting headache, or a raw talent ready to be pushed to greatness, we are here to architect your path</p>
+      </div>
+      <!-- The design's first row is a "[Founder email]" placeholder. A made-up
+           address on a contact page is worse than one row fewer, so it waits
+           for a real one. -->
+      <div class="ab2-contact__rows">
+        <div class="ab2-contact__row">
+          <span class="ab2-contact__k">Business Affairs &amp; Partnerships</span>
+          <a class="ab2-contact__v" href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
+        </div>
+        <div class="ab2-contact__row">
+          <span class="ab2-contact__k">Direct Line</span>
+          <a class="ab2-contact__v" href="tel:+966580503970" dir="ltr">+966 58 050 3970</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="lx-foot">
+    <div class="lx-foot__in">
+      <div class="lx-foot__top">
+        <div>
+          <div class="lx-foot__brand">
+            <img src="assets/scene-one-logo-v5.svg" alt="Scene One">
+          </div>
+          <p class="lx-foot__blurb">A Saudi house for discovering and developing emerging filmmakers</p>
+        </div>
+        <div class="lx-foot__col">
+          <a href="/#coverage-types">Coverage</a>
+          <a href="/readers">Readers</a>
+          <a href="/#journey">Journey</a>
+          <a href="/partners">Partners</a>
+        </div>
+        <div class="lx-foot__col">
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms</a>
+          <a href="/booklet" target="_blank" rel="noopener">Our story</a>
+        </div>
+        <div class="lx-foot__col">
+          <p class="lx-foot__lbl">Contact</p>
+          <a class="lx-foot__mail" href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
+          <div class="lx-foot__actions">
+            <a class="lx-foot__btn" href="tel:+966580503970" dir="ltr" aria-label="Call Scene One">966580503970</a>
+            <a class="lx-foot__btn lx-foot__btn--wa" href="https://wa.me/966580503970"
+               target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.61.14-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.42-.07-.13-.27-.2-.57-.35z"/><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.25 8.24a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.17 8.17 0 0 1-1.26-4.38c0-4.54 3.7-8.25 8.24-8.25z"/></svg><span>WhatsApp</span></a>
+          </div>
+        </div>
+      </div>
+      <div class="lx-foot__bar">
+        <p class="lx-foot__cr">© 2026 Scene One. All rights reserved · CR 7054791293</p>
+        <div class="lx-foot__soc">
+          <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X</a>
+          <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- js/i18n.js is deliberately absent; see the note at the top of this file. -->
+<script src="js/main.js"></script>
+</body>
+</html>

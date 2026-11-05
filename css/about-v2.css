@@ -1,0 +1,232 @@
+/* ============================================================================
+   /about — the founders page, English only.
+
+   Built from the 1440px design export. The artboard is a fixed canvas, so its
+   literal pixel values are the DESKTOP end of each scale here rather than the
+   whole story: sizes are clamped so the page holds together down to a phone,
+   and the palette comes from css/tokens.css, which already carries this
+   design's exact colours (#F9F4EF, #2A2622, #CD2E07, #7A736A, #D9D4CC).
+
+   The wrapper is .ab2. It is registered alongside .rd2/.tm2/.sb2 in
+   css/tokens.css (for the palette) and css/site-chrome.css (for the white nav
+   on a light page), so the bar above this page matches the others.
+   ========================================================================= */
+
+/* ---- shared type -------------------------------------------------------- */
+
+.ab2-eyebrow {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--lx-red);
+}
+.ab2-h {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(28px, 3.8vw, 44px);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--lx-ink);
+}
+.ab2-head { display: flex; flex-direction: column; gap: 14px; }
+
+/* Each band is the shared container, centred, so the page lines up with the
+   fixed nav above it exactly as the other v2 pages do. */
+.ab2-hero__in,
+.ab2-founders__in,
+.ab2-trust__in,
+.ab2-contact__in {
+  max-inline-size: var(--lx-w);
+  margin-inline: auto;
+}
+
+/* ---- 01 · hero ---------------------------------------------------------- */
+
+.ab2-hero {
+  /* Pays for the fixed 104px bar, as the readers and terms heroes do. */
+  padding-block-start: calc(104px + clamp(40px, 5vw, 80px));
+  padding-block-end: clamp(56px, 7vw, 96px);
+  padding-inline: var(--lx-x);
+  background: var(--lx-white);
+}
+.ab2-hero__in { display: flex; flex-direction: column; gap: 22px; }
+.ab2-hero__h {
+  margin: 0;
+  max-inline-size: 1180px;
+  font-family: var(--font-head);
+  font-size: clamp(32px, 4.6vw, 60px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -1px;
+  color: var(--lx-ink);
+}
+.ab2-hero__cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(28px, 4.4vw, 64px);
+  margin-block-start: clamp(10px, 1.4vw, 18px);
+  border-block-start: 2px solid var(--lx-ink);
+  padding-block-start: 28px;
+}
+.ab2-hero__cols p {
+  margin: 0;
+  font-size: clamp(16px, 1.4vw, 19px);
+  line-height: 1.75;
+  color: var(--lx-muted);
+}
+
+/* ---- 02 · founders ------------------------------------------------------ */
+
+.ab2-founders {
+  padding-block: clamp(64px, 8vw, 110px);
+  padding-inline: var(--lx-x);
+  background: var(--lx-cream);
+}
+.ab2-founders__in { display: flex; flex-direction: column; gap: clamp(36px, 4vw, 56px); }
+.ab2-founders__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(24px, 3.4vw, 48px);
+}
+.ab2-founder {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 28px;
+  border-radius: 12px;
+  background: var(--lx-white);
+}
+.ab2-founder__photo {
+  inline-size: 100%;
+  /* The design's frame is 560x560 — a square, once the 1440 canvas is divided
+     into two columns and the card's own 28px padding comes off. A ratio rather
+     than that fixed height keeps the same crop at every width. Both source
+     photographs are square too, so nothing is cut. */
+  aspect-ratio: 1 / 1;
+  block-size: auto;
+  object-fit: cover;
+  /* Both photographs are wider than the frame and the face sits off-centre;
+     these are the design's own crop points. */
+  object-position: 45% 30%;
+  border-radius: 8px;
+}
+.ab2-founder__photo--right { object-position: 65% 30%; }
+.ab2-founder__id { display: flex; flex-direction: column; gap: 6px; }
+.ab2-founder__name {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(24px, 2.4vw, 30px);
+  font-weight: 600;
+  color: var(--lx-ink);
+}
+.ab2-founder__role {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--lx-red);
+}
+.ab2-founder__focus {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--lx-muted);
+}
+.ab2-founder__focus span { margin-inline-end: 6px; font-weight: 600; color: var(--lx-ink); }
+.ab2-founder__quote {
+  margin: 0;
+  font-size: clamp(15px, 1.3vw, 17px);
+  line-height: 1.75;
+  color: var(--lx-ink);
+}
+
+/* ---- 03 · why us -------------------------------------------------------- */
+
+.ab2-trust {
+  padding-block: clamp(64px, 7.5vw, 100px);
+  padding-inline: var(--lx-x);
+  background: var(--lx-white);
+}
+.ab2-trust__in { display: flex; flex-direction: column; gap: clamp(32px, 3.6vw, 48px); }
+.ab2-trust__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(28px, 3.4vw, 48px);
+}
+.ab2-trust__card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-block-start: 2px solid var(--lx-ink);
+  padding-block-start: 24px;
+}
+.ab2-trust__card--accent { border-block-start-color: var(--lx-red); }
+.ab2-trust__card h3 {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(19px, 1.8vw, 22px);
+  font-weight: 600;
+  color: var(--lx-ink);
+}
+.ab2-trust__card p {
+  margin: 0;
+  font-size: clamp(15px, 1.3vw, 16px);
+  line-height: 1.75;
+  color: var(--lx-muted);
+}
+
+/* ---- 04 · contact ------------------------------------------------------- */
+
+.ab2-contact {
+  padding-block: clamp(64px, 7vw, 96px);
+  padding-inline: var(--lx-x);
+  background: var(--lx-cream);
+}
+.ab2-contact__in {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: clamp(40px, 6.6vw, 96px);
+}
+.ab2-contact__lede {
+  inline-size: 640px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.ab2-contact__p {
+  margin: 0;
+  font-size: clamp(15px, 1.4vw, 17px);
+  line-height: 1.75;
+  color: var(--lx-muted);
+}
+.ab2-contact__rows { flex-grow: 1; display: flex; flex-direction: column; }
+.ab2-contact__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-block: 20px;
+  border-block-end: 1px solid var(--lx-line);
+}
+.ab2-contact__row:last-child { border-block-end: 0; }
+.ab2-contact__k { font-size: 16px; font-weight: 600; color: var(--lx-ink); }
+.ab2-contact__v { font-size: 16px; font-weight: 500; color: var(--lx-ink); }
+.ab2-contact__v:hover { color: var(--lx-red); }
+
+/* ---- narrow ------------------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .ab2-hero__cols,
+  .ab2-founders__grid,
+  .ab2-trust__grid { grid-template-columns: minmax(0, 1fr); }
+  .ab2-contact__in { flex-direction: column; }
+  .ab2-contact__lede { inline-size: 100%; }
+}
+@media (max-width: 600px) {
+  .ab2-founder { padding: 18px; }
+  .ab2-hero__h { letter-spacing: -.4px; }
+}
