@@ -144,21 +144,13 @@
   </div>
 
   <!-- ── HERO ──
-       Rebuilt to the new design's COPY only. The video, the shade, .hero__title
-       / .hero__sub and both buttons keep their existing styles untouched — the
-       brief was explicit that the hero's buttons were not to be redesigned.
-       What is new here is the eyebrow above the headline and the trust strip
-       pinned to the foot of the section, which replaces the stacked partner
-       badge + NDA line that used to sit inside .hero__content. -->
+       No footage: the section is the site's own cream, and the copy, the CTA
+       and the trust strip invert to ink on it. The recolouring lives in
+       css/landing-v2.css under ".landing .hero", not here. .hero__shade is kept
+       in the markup with nothing to shade — styles.css builds it and five other
+       pages read that block, so emptying it there is a wider change than this
+       page. -->
   <section class="hero">
-    <video class="hero__bg" autoplay muted loop playsinline preload="auto" poster="assets/hero-landing-poster.jpg"
-           disablepictureinpicture disableremoteplayback
-           aria-hidden="true" tabindex="-1">
-      <!-- Two crops of the same take: the 3:2 cut for landscape, the portrait
-           master for phones, so neither has to be scaled ~2.3x to cover. -->
-      <source src="assets/hero-landing-portrait.mp4" media="(max-aspect-ratio: 1/1)" type="video/mp4">
-      <source src="assets/hero-landing.mp4" type="video/mp4">
-    </video>
     <div class="hero__shade"></div>
     <div class="hero__content">
       <h1 class="hero__title" data-i18n="heroTitle">نكتشف الأصوات التي تستحق أن تصل إلى الشاشة</h1>

@@ -1036,3 +1036,25 @@ html[dir="ltr"] .landing .hero__shade {
 .landing .hero__strip p { color: var(--lx-ink); }
 .landing .hero__strip a { color: var(--lx-ink); }
 .landing .hero__strip a:hover { color: var(--lx-black); }
+
+/* ---- the hero, with the footage taken out ------------------------------
+   Everything above already dresses this hero for a light ground: the veil,
+   the ink copy, the inverted buttons and badge. What it was dressing was a
+   video under a cream veil. The video is gone, so only two things change.
+
+   The poster is the first. css/styles.css paints it on .hero itself rather
+   than on the <video>, so that a refused autoplay still had something to
+   show — which means removing the <video> alone would have frozen the
+   photograph in place instead of removing it.
+
+   The veil is the second. It exists to lift cream over moving footage; over
+   the flat ground beneath it there is nothing left to lift, and its mask
+   leaves a faint horizontal edge where it fades in. */
+.landing .hero { background-image: none; }
+.landing .hero__shade,
+html[dir="ltr"] .landing .hero__shade { background: none; -webkit-mask-image: none; mask-image: none; }
+
+/* 100vh was paying for footage. Without it the hero is a headline, a line of
+   copy and a button, and a full screen of empty ground above the fold reads
+   as a page still loading. */
+.landing .hero { min-block-size: 78vh; }
