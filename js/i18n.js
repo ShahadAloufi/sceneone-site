@@ -437,8 +437,9 @@
       abT2P: "ننظر إلى كل مشروع من جانبيه الإبداعي والتجاري. نعمل على تقوية القصة مع مراعاة جمهورها وميزانيتها ومتطلبات إنتاجها، ليتمكّن الكاتب من تطوير عمله برؤية أوضح لخطواته المقبلة.",
       abT3H: "من قلب المشهد السينمائي السعودي",
       abT3P: "نحن جزء من مجتمع سينمائي سعودي ينمو ويتجدّد. نبني علاقات مع الكتّاب وصنّاع الأفلام والجهات العاملة في القطاع، لنفتح مجالات للتعاون وفرصًا للمواهب الصاعدة.",
+      abContactEyebrow: "لفرص التعاون",
       abContactH: "لنصنع معًا ما هو قادم",
-      abContactP: "سواء كنت كاتبًا تبحث عن دعم لتطوير نصّك، أو مخرجًا تبحث عن قصة لمشروعك المقبل، أو جهة إنتاج تبحث عن نصوص واعدة، يسعدنا أن نسمع منك ونبحث معًا فرص التعاون.",
+      abContactP: "هل تعمل على نصّ أو تبحث عن قصة أو ترى فرصة للتعاون؟ نرحّب بالكتّاب والمخرجين وجهات الإنتاج ونتطلّع إلى معرفة أفكاركم وبحث سبل العمل معًا",
       abContactK1: "الأعمال والشراكات",
       abContactK2: "للتواصل المباشر",
 
@@ -1061,8 +1062,9 @@
       abT2P: "We approach every project through both a creative and a commercial lens. We strengthen the story while considering its audience, budget, and production needs, helping writers move their work forward with a clear sense of direction",
       abT3H: "Connected to Saudi Cinema",
       abT3P: "Our work is rooted in Saudi Arabia\u2019s growing film community. We build relationships with writers, filmmakers, and industry organizations to encourage collaboration and create opportunities for emerging talent",
+      abContactEyebrow: "For collaboration",
       abContactH: "Let\u2019s Shape What Comes Next",
-      abContactP: "Whether you are a writer looking for support to develop your script, a director looking for a story for your next project, or a production company looking for promising scripts, we would be glad to hear from you and explore how we might work together.",
+      abContactP: "Are you working on a script, looking for a story, or do you see an opportunity to collaborate? We welcome writers, directors and production companies, and we look forward to hearing your ideas and exploring ways to work together",
       abContactK1: "Business Affairs & Partnerships",
       abContactK2: "Direct Line",
 
