@@ -162,7 +162,6 @@
   border-block-start: 2px solid var(--lx-ink);
   padding-block-start: 24px;
 }
-.ab2-trust__card--accent { border-block-start-color: var(--lx-red); }
 .ab2-trust__card h3 {
   margin: 0;
   font-family: var(--font-head);
