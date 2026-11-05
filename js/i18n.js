@@ -412,6 +412,36 @@
 
       // ---- readers.html (About Us / Reader Team) ----
       docTitleReaders: "من يقرأ نصك | Scene One",
+      docTitleAbout: "وراء سين ون | Scene One",
+
+      /* ---- /about — the founders page ---------------------------------- */
+      abEyebrow: "وراء سين ون",
+      abH: "القصص المميزة تستحق أن تجد طريقها إلى الشاشة",
+      abP1: "بدأت سين ون بشغف مشترك بالحكاية، وسؤال: كيف نساعد مزيدًا من الكتّاب السعوديين على إيصال قصصهم إلى الشاشة؟ رأينا أصواتًا واعدة تحتاج إلى من يساندها في تطوير نصوصها، ويوضّح لها خطوات الانتقال من الكتابة إلى الإنتاج.",
+      abP2: "أسّسنا سين ون لتقديم هذا الدعم. نجمع بين تطوير النصوص واستراتيجيات الأعمال، لنساعد الكتّاب على صقل أعمالهم، وفهم فرص تحويلها إلى أفلام، والتواصل مع شركاء يمكنهم المساهمة في تحقيقها.",
+      abFoundersEyebrow: "المؤسستان",
+      abFoundersH: "مؤسستان، ورؤية واحدة",
+      abRawanName: "روان",
+      abRawanRole: "شريكة مؤسِّسة ومديرة شؤون الكتّاب",
+      abRawanFocusHtml: "<span>مجال التركيز:</span> رعاية المواهب، وتقييم السيناريو، والحفاظ على أصالة القصة وتماسكها.",
+      abRawanQuote: "«أبحث دائمًا عمّا يمنح القصة نبضها. أرى في السيناريو تجربة سينمائية تبدأ على الورق، وتكتمل بالصورة والصوت والأداء. أعمل على اكتشاف الأصوات الواعدة، ومساعدة الكتّاب على توسيع آفاقهم وصقل أدواتهم، لتصل قصصهم إلى جمهور أوسع دون أن تفقد خصوصيتها.»",
+      abShahadName: "شهد",
+      abShahadRole: "شريكة مؤسِّسة ومديرة تنفيذية",
+      abShahadFocusHtml: "<span>مجال التركيز:</span> نماذج الأعمال، وتجهيز المشاريع للعرض على جهات الإنتاج، والتخطيط الاستراتيجي.",
+      abShahadQuote: "«أركّز على ما تحتاجه الرؤية الإبداعية لتصبح مشروعًا قابلًا للتنفيذ. أعمل على بناء نماذج الأعمال، وتنظيم مسارات التعاون مع جهات الإنتاج، وصياغة الشراكات التي تصون مصالح الكتّاب وتمنح المنتجين والمخرجين أساسًا واضحًا للمضي بالمشروع قدمًا.»",
+      abWhyEyebrow: "لماذا سين ون؟",
+      abWhyH: "ما يميّز سين ون",
+      abT1H: "نكتشف الموهبة ونرعى تطوّرها",
+      abT1P: "نكتشف الكتّاب الواعدين، ونقيّم نصوصهم، ونقدّم دعمًا يتناسب مع احتياجات كل مشروع. بذلك، نتيح لشركاء الإنتاج مجموعة مختارة من القصص ذات الإمكانات الواعدة والأساس المتين لمواصلة التطوير.",
+      abT2H: "رؤية إبداعية وخطوات عملية",
+      abT2P: "ننظر إلى كل مشروع من جانبيه الإبداعي والتجاري. نعمل على تقوية القصة مع مراعاة جمهورها وميزانيتها ومتطلبات إنتاجها، ليتمكّن الكاتب من تطوير عمله برؤية أوضح لخطواته المقبلة.",
+      abT3H: "من قلب المشهد السينمائي السعودي",
+      abT3P: "نحن جزء من مجتمع سينمائي سعودي ينمو ويتجدّد. نبني علاقات مع الكتّاب وصنّاع الأفلام والجهات العاملة في القطاع، لنفتح مجالات للتعاون وفرصًا للمواهب الصاعدة.",
+      abContactH: "لنصنع معًا ما هو قادم",
+      abContactP: "سواء كنت كاتبًا تبحث عن دعم لتطوير نصّك، أو مخرجًا تبحث عن قصة لمشروعك المقبل، أو جهة إنتاج تبحث عن نصوص واعدة، يسعدنا أن نسمع منك ونبحث معًا فرص التعاون.",
+      abContactK1: "الأعمال والشراكات",
+      abContactK2: "للتواصل المباشر",
+
       // Video hero (2026-08-13). auHeroTitleHtml is the PREVIOUS title, kept
       // because nothing references it now — delete it if the hero settles.
       auHeroTitleHtml: "تعرف على<br>قصتنا",
@@ -1006,6 +1036,36 @@
 
       // ---- readers.html (About Us / Reader Team) ----
       docTitleReaders: "Who Reads Your Script | Scene One",
+      docTitleAbout: "About | Scene One",
+
+      /* ---- /about — the founders page ---------------------------------- */
+      abEyebrow: "The minds behind Scene One",
+      abH: "Great stories deserve a clear path to the screen",
+      abP1: "Scene One began with a shared love of storytelling and a question: how can we help more Saudi writers bring their stories to the screen? We saw promising voices that needed dedicated support to develop their scripts and navigate the next steps.",
+      abP2: "We founded Scene One to bring that support together. Combining creative development with business strategy, we help writers strengthen their work, understand its production potential, and connect with the people who can help move it forward.",
+      abFoundersEyebrow: "The founders",
+      abFoundersH: "Two founders. A shared vision",
+      abRawanName: "Rawan",
+      abRawanRole: "Co-Founder & Literary Manager",
+      abRawanFocusHtml: "<span>The focus</span> Talent incubation, script coverage and narrative integrity",
+      abRawanQuote: "\u201CMy obsession is the pulse of the story. I look at a script not just as words on a page, but as a living, breathing cinematic experience. My role is to discover the raw, unpolished diamonds in our writing community, push their boundaries, and ensure their narrative voice is powerful enough to captivate a global audience\u201D",
+      abShahadName: "Shahad",
+      abShahadRole: "Co-Founder & Managing Director",
+      abShahadFocusHtml: "<span>The focus</span> Commercial architecture, studio packaging and business strategy",
+      abShahadQuote: "\u201CMy obsession is the viability and execution of the vision. A great script only matters if it gets made. I engineer the business models, structure the studio pipelines, and build the packaging agreements that protect our writers while making it effortless for production houses and elite directors to say yes\u201D",
+      abWhyEyebrow: "Why us",
+      abWhyH: "What Sets Scene One Apart",
+      abT1H: "Talent, Thoughtfully Developed",
+      abT1P: "We discover promising writers, evaluate their scripts, and provide focused development support. This gives production partners a considered selection of stories with clear potential and a stronger foundation for development",
+      abT2H: "Creative Vision, Practical Direction",
+      abT2P: "We approach every project through both a creative and a commercial lens. We strengthen the story while considering its audience, budget, and production needs, helping writers move their work forward with a clear sense of direction",
+      abT3H: "Connected to Saudi Cinema",
+      abT3P: "Our work is rooted in Saudi Arabia\u2019s growing film community. We build relationships with writers, filmmakers, and industry organizations to encourage collaboration and create opportunities for emerging talent",
+      abContactH: "Let\u2019s Shape What Comes Next",
+      abContactP: "Whether you are a writer looking for support to develop your script, a director looking for a story for your next project, or a production company looking for promising scripts, we would be glad to hear from you and explore how we might work together.",
+      abContactK1: "Business Affairs & Partnerships",
+      abContactK2: "Direct Line",
+
       auHeroTitleHtml: "About Us",
       auHeroTitle: "Here<br>Scene One",
       auHeroBadge: "Professional script coverage<br>for screenwriters",

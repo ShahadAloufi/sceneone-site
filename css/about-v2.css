@@ -230,3 +230,10 @@
   .ab2-founder { padding: 18px; }
   .ab2-hero__h { letter-spacing: -.4px; }
 }
+
+/* ---- Arabic ------------------------------------------------------------- */
+
+/* The hero's negative tracking is set for Latin display type. Arabic letters
+   join, so tightening them pulls the joins together and the line starts to
+   smudge at this size. */
+[dir="rtl"] .ab2-hero__h { letter-spacing: normal; }

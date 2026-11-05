@@ -1,19 +1,13 @@
 <!DOCTYPE html>
-<!-- ENGLISH ONLY, deliberately.
-     Every other public page is Arabic-first with js/i18n.js swapping strings at
-     runtime. This one ships without that script: the Arabic copy does not exist
-     yet, and loading i18n.js would render the shared chrome in Arabic around an
-     English body — and its applyLang() writes the chosen language to
-     localStorage, so merely opening this page would flip the rest of the site.
-     The chrome below therefore carries plain English text and no data-i18n, and
-     the AR toggle is absent rather than broken. When the Arabic arrives this
-     page joins the dict like the others. -->
-<html lang="en" dir="ltr">
+<!-- Arabic-first and bilingual, like every other public page: js/i18n.js swaps
+     the strings at runtime off the ab* keys in its dict. It shipped English-only
+     while only the English copy existed; the Arabic landed and it joined. -->
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-  <title>About | Scene One</title>
-  <meta name="description" content="The founders behind Scene One, and what sets the house apart: elite creative script engineering with studio-grade business strategy.">
+  <title data-i18n-doctitle="docTitleAbout">وراء سين ون | Scene One</title>
+  <meta name="description" content="القصص المميزة تستحق أن تجد طريقها إلى الشاشة. مؤسستا سين ون، وما يميّز البيت عن غيره.">
   <link rel="icon" type="image/png" href="assets/favicon-v2.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,16 +36,17 @@
     <a class="nav__brand" href="/">
       <img class="nav__logo" src="assets/scene-one-mark-v5-ink.svg" alt="Scene One"></a>
     <ul class="nav__links">
-      <li><a href="/">Home</a></li>
-      <li><a href="/about" aria-current="page">About</a></li>
-      <li><a href="/#coverage-types">Coverage</a></li>
-      <li><a href="/readers">Readers</a></li>
-      <li><a href="/#journey">Journey</a></li>
-      <li><a href="/#contact">Contact</a></li>
+      <li><a href="/" data-i18n="navHome">الرئيسية</a></li>
+      <li><a href="/about" aria-current="page" data-i18n="navAboutUs">من نحن</a></li>
+      <li><a href="/#coverage-types" data-i18n="navCoverage">تغطية النصوص</a></li>
+      <li><a href="/readers" data-i18n="navReaders">من يقرأ نصك</a></li>
+      <li><a href="/#journey" data-i18n="navJourney">رحلة النص</a></li>
+      <li><a href="/#contact" data-i18n="navContact">تواصل معنا</a></li>
     </ul>
     <div class="nav__end">
-      <a class="nav__cta" href="/submit">Submit your script</a>
-      <button class="menu-btn" data-menu-open aria-label="Menu">
+      <a class="nav__cta" href="/submit" data-i18n="btnSubmit">قدّم نصك</a>
+      <div class="lang-toggle-group" role="group" aria-label="Language"><button class="lang-btn" type="button" data-lang="en">EN</button><button class="lang-btn" type="button" data-lang="ar">AR</button></div>
+      <button class="menu-btn" data-menu-open data-i18n-aria="menuLabel" aria-label="القائمة">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -63,45 +58,46 @@
       <a class="overlay__brand" href="/" data-menu-close>
         <img src="assets/scene-one-mark-v5-ink.svg" alt="Scene One">
       </a>
-      <button class="overlay__close" data-menu-close aria-label="Close">
+      <button class="overlay__close" data-menu-close data-i18n-aria="closeLabel" aria-label="إغلاق">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
     </div>
     <nav class="overlay__links">
       <a href="/" data-menu-close>
         <span class="overlay__n" aria-hidden="true">01</span>
-        <span class="overlay__label">Home</span>
+        <span class="overlay__label" data-i18n="navHome">الرئيسية</span>
         <span class="overlay__go" aria-hidden="true">←</span>
       </a>
       <a href="/about" aria-current="page" data-menu-close>
         <span class="overlay__n" aria-hidden="true">02</span>
-        <span class="overlay__label">About</span>
+        <span class="overlay__label" data-i18n="navAboutUs">من نحن</span>
         <span class="overlay__go" aria-hidden="true">←</span>
       </a>
       <a href="/#coverage-types" data-menu-close>
         <span class="overlay__n" aria-hidden="true">03</span>
-        <span class="overlay__label">Coverage</span>
+        <span class="overlay__label" data-i18n="navCoverage">تغطية النصوص</span>
         <span class="overlay__go" aria-hidden="true">←</span>
       </a>
       <a href="/readers" data-menu-close>
         <span class="overlay__n" aria-hidden="true">04</span>
-        <span class="overlay__label">Readers</span>
+        <span class="overlay__label" data-i18n="navReaders">من يقرأ نصك</span>
         <span class="overlay__go" aria-hidden="true">←</span>
       </a>
       <a href="/#journey" data-menu-close>
         <span class="overlay__n" aria-hidden="true">05</span>
-        <span class="overlay__label">Journey</span>
+        <span class="overlay__label" data-i18n="navJourney">رحلة النص</span>
         <span class="overlay__go" aria-hidden="true">←</span>
       </a>
       <a href="/#contact" data-menu-close>
         <span class="overlay__n" aria-hidden="true">06</span>
-        <span class="overlay__label">Contact</span>
+        <span class="overlay__label" data-i18n="navContact">تواصل معنا</span>
         <span class="overlay__go" aria-hidden="true">←</span>
       </a>
     </nav>
     <div class="overlay__foot">
       <div class="overlay__actions">
-        <a class="overlay__cta" href="/submit" data-menu-close>Submit your script</a>
+        <a class="overlay__cta" href="/submit" data-menu-close data-i18n="btnSubmit">قدّم نصك</a>
+        <div class="lang-toggle-group lang-toggle-group--overlay" role="group" aria-label="Language"><button class="lang-btn" type="button" data-lang="en">EN</button><button class="lang-btn" type="button" data-lang="ar">AR</button></div>
       </div>
       <div class="overlay__contact">
         <a class="overlay__mail" href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
@@ -119,11 +115,11 @@
        story, divided by the same 2px rule the trust cards use. -->
   <section class="ab2-hero" id="top">
     <div class="ab2-hero__in">
-      <p class="ab2-eyebrow">The minds behind Scene One</p>
-      <h1 class="ab2-hero__h">Great stories deserve a clear path to the screen</h1>
+      <p class="ab2-eyebrow" data-i18n="abEyebrow">وراء سين ون</p>
+      <h1 class="ab2-hero__h" data-i18n="abH">القصص المميزة تستحق أن تجد طريقها إلى الشاشة</h1>
       <div class="ab2-hero__cols">
-        <p>Scene One began with a shared love of storytelling and a question: how can we help more Saudi writers bring their stories to the screen? We saw promising voices that needed dedicated support to develop their scripts and navigate the next steps.</p>
-        <p>We founded Scene One to bring that support together. Combining creative development with business strategy, we help writers strengthen their work, understand its production potential, and connect with the people who can help move it forward.</p>
+        <p data-i18n="abP1">بدأت سين ون بشغف مشترك بالحكاية، وسؤال: كيف نساعد مزيدًا من الكتّاب السعوديين على إيصال قصصهم إلى الشاشة؟ رأينا أصواتًا واعدة تحتاج إلى من يساندها في تطوير نصوصها، ويوضّح لها خطوات الانتقال من الكتابة إلى الإنتاج.</p>
+        <p data-i18n="abP2">أسّسنا سين ون لتقديم هذا الدعم. نجمع بين تطوير النصوص واستراتيجيات الأعمال، لنساعد الكتّاب على صقل أعمالهم، وفهم فرص تحويلها إلى أفلام، والتواصل مع شركاء يمكنهم المساهمة في تحقيقها.</p>
       </div>
     </div>
   </section>
@@ -132,29 +128,29 @@
   <section class="ab2-founders" id="founders">
     <div class="ab2-founders__in">
       <div class="ab2-head">
-        <p class="ab2-eyebrow">The founders</p>
-        <h2 class="ab2-h">Two founders. A shared vision</h2>
+        <p class="ab2-eyebrow" data-i18n="abFoundersEyebrow">المؤسستان</p>
+        <h2 class="ab2-h" data-i18n="abFoundersH">مؤسستان، ورؤية واحدة</h2>
       </div>
       <div class="ab2-founders__grid" data-reveal>
         <article class="ab2-founder">
-          <img class="ab2-founder__photo" src="assets/founder-rawan.webp" alt="Rawan"
+          <img class="ab2-founder__photo" src="assets/founder-rawan.webp" alt="روان" data-i18n-alt="abRawanName"
                loading="lazy" decoding="async" width="800" height="800">
           <div class="ab2-founder__id">
-            <h3 class="ab2-founder__name">Rawan</h3>
-            <p class="ab2-founder__role">Co-Founder &amp; Literary Manager</p>
+            <h3 class="ab2-founder__name" data-i18n="abRawanName">روان</h3>
+            <p class="ab2-founder__role" data-i18n="abRawanRole">شريكة مؤسِّسة ومديرة شؤون الكتّاب</p>
           </div>
-          <p class="ab2-founder__focus"><span>The focus</span> Talent incubation, script coverage and narrative integrity</p>
-          <p class="ab2-founder__quote">“My obsession is the pulse of the story. I look at a script not just as words on a page, but as a living, breathing cinematic experience. My role is to discover the raw, unpolished diamonds in our writing community, push their boundaries, and ensure their narrative voice is powerful enough to captivate a global audience”</p>
+          <p class="ab2-founder__focus" data-i18n-html="abRawanFocusHtml"><span>مجال التركيز:</span> رعاية المواهب، وتقييم السيناريو، والحفاظ على أصالة القصة وتماسكها.</p>
+          <p class="ab2-founder__quote" data-i18n="abRawanQuote">«أبحث دائمًا عمّا يمنح القصة نبضها. أرى في السيناريو تجربة سينمائية تبدأ على الورق، وتكتمل بالصورة والصوت والأداء. أعمل على اكتشاف الأصوات الواعدة، ومساعدة الكتّاب على توسيع آفاقهم وصقل أدواتهم، لتصل قصصهم إلى جمهور أوسع دون أن تفقد خصوصيتها.»</p>
         </article>
         <article class="ab2-founder">
-          <img class="ab2-founder__photo ab2-founder__photo--right" src="assets/founder-shahad.webp" alt="Shahad"
+          <img class="ab2-founder__photo ab2-founder__photo--right" src="assets/founder-shahad.webp" alt="شهد" data-i18n-alt="abShahadName"
                loading="lazy" decoding="async" width="800" height="800">
           <div class="ab2-founder__id">
-            <h3 class="ab2-founder__name">Shahad</h3>
-            <p class="ab2-founder__role">Co-Founder &amp; Managing Director</p>
+            <h3 class="ab2-founder__name" data-i18n="abShahadName">شهد</h3>
+            <p class="ab2-founder__role" data-i18n="abShahadRole">شريكة مؤسِّسة ومديرة تنفيذية</p>
           </div>
-          <p class="ab2-founder__focus"><span>The focus</span> Commercial architecture, studio packaging and business strategy</p>
-          <p class="ab2-founder__quote">“My obsession is the viability and execution of the vision. A great script only matters if it gets made. I engineer the business models, structure the studio pipelines, and build the packaging agreements that protect our writers while making it effortless for production houses and elite directors to say yes”</p>
+          <p class="ab2-founder__focus" data-i18n-html="abShahadFocusHtml"><span>مجال التركيز:</span> نماذج الأعمال، وتجهيز المشاريع للعرض على جهات الإنتاج، والتخطيط الاستراتيجي.</p>
+          <p class="ab2-founder__quote" data-i18n="abShahadQuote">«أركّز على ما تحتاجه الرؤية الإبداعية لتصبح مشروعًا قابلًا للتنفيذ. أعمل على بناء نماذج الأعمال، وتنظيم مسارات التعاون مع جهات الإنتاج، وصياغة الشراكات التي تصون مصالح الكتّاب وتمنح المنتجين والمخرجين أساسًا واضحًا للمضي بالمشروع قدمًا.»</p>
         </article>
       </div>
     </div>
@@ -164,22 +160,22 @@
   <section class="ab2-trust">
     <div class="ab2-trust__in">
       <div class="ab2-head">
-        <p class="ab2-eyebrow">Why us</p>
-        <h2 class="ab2-h">What Sets Scene One Apart</h2>
+        <p class="ab2-eyebrow" data-i18n="abWhyEyebrow">لماذا سين ون؟</p>
+        <h2 class="ab2-h" data-i18n="abWhyH">ما يميّز سين ون</h2>
       </div>
       <div class="ab2-trust__grid" data-reveal>
         <div class="ab2-trust__card">
-          <h3>Talent, Thoughtfully Developed</h3>
-          <p>We discover promising writers, evaluate their scripts, and provide focused development support. This gives production partners a considered selection of stories with clear potential and a stronger foundation for development</p>
+          <h3 data-i18n="abT1H">نكتشف الموهبة ونرعى تطوّرها</h3>
+          <p data-i18n="abT1P">نكتشف الكتّاب الواعدين، ونقيّم نصوصهم، ونقدّم دعمًا يتناسب مع احتياجات كل مشروع. بذلك، نتيح لشركاء الإنتاج مجموعة مختارة من القصص ذات الإمكانات الواعدة والأساس المتين لمواصلة التطوير.</p>
         </div>
         <div class="ab2-trust__card">
-          <h3>Creative Vision, Practical Direction</h3>
-          <p>We approach every project through both a creative and a commercial lens. We strengthen the story while considering its audience, budget, and production needs, helping writers move their work forward with a clear sense of direction</p>
+          <h3 data-i18n="abT2H">رؤية إبداعية وخطوات عملية</h3>
+          <p data-i18n="abT2P">ننظر إلى كل مشروع من جانبيه الإبداعي والتجاري. نعمل على تقوية القصة مع مراعاة جمهورها وميزانيتها ومتطلبات إنتاجها، ليتمكّن الكاتب من تطوير عمله برؤية أوضح لخطواته المقبلة.</p>
         </div>
         <!-- The design accents the third rule, not the first two. -->
         <div class="ab2-trust__card ab2-trust__card--accent">
-          <h3>Connected to Saudi Cinema</h3>
-          <p>Our work is rooted in Saudi Arabia’s growing film community. We build relationships with writers, filmmakers, and industry organizations to encourage collaboration and create opportunities for emerging talent</p>
+          <h3 data-i18n="abT3H">من قلب المشهد السينمائي السعودي</h3>
+          <p data-i18n="abT3P">نحن جزء من مجتمع سينمائي سعودي ينمو ويتجدّد. نبني علاقات مع الكتّاب وصنّاع الأفلام والجهات العاملة في القطاع، لنفتح مجالات للتعاون وفرصًا للمواهب الصاعدة.</p>
         </div>
       </div>
     </div>
@@ -189,20 +185,20 @@
   <section class="ab2-contact" id="contact">
     <div class="ab2-contact__in">
       <div class="ab2-contact__lede">
-        <p class="ab2-eyebrow">Contact</p>
-        <h2 class="ab2-h">Let’s Shape What Comes Next</h2>
-        <p class="ab2-contact__p">Whether you are an ambitious director looking for your next breakthrough creative circle, a studio looking to fast-track script development without the vetting headache, or a raw talent ready to be pushed to greatness, we are here to architect your path</p>
+        <p class="ab2-eyebrow" data-i18n="navContact">تواصل معنا</p>
+        <h2 class="ab2-h" data-i18n="abContactH">لنصنع معًا ما هو قادم</h2>
+        <p class="ab2-contact__p" data-i18n="abContactP">سواء كنت كاتبًا تبحث عن دعم لتطوير نصّك، أو مخرجًا تبحث عن قصة لمشروعك المقبل، أو جهة إنتاج تبحث عن نصوص واعدة، يسعدنا أن نسمع منك ونبحث معًا فرص التعاون.</p>
       </div>
       <!-- The design's first row is a "[Founder email]" placeholder. A made-up
            address on a contact page is worse than one row fewer, so it waits
            for a real one. -->
       <div class="ab2-contact__rows">
         <div class="ab2-contact__row">
-          <span class="ab2-contact__k">Business Affairs &amp; Partnerships</span>
+          <span class="ab2-contact__k" data-i18n="abContactK1">الأعمال والشراكات</span>
           <a class="ab2-contact__v" href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
         </div>
         <div class="ab2-contact__row">
-          <span class="ab2-contact__k">Direct Line</span>
+          <span class="ab2-contact__k" data-i18n="abContactK2">للتواصل المباشر</span>
           <a class="ab2-contact__v" href="tel:+966580503970" dir="ltr">+966 58 050 3970</a>
         </div>
       </div>
@@ -217,31 +213,31 @@
           <div class="lx-foot__brand">
             <img src="assets/scene-one-logo-v5.svg" alt="Scene One">
           </div>
-          <p class="lx-foot__blurb">A Saudi house for discovering and developing emerging filmmakers</p>
+          <p class="lx-foot__blurb" data-i18n="footBlurb">نكتشف الأصوات الجديدة، نطوّر أفلامها، ونبني لها طريقًا إلى الشاشة</p>
         </div>
         <div class="lx-foot__col">
-          <a href="/#coverage-types">Coverage</a>
-          <a href="/readers">Readers</a>
-          <a href="/#journey">Journey</a>
-          <a href="/partners">Partners</a>
+          <a href="/#coverage-types" data-i18n="footCoverage">تغطية النصوص</a>
+          <a href="/readers" data-i18n="footReaders">من يقرأ نصك</a>
+          <a href="/#journey" data-i18n="navJourney">رحلة النص</a>
+          <a href="/partners" data-i18n="footPartners">شركاء</a>
         </div>
         <div class="lx-foot__col">
-          <a href="/privacy">Privacy Policy</a>
-          <a href="/terms">Terms</a>
-          <a href="/booklet" target="_blank" rel="noopener">Our story</a>
+          <a href="/privacy" data-i18n="footerPrivacy">سياسة الخصوصية</a>
+          <a href="/terms" data-i18n="footerTerms">الشروط والأحكام</a>
+          <a href="/booklet" target="_blank" rel="noopener" data-i18n="footStory">حكاية سين ون</a>
         </div>
         <div class="lx-foot__col">
-          <p class="lx-foot__lbl">Contact</p>
+          <p class="lx-foot__lbl" data-i18n="footContact">للتواصل</p>
           <a class="lx-foot__mail" href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
           <div class="lx-foot__actions">
-            <a class="lx-foot__btn" href="tel:+966580503970" dir="ltr" aria-label="Call Scene One">966580503970</a>
+            <a class="lx-foot__btn" href="tel:+966580503970" dir="ltr" data-i18n-aria="footCallAria">966580503970</a>
             <a class="lx-foot__btn lx-foot__btn--wa" href="https://wa.me/966580503970"
-               target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.61.14-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.42-.07-.13-.27-.2-.57-.35z"/><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.25 8.24a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.17 8.17 0 0 1-1.26-4.38c0-4.54 3.7-8.25 8.24-8.25z"/></svg><span>WhatsApp</span></a>
+               target="_blank" rel="noopener noreferrer" data-i18n-aria="footWaAria"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.61.14-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.42-.07-.13-.27-.2-.57-.35z"/><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.25 8.24a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.17 8.17 0 0 1-1.26-4.38c0-4.54 3.7-8.25 8.24-8.25z"/></svg><span data-i18n="footWa">واتساب</span></a>
           </div>
         </div>
       </div>
       <div class="lx-foot__bar">
-        <p class="lx-foot__cr">© 2026 Scene One. All rights reserved · CR 7054791293</p>
+        <p class="lx-foot__cr" data-i18n="footCr">© 2026 جميع الحقوق محفوظة لـ سين ون · الرقم الموحد 7054791293</p>
         <div class="lx-foot__soc">
           <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X</a>
           <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
@@ -252,7 +248,7 @@
   </footer>
 </div>
 
-<!-- js/i18n.js is deliberately absent; see the note at the top of this file. -->
+<script src="js/i18n.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
