@@ -1101,9 +1101,9 @@ html[dir="ltr"] .landing .hero__shade {
   background-position: center;
   will-change: transform;
 }
-.hn-slide--1 .hn-slide__ph { background-image: url('../assets/cta-seats-screen.webp'); }
-.hn-slide--2 .hn-slide__ph { background-image: url('../assets/hero-num-chair.jpg'); }
-.hn-slide--3 .hn-slide__ph { background-image: url('../assets/hero-num-screen.jpg'); }
+.hn-slide--seats .hn-slide__ph { background-image: url('../assets/cta-seats-screen.webp'); }
+.hn-slide--chair .hn-slide__ph { background-image: url('../assets/hero-num-chair.jpg'); }
+.hn-slide--screen .hn-slide__ph { background-image: url('../assets/hero-num-screen.jpg'); }
 
 /* Heaviest at the two edges, where the copy sits, and lightest across the
    middle, where the photograph is the only thing to look at. */
