@@ -1120,21 +1120,30 @@ html[dir="ltr"] .landing .hero__shade {
 /* The figure. --hn-num drives BOTH the type size and the mask's height: they
    have to agree exactly, or the slide-up reveal clips at the wrong line. */
 .hn-slide__mask {
-  --hn-num: clamp(96px, 26vw, 440px);
+  /* 31vw lands on the design's 440px at its own 1440 canvas — 26vw had been
+     undersizing it by a sixth everywhere, and bottoming out at the floor on a
+     phone. The floor is now a size the figure actually reads at rather than
+     the smallest that fits. */
+  --hn-num: clamp(160px, 31vw, 520px);
   position: absolute;
   inset-inline: 0;
   /* 170 / 900 of the design's canvas, which also clears the fixed bar. */
   inset-block-start: 19%;
-  block-size: calc(var(--hn-num) * .98);
+  /* Taller than the figure's own line box, with the figure centred in the
+     slack. The design's mask is the line box exactly, which clipped the tops
+     of the digits: the face's glyphs stand slightly proud of a .98 line, and
+     half-leading that tight has nowhere to put the overflow. */
+  block-size: calc(var(--hn-num) * 1.2);
   overflow: hidden;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 .hn-slide__num {
   font-family: var(--font-head);
   font-weight: 600;
   font-size: var(--hn-num);
-  line-height: .98;
+  line-height: 1;
   /* -18px at 440px. In em so it holds as the figure clamps down. */
   letter-spacing: -.041em;
   color: var(--lx-cream);

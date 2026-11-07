@@ -237,11 +237,16 @@
     var n = slides.length;
     if (n < 2) return;
 
-    // The design's numbers. HOLD is how long a slide rests; WIPE is the
-    // transition. The 900ms guard below is shorter than WIPE on purpose: a
-    // click lands slightly before the previous wipe has fully settled, which
-    // reads as responsive rather than as a dropped press.
-    var HOLD = 4800, WIPE = 1150, GUARD = 900;
+    // HOLD is how long a slide rests; WIPE is the transition. Both are a step
+    // quicker than the design's 4800/1150 — three slides at the slower pace
+    // took fourteen seconds to come round, which is longer than anyone waits
+    // on a hero. The guard is shorter than WIPE on purpose: a click landing
+    // just before the previous wipe has settled reads as responsive rather
+    // than as a dropped press.
+    var HOLD = 3400, WIPE = 820, GUARD = 620;
+    // Where the figure and the label start inside a wipe, and how long each
+    // takes. Scaled with WIPE so they still land inside it.
+    var NUM_IN = 200, NUM_DUR = 640, LAB_IN = 340, LAB_DUR = 500;
 
     var reduce = false;
     try {
@@ -274,11 +279,16 @@
           el.style.clipPath = "inset(" + ((1 - p) * 100).toFixed(2) + "% 0 0 0)";
           ph.style.transform = "scale(" + (1.18 - 0.18 * p).toFixed(4) + ")";
           // The figure and the label start AFTER the wipe has opened enough to
-          // show them — 280ms and 480ms in. Starting them together with the
-          // wipe means they arrive before there is anything behind them.
-          var pn = easeOut(cl((t - 280) / 900));
-          num.style.transform = "translateY(" + ((1 - pn) * 105).toFixed(2) + "%)";
-          var pl = easeOut(cl((t - 480) / 700));
+          // show them. Starting them together with the wipe means they arrive
+          // before there is anything behind them.
+          //
+          // 120%, not the design's 105%: the mask is now 1.2x the figure's line
+          // box so the digits are not clipped, and 105% of the figure no longer
+          // clears the taller mask — it left a sliver of the number showing
+          // below the fold before it rose.
+          var pn = easeOut(cl((t - NUM_IN) / NUM_DUR));
+          num.style.transform = "translateY(" + ((1 - pn) * 120).toFixed(2) + "%)";
+          var pl = easeOut(cl((t - LAB_IN) / LAB_DUR));
           lab.style.opacity = pl;
           lab.style.transform = "translateY(" + ((1 - pl) * 24).toFixed(1) + "px)";
         } else if (k === prev && t < WIPE + 50) {

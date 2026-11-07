@@ -29,6 +29,53 @@ alter table public.admins
   add constraint admins_role_check
   check (role in ('admin', 'super_admin', 'lead_reader', 'senior_reader', 'junior_reader'));
 
+-- Claiming suspension. A per-account switch for when someone's own coverage is
+-- under review: they keep their account, their dashboard and anything they are
+-- already holding — finishing it and releasing it both still work — and only
+-- the taking of NEW work stops.
+--
+-- A flag rather than a role, deliberately. Every reader role can claim, so
+-- there is no role to move someone to; and demoting or deleting the account
+-- would change what they can see and orphan their delivery history, which is a
+-- far bigger act than "not right now".
+--
+-- NOT NULL DEFAULT true, so the only way to read false is for a human to have
+-- set it, which is what lets /api/claim-script fail CLOSED on it.
+alter table public.admins
+  add column if not exists can_claim boolean not null default true;
+
+-- /api/claim-script enforces this for primary claims and for a staff reassign.
+-- The CO-READER slot is the gap it cannot cover: js/admin.js writes
+-- co_reader_id straight through the client under RLS, never through the API,
+-- so without this trigger a suspended reader could simply take a co-reader
+-- slot instead. Service role returns early, exactly as enforce_assignment_lock
+-- does — the API has already made this check by then.
+create or replace function public.enforce_claim_suspension()
+returns trigger language plpgsql security definer set search_path = public as $$
+begin
+  if auth.uid() is null then return new; end if; -- claim API (service role) is trusted
+  if new.co_reader_id is distinct from old.co_reader_id
+     and new.co_reader_id is not null
+     and exists (select 1 from public.admins a
+                 where a.id = new.co_reader_id and a.can_claim = false) then
+    raise exception 'READER_CLAIMING_SUSPENDED' using errcode = 'check_violation';
+  end if;
+  -- Defence in depth. A client-side primary claim is already refused by
+  -- enforce_assignment_lock (ASSIGNMENT_VIA_API_ONLY); this costs nothing and
+  -- means the rule does not depend on that one staying in place.
+  if new.assigned_to is distinct from old.assigned_to
+     and new.assigned_to is not null
+     and exists (select 1 from public.admins a
+                 where a.id = new.assigned_to and a.can_claim = false) then
+    raise exception 'READER_CLAIMING_SUSPENDED' using errcode = 'check_violation';
+  end if;
+  return new;
+end; $$;
+drop trigger if exists trg_claim_suspension on public.submissions;
+create trigger trg_claim_suspension
+  before update on public.submissions
+  for each row execute function public.enforce_claim_suspension();
+
 -- Helper functions (SECURITY DEFINER so they bypass RLS on `admins` and avoid
 -- infinite recursion when referenced inside `admins` policies).
 create or replace function public.is_admin(uid uuid)

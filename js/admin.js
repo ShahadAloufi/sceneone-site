@@ -114,6 +114,8 @@
       assignTwice: "لا يمكنك إسناد نفسك مرتين",
       assignBlocked: "لا يمكنك قبول تكليف جديد حتى ترسل تقييم تكليفك الحالي لاعتماد فريق الجودة.",
       claimBlockedLevel: "هذا النص لكاتب محترف أو متمرّس، وهو مخصص لقارئ أول.",
+      claimSuspended: "إسناد النصوص موقوف مؤقتًا على حسابك. تواصل مع فريق الجودة.",
+      suspendedReader: "إسناد موقوف",
       claimConfirm: "سيتم إشعار الكاتب ببدء العمل على نصه بعد ساعة واحدة. يمكنك إلغاء الإسناد خلال هذه المدة. هل تريد المتابعة؟",
       covLocked: "أسند نفسك أولاً", covDenied: "لا يمكنك عرض هذا التقييم إلا بعد إسناد نفسك للنص.",
       phName: "اسم المشرف", phPassword: "8 أحرف على الأقل",
@@ -209,6 +211,8 @@
       assignTwice: "You cannot assign yourself twice",
       assignBlocked: "You can't take a new assignment until you send your current coverage for quality review.",
       claimBlockedLevel: "This script is from a professional or veteran writer, reserved for senior readers.",
+      claimSuspended: "Taking new assignments is paused on your account. Talk to the quality team.",
+      suspendedReader: "Assignment paused",
       claimConfirm: "The writer will be notified that you started working on their script after 1 hour. You can release it before then. Continue?",
       covLocked: "Assign yourself first", covDenied: "You can only view this coverage after assigning yourself to the script.",
       phName: "Admin name", phPassword: "At least 8 characters",
@@ -292,6 +296,10 @@
   var me = null; // { id, email, name, role }
   var adminsById = {};
   var adminRoleById = {};
+  // Readers whose claiming is suspended (admins.can_claim = false). Mirrors the
+  // check in /api/claim-script; the API and the DB trigger are the real gates,
+  // this only stops the UI offering a button that would be refused.
+  var suspendedIds = {};
   var currentRows = [];
   var currentCov = {};
 
@@ -392,7 +400,11 @@
     var sess = await sb.auth.getSession();
     var user = sess.data.session && sess.data.session.user;
     if (!user) return null;
-    var res = await sb.from("admins").select("id,email,name,role").eq("id", user.id).maybeSingle();
+    // can_claim ships with its own migration; a select naming a column that is
+    // not there yet errors, and loadMe() returning null would black out the whole
+    // dashboard. Retry without it — absent means nobody is suspended.
+    var res = await sb.from("admins").select("id,email,name,role,can_claim").eq("id", user.id).maybeSingle();
+    if (res.error) res = await sb.from("admins").select("id,email,name,role").eq("id", user.id).maybeSingle();
     if (res.error || !res.data) return null; // authenticated but not an admin
     return res.data;
   }
@@ -711,18 +723,28 @@
     // parallel — they don't depend on each other, so one round-trip's worth of
     // latency instead of three.
     var results = await Promise.all([
-      sb.from("admins").select("id,name,role"),
+      sb.from("admins").select("id,name,role,can_claim"),
       sb.from("submissions").select("*").order("created_at", { ascending: false }),
       sb.from("coverages").select("submission_id,status,delivered_at")
     ]);
     var ad = results[0], res = results[1], cov = results[2];
+    // Same fallback as loadMe: without can_claim the reader names would be lost
+    // from every assignee cell, which is a far worse failure than losing a flag.
+    if (ad.error) ad = await sb.from("admins").select("id,name,role");
 
     if (!silent) { hide($("subLoading")); }
     $("subTable").hidden = false;
 
     adminsById = {};
     adminRoleById = {};
-    (ad.data || []).forEach(function (a) { adminsById[a.id] = a.name; adminRoleById[a.id] = a.role; });
+    suspendedIds = {};
+    (ad.data || []).forEach(function (a) {
+      adminsById[a.id] = a.name;
+      adminRoleById[a.id] = a.role;
+      // Only ever true for an account someone has deliberately switched off:
+      // the column is NOT NULL DEFAULT true.
+      if (a.can_claim === false) suspendedIds[a.id] = true;
+    });
 
     var body = $("subBody");
     body.innerHTML = "";
@@ -926,6 +948,9 @@
   // Mirrors /api/claim-script, which stays stricter: it also counts
   // assigned-but-refunded scripts, which never reach this list, so a rare
   // false-negative here still fails safely at the API with assignBlocked.
+  // Suspended readers take nothing new, whatever else is true of the script.
+  function claimingSuspended() { return !!me && isReader(me.role) && me.can_claim === false; }
+
   var HANDED_OFF = ["submitted", "approved"];
   function hasActiveAssignment() {
     if (!me || !isReader(me.role)) return false;
@@ -1015,7 +1040,8 @@
       // rules /api/claim-script enforces (see claim eligibility helpers above).
       var blocked = null;
       if (me && isReader(me.role)) {
-        if (juniorBlockedFrom(s)) blocked = t("claimBlockedLevel");
+        if (claimingSuspended()) blocked = t("claimSuspended");
+        else if (juniorBlockedFrom(s)) blocked = t("claimBlockedLevel");
         else if (hasActiveAssignment()) blocked = t("assignBlocked");
       }
       row.appendChild(addSlotBtn(cell, s, "primary", blocked));
@@ -1024,7 +1050,7 @@
       if (isJunior(s.assigned_to)) {
         row.appendChild(s.co_reader_id
           ? slotAvatar(s.co_reader_id, cell, s, "co")
-          : addSlotBtn(cell, s, "co"));
+          : addSlotBtn(cell, s, "co", claimingSuspended() ? t("claimSuspended") : null));
       }
     }
     cell.appendChild(row);
@@ -1207,7 +1233,8 @@
       var msg = out.message || "";
       // Markers set by /api/claim-script so the copy shown is localised here
       // rather than echoing the server's Arabic fallback.
-      var friendly = /READER_HAS_ACTIVE_ASSIGNMENT/.test(msg) ? t("assignBlocked")
+      var friendly = /READER_CLAIMING_SUSPENDED/.test(msg) ? t("claimSuspended")
+                   : /READER_HAS_ACTIVE_ASSIGNMENT/.test(msg) ? t("assignBlocked")
                    : /JUNIOR_LEVEL_RESTRICTED/.test(msg) ? t("claimBlockedLevel")
                    : (msg || t("assignFail"));
       alert(friendly);
@@ -1246,7 +1273,11 @@
       s.co_reader_id = prev;
       renderAssignee(cell, s);
       refreshCoverageCell(cell, s);
-      alert(t("assignFail"));
+      // The co-reader slot is written straight through the client, so the DB
+      // trigger is what refuses a suspended reader here — say why rather than
+      // reporting a generic failure.
+      var m = (res.error && res.error.message) || "";
+      alert(/READER_CLAIMING_SUSPENDED/.test(m) ? t("claimSuspended") : t("assignFail"));
     }
   }
 
@@ -1284,7 +1315,9 @@
     sel.className = "adm-reassign";
     sel.title = t("reassignTip");
     sel.setAttribute("aria-label", t("reassignTip"));
-    var ids = Object.keys(adminRoleById).filter(function (id) { return isReader(adminRoleById[id]); });
+    var ids = Object.keys(adminRoleById).filter(function (id) {
+      return isReader(adminRoleById[id]) && !suspendedIds[id];
+    });
     // Keep the current assignee listed even if their role changed since.
     if (s.assigned_to && ids.indexOf(s.assigned_to) === -1) ids.unshift(s.assigned_to);
     sel.innerHTML = ids.map(function (id) {

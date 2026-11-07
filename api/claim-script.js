@@ -41,11 +41,20 @@ async function requireAdmin(req) {
   if (!userResp.ok) return { error: 401, message: "جلسة غير صالحة" };
   const user = await userResp.json();
   if (!user || !user.id) return { error: 401, message: "جلسة غير صالحة" };
-  const roleResp = await fetch(
-    url + "/rest/v1/admins?id=eq." + user.id + "&select=id,role",
-    { headers: { apikey: key, Authorization: "Bearer " + key } }
-  );
-  const rows = roleResp.ok ? await roleResp.json() : [];
+  // `can_claim` is asked for but not depended on. It arrives with its own
+  // migration, and PostgREST 400s a select naming a column that does not exist
+  // yet — which here would read as "not an admin" and lock every reader out of
+  // claiming until the SQL was run. So the deploy may land either side of the
+  // migration: without the column nobody is suspended anyway, which is exactly
+  // what an absent `can_claim` means below.
+  const svcHeaders = { apikey: key, Authorization: "Bearer " + key };
+  let rows = [];
+  for (const sel of ["id,role,can_claim", "id,role"]) {
+    const roleResp = await fetch(
+      url + "/rest/v1/admins?id=eq." + user.id + "&select=" + sel, { headers: svcHeaders }
+    );
+    if (roleResp.ok) { rows = await roleResp.json(); break; }
+  }
   if (!rows.length) return { error: 403, message: "غير مصرّح" };
   return { me: rows[0] };
 }
@@ -122,12 +131,22 @@ module.exports = async (req, res) => {
     if (!sub.assigned_to) return res.status(409).json({ message: "هذا النص غير مُسند" });
     if (to === sub.assigned_to) return res.status(200).json({ ok: true, assigned_to: to });
 
-    const tResp = await fetch(
-      url + "/rest/v1/admins?id=eq." + encodeURIComponent(to) + "&select=id,role",
-      { headers }
-    );
-    const tRows = tResp.ok ? await tResp.json() : [];
+    // Same two-step as requireAdmin: the column may not exist yet.
+    let tRows = [];
+    for (const sel of ["id,role,can_claim", "id,role"]) {
+      const tResp = await fetch(
+        url + "/rest/v1/admins?id=eq." + encodeURIComponent(to) + "&select=" + sel, { headers }
+      );
+      if (tResp.ok) { tRows = await tResp.json(); break; }
+    }
     if (!tRows.length) return res.status(400).json({ message: "القارئ غير موجود" });
+    // Suspension covers being GIVEN a script too, not only taking one — the
+    // reason for it is the quality of the work, which does not change with who
+    // started the assignment. Staff who really want them on it lift the flag
+    // first, deliberately, rather than routing around it with a reassign.
+    if (tRows[0].can_claim === false) {
+      return res.status(409).json({ message: "إسناد النصوص موقوف مؤقتًا على حساب هذا القارئ" });
+    }
 
     // A co-reader only makes sense under a junior primary, and can't be the
     // primary as well — drop it otherwise.
@@ -178,6 +197,22 @@ module.exports = async (req, res) => {
   // pool, and /api/payment-webhook is the only thing that puts it there.
   if (sub.status !== "unassigned") {
     return res.status(409).json({ message: "لم يكتمل دفع رسوم هذا النص" });
+  }
+
+  // A reader whose claiming is suspended takes nothing new. `can_claim` is a
+  // per-account switch on `admins`, used when someone's coverage is itself
+  // under review: they keep their account, their dashboard and whatever they
+  // are already holding — releasing it and finishing it both still work — and
+  // only the taking of new work stops. Staff are never subject to it.
+  //
+  // FAILS CLOSED, unlike the workload rule below: this one exists because the
+  // work is not trusted right now, so a missing or unreadable column must not
+  // quietly hand them a script. `can_claim` is NOT NULL DEFAULT true, so the
+  // only way to read false here is for someone to have set it.
+  if (me.can_claim === false) {
+    return res.status(403).json({
+      message: "READER_CLAIMING_SUSPENDED: إسناد النصوص موقوف مؤقتًا على حسابك، تواصل مع فريق الجودة",
+    });
   }
 
   // Junior readers are kept off experienced writers: the script's self-declared
