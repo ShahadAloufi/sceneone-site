@@ -163,19 +163,16 @@
       <article class="hn-slide hn-slide--chair is-on">
         <div class="hn-slide__ph"></div>
         <div class="hn-slide__shade"></div>
-        <p class="hn-slide__lab" data-i18n="hnLab2">كاتبًا استلموا تقريرًا تفصيليًا لأفلامهم خلال شهرين</p>
         <div class="hn-slide__mask"><span class="hn-slide__num" dir="ltr">30</span></div>
       </article>
       <article class="hn-slide hn-slide--seats">
         <div class="hn-slide__ph"></div>
         <div class="hn-slide__shade"></div>
-        <p class="hn-slide__lab" data-i18n="hnLab1">مشاريع في مسار الاستضافة خلال شهرين</p>
         <div class="hn-slide__mask"><span class="hn-slide__num" dir="ltr">7</span></div>
       </article>
       <article class="hn-slide hn-slide--screen">
         <div class="hn-slide__ph"></div>
         <div class="hn-slide__shade"></div>
-        <p class="hn-slide__lab" data-i18n="hnLab3">فكرة فيلم في تحدي القصة بمنتدى الأفلام السعودي</p>
         <div class="hn-slide__mask"><span class="hn-slide__num" dir="ltr">80</span></div>
       </article>
     </div>
@@ -191,7 +188,14 @@
     <div class="hn__foot">
       <div class="hn__lede">
         <p class="hn__eyebrow"><span class="hn__dot" aria-hidden="true"></span><span data-i18n="hnEyebrow">سين ون بالأرقام</span></p>
-        <h1 class="hn__h" data-i18n="heroTitle">نكتشف الأصوات التي تستحق أن تصل إلى الشاشة</h1>
+        <!-- The headline IS the slide's label: the three stack on one grid
+             cell, so the h1 is as tall as the longest of them and nothing
+             below it moves as they cross-fade. Order matches the slides. -->
+        <h1 class="hn__h">
+          <span class="hn__h-l is-on" data-i18n="hnLab2">كاتبًا استلموا تقريرًا تفصيليًا لأفلامهم خلال شهرين</span>
+          <span class="hn__h-l" data-i18n="hnLab1">مشاريع في مسار الاستضافة خلال شهرين</span>
+          <span class="hn__h-l" data-i18n="hnLab3">فكرة فيلم في تحدي القصة بمنتدى الأفلام السعودي</span>
+        </h1>
       </div>
       <div class="hn__act">
         <a class="hn__cta" href="/submit"><span data-i18n="btnSubmit">قدّم نصك</span><span class="hn__arrow" aria-hidden="true">←</span></a>

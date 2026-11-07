@@ -32,7 +32,6 @@
       overlayBlurb: "منصة متخصصة في تقييم النصوص السينمائية وتقديم ملاحظات احترافية تساعد الكتّاب على تطوير أعمالهم وصقلها قبل خطوتهم التالية.",
       overlayContact: "تواصل", overlaySocial: "حساباتنا",
 
-      heroTitle: "نكتشف الأصوات التي تستحق أن تصل إلى الشاشة",
       heroSub: "نرافق الكتّاب وصنّاع الأفلام في تطوير أعمالهم، وصقل رؤيتهم، وتهيئة نصوصهم لتكون جاهزة للصناعة، وفتح الطريق أمامهم نحو الفرص الحقيقية داخل الصناعة.",
       btnViewCoverage: "عرض التغطيات", btnGuide: "كيف بدأت الحكاية",
       heroNdaHtml: "نصك محمي هنا، ونشجعك على تسجيله لدى <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\">SAIP</a>.",
@@ -668,7 +667,6 @@
       overlayBlurb: "A specialized platform for screenplay evaluation, offering professional feedback that helps writers develop and refine their work before their next step.",
       overlayContact: "Contact", overlaySocial: "Follow Us",
 
-      heroTitle: "We find the voices and stories that deserve to reach the screen",
       heroSub: "We work alongside writers and filmmakers to develop their work, sharpen their vision, and prepare their projects for the industry, opening the way to real opportunities.",
       btnViewCoverage: "View Coverages", btnGuide: "How the story began",
       heroNdaHtml: "Your script is protected here. We also encourage you to register your work with the <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\">Saudi Authority for Intellectual Property (SAIP)</a>.",

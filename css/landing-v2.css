@@ -1072,7 +1072,6 @@ html[dir="ltr"] .landing .hero__shade {
 /* The gutter the fixed nav uses, so the hero's corners line up with the bar
    above them at every width. */
 .hn__count,
-.hn-slide__lab,
 .hn__foot { --hn-x: max(var(--lx-x), calc((100% - var(--lx-w)) / 2)); }
 
 /* ---- the slides --------------------------------------------------------- */
@@ -1150,18 +1149,6 @@ html[dir="ltr"] .landing .hero__shade {
   will-change: transform;
 }
 
-.hn-slide__lab {
-  position: absolute;
-  inset-block-start: calc(104px + 28px);
-  inset-inline-start: var(--hn-x);
-  margin: 0;
-  max-inline-size: 520px;
-  font-size: clamp(15px, 1.6vw, 22px);
-  font-weight: 500;
-  line-height: 1.5;
-  color: var(--lx-cream);
-}
-
 /* ---- the fixed frame over the slides ------------------------------------ */
 
 .hn__count {
@@ -1211,12 +1198,22 @@ html[dir="ltr"] .landing .hero__shade {
 .hn__dot { inline-size: 9px; block-size: 9px; border-radius: 50%; background: var(--lx-red); flex: none; }
 .hn__h {
   margin: 0;
+  /* All three labels share one cell, so the block keeps the height of the
+     longest and the CTA beside it never shifts mid-cycle. */
+  display: grid;
   font-family: var(--font-head);
-  font-size: clamp(26px, 3.4vw, 44px);
+  font-size: clamp(24px, 3vw, 40px);
   font-weight: 600;
   line-height: 1.4;
   color: var(--lx-cream);
 }
+.hn__h-l {
+  grid-area: 1 / 1;
+  /* JS drives opacity and transform from here; .is-on is the resting state,
+     and it is also what renders a finished hero if main.js never runs. */
+  opacity: 0;
+}
+.hn__h-l.is-on { opacity: 1; }
 
 .hn__act { display: flex; flex-direction: column; align-items: flex-end; gap: 22px; }
 .hn__cta {
@@ -1271,10 +1268,10 @@ html[dir="ltr"] .hn__arrow { transform: scaleX(-1); }
 @media (max-width: 860px) {
   .hn__foot { flex-direction: column; align-items: stretch; }
   .hn__act { align-items: flex-start; }
-  /* Lower than the design's 19%: the label wraps to two or three lines at this
-     width, and at 19% the figure started before it had finished. */
-  .hn-slide__mask { inset-block-start: 26%; }
-  .hn-slide__lab { max-inline-size: 22ch; }
+  /* Centred in the band the frame leaves it: the counter ends around 149px
+     and the foot starts around 570px on a 812px phone, so the figure sits on
+     that midpoint rather than in the top third as the desktop 19% put it. */
+  .hn-slide__mask { inset-block-start: 32%; }
 }
 @media (max-width: 600px) {
   .hn__cta { padding: 14px 26px; font-size: 16px; }

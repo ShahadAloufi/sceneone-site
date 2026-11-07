@@ -232,6 +232,7 @@
     var slides = Array.prototype.slice.call(root.querySelectorAll(".hn-slide"));
     var fills = Array.prototype.slice.call(root.querySelectorAll(".hn__fill"));
     var bars = Array.prototype.slice.call(root.querySelectorAll(".hn__bar"));
+    var labs = Array.prototype.slice.call(root.querySelectorAll(".hn__h-l"));
     var countEl = root.querySelector(".hn__count-i");
     var liveEl = root.querySelector(".hn__live");
     var n = slides.length;
@@ -272,7 +273,7 @@
         var el = slides[k];
         var ph = el.querySelector(".hn-slide__ph");
         var num = el.querySelector(".hn-slide__num");
-        var lab = el.querySelector(".hn-slide__lab");
+        var lab = labs[k];
 
         if (k === cur) {
           el.style.zIndex = 3;
@@ -320,7 +321,7 @@
       }
       if (!liveEl) return;
       var num = slides[cur].querySelector(".hn-slide__num");
-      var lab = slides[cur].querySelector(".hn-slide__lab");
+      var lab = labs[cur];
       liveEl.textContent = (num ? num.textContent : "") + " — " + (lab ? lab.textContent : "");
     }
 
@@ -330,6 +331,7 @@
       if (!reduce && now - t0 < GUARD) return;   // let a wipe finish
       prev = cur; cur = k; t0 = now; shown = now;
       slides.forEach(function (el, i) { el.classList.toggle("is-on", i === cur); });
+      labs.forEach(function (el, i) { el.classList.toggle("is-on", i === cur); });
       announce();
       if (reduce) paint(now); else start();
     }
