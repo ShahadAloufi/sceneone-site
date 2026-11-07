@@ -108,74 +108,75 @@
 
 
 /* ============================================================================
-   THE LIGHT BAR — shared by the pages whose hero is light.
+   THE BLACK BAR — shared by the pages whose hero is light.
+
+   The bar used to be white on these pages, to sit quietly on a light hero. It
+   is black now, and deliberately the SAME black as .lx-foot above: both are
+   --lx-black, both are flat with no shadow, and both set their text in white
+   at the footer's own opacities. The page is then bracketed by one colour top
+   and bottom instead of fading into the bar at one end.
 
    css/styles.css dresses the nav for a dark page, because /about-coverage
-   still opens on black. So none of it is edited there. This block opts in by page wrapper instead, and
-   it loads after styles.css, so equal specificity is enough to win.
+   still opens on black. So none of it is edited there. This block opts in by
+   page wrapper instead, and it loads after styles.css, so equal specificity is
+   enough to win.
 
-   The logo itself is not inverted here: invert(1) would flip its accent dot
-   from #CD2E07 to cyan along with everything else. The light pages point at
-   assets/scene-one-mark-v5-ink.svg, a dark-ink cut of the same drawing.
+   The logo is not inverted in CSS: invert(1) would flip its accent dot from
+   #CD2E07 to cyan along with everything else. These pages point their
+   .nav__logo at assets/scene-one-mark-v5.svg, the light cut of the same
+   drawing — note their OVERLAY keeps the -ink cut, because the hamburger
+   panel is still white.
    ========================================================================= */
 
 /* styles.css starts the landing's bar as a dark gradient and turns it solid on
-   scroll. On a light hero the gradient reads as a smudge, so the bar is white
-   from the first paint, with a hairline instead of the dark page's drop shadow.
-   .scrolled is kept in step so the scroll handler in js/main.js has nothing to
-   undo. */
+   scroll. Here it is solid from the first paint, and .scrolled is kept in step
+   so the scroll handler in js/main.js has nothing to undo. No shadow: the
+   footer has none either, and black on cream needs no help separating. */
 .landing .nav, .landing .nav.scrolled,
 .rd2 .nav,     .rd2 .nav.scrolled,
 .tm2 .nav,     .tm2 .nav.scrolled,
 .sb2 .nav,     .sb2 .nav.scrolled,
 .ab2 .nav,     .ab2 .nav.scrolled {
-  background: var(--lx-white);
-  box-shadow: 0 1px 0 rgba(0, 0, 0, .08);
+  background: var(--lx-black);
+  box-shadow: none;
 }
+/* .lx-foot__col a's two values, so a link reads the same weight in both bars. */
 @media (min-width: 1000px) {
   .landing .nav__links a,
   .rd2 .nav__links a,
   .tm2 .nav__links a,
   .sb2 .nav__links a,
-  .ab2 .nav__links a { color: var(--lx-ink); }
+  .ab2 .nav__links a { color: rgba(255, 255, 255, .62); }
   .landing .nav__links a:hover,
   .rd2 .nav__links a:hover,
   .tm2 .nav__links a:hover,
   .sb2 .nav__links a:hover,
-  .ab2 .nav__links a:hover { color: var(--lx-black); }
+  .ab2 .nav__links a:hover { color: #fff; }
 }
 .landing .menu-btn span,
 .rd2 .menu-btn span,
 .tm2 .menu-btn span,
 .sb2 .menu-btn span,
-.ab2 .menu-btn span { background: var(--lx-black); }
+.ab2 .menu-btn span { background: #fff; }
+/* The same hairline the footer's call/WhatsApp buttons carry. */
 .landing .lang-toggle-group,
 .rd2 .lang-toggle-group,
 .tm2 .lang-toggle-group,
 .sb2 .lang-toggle-group,
-.ab2 .lang-toggle-group { border-color: rgba(0, 0, 0, .22); }
+.ab2 .lang-toggle-group { border-color: rgba(255, 255, 255, .22); }
 .landing .lang-btn,
 .rd2 .lang-btn,
 .tm2 .lang-btn,
 .sb2 .lang-btn,
-.ab2 .lang-btn { color: var(--lx-ink); }
+.ab2 .lang-btn { color: rgba(255, 255, 255, .86); }
 .landing .lang-btn:hover,
 .rd2 .lang-btn:hover,
 .tm2 .lang-btn:hover,
 .sb2 .lang-btn:hover,
-.ab2 .lang-btn:hover { color: var(--lx-black); }
+.ab2 .lang-btn:hover { color: #fff; }
 
-/* The pill inverts with everything else: cream on black becomes black on cream. */
-.landing .nav__cta,
-.rd2 .nav__cta,
-.tm2 .nav__cta,
-.sb2 .nav__cta,
-.ab2 .nav__cta { background: var(--lx-black); color: var(--lx-cream); }
-.landing .nav__cta:hover,
-.rd2 .nav__cta:hover,
-.tm2 .nav__cta:hover,
-.sb2 .nav__cta:hover,
-.ab2 .nav__cta:hover { background: #241f1b; }
+/* The pill needs no override any more: .nav__cta's own cream-on-black above is
+   already what a dark bar wants, and it matches .lx-foot__btn's hover state. */
 
 /* ---- reveal on scroll ---------------------------------------------------
    Cards rise and fade as their group enters the viewport, staggered in reading
