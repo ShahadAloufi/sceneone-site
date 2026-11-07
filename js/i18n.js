@@ -42,7 +42,7 @@
          copies of one number. */
       hnRegion: "سين ون بالأرقام",
       hnEyebrow: "سين ون بالأرقام",
-      hnLab1: "مشاريع في مسار الاستضافة خلال شهرين",
+      hnLab1: "مشاريع في مسار الاستضافة",
       hnLab2: "كاتبًا استلموا تقريرًا تفصيليًا لأفلامهم خلال شهرين",
       hnLab3: "فكرة فيلم في تحدي القصة بمنتدى الأفلام السعودي",
       hnGo1: "الشريحة الأولى", hnGo2: "الشريحة الثانية", hnGo3: "الشريحة الثالثة",
@@ -674,7 +674,7 @@
       /* ---- hero: Scene One by the numbers ------------------------------ */
       hnRegion: "Scene One by the numbers",
       hnEyebrow: "Scene One by the numbers",
-      hnLab1: "projects on the hosting track within two months",
+      hnLab1: "projects on the hosting track",
       hnLab2: "writers received a detailed report on their film within two months",
       hnLab3: "film ideas in the Story Challenge at the Saudi Film Forum",
       hnGo1: "Slide one", hnGo2: "Slide two", hnGo3: "Slide three",
