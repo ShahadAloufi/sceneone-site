@@ -136,11 +136,10 @@
       heroPartner: "شريك معتمد لدى جمعية السينما السعودية",
 
       introEyebrow: "البداية",
-      introH: "هناك كتّاب موهوبون،<br>وقصص تستحق أن تُروى",
-      introP: "توجد أفكار ونصوص واعدة، لكن بعض الكتّاب لا يجدون من يقرأ أعمالهم بجدية، أو يساعدهم على تطويرها، أو يوضح لهم الخطوة التالية.",
+      introH: "هناك كتّاب موهوبون، وقصص تستحق أن تُروى",
+      introP: "توجد أفكار ونصوص واعدة، لكن بعض الكتّاب لا يجدون من يقرأ أعمالهم بجدية، أو يساعدهم على تطويرها، أو يوضح لهم الخطوة التالية",
       introKicker: "من هنا بدأت سين ون",
       introLink: "اقرأ الحكاية كاملة",
-      introImgAlt: "آلة عرض سينمائي تدور في قاعة",
 
       doEyebrow: "ما نفعله", doH: "نكتشف. نطوّر. نربط.",
       do1T: "نكتشف", do1B: "نبحث عن الأصوات والقصص قبل أن تلتفت إليها الصناعة.",
@@ -768,11 +767,10 @@
       heroPartner: "Accredited partner of the Saudi Cinema Association",
 
       introEyebrow: "The beginning",
-      introH: "There are gifted writers<br>and stories that deserve to be told",
+      introH: "There are gifted writers and stories that deserve to be told",
       introP: "Promising ideas and screenplays are everywhere. But many writers never find someone who will read their work seriously, help them develop it, or show them what comes next.",
       introKicker: "That is where Scene One began.",
       introLink: "Read the full story",
-      introImgAlt: "A film projector running in a screening room",
 
       doEyebrow: "What we do", doH: "We discover. We develop. We connect.",
       do1T: "Discover", do1B: "We look for distinctive voices and compelling stories before the industry discovers them.",
