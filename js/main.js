@@ -210,6 +210,174 @@
   });
 
 
+  /* ---------- HERO: SCENE ONE BY THE NUMBERS ----------
+     Three photographic slides, each wiping up over the last. One rAF loop
+     drives every moving part, because they are all reading the same clock:
+     the wipe, the photo's Ken Burns scale, the figure rising into its mask,
+     the label fading up behind it, and the progress bar that doubles as the
+     autoplay timer. Two timers would drift apart within a cycle.
+
+     Nothing here sets up an initial state. The markup already carries the
+     first slide composed (.is-on), so a browser that never reaches this file
+     shows a finished hero rather than a black band — and the loop's first
+     frame simply repaints what is already on screen.
+
+     prefers-reduced-motion is honoured by not running the loop at all: each
+     slide is painted at its finished position, and autoplay never advances.
+     The bars still work, so the hero stays usable without moving on its own. */
+  (function heroNumbers() {
+    var root = document.querySelector(".hn");
+    if (!root) return;
+
+    var slides = Array.prototype.slice.call(root.querySelectorAll(".hn-slide"));
+    var fills = Array.prototype.slice.call(root.querySelectorAll(".hn__fill"));
+    var bars = Array.prototype.slice.call(root.querySelectorAll(".hn__bar"));
+    var countEl = root.querySelector(".hn__count-i");
+    var liveEl = root.querySelector(".hn__live");
+    var n = slides.length;
+    if (n < 2) return;
+
+    // The design's numbers. HOLD is how long a slide rests; WIPE is the
+    // transition. The 900ms guard below is shorter than WIPE on purpose: a
+    // click lands slightly before the previous wipe has fully settled, which
+    // reads as responsive rather than as a dropped press.
+    var HOLD = 4800, WIPE = 1150, GUARD = 900;
+
+    var reduce = false;
+    try {
+      reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    } catch (e) { /* treat as no preference */ }
+
+    var cur = 0, prev = -1;
+    var t0 = -1e9;                 // when the current wipe started
+    var shown = performance.now(); // when the current slide became current
+    var raf = 0, running = false, pausedAt = 0;
+
+    function cl(x) { return x < 0 ? 0 : (x > 1 ? 1 : x); }
+    function easeInOut(x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
+    function easeOut(x) { return 1 - Math.pow(1 - x, 4); }
+
+    function paint(now) {
+      // In reduce mode every slide is painted at t = done, so the current one
+      // is simply whole and the others are simply hidden.
+      var t = reduce ? 1e9 : now - t0;
+      var p = easeInOut(cl(t / WIPE));
+
+      for (var k = 0; k < n; k++) {
+        var el = slides[k];
+        var ph = el.querySelector(".hn-slide__ph");
+        var num = el.querySelector(".hn-slide__num");
+        var lab = el.querySelector(".hn-slide__lab");
+
+        if (k === cur) {
+          el.style.zIndex = 3;
+          el.style.clipPath = "inset(" + ((1 - p) * 100).toFixed(2) + "% 0 0 0)";
+          ph.style.transform = "scale(" + (1.18 - 0.18 * p).toFixed(4) + ")";
+          // The figure and the label start AFTER the wipe has opened enough to
+          // show them — 280ms and 480ms in. Starting them together with the
+          // wipe means they arrive before there is anything behind them.
+          var pn = easeOut(cl((t - 280) / 900));
+          num.style.transform = "translateY(" + ((1 - pn) * 105).toFixed(2) + "%)";
+          var pl = easeOut(cl((t - 480) / 700));
+          lab.style.opacity = pl;
+          lab.style.transform = "translateY(" + ((1 - pl) * 24).toFixed(1) + "px)";
+        } else if (k === prev && t < WIPE + 50) {
+          // The outgoing slide stays whole underneath and drifts up a little,
+          // so the wipe reads as one image sliding over another rather than as
+          // a reveal onto nothing.
+          el.style.zIndex = 2;
+          el.style.clipPath = "inset(0 0 0 0)";
+          ph.style.transform = "translateY(" + (-p * 7).toFixed(2) + "%) scale(1)";
+          num.style.transform = "translateY(" + (-p * 60).toFixed(2) + "%)";
+          lab.style.opacity = 1 - p;
+        } else {
+          el.style.zIndex = 1;
+          el.style.clipPath = "inset(100% 0 0 0)";
+        }
+      }
+
+      var fill = reduce ? 1 : cl((now - shown) / HOLD);
+      for (var j = 0; j < n; j++) {
+        if (fills[j]) fills[j].style.width = (j === cur ? fill * 100 : 0) + "%";
+      }
+      return fill;
+    }
+
+    function announce() {
+      if (countEl) countEl.textContent = "0" + (cur + 1);
+      for (var k = 0; k < n; k++) {
+        if (bars[k]) bars[k].setAttribute("aria-current", k === cur ? "true" : "false");
+      }
+      if (!liveEl) return;
+      var num = slides[cur].querySelector(".hn-slide__num");
+      var lab = slides[cur].querySelector(".hn-slide__lab");
+      liveEl.textContent = (num ? num.textContent : "") + " — " + (lab ? lab.textContent : "");
+    }
+
+    function go(k) {
+      if (k === cur) return;
+      var now = performance.now();
+      if (!reduce && now - t0 < GUARD) return;   // let a wipe finish
+      prev = cur; cur = k; t0 = now; shown = now;
+      slides.forEach(function (el, i) { el.classList.toggle("is-on", i === cur); });
+      announce();
+      if (reduce) paint(now); else start();
+    }
+
+    function frame(now) {
+      var fill = paint(now);
+      if (fill >= 1) go((cur + 1) % n);
+      raf = requestAnimationFrame(frame);
+    }
+
+    function start() {
+      if (running || reduce) return;
+      if (pausedAt) {
+        // Shift both clocks by the time spent paused, so a slide resumes where
+        // it left off instead of jumping or restarting.
+        var d = performance.now() - pausedAt;
+        t0 += d; shown += d; pausedAt = 0;
+      }
+      running = true;
+      raf = requestAnimationFrame(frame);
+    }
+    function stop() {
+      if (!running) return;
+      running = false;
+      cancelAnimationFrame(raf);
+      pausedAt = performance.now();
+    }
+
+    bars.forEach(function (b) {
+      b.addEventListener("click", function (e) {
+        e.stopPropagation();
+        go(parseInt(b.getAttribute("data-go"), 10) || 0);
+      });
+    });
+
+    // The design advances on a click anywhere in the hero. Anything the
+    // visitor meant to press — the CTA, a bar — is left alone.
+    root.addEventListener("click", function (e) {
+      if (e.target.closest && e.target.closest("a, button")) return;
+      go((cur + 1) % n);
+    });
+
+    // Don't burn a rAF on a hero nobody is looking at. Both of these also stop
+    // the carousel cycling through unseen while the visitor reads further down.
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) stop(); else start();
+    });
+    if (window.IntersectionObserver) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { if (en.isIntersecting) start(); else stop(); });
+      }, { threshold: 0.01 }).observe(root);
+    }
+
+    announce();
+    if (reduce) paint(performance.now()); else start();
+  })();
+
+
   /* ---------- IN-PAGE HASH SMOOTH SCROLL (landing) ---------- */
   if (window.location.hash) {
     var target = document.getElementById(window.location.hash.replace("#", ""));

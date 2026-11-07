@@ -1037,24 +1037,237 @@ html[dir="ltr"] .landing .hero__shade {
 .landing .hero__strip a { color: var(--lx-ink); }
 .landing .hero__strip a:hover { color: var(--lx-black); }
 
-/* ---- the hero, with the footage taken out ------------------------------
-   Everything above already dresses this hero for a light ground: the veil,
-   the ink copy, the inverted buttons and badge. What it was dressing was a
-   video under a cream veil. The video is gone, so only two things change.
+/* ============================================================================
+   HERO — SCENE ONE BY THE NUMBERS (.hn)
 
-   The poster is the first. css/styles.css paints it on .hero itself rather
-   than on the <video>, so that a refused autoplay still had something to
-   show — which means removing the <video> alone would have frozen the
-   photograph in place instead of removing it.
+   Built from the 1440x900 design export. The artboard is a fixed canvas, so
+   its pixel values are the DESKTOP end of each scale rather than the whole
+   story: the figure, the headline and the gutters all clamp down to a phone.
 
-   The veil is the second. It exists to lift cream over moving footage; over
-   the flat ground beneath it there is nothing left to lift, and its mask
-   leaves a faint horizontal edge where it fades in. */
-.landing .hero { background-image: none; }
-.landing .hero__shade,
-html[dir="ltr"] .landing .hero__shade { background: none; -webkit-mask-image: none; mask-image: none; }
+   The old `.hero` markup this replaced is gone from index.html, so the
+   `.landing .hero*` rules earlier in this file and in css/styles.css no longer
+   match anything on this page. They are left where they are: styles.css's
+   block still dresses the readers, terms and privacy heroes, and this file's
+   is dead weight measured in bytes against the risk of a careless delete.
 
-/* 100vh was paying for footage. Without it the hero is a headline, a line of
-   copy and a button, and a full screen of empty ground above the fold reads
-   as a page still loading. */
-.landing .hero { min-block-size: 78vh; }
+   One figure is one slide. Each wipes up over the last, and three things move
+   on their own clocks inside it — photo, figure, label — which is what makes
+   the change read as a cut rather than a crossfade. heroNumbers() in
+   js/main.js owns all of it; nothing here animates by itself, so a page with
+   no JS shows the first slide, fully composed and still.
+   ========================================================================= */
+
+.hn {
+  position: relative;
+  /* The design is 900px under an 84px bar. Ours is a fixed 104px bar over a
+     full screen; svh so a phone's collapsing toolbar cannot crop the foot. */
+  min-block-size: 100vh;
+  min-block-size: 100svh;
+  overflow: hidden;
+  background: #000;
+  /* The slides are absolutely positioned, so the section needs its own height
+     rather than taking one from content. */
+  display: block;
+}
+/* The gutter the fixed nav uses, so the hero's corners line up with the bar
+   above them at every width. */
+.hn__count,
+.hn-slide__lab,
+.hn__foot { --hn-x: max(var(--lx-x), calc((100% - var(--lx-w)) / 2)); }
+
+/* ---- the slides --------------------------------------------------------- */
+
+.hn__slides { position: absolute; inset: 0; }
+.hn-slide {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* The wipe. Each slide is clipped from its own top edge: 100% hides it,
+     0% shows it whole, and the loop walks one slide from the first to the
+     second while the one beneath stays open. */
+  clip-path: inset(100% 0 0 0);
+  z-index: 1;
+  will-change: clip-path;
+}
+/* The first slide is composed before the script runs — and stays that way if
+   it never does. The loop takes over from here on its first frame. */
+.hn-slide.is-on { clip-path: inset(0 0 0 0); z-index: 3; }
+
+.hn-slide__ph {
+  position: absolute;
+  /* Bled 2% past every edge so the Ken Burns scale never exposes a seam. */
+  inset: -2%;
+  background-size: cover;
+  background-position: center;
+  will-change: transform;
+}
+.hn-slide--1 .hn-slide__ph { background-image: url('../assets/cta-seats-screen.webp'); }
+.hn-slide--2 .hn-slide__ph { background-image: url('../assets/hero-num-chair.jpg'); }
+.hn-slide--3 .hn-slide__ph { background-image: url('../assets/hero-num-screen.jpg'); }
+
+/* Heaviest at the two edges, where the copy sits, and lightest across the
+   middle, where the photograph is the only thing to look at. */
+.hn-slide__shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(0, 0, 0, .55) 0%,
+    rgba(0, 0, 0, .25) 38%,
+    rgba(0, 0, 0, .35) 62%,
+    rgba(0, 0, 0, .82) 100%);
+}
+
+/* The figure. --hn-num drives BOTH the type size and the mask's height: they
+   have to agree exactly, or the slide-up reveal clips at the wrong line. */
+.hn-slide__mask {
+  --hn-num: clamp(96px, 26vw, 440px);
+  position: absolute;
+  inset-inline: 0;
+  /* 170 / 900 of the design's canvas, which also clears the fixed bar. */
+  inset-block-start: 19%;
+  block-size: calc(var(--hn-num) * .98);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+.hn-slide__num {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: var(--hn-num);
+  line-height: .98;
+  /* -18px at 440px. In em so it holds as the figure clamps down. */
+  letter-spacing: -.041em;
+  color: var(--lx-cream);
+  will-change: transform;
+}
+
+.hn-slide__lab {
+  position: absolute;
+  inset-block-start: calc(104px + 28px);
+  inset-inline-start: var(--hn-x);
+  margin: 0;
+  max-inline-size: 520px;
+  font-size: clamp(15px, 1.6vw, 22px);
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--lx-cream);
+}
+
+/* ---- the fixed frame over the slides ------------------------------------ */
+
+.hn__count {
+  position: absolute;
+  inset-block-start: calc(104px + 28px);
+  inset-inline-end: var(--hn-x);
+  z-index: 4;
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: var(--lx-cream);
+  /* The design sets this in a monospace face. One extra font request for two
+     digits is not worth it; tabular figures stop the counter twitching as it
+     counts, which is the only reason it wanted monospace. */
+  font-variant-numeric: tabular-nums;
+}
+.hn__count-n { opacity: .45; }
+
+/* Announced, never shown: the slides themselves are aria-hidden. */
+.hn__live {
+  position: absolute;
+  inline-size: 1px; block-size: 1px;
+  margin: -1px; padding: 0; border: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+
+.hn__foot {
+  position: absolute;
+  inset-block-end: clamp(28px, 5vh, 56px);
+  inset-inline: var(--hn-x);
+  z-index: 4;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px 48px;
+}
+.hn__lede { max-inline-size: 640px; display: flex; flex-direction: column; gap: 14px; }
+.hn__eyebrow {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: rgba(249, 244, 239, .7);
+}
+.hn__dot { inline-size: 9px; block-size: 9px; border-radius: 50%; background: var(--lx-red); flex: none; }
+.hn__h {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(26px, 3.4vw, 44px);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--lx-cream);
+}
+
+.hn__act { display: flex; flex-direction: column; align-items: flex-end; gap: 22px; }
+.hn__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 34px;
+  border-radius: 8px;
+  background: var(--lx-cream);
+  color: #000;
+  font-family: var(--font-head);
+  font-size: 17px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 200ms ease;
+}
+.hn__cta:hover { background: #fff; }
+/* The glyph is the RTL-facing one, flipped for English — the same convention
+   .overlay__go follows in css/styles.css. */
+.hn__arrow { display: inline-block; }
+html[dir="ltr"] .hn__arrow { transform: scaleX(-1); }
+
+.hn__bars { display: flex; gap: 8px; }
+.hn__bar {
+  position: relative;
+  inline-size: 64px;
+  block-size: 3px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  background: rgba(249, 244, 239, .25);
+  cursor: pointer;
+}
+/* 3px is the design's bar and far under any usable target, so the hit area is
+   grown around it without moving the line — the same trick .hero__strip's SAIP
+   link uses. */
+.hn__bar::after { content: ""; position: absolute; inset-block: -14px; inset-inline: 0; }
+.hn__bar:focus-visible { outline: 2px solid var(--lx-cream); outline-offset: 6px; }
+/* Fills from the inline start, so it runs the way the page reads. */
+.hn__fill {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: 0;
+  background: var(--lx-cream);
+  display: block;
+}
+
+/* ---- narrow -------------------------------------------------------------
+   The foot stacks and the figure comes down, but nothing is dropped: on a
+   phone the three numbers ARE the hero. */
+@media (max-width: 860px) {
+  .hn__foot { flex-direction: column; align-items: stretch; }
+  .hn__act { align-items: flex-start; }
+  /* Lower than the design's 19%: the label wraps to two or three lines at this
+     width, and at 19% the figure started before it had finished. */
+  .hn-slide__mask { inset-block-start: 26%; }
+  .hn-slide__lab { max-inline-size: 22ch; }
+}
+@media (max-width: 600px) {
+  .hn__cta { padding: 14px 26px; font-size: 16px; }
+  .hn__bar { inline-size: 48px; }
+}

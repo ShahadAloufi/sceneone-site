@@ -143,37 +143,66 @@
     </div>
   </div>
 
-  <!-- ── HERO ──
-       No footage: the section is the site's own cream, and the copy, the CTA
-       and the trust strip invert to ink on it. The recolouring lives in
-       css/landing-v2.css under ".landing .hero", not here. .hero__shade is kept
-       in the markup with nothing to shade — styles.css builds it and five other
-       pages read that block, so emptying it there is a wider change than this
-       page. -->
-  <section class="hero">
-    <div class="hero__shade"></div>
-    <div class="hero__content">
-      <h1 class="hero__title" data-i18n="heroTitle">نكتشف الأصوات التي تستحق أن تصل إلى الشاشة</h1>
-      <p class="hero__sub" data-i18n="heroSub">نرافق الكتّاب وصنّاع الأفلام في تطوير أعمالهم، وصقل رؤيتهم، وتهيئة نصوصهم لتكون جاهزة للصناعة، وفتح الطريق أمامهم نحو الفرص الحقيقية داخل الصناعة.</p>
-      <div class="btn-row">
-        <a class="btn btn--white" href="/submit" data-i18n="btnSubmit">قدّم نصك</a>
-      </div>
+  <!-- ── HERO: SCENE ONE BY THE NUMBERS ──
+       Three photographic slides, each wiping up over the last, with the figure
+       it carries rising into a mask. Driven by heroNumbers() in js/main.js —
+       one rAF loop, no library — and styled under `.hn` in css/landing-v2.css.
 
+       Everything a reader needs is in the markup before that script runs: the
+       first slide's photo, figure and label are the document's own order, so a
+       blocked or failed script leaves a legible hero rather than an empty black
+       band. The same is true of prefers-reduced-motion, which the loop honours
+       by painting the first slide and never advancing.
+
+       The figures are Latin digits in both languages, as the design has them,
+       and .hn-slide__num carries dir="ltr" so a number is never reordered. -->
+  <section class="hn" id="top" aria-roledescription="carousel" data-i18n-aria="hnRegion" aria-label="سين ون بالأرقام">
+    <!-- aria-hidden: the figure and its label are announced from .hn__live
+         below instead, once per change, rather than three times over. -->
+    <div class="hn__slides" aria-hidden="true">
+      <article class="hn-slide hn-slide--1 is-on">
+        <div class="hn-slide__ph"></div>
+        <div class="hn-slide__shade"></div>
+        <p class="hn-slide__lab" data-i18n="hnLab1">مشاريع في مسار الاستضافة خلال شهرين</p>
+        <div class="hn-slide__mask"><span class="hn-slide__num" dir="ltr">7</span></div>
+      </article>
+      <article class="hn-slide hn-slide--2">
+        <div class="hn-slide__ph"></div>
+        <div class="hn-slide__shade"></div>
+        <p class="hn-slide__lab" data-i18n="hnLab2">كاتبًا استلموا تقريرًا تفصيليًا لأفلامهم</p>
+        <div class="hn-slide__mask"><span class="hn-slide__num" dir="ltr">30</span></div>
+      </article>
+      <article class="hn-slide hn-slide--3">
+        <div class="hn-slide__ph"></div>
+        <div class="hn-slide__shade"></div>
+        <p class="hn-slide__lab" data-i18n="hnLab3">فكرة فيلم في تحدي القصة بمنتدى الأفلام السعودي</p>
+        <div class="hn-slide__mask"><span class="hn-slide__num" dir="ltr">80</span></div>
+      </article>
     </div>
-    <!-- Accreditation badge, restored under the CTAs. Styled by .partner in
-         styles.css — a stacked mark over its caption, white line art straight
-         on the photo with no plate. Unlike .hero__strip it is part of the
-         copy column, so it survives on a phone where the strip is dropped. -->
-    <div class="partner">
-      <a class="partner__logo" href="https://www.cinemaassoc.com" target="_blank" rel="noopener noreferrer">
-        <img src="assets/partner-cinema-association-v2.png" alt="جمعية السينما Cinema Association" width="713" height="416">
-      </a>
-      <p class="partner__text" data-i18n="partnerBadge">شريك معتمد</p>
-    </div>
-    <!-- data-i18n-html on the SAIP line: it carries a link, and the plain key
-         would insert the markup as text. -->
-    <div class="hero__strip">
-      <p data-i18n-html="heroNdaHtml">نصك محمي هنا، ونشجعك على تسجيله لدى <a href="https://www.saip.gov.sa/" target="_blank" rel="noopener noreferrer">SAIP</a>.</p>
+
+    <!-- dir="ltr" sits on the INNER span, never on the <p>. On the block it
+         would also flip inset-inline-end, which is how the counter ended up
+         on top of the label instead of opposite it. -->
+    <p class="hn__count"><span dir="ltr"><span class="hn__count-i">01</span> <span class="hn__count-n">/ 03</span></span></p>
+
+    <!-- The one thing a screen reader hears when the slide changes. -->
+    <p class="hn__live" aria-live="polite"></p>
+
+    <div class="hn__foot">
+      <div class="hn__lede">
+        <p class="hn__eyebrow"><span class="hn__dot" aria-hidden="true"></span><span data-i18n="hnEyebrow">سين ون بالأرقام</span></p>
+        <h1 class="hn__h" data-i18n="heroTitle">نكتشف الأصوات التي تستحق أن تصل إلى الشاشة</h1>
+      </div>
+      <div class="hn__act">
+        <a class="hn__cta" href="/submit"><span data-i18n="btnSubmit">قدّم نصك</span><span class="hn__arrow" aria-hidden="true">←</span></a>
+        <!-- Each bar is the control for its slide AND the autoplay timer for it,
+             which is why they are buttons and not decoration. -->
+        <div class="hn__bars">
+          <button class="hn__bar" type="button" data-go="0" data-i18n-aria="hnGo1" aria-label="الشريحة الأولى"><span class="hn__fill"></span></button>
+          <button class="hn__bar" type="button" data-go="1" data-i18n-aria="hnGo2" aria-label="الشريحة الثانية"><span class="hn__fill"></span></button>
+          <button class="hn__bar" type="button" data-go="2" data-i18n-aria="hnGo3" aria-label="الشريحة الثالثة"><span class="hn__fill"></span></button>
+        </div>
+      </div>
     </div>
   </section>
 

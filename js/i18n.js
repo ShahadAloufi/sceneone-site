@@ -37,6 +37,16 @@
       btnViewCoverage: "عرض التغطيات", btnGuide: "كيف بدأت الحكاية",
       heroNdaHtml: "نصك محمي هنا، ونشجعك على تسجيله لدى <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\">SAIP</a>.",
       partnerBadge: "شريك معتمد",
+      /* ---- hero: سين ون بالأرقام --------------------------------------
+         The three figures themselves live in index.html, not here: they are
+         Latin digits in both languages, so translating them would mean two
+         copies of one number. */
+      hnRegion: "سين ون بالأرقام",
+      hnEyebrow: "سين ون بالأرقام",
+      hnLab1: "مشاريع في مسار الاستضافة خلال شهرين",
+      hnLab2: "كاتبًا استلموا تقريرًا تفصيليًا لأفلامهم",
+      hnLab3: "فكرة فيلم في تحدي القصة بمنتدى الأفلام السعودي",
+      hnGo1: "الشريحة الأولى", hnGo2: "الشريحة الثانية", hnGo3: "الشريحة الثالثة",
       /* ---- privacy v2 -------------------------------------------------- */
       pvLede: "ما البيانات التي نجمعها، وكيف نستخدمها، ومتى نشاركها، وكيف نحمي نصّك. وحقوقك في كل ذلك.",
       pvCardLabel: "أهمّ من كلّ شيء",
@@ -663,6 +673,13 @@
       btnViewCoverage: "View Coverages", btnGuide: "How the story began",
       heroNdaHtml: "Your script is protected here. We also encourage you to register your work with the <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\">Saudi Authority for Intellectual Property (SAIP)</a>.",
       partnerBadge: "Accredited partner",
+      /* ---- hero: Scene One by the numbers ------------------------------ */
+      hnRegion: "Scene One by the numbers",
+      hnEyebrow: "Scene One by the numbers",
+      hnLab1: "projects on the hosting track within two months",
+      hnLab2: "writers received a detailed report on their film",
+      hnLab3: "film ideas in the Story Challenge at the Saudi Film Forum",
+      hnGo1: "Slide one", hnGo2: "Slide two", hnGo3: "Slide three",
       /* ---- privacy v2 -------------------------------------------------- */
       pvLede: "What data we collect, how we use it, when we share it, and how we protect your script. And your rights in all of it.",
       pvCardLabel: "Most importantly",
