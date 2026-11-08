@@ -720,9 +720,63 @@
 .lx-vox__head { display: flex; flex-direction: column; gap: 14px; }
 .lx-vox__head .lx-sub { margin: 0; max-inline-size: 42ch; }
 
-.lx-vox__cards { display: grid; gap: 24px; align-items: stretch; }
-/* The long message earns the wider card. */
-@media (min-width: 760px) { .lx-vox__cards { grid-template-columns: 1.35fr 1fr; } }
+.lx-vox__cards { display: grid; }
+/* Below the deck breakpoint — and on any page where js/main.js never runs —
+   the cards are simply two blocks, one after the other. Everything that makes
+   them a deck lives under .is-deck, which main.js adds, so a blocked script
+   leaves both testimonials readable rather than one hidden behind the other. */
+.lx-vox__deck { display: grid; gap: 24px; }
+
+@media (min-width: 760px) {
+  /* THE DECK. Both cards occupy the same grid cell, so the stage is as tall as
+     the taller of them and nothing reflows when they trade places — only
+     transform and z-index change, and both are composited.
+
+     --i is the card's depth, set by main.js: 0 is the front, 1 is the card
+     behind it, and so on for however many testimonials this grows to. Every
+     step back is a nudge sideways, a little smaller and a little turned. */
+  .lx-vox__deck.is-deck {
+    gap: 0;
+    /* Room for the cards behind to peek into, so a translated card cannot
+       reach past the container and take the page's horizontal scroll with it.
+       On the end side, which is the direction they fan towards. */
+    padding-inline-end: 124px;
+  }
+  .lx-vox__deck.is-deck .lx-vox__card {
+    grid-area: 1 / 1;
+    --vox-dir: -1;                      /* RTL: the fan opens to the left  */
+    --vox-step: 104px;
+    transform: translateX(calc(var(--vox-dir) * var(--i, 0) * var(--vox-step)))
+               scale(calc(1 - var(--i, 0) * .05))
+               rotate(calc(var(--vox-dir) * var(--i, 0) * 2.4deg));
+    transform-origin: 50% 100%;
+    z-index: calc(10 - var(--i, 0));
+    box-shadow: 0 24px 60px rgba(0, 0, 0, calc(.10 + var(--i, 0) * .06));
+    transition: transform 700ms cubic-bezier(.22, .61, .36, 1),
+                box-shadow 700ms cubic-bezier(.22, .61, .36, 1),
+                filter 500ms ease;
+  }
+  html[dir="ltr"] .lx-vox__deck.is-deck .lx-vox__card { --vox-dir: 1; }
+  /* A card behind is a target, not a text: it is dimmed, it takes the whole
+     click itself (its own children must not swallow it), and its inner
+     controls are out of reach until it is in front. */
+  .lx-vox__deck.is-deck .lx-vox__card:not(.is-front) {
+    cursor: pointer;
+    filter: brightness(.92) saturate(.9);
+  }
+  .lx-vox__deck.is-deck .lx-vox__card:not(.is-front) > * { pointer-events: none; }
+  .lx-vox__deck.is-deck .lx-vox__card:not(.is-front):hover,
+  .lx-vox__deck.is-deck .lx-vox__card:not(.is-front):focus-visible {
+    filter: none;
+    transform: translateX(calc(var(--vox-dir) * var(--i, 0) * (var(--vox-step) + 14px)))
+               scale(calc(1 - var(--i, 0) * .04))
+               rotate(calc(var(--vox-dir) * var(--i, 0) * 1.2deg));
+  }
+  .lx-vox__deck.is-deck .lx-vox__card:focus-visible { outline: 2px solid var(--lx-red); outline-offset: 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lx-vox__deck.is-deck .lx-vox__card { transition: none; }
+}
 
 .lx-vox__card {
   margin: 0;

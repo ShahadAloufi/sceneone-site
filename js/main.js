@@ -423,6 +423,87 @@
   }
 })();
 
+/*
+ * THE TESTIMONIAL DECK.
+ *
+ * The cards are stacked rather than laid side by side: one in front, the rest
+ * fanned behind it. Clicking a card behind brings it forward and sends the
+ * others back, which is the whole interaction.
+ *
+ * The depth lives in one custom property per card, --i (0 = front), and CSS
+ * does the rest — so adding a third testimonial needs no change here. Nothing
+ * animates in JS: setting --i hands the move to the transition on .lx-vox__card.
+ *
+ * .is-deck is added from here, never in the markup. Without it the cards are
+ * two ordinary blocks, so a blocked script leaves both readable instead of
+ * hiding one behind the other.
+ */
+(function voxDeck() {
+  var deck = document.querySelector(".lx-vox__deck");
+  if (!deck) return;
+
+  var cards = Array.prototype.slice.call(deck.querySelectorAll(".lx-vox__card"));
+  if (cards.length < 2) return;
+
+  /* The same breakpoint the CSS uses. Below it the cards are stacked one after
+     the other and every one of them is fully visible, so there is nothing to
+     bring forward — and a card that is not a target must not be announced as a
+     button either. */
+  var wide = window.matchMedia("(min-width: 760px)");
+  var front = 0;
+
+  function show(k) {
+    front = k;
+    var n = cards.length;
+    cards.forEach(function (card, i) {
+      /* Depth counts round from the chosen card, so the one after it in the
+         DOM sits directly behind and no two ever share a position. */
+      var depth = (i - front + n) % n;
+      card.style.setProperty("--i", depth);
+      card.classList.toggle("is-front", depth === 0);
+      if (depth === 0) {
+        card.removeAttribute("tabindex");
+        card.removeAttribute("role");
+      } else {
+        card.setAttribute("tabindex", "0");
+        card.setAttribute("role", "button");
+      }
+    });
+  }
+
+  function flat() {
+    cards.forEach(function (card) {
+      card.style.removeProperty("--i");
+      card.classList.remove("is-front");
+      card.removeAttribute("tabindex");
+      card.removeAttribute("role");
+    });
+  }
+
+  function sync() {
+    if (wide.matches) { deck.classList.add("is-deck"); show(front); }
+    else { deck.classList.remove("is-deck"); flat(); }
+  }
+
+  cards.forEach(function (card, i) {
+    card.addEventListener("click", function () {
+      if (wide.matches && !card.classList.contains("is-front")) show(i);
+    });
+    card.addEventListener("keydown", function (e) {
+      if (!wide.matches || card.classList.contains("is-front")) return;
+      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+        e.preventDefault();
+        show(i);
+      }
+    });
+  });
+
+  if (wide.addEventListener) wide.addEventListener("change", sync);
+  else if (wide.addListener) wide.addListener(sync);   // Safari < 14
+  sync();
+})();
+
+
 /* Reveal on scroll — the landing's card groups.
  *
  * The decision to animate at all was already made in <head>: index.html puts

@@ -537,8 +537,13 @@
         <p class="lx-sub" data-i18n="voxSub">من ردودهم بعد أن وصلتهم تقاريرهم.</p>
       </div>
 
+      <!-- data-reveal animates a group's CHILDREN, and the deck animates the
+           cards' own transform — the two would fight over the same property.
+           So the group has exactly one child, the deck, and the cards inside
+           it are left to the deck alone. -->
       <div class="lx-vox__cards" data-reveal>
-        <figure class="lx-vox__card lx-vox__card--wide">
+       <div class="lx-vox__deck">
+        <figure class="lx-vox__card lx-vox__card--wide is-front">
           <span class="lx-vox__mark" aria-hidden="true">&rdquo;</span>
           <img class="lx-vox__via" src="assets/source-gmail.webp" alt="وصلتنا عبر البريد الإلكتروني" data-i18n-alt="voxVia1" loading="lazy" decoding="async" width="96" height="96">
           <input type="checkbox" id="vox-sakeena" class="lx-vox__t" hidden>
@@ -573,6 +578,7 @@
             <span class="lx-vox__role" data-i18n="voxRole2">كاتب «غشنة»</span>
           </figcaption>
         </figure>
+       </div>
       </div>
     </div>
   </section>
