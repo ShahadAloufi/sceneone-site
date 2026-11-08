@@ -229,23 +229,31 @@
     </div>
   </section>
 
-  <!-- ── 2. WHAT WE DO ── -->
-  <section class="lx" id="what">
+  <!-- ── 2. WHAT WE DO ──
+       Three steps, each opened by its own number. The hairline over each column
+       is gone: the number is what marks the column now, and a rule above it as
+       well read as two devices doing one job. -->
+  <section class="lx lx-do" id="what">
     <div class="lx__in">
-      <p class="lx-eyebrow" data-i18n="doEyebrow">ما نفعله</p>
-      <h2 class="lx-h" data-i18n="doH">نكتشف. نطوّر. نربط.</h2>
+      <div class="lx-do__head">
+        <p class="lx-eyebrow" data-i18n="doEyebrow">ما نفعله</p>
+        <h2 class="lx-do__h" data-i18n="doH">نكتشف، نطوّر، نربط</h2>
+      </div>
       <div class="lx-do__grid" data-reveal>
         <div class="lx-do__col">
+          <span class="lx-do__n" aria-hidden="true">01</span>
           <h3 class="lx-do__t" data-i18n="do1T">نكتشف</h3>
-          <p class="lx-do__b" data-i18n="do1B">نبحث عن الأصوات والقصص قبل أن تلتفت إليها الصناعة.</p>
+          <p class="lx-do__b" data-i18n="do1B">نبحث عن الأصوات والقصص قبل أن تلتفت إليها الصناعة</p>
         </div>
         <div class="lx-do__col">
+          <span class="lx-do__n" aria-hidden="true">02</span>
           <h3 class="lx-do__t" data-i18n="do2T">نطوّر</h3>
-          <p class="lx-do__b" data-i18n="do2B">نقرأ المشروع كفيلم لا كنص، ونعمل مع الكاتب على أقوى نسخة منه.</p>
+          <p class="lx-do__b" data-i18n="do2B">نقرأ المشروع كفيلم لا كنص، ونعمل مع الكاتب على أقوى نسخة منه</p>
         </div>
         <div class="lx-do__col">
+          <span class="lx-do__n" aria-hidden="true">03</span>
           <h3 class="lx-do__t" data-i18n="do3T">نربط</h3>
-          <p class="lx-do__b" data-i18n="do3B">نأخذ المشاريع القوية إلى الجهات التي تستطيع أن تصنعها.</p>
+          <p class="lx-do__b" data-i18n="do3B">نأخذ المشاريع القوية إلى الجهات التي تستطيع أن تصنعها</p>
         </div>
       </div>
     </div>
@@ -259,27 +267,34 @@
        The eight axes are the same eight the real coverage report is written
        against (see js/report-render.js) — they are the product, so they are
        named here rather than summarised. -->
-  <section class="lx lx--flush" id="reading">
-    <div class="lx-read">
-      <div class="lx-read__copy">
-        <p class="lx-eyebrow" data-i18n="readEyebrow">القراءة</p>
-        <h2 class="lx-h" data-i18n="readH">كل شيء يبدأ من النص</h2>
-        <p class="lx-read__p" data-i18n="readP">نقرأ النص لنفهم ما يميّزه وما يحتاج إلى تطوير، ثم نحدد معه الخطوة التالية، سواء كانت إعادة كتابة، أو تطويرًا أعمق للمشروع، أو الوصول إلى فرصة مناسبة في الصناعة.</p>
-        <p class="lx-read__lbl" data-i18n="readLbl">وتبدأ القراءة بتقرير مفصّل يكتبه قارئ متخصص عبر ثمانية محاور:</p>
-        <ul class="lx-read__axes">
-          <li data-i18n="axis1">الفكرة والموضوع</li>
-          <li data-i18n="axis2">عنصر الجذب</li>
-          <li data-i18n="axis3">الرهانات والحبكة</li>
-          <li data-i18n="axis4">الشخصيات</li>
-          <li data-i18n="axis5">الحوار</li>
-          <li data-i18n="axis6">البناء والإيقاع</li>
-          <li data-i18n="axis7">قابلية الإنتاج</li>
-          <li data-i18n="axis8">العرض والتنسيق</li>
-        </ul>
-        <a class="lx-link" href="/sample-report" data-i18n="readLink">اطّلع على نموذج تقرير</a>
-      </div>
-      <div class="lx-read__media">
-        <img src="assets/reading-chair.webp" alt="" data-i18n-alt="readImgAlt" loading="lazy" decoding="async" width="520" height="720">
+  <section class="lx lx-read" id="reading">
+    <div class="lx__in">
+      <!-- A wide strip rather than the old portrait crop beside the copy: the
+           section now opens on the photograph and the text answers it. -->
+      <img class="lx-read__strip" src="assets/read-script-strip.jpg" alt="" data-i18n-alt="readImgAlt" loading="lazy" decoding="async" width="2560" height="879">
+      <div class="lx-read__row">
+        <div class="lx-read__copy">
+          <p class="lx-eyebrow" data-i18n="readEyebrow">القراءة</p>
+          <h2 class="lx-read__h" data-i18n="readH">كل شيء يبدأ من النص</h2>
+          <p class="lx-read__p" data-i18n="readP">نقرأ النص لنفهم ما يميّزه وما يحتاج إلى تطوير، ثم نحدد معه الخطوة التالية، سواء كانت إعادة كتابة، أو تطويرًا أعمق للمشروع، أو الوصول إلى فرصة مناسبة في الصناعة</p>
+          <a class="lx-link lx-read__link" href="/sample-report" data-i18n="readLink">اطّلع على نموذج تقرير</a>
+        </div>
+        <div class="lx-read__axes-col">
+          <p class="lx-read__lbl" data-i18n="readLbl">تقرير مفصّل يكتبه قارئ متخصص عبر ثمانية محاور</p>
+          <!-- Numbered in the markup, not by a counter: the numbers are part of
+               the design's typography, and aria-hidden keeps a screen reader
+               from reading "01" before every axis. -->
+          <ul class="lx-read__axes">
+            <li><span class="lx-read__n" aria-hidden="true">01</span><span data-i18n="axis1">الفكرة والموضوع</span></li>
+            <li><span class="lx-read__n" aria-hidden="true">02</span><span data-i18n="axis2">عنصر الجذب</span></li>
+            <li><span class="lx-read__n" aria-hidden="true">03</span><span data-i18n="axis3">الرهانات والحبكة</span></li>
+            <li><span class="lx-read__n" aria-hidden="true">04</span><span data-i18n="axis4">الشخصيات</span></li>
+            <li><span class="lx-read__n" aria-hidden="true">05</span><span data-i18n="axis5">الحوار</span></li>
+            <li><span class="lx-read__n" aria-hidden="true">06</span><span data-i18n="axis6">البناء والإيقاع</span></li>
+            <li><span class="lx-read__n" aria-hidden="true">07</span><span data-i18n="axis7">قابلية الإنتاج</span></li>
+            <li><span class="lx-read__n" aria-hidden="true">08</span><span data-i18n="axis8">العرض والتنسيق</span></li>
+          </ul>
+        </div>
       </div>
     </div>
   </section>

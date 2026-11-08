@@ -141,10 +141,10 @@
       introKicker: "من هنا بدأت سين ون",
       introLink: "اقرأ الحكاية كاملة",
 
-      doEyebrow: "ما نفعله", doH: "نكتشف. نطوّر. نربط.",
-      do1T: "نكتشف", do1B: "نبحث عن الأصوات والقصص قبل أن تلتفت إليها الصناعة.",
-      do2T: "نطوّر", do2B: "نقرأ المشروع كفيلم لا كنص، ونعمل مع الكاتب على أقوى نسخة منه.",
-      do3T: "نربط", do3B: "نأخذ المشاريع القوية إلى الجهات التي تستطيع أن تصنعها.",
+      doEyebrow: "ما نفعله", doH: "نكتشف، نطوّر، نربط",
+      do1T: "نكتشف", do1B: "نبحث عن الأصوات والقصص قبل أن تلتفت إليها الصناعة",
+      do2T: "نطوّر", do2B: "نقرأ المشروع كفيلم لا كنص، ونعمل مع الكاتب على أقوى نسخة منه",
+      do3T: "نربط", do3B: "نأخذ المشاريع القوية إلى الجهات التي تستطيع أن تصنعها",
 
       lookEyebrow: "قبل أن تُرسل نصك", lookH: "ما الذي نبحث عنه",
       look1: "أصوات جديدة<br class='lx-look__br'>لها بصمة خاصة",
@@ -154,10 +154,10 @@
       look5: "صنّاع أفلام لديهم ما يريدون قوله،<br class='lx-look__br'>ويريدون بناء هوية سينمائية حوله",
 
       readEyebrow: "القراءة", readH: "كل شيء يبدأ من النص",
-      readP: "نقرأ النص لنفهم ما يميّزه وما يحتاج إلى تطوير، ثم نحدد معه الخطوة التالية، سواء كانت إعادة كتابة، أو تطويرًا أعمق للمشروع، أو الوصول إلى فرصة مناسبة في الصناعة.",
-      readLbl: "وتبدأ القراءة بتقرير مفصّل يكتبه قارئ متخصص عبر ثمانية محاور:",
+      readP: "نقرأ النص لنفهم ما يميّزه وما يحتاج إلى تطوير، ثم نحدد معه الخطوة التالية، سواء كانت إعادة كتابة، أو تطويرًا أعمق للمشروع، أو الوصول إلى فرصة مناسبة في الصناعة",
+      readLbl: "تقرير مفصّل يكتبه قارئ متخصص عبر ثمانية محاور",
       readLink: "اطّلع على نموذج تقرير",
-      readImgAlt: "كرسي إخراج في ضوء بعد الظهيرة",
+      readImgAlt: "صفحة سيناريو عليها ملاحظات بخط اليد",
       axis1: "الفكرة والموضوع", axis2: "عنصر الجذب", axis3: "الرهانات والحبكة", axis4: "الشخصيات",
       axis5: "الحوار", axis6: "البناء والإيقاع", axis7: "قابلية الإنتاج", axis8: "العرض والتنسيق",
 
@@ -772,7 +772,7 @@
       introKicker: "That is where Scene One began.",
       introLink: "Read the full story",
 
-      doEyebrow: "What we do", doH: "We discover. We develop. We connect.",
+      doEyebrow: "What we do", doH: "We discover, we develop, we connect",
       do1T: "Discover", do1B: "We look for distinctive voices and compelling stories before the industry discovers them.",
       do2T: "Develop", do2B: "We read each project as a film, not merely as a document, and work with the writer toward its strongest version.",
       do3T: "Connect", do3B: "We bring strong projects to the people who can help bring them to life.",
@@ -786,9 +786,9 @@
 
       readEyebrow: "The read", readH: "Everything starts with the script",
       readP: "We read your script to understand what makes it distinctive and what still needs work. Then, together, we identify the right next step: a rewrite, deeper project development, or the right opportunity within the industry.",
-      readLbl: "The process begins with a detailed report prepared by a specialist reader, covering eight areas:",
+      readLbl: "A detailed report written by a specialist reader across eight areas",
       readLink: "View a sample report",
-      readImgAlt: "A director's chair in afternoon light",
+      readImgAlt: "A screenplay page marked up by hand",
       axis1: "Concept and theme", axis2: "Hook", axis3: "Stakes and plot", axis4: "Characters",
       axis5: "Dialogue", axis6: "Structure and pacing", axis7: "Producibility", axis8: "Presentation and formatting",
 

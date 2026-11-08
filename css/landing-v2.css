@@ -237,10 +237,16 @@
   flex-direction: column;
   gap: clamp(56px, 13vw, 230px);
 }
-/* This section's eyebrow is larger and lighter than the page's — the heading
-   beside it is twice any other, and the 13px/700 default read as a label on
-   something small. Scoped here on purpose; every other section keeps it. */
-.lx-intro .lx-eyebrow { margin-block-end: 28px; font-size: 15px; font-weight: 500; }
+/* The redesigned sections set the eyebrow larger and lighter than the page's
+   default — the headings beside it are twice any other, and 13px/700 read as
+   a label on something small. Listed rather than changed globally: the
+   sections further down still carry the old scale. */
+.lx-intro .lx-eyebrow,
+.lx-do .lx-eyebrow,
+.lx-read .lx-eyebrow { font-size: 15px; font-weight: 500; }
+.lx-intro .lx-eyebrow { margin-block-end: 28px; }
+.lx-do .lx-eyebrow { margin-block-end: 22px; }
+.lx-read .lx-eyebrow { margin-block-end: 26px; }
 .lx-intro__h {
   margin: 0;
   /* Far bigger than .lx-h: this is the page's one statement, and the design
@@ -277,16 +283,51 @@
 }
 .lx-intro__link { margin-block-start: 22px; font-size: 16px; font-weight: 500; border-block-end-width: 1.5px; }
 
-/* ---- 2. what we do: three columns under hairlines ---------------------- */
+/* ---- 2. what we do: three numbered steps ------------------------------- */
+.lx-do__h {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(28px, 5vw, 72px);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -.01em;
+  color: var(--lx-black);
+}
 .lx-do__grid {
   display: grid;
-  gap: 34px 40px;
-  margin-block-start: 56px;
+  gap: 34px clamp(34px, 4.4vw, 64px);
+  /* The air under the heading is part of the composition here, not the usual
+     gap between a heading and what follows. */
+  margin-block-start: clamp(48px, 6.6vw, 96px);
 }
-@media (min-width: 760px) { .lx-do__grid { grid-template-columns: repeat(3, 1fr); } }
-.lx-do__col { padding-block-start: 20px; border-block-start: 1px solid var(--lx-ink); }
-.lx-do__t { margin: 0 0 12px; font-family: var(--font-head); font-size: 19px; font-weight: 800; }
-.lx-do__b { margin: 0; font-size: 14px; line-height: 1.9; color: var(--lx-muted); }
+@media (min-width: 760px) { .lx-do__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.lx-do__col { display: flex; flex-direction: column; gap: 18px; }
+/* Set in the heading face with tracking and tabular figures rather than the
+   design's monospace: one more font request for two digits is not worth it,
+   and the figures are what wanted monospace. Same call as .hn__count. */
+.lx-do__n {
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  font-variant-numeric: tabular-nums;
+  color: var(--lx-red);
+}
+.lx-do__t {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(22px, 2.5vw, 36px);
+  font-weight: 600;
+  color: var(--lx-black);
+}
+.lx-do__b {
+  margin: 0;
+  max-inline-size: 340px;
+  font-size: clamp(15px, 1.35vw, 19px);
+  font-weight: 300;
+  line-height: 1.85;
+  color: rgba(0, 0, 0, .72);
+}
 
 /* ---- 4. what we look for: five numbered cards on white ------------------ */
 /* Was a stack of ruled rows with a red dot. The design turns it into cards,
@@ -363,107 +404,89 @@
   .lx-look__card:nth-child(5) { grid-column: span 3; }
 }
 
-/* ---- 4. the read: photo, copy, the eight axes -------------------------- */
-/* The single column needs minmax(0, 1fr) for the same reason the two-column
-   rule below does: an implicit track floors at min-content, and the axes grid
-   inside the copy measures 518px there. Below 600px that floor was wider than
-   the phone, so the whole section hung 126px off the edge and took the page's
-   horizontal scroll with it. */
-.lx-read { display: grid; gap: 0; grid-template-columns: minmax(0, 1fr); }
-/* Two equal halves, and they split earlier than the other full-bleed sections:
-   from 600px the copy and the photograph each take exactly half the row. */
-/* minmax(0, 1fr), not a bare 1fr: a plain fr track floors at its content's
-   min-content width, and the axes grid inside the copy is wide enough to push
-   that past half the row (measured 518 / 182 instead of 350 / 350). Zeroing the
-   floor makes the halves genuinely equal and lets the axes reflow instead. */
-@media (min-width: 600px) { .lx-read { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
-/* The photograph is absolutely positioned so it cannot set the row's height.
-   Left in flow it does: it is a portrait crop (520x720), so at an 800px column
-   it demanded 1108px and dragged the copy beside it down with it, while the
-   intro's square photo only asked for 800. Out of flow, the row is sized by the
-   copy and this min-height, and object-fit crops the picture to whatever that
-   turns out to be — the same height behaviour as .lx-intro__media. */
-.lx-read__media { position: relative; min-block-size: var(--lx-media-h); background: #1a1613; }
-.lx-read__media img {
-  position: absolute;
-  inset: 0;
-  inline-size: 100%;
-  block-size: 100%;
-  /* Fills the band, exactly as the intro photograph does, so the two render at
-     the same width and height at every viewport.
-
-     The band has a fixed height and a fluid width, so its shape changes as the
-     window does while the picture's does not — there is no fit that both fills
-     the cell and shows the whole frame. Filling wins here, and the crop is
-     anchored to the bottom so what it takes is wall and shadow at the top,
-     never the chair and the papers. */
-  object-fit: cover;
-  object-position: center bottom;
+/* ---- 3. the read: a wide strip, then copy and the eight axes ------------ */
+/* The portrait photograph that used to sit beside the copy is gone; the
+   section opens on a full-width strip and the text answers it underneath.
+   assets/reading-chair.webp is unreferenced as a result. */
+.lx-read { padding-block-start: 0; }   /* it reads as one block with 'what we do' above */
+.lx-read__strip {
   display: block;
+  inline-size: 100%;
+  block-size: clamp(200px, 30vw, 440px);
+  /* A 2560x879 frame in a box whose shape changes with the window, so it has
+     to crop. 40% down keeps the circled dialogue and off the blank margin. */
+  object-fit: cover;
+  object-position: center 40%;
+  background: #1a1613;
 }
-.lx-read__copy {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  /* Less than the page's --lx-y here on purpose: the column is centred and the
-     copy is short, so the section's own rhythm left ~220px of padding on top of
-     the slack the centring already creates. */
-  padding-block: clamp(48px, 5vw, 64px);
-  padding-inline: var(--lx-x);
-}
-@media (min-width: 600px) {
-  /* Copy first in the DOM, so in RTL it takes the near column and the photo
-     bleeds off the far edge — the same arrangement as .lx-intro, and it
-     mirrors on its own in LTR. Doing this with `order` instead looked right
-     in RTL and put the photo on the wrong side in English.
-
-     Matches the split breakpoint above: below 1400px viewport this resolves to
-     --lx-x anyway, so it only starts doing real work once the container is
-     capped. */
-  .lx-read__copy { padding-inline-start: max(var(--lx-x), calc((100vw - var(--lx-w)) / 2)); }
-}
-/* The design sets this copy a tier darker and larger than it was — ink rather
-   than muted, 18px rather than 15 — and drops the label to the muted tier the
-   paragraph just left. Clamped rather than fixed: the design is a 1440 board,
-   and 18px of Arabic in a half-width column is too much on a phone. */
-.lx-read__p {
-  margin: 22px 0 0;
-  font-size: clamp(15px, 1.3vw, 18px);
-  line-height: 1.95;
-  color: var(--lx-ink);
-  max-inline-size: 48ch;
-}
-.lx-read__lbl { margin: 36px 0 0; font-size: clamp(13px, 1.2vw, 17px); line-height: 1.95; color: var(--lx-muted); }
-/* The design lays these out as chips that wrap, not as a fixed grid: the row
-   breaks where it runs out of width, which is how it lands 5 + 3 rather than
-   4 + 4. Wrapping also removes the old overflow trap — a grid's min-content
-   was 518px wide and hung the whole section off a phone's edge.
-
-   The design gives each chip a background of #F9F4EF, which is the section's
-   own ground, so the plate draws nothing. Left off rather than set to a colour
-   that cannot be seen; the padding is what does the spacing work. */
-.lx-read__axes {
+.lx-read__row {
   display: flex;
   flex-wrap: wrap;
-  /* The design spaced these with 18px of padding inside each chip plus a 10px
-     gap. That reads the same BETWEEN chips, but it also indents the first one
-     by 18px, so the row no longer started where the line above it does. The
-     same 46px of air now lives entirely in the column gap, which leaves the
-     first chip flush with the paragraph. Row rhythm is unchanged: the 9px of
-     block padding stays and carries it. */
-  column-gap: 46px;
-  row-gap: 10px;
-  margin: 20px 0 0;
+  justify-content: space-between;
+  gap: 48px clamp(40px, 6.6vw, 96px);
+  margin-block-start: clamp(44px, 6vw, 88px);
+}
+.lx-read__copy { flex: 1 1 320px; max-inline-size: 560px; }
+.lx-read__h {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(26px, 4.2vw, 60px);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -.01em;
+  color: var(--lx-black);
+}
+.lx-read__p {
+  margin: 26px 0 0;
+  font-size: clamp(15px, 1.35vw, 19px);
+  font-weight: 300;
+  line-height: 1.95;
+  color: rgba(0, 0, 0, .72);
+}
+.lx-read__link { margin-block-start: 30px; font-size: 16px; font-weight: 500; border-block-end-width: 1.5px; }
+/* The axes column starts lower than the heading beside it — the design hangs
+   it off the heading's baseline rather than the row's top. Only once the two
+   are actually side by side, or it is just a gap on a phone. */
+.lx-read__axes-col { flex: 1 1 300px; }
+@media (min-width: 900px) { .lx-read__axes-col { padding-block-start: 52px; } }
+.lx-read__lbl {
+  margin: 0 0 30px;
+  font-size: clamp(15px, 1.2vw, 17px);
+  font-weight: 500;
+  line-height: 1.7;
+  color: var(--lx-black);
+}
+.lx-read__axes {
+  display: grid;
+  /* One column on a phone: two columns of 21px Arabic wrap every entry onto
+     a second line, which turns a list into a block of text. */
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: 56px;
+  row-gap: 26px;
+  margin: 0;
   padding: 0;
-  max-inline-size: 620px;
   list-style: none;
 }
+@media (min-width: 560px) { .lx-read__axes { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .lx-read__axes li {
-  padding-block: 9px;
-  padding-inline: 0;
-  font-size: clamp(13.5px, 1.1vw, 15px);
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  font-size: clamp(16px, 1.5vw, 21px);
   font-weight: 400;
-  color: var(--lx-ink);
+  color: var(--lx-black);
+}
+/* Same reasoning as .lx-do__n: the heading face with tracking and tabular
+   figures, not a second font for sixteen digits. */
+.lx-read__n {
+  flex: none;
+  inline-size: 22px;
+  font-family: var(--font-head);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  font-variant-numeric: tabular-nums;
+  color: var(--lx-red);
 }
 
 /* ---- 5. services: three price cards ------------------------------------ */
