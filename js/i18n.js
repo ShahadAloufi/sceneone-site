@@ -148,7 +148,7 @@
 
       lookEyebrow: "قبل أن تُرسل نصك", lookH: "ما الذي نبحث عنه",
       look1: "أصوات جديدة<br class='lx-look__br'>لها بصمة خاصة",
-      look2: "قصص تستحق أن تُرى<br class='lx-look__br'>على الشاشة الآن",
+      look2: "قصص تستحق أن تُرى<br class='lx-look__br'>على الشاشة",
       look3: "أنواع وزوايا<br class='lx-look__br'>وطرق سرد غير مألوفة",
       look4: "مشاريع بفكرة قوية<br class='lx-look__br'>ما زالت تحتاج تطويرًا",
       look5: "صنّاع أفلام لديهم ما يريدون قوله،<br class='lx-look__br'>ويريدون بناء هوية سينمائية حوله",
@@ -779,7 +779,7 @@
 
       lookEyebrow: "Before you send your script", lookH: "What we are looking for",
       look1: "New voices with a distinctive point of view",
-      look2: "Stories that deserve to be on screen now",
+      look2: "Stories that deserve to be on screen",
       look3: "Genres, perspectives and approaches to storytelling that feel fresh",
       look4: "Projects with a strong central idea that still need development",
       look5: "Filmmakers with something to say who want to build a cinematic identity around it",
