@@ -674,7 +674,7 @@
       hnRegion: "Scene One by the numbers",
       hnEyebrow: "Scene One by the numbers",
       hnLab1: "Projects nominated for Script Hosting",
-      hnLab2: "Writers received a detailed report on their film within two months",
+      hnLab2: "Writers received a detailed report on their script within two months",
       hnLab3: "Film ideas in the Story Challenge at the Saudi Film Forum",
       hnGo1: "Slide one", hnGo2: "Slide two", hnGo3: "Slide three",
       /* ---- privacy v2 -------------------------------------------------- */
