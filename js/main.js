@@ -255,7 +255,15 @@
     } catch (e) { /* treat as no preference */ }
 
     var cur = 0, prev = -1;
-    var t0 = -1e9;                 // when the current wipe started
+    // The first slide is already whole in the markup — its photograph and its
+    // label render with no JS at all. What it has not done yet is bring the
+    // figure up, so the clock starts now rather than in the distant past and
+    // slide 1 plays its own entrance on load. `first` is what keeps that
+    // entrance to the figure alone: wiping the photograph in would open the
+    // page on a black box, and re-fading a label that is already on screen
+    // would flicker it.
+    var first = true;
+    var t0 = performance.now();    // when the current wipe started
     var shown = performance.now(); // when the current slide became current
     var raf = 0, running = false, pausedAt = 0;
 
@@ -277,8 +285,10 @@
 
         if (k === cur) {
           el.style.zIndex = 3;
-          el.style.clipPath = "inset(" + ((1 - p) * 100).toFixed(2) + "% 0 0 0)";
-          ph.style.transform = "scale(" + (1.18 - 0.18 * p).toFixed(4) + ")";
+          el.style.clipPath = first ? "inset(0 0 0 0)"
+                                    : "inset(" + ((1 - p) * 100).toFixed(2) + "% 0 0 0)";
+          ph.style.transform = first ? "scale(1)"
+                                     : "scale(" + (1.18 - 0.18 * p).toFixed(4) + ")";
           // The figure and the label start AFTER the wipe has opened enough to
           // show them. Starting them together with the wipe means they arrive
           // before there is anything behind them.
@@ -289,9 +299,11 @@
           // below the fold before it rose.
           var pn = easeOut(cl((t - NUM_IN) / NUM_DUR));
           num.style.transform = "translateY(" + ((1 - pn) * 120).toFixed(2) + "%)";
-          var pl = easeOut(cl((t - LAB_IN) / LAB_DUR));
-          lab.style.opacity = pl;
-          lab.style.transform = "translateY(" + ((1 - pl) * 24).toFixed(1) + "px)";
+          if (!first) {
+            var pl = easeOut(cl((t - LAB_IN) / LAB_DUR));
+            lab.style.opacity = pl;
+            lab.style.transform = "translateY(" + ((1 - pl) * 24).toFixed(1) + "px)";
+          }
         } else if (k === prev && t < WIPE + 50) {
           // The outgoing slide stays whole underneath and drifts up a little,
           // so the wipe reads as one image sliding over another rather than as
@@ -329,7 +341,7 @@
       if (k === cur) return;
       var now = performance.now();
       if (!reduce && now - t0 < GUARD) return;   // let a wipe finish
-      prev = cur; cur = k; t0 = now; shown = now;
+      prev = cur; cur = k; t0 = now; shown = now; first = false;
       slides.forEach(function (el, i) { el.classList.toggle("is-on", i === cur); });
       labs.forEach(function (el, i) { el.classList.toggle("is-on", i === cur); });
       announce();
