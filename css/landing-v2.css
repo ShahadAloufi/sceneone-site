@@ -1213,7 +1213,7 @@ html[dir="ltr"] .landing .hero__shade {
 /* Announced, never shown: the slides themselves are aria-hidden. */
 /* The plus is a qualifier on the figure, not part of it, so it is set well
    below the digits' size. em, so it tracks the clamp. */
-.hn-slide__plus { font-size: .46em; font-weight: 500; letter-spacing: 0; margin-inline-start: .08em; }
+.hn-slide__plus { font-size: .36em; font-weight: 500; letter-spacing: 0; margin-inline-start: .1em; }
 
 .hn__live {
   position: absolute;
