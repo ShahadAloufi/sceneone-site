@@ -673,9 +673,9 @@
       /* ---- hero: Scene One by the numbers ------------------------------ */
       hnRegion: "Scene One by the numbers",
       hnEyebrow: "Scene One by the numbers",
-      hnLab1: "projects nominated for the hosting track",
-      hnLab2: "writers received a detailed report on their film within two months",
-      hnLab3: "film ideas in the Story Challenge at the Saudi Film Forum",
+      hnLab1: "Projects nominated for the hosting track",
+      hnLab2: "Writers received a detailed report on their film within two months",
+      hnLab3: "Film ideas in the Story Challenge at the Saudi Film Forum",
       hnGo1: "Slide one", hnGo2: "Slide two", hnGo3: "Slide three",
       /* ---- privacy v2 -------------------------------------------------- */
       pvLede: "What data we collect, how we use it, when we share it, and how we protect your script. And your rights in all of it.",
