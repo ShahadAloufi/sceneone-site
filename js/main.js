@@ -248,6 +248,12 @@
     // Where the figure and the label start inside a wipe, and how long each
     // takes. Scaled with WIPE so they still land inside it.
     var NUM_IN = 200, NUM_DUR = 640, LAB_IN = 340, LAB_DUR = 500;
+    // The opening figure is slower than the ones that follow, and eased at both
+    // ends rather than only on the way out. A slide mid-cycle is a change the
+    // eye is already following; the first one is the page arriving, and at the
+    // in-cycle pace it snapped. FIRST_HOLD buys back the time the longer
+    // entrance spends, so slide 1 still rests before it moves on.
+    var FIRST_IN = 240, FIRST_DUR = 1250, FIRST_HOLD = 700;
 
     var reduce = false;
     try {
@@ -264,7 +270,10 @@
     // would flicker it.
     var first = true;
     var t0 = performance.now();    // when the current wipe started
-    var shown = performance.now(); // when the current slide became current
+    // Offset, not merely "now": the progress bar reads as the time left on this
+    // slide, and without it the first one would start counting down through its
+    // own entrance. cl() floors the fill at 0 until the offset passes.
+    var shown = performance.now() + FIRST_HOLD;
     var raf = 0, running = false, pausedAt = 0;
 
     function cl(x) { return x < 0 ? 0 : (x > 1 ? 1 : x); }
@@ -297,7 +306,8 @@
           // box so the digits are not clipped, and 105% of the figure no longer
           // clears the taller mask — it left a sliver of the number showing
           // below the fold before it rose.
-          var pn = easeOut(cl((t - NUM_IN) / NUM_DUR));
+          var pn = first ? easeInOut(cl((t - FIRST_IN) / FIRST_DUR))
+                         : easeOut(cl((t - NUM_IN) / NUM_DUR));
           num.style.transform = "translateY(" + ((1 - pn) * 120).toFixed(2) + "%)";
           if (!first) {
             var pl = easeOut(cl((t - LAB_IN) / LAB_DUR));
