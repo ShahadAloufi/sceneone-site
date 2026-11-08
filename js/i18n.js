@@ -671,8 +671,8 @@
       heroNdaHtml: "Your script is protected here. We also encourage you to register your work with the <a href=\"https://www.saip.gov.sa/\" target=\"_blank\" rel=\"noopener noreferrer\">Saudi Authority for Intellectual Property (SAIP)</a>.",
       partnerBadge: "Accredited partner",
       /* ---- hero: Scene One by the numbers ------------------------------ */
-      hnRegion: "Scene One by the numbers",
-      hnEyebrow: "Scene One by the numbers",
+      hnRegion: "Scene One by numbers",
+      hnEyebrow: "Scene One by numbers",
       hnLab1: "Projects nominated for Script Hosting",
       hnLab2: "Writers received a detailed report on their script within two months",
       hnLab3: "Film ideas in the Story Challenge at the Saudi Film Forum",
