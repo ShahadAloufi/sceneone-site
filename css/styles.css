@@ -42,10 +42,17 @@
 }
 /* English: swap both to IBM Plex Sans. Lives on <html> so every page that
    sets dir="ltr" (via js/i18n.js on the pages that have it, or statically)
-   picks it up without needing its own override. */
+   picks it up without needing its own override.
+
+   TAJAWAL IS NAMED AFTER IT ON PURPOSE, and must stay. IBM Plex Sans carries
+   no Arabic, so any Arabic on an English page — a writer's name, the quoted
+   emails in the testimonials, a film title — fell through to the system UI
+   font and rendered in a face that belongs to no part of the brand. Fallback
+   is per GLYPH, not per element, so Latin still gets Plex and only the Arabic
+   reaches Tajawal. Same fix the report pages already carry. */
 html[dir="ltr"] {
-  --font-body: 'IBM Plex Sans', sans-serif;
-  --font-head: 'IBM Plex Sans', sans-serif;
+  --font-body: 'IBM Plex Sans', 'Tajawal', sans-serif;
+  --font-head: 'IBM Plex Sans', 'Tajawal', sans-serif;
 }
 
 @media (min-width: 640px) {
