@@ -846,12 +846,32 @@
    It sits directly under the quote mark at the head of the card, so the pair
    reads as one unit: a quotation, and where the quotation came from. Small on
    purpose: a provenance mark, not a logo placement. */
+/* Drawn rather than placed: these were the Gmail and Instagram logos in full
+   colour, two brands' palettes landing in the middle of a card that has one.
+   They are line marks in the card's own ink now, the same treatment as the
+   WhatsApp glyph in the footer — currentColor, so each card's text colour
+   carries them and the dark card needs no second rule. */
 .lx-vox__via {
   display: block;
   inline-size: 26px;
-  block-size: auto;
+  block-size: 26px;
   margin-block-start: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  /* The quotation is the loud thing on the card; this is a footnote saying
+     where it arrived from. */
+  opacity: .55;
 }
+/* The one solid part of either mark. */
+.lx-vox__via-dot { fill: currentColor; stroke: none; }
+/* The dark card never set a text colour of its own — it paints its paragraphs
+   and its name individually — so currentColor here resolved to the section's
+   ink and the mark all but vanished on black. Setting `color` rather than
+   `stroke` fixes the dot too, which fills with the same keyword. */
+.lx-vox__card--dark .lx-vox__via { color: var(--lx-cream); opacity: .6; }
 
 .lx-vox__card figcaption {
   margin-block-start: auto;
