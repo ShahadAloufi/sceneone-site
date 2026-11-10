@@ -819,7 +819,7 @@
       wrEyebrow: "For writers", wrH: "Your script needs more<br>than just a reader",
       wrP1: "It needs someone who understands why you want to make this film.",
       wrP2: "We do not tell you what your film should be. We work with you to find the strongest version of the story you want to tell, while staying true to your creative vision and your voice.",
-      indEyebrow: "For production companies and directors", indH: "We do not just send you a script.<br>We bring you a project.",
+      indEyebrow: "For production companies and directors", indH: "More than a script.<br>A project with direction.",
       indP1: "Every project we present has been carefully read and evaluated to identify its strengths and the areas it still needs to develop.",
       indP2: "We save you time on initial script evaluation by presenting projects with clearer stories, stronger creative direction, and a defined understanding of the film and its intended audience.",
 
