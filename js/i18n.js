@@ -816,12 +816,12 @@
       jn5N: "05", jn5T: "Hosting and sharing", jn5B: "The project is added to a private library and shared with industry partners.",
       jn6N: "06", jn6T: "Development and production", jn6B: "Real opportunities to develop the project further or move it toward production.",
 
-      wrEyebrow: "For writers", wrH: "You do not just need<br>someone to read your script",
-      wrP1: "You need someone who understands why you want to make this film.",
-      wrP2: "We do not tell you what your film should be. We help you find the strongest version of the story you want to tell.",
-      indEyebrow: "For the industry", indH: "We do not send you a script.<br>We send you a project.",
-      indP1: "When a project reaches you from Scene One, it has been read, understood, and assessed for both its needs and its strengths.",
-      indP2: "We save you time on first-round evaluation: a clearer story, a stronger creative direction, and a written understanding of what the film is and who it is for.",
+      wrEyebrow: "For writers", wrH: "Your script needs more<br>than just a reader",
+      wrP1: "It needs someone who understands why you want to make this film.",
+      wrP2: "We do not tell you what your film should be. We work with you to find the strongest version of the story you want to tell, while staying true to your creative vision and your voice.",
+      indEyebrow: "For production companies and directors", indH: "We do not just send you a script.<br>We bring you a project.",
+      indP1: "Every project we present has been carefully read and evaluated to identify its strengths and the areas it still needs to develop.",
+      indP2: "We save you time on initial script evaluation by presenting projects with clearer stories, stronger creative direction, and a defined understanding of the film and its intended audience.",
 
       teamEyebrow: "The team", teamH: "Who reads your script?", teamMore: "Read more",
       teamSub: "Our readers include filmmakers and screenwriters, alongside a creative development producer who takes projects forward after recommendation.",
