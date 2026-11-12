@@ -887,6 +887,10 @@
 .lx-vox__name { font-family: var(--font-head); font-size: 18px; font-weight: 800; color: var(--lx-black); }
 .lx-vox__card--dark .lx-vox__name { color: var(--lx-cream); }
 .lx-vox__role { font-size: 14px; color: var(--lx-red); }
+/* A step brighter on black. The brand red is mixed for the cream ground, where
+   it carries; against this card it sinks into the background and the line
+   under the name all but disappears. Same hue, lifted — not a second accent. */
+.lx-vox__card--dark .lx-vox__role { color: #e63208; }
 
 /* The phone cut of the same block: the two cards stack (they already do, from
    the grid above), and every fixed measure steps down to the mobile design's
