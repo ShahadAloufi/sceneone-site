@@ -21,7 +21,7 @@
      (#f9f4ef): it reads as white now, with just enough in it to stay off
      pure #fff — which is still the raised-card colour below, and has to
      keep lifting off this. */
-  --lx-cream:      #fafaf9;  /* the page ground for every light section       */
+  --lx-cream:      #f6f4ee;  /* the page ground for every light section       */
   --lx-white:      #ffffff;  /* raised cards only, so they lift off the cream */
   --lx-black:      #000000;
   --lx-ink:        #2a2622;  /* headings and body on light                    */
