@@ -22,7 +22,7 @@
   min-block-size: 100vh;
   display: grid;
   grid-template-columns: 1fr;
-  background: var(--lx-cream, #f9f4ef);
+  background: var(--lx-cream, #f8f8f6);
   color: #2a2622;
 }
 @media (min-width: 1000px) { .ck { grid-template-columns: 560px minmax(0, 1fr); } }
