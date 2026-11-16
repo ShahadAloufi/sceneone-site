@@ -1068,7 +1068,7 @@
       abShahadName: "Shahad Aloufi",
       abShahadRole: "Co-Founder & Managing Director",
       abShahadFocus: "Focuses on commercial architecture, studio packaging and business strategy",
-      abShahadQuote: "\u201CMy obsession is the viability and execution of the vision. A great script only matters if it gets made. I engineer the business models, structure the studio pipelines, and build the packaging agreements that protect our writers while making it effortless for production houses and elite directors to say yes\u201D",
+      abShahadQuote: "\u201CI engineer the business models, structure the studio pipelines, and build the packaging agreements that protect our writers while making it effortless for production houses and elite directors to say yes\u201D",
       abWhyEyebrow: "Why us",
       abWhyH: "What Sets Scene One Apart",
       abT1H: "Talent, Thoughtfully Developed",
