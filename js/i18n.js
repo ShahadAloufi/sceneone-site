@@ -122,6 +122,7 @@
 
       widTag1: "الأثر العاطفي", widTag2: "البناء السردي",
       hasanTag1: "تطوير المشاريع", hasanTag2: "الاستراتيجية والإنتاج",
+      hishamTag1: "غرف الكتابة", hishamTag2: "تطوير النصوص",
       haifaTag1: "الدراما النفسية والاجتماعية", haifaTag2: "الشخصيات",
       fajrTag1: "بناء القصة", fajrTag2: "اللغة البصرية",
 
@@ -468,6 +469,8 @@
       fajrBio: "متخصصة في السينما والفنون الأدائية، بخبرة في كتابة السيناريو والإنتاج الإبداعي والسرد البصري. تركّز في قراءاتها على بناء القصة، واللغة البصرية، والأثر العاطفي للنص.",
       hasanName: "حسن زروق", hasanRole: "قائد التطوير الإبداعي",
       hasanBio: "مخرج سينمائي بخبرة تتجاوز 15 عامًا في السينما والتلفزيون، حاصل على ماجستير في الكتابة والإنتاج السينمائي الدوليين من ميلانو. يعمل على تحويل الأفكار إلى مشاريع مؤثرة موجهة للجمهور، بخبرة تمتد عبر أفريقيا والشرق الأوسط وأوروبا.",
+      hishamName: "هشام إبراهيم", hishamRole: "قارئ نصوص ومنتج تطوير",
+      hishamBio: "كاتب سيناريو وكاتب إبداعي، وطالب ماجستير في كتابة السيناريو، بدأ مسيرته عام 2018 وتنقّل بين الأفلام الروائية الطويلة والقصيرة والمسلسلات والأنميشن والوثائقي. شارك في كتابة فيلم «عبد» الحائز على ثلاث جوائز في مهرجان أفلام السعودية، ويعمل حاليًا في استوديو صلة ككاتب سيناريو ومنتج تطوير مشاريع. قدّم أكثر من 16 ورشة في كتابة السيناريو وصناعة الأفلام.",
 
       // ---- about-coverage.html ----
       docTitleCoverage: "عن تغطية النصوص السينمائية | Scene One",
@@ -753,6 +756,7 @@
 
       widTag1: "Emotional impact", widTag2: "Narrative structure",
       hasanTag1: "Project development", hasanTag2: "Strategy & production",
+      hishamTag1: "Writers' rooms", hishamTag2: "Script development",
       haifaTag1: "Psychological & social drama", haifaTag2: "Character",
       fajrTag1: "Story construction", fajrTag2: "Visual language",
 
@@ -1095,6 +1099,8 @@
       fajrBio: "Specialized in film and performing arts, with experience in screenwriting, creative production, and visual storytelling. Her analysis focuses on story structure, visual language, and the emotional impact of the script.",
       hasanName: "Hasan Zarroug", hasanRole: "Head of Creative Development",
       hasanBio: "Film director with over 15 years in film and television, holding a master's in international screenwriting and film production from Milan. He turns ideas into affecting, audience-facing projects, drawing on experience across Africa, the Middle East and Europe.",
+      hishamName: "Hisham Ibrahim", hishamRole: "Script reader and development producer",
+      hishamBio: "Screenwriter and creative writer, and a screenwriting master's student, who began in 2018 and has worked across features, shorts, series, animation and documentary. He co-wrote the film «Abd», winner of three awards at the Saudi Film Festival, and is now a writer and development producer at Sila Studio. He has led more than 16 workshops in screenwriting and filmmaking.",
 
       // ---- about-coverage.html ----
       docTitleCoverage: "About Screenplay Coverage | Scene One",

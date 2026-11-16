@@ -639,9 +639,14 @@
    the brief — three lines, cut mid-sentence. Full width gives the card ~350px
    and the brief room to end on its own ellipsis, which is what makes the
    always-open overlay worth having on touch. */
+/* The column count tracks the number of readers: five of them, so the wide
+   layout is five across and the row stays whole. At four it left the last
+   reader alone on a second row — the one arrangement that reads as a mistake
+   rather than a grid. The middle step is three, which breaks 3 + 2 instead. */
 .lx-team__grid { display: grid; gap: 28px 24px; margin-block-start: 48px; grid-template-columns: 1fr; }
-@media (min-width: 600px) { .lx-team__grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 860px) { .lx-team__grid { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 600px)  { .lx-team__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 860px)  { .lx-team__grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1100px) { .lx-team__grid { grid-template-columns: repeat(5, 1fr); } }
 .lx-team__photo {
   aspect-ratio: 292 / 300;
   inline-size: 100%;
