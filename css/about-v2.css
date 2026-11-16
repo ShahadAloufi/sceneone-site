@@ -134,7 +134,6 @@
   font-weight: 500;
   color: var(--lx-muted);
 }
-.ab2-founder__focus span { margin-inline-end: 6px; font-weight: 600; color: var(--lx-ink); }
 .ab2-founder__quote {
   margin: 0;
   font-size: clamp(15px, 1.3vw, 17px);
