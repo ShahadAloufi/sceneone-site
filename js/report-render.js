@@ -304,8 +304,20 @@
     }
     // Carry a pre-restructure coverage onto the new shape. Only ever fills a
     // blank: whatever the reader has written under a current key wins.
+    //
+    // The GLANCE MARK moves with the note, and must. Carrying the words without
+    // the mark left a delivered report showing a point with a paragraph under it
+    // and an empty row in the scorecard beside it, which reads as a reader who
+    // could not make up their mind rather than as a renaming. Caught on a live
+    // treatment report after Hook and Originality were split apart.
     if (sc.legacy) {
       Object.keys(sc.legacy).forEach(function (k) {
+        if (!c.glance[k]) {
+          for (var g = 0; g < sc.legacy[k].length; g++) {
+            var gv = c.glance[sc.legacy[k][g]];
+            if (gv) { c.glance[k] = gv; break; }
+          }
+        }
         if (String(c.eval[k].text || "").trim() || c.eval[k].score) return;
         for (var i = 0; i < sc.legacy[k].length; i++) {
           var src = e[sc.legacy[k][i]];
