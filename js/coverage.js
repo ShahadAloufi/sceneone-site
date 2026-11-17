@@ -76,7 +76,7 @@
       evaluation: "Evaluation", market: "The market", overall: "Overall comments",
       // Treatment wording for the three sections whose subject changes with the
       // product — picked up by applyUILang when the schema says treatment.
-      glanceT: "Creative scorecard at a glance", evaluationT: "Creative assessment", marketT: "Development & industry outlook",
+      glanceT: "Creative scorecard at a glance", evaluationT: "Creative assessment", marketT: "Industry readiness",
       readerLogline: "Logline (as read)", assessment: "Overall assessment",
       readerLoglineHint: "In your own words: protagonist, central conflict, goal, stakes. A gap between this and the writer's logline is itself a finding.",
       assessmentHint: "The most significant strength, the most consequential weakness, and how ready this is to move forward.",
@@ -154,7 +154,7 @@
       synopsis: "الملخّص",
       synopsisHint: "ماذا يحدث في القصة وكيف تتطور؟",
       evaluation: "التقييم", market: "السوق", overall: "ملاحظات عامة",
-      glanceT: "التقييم الإبداعي باختصار", evaluationT: "التقييم الإبداعي", marketT: "أولويات التطوير والجاهزية للصناعة",
+      glanceT: "التقييم الإبداعي باختصار", evaluationT: "التقييم الإبداعي", marketT: "الجاهزية للصناعة",
       readerLogline: "الفكرة المختصرة كما قرأتها", assessment: "التقييم العام للمشروع",
       readerLoglineHint: "بأسلوبك: الشخصية الرئيسية، الصراع المركزي، الهدف، وما هو على المحك. الفرق بين ما كتبته هنا وما كتبه الكاتب هو بحد ذاته ملاحظة.",
       assessmentHint: "أهم نقطة قوة، وأكثر نقاط الضعف أثرًا، ومدى جاهزية العمل للانتقال إلى الخطوة التالية.",

@@ -42,7 +42,7 @@
       // finished thing) gives way to a scale about how far along each element is.
       strong: "Strong", promising: "Promising", developing: "Needs Development", weak: "Weak",
       synopsis: "Synopsis", evaluation: "Evaluation", market: "The market", overall: "Overall comments",
-      coverageT: "Treatment coverage", synopsisT: "Treatment summary", evaluationT: "Creative assessment", marketT: "Development & industry outlook", footT: "Treatment coverage",
+      coverageT: "Treatment coverage", synopsisT: "Treatment summary", evaluationT: "Creative assessment", marketT: "Industry readiness", footT: "Treatment coverage",
       // Part I of the treatment report. The reader writes their OWN logline so
       // it can be set against the writer's: a gap between the two is itself the
       // finding, and it says what the treatment actually communicated.
@@ -90,7 +90,7 @@
       logline: "الفكرة المختصرة", glance: "التقييم العام", excellent: "ممتاز", good: "جيد", fair: "مقبول", poor: "ضعيف",
       strong: "قوي", promising: "واعد", developing: "يحتاج إلى تطوير", weak: "ضعيف",
       synopsis: "الملخّص", evaluation: "التقييم", market: "السوق", overall: "ملاحظات عامة",
-      coverageT: "تقييم المعالجة", synopsisT: "الملخّص (Treatment Summary)", evaluationT: "التقييم الإبداعي", marketT: "أولويات التطوير والجاهزية للصناعة", footT: "تقييم المعالجة",
+      coverageT: "تقييم المعالجة", synopsisT: "الملخّص (Treatment Summary)", evaluationT: "التقييم الإبداعي", marketT: "الجاهزية للصناعة", footT: "تقييم المعالجة",
       readerLogline: "الفكرة المختصرة كما قرأها القارئ", assessment: "التقييم العام للمشروع",
       glanceT: "التقييم الإبداعي باختصار",
       strengths: "نقاط القوة", develop: "ما يحتاج إلى تطوير", attachment: "مرفق لك", verdict: "الحكم", pending: "بانتظار التقييم", notwritten: "لم يُكتب بعد.",
