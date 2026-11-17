@@ -80,40 +80,6 @@
   color: var(--lx-ink);
 }
 
-/* Three figures divided by hairlines. The dividers are borders on the items
-   rather than separate elements, and the LAST one is bare — in RTL that is the
-   leftmost, so the row ends clean on both sides. */
-.rd2-stats { display: flex; flex-wrap: wrap; margin-block-start: 40px; }
-.rd2-stat {
-  padding-inline: clamp(24px, 3.6vw, 52px);
-  border-inline-end: 1px solid rgba(0, 0, 0, .14);
-}
-.rd2-stat:first-child { padding-inline-start: 0; }
-.rd2-stat:last-child { border-inline-end: 0; padding-inline-end: 0; }
-/* On a phone the three do not fit on one line: they wrapped, and the wrap left
-   a divider hanging at the end of the first row with the third figure orphaned
-   under it. Stacked, with the rule moved to the top edge of each but the first. */
-@media (max-width: 639px) {
-  .rd2-stats { display: block; }
-  .rd2-stat {
-    padding-inline: 0;
-    padding-block: 18px;
-    border-inline-end: 0;
-    border-block-start: 1px solid rgba(0, 0, 0, .14);
-  }
-  .rd2-stat:first-child { border-block-start: 0; padding-block-start: 0; }
-  .rd2-stat__n { margin-bottom: 2px; }
-}
-.rd2-stat__n {
-  margin: 0 0 6px;
-  font-family: var(--font-head);
-  font-size: clamp(26px, 3vw, 34px);
-  font-weight: 700;
-  color: var(--lx-black);
-  font-variant-numeric: tabular-nums;
-}
-.rd2-stat__l { margin: 0; font-size: 15px; font-weight: 400; color: var(--lx-muted); }
-
 /* ---- 02 · method: three columns under rules ----------------------------- */
 
 .rd2-method__grid {
