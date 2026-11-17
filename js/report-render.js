@@ -64,7 +64,7 @@
       eval: { "Premise & Theme": "Premise & Theme", "Hook": "Hook", "Stakes & Plot": "Stakes & Plot", "Character": "Character", "Dialogue": "Dialogue", "Structure & Pace": "Structure & Pace", "Producibility": "Producibility", "Presentation": "Presentation",
               "Narrative Clarity": "Narrative clarity", "Character Basics": "Character (fundamentals)", "Emotional Journey": "Emotional journey",
               "Story Structure": "Overall story structure", "Screenplay Potential": "Screenplay development potential", "Market Viability": "Market viability", "Overall presentation": "Overall presentation",
-              "Hook & Originality": "Hook & originality", "Stakes, Conflict & Plot": "Stakes, conflict & plot", "Characters & Arcs": "Characters & arcs",
+              "Originality": "Originality", "Hook & Originality": "Hook & originality", "Stakes, Conflict & Plot": "Stakes, conflict & plot", "Characters & Arcs": "Characters & arcs",
               "Structure & Momentum": "Structure & narrative momentum", "Genre, Tone & Cinematic Potential": "Genre, tone & cinematic potential",
               "Treatment Clarity": "Treatment clarity & presentation" },
       market_l: { audience: "Audience", genreDemand: "Genre and demand", pathBuyers: "Path and buyers", budgetCeiling: "Budget and ceiling", regional: "Regional potential", net: "Net",
@@ -73,7 +73,7 @@
       glance_l: { "Premise & Theme": "Premise & Theme", "Hook": "Hook", "Stakes & Plot": "Stakes & Plot", "Character": "Character", "Dialogue": "Dialogue", "Structure & Pace": "Structure & Pace", "Producibility": "Producibility", "Overall presentation": "Overall presentation",
                  "Narrative Clarity": "Narrative clarity", "Character Basics": "Character (fundamentals)", "Emotional Journey": "Emotional journey",
                  "Story Structure": "Overall story structure", "Screenplay Potential": "Screenplay development potential", "Market Viability": "Market viability",
-                 "Hook & Originality": "Hook & originality", "Stakes, Conflict & Plot": "Stakes, conflict & plot", "Characters & Arcs": "Characters & arcs",
+                 "Originality": "Originality", "Hook & Originality": "Hook & originality", "Stakes, Conflict & Plot": "Stakes, conflict & plot", "Characters & Arcs": "Characters & arcs",
                  "Structure & Momentum": "Structure & momentum", "Genre, Tone & Cinematic Potential": "Genre, tone & cinematic potential",
                  "Treatment Clarity": "Treatment clarity" },
       decision: { Recommend: "Strong Enough for Industry Consideration", Consider: "Consider with Development", Pass: "Further Development Required" },
@@ -100,7 +100,7 @@
       eval: { "Premise & Theme": "الفكرة والموضوع", "Hook": "عنصر الجذب", "Stakes & Plot": "الرهانات الدرامية والحبكة", "Character": "الشخصيات", "Dialogue": "الحوار", "Structure & Pace": "البناء الدرامي والإيقاع", "Producibility": "قابلية الإنتاج", "Presentation": "العرض والتنسيق",
               "Narrative Clarity": "وضوح الرؤية السردية", "Character Basics": "الشخصيات (الأساسيات)", "Emotional Journey": "الرحلة العاطفية",
               "Story Structure": "البناء العام للقصة", "Screenplay Potential": "قابلية التطوير لسيناريو", "Market Viability": "الجدوى السوقية", "Overall presentation": "العرض العام",
-              "Hook & Originality": "عنصر الجذب والأصالة", "Stakes, Conflict & Plot": "الرهانات والصراع والحبكة", "Characters & Arcs": "الشخصيات وتحولاتها",
+              "Originality": "الأصالة", "Hook & Originality": "عنصر الجذب والأصالة", "Stakes, Conflict & Plot": "الرهانات والصراع والحبكة", "Characters & Arcs": "الشخصيات وتحولاتها",
               "Structure & Momentum": "البناء والتقدم الدرامي", "Genre, Tone & Cinematic Potential": "النوع والنبرة والإمكانات السينمائية",
               "Treatment Clarity": "وضوح المعالجة وتقديمها" },
       market_l: { audience: "الجمهور المستهدف", genreDemand: "النوع والطلب في السوق", pathBuyers: "مسار المشروع والجهات المشترية", budgetCeiling: "الميزانية وسقف الإيرادات المتوقع", regional: "إمكانات الانتشار الإقليمي", net: "الخلاصة",
@@ -109,7 +109,7 @@
       glance_l: { "Premise & Theme": "الفكرة والموضوع", "Hook": "عنصر الجذب", "Stakes & Plot": "الرهانات الدرامية والحبكة", "Character": "الشخصيات", "Dialogue": "الحوار", "Structure & Pace": "البناء الدرامي والإيقاع", "Producibility": "قابلية الإنتاج", "Overall presentation": "العرض العام",
                  "Narrative Clarity": "وضوح الرؤية السردية", "Character Basics": "الشخصيات (الأساسيات)", "Emotional Journey": "الرحلة العاطفية",
                  "Story Structure": "البناء العام للقصة", "Screenplay Potential": "قابلية التطوير لسيناريو", "Market Viability": "الجدوى السوقية",
-                 "Hook & Originality": "عنصر الجذب والأصالة", "Stakes, Conflict & Plot": "الرهانات والصراع والحبكة", "Characters & Arcs": "الشخصيات وتحولاتها",
+                 "Originality": "الأصالة", "Hook & Originality": "عنصر الجذب والأصالة", "Stakes, Conflict & Plot": "الرهانات والصراع والحبكة", "Characters & Arcs": "الشخصيات وتحولاتها",
                  "Structure & Momentum": "البناء والتقدم الدرامي", "Genre, Tone & Cinematic Potential": "النوع والنبرة والإمكانات السينمائية",
                  "Treatment Clarity": "وضوح المعالجة" },
       // One wording for these three across the whole site — the guide
@@ -182,19 +182,22 @@
   // The treatment report restructured (2026-10-31) into three parts: Project
   // Overview, Creative Assessment, Development & Industry Outlook.
   //
-  // SEVEN creative points, not nine. Market viability and overall presentation
+  // EIGHT creative points, not nine. Market viability and overall presentation
   // left the scorecard on purpose: production complexity and commercial fit are
   // not measures of story quality, and rating them alongside premise and
   // character let a difficult independent film score badly for being difficult.
-  // They are discussed as prose in Part III instead.
+  // They are discussed as prose in Part III instead. The hook and the
+  // originality were one point until a reader pointed out they are not the
+  // same question: a familiar story can open on a gripping hook, and an
+  // original premise can open on nothing at all.
   //
   // No numeric scoring here. A treatment is read for potential, and a 3.5/5 on
   // a story that does not exist yet claims a precision nobody has — so the four
   // qualitative levels are the only rating, and there is no /10.
   var TREATMENT_SCHEMA = {
     key: "treatment",
-    glance: ["Premise & Theme", "Hook & Originality", "Stakes, Conflict & Plot", "Characters & Arcs", "Structure & Momentum", "Genre, Tone & Cinematic Potential", "Treatment Clarity"],
-    eval: ["Premise & Theme", "Hook & Originality", "Stakes, Conflict & Plot", "Characters & Arcs", "Structure & Momentum", "Genre, Tone & Cinematic Potential", "Treatment Clarity"],
+    glance: ["Premise & Theme", "Hook", "Originality", "Stakes, Conflict & Plot", "Characters & Arcs", "Structure & Momentum", "Genre, Tone & Cinematic Potential", "Treatment Clarity"],
+    eval: ["Premise & Theme", "Hook", "Originality", "Stakes, Conflict & Plot", "Characters & Arcs", "Structure & Momentum", "Genre, Tone & Cinematic Potential", "Treatment Clarity"],
     // "Development priorities" used to open this list. It asked the reader for
     // the same thing as the overall "what needs development" note below it, so a
     // treatment was written twice and its writer read the same advice twice.
@@ -213,7 +216,11 @@
     // dropping it. First match wins; a new key the reader has already filled is
     // never overwritten.
     legacy: {
-      "Hook & Originality": ["Hook"],
+      // Written as one "Hook & Originality" note before the two were asked
+      // separately. It lands on the hook — that is what such a note leads
+      // with — and originality starts empty rather than holding half a
+      // sentence written about something else.
+      "Hook": ["Hook & Originality"],
       "Stakes, Conflict & Plot": ["Stakes & Plot"],
       "Characters & Arcs": ["Character Basics", "Emotional Journey"],
       "Structure & Momentum": ["Story Structure"],
