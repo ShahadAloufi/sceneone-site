@@ -69,7 +69,7 @@
               "Treatment Clarity": "Treatment clarity & presentation" },
       market_l: { audience: "Audience", genreDemand: "Genre and demand", pathBuyers: "Path and buyers", budgetCeiling: "Budget and ceiling", regional: "Regional potential", net: "Net",
                   tPath: "Path and potential partners", tBudget: "Budget and production ceiling", tReach: "Reach potential",
-                  devPriorities: "Development priorities", tProduction: "Production considerations", tMarketPos: "Market & audience positioning" },
+                  tProduction: "Production considerations", tMarketPos: "Market & audience positioning" },
       glance_l: { "Premise & Theme": "Premise & Theme", "Hook": "Hook", "Stakes & Plot": "Stakes & Plot", "Character": "Character", "Dialogue": "Dialogue", "Structure & Pace": "Structure & Pace", "Producibility": "Producibility", "Overall presentation": "Overall presentation",
                  "Narrative Clarity": "Narrative clarity", "Character Basics": "Character (fundamentals)", "Emotional Journey": "Emotional journey",
                  "Story Structure": "Overall story structure", "Screenplay Potential": "Screenplay development potential", "Market Viability": "Market viability",
@@ -105,7 +105,7 @@
               "Treatment Clarity": "وضوح المعالجة وتقديمها" },
       market_l: { audience: "الجمهور المستهدف", genreDemand: "النوع والطلب في السوق", pathBuyers: "مسار المشروع والجهات المشترية", budgetCeiling: "الميزانية وسقف الإيرادات المتوقع", regional: "إمكانات الانتشار الإقليمي", net: "الخلاصة",
                   tPath: "مسار المشروع والجهات المحتملة", tBudget: "الميزانية وسقف الإنتاج", tReach: "إمكانات الانتشار",
-                  devPriorities: "أولويات التطوير", tProduction: "قابلية الإنتاج", tMarketPos: "الموقع السوقي والجمهور المستهدف" },
+                  tProduction: "قابلية الإنتاج", tMarketPos: "الموقع السوقي والجمهور المستهدف" },
       glance_l: { "Premise & Theme": "الفكرة والموضوع", "Hook": "عنصر الجذب", "Stakes & Plot": "الرهانات الدرامية والحبكة", "Character": "الشخصيات", "Dialogue": "الحوار", "Structure & Pace": "البناء الدرامي والإيقاع", "Producibility": "قابلية الإنتاج", "Overall presentation": "العرض العام",
                  "Narrative Clarity": "وضوح الرؤية السردية", "Character Basics": "الشخصيات (الأساسيات)", "Emotional Journey": "الرحلة العاطفية",
                  "Story Structure": "البناء العام للقصة", "Screenplay Potential": "قابلية التطوير لسيناريو", "Market Viability": "الجدوى السوقية",
@@ -195,8 +195,10 @@
     key: "treatment",
     glance: ["Premise & Theme", "Hook & Originality", "Stakes, Conflict & Plot", "Characters & Arcs", "Structure & Momentum", "Genre, Tone & Cinematic Potential", "Treatment Clarity"],
     eval: ["Premise & Theme", "Hook & Originality", "Stakes, Conflict & Plot", "Characters & Arcs", "Structure & Momentum", "Genre, Tone & Cinematic Potential", "Treatment Clarity"],
+    // "Development priorities" used to open this list. It asked the reader for
+    // the same thing as the overall "what needs development" note below it, so a
+    // treatment was written twice and its writer read the same advice twice.
     market: [
-      { k: "devPriorities", label: "Development priorities" },
       { k: "tProduction", label: "Production considerations" },
       { k: "tMarketPos", label: "Market & audience positioning" }
     ],
@@ -218,7 +220,8 @@
       "Treatment Clarity": ["Narrative Clarity", "Overall presentation"]
     },
     legacyMarket: {
-      devPriorities: ["Screenplay Potential"],
+      // "Screenplay Potential" from the nine-point shape lands in the overall
+      // development note now, not here; the SQL migration moved it.
       tProduction: ["tBudget"],
       tMarketPos: ["tMarketViability", "audience", "genreDemand", "tPath", "tReach"]
     }
