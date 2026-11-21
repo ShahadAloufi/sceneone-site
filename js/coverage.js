@@ -1123,6 +1123,22 @@
     if (currentSaveKey === "saveFailed") { covStatus = prev; toast(UI[UILANG].saveFailed); return; }
     configureWorkspaceState();
     toast(UI[UILANG].tSubmitted);
+    // Tell the quality team it is waiting. Fire-and-forget on purpose: the
+    // submit itself is the reader's own write and has already succeeded, so a
+    // mail failure must not read to them as a failed submit. The endpoint
+    // re-checks from the database that this caller holds the script and that
+    // the coverage really is 'submitted' — this call only asks for the email.
+    try {
+      var sess = await sb.auth.getSession();
+      var tok = sess && sess.data && sess.data.session && sess.data.session.access_token;
+      if (tok) {
+        fetch("/api/review-coverage", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: "Bearer " + tok },
+          body: JSON.stringify({ submission_id: submissionId, action: "notify_submitted" }),
+        }).catch(function () { /* the coverage is submitted either way */ });
+      }
+    } catch (e) { /* same */ }
   };
 
   // Staff quality actions → the privileged /api/review-coverage endpoint.

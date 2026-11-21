@@ -30,6 +30,7 @@
 // Required env vars: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY.
 
 const { brandHeader, emailDocument } = require("../lib/email-brand");
+const { sendRevisionNotice, sendQaReviewNotice } = require("../lib/submission-emails");
 
 const NOTIFY_FROM = "Scene One <no-reply@sceneone.info>";
 const NOTIFY_TO = "sceneone.info@gmail.com";
@@ -109,7 +110,13 @@ function sanitizeComments(raw) {
 // caller may act on is decided separately, from the assignment — see the handler.
 const REVIEWER_ROLES = ["admin", "super_admin", "lead_reader"];
 
-async function requireReviewer(req) {
+// Resolves the caller to a Scene One account and nothing more. The REVIEWER
+// check is applied per action in the handler rather than here, because one
+// action — notify_submitted — belongs to the assigned reader: it is how a
+// reader with no mail credentials of their own asks the server to tell the
+// quality team their coverage is ready. Every other action stays
+// reviewer-only.
+async function resolveCaller(req) {
   const { url, key } = svc();
   const auth = req.headers.authorization || "";
   const token = auth.replace(/^Bearer\s+/i, "").trim();
@@ -121,15 +128,13 @@ async function requireReviewer(req) {
   const user = await userResp.json();
   if (!user || !user.id) return { error: 401, message: "جلسة غير صالحة" };
   const roleResp = await fetch(
-    url + "/rest/v1/admins?id=eq." + user.id + "&select=id,role",
+    url + "/rest/v1/admins?id=eq." + user.id + "&select=id,role,name",
     { headers: { apikey: key, Authorization: "Bearer " + key } }
   );
   const rows = roleResp.ok ? await roleResp.json() : [];
   const row = rows[0];
-  if (!row || REVIEWER_ROLES.indexOf(row.role) === -1) {
-    return { error: 403, message: "هذا الإجراء مخصص لفريق الجودة فقط" };
-  }
-  return { user, role: row.role };
+  if (!row) return { error: 403, message: "غير مصرّح" };
+  return { user, role: row.role, name: row.name };
 }
 
 // Bilingual email inviting the writer to open their (now approved) report, and
@@ -233,7 +238,7 @@ module.exports = async (req, res) => {
     return res.status(500).json({ message: "الخادم غير مهيأ" });
   }
 
-  const gate = await requireReviewer(req);
+  const gate = await resolveCaller(req);
   if (gate.error) return res.status(gate.error).json({ message: gate.message });
 
   const b = req.body || {};
@@ -241,11 +246,52 @@ module.exports = async (req, res) => {
   const action = (b.action || "").toString().trim();
   if (!subId) return res.status(400).json({ message: "معرّف النص مطلوب" });
   if (action !== "approve" && action !== "request_revision" &&
-      action !== "set_attachment" && action !== "set_comments") {
+      action !== "set_attachment" && action !== "set_comments" &&
+      action !== "notify_submitted") {
     return res.status(400).json({ message: "إجراء غير معروف" });
+  }
+  // Everything that acts ON a coverage is the quality team's; only the notice
+  // below is the reader's, and it changes nothing.
+  if (action !== "notify_submitted" && REVIEWER_ROLES.indexOf(gate.role) === -1) {
+    return res.status(403).json({ message: "هذا الإجراء مخصص لفريق الجودة فقط" });
   }
 
   const headers = { apikey: key, Authorization: "Bearer " + key };
+
+  // ---- TELL THE QUALITY TEAM A COVERAGE IS WAITING -------------------------
+  // Posted by the ASSIGNED READER right after they submit. The submit itself is
+  // still their own write — RLS lets the assignee move their coverage to
+  // 'submitted', and the DB trigger is what keeps them from going further — so
+  // this endpoint does not perform it; it only sends the mail the reader has no
+  // key to send (RESEND_API_KEY is server-side).
+  //
+  // Gated on the caller actually holding the script AND on the coverage really
+  // being in 'submitted', read back from the database rather than taken from
+  // the request. A reader cannot use it to mail the quality team about someone
+  // else's work, or about work they have not submitted.
+  if (action === "notify_submitted") {
+    const rowResp = await fetch(
+      url + "/rest/v1/submissions?id=eq." + encodeURIComponent(subId) +
+      "&select=id,title_ar,title_en,assigned_to,co_reader_id",
+      { headers }
+    );
+    const rows = rowResp.ok ? await rowResp.json() : [];
+    if (!rows.length) return res.status(404).json({ message: "النص غير موجود" });
+    const sub = rows[0];
+    if (sub.assigned_to !== gate.user.id && sub.co_reader_id !== gate.user.id) {
+      return res.status(403).json({ message: "غير مصرّح" });
+    }
+    const cResp = await fetch(
+      url + "/rest/v1/coverages?submission_id=eq." + encodeURIComponent(subId) + "&select=status",
+      { headers }
+    );
+    const cRows = cResp.ok ? await cResp.json() : [];
+    if (!cRows.length || cRows[0].status !== "submitted") {
+      return res.status(409).json({ message: "هذه التغطية ليست بانتظار المراجعة" });
+    }
+    await sendQaReviewNotice(url, key, sub, gate.name);
+    return res.status(200).json({ ok: true, notified: true });
+  }
 
   // ---- SAVE THE PER-POINT REVIEW COMMENTS -----------------------------------
   // Autosave for the notes a reviewer writes against each evaluation point.
@@ -337,7 +383,8 @@ module.exports = async (req, res) => {
   // statuses). Mirrors is_assigned() in the database.
   const asgResp = await fetch(
     url + "/rest/v1/submissions?id=eq." + encodeURIComponent(subId) +
-    "&select=assigned_to,co_reader_id",
+    // title/ids ride along for the revision notice below — one read, not two.
+    "&select=id,title_ar,title_en,assigned_to,co_reader_id",
     { headers }
   );
   const asgRows = asgResp.ok ? await asgResp.json() : [];
@@ -407,6 +454,10 @@ module.exports = async (req, res) => {
       console.error("review-coverage request_revision failed:", patch.status, await patch.text());
       return res.status(502).json({ message: "تعذّر إرسال طلب التعديل" });
     }
+    // The reader is told, with the note. Awaited so a failure is logged against
+    // this request, but it can never fail the request itself: the bounce is
+    // already written, and the reader would see it on next login regardless.
+    await sendRevisionNotice(url, key, asgRows[0], note);
     return res.status(200).json({ ok: true, status: "revision_requested" });
   }
 
