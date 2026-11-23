@@ -275,7 +275,12 @@
         <p class="lx-sub" data-i18n="bentoSub">تغطية النصوص هي خطوتك الأولى حيث نقرأ مشروعك لنفهم إمكاناته، ونساعدك على تحديد ما يحتاج إليه للوصول إلى مرحلته التالية</p>
       </div>
       <div class="lx-bento" data-reveal>
-        <a class="lx-bento__c lx-bento__c--ph lx-bento__c--a" href="#coverage-types">
+        <!-- To /submit, not to a coverage page: the artboard has none, and the
+             pricing section this used to point at only exists in the narrow
+             block now — so on a desktop the anchor resolved to a display:none
+             element and the chip did nothing. Repoint it when the coverage
+             services page is designed. -->
+        <a class="lx-bento__c lx-bento__c--ph lx-bento__c--a" href="/submit">
           <img class="lx-bento__bg" src="assets/read-script-strip.jpg" alt="" data-i18n-alt="readImgAlt" loading="lazy" decoding="async" width="2560" height="879">
           <span class="lx-bento__veil" aria-hidden="true"></span>
           <span class="lx-bento__body">

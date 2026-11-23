@@ -111,11 +111,19 @@ Actively iterating on UX polish and workflow features.
   desktop route to `/treatment-submit`.** The three price cards were kept on
   the first pass because the artboard has no equivalent — it folds coverage into
   one bento card labelled «عرض التغطيات ←» with nothing behind it. That was
-  raised and overruled ("APPLY THE DESIGN AS IS"), so the section is deleted and
-  card 01 links to `#services`, the band it is already in.
-  **On a desktop the treatment product can now only be bought by typing the
-  URL** — the narrow page still has the cards, so a phone can still reach it.
-  `/submit` is unaffected (nav pill, hero, CTA, footer).
+  raised and overruled ("APPLY THE DESIGN AS IS"), so the section is deleted.
+  - **Card 01's «عرض التغطيات ←» goes to `/submit`**, by instruction, until a
+    coverage services page is designed. It first pointed at `#coverage-types`,
+    which only exists in the narrow block now — so on a desktop the anchor
+    resolved to a `display:none` element and the chip silently did nothing.
+    **That is the failure mode to watch for while the two blocks coexist:** an
+    in-page link in one block whose target lives in the other is not a broken
+    link, it is a dead one. Every remaining anchor in both blocks was checked
+    against its own block and resolves.
+  - **On a desktop the treatment product can still only be bought by typing the
+    URL** — `/submit` is the script intake, and `/treatment-submit` has no route
+    from the desktop page. The narrow page still has the cards, so a phone can
+    reach it. The coverage services page is where that belongs.
 - **The bento is SOURCE-ORDER flow**, so the wide cell takes 01 and 03 and the
   narrow one 02 and 04 — the cream card is wide on row two and the hosting
   photograph narrow. The artboard's own comments call card 04 wide and its
