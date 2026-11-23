@@ -94,9 +94,11 @@ Actively iterating on UX polish and workflow features.
 **The desktop structure**, hero → partners strip → services (four bento cards)
 → what you get → the team → the writers' messages → FAQ → closing CTA → footer:
 
-- **The site's own scale is 110%, and the class is `zoomed`.** It was 75%
-  (`html.z75 { zoom: .75 }`) while the design was drawn to be read that way;
-  the restructured page was asked to be read bigger. **The class was renamed
+- **The site's own scale is 90%, and the class is `zoomed`.** It was 75%
+  (`html.z75 { zoom: .75 }`) while the design was drawn to be read that way.
+  It went to 110% first and that overshot: the view being matched was a
+  browser at 125% over the old .75, which is 0.9375 — so the number that
+  reproduced it was never 110. Settled at 90%. **The class was renamed
   because it had to be touched in nine files the moment the number moved** — a
   class that names its own value lies the first time the value changes.
   Desktop only, as before (`@media (min-width: 1000px)`), so the narrow page
