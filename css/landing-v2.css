@@ -1081,8 +1081,6 @@ html[dir="ltr"] .landing .hero__shade {
   transition: background-color 200ms ease, color 200ms ease;
 }
 .pg--wide .hn__cta:hover { background: var(--lx-red); }
-.pg--wide .hn__cta--quiet { padding-inline: 30px; background: var(--lx-cream); color: var(--lx-black); font-weight: 500; }
-.pg--wide .hn__cta--quiet:hover { background: var(--lx-line); color: var(--lx-black); }
 
 /* ---- the frame ---------------------------------------------------------- */
 
@@ -1158,11 +1156,13 @@ html[dir="ltr"] .landing .hero__shade {
   inset-inline: 32px;
   z-index: 2;
   margin: 16px auto 0;
-  max-inline-size: 420px;
+  max-inline-size: 460px;
   text-align: center;
-  font-size: clamp(16px, 1.4vw, 20px);
+  /* A step up the scale, 20 -> 24, with the line box following 32 -> 36. Both
+     ends of both clamps stay on the 4px grid, and both cap by 1440. */
+  font-size: clamp(20px, 1.8vw, 24px);
   font-weight: 500;
-  line-height: clamp(24px, 2.4vw, 32px);
+  line-height: clamp(28px, 2.6vw, 36px);
   color: var(--lx-cream);
   /* JS drives opacity and transform from here; .is-on is the resting state,
      and it is also what renders a finished frame if main.js never runs. */
@@ -1289,7 +1289,6 @@ html[dir="ltr"] .landing .hero__shade {
   .pg--wide .hn__count { inset-block-start: 24px; inset-inline-start: 22px; }
   .pg--wide .hn__foot { inset-block-end: 22px; inset-inline: 22px; }
   .pg--wide .hn__cta { padding: 14px 26px; }
-  .pg--wide .hn__cta--quiet { padding-inline: 22px; }
 }
 
 /* ============================================================================

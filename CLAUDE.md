@@ -152,6 +152,12 @@ Actively iterating on UX polish and workflow features.
   FRAME, not the window** — `--hn-num` in `cqw` against a `container-type:
   inline-size` on `.hn__stage`; in `vw` it tracked a viewport the box no longer
   spans.
+  - **The hero has ONE button, «قدّم نصك».** The quiet «اطّلع على نموذج تقرير»
+    beside it was removed on request, and with it `.hn__cta--quiet` and the
+    desktop page's **only** link to `/sample-report` — so the sample report now
+    has no route from the desktop landing at all (the narrow page still has
+    four). `hnSample` is orphaned in `js/i18n.js`. `.hn__acts` is still a flex
+    row, so a second button can come back without touching the CSS.
   - **The slide's caption sits UNDER the figure, centred** (it was in the
     frame's top corner, opposite the counter). It is placed from the mask's own
     geometry — the mask's `28%` top plus its height — so the two cannot drift
