@@ -196,11 +196,15 @@
   justify-content: space-between;
   gap: 24px;
 }
-.lx-bento__c--dark { background: var(--lx-black); color: var(--lx-cream); }
-.lx-bento__c--cream { background: var(--lx-cream); color: var(--lx-ink); }
-/* The photographic pair. The copy sits on the bottom edge and the veil is
-   what it sits on, so the padding goes on .lx-bento__body instead — a card
-   with a photo pads its text, not its image. */
+/* ALL FOUR are photographic now. 02 was a black card and 03 a cream one, each
+   with its number on the top edge and its text on the bottom; they were given
+   photographs on request, so they take the same treatment as 01 and 04 and the
+   number moved down into the copy with everything else. The two colour
+   modifiers went with them — no card carries either any more.
+
+   The copy sits on the bottom edge and the veil is what it sits on, so the
+   padding goes on .lx-bento__body instead: a card with a photo pads its text,
+   not its image. */
 .lx-bento__c--ph { background: #151515; color: var(--lx-cream); padding: 0; justify-content: flex-end; }
 .lx-bento__bg {
   position: absolute;
@@ -240,8 +244,10 @@
   font-weight: 600;
   line-height: 1.3;
 }
-.lx-bento__c--dark .lx-bento__t,
-.lx-bento__c--cream .lx-bento__t { font-size: clamp(22px, 2.2vw, 30px); }
+/* The narrow pair runs a step smaller than the wide pair: less width for the
+   same words. Keyed on the cells now rather than on the old colour variants. */
+.lx-bento__c--b .lx-bento__t,
+.lx-bento__c--c .lx-bento__t { font-size: clamp(22px, 2.2vw, 30px); }
 .lx-bento__b {
   margin: 0;
   max-inline-size: 52ch;
@@ -250,8 +256,6 @@
   line-height: 1.8;
   color: rgba(249, 244, 239, .8);
 }
-.lx-bento__c--cream .lx-bento__b { color: var(--lx-muted); }
-.lx-bento__c--dark .lx-bento__b { color: rgba(249, 244, 239, .72); }
 /* The chip on card 01. It is inside an <a>, so it is a label on a link rather
    than a link of its own — nesting one would be invalid and would give a
    screen reader two targets for one destination. */
