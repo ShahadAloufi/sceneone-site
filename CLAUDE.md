@@ -144,6 +144,14 @@ Actively iterating on UX polish and workflow features.
   the cap now only does its job on a very wide screen. The hero is ~1020 layout
   px tall at 1440 as a result, so it no longer fits the fold — which is what
   the reference shows.
+- **The hero's copy was rewritten (2026-11-23)**: «نحو تطوير المواهب في الكتابة
+  السينمائية» over «تسعى سين ون إلى دعم الكتّاب وصنّاع الأفلام…». `hnH`/`hnP` in
+  both dictionaries, and the markup.
+  ⚠️ **The page's META copy still carries the OLD headline** — `description`,
+  `og:title`, `og:description`, `twitter:title` and `og:image:alt` all say
+  «نكتشف الأصوات…», and the OG card image has that line rendered into it. So
+  what a link preview shows no longer matches what the page says. Left alone
+  because the ask was the hero; it wants a pass of its own, image included.
 - **The hero is two columns and the h1 is a fixed headline again.** It was a
   full-screen band where the headline WAS the current slide's label; copy now
   sits in one column and the three figures in a framed box in the other, with
