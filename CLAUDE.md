@@ -144,6 +144,13 @@ Actively iterating on UX polish and workflow features.
   the cap now only does its job on a very wide screen. The hero is ~1020 layout
   px tall at 1440 as a result, so it no longer fits the fold — which is what
   the reference shows.
+- **The copy column is CENTRED against the frame.** The artboard started it
+  80px below the frame's top edge and let it hang there, which read fine at the
+  drawn size; once the frame grew to 728 the copy was stranded in its top
+  third, so `align-items: center` on `.hn__in` replaced that padding. Measured
+  equal above and below at every desktop width (168/168 at 1440, 131/131 at
+  1280, 89/89 at 1024). The base rule keeps `start` — below the breakpoint the
+  two stack, and a stacked column has nothing to centre against.
 - **The hero's copy was rewritten (2026-11-23)**: «نحو تطوير المواهب في الكتابة
   السينمائية» over «تسعى سين ون إلى دعم الكتّاب وصنّاع الأفلام…». `hnH`/`hnP` in
   both dictionaries, and the markup.

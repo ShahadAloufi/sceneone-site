@@ -1019,10 +1019,14 @@ html[dir="ltr"] .landing .hero__shade {
      alone changed nothing; 50vw is what makes the frame grow. The cap now
      does its job on a very wide screen, where 50vw would run away. */
   .pg--wide .hn__in { grid-template-columns: minmax(0, 1fr) clamp(420px, 50vw, 728px); }
-  /* The design starts the copy 80px below the frame's top edge; the two are
-     deliberately not top-aligned, which is what keeps the figure reading as
-     the taller object. */
-  .pg--wide .hn__copy { padding-block-start: clamp(24px, 5.5vw, 80px); }
+  /* CENTRED against the frame. The design started the copy 80px below the
+     frame's top edge and let it hang there; once the frame grew the copy was
+     stranded against its top third, so the column is centred on the frame
+     instead and the padding that used to offset it is gone. `align-items`
+     does the work, which is why the base rule's `start` is overridden here
+     rather than changed: below this breakpoint the two stack, and a stacked
+     column has nothing to centre against. */
+  .pg--wide .hn__in { align-items: center; }
 }
 
 /* ---- the copy ----------------------------------------------------------- */
