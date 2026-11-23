@@ -244,6 +244,14 @@ Actively iterating on UX polish and workflow features.
     The group is `dir="ltr"` so ← stays physically left and → physically right
     whichever way the page reads — an arrow drawn as a glyph has to — while the
     STEP each takes is unchanged, the deck having no direction of its own.
+    **The DOTS take their direction from the DOCUMENT, not from that wrapper**
+    — first dot on the right in Arabic, on the left in English. They inherited
+    the nav's `ltr` at first, which put the first message's dot on the wrong
+    side of an Arabic page: an arrow is a glyph with a physical direction, but
+    a row of dots is a position in a sequence and reads the way the page does.
+  - **محمد علي opens the deck**, by request. `voxDeck()` starts on the first
+    panel, so source order IS the order, and `is-on` belongs to whichever is
+    first — it is the resting state a page with no script shows.
   - **The raw-message column is GONE.** It carried each message as it arrived,
     under «الرسالة كما وصلتنا», with a toggle to open the rest. Once the quote
     became a condensed version of the whole message the two said the same thing
