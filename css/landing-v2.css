@@ -558,26 +558,18 @@ html[dir="ltr"] .lx-team__arrow { transform: scaleX(-1); }
 #team .lx__in { display: flex; flex-direction: column; }
 
 /* ---- 5. what the writers said ------------------------------------------
-   The pull quote on one side, the message as it arrived on the other, one
-   writer at a time. voxDeck() in js/main.js switches panels; everything here
-   renders a finished section without it, which is why `.is-on` is a resting
-   state and not the only visible one — see the `.lx-vox--js` scoping below. */
+   One message at a time, centred: the quote in guillemets, the name and the
+   role under it, and the controls as a single group below. voxDeck() in
+   js/main.js switches panels; everything here renders a finished section
+   without it, which is why `.is-on` is a resting state and not the only
+   visible one — see the `.lx-vox--js` scoping below.
+
+   There is no quote ornament. It was a 150px red `”` set above the quote, and
+   it went when the quote took its own guillemets: a mark and a pair of
+   quotation marks are the same device twice. */
 
 .pg--wide .lx-vox__deck { display: flex; flex-direction: column; gap: clamp(40px, 5vw, 64px); }
-.pg--wide .lx-vox__item {
-  margin: 0;
-  display: grid;
-  gap: 40px;
-  border-block-start: 2px solid var(--lx-black);
-  padding-block-start: 44px;
-}
-/* One column since the raw-message column came off. The measure is what that
-   column used to leave the quote — a 1400 container less the 440 and the 96
-   gap — so the line length and the rag are unchanged; without it the quote
-   would run the full container at 46px. */
-@media (min-width: 900px) {
-  .pg--wide .lx-vox__pull { max-inline-size: 864px; }
-}
+.pg--wide .lx-vox__item { margin: 0; display: grid; }
 /* Only once the script owns the deck does a panel hide. With no JS every
    message is on the page and the nav below stays hidden, so nothing promises
    a control that cannot work. */
@@ -589,79 +581,91 @@ html[dir="ltr"] .lx-team__arrow { transform: scaleX(-1); }
   .pg--wide .lx-vox--js .lx-vox__item.is-on { animation: none; }
 }
 
-.pg--wide .lx-vox__pull { display: flex; flex-direction: column; gap: 28px; min-inline-size: 0; }
-/* The mark is set in the Latin face in both languages: it is a typographic
-   ornament, and the Arabic face draws it at a size that reads as punctuation
-   rather than as the 150px flourish the design wants. block-size clips the
-   line box so the quote below it is not pushed down by the glyph's leading. */
-.pg--wide .lx-vox__mark {
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 150px;
-  line-height: .6;
-  block-size: 64px;
-  font-weight: 600;
-  color: var(--lx-red);
+.pg--wide .lx-vox__pull {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  /* Centred, and capped so the quote breaks into the two or three lines the
+     design sets rather than running the container's full width. */
+  max-inline-size: 1000px;
+  margin-inline: auto;
+  text-align: center;
 }
 .pg--wide .lx-vox__q {
   margin: 0;
-  font-size: clamp(26px, 3.4vw, 46px);
+  /* A third of what it was. The quote stood at 46px while it was a pull quote
+     beside the raw message, carrying the section on its own; centred under a
+     heading it is a sentence being read, not a display line. */
+  font-size: clamp(19px, 2.1vw, 30px);
   font-weight: 600;
-  line-height: 1.45;
+  line-height: 1.55;
   color: var(--lx-black);
 }
-/* The English quote runs shorter, so it is set a step larger, as the design
-   has it, and left-aligned — it is already dir="ltr" in the markup. */
-.pg--wide .lx-vox__q--en { font-size: clamp(28px, 4vw, 54px); text-align: left; }
-.pg--wide .lx-vox__cap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 18px; margin-block-start: 12px; }
-.pg--wide .lx-vox__name { font-family: var(--font-head); font-size: 22px; font-weight: 600; color: var(--lx-black); }
-.pg--wide .lx-vox__role { font-size: 16px; color: var(--lx-red); }
-
-
-.pg--wide .lx-vox__nav {
+/* Latin punctuation and Latin spacing, but centred like the other one — the
+   dir="ltr" is on the element itself and would otherwise start-align it. */
+.pg--wide .lx-vox__q--en { text-align: center; }
+.pg--wide .lx-vox__cap {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  margin-block-start: clamp(28px, 3.4vw, 36px);
+  align-items: baseline;
+  justify-content: center;
+  gap: 12px;
+  margin-block-start: 6px;
 }
-.pg--wide .lx-vox__dots { display: flex; gap: 8px; }
+.pg--wide .lx-vox__name { font-family: var(--font-head); font-size: 17px; font-weight: 700; color: var(--lx-black); }
+/* Grey, not the accent. The role sits directly beside the name here rather
+   than under a quote of its own, and in red it read as the louder of the two. */
+.pg--wide .lx-vox__role { font-size: 15px; color: var(--lx-muted-2); }
+
+/* The controls: one centred group, an arrow either side of the dots. */
+.pg--wide .lx-vox__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-block-start: clamp(36px, 4.4vw, 56px);
+}
+.pg--wide .lx-vox__dots { display: flex; align-items: center; gap: 10px; }
 .pg--wide .lx-vox__dot {
   position: relative;
-  inline-size: 56px;
-  block-size: 3px;
+  inline-size: 8px;
+  block-size: 8px;
   padding: 0;
   border: 0;
-  background: rgba(0, 0, 0, .15);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .18);
   cursor: pointer;
   transition: background-color 200ms ease;
 }
-/* 3px is far under any usable target, so the hit area is grown around the
-   line without moving it — the same trick .hn__bar uses. */
-.pg--wide .lx-vox__dot::after { content: ""; position: absolute; inset-block: -14px; inset-inline: 0; }
+/* 8px is far under any usable target, so the hit area is grown around the dot
+   without moving it — the same trick .hn__bar uses. */
+.pg--wide .lx-vox__dot::after { content: ""; position: absolute; inset: -12px; }
 .pg--wide .lx-vox__dot[aria-current="true"] { background: var(--lx-red); }
 .pg--wide .lx-vox__dot:focus-visible { outline: 2px solid var(--lx-red); outline-offset: 6px; }
-.pg--wide .lx-vox__arrows { display: flex; align-items: center; gap: 28px; }
 .pg--wide .lx-vox__arw {
+  inline-size: 52px;
+  block-size: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 0;
   border: 0;
-  background: none;
-  font-size: 26px;
+  border-radius: 10px;
+  background: var(--lx-cream);
+  font-size: 20px;
   line-height: 1;
   color: var(--lx-black);
   cursor: pointer;
-  transition: opacity 200ms ease;
+  transition: background-color 200ms ease, color 200ms ease;
 }
-.pg--wide .lx-vox__arw:hover { opacity: .6; }
-.pg--wide .lx-vox__arw:focus-visible { outline: 2px solid var(--lx-red); outline-offset: 4px; }
-.pg--wide .lx-vox__count { font-size: 14px; letter-spacing: 1px; color: var(--lx-black); font-variant-numeric: tabular-nums; }
-.pg--wide .lx-vox__count-n { opacity: .4; }
+.pg--wide .lx-vox__arw:hover { background: var(--lx-black); color: var(--lx-cream); }
+.pg--wide .lx-vox__arw:focus-visible { outline: 2px solid var(--lx-red); outline-offset: 3px; }
 
 @media (max-width: 760px) {
-  .pg--wide .lx-vox__item { padding-block-start: 28px; gap: 28px; }
-  .pg--wide .lx-vox__mark { font-size: 90px; block-size: 40px; }
-  .pg--wide .lx-vox__name { font-size: 19px; }
+  .pg--wide .lx-vox__name { font-size: 16px; }
   .pg--wide .lx-vox__role { font-size: 14px; }
+  .pg--wide .lx-vox__arw { inline-size: 46px; block-size: 46px; font-size: 18px; }
 }
 
 /* ---- 6. closing CTA ----------------------------------------------------

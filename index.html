@@ -479,8 +479,7 @@
       <div class="lx-vox__deck">
         <figure class="lx-vox__item is-on">
           <div class="lx-vox__pull">
-            <span class="lx-vox__mark" aria-hidden="true">&rdquo;</span>
-            <p class="lx-vox__q">التقييم كان عادل وأنصفني، وخلّاني أتشجع وأؤمن بمشروعي أكثر. أتمنى أتعرف على القارئ أكثر وأقول له شكرًا، وجميلك راح أردّه يوم تشوف «ليس حرج» يفوز بمنح وينعرض على الشاشات بإذن الله.</p>
+            <p class="lx-vox__q">«التقييم كان عادل وأنصفني، وخلّاني أتشجع وأؤمن بمشروعي أكثر. أتمنى أتعرف على القارئ أكثر وأقول له شكرًا، وجميلك راح أردّه يوم تشوف &#8249;ليس حرج&#8250; يفوز بمنح وينعرض على الشاشات بإذن الله.»</p>
             <figcaption class="lx-vox__cap">
               <span class="lx-vox__name" data-i18n="voxName1">سكينة</span>
               <span class="lx-vox__role" data-i18n="voxRole1">كاتبة «ليس حرج»</span>
@@ -490,8 +489,7 @@
 
         <figure class="lx-vox__item">
           <div class="lx-vox__pull">
-            <span class="lx-vox__mark" dir="ltr" aria-hidden="true">&ldquo;</span>
-            <p class="lx-vox__q lx-vox__q--en" dir="ltr">Another step forward for BRWAL. Grateful to Scene One for this opportunity, and for every step that helps us grow, develop and make film further.</p>
+            <p class="lx-vox__q lx-vox__q--en" dir="ltr">&ldquo;Another step forward for BRWAL. Grateful to Scene One for this opportunity, and for every step that helps us grow, develop and make film further.&rdquo;</p>
             <figcaption class="lx-vox__cap">
               <span class="lx-vox__name" data-i18n="voxName2">أحمد كردي</span>
               <span class="lx-vox__role" data-i18n="voxRole2">كاتب «غشنة»</span>
@@ -502,16 +500,17 @@
 
       <!-- Hidden until js/main.js takes over: with no script every message is
            already on the page, so a dot that selects one would do nothing. -->
-      <div class="lx-vox__nav" hidden>
+      <!-- dir="ltr" on the group, so the two arrows keep their physical sides
+           whichever way the page reads: ← is always on the left and → always
+           on the right, which is what an arrow drawn as a glyph has to do. The
+           STEP each one takes is unchanged, since the deck has no direction. -->
+      <div class="lx-vox__nav" hidden dir="ltr">
+        <button class="lx-vox__arw" type="button" data-vox-step="-1" data-i18n-aria="voxPrev" aria-label="السابق">&#8592;</button>
         <div class="lx-vox__dots">
           <button class="lx-vox__dot" type="button" data-vox="0" data-i18n-aria="voxGo1" aria-label="الرسالة الأولى"></button>
           <button class="lx-vox__dot" type="button" data-vox="1" data-i18n-aria="voxGo2" aria-label="الرسالة الثانية"></button>
         </div>
-        <div class="lx-vox__arrows" dir="ltr">
-          <button class="lx-vox__arw" type="button" data-vox-step="-1" data-i18n-aria="voxPrev" aria-label="السابق">&#8592;</button>
-          <span class="lx-vox__count"><span class="lx-vox__count-i">01</span> <span class="lx-vox__count-n">/ 02</span></span>
-          <button class="lx-vox__arw" type="button" data-vox-step="1" data-i18n-aria="voxNext" aria-label="التالي">&#8594;</button>
-        </div>
+        <button class="lx-vox__arw" type="button" data-vox-step="1" data-i18n-aria="voxNext" aria-label="التالي">&#8594;</button>
       </div>
     </div>
   </section>

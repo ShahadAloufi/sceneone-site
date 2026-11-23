@@ -136,8 +136,21 @@ Actively iterating on UX polish and workflow features.
   footer's contact row. `.lx` therefore paints white, `.lx--white` is a no-op
   kept so the modifier still resolves, and `.pg--narrow .lx` puts the cream back
   for yesterday's page.
-- **The writers' messages are one at a time** (`.lx-vox__item`, `voxDeck()`):
-  the quote, the name and the role, with dots, arrows and a counter.
+- **The writers' messages are one at a time** (`.lx-vox__item`, `voxDeck()`),
+  and the block is CENTRED: the quote in guillemets, the name and the role
+  under it, and one control group below — an arrow either side of the dots.
+  - **There is no quote ornament.** It was a 150px red `”` above the quote; it
+    went when the quote took its own guillemets, because a mark and a pair of
+    quotation marks are the same device twice. The narrow page still has it.
+  - **The quote is 30px, down from 46px.** At 46 it was a pull quote beside the
+    raw message, carrying the section alone; centred under a heading it is a
+    sentence being read, not a display line.
+  - **The role is grey, not the accent.** Beside the name rather than under a
+    quote of its own, red read as the louder of the two.
+  - **The counter is gone** with the old split nav; the dots carry position.
+    The group is `dir="ltr"` so ← stays physically left and → physically right
+    whichever way the page reads — an arrow drawn as a glyph has to — while the
+    STEP each takes is unchanged, the deck having no direction of its own.
   - **The raw-message column is GONE.** It carried each message as it arrived,
     under «الرسالة كما وصلتنا», with a toggle to open the rest. Once the quote
     became a condensed version of the whole message the two said the same thing
