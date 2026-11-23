@@ -195,12 +195,6 @@
   flex-direction: column;
   gap: 18px;
 }
-.ab2-contact__p {
-  margin: 0;
-  font-size: clamp(15px, 1.4vw, 17px);
-  line-height: 1.75;
-  color: var(--lx-muted);
-}
 .ab2-contact__rows { flex-grow: 1; display: flex; flex-direction: column; }
 .ab2-contact__row {
   display: flex;

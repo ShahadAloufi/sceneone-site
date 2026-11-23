@@ -447,7 +447,6 @@
       abT3P: "نحن جزء من مجتمع سينمائي سعودي ينمو ويتجدّد. نبني علاقات مع الكتّاب وصنّاع الأفلام والجهات العاملة في القطاع، لنفتح مجالات للتعاون وفرصًا للمواهب الصاعدة.",
       abContactEyebrow: "تواصل معنا",
       abContactH: "لفرص التعاون",
-      abContactP: "هل تعمل على نصّ أو تبحث عن قصة أو ترى فرصة للتعاون؟ نرحّب بالكتّاب والمخرجين وجهات الإنتاج ونتطلّع إلى معرفة أفكاركم وبحث سبل العمل معًا",
       abContactK1: "الأعمال والشراكات",
       abContactK2: "للتواصل المباشر",
 
@@ -1079,7 +1078,6 @@
       abT3P: "Our work is rooted in Saudi Arabia\u2019s growing film community. We build relationships with writers, filmmakers, and industry organizations to encourage collaboration and create opportunities for emerging talent",
       abContactEyebrow: "Contact Us",
       abContactH: "For Collaboration",
-      abContactP: "Are you working on a script, looking for a story, or do you see an opportunity to collaborate? We welcome writers, directors and production companies, and we look forward to hearing your ideas and exploring ways to work together",
       abContactK1: "Business Affairs & Partnerships",
       abContactK2: "Direct Line",
 
