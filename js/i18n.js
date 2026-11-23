@@ -126,8 +126,6 @@
       fajrTag1: "بناء القصة", fajrTag2: "اللغة البصرية",
 
       rdAxesEyebrow: "ما الذي يصلك", rdAxesH: "تقرير مفصّل عبر تسعة محاور",
-      rdCtaH: "إلى أين يمكن أن يصل نصّك؟",
-      rdCtaSub: "ابدأ بقراءة مهنية تساعدك على فهم نصّك بعمق، واكتشاف فرص تطويره، ومعرفة خطوتك التالية",
 
       /* ---- landing v2 ------------------------------------------------- */
       navAboutUs: "من نحن", navCoverage: "تغطية النصوص",
@@ -413,8 +411,8 @@
       faqQ37: "هل تشمل الخدمة ملاحظات على العرض التقديمي أو الـLogline؟",
       faqA37: "صُممت خدمة القراءة الاحترافية لتمنح السيناريو الاهتمام الذي يستحقه، لذلك ينصبّ التقييم الأساسي على النص نفسه وعناصره الدرامية والفنية.<br><br>أما إذا كنت ترغب في تطوير عنصر الجذب (Logline) أو العرض التقديمي لمشروعك، فقد تتوفر خدمات مخصصة لذلك، وسيُوضح نطاق كل خدمة ومخرجاتها قبل التقديم، لتختار ما يناسب احتياجات مشروعك ومرحلته.",
 
-      ctaH: "امنح قصتك فرصة لتتقدّم",
-      ctaSub: "أرسل نصك واحصل على قراءة متخصصة تساعدك على معرفة خطوتك التالية",
+      ctaH: "إلى أين يمكن أن يصل نصّك؟",
+      ctaSub: "ابدأ بقراءة مهنية تساعدك على فهم نصّك بعمق، واكتشاف فرص تطويره، ومعرفة خطوتك التالية",
 
       footerCopyHtml: "© 2026 جميع الحقوق محفوظة لـSCENE ONE.<br><span class=\"footer__cr\">الرقم الموحد: 7054791293</span>",
       footerPrivacy: "سياسة الخصوصية", footerTerms: "الشروط والأحكام",
@@ -760,8 +758,6 @@
       fajrTag1: "Story construction", fajrTag2: "Visual language",
 
       rdAxesEyebrow: "What you receive", rdAxesH: "A detailed report across nine axes",
-      rdCtaH: "How far can your script go?",
-      rdCtaSub: "Start with a professional read that helps you understand your script in depth, find where it can grow, and know your next step",
 
       /* ---- landing v2 ------------------------------------------------- */
       navAboutUs: "About", navCoverage: "Coverage",
@@ -1045,8 +1041,8 @@
       faqQ37: "Does the service include a pitch deck or logline rewrite?",
       faqA37: "The professional read is designed to give the screenplay the attention it deserves, so the assessment centres on the script itself and its dramatic and craft elements.<br><br>If you want to develop your logline or your project's pitch, dedicated services may be available for that, and the scope and deliverables of each will be set out before you submit, so you can choose what suits your project and its stage.",
 
-      ctaH: "Your story should not wait<br>to be discovered",
-      ctaSub: "Have you written a story that deserves to be seen? Start with Scene One.",
+      ctaH: "How far can your script go?",
+      ctaSub: "Start with a professional read that helps you understand your script in depth, find where it can grow, and know your next step",
 
       footerCopyHtml: "© 2026 All rights reserved to SCENE ONE.<br><span class=\"footer__cr\">Unified National Number: 7054791293</span>",
       footerPrivacy: "Privacy Policy", footerTerms: "Terms & Conditions",
