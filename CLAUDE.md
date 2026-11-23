@@ -223,6 +223,10 @@ Actively iterating on UX polish and workflow features.
     in English — with the number in red. It sat on `inline-end` at first, so
     in Arabic you met the step last. `aria-hidden`, because the step is a
     position in a sequence the two headings already carry.
+  - **No arrow glyphs on the buttons.** `.lx-bento__arrow` and
+    `.lx-team__arrow` are gone with the `←` they drew; the narrow page's
+    `.hn__arrow` stays, and so do the testimonial carousel's arrows, which ARE
+    the button rather than decoration inside one.
   - **`.lx-bento__body` is a COLUMN**, so the chip sits under the copy on that
     same reading edge. Beside the text it was pushed to the far side, which in
     Arabic put the call to action on the left of a block read from the right.
