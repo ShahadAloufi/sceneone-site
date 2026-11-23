@@ -218,9 +218,18 @@ Actively iterating on UX polish and workflow features.
     not something a writer can buy — it is what happens to a project after its
     report, by nomination — so it closes on «بالترشيح بعد استلام التقرير»
     rather than on a button that would promise a purchase that does not exist.
-  - Each card carries a step chip in the corner (`.lx-bento__step`), the
-    number in red. `aria-hidden`, because the step is a position in a sequence
-    the two headings already carry.
+  - Each card carries a step chip on the page's READING edge
+    (`.lx-bento__step`, `inset-inline-start`) — top-right in Arabic, top-left
+    in English — with the number in red. It sat on `inline-end` at first, so
+    in Arabic you met the step last. `aria-hidden`, because the step is a
+    position in a sequence the two headings already carry.
+  - **`.lx-bento__body` is a COLUMN**, so the chip sits under the copy on that
+    same reading edge. Beside the text it was pushed to the far side, which in
+    Arabic put the call to action on the left of a block read from the right.
+  - **`.lx-bento__go` is SOLID cream with black text**, not the artboard's 14%
+    cream wash with cream text on it. That wash read fine over the dark half
+    of a photograph and vanished over the bright half — which is exactly where
+    it sits on the coverage card.
   - `bento3*`/`bento4*` are orphaned in `js/i18n.js`; `bento2*` was repurposed
     for hosting rather than left pointing at copy the page no longer shows.
 - **The desktop page is WHITE throughout.** Every band on the artboard is
@@ -309,7 +318,12 @@ Actively iterating on UX polish and workflow features.
   (روابط / تابعنا / قانوني). `.lx-foot`'s dark block stays for `/readers`,
   `/terms`, `/privacy`, `/submit`, `/about` **and the narrow page**, which all
   carry the old markup; the desktop one is `.landing .pg--wide .lx-foot`.
-  - **The contact row LOOKS like a field and is a link.** The artboard draws a
+  - **The three labelled columns and the contact row are GONE** (removed on
+    request). Terms and privacy survive as two quiet links in the bottom bar
+    rather than under a «قانوني» heading: nothing else on this page links to
+    them, and they are what a site taking payments has to keep reachable. The
+    e-mail is still there as the address.
+  - *(history)* **The contact row LOOKED like a field and was a link.** The artboard draws a
     placeholder beside a button; there is nothing to post it to (the interest
     endpoint was deleted in August), so the whole row is one `mailto:`.
   - **The call and WhatsApp buttons are not on the desktop footer.** The
