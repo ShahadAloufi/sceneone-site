@@ -160,7 +160,7 @@
       bento4T: "استضافة المشاريع وربطها بالصناعة",
       bento4B: "نرشّح المشاريع الأعلى تقييمًا ونقدّمها لجهات الإنتاج، بموافقة كتّابها الكتابية وبأسمائهم",
 
-      getsEyebrow: "لماذا سين ون", getsH: "ما الذي تحصل عليه حين تقدّم نصك",
+      getsEyebrow: "لماذا سين ون", getsH: "ما الذي تحصل عليه بعد التقرير",
       gets1T: "نظرة أعمق إلى قصتك",
       gets1B: "يقرأ نصك متخصص في صناعة الأفلام، ليرى ما يميّز قصتك وما قد لا تلاحظه وأنت تكتبها",
       gets2T: "ملاحظات دقيقة على مشروعك",
@@ -839,7 +839,7 @@
       bento4T: "Hosting projects and connecting them to the industry",
       bento4B: "We put the highest-rated projects forward to production companies, with their writers' explicit written consent and under their own names",
 
-      getsEyebrow: "Why Scene One", getsH: "What you get when you submit your script",
+      getsEyebrow: "Why Scene One", getsH: "What you get after the report",
       gets1T: "A deeper look at your story",
       gets1B: "A film-industry specialist reads your script, to see what sets your story apart and what you may not notice while writing it",
       gets2T: "Precise notes on your project",
