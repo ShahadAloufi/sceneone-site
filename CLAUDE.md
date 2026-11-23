@@ -94,6 +94,33 @@ Actively iterating on UX polish and workflow features.
 **The desktop structure**, hero → partners strip → services (four bento cards)
 → what you get → the team → the writers' messages → FAQ → closing CTA → footer:
 
+- **The DESKTOP type is on a 4px grid**, by instruction: every font-size there
+  renders as a multiple of four — the whole page is 12 / 16 / 20 / 28 / 32 /
+  44 / 48 / 64 / 88 / 248. Three things this needed beyond rounding:
+  - **A clamp can only put its two ENDPOINTS on the grid**, since the middle
+    term is a fraction of the viewport. The quote was the one clamp still
+    landing mid-range at 1440 (2.1vw = 30.24), so its vw term went to 2.3 and
+    it caps at 32 there; every other clamp was already capping.
+  - **`.hn-slide__plus` is no longer `.36em` of the figure.** A size derived
+    from another size cannot be held on the grid — 36% of 248 is 89.28 — so it
+    is its own `clamp(40px, 15.5cqw, 88px)` against the same container, which
+    keeps the proportion and lands on 88. The figure itself is 248, not 250.
+  - **Several of the rules are UNSCOPED and reach the narrow page too.** Each
+    one's old value is pinned back under `.pg--narrow` in the "what the two
+    blocks fight over" block, so mobile's type is what it was. Measured at
+    390px: 11.5 / 12.5 / 13 / 13.5 / 14 / 14.5 / 15 / 17 / 19 / 21 / 22 / 26,
+    all untouched.
+  - **Left alone on purpose:** `.lx-h--sm`, `.lx-link` and every `.lx-svc__*`.
+    They sit in the desktop half of the file but their markup is narrow-only
+    (the price cards), so they are mobile's type, not the landing desktop's.
+- **The hero frame was sized up on request**, from the artboard's 580 to 728 at
+  the widest. **The middle term is what moved, not the cap**, and that is the
+  catch worth remembering: under `zoom` a `vw` resolves against the UNZOOMED
+  viewport, so at 1440 the old `40vw` was 576 and the 580 cap never bound at
+  all. Raising the cap alone changed nothing; `50vw` is what makes it grow, and
+  the cap now only does its job on a very wide screen. The hero is ~1020 layout
+  px tall at 1440 as a result, so it no longer fits the fold — which is what
+  the reference shows.
 - **The hero is two columns and the h1 is a fixed headline again.** It was a
   full-screen band where the headline WAS the current slide's label; copy now
   sits in one column and the three figures in a framed box in the other, with

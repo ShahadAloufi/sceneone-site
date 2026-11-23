@@ -68,7 +68,7 @@
 .lx-eyebrow {
   margin: 0 0 14px;
   font-family: var(--font-head);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--lx-red);
   letter-spacing: .02em;
@@ -76,7 +76,7 @@
 .lx-h {
   margin: 0;
   font-family: var(--font-head);
-  font-size: clamp(28px, 4.4vw, 46px);
+  font-size: clamp(28px, 4.4vw, 48px);
   font-weight: 800;
   line-height: 1.28;
   letter-spacing: -.01em;
@@ -84,7 +84,7 @@
 .lx-h--sm { font-size: clamp(24px, 3.4vw, 34px); }
 .lx-sub {
   margin: 14px 0 0;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.85;
   color: var(--lx-muted);
   max-inline-size: 62ch;
@@ -125,7 +125,7 @@
   text-align: center;
   margin-block-end: clamp(36px, 4.4vw, 56px);
 }
-.lx-head .lx-eyebrow { margin: 0; font-size: 15px; font-weight: 500; }
+.lx-head .lx-eyebrow { margin: 0; font-size: 16px; font-weight: 500; }
 /* No measure on the heading. It had an 18ch cap, which is not the artboard's —
    that one caps the SUB at 640 and lets the heading run — and the cap is what
    broke «من القراءة الأولى إلى تطوير المشروع» onto two lines. */
@@ -143,7 +143,7 @@
   align-items: center;
   gap: 22px;
 }
-.lx-logos__lbl { margin: 0; font-size: 14px; color: var(--lx-muted-2); text-align: center; }
+.lx-logos__lbl { margin: 0; font-size: 12px; color: var(--lx-muted-2); text-align: center; }
 .lx-logos__row {
   display: flex;
   flex-wrap: wrap;
@@ -232,7 +232,7 @@
 .lx-bento__col { display: flex; flex-direction: column; gap: 10px; }
 .lx-bento__n {
   font-family: var(--font-head);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--lx-red);
   font-variant-numeric: tabular-nums;
@@ -240,14 +240,14 @@
 .lx-bento__t {
   margin: 0;
   font-family: var(--font-head);
-  font-size: clamp(22px, 2.4vw, 32px);
+  font-size: clamp(24px, 2.4vw, 32px);
   font-weight: 600;
   line-height: 1.3;
 }
 /* The narrow pair runs a step smaller than the wide pair: less width for the
    same words. Keyed on the cells now rather than on the old colour variants. */
 .lx-bento__c--b .lx-bento__t,
-.lx-bento__c--c .lx-bento__t { font-size: clamp(22px, 2.2vw, 30px); }
+.lx-bento__c--c .lx-bento__t { font-size: clamp(20px, 2.2vw, 28px); }
 .lx-bento__b {
   margin: 0;
   max-inline-size: 52ch;
@@ -268,7 +268,7 @@
   border-radius: 8px;
   background: rgba(249, 244, 239, .14);
   font-family: var(--font-head);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   color: var(--lx-cream);
   white-space: nowrap;
@@ -287,7 +287,7 @@ html[dir="ltr"] .lx-bento__arrow { transform: scaleX(-1); }
   .lx-bento__c { padding: 28px; min-block-size: 260px; }
   .lx-bento__c--ph { padding: 0; }
   .lx-bento__body { padding: 28px; }
-  .lx-bento__b { font-size: 15px; }
+  .lx-bento__b { font-size: 16px; }
 }
 
 /* ---- 3. what you get: four numbered cards ------------------------------
@@ -326,11 +326,11 @@ html[dir="ltr"] .lx-bento__arrow { transform: scaleX(-1); }
 .lx-gets__t {
   margin: 0 0 8px;
   font-family: var(--font-head);
-  font-size: clamp(19px, 1.8vw, 21px);
+  font-size: 20px;
   font-weight: 600;
   line-height: 1.35;
 }
-.lx-gets__b { margin: 0; font-size: 15px; font-weight: 300; line-height: 1.8; color: var(--lx-muted); }
+.lx-gets__b { margin: 0; font-size: 16px; font-weight: 300; line-height: 1.8; color: var(--lx-muted); }
 
 /* ---- 2. the coverage products: three price cards ----------------------- */
 .lx-svc__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; }
@@ -500,7 +500,7 @@ html[dir="ltr"] .lx-bento__arrow { transform: scaleX(-1); }
 /* The opening of the bio, not a second piece of copy: clamped so the card shows
    as much as it has room for and /readers carries the rest. */
 .lx-team__brief {
-  font-size: 12.5px;
+  font-size: 12px;
   line-height: 1.75;
   color: rgba(255, 255, 255, .88);
   display: -webkit-box;
@@ -515,7 +515,7 @@ html[dir="ltr"] .lx-bento__arrow { transform: scaleX(-1); }
   border: 1px solid rgba(255, 255, 255, .6);
   border-radius: 8px;
   font-family: var(--font-head);
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 700;
   transition: background-color 200ms ease, color 200ms ease;
 }
@@ -532,8 +532,8 @@ html[dir="ltr"] .lx-bento__arrow { transform: scaleX(-1); }
 /* Start-aligned, at the artboard's sizes. They were centred under a narrower
    card; with five across a 1400 container the name now opens on the same edge
    as the portrait beside it. */
-.lx-team__n { margin: 12px 0 0; font-family: var(--font-head); font-size: 19px; font-weight: 600; }
-.lx-team__r { margin: 6px 0 0; font-size: 14px; color: var(--lx-red); }
+.lx-team__n { margin: 12px 0 0; font-family: var(--font-head); font-size: 20px; font-weight: 600; }
+.lx-team__r { margin: 6px 0 0; font-size: 16px; color: var(--lx-red); }
 
 /* The row closes on a link through to the readers page. Centred, and
    pulled up a touch: the grid already ends on a 48px gap. */
@@ -601,7 +601,7 @@ html[dir="ltr"] .lx-team__arrow { transform: scaleX(-1); }
   /* A third of what it was. The quote stood at 46px while it was a pull quote
      beside the raw message, carrying the section on its own; centred under a
      heading it is a sentence being read, not a display line. */
-  font-size: clamp(19px, 2.1vw, 30px);
+  font-size: clamp(20px, 2.3vw, 32px);
   font-weight: 600;
   line-height: 1.55;
   color: var(--lx-black);
@@ -617,10 +617,10 @@ html[dir="ltr"] .lx-team__arrow { transform: scaleX(-1); }
   gap: 12px;
   margin-block-start: 6px;
 }
-.pg--wide .lx-vox__name { font-family: var(--font-head); font-size: 17px; font-weight: 700; color: var(--lx-black); }
+.pg--wide .lx-vox__name { font-family: var(--font-head); font-size: 20px; font-weight: 700; color: var(--lx-black); }
 /* Grey, not the accent. The role sits directly beside the name here rather
    than under a quote of its own, and in red it read as the louder of the two. */
-.pg--wide .lx-vox__role { font-size: 15px; color: var(--lx-muted-2); }
+.pg--wide .lx-vox__role { font-size: 16px; color: var(--lx-muted-2); }
 
 /* The controls: one centred group, an arrow either side of the dots. */
 .pg--wide .lx-vox__nav {
@@ -668,8 +668,8 @@ html[dir="ltr"] .lx-team__arrow { transform: scaleX(-1); }
 
 @media (max-width: 760px) {
   .pg--wide .lx-vox__name { font-size: 16px; }
-  .pg--wide .lx-vox__role { font-size: 14px; }
-  .pg--wide .lx-vox__arw { inline-size: 46px; block-size: 46px; font-size: 18px; }
+  .pg--wide .lx-vox__role { font-size: 12px; }
+  .pg--wide .lx-vox__arw { inline-size: 48px; block-size: 48px; font-size: 16px; }
 }
 
 /* ---- 6. closing CTA ----------------------------------------------------
@@ -702,12 +702,12 @@ html[dir="ltr"] .lx-team__arrow { transform: scaleX(-1); }
 .pg--wide .lx-cta__h {
   margin: 0;
   font-family: var(--font-head);
-  font-size: clamp(26px, 3.6vw, 44px);
+  font-size: clamp(24px, 3.6vw, 44px);
   font-weight: 600;
   line-height: 1.35;
   color: var(--lx-cream);
 }
-.pg--wide .lx-cta__sub { margin: 0; font-size: clamp(15px, 1.4vw, 18px); font-weight: 300; line-height: 1.8; color: rgba(249, 244, 239, .72); }
+.pg--wide .lx-cta__sub { margin: 0; font-size: clamp(16px, 1.4vw, 20px); font-weight: 300; line-height: 1.8; color: rgba(249, 244, 239, .72); }
 .pg--wide .lx-cta__btn {
   align-self: flex-start;
   display: inline-flex;
@@ -720,7 +720,7 @@ html[dir="ltr"] .lx-team__arrow { transform: scaleX(-1); }
   background: var(--lx-red);
   color: #fff;
   font-family: var(--font-head);
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 600;
   transition: background-color 200ms ease;
 }
@@ -762,14 +762,14 @@ html[dir="ltr"] .lx-team__arrow { transform: scaleX(-1); }
 .landing .faq__wrap { max-width: var(--lx-w); }
 .landing .faq__eyebrow {
   font-family: var(--font-head);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--lx-red);
   margin-bottom: 14px;
 }
 .landing .faq__title {
   font-family: var(--font-head);
-  font-size: clamp(28px, 4.4vw, 46px);
+  font-size: clamp(28px, 4.4vw, 48px);
   font-weight: 800;
   line-height: 1.28;
   letter-spacing: -.01em;
@@ -782,6 +782,7 @@ html[dir="ltr"] .lx-team__arrow { transform: scaleX(-1); }
    font, muted ink, a hairline border — because a filter should not read as
    loudly as a CTA beside it. */
 .landing .faq-cat {
+  font-size: 16px;
   background: transparent;
   border: 1px solid var(--lx-line);
   padding: 10px 20px;
@@ -791,7 +792,7 @@ html[dir="ltr"] .lx-team__arrow { transform: scaleX(-1); }
 .landing .faq-cat.is-active { background: var(--lx-ink); border-color: var(--lx-ink); color: var(--lx-cream); }
 .landing .faq-cat:focus-visible { outline: 2px solid var(--lx-red); outline-offset: 2px; }
 .landing .faq-item { border-bottom: 1px solid var(--lx-line); }
-.landing .faq-item__q { font-size: 17px; color: var(--lx-ink); }
+.landing .faq-item__q { font-size: 16px; color: var(--lx-ink); }
 .landing .faq-item__a { color: var(--lx-muted); }
 /* The +/- glyph is drawn from currentColor on the button, so recolouring the
    button is enough — no need to touch the two pseudo-element bars. */
@@ -978,7 +979,13 @@ html[dir="ltr"] .landing .hero__shade {
   align-items: start;
 }
 @media (min-width: 1000px) {
-  .pg--wide .hn__in { grid-template-columns: minmax(0, 1fr) clamp(420px, 40vw, 580px); }
+  /* Asked to be bigger: the frame now runs to 728 where it ran to 580.
+     THE MIDDLE TERM IS WHAT MOVED, not the cap, and that is the whole catch —
+     under `zoom` a vw resolves against the UNZOOMED viewport, so at 1440 the
+     old 40vw was 576 and the 580 cap never bound at all. Raising the cap
+     alone changed nothing; 50vw is what makes the frame grow. The cap now
+     does its job on a very wide screen, where 50vw would run away. */
+  .pg--wide .hn__in { grid-template-columns: minmax(0, 1fr) clamp(420px, 50vw, 728px); }
   /* The design starts the copy 80px below the frame's top edge; the two are
      deliberately not top-aligned, which is what keeps the figure reading as
      the taller object. */
@@ -1010,7 +1017,7 @@ html[dir="ltr"] .landing .hero__shade {
   border: 2px solid var(--lx-cream);
 }
 .pg--wide .hn__faces img + img { margin-left: -9px; }
-.pg--wide .hn__pill-t { font-size: 14px; font-weight: 500; color: var(--lx-ink); }
+.pg--wide .hn__pill-t { font-size: 16px; font-weight: 500; color: var(--lx-ink); }
 .pg--wide .hn__pill-n { font-family: var(--font-head); font-weight: 700; color: var(--lx-red); }
 .pg--wide .hn__h {
   margin: 0;
@@ -1045,7 +1052,7 @@ html[dir="ltr"] .landing .hero__shade {
   background: var(--lx-black);
   color: var(--lx-cream);
   font-family: var(--font-head);
-  font-size: clamp(15px, 1.4vw, 17px);
+  font-size: 16px;
   font-weight: 600;
   white-space: nowrap;
   transition: background-color 200ms ease, color 200ms ease;
@@ -1119,7 +1126,7 @@ html[dir="ltr"] .landing .hero__shade {
   z-index: 2;
   margin: 0;
   max-inline-size: 340px;
-  font-size: clamp(15px, 1.4vw, 18px);
+  font-size: clamp(16px, 1.4vw, 20px);
   font-weight: 500;
   line-height: 1.5;
   color: var(--lx-cream);
@@ -1135,7 +1142,7 @@ html[dir="ltr"] .landing .hero__shade {
   /* The design's 250px in a 580 frame. cqw rather than vw: the frame is now a
      column of the hero rather than the window, so the figure has to scale with
      the box it is in and not with the screen. */
-  --hn-num: clamp(110px, 43cqw, 250px);
+  --hn-num: clamp(112px, 43cqw, 248px);
   position: absolute;
   inset-inline: 0;
   /* 190 / 640 of the design's frame. */
@@ -1162,7 +1169,7 @@ html[dir="ltr"] .landing .hero__shade {
 }
 /* The plus is a qualifier on the figure, not part of it, so it is set well
    below the digits' size. em, so it tracks the clamp. */
-.pg--wide .hn-slide__plus { font-size: .36em; font-weight: 500; letter-spacing: 0; margin-inline-start: .1em; }
+.pg--wide .hn-slide__plus { font-size: clamp(40px, 15.5cqw, 88px); font-weight: 500; letter-spacing: 0; margin-inline-start: .1em; }
 
 /* ---- the fixed frame over the slides ------------------------------------ */
 
@@ -1172,7 +1179,7 @@ html[dir="ltr"] .landing .hero__shade {
   inset-inline-start: 32px;
   z-index: 4;
   margin: 0;
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 1px;
   color: var(--lx-cream);
   /* The design sets this in a monospace face. One extra font request for two
@@ -1206,7 +1213,7 @@ html[dir="ltr"] .landing .hero__shade {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 14px;
+  font-size: 12px;
   color: rgba(249, 244, 239, .75);
 }
 .pg--wide .hn__dot { inline-size: 8px; block-size: 8px; border-radius: 50%; background: var(--lx-red); flex: none; }
@@ -1301,6 +1308,23 @@ html[dir="ltr"] .landing .hero__shade {
 .pg--narrow .lx-team__r { margin: 6px 0 0; font-size: 13px; text-align: center; }
 /* The dark footer is the shared one; only the wide block's is light, so the
    overrides in css/site-chrome.css are scoped there rather than here. */
+
+/* ---- the type scale ----------------------------------------------------
+   The DESKTOP page was put on a 4px grid: every font-size there is a multiple
+   of four, and the clamps' two endpoints are too (the fluid middle term
+   cannot be, since it is a fraction of the viewport). Several of those rules
+   are unscoped and so reach the narrow page as well, which is not to change
+   until its own artboard arrives — so each one's old value is pinned back
+   here. All of this goes when .pg--narrow does. */
+.pg--narrow .lx-eyebrow { font-size: 13px; }
+.pg--narrow .lx-h { font-size: clamp(28px, 4.4vw, 46px); }
+.pg--narrow .lx-sub { font-size: 15px; }
+.pg--narrow .lx-team__brief { font-size: 12.5px; }
+.pg--narrow .lx-team__more { font-size: 12.5px; }
+.pg--narrow .faq__eyebrow { font-size: 13px; }
+.pg--narrow .faq__title { font-size: clamp(28px, 4.4vw, 46px); }
+.pg--narrow .faq-item__q { font-size: 17px; }
+.pg--narrow .faq-cat { font-size: 14px; }
 
 /* ---- yesterday's page, scoped to the narrow block --------------------- */
 /* ---- 1. intro: text only ----------------------------------------------- */

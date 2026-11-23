@@ -281,6 +281,10 @@
    what the design draws, and it matches the hero's own primary button. */
 .landing .nav__cta { background: var(--lx-black); color: var(--lx-cream); }
 .landing .nav__cta:hover { background: var(--lx-red); color: #fff; }
+/* The pill is shared chrome at 14px. The landing's type is on a 4px grid, so
+   it takes 16 HERE only — the other four pages keep the 14 they were drawn
+   with. */
+.landing .nav__cta { font-size: 16px; }
 
 /* The artboard's bar is 92px with a 36px mark; ours is 104px with a 56px one,
    which is load-bearing elsewhere — the readers, terms and privacy heroes each
@@ -291,7 +295,7 @@
 /* Dark links at the artboard's own weight, not the .62 of a dark bar. */
 @media (min-width: 1000px) {
   .landing .nav__links { gap: 34px; }
-  .landing .nav__links a { color: #2a2622; font-weight: 400; font-size: 15px; }
+  .landing .nav__links a { color: #2a2622; font-weight: 400; font-size: 16px; }
 }
 
 /* ============================================================================
@@ -364,7 +368,7 @@
 .landing .pg--wide .lx-foot__mailrow-t {
   flex: 1;
   padding-inline: 16px;
-  font-size: 15px;
+  font-size: 16px;
   color: var(--lx-muted-2);
 }
 .landing .pg--wide .lx-foot__mailrow-b {
@@ -374,7 +378,7 @@
   background: var(--lx-black);
   color: var(--lx-cream);
   font-family: var(--font-head);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   white-space: nowrap;
   transition: background-color 200ms ease;
@@ -384,7 +388,7 @@
 .landing .pg--wide .lx-foot__cols { display: flex; flex-wrap: wrap; gap: 40px clamp(40px, 5vw, 72px); }
 .landing .pg--wide .lx-foot__col { gap: 14px; }
 .landing .pg--wide .lx-foot__col a,
-.landing .pg--wide .lx-foot__col p { font-size: 15px; color: #4a443d; }
+.landing .pg--wide .lx-foot__col p { font-size: 16px; color: #4a443d; }
 .landing .pg--wide .lx-foot__col a:hover { color: var(--lx-red); }
 .landing .pg--wide .lx-foot__lbl {
   color: var(--lx-black) !important;
@@ -398,7 +402,7 @@
   border-block-start-color: rgba(0, 0, 0, .1);
 }
 .landing .pg--wide .lx-foot__cr,
-.landing .pg--wide .lx-foot__cr-mail { font-size: 13px; color: var(--lx-muted-2); }
+.landing .pg--wide .lx-foot__cr-mail { font-size: 12px; color: var(--lx-muted-2); }
 .landing .pg--wide .lx-foot__cr-mail:hover { color: var(--lx-red); }
 
 /* ---- the page's own zoom -------------------------------------------------
