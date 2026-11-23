@@ -94,6 +94,17 @@ Actively iterating on UX polish and workflow features.
 **The desktop structure**, hero → partners strip → services (four bento cards)
 → what you get → the team → the writers' messages → FAQ → closing CTA → footer:
 
+- **The site's own scale is 110%, and the class is `zoomed`.** It was 75%
+  (`html.z75 { zoom: .75 }`) while the design was drawn to be read that way;
+  the restructured page was asked to be read bigger. **The class was renamed
+  because it had to be touched in nine files the moment the number moved** — a
+  class that names its own value lies the first time the value changes.
+  Desktop only, as before (`@media (min-width: 1000px)`), so the narrow page
+  still renders at 1.
+  ⚠️ **A `vw` resolves against the UNZOOMED viewport under `zoom`.** Every
+  `vw` term on the page is therefore in screen pixels, not layout pixels, and
+  that is why raising a clamp's CAP can do nothing at all while raising its
+  middle term is what moves the element. Hit twice; see the hero's frame.
 - **The DESKTOP type is on a 4px grid**, by instruction: every font-size there
   renders as a multiple of four — the whole page is 12 / 16 / 20 / 28 / 32 /
   44 / 48 / 64 / 88 / 248. Three things this needed beyond rounding:
@@ -105,6 +116,16 @@ Actively iterating on UX polish and workflow features.
     from another size cannot be held on the grid — 36% of 248 is 89.28 — so it
     is its own `clamp(40px, 15.5cqw, 88px)` against the same container, which
     keeps the proportion and lands on 88. The figure itself is 248, not 250.
+  - **The LINE BOXES are on the grid too** (added after the sizes): every
+    `line-height` is a px multiple of 4 rather than a ratio, so a line lands on
+    the grid instead of wherever 1.28 or 1.85 happened to put it. For a fluid
+    font the line-height is a clamp as well, both endpoints on the grid, the
+    ratio preserved between them. Measured at 1440 and 1920: the line boxes are
+    16 / 20 / 24 / 28 / 32 / 36 / 40 / 48 / 60 / 84 / 88 / 248, nothing off.
+  - **Buttons and pills keep `line-height: normal`, deliberately.** Their height
+    is padding around a single line, so pinning the line box would move every
+    control on the page to fix a number nobody can see. The explicit values are
+    for text that wraps.
   - **Several of the rules are UNSCOPED and reach the narrow page too.** Each
     one's old value is pinned back under `.pg--narrow` in the "what the two
     blocks fight over" block, so mobile's type is what it was. Measured at

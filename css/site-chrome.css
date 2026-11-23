@@ -406,8 +406,14 @@
 .landing .pg--wide .lx-foot__cr-mail:hover { color: var(--lx-red); }
 
 /* ---- the page's own zoom -------------------------------------------------
-   The design is drawn to be read at a browser zoom of 75%, and a visitor
-   should not have to set that themselves — so the public pages carry it.
+   The public pages carry their own scale so a visitor does not have to set one
+   themselves. It was 75% while the design was drawn to be read that way; it is
+   110% now, asked for after the restructure — the page simply wanted to be
+   read bigger than it was drawn.
+
+   The class is `zoomed`, not a number: it was `z75` and had to be renamed in
+   nine files the moment the figure changed. A class that names its own value
+   is a class that lies the first time the value moves.
 
    `zoom` and not `transform: scale()`: zoom re-runs layout, so text reflows
    and nothing is blurred or clipped, which is exactly what the browser's own
@@ -423,10 +429,10 @@
    report is a deliverable (and is what /api/report-pdf renders), and the
    other two are tools people work in all day. */
 @media (min-width: 1000px) {
-  html.z75 { zoom: .75; }
+  html.zoomed { zoom: 1.1; }
 }
 /* The hero used to need a companion rule here: it was a 100svh band, and a
    viewport-height box is measured against the UNZOOMED viewport, so it stopped
    a quarter short of the fold. The hero is sized by its content now, so the
    rule went with the band. Anything viewport-height added to a zoomed page
-   will want the same /.75 treatment. */
+   will want the same /1.1 treatment. */
