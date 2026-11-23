@@ -109,7 +109,7 @@
       /* ---- readers v2 -------------------------------------------------- */
       rdEyebrow: "الفريق",
       rdTitle: "من يقرأ نصك",
-      rdLede: "يقرأ نصك صانع أفلام أو كاتب سيناريو، بالمعايير نفسها التي تُقرأ بها المشاريع في غرف التطوير، ويكتب لك أين تكمن قوة نصك وما الذي يحتاج تطويرًا. وبعد التقرير، نكمل تطوير المشاريع التي تستحق مع الكاتب والمخرج، ثم نقدّمها لجهات الإنتاج لدعم كاتبها.",
+      rdLede: "يقرأ نصك صانع أفلام أو كاتب سيناريو، بالمعايير نفسها التي تُقرأ بها المشاريع في غرف التطوير، ويكتب لك أين تكمن قوة نصك وما الذي يحتاج تطويرًا. وبعد التقرير، نكمل تطوير المشاريع الواعدة مع الكاتب والمخرج، ثم نقدّمها لجهات الإنتاج لدعم كاتبها.",
 
       rdMethodEyebrow: "المنهج", rdMethodH: "كيف نقرأ نصك",
       rdM1T: "خبرة عملية",
@@ -742,7 +742,7 @@
       /* ---- readers v2 -------------------------------------------------- */
       rdEyebrow: "The team",
       rdTitle: "Who reads your script",
-      rdLede: "Your script is read by a filmmaker or a screenwriter, against the same standards projects meet in development rooms, and they write down where its strength lies and what needs work. After the report, we carry on developing the projects that earn it with the writer and the director, then take them to production companies to back the writer.",
+      rdLede: "Your script is read by a filmmaker or a screenwriter, against the same standards projects meet in development rooms, and they write down where its strength lies and what needs work. After the report, we carry on developing the promising projects with the writer and the director, then take them to production companies to back the writer.",
 
       rdMethodEyebrow: "The method", rdMethodH: "How we read your script",
       rdM1T: "Working experience",
