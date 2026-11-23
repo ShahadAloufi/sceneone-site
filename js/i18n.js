@@ -148,7 +148,7 @@
       logosLbl: "نعمل مع جهات في قطاع السينما السعودي",
 
       bentoEyebrow: "خدماتنا", bentoH: "من القراءة الأولى إلى تطوير المشروع",
-      bentoSub: "أربعة مسارات يمرّ بها المشروع عندنا، ويختار الكاتب منها ما يناسب مرحلته",
+      bentoSub: "تغطية النصوص هي خطوتك الأولى حيث نقرأ مشروعك لنفهم إمكاناته، ونساعدك على تحديد ما يحتاج إليه للوصول إلى مرحلته التالية",
       bento1T: "تغطية النصوص",
       bento1B: "تقرير مكتوب يعدّه قارئ متخصص للأفلام القصيرة والطويلة والمعالجات، عبر تسعة محاور واضحة",
       bento2T: "التطوير الإبداعي",
@@ -820,7 +820,7 @@
       logosLbl: "We work with organizations across the Saudi film sector",
 
       bentoEyebrow: "Services", bentoH: "From the first read to developing the project",
-      bentoSub: "Four tracks a project can take with us, and the writer picks the one their stage calls for",
+      bentoSub: "Script coverage is your first step: we read your project to understand what it can be, and help you work out what it needs to reach its next stage",
       bento1T: "Script coverage",
       bento1B: "A written report by a specialist reader, for shorts, features and treatments, across nine clear axes",
       bento2T: "Creative development",

@@ -126,8 +126,10 @@
   margin-block-end: clamp(36px, 4.4vw, 56px);
 }
 .lx-head .lx-eyebrow { margin: 0; font-size: 15px; font-weight: 500; }
-.lx-head .lx-h { max-inline-size: 18ch; }
-.lx-head .lx-sub { margin: 0; max-inline-size: 48ch; }
+/* No measure on the heading. It had an 18ch cap, which is not the artboard's —
+   that one caps the SUB at 640 and lets the heading run — and the cap is what
+   broke «من القراءة الأولى إلى تطوير المشروع» onto two lines. */
+.lx-head .lx-sub { margin: 0; max-inline-size: 640px; }
 
 /* ---- partners strip ----------------------------------------------------
    A line under the hero, not a section: no heading, no paragraph, just the
