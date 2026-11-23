@@ -168,21 +168,15 @@
   block-size: clamp(60px, 6.4vw, 84px);
 }
 
-/* ---- 1. services: four cards on a bento grid ---------------------------
-   Two columns, 1.65fr beside 1fr, and two rows. The two photographic cards
-   take the wide cell and the two flat ones the narrow, alternating sides so
-   neither column is all photograph.
-
-   Placement is SOURCE ORDER, so the wide cell takes cards 01 and 03 and the
-   narrow one 02 and 04 — the cream card is the wide one on row two and the
-   hosting photograph the narrow one. The artboard's own comments call card 04
-   wide, but its render does not, and the render is what was asked for: this
-   was briefly overridden with grid-area and put back. */
+/* ---- 1. services: two steps side by side -------------------------------
+   Equal columns, one row. It was four cards on a 1.65fr/1fr bento over two
+   rows; the section was redrawn as a journey — the report, then what the
+   report can lead to — and the two middle cards went with it. */
 .lx-bento { display: grid; gap: 20px; }
 @media (min-width: 900px) {
   .lx-bento {
-    grid-template-columns: 1.65fr 1fr;
-    grid-template-rows: repeat(2, clamp(320px, 27vw, 390px));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: clamp(420px, 36vw, 512px);
   }
 }
 .lx-bento__c {
@@ -230,12 +224,37 @@
   gap: 30px;
 }
 .lx-bento__col { display: flex; flex-direction: column; gap: 10px; }
-.lx-bento__n {
+/* The step, in the corner opposite the page's reading edge. A chip rather
+   than a bare number: on a photograph a number alone reads as part of the
+   picture. */
+.lx-bento__step {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: 24px;
+  inset-inline-end: 24px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, .55);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
   font-family: var(--font-head);
-  font-size: 16px;
+  font-size: 12px;
+  line-height: 16px;
   font-weight: 700;
-  color: var(--lx-red);
-  font-variant-numeric: tabular-nums;
+  color: var(--lx-cream);
+}
+.lx-bento__step-n { color: var(--lx-red); font-variant-numeric: tabular-nums; }
+/* Card 02 ends on what it is rather than on a button: hosting is not bought,
+   it is nominated, and a CTA there would promise a purchase that does not
+   exist. */
+.lx-bento__note {
+  margin: 10px 0 0;
+  font-size: 12px;
+  line-height: 16px;
+  color: rgba(249, 244, 239, .55);
 }
 .lx-bento__t {
   margin: 0;
@@ -244,10 +263,6 @@
   font-weight: 600;
   line-height: clamp(32px, 3.1vw, 40px);
 }
-/* The narrow pair runs a step smaller than the wide pair: less width for the
-   same words. Keyed on the cells now rather than on the old colour variants. */
-.lx-bento__c--b .lx-bento__t,
-.lx-bento__c--c .lx-bento__t { font-size: clamp(20px, 2.2vw, 28px); }
 .lx-bento__b {
   margin: 0;
   max-inline-size: 52ch;
@@ -274,8 +289,8 @@
   white-space: nowrap;
   transition: background-color 200ms ease;
 }
-.lx-bento__c--a:hover .lx-bento__go { background: rgba(249, 244, 239, .26); }
-.lx-bento__c--a:focus-visible { outline: 2px solid var(--lx-red); outline-offset: 3px; }
+.lx-bento__c:hover .lx-bento__go { background: rgba(249, 244, 239, .26); }
+.lx-bento__c:focus-visible { outline: 2px solid var(--lx-red); outline-offset: 3px; }
 /* The glyph is the RTL-facing one, flipped for English — the convention every
    arrow on this page follows. */
 .lx-bento__arrow { display: inline-block; }
@@ -694,7 +709,6 @@ html[dir="ltr"] .lx-team__arrow { transform: scaleX(-1); }
    wraps. */
 .lx-eyebrow { line-height: 16px; }
 .lx-logos__lbl { line-height: 24px; }
-.lx-bento__n { line-height: 20px; }
 .lx-gets__n { line-height: 20px; }
 .lx-team__n { line-height: 28px; }
 .lx-team__r { line-height: 24px; }

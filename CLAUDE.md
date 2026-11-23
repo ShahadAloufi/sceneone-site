@@ -207,12 +207,22 @@ Actively iterating on UX polish and workflow features.
     URL** — `/submit` is the script intake, and `/treatment-submit` has no route
     from the desktop page. The narrow page still has the cards, so a phone can
     reach it. The coverage services page is where that belongs.
-- **The bento is SOURCE-ORDER flow**, so the wide cell takes 01 and 03 and the
-  narrow one 02 and 04 — the cream card is wide on row two and the hosting
-  photograph narrow. The artboard's own comments call card 04 wide and its
-  render does not; this was briefly overridden with `grid-area` to match the
-  comments, then put back to match the render, which is what "as is" means.
-  **Do not re-fix it.**
+- **The services section is TWO steps, not four cards** (redrawn 2026-11-23):
+  «من التقرير إلى الاستضافة» — the report, then what the report can lead to —
+  on two equal columns in one row. It was a 1.65fr/1fr bento over two rows
+  carrying coverage, creative development, finding talent and hosting; the two
+  middle cards went with the redraw, and their photographs
+  (`svc-development-board.jpg`, `svc-talent-slate.jpg`) are still in `assets/`,
+  unreferenced.
+  - **Card 01 is a link, card 02 is NOT, and must not become one.** Hosting is
+    not something a writer can buy — it is what happens to a project after its
+    report, by nomination — so it closes on «بالترشيح بعد استلام التقرير»
+    rather than on a button that would promise a purchase that does not exist.
+  - Each card carries a step chip in the corner (`.lx-bento__step`), the
+    number in red. `aria-hidden`, because the step is a position in a sequence
+    the two headings already carry.
+  - `bento3*`/`bento4*` are orphaned in `js/i18n.js`; `bento2*` was repurposed
+    for hosting rather than left pointing at copy the page no longer shows.
 - **The desktop page is WHITE throughout.** Every band on the artboard is
   `#FFFFFF`, measured; the cream is a CARD colour only — the hero's pill and
   quiet button, bento 03, the four "what you get" cards, the readers' link, the

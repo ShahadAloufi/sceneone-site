@@ -265,20 +265,23 @@
   </section>
 
   <!-- ── 1. SERVICES ──
-       Four cards on a two-column grid, the two photographic ones wide and the
-       two flat ones narrow, alternating sides row by row. Placement is
-       explicit rather than by flow: in source order the cream card would take
-       the wide cell on the second row, which is the one thing the design's
-       own export gets wrong against its own comments.
+       TWO steps, side by side and equal: the report, and what the report can
+       lead to. It was four cards on a bento grid — coverage, creative
+       development, finding talent, hosting — and the two middle ones went when
+       the section was redrawn as a journey rather than a menu. Their
+       photographs (svc-development-board.jpg, svc-talent-slate.jpg) are still
+       in assets/, unreferenced.
 
-       Card 01 is a link into the pricing section below it; the other three
-       describe work that is arranged by conversation, so they are not. -->
+       Card 01 is a link; card 02 is not, and must not become one. Hosting is
+       not something a writer can buy — it is what happens TO a project after
+       its report, by nomination — so it closes on a note saying so rather
+       than on a button that would promise a purchase. -->
   <section class="lx lx-svc2" id="services">
     <div class="lx__in">
       <div class="lx-head">
         <p class="lx-eyebrow" data-i18n="bentoEyebrow">خدماتنا</p>
-        <h2 class="lx-h" data-i18n="bentoH">من القراءة الأولى إلى تطوير المشروع</h2>
-        <p class="lx-sub" data-i18n="bentoSub">تغطية النصوص هي خطوتك الأولى حيث نقرأ مشروعك لنفهم إمكاناته، ونساعدك على تحديد ما يحتاج إليه للوصول إلى مرحلته التالية</p>
+        <h2 class="lx-h" data-i18n="bentoH">من التقرير إلى الاستضافة</h2>
+        <p class="lx-sub" data-i18n="bentoSub">تبدأ رحلتك بتقرير تغطية لنصك، وعلى أساسه تُرشَّح المشاريع الواعدة لمسار الاستضافة</p>
       </div>
       <div class="lx-bento" data-reveal>
         <!-- To /submit, not to a coverage page: the artboard has none, and the
@@ -286,48 +289,29 @@
              block now — so on a desktop the anchor resolved to a display:none
              element and the chip did nothing. Repoint it when the coverage
              services page is designed. -->
-        <a class="lx-bento__c lx-bento__c--ph lx-bento__c--a" href="/submit">
+        <a class="lx-bento__c lx-bento__c--ph" href="/submit">
           <img class="lx-bento__bg" src="assets/read-script-strip.jpg" alt="" data-i18n-alt="readImgAlt" loading="lazy" decoding="async" width="2560" height="879">
           <span class="lx-bento__veil" aria-hidden="true"></span>
+          <!-- aria-hidden: the step is a position in a sequence the headings
+               already carry, so a screen reader is told it twice otherwise. -->
+          <span class="lx-bento__step" aria-hidden="true"><span data-i18n="bentoStep">الخطوة</span> <b class="lx-bento__step-n">01</b></span>
           <span class="lx-bento__body">
             <span class="lx-bento__col">
-              <span class="lx-bento__n" aria-hidden="true">01</span>
               <span class="lx-bento__t" data-i18n="bento1T">تغطية النصوص</span>
               <span class="lx-bento__b" data-i18n="bento1B">تقرير مكتوب يعدّه قارئ متخصص للأفلام القصيرة والطويلة والمعالجات، عبر تسعة محاور واضحة</span>
             </span>
             <span class="lx-bento__go"><span data-i18n="btnViewCoverage">عرض التغطيات</span><span class="lx-bento__arrow" aria-hidden="true">←</span></span>
           </span>
         </a>
-        <article class="lx-bento__c lx-bento__c--ph lx-bento__c--b">
-          <img class="lx-bento__bg" src="assets/svc-development-board.jpg" alt="" loading="lazy" decoding="async" width="736" height="981">
-          <span class="lx-bento__veil" aria-hidden="true"></span>
-          <div class="lx-bento__body">
-            <div class="lx-bento__col">
-              <span class="lx-bento__n" aria-hidden="true">02</span>
-              <h3 class="lx-bento__t" data-i18n="bento2T">التطوير الإبداعي</h3>
-              <p class="lx-bento__b" data-i18n="bento2B">جلسات منظمة مع الكاتب والمخرج على البنية الدرامية والشخصيات والرؤية، مع الحفاظ على هوية المشروع</p>
-            </div>
-          </div>
-        </article>
-        <article class="lx-bento__c lx-bento__c--ph lx-bento__c--c">
-          <img class="lx-bento__bg" src="assets/svc-talent-slate.jpg" alt="" loading="lazy" decoding="async" width="736" height="414">
-          <span class="lx-bento__veil" aria-hidden="true"></span>
-          <div class="lx-bento__body">
-            <div class="lx-bento__col">
-              <span class="lx-bento__n" aria-hidden="true">03</span>
-              <h3 class="lx-bento__t" data-i18n="bento3T">اكتشاف المواهب</h3>
-              <p class="lx-bento__b" data-i18n="bento3B">نبحث عن الأصوات الجديدة من خلال المنصة وتحدي القصة ومسارات التدريب العملي مع محترفين في الصناعة</p>
-            </div>
-          </div>
-        </article>
-        <article class="lx-bento__c lx-bento__c--ph lx-bento__c--d">
+        <article class="lx-bento__c lx-bento__c--ph">
           <img class="lx-bento__bg lx-bento__bg--gray" src="assets/svc-hosting-stage.jpg" alt="" loading="lazy" decoding="async" width="2880" height="1040">
           <span class="lx-bento__veil" aria-hidden="true"></span>
+          <span class="lx-bento__step" aria-hidden="true"><span data-i18n="bentoStep">الخطوة</span> <b class="lx-bento__step-n">02</b></span>
           <div class="lx-bento__body">
             <div class="lx-bento__col">
-              <span class="lx-bento__n" aria-hidden="true">04</span>
-              <h3 class="lx-bento__t" data-i18n="bento4T">استضافة المشاريع وربطها بالصناعة</h3>
-              <p class="lx-bento__b" data-i18n="bento4B">نرشّح المشاريع الأعلى تقييمًا ونقدّمها لجهات الإنتاج، بموافقة كتّابها الكتابية وبأسمائهم</p>
+              <h3 class="lx-bento__t" data-i18n="bento2T">استضافة المشاريع</h3>
+              <p class="lx-bento__b" data-i18n="bento2B">بناءً على التقرير، نرشِّح المشاريع الأعلى تقييمًا لمسار الاستضافة ونقدّمها لجهات الإنتاج، بموافقة كتّابها الكتابية وبأسمائهم</p>
+              <p class="lx-bento__note" data-i18n="bento2Note">بالترشيح بعد استلام التقرير</p>
             </div>
           </div>
         </article>
