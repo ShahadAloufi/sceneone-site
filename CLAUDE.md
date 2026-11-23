@@ -137,8 +137,19 @@ Actively iterating on UX polish and workflow features.
   kept so the modifier still resolves, and `.pg--narrow .lx` puts the cream back
   for yesterday's page.
 - **The writers' messages are one at a time** (`.lx-vox__item`, `voxDeck()`):
-  pull quote on one side, the message as it arrived on the other, with dots,
-  arrows and a counter. **No autoplay** — the hero cycles because its three
+  the quote, the name and the role, with dots, arrows and a counter.
+  - **The raw-message column is GONE.** It carried each message as it arrived,
+    under «الرسالة كما وصلتنا», with a toggle to open the rest. Once the quote
+    became a condensed version of the whole message the two said the same thing
+    twice, so the column came off on request and the item is one column with
+    the measure that column used to leave it (864px — the container less the
+    440 and the 96 gap — so the line length is unchanged).
+    **Two consequences:** Sakeena's quote is now a TIDIED excerpt with her raw
+    words nowhere on the page, and Ahmed's second sentence was folded INTO his
+    quote, which is where it had to go — dropping the column without that would
+    have lost half of what he wrote. `voxAsSent` is orphaned in `js/i18n.js`;
+    `voxMore`/`voxLess` are still the narrow page's.
+  - **No autoplay** — the hero cycles because its three
   figures are one statement; moving someone's words on a timer while they are
   being read is the wrong motion. Every panel renders visible and the nav is
   `hidden` until the script marks the root (`.lx-vox--js`), so a page with no JS
