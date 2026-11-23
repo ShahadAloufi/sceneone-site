@@ -171,7 +171,7 @@
       teamH2: "فريق القراءة والتطوير",
 
       voxAsSent: "الرسالة كما وصلتنا",
-      voxGo1: "الرسالة الأولى", voxGo2: "الرسالة الثانية",
+      voxGo1: "الرسالة الأولى", voxGo2: "الرسالة الثانية", voxGo3: "الرسالة الثالثة",
       voxPrev: "السابق", voxNext: "التالي",
 
       introEyebrow: "البداية",
@@ -242,6 +242,7 @@
       voxMore: "عرض الرسالة كاملة ↓", voxLess: "إخفاء ↑",
       voxName1: "سكينة", voxRole1: "كاتبة «ليس حرج»",
       voxName2: "أحمد كردي", voxRole2: "كاتب «غشنة»",
+      voxName3: "محمد علي", voxRole3: "كاتب «خِفار المدينة الضائعة»",
       partEyebrow: "شراكاتنا", partH: "نعمل مع شركاء في قطاع السينما",
       partSub: "نقدّم لأعضاء جمعية السينما السعودية مزايا خاصة على خدمات قراءة النصوص وتقييمها",
 
@@ -843,7 +844,7 @@
       teamH2: "The reading and development team",
 
       voxAsSent: "The message as it reached us",
-      voxGo1: "First message", voxGo2: "Second message",
+      voxGo1: "First message", voxGo2: "Second message", voxGo3: "Third message",
       voxPrev: "Previous", voxNext: "Next",
 
       introEyebrow: "The beginning",
@@ -915,6 +916,7 @@
       // copy to be rendered.
       voxName1: "سكينة", voxRole1: "كاتبة «ليس حرج»",
       voxName2: "أحمد كردي", voxRole2: "كاتب «غشنة»",
+      voxName3: "محمد علي", voxRole3: "كاتب «خِفار المدينة الضائعة»",
       partEyebrow: "Partnerships", partH: "We collaborate with organizations across the film industry",
       partSub: "Saudi Cinema Association members receive special benefits on script coverage services.",
 
