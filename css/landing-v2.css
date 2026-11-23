@@ -1102,6 +1102,11 @@ html[dir="ltr"] .landing .hero__shade {
 
 .pg--wide .hn__slides { position: absolute; inset: 0; }
 .pg--wide .hn-slide {
+  /* The figure's size, read by BOTH the mask and the caption under it. The
+     design's 250px in a 580 frame; cqw rather than vw because the frame is a
+     column of the hero rather than the window, so the figure scales with the
+     box it is in and not with the screen. */
+  --hn-num: clamp(112px, 43cqw, 248px);
   position: absolute;
   inset: 0;
   overflow: hidden;
@@ -1144,11 +1149,17 @@ html[dir="ltr"] .landing .hero__shade {
    fades and lifts it on its own clock a beat after the figure. */
 .pg--wide .hn-slide__lab {
   position: absolute;
-  inset-block-start: 30px;
-  inset-inline-end: 32px;
+  /* UNDER the figure, centred. It used to sit in the frame's top corner,
+     opposite the counter; it now reads as the figure's caption, which is what
+     it always was. The offset is the mask's own geometry — its 28% top plus
+     its full height — so the two cannot drift apart. That is why --hn-num is
+     declared on the slide rather than on the mask: both need it. */
+  inset-block-start: calc(28% + (var(--hn-num) * 1.2));
+  inset-inline: 32px;
   z-index: 2;
-  margin: 0;
-  max-inline-size: 340px;
+  margin: 16px auto 0;
+  max-inline-size: 420px;
+  text-align: center;
   font-size: clamp(16px, 1.4vw, 20px);
   font-weight: 500;
   line-height: clamp(24px, 2.4vw, 32px);
@@ -1162,10 +1173,6 @@ html[dir="ltr"] .landing .hero__shade {
 /* The figure. --hn-num drives BOTH the type size and the mask's height: they
    have to agree exactly, or the slide-up reveal clips at the wrong line. */
 .pg--wide .hn-slide__mask {
-  /* The design's 250px in a 580 frame. cqw rather than vw: the frame is now a
-     column of the hero rather than the window, so the figure has to scale with
-     the box it is in and not with the screen. */
-  --hn-num: clamp(112px, 43cqw, 248px);
   position: absolute;
   inset-inline: 0;
   /* 190 / 640 of the design's frame. */
@@ -1278,7 +1285,7 @@ html[dir="ltr"] .landing .hero__shade {
      line, so the label's room is the frame less that corner — 22px of inset
      either side, the counter's own width, and a gap. A percentage happened to
      clear it at 375 and would not at every width. */
-  .pg--wide .hn-slide__lab { inset-block-start: 22px; inset-inline-end: 22px; max-inline-size: calc(100% - 110px); }
+  .pg--wide .hn-slide__lab { inset-inline: 22px; max-inline-size: none; }
   .pg--wide .hn__count { inset-block-start: 24px; inset-inline-start: 22px; }
   .pg--wide .hn__foot { inset-block-end: 22px; inset-inline: 22px; }
   .pg--wide .hn__cta { padding: 14px 26px; }
