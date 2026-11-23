@@ -108,11 +108,22 @@ Actively iterating on UX polish and workflow features.
   `#coverage-types` are gone with their sections; the footer's رحلة النص link
   became خدماتنا. The bar and the overlay still list the same six in the same
   order — keep them in step.
-  - **The bar is still BLACK, which the design is not.** The artboard draws a
-    white bar with dark links. It is left alone because that bar is shared
-    chrome across `.landing`/`.rd2`/`.tm2`/`.sb2`/`.ab2` and was unified on
-    purpose; a white one here alone would unmatch five pages. Flipping it is a
-    deliberate change to `css/site-chrome.css`, not a landing-page tweak.
+  - **The bar is GLASS now, and the landing has left the shared dark group.**
+    It shipped black for an hour and was changed on request: the hero opens on
+    white, so the black slab read as a band across the top of it. The landing's
+    `.nav` is `rgba(255,255,255,.72)` with `backdrop-filter: saturate(180%)
+    blur(18px)`, dark links, a black `.nav__cta`, and the **-ink cut of the
+    mark** rather than the light one the other pages use. Three things that
+    look optional and are not: an `@supports` fallback that paints it SOLID
+    where `backdrop-filter` is unsupported (translucent white over the cards
+    below would leave them legible through the links); a **hairline, not a
+    shadow**, and only on `.scrolled`, since a shadow under glass reads as
+    grime; and `.scrolled` kept in step with the resting state so the scroll
+    handler in `js/main.js` still has nothing to undo.
+    **`.rd2`/`.tm2`/`.sb2`/`.ab2` keep the black bar** — they all still open on
+    a dark hero. So the landing's bar no longer matches theirs, which is the
+    intended trade: a bar belongs to the page under it before it matches the
+    page next door.
 - **New assets:** `partner-saudi-film-confex.png` (white artwork, knocked to
   black in CSS rather than shipped twice), `svc-hosting-stage.jpg` (bento 04),
   `cta-wall.jpg` (the CTA collage's second still). The hero keeps its own

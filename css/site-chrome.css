@@ -128,11 +128,14 @@
    panel is still white.
    ========================================================================= */
 
-/* styles.css starts the landing's bar as a dark gradient and turns it solid on
-   scroll. Here it is solid from the first paint, and .scrolled is kept in step
-   so the scroll handler in js/main.js has nothing to undo. No shadow: the
-   footer has none either, and black on cream needs no help separating. */
-.landing .nav, .landing .nav.scrolled,
+/* styles.css starts these bars as a dark gradient and turns them solid on
+   scroll. Here they are solid from the first paint, and .scrolled is kept in
+   step so the scroll handler in js/main.js has nothing to undo. No shadow: the
+   footer has none either, and black on cream needs no help separating.
+
+   THE LANDING IS NOT IN THIS GROUP ANY MORE — its bar is the glass one at the
+   end of this file. Every other page here still opens on a dark hero, so a
+   light bar over one of those would be the wrong way round. */
 .rd2 .nav,     .rd2 .nav.scrolled,
 .tm2 .nav,     .tm2 .nav.scrolled,
 .sb2 .nav,     .sb2 .nav.scrolled,
@@ -142,34 +145,28 @@
 }
 /* .lx-foot__col a's two values, so a link reads the same weight in both bars. */
 @media (min-width: 1000px) {
-  .landing .nav__links a,
   .rd2 .nav__links a,
   .tm2 .nav__links a,
   .sb2 .nav__links a,
   .ab2 .nav__links a { color: rgba(255, 255, 255, .62); }
-  .landing .nav__links a:hover,
   .rd2 .nav__links a:hover,
   .tm2 .nav__links a:hover,
   .sb2 .nav__links a:hover,
   .ab2 .nav__links a:hover { color: #fff; }
 }
-.landing .menu-btn span,
 .rd2 .menu-btn span,
 .tm2 .menu-btn span,
 .sb2 .menu-btn span,
 .ab2 .menu-btn span { background: #fff; }
 /* The same hairline the footer's call/WhatsApp buttons carry. */
-.landing .lang-toggle-group,
 .rd2 .lang-toggle-group,
 .tm2 .lang-toggle-group,
 .sb2 .lang-toggle-group,
 .ab2 .lang-toggle-group { border-color: rgba(255, 255, 255, .22); }
-.landing .lang-btn,
 .rd2 .lang-btn,
 .tm2 .lang-btn,
 .sb2 .lang-btn,
 .ab2 .lang-btn { color: rgba(255, 255, 255, .86); }
-.landing .lang-btn:hover,
 .rd2 .lang-btn:hover,
 .tm2 .lang-btn:hover,
 .sb2 .lang-btn:hover,
@@ -231,6 +228,61 @@
     transition: none;
   }
 }
+
+/* ============================================================================
+   THE LANDING'S BAR — glass, not black.
+
+   The page used to open on a photograph and the bar was a black slab over it.
+   The restructured hero opens on WHITE, so the slab read as a band across the
+   top of it; the design draws a light bar instead, and this is that bar.
+
+   Scoped to .landing alone. The four pages above still open on a dark hero,
+   so they keep the black one — which does mean the landing's bar no longer
+   matches theirs. That is the intended trade: a bar should belong to the page
+   under it before it matches the page next door.
+
+   It is translucent and blurred, so the hero's frame and the cards below show
+   through as they pass beneath it. Three things make that safe:
+     - A FALLBACK. Without backdrop-filter the same rgba() over a page that is
+       not always white would leave dark cards legible through the links, so
+       @supports paints it solid instead.
+     - A HAIRLINE, not a shadow. On scroll the bar needs an edge or it floats;
+       a shadow under glass reads as grime.
+     - .scrolled IS KEPT IN STEP with the resting state, so the handler in
+       js/main.js has nothing to undo — the same contract the dark bars have.
+
+   The logo is not inverted in CSS: invert(1) would flip its accent dot from
+   #CD2E07 to cyan with everything else. index.html points .nav__logo at the
+   -ink cut of the same drawing, which is also what the overlay uses.
+   ========================================================================= */
+
+.landing .nav, .landing .nav.scrolled {
+  background: rgba(255, 255, 255, .72);
+  -webkit-backdrop-filter: saturate(180%) blur(18px);
+  backdrop-filter: saturate(180%) blur(18px);
+  border-block-end: 1px solid transparent;
+  box-shadow: none;
+}
+/* The edge only once something is actually running under the bar. */
+.landing .nav.scrolled { border-block-end-color: rgba(0, 0, 0, .08); }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .landing .nav, .landing .nav.scrolled { background: var(--lx-white); }
+}
+
+@media (min-width: 1000px) {
+  /* .lx-foot__col a's two values, inverted for a light ground. */
+  .landing .nav__links a { color: rgba(0, 0, 0, .62); }
+  .landing .nav__links a:hover { color: var(--lx-black); }
+}
+.landing .menu-btn span { background: var(--lx-black); }
+.landing .lang-toggle-group { border-color: rgba(0, 0, 0, .18); }
+.landing .lang-btn { color: rgba(0, 0, 0, .7); }
+.landing .lang-btn:hover { color: var(--lx-black); }
+/* The pill inverts with the bar: .nav__cta is cream-on-black for a dark bar,
+   which on this one would be a white pill on white. Black-on-light is also
+   what the design draws, and it matches the hero's own primary button. */
+.landing .nav__cta { background: var(--lx-black); color: var(--lx-cream); }
+.landing .nav__cta:hover { background: var(--lx-red); color: #fff; }
 
 /* ---- the page's own zoom -------------------------------------------------
    The design is drawn to be read at a browser zoom of 75%, and a visitor
