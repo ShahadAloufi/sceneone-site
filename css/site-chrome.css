@@ -355,55 +355,15 @@
 /* Drawn as a field with a button in it. It is a LINK, all of it: there is
    nothing to post a field to — the interest endpoint was deleted in August —
    and an input that goes nowhere is worse than a mailto that works. */
-.landing .pg--wide .lx-foot__mailrow {
-  align-self: stretch;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-block-start: 8px;
-  padding: 6px;
-  border-radius: 8px;
-  background: var(--lx-cream);
-}
-.landing .pg--wide .lx-foot__mailrow-t {
-  flex: 1;
-  padding-inline: 16px;
-  font-size: 16px;
-  color: var(--lx-muted-2);
-}
-.landing .pg--wide .lx-foot__mailrow-b {
-  flex: none;
-  padding: 11px 22px;
-  border-radius: 8px;
-  background: var(--lx-black);
-  color: var(--lx-cream);
-  font-family: var(--font-head);
-  font-size: 16px;
-  font-weight: 700;
-  white-space: nowrap;
-  transition: background-color 200ms ease;
-}
-.landing .pg--wide .lx-foot__mailrow:hover .lx-foot__mailrow-b { background: var(--lx-red); color: #fff; }
-
-.landing .pg--wide .lx-foot__cols { display: flex; flex-wrap: wrap; gap: 40px clamp(40px, 5vw, 72px); }
-.landing .pg--wide .lx-foot__col { gap: 14px; }
-.landing .pg--wide .lx-foot__col a,
-.landing .pg--wide .lx-foot__col p { font-size: 16px; color: #4a443d; }
-.landing .pg--wide .lx-foot__col a:hover { color: var(--lx-red); }
-.landing .pg--wide .lx-foot__lbl {
-  color: var(--lx-black) !important;
-  font-size: 16px !important;
-  font-weight: 700;
-  margin-block-end: 4px !important;
-}
 .landing .pg--wide .lx-foot__bar {
   margin-block-start: clamp(40px, 5vw, 64px);
   padding-block: 24px;
   border-block-start-color: rgba(0, 0, 0, .1);
 }
 .landing .pg--wide .lx-foot__cr,
-.landing .pg--wide .lx-foot__cr-mail { font-size: 12px; color: var(--lx-muted-2); }
-.landing .pg--wide .lx-foot__cr-mail:hover { color: var(--lx-red); }
+.landing .pg--wide .lx-foot__barlinks a { font-size: 12px; color: var(--lx-muted-2); }
+.landing .pg--wide .lx-foot__barlinks { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.landing .pg--wide .lx-foot__barlinks a:hover { color: var(--lx-red); }
 
 /* ---- the page's own zoom -------------------------------------------------
    The public pages carry their own scale so a visitor does not have to set one

@@ -218,10 +218,14 @@
   position: relative;
   z-index: 2;
   padding: 36px 40px;
+  /* A column: the chip sits UNDER the copy on the page's reading edge, not
+     opposite it across the card. Beside the text it was pushed to the far
+     side, which in Arabic put the call to action on the left of a block read
+     from the right. */
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 30px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
 }
 .lx-bento__col { display: flex; flex-direction: column; gap: 10px; }
 /* The step, in the corner opposite the page's reading edge. A chip rather
@@ -301,9 +305,6 @@
    arrow on this page follows. */
 .lx-bento__arrow { display: inline-block; }
 html[dir="ltr"] .lx-bento__arrow { transform: scaleX(-1); }
-@media (max-width: 899px) {
-  .lx-bento__body { flex-direction: column; align-items: flex-start; gap: 20px; }
-}
 @media (max-width: 600px) {
   .lx-bento__c { padding: 28px; min-block-size: 260px; }
   .lx-bento__c--ph { padding: 0; }
@@ -559,9 +560,17 @@ html[dir="ltr"] .lx-bento__arrow { transform: scaleX(-1); }
 /* The row closes on a link through to the readers page. Centred, and
    pulled up a touch: the grid already ends on a 48px gap. */
 .lx-team__all {
-  align-self: center;
-  display: inline-flex;
+  /* `inline-size: fit-content` + auto margins, NOT align-self. This link is a
+     child of a plain block (.lx__in), where align-self does nothing and an
+     inline-flex element is inline-level — so auto margins had nothing to
+     centre and it sat on the start edge. There was a `#team .lx__in { display:
+     flex }` propping it up, which stopped matching the moment the desktop
+     block's id became #team-d. Centring that does not depend on the parent
+     cannot break that way again. */
+  display: flex;
+  inline-size: fit-content;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   margin-block-start: 36px;
   margin-inline: auto;
@@ -578,9 +587,6 @@ html[dir="ltr"] .lx-bento__arrow { transform: scaleX(-1); }
 /* The glyph is the RTL-facing one, flipped for English. */
 .lx-team__arrow { display: inline-block; }
 html[dir="ltr"] .lx-team__arrow { transform: scaleX(-1); }
-/* .lx__in is a plain block, so the link needs a row of its own to be
-   centred in — align-self alone has nothing to act against. */
-#team .lx__in { display: flex; flex-direction: column; }
 
 /* ---- 5. what the writers said ------------------------------------------
    One message at a time, centred: the quote in guillemets, the name and the
