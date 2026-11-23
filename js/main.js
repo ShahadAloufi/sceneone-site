@@ -226,13 +226,15 @@
      slide is painted at its finished position, and autoplay never advances.
      The bars still work, so the hero stays usable without moving on its own. */
   (function heroNumbers() {
-    var root = document.querySelector(".hn");
+    // The frame, not the whole hero: the copy beside it is not part of the
+    // carousel, and the click-to-advance below must not fire from the headline.
+    var root = document.querySelector(".hn__stage");
     if (!root) return;
 
     var slides = Array.prototype.slice.call(root.querySelectorAll(".hn-slide"));
     var fills = Array.prototype.slice.call(root.querySelectorAll(".hn__fill"));
     var bars = Array.prototype.slice.call(root.querySelectorAll(".hn__bar"));
-    var labs = Array.prototype.slice.call(root.querySelectorAll(".hn__h-l"));
+    var labs = Array.prototype.slice.call(root.querySelectorAll(".hn-slide__lab"));
     var countEl = root.querySelector(".hn__count-i");
     var liveEl = root.querySelector(".hn__live");
     var n = slides.length;
@@ -389,8 +391,8 @@
       });
     });
 
-    // The design advances on a click anywhere in the hero. Anything the
-    // visitor meant to press — the CTA, a bar — is left alone.
+    // The design advances on a click anywhere in the frame. Anything the
+    // visitor meant to press — a bar — is left alone.
     root.addEventListener("click", function (e) {
       if (e.target.closest && e.target.closest("a, button")) return;
       go((cur + 1) % n);
@@ -411,6 +413,54 @@
     if (reduce) paint(performance.now()); else start();
   })();
 
+
+
+  /* ---------- WHAT THE WRITERS SAID (one message at a time) ----------
+     The deck renders whole with no script — every panel visible, the nav
+     hidden — so this does two things before it does anything else: it marks
+     the section, which is what lets the CSS hide the panels it isn't showing,
+     and it un-hides the nav. In that order, so there is never a frame with
+     every panel on screen AND a set of controls under them.
+
+     There is no autoplay here, deliberately. The hero cycles because its three
+     figures are one statement; a testimonial is someone's words, and moving
+     them on a timer while they are being read is the wrong kind of motion. */
+  (function voxDeck() {
+    var root = document.querySelector(".lx-vox");
+    if (!root) return;
+
+    var items = Array.prototype.slice.call(root.querySelectorAll(".lx-vox__item"));
+    var dots = Array.prototype.slice.call(root.querySelectorAll(".lx-vox__dot"));
+    var nav = root.querySelector(".lx-vox__nav");
+    var countEl = root.querySelector(".lx-vox__count-i");
+    var n = items.length;
+    if (n < 2 || !nav) return;
+
+    var cur = 0;
+
+    function show(k) {
+      cur = ((k % n) + n) % n;
+      items.forEach(function (el, i) { el.classList.toggle("is-on", i === cur); });
+      dots.forEach(function (el, i) { el.setAttribute("aria-current", i === cur ? "true" : "false"); });
+      if (countEl) countEl.textContent = (cur + 1 < 10 ? "0" : "") + (cur + 1);
+    }
+
+    root.classList.add("lx-vox--js");
+    nav.hidden = false;
+
+    dots.forEach(function (d) {
+      d.addEventListener("click", function () {
+        show(parseInt(d.getAttribute("data-vox"), 10) || 0);
+      });
+    });
+    Array.prototype.forEach.call(root.querySelectorAll("[data-vox-step]"), function (b) {
+      b.addEventListener("click", function () {
+        show(cur + (parseInt(b.getAttribute("data-vox-step"), 10) || 1));
+      });
+    });
+
+    show(0);
+  })();
 
   /* ---------- IN-PAGE HASH SMOOTH SCROLL (landing) ---------- */
   if (window.location.hash) {

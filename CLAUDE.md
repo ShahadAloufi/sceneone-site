@@ -48,6 +48,77 @@ coverage workspace + report, role-based access, deadlines, and report delivery t
 writers. **The payment gate is live and has taken real money** (see below).
 Actively iterating on UX polish and workflow features.
 
+**Recently shipped (2026-11-23) — the landing page, restructured:**
+
+- **`index.html` was rebuilt to a new artboard**, and the change is STRUCTURAL,
+  not a reskin. The page is now: hero → partners strip → services (four bento
+  cards) → the three coverage products → what you get (four cards) → the team →
+  the writers' messages → FAQ → closing CTA → footer.
+  **Six sections were deleted** with their copy, CSS and i18n: البداية
+  (`.lx-intro`), ما نقدمه (`.lx-do`), القراءة and its nine axes (`.lx-read`),
+  ما نبحث عنه (`.lx-look`), رحلة النص (`.lx-jn`), and جمهوران (`.lx-split`).
+  The partnership band (`.lx-part`) went too, replaced by the slim logo strip.
+  Their **dictionary keys are still in `js/i18n.js`** — the file already carried
+  a long dead tail from the v1 pages, so pruning just these would have been
+  arbitrary; a real prune is its own job.
+- **The hero is two columns now, and the h1 is a fixed headline again.** It used
+  to be a full-screen band where the headline WAS the current slide's label.
+  Copy sits in one column (a social-proof pill, «نكتشف الأصوات التي تستحق أن
+  تصل إلى الشاشة», a sub, two CTAs) and the three-figure carousel in a framed
+  box in the other. **The label moved INTO the frame**, one per slide
+  (`.hn-slide__lab`), which is why `heroNumbers()` now queries that instead of
+  `.hn__h-l`, and why its `root` is `.hn__stage` and not `.hn` — the
+  click-to-advance must not fire from the headline beside it.
+  - The slide machinery is otherwise untouched: same wipe, same per-slide
+    clocks, same first-load entrance, same no-JS fallback (slide one composed
+    in the markup).
+  - **The figure scales with the FRAME, not the window** — `--hn-num` is in
+    `cqw` against a `container-type: inline-size` on `.hn__stage`. In `vw` it
+    tracked a viewport the box no longer spans.
+  - **`html.z75 .hn`'s `calc(100svh / .75)` is gone** from `site-chrome.css`
+    with the full-screen band. The note explaining why a viewport-height box
+    needs that on a zoomed page is kept where the rule was.
+- **The pricing cards were KEPT, deliberately, and the design does not have
+  them.** It folds coverage into one bento card labelled «عرض التغطيات ←» with
+  nothing behind it. Deleting `#coverage-types` would have left
+  `/treatment-submit` unreachable from the landing page entirely — the treatment
+  product would still be purchasable only by typing the URL. So card 01 links
+  to that section and the section stays. If the cards should really go, the
+  treatment intake needs another route first.
+- **The bento's placement is EXPLICIT (`grid-area`), and that is a fix, not a
+  preference.** In source order the cream card falls into the wide cell on row
+  two and the hosting photograph into the narrow one — which is what the
+  design's own export renders, against its own comments, which call card 04 the
+  wide one. Measured on the artboard: 785 / 475 / 785 / 475. The two
+  photographic cards are the wide pair here.
+- **The writers' messages are one at a time** (`.lx-vox__item`, `voxDeck()` in
+  `js/main.js`): pull quote on one side, the message as it arrived on the
+  other, with dots, arrows and a counter. **No autoplay** — the hero cycles
+  because its three figures are one statement; moving someone's words on a
+  timer while they are being read is the wrong motion. Every panel renders
+  visible and the nav is `hidden` until the script marks the root
+  (`.lx-vox--js`), so a page with no JS is two whole messages rather than one
+  message and five dead controls.
+- **The CTA is a slab INSIDE the page, not a full-bleed band over a photo.** Two
+  grayscale stills are placed on the black rather than behind it, so the
+  heading reads at full contrast instead of through a 72% veil. The stills are
+  dropped below 1100px, where the copy and the collage would meet.
+- **The nav is five destinations plus home**: الرئيسية · خدماتنا · من نحن · من
+  يقرأ نصك · تجارب الكتّاب · الأسئلة الشائعة. `#journey` and the bar's
+  `#coverage-types` are gone with their sections; the footer's رحلة النص link
+  became خدماتنا. The bar and the overlay still list the same six in the same
+  order — keep them in step.
+  - **The bar is still BLACK, which the design is not.** The artboard draws a
+    white bar with dark links. It is left alone because that bar is shared
+    chrome across `.landing`/`.rd2`/`.tm2`/`.sb2`/`.ab2` and was unified on
+    purpose; a white one here alone would unmatch five pages. Flipping it is a
+    deliberate change to `css/site-chrome.css`, not a landing-page tweak.
+- **New assets:** `partner-saudi-film-confex.png` (white artwork, knocked to
+  black in CSS rather than shipped twice), `svc-hosting-stage.jpg` (bento 04),
+  `cta-wall.jpg` (the CTA collage's second still). The hero keeps its own
+  photo→figure mapping — the design swaps slides 1 and 2's photographs, but the
+  seats photo was chosen for the 3+ hosting slide on request and stays there.
+
 **Recently shipped (2026-09-07 → 09-11):**
 
 - **Reply attachments in the writer Q&A.** A reader answering a question can send

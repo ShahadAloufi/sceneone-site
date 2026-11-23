@@ -65,11 +65,11 @@
          hamburger's overlay carries the same six destinations. -->
     <ul class="nav__links">
       <li><a href="/" data-i18n="navHome">الرئيسية</a></li>
+      <li><a href="#services" data-i18n="navServices">خدماتنا</a></li>
       <li><a href="/about" data-i18n="navAboutUs">من نحن</a></li>
-      <li><a href="#coverage-types" data-i18n="navCoverage">تغطية النصوص</a></li>
       <li><a href="/readers" data-i18n="navReaders">من يقرأ نصك</a></li>
-      <li><a href="#journey" data-i18n="navJourney">رحلة النص</a></li>
-      <li><a href="#contact" data-i18n="navContact">تواصل معنا</a></li>
+      <li><a href="#voices" data-i18n="navVoices">تجارب الكتّاب</a></li>
+      <li><a href="#faq" data-i18n="navFaq">الأسئلة الشائعة</a></li>
     </ul>
     <div class="nav__end">
       <!-- Styled in css/landing-v2.css: this pill is the landing page's, not
@@ -101,14 +101,14 @@
           <span class="overlay__label" data-i18n="navHome">الرئيسية</span>
           <span class="overlay__go" aria-hidden="true">←</span>
         </a>
-        <a href="/about" data-menu-close>
+        <a href="#services" data-menu-close>
           <span class="overlay__n" aria-hidden="true">02</span>
-          <span class="overlay__label" data-i18n="navAboutUs">من نحن</span>
+          <span class="overlay__label" data-i18n="navServices">خدماتنا</span>
           <span class="overlay__go" aria-hidden="true">←</span>
         </a>
-        <a href="#coverage-types" data-menu-close>
+        <a href="/about" data-menu-close>
           <span class="overlay__n" aria-hidden="true">03</span>
-          <span class="overlay__label" data-i18n="navCoverage">تغطية النصوص</span>
+          <span class="overlay__label" data-i18n="navAboutUs">من نحن</span>
           <span class="overlay__go" aria-hidden="true">←</span>
         </a>
         <a href="/readers" data-menu-close>
@@ -116,14 +116,14 @@
           <span class="overlay__label" data-i18n="navReaders">من يقرأ نصك</span>
           <span class="overlay__go" aria-hidden="true">←</span>
         </a>
-        <a href="#journey" data-menu-close>
+        <a href="#voices" data-menu-close>
           <span class="overlay__n" aria-hidden="true">05</span>
-          <span class="overlay__label" data-i18n="navJourney">رحلة النص</span>
+          <span class="overlay__label" data-i18n="navVoices">تجارب الكتّاب</span>
           <span class="overlay__go" aria-hidden="true">←</span>
         </a>
-        <a href="#contact" data-menu-close>
+        <a href="#faq" data-menu-close>
           <span class="overlay__n" aria-hidden="true">06</span>
-          <span class="overlay__label" data-i18n="navContact">تواصل معنا</span>
+          <span class="overlay__label" data-i18n="navFaq">الأسئلة الشائعة</span>
           <span class="overlay__go" aria-hidden="true">←</span>
         </a>
     </nav>
@@ -143,203 +143,176 @@
     </div>
   </div>
 
-  <!-- ── HERO: SCENE ONE BY THE NUMBERS ──
-       Three photographic slides, each wiping up over the last, with the figure
-       it carries rising into a mask. Driven by heroNumbers() in js/main.js —
-       one rAF loop, no library — and styled under `.hn` in css/landing-v2.css.
+  <!-- ── HERO ──
+       Copy on one side, the numbers on the other. The band used to be the
+       full screen with the figures behind the headline; the new structure
+       gives the headline its own column and puts the three figures in a
+       frame beside it, so the page states what it does before it states how
+       much of it it has done.
+
+       The frame itself is unchanged machinery: three photographic slides,
+       each wiping up over the last with the figure it carries rising into a
+       mask, driven by heroNumbers() in js/main.js — one rAF loop, no library.
+       What moved is the LABEL: it used to be the h1 below the band, and is
+       now a line inside the frame, one per slide, so the headline can be a
+       headline again.
 
        Everything a reader needs is in the markup before that script runs: the
-       first slide's photo, figure and label are the document's own order, so a
-       blocked or failed script leaves a legible hero rather than an empty black
-       band. The same is true of prefers-reduced-motion, which the loop honours
-       by painting the first slide and never advancing.
+       first slide's photo, figure and label are the document's own order, so
+       a blocked or failed script leaves a legible hero rather than an empty
+       black box. prefers-reduced-motion gets the same, by the loop painting
+       the first slide and never advancing.
 
        The figures are Latin digits in both languages, as the design has them,
        and .hn-slide__num carries dir="ltr" so a number is never reordered. -->
-  <section class="hn" id="top" aria-roledescription="carousel" data-i18n-aria="hnRegion" aria-label="سين ون بالأرقام">
-    <!-- aria-hidden: the figure and its label are announced from .hn__live
-         below instead, once per change, rather than three times over. -->
-    <div class="hn__slides" aria-hidden="true">
-      <article class="hn-slide hn-slide--chair is-on">
-        <div class="hn-slide__ph"></div>
-        <div class="hn-slide__shade"></div>
-        <div class="hn-slide__mask"><span class="hn-slide__num" dir="ltr">30<span class="hn-slide__plus">+</span></span></div>
-      </article>
-      <article class="hn-slide hn-slide--seats">
-        <div class="hn-slide__ph"></div>
-        <div class="hn-slide__shade"></div>
-        <div class="hn-slide__mask"><span class="hn-slide__num" dir="ltr">3<span class="hn-slide__plus">+</span></span></div>
-      </article>
-      <article class="hn-slide hn-slide--screen">
-        <div class="hn-slide__ph"></div>
-        <div class="hn-slide__shade"></div>
-        <div class="hn-slide__mask"><span class="hn-slide__num" dir="ltr">80<span class="hn-slide__plus">+</span></span></div>
-      </article>
-    </div>
-
-    <!-- dir="ltr" sits on the INNER span, never on the <p>. On the block it
-         would also flip inset-inline-end, which is how the counter ended up
-         on top of the label instead of opposite it. -->
-    <p class="hn__count"><span dir="ltr"><span class="hn__count-i">01</span> <span class="hn__count-n">/ 03</span></span></p>
-
-    <!-- The one thing a screen reader hears when the slide changes. -->
-    <p class="hn__live" aria-live="polite"></p>
-
-    <div class="hn__foot">
-      <div class="hn__lede">
-        <p class="hn__eyebrow"><span class="hn__dot" aria-hidden="true"></span><span data-i18n="hnEyebrow">سين ون بالأرقام</span></p>
-        <!-- The headline IS the slide's label: the three stack on one grid
-             cell, so the h1 is as tall as the longest of them and nothing
-             below it moves as they cross-fade. Order matches the slides. -->
-        <h1 class="hn__h">
-          <span class="hn__h-l is-on" data-i18n="hnLab2">كاتبًا استلموا تقريرًا تفصيليًا لأفلامهم خلال شهرين</span>
-          <span class="hn__h-l" data-i18n="hnLab1">مشاريع ترشحت لمسار الاستضافة</span>
-          <span class="hn__h-l" data-i18n="hnLab3">فكرة فيلم في تحدي القصة بمنتدى الأفلام السعودي</span>
-        </h1>
+  <section class="hn" id="top">
+    <div class="hn__in">
+      <div class="hn__copy">
+        <!-- The faces are three of the readers' own portraits, at 28px. They
+             are decoration for a line that already names the team, hence
+             aria-hidden and empty alts. -->
+        <p class="hn__pill">
+          <span class="hn__faces" aria-hidden="true" dir="ltr">
+            <img src="assets/reader-wad.webp" alt="" loading="lazy" decoding="async" width="600" height="800">
+            <img src="assets/reader-hasan-v2.webp" alt="" loading="lazy" decoding="async" width="600" height="800">
+            <img src="assets/reader-haifa-v3.jpg" alt="" loading="lazy" decoding="async" width="600" height="800">
+          </span>
+          <span class="hn__pill-t"><b class="hn__pill-n" dir="ltr">55</b> <span data-i18n="hnPill">مشروعًا قرأها فريقنا منذ سبتمبر</span></span>
+        </p>
+        <h1 class="hn__h" data-i18n="hnH">نكتشف الأصوات التي تستحق أن تصل إلى الشاشة</h1>
+        <p class="hn__p" data-i18n="hnP">نكتشف الأصوات الجديدة، نطوّر أفلامها، ونبني لها طريقًا إلى الشاشة</p>
+        <div class="hn__acts">
+          <a class="hn__cta" href="/submit" data-i18n="btnSubmit">قدّم نصك</a>
+          <a class="hn__cta hn__cta--quiet" href="/sample-report" data-i18n="hnSample">اطّلع على نموذج تقرير</a>
+        </div>
       </div>
-      <div class="hn__act">
-        <a class="hn__cta" href="/submit"><span data-i18n="btnSubmit">قدّم نصك</span><span class="hn__arrow" aria-hidden="true">←</span></a>
-        <!-- Each bar is the control for its slide AND the autoplay timer for it,
-             which is why they are buttons and not decoration. -->
-        <div class="hn__bars">
-          <button class="hn__bar" type="button" data-go="0" data-i18n-aria="hnGo1" aria-label="الشريحة الأولى"><span class="hn__fill"></span></button>
-          <button class="hn__bar" type="button" data-go="1" data-i18n-aria="hnGo2" aria-label="الشريحة الثانية"><span class="hn__fill"></span></button>
-          <button class="hn__bar" type="button" data-go="2" data-i18n-aria="hnGo3" aria-label="الشريحة الثالثة"><span class="hn__fill"></span></button>
+
+      <div class="hn__stage" aria-roledescription="carousel" data-i18n-aria="hnRegion" aria-label="سين ون بالأرقام">
+        <!-- aria-hidden: the figure and its label are announced from .hn__live
+             below instead, once per change, rather than three times over. -->
+        <div class="hn__slides" aria-hidden="true">
+          <article class="hn-slide hn-slide--chair is-on">
+            <div class="hn-slide__ph"></div>
+            <div class="hn-slide__shade"></div>
+            <p class="hn-slide__lab is-on" data-i18n="hnLab2">كاتبًا استلموا تقريرًا تفصيليًا لأفلامهم خلال شهرين</p>
+            <div class="hn-slide__mask"><span class="hn-slide__num" dir="ltr">30<span class="hn-slide__plus">+</span></span></div>
+          </article>
+          <article class="hn-slide hn-slide--seats">
+            <div class="hn-slide__ph"></div>
+            <div class="hn-slide__shade"></div>
+            <p class="hn-slide__lab" data-i18n="hnLab1">مشاريع ترشحت لمسار الاستضافة</p>
+            <div class="hn-slide__mask"><span class="hn-slide__num" dir="ltr">3<span class="hn-slide__plus">+</span></span></div>
+          </article>
+          <article class="hn-slide hn-slide--screen">
+            <div class="hn-slide__ph"></div>
+            <div class="hn-slide__shade"></div>
+            <p class="hn-slide__lab" data-i18n="hnLab3">فكرة فيلم في تحدي القصة بمنتدى الأفلام السعودي</p>
+            <div class="hn-slide__mask"><span class="hn-slide__num" dir="ltr">80<span class="hn-slide__plus">+</span></span></div>
+          </article>
+        </div>
+
+        <!-- dir="ltr" sits on the INNER span, never on the <p>. On the block it
+             would also flip inset-inline-start, which is how the counter ended
+             up on top of the label instead of opposite it. -->
+        <p class="hn__count"><span dir="ltr"><span class="hn__count-i">01</span> <span class="hn__count-n">/ 03</span></span></p>
+
+        <!-- The one thing a screen reader hears when the slide changes. -->
+        <p class="hn__live" aria-live="polite"></p>
+
+        <div class="hn__foot">
+          <p class="hn__eyebrow"><span class="hn__dot" aria-hidden="true"></span><span data-i18n="hnEyebrow">سين ون بالأرقام</span></p>
+          <!-- Each bar is the control for its slide AND the autoplay timer for
+               it, which is why they are buttons and not decoration. -->
+          <div class="hn__bars">
+            <button class="hn__bar" type="button" data-go="0" data-i18n-aria="hnGo1" aria-label="الشريحة الأولى"><span class="hn__fill"></span></button>
+            <button class="hn__bar" type="button" data-go="1" data-i18n-aria="hnGo2" aria-label="الشريحة الثانية"><span class="hn__fill"></span></button>
+            <button class="hn__bar" type="button" data-go="2" data-i18n-aria="hnGo3" aria-label="الشريحة الثالثة"><span class="hn__fill"></span></button>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── 1. THE BEGINNING ──
-       Text only. The heading opens the section at the page's own start edge;
-       the paragraph block answers it from the opposite edge, lower down, so
-       the empty space between them is the composition. The photo that used to
-       fill that half is gone (assets/intro-reel.webp is now unreferenced). -->
-  <section class="lx lx-intro" id="about">
+  <!-- ── PARTNERS ──
+       A strip, not a section. The partnership used to be a full band with a
+       heading and a paragraph of its own; here it is a line of logos directly
+       under the hero, which is where a visitor looks for them.
+
+       The association's file is the dark cut already. The forum's artwork is
+       white, so it is knocked to black in CSS rather than shipped twice. -->
+  <section class="lx-logos" id="partners">
+    <p class="lx-logos__lbl" data-i18n="logosLbl">نعمل مع جهات في قطاع السينما السعودي</p>
+    <div class="lx-logos__row">
+      <a href="https://www.cinemaassoc.com" target="_blank" rel="noopener noreferrer">
+        <img class="lx-logos__img" src="assets/partner-cinema-association-dark.png" alt="جمعية السينما" loading="lazy" decoding="async" width="420" height="245">
+      </a>
+      <img class="lx-logos__img lx-logos__img--knock" src="assets/partner-saudi-film-confex.png" alt="منتدى الأفلام السعودي" loading="lazy" decoding="async" width="261" height="208">
+    </div>
+  </section>
+
+  <!-- ── 1. SERVICES ──
+       Four cards on a two-column grid, the two photographic ones wide and the
+       two flat ones narrow, alternating sides row by row. Placement is
+       explicit rather than by flow: in source order the cream card would take
+       the wide cell on the second row, which is the one thing the design's
+       own export gets wrong against its own comments.
+
+       Card 01 is a link into the pricing section below it; the other three
+       describe work that is arranged by conversation, so they are not. -->
+  <section class="lx lx-svc2" id="services">
     <div class="lx__in">
-      <div class="lx-intro__head">
-        <p class="lx-eyebrow" data-i18n="introEyebrow">البداية</p>
-        <h2 class="lx-intro__h" data-i18n="introH">هناك كتّاب موهوبون وقصص تستحق أن تُروى</h2>
+      <div class="lx-head">
+        <p class="lx-eyebrow" data-i18n="bentoEyebrow">خدماتنا</p>
+        <h2 class="lx-h" data-i18n="bentoH">من القراءة الأولى إلى تطوير المشروع</h2>
+        <p class="lx-sub" data-i18n="bentoSub">أربعة مسارات يمرّ بها المشروع عندنا، ويختار الكاتب منها ما يناسب مرحلته</p>
       </div>
-      <div class="lx-intro__copy">
-        <p class="lx-intro__p" data-i18n="introP">كثير من الكتّاب لديهم أفكار ونصوص واعدة، لكنهم لا يجدون قراءة جادة لأعمالهم، أو توجيهًا يساعدهم على تطويرها ومعرفة خطوتهم التالية</p>
-        <p class="lx-intro__kicker" data-i18n="introKicker">من هنا بدأت سين ون</p>
-        <a class="lx-link lx-intro__link" href="/booklet" target="_blank" rel="noopener" data-i18n="introLink">اعرف حكاية سين ون</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── 2. WHAT WE DO ──
-       Three steps, each opened by its own number. The hairline over each column
-       is gone: the number is what marks the column now, and a rule above it as
-       well read as two devices doing one job. -->
-  <section class="lx lx-do" id="what">
-    <div class="lx__in">
-      <div class="lx-do__head">
-        <p class="lx-eyebrow" data-i18n="doEyebrow">ما نقدمه</p>
-        <h2 class="lx-do__h" data-i18n="doH">نكتشف المواهب ونطوّر القصص ونفتح لها الطريق</h2>
-      </div>
-      <div class="lx-do__grid" data-reveal>
-        <div class="lx-do__col">
-          <span class="lx-do__n" aria-hidden="true">01</span>
-          <h3 class="lx-do__t" data-i18n="do1T">نكتشف</h3>
-          <p class="lx-do__b" data-i18n="do1B">نبحث عن كتّاب لهم صوتهم الخاص وقصص لم تأخذ فرصتها بعد</p>
-        </div>
-        <div class="lx-do__col">
-          <span class="lx-do__n" aria-hidden="true">02</span>
-          <h3 class="lx-do__t" data-i18n="do2T">نطوّر</h3>
-          <p class="lx-do__b" data-i18n="do2B">نقرأ النص ونتخيّل الفيلم الذي يمكن أن يصبح عليه، ونعمل مع الكاتب على تطويره</p>
-        </div>
-        <div class="lx-do__col">
-          <span class="lx-do__n" aria-hidden="true">03</span>
-          <h3 class="lx-do__t" data-i18n="do3T">نربط</h3>
-          <p class="lx-do__b" data-i18n="do3B">نصل بالمشاريع الواعدة إلى منتجين وشركاء يمكنهم المساهمة في انتقالها إلى الشاشة</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── 3. THE READ ──
-       Ahead of WHAT WE LOOK FOR, which is the order the new design sets: the
-       reading is what the service IS, so it is introduced before the list of
-       what a script needs to show.
-
-       The nine axes are the same nine the real coverage report is written
-       against (see js/report-render.js) — they are the product, so they are
-       named here rather than summarised. -->
-  <section class="lx lx-read" id="reading">
-    <div class="lx__in">
-      <!-- A wide strip rather than the old portrait crop beside the copy: the
-           section now opens on the photograph and the text answers it. -->
-      <img class="lx-read__strip" src="assets/read-script-strip.jpg" alt="" data-i18n-alt="readImgAlt" loading="lazy" decoding="async" width="2560" height="879">
-      <div class="lx-read__row">
-        <div class="lx-read__copy">
-          <p class="lx-eyebrow" data-i18n="readEyebrow">قراءة النصوص وتقييمها</p>
-          <h2 class="lx-read__h" data-i18n="readH">نبدأ من النص</h2>
-          <p class="lx-read__p" data-i18n="readP">نقرأ نصك لنتعرّف إلى ما يميّزه وما يحتاج إلى تطوير، ونساعدك على تحديد خطوتك التالية، من العمل على مسودة جديدة إلى تطوير المشروع أو تقديمه إلى جهة مناسبة في صناعة الأفلام</p>
-          <a class="lx-link lx-read__link" href="/sample-report" data-i18n="readLink">اطّلع على نموذج التقرير</a>
-        </div>
-        <div class="lx-read__axes-col">
-          <p class="lx-read__lbl" data-i18n="readLbl">تحصل على تقرير مفصّل يعدّه قارئ متخصص، ويغطي تسعة محاور أساسية في النص</p>
-          <!-- Numbered in the markup, not by a counter: the numbers are part of
-               the design's typography, and aria-hidden keeps a screen reader
-               from reading "01" before every axis. -->
-          <ul class="lx-read__axes">
-            <li><span class="lx-read__n" aria-hidden="true">01</span><span data-i18n="axis1">الفكرة والموضوع</span></li>
-            <li><span class="lx-read__n" aria-hidden="true">02</span><span data-i18n="axis2">عنصر الجذب</span></li>
-            <li><span class="lx-read__n" aria-hidden="true">03</span><span data-i18n="axis3">الأصالة</span></li>
-            <li><span class="lx-read__n" aria-hidden="true">04</span><span data-i18n="axis4">الرهانات والحبكة</span></li>
-            <li><span class="lx-read__n" aria-hidden="true">05</span><span data-i18n="axis5">الشخصيات</span></li>
-            <li><span class="lx-read__n" aria-hidden="true">06</span><span data-i18n="axis6">الحوار</span></li>
-            <li><span class="lx-read__n" aria-hidden="true">07</span><span data-i18n="axis7">البناء والإيقاع</span></li>
-            <li><span class="lx-read__n" aria-hidden="true">08</span><span data-i18n="axis8">قابلية الإنتاج</span></li>
-            <li><span class="lx-read__n" aria-hidden="true">09</span><span data-i18n="axis9">العرض والتنسيق</span></li>
-          </ul>
-        </div>
+      <div class="lx-bento" data-reveal>
+        <a class="lx-bento__c lx-bento__c--ph lx-bento__c--a" href="#coverage-types">
+          <img class="lx-bento__bg" src="assets/read-script-strip.jpg" alt="" data-i18n-alt="readImgAlt" loading="lazy" decoding="async" width="2560" height="879">
+          <span class="lx-bento__veil" aria-hidden="true"></span>
+          <span class="lx-bento__body">
+            <span class="lx-bento__col">
+              <span class="lx-bento__n" aria-hidden="true">01</span>
+              <span class="lx-bento__t" data-i18n="bento1T">تغطية النصوص</span>
+              <span class="lx-bento__b" data-i18n="bento1B">تقرير مكتوب يعدّه قارئ متخصص للأفلام القصيرة والطويلة والمعالجات، عبر تسعة محاور واضحة</span>
+            </span>
+            <span class="lx-bento__go"><span data-i18n="btnViewCoverage">عرض التغطيات</span><span class="lx-bento__arrow" aria-hidden="true">←</span></span>
+          </span>
+        </a>
+        <article class="lx-bento__c lx-bento__c--dark lx-bento__c--b">
+          <span class="lx-bento__n" aria-hidden="true">02</span>
+          <div class="lx-bento__col">
+            <h3 class="lx-bento__t" data-i18n="bento2T">التطوير الإبداعي</h3>
+            <p class="lx-bento__b" data-i18n="bento2B">جلسات منظمة مع الكاتب والمخرج على البنية الدرامية والشخصيات والرؤية، مع الحفاظ على هوية المشروع</p>
+          </div>
+        </article>
+        <article class="lx-bento__c lx-bento__c--cream lx-bento__c--c">
+          <span class="lx-bento__n" aria-hidden="true">03</span>
+          <div class="lx-bento__col">
+            <h3 class="lx-bento__t" data-i18n="bento3T">اكتشاف المواهب</h3>
+            <p class="lx-bento__b" data-i18n="bento3B">نبحث عن الأصوات الجديدة من خلال المنصة وتحدي القصة ومسارات التدريب العملي مع محترفين في الصناعة</p>
+          </div>
+        </article>
+        <article class="lx-bento__c lx-bento__c--ph lx-bento__c--d">
+          <img class="lx-bento__bg lx-bento__bg--gray" src="assets/svc-hosting-stage.jpg" alt="" loading="lazy" decoding="async" width="2880" height="1040">
+          <span class="lx-bento__veil" aria-hidden="true"></span>
+          <div class="lx-bento__body">
+            <div class="lx-bento__col">
+              <span class="lx-bento__n" aria-hidden="true">04</span>
+              <h3 class="lx-bento__t" data-i18n="bento4T">استضافة المشاريع وربطها بالصناعة</h3>
+              <p class="lx-bento__b" data-i18n="bento4B">نرشّح المشاريع الأعلى تقييمًا ونقدّمها لجهات الإنتاج، بموافقة كتّابها الكتابية وبأسمائهم</p>
+            </div>
+          </div>
+        </article>
       </div>
     </div>
   </section>
 
-
-  <!-- ── 4. WHAT WE LOOK FOR ──
-       Five numbered cards on a six-column grid: three across the top at two
-       columns each, then two at three. The fifth is the dark one, which is how
-       the design closes the block.
-
-       The numbers are decorative ordinals, not content — the list already
-       carries the order — so they are hidden from a screen reader along with
-       the rule beside them. -->
-  <section class="lx lx--white" id="looking">
-    <div class="lx__in">
-      <p class="lx-eyebrow" data-i18n="lookEyebrow">قبل أن تُرسل نصك</p>
-      <h2 class="lx-h" data-i18n="lookH">ما الذي نبحث عنه؟</h2>
-      <ul class="lx-look__grid" data-reveal>
-        <li class="lx-look__card">
-          <span class="lx-look__head" aria-hidden="true"><span class="lx-look__n">01</span><span class="lx-look__rule"></span></span>
-          <p class="lx-look__t" data-i18n-html="look1">أصوات جديدة<br class='lx-look__br'>لها بصمة خاصة</p>
-        </li>
-        <li class="lx-look__card">
-          <span class="lx-look__head" aria-hidden="true"><span class="lx-look__n">02</span><span class="lx-look__rule"></span></span>
-          <p class="lx-look__t" data-i18n-html="look2">قصص تستحق أن تُرى<br class='lx-look__br'>على الشاشة</p>
-        </li>
-        <li class="lx-look__card">
-          <span class="lx-look__head" aria-hidden="true"><span class="lx-look__n">03</span><span class="lx-look__rule"></span></span>
-          <p class="lx-look__t" data-i18n-html="look3">أنواع وزوايا<br class='lx-look__br'>وطرق سرد غير مألوفة</p>
-        </li>
-        <li class="lx-look__card">
-          <span class="lx-look__head" aria-hidden="true"><span class="lx-look__n">04</span><span class="lx-look__rule"></span></span>
-          <p class="lx-look__t" data-i18n-html="look4">مشاريع بفكرة قوية<br class='lx-look__br'>ما زالت تحتاج تطويرًا</p>
-        </li>
-        <li class="lx-look__card lx-look__card--dark">
-          <span class="lx-look__head" aria-hidden="true"><span class="lx-look__n">05</span><span class="lx-look__rule"></span></span>
-          <p class="lx-look__t" data-i18n-html="look5">صنّاع أفلام لديهم ما يريدون قوله،<br class='lx-look__br'>ويريدون بناء هوية سينمائية حوله</p>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- ── 5. SERVICES ── -->
-  <section class="lx" id="coverage-types">
+  <!-- ── 2. THE COVERAGE PRODUCTS ──
+       The three things a writer can actually buy, and the only route on this
+       page to /treatment-submit. The new design folds coverage into one
+       bento card; this is what that card links to. -->
+  <section class="lx lx--white" id="coverage-types">
     <div class="lx__in">
       <div class="lx-svc__head">
         <div>
@@ -352,10 +325,6 @@
           <h3 class="lx-svc__t" data-i18n="svc1T">قراءة سيناريو فيلم قصير وتقييمه</h3>
           <p class="lx-svc__meta" data-i18n="svc1Meta">للسيناريو من 10 إلى 60 صفحة</p>
           <p class="lx-svc__by" data-i18n="svcByPages">يُحسب السعر بحسب حجم المشروع، ويظهر لك فور اختيار نوع العمل ورفع ملف المشروع</p>
-          <!-- Prices are off the cards for now. Uncomment to put them back.
-          <p class="lx-svc__flag" data-i18n="svcFlag">سعر إطلاق مؤقت</p>
-          <p class="lx-svc__price"><span class="lx-svc__from" data-i18n="svcFrom">ابتداءً من</span><span class="lx-svc__num" data-i18n="svc1Num">100 - 400</span><span class="lx-svc__riyal" role="img" aria-label="ريال سعودي"></span></p>
-          -->
           <p class="lx-svc__b" data-i18n="svc1B">تقرير مفصّل يوضح نقاط قوة السيناريو والجوانب التي تحتاج إلى تطوير، ويقدّم ملاحظات عملية تساعدك على كتابة المسودة التالية، مع إمكانية ترشيح النصوص المتميزة لجهات مناسبة في صناعة الأفلام</p>
           <a class="lx-link lx-svc__what" href="/sample-report" data-i18n="svcWhat">اطّلع على تفاصيل التقرير</a>
           <div class="lx-svc__foot">
@@ -367,10 +336,6 @@
           <h3 class="lx-svc__t" data-i18n="svc2T">قراءة سيناريو فيلم طويل وتقييمه</h3>
           <p class="lx-svc__meta" data-i18n="svc2Meta">للسيناريو من 60 إلى 200 صفحة</p>
           <p class="lx-svc__by" data-i18n="svcByPages">يُحسب السعر بحسب حجم المشروع، ويظهر لك فور اختيار نوع العمل ورفع ملف المشروع</p>
-          <!-- Prices are off the cards for now. Uncomment to put them back.
-          <p class="lx-svc__flag" data-i18n="svcFlag">سعر إطلاق مؤقت</p>
-          <p class="lx-svc__price"><span class="lx-svc__from" data-i18n="svcFrom">ابتداءً من</span><span class="lx-svc__num" data-i18n="svc2Num">600 - 2,000</span><span class="lx-svc__riyal" role="img" aria-label="ريال سعودي"></span></p>
-          -->
           <p class="lx-svc__b" data-i18n="svc2B">قراءة متأنية لسيناريو فيلمك، تتناول بناء القصة والشخصيات والحوار والإيقاع وقابلية الإنتاج، وتقدّم ملاحظات عملية لتطوير المسودة التالية، مع إمكانية ترشيح النصوص المتميزة لجهات مناسبة في صناعة الأفلام</p>
           <a class="lx-link lx-svc__what" href="/sample-report" data-i18n="svcWhat">اطّلع على تفاصيل التقرير</a>
           <div class="lx-svc__foot">
@@ -382,10 +347,6 @@
           <h3 class="lx-svc__t" data-i18n="svc3T">قراءة المعالجة السينمائية وتقييمها</h3>
           <p class="lx-svc__meta" data-i18n="svc3Meta">طوّر قصتك قبل كتابة السيناريو</p>
           <p class="lx-svc__by" data-i18n="svcPriceOnUpload">يظهر لك السعر فور اختيار نوع العمل ورفع ملف المشروع</p>
-          <!-- Prices are off the cards for now. Uncomment to put them back.
-          <p class="lx-svc__flag" data-i18n="svcFlag">سعر إطلاق مؤقت</p>
-          <p class="lx-svc__price"><span class="lx-svc__num" data-i18n="svc3Num">150</span><span class="lx-svc__riyal" role="img" aria-label="ريال سعودي"></span></p>
-          -->
           <p class="lx-svc__b" data-i18n="svc3B">تقييم للفكرة وبناء القصة والشخصيات ومسار الأحداث، يساعدك على معرفة ما يحتاج إلى تطوير قبل الانتقال إلى كتابة السيناريو</p>
           <a class="lx-link lx-svc__what" href="/sample-treatment-report" data-i18n="svcWhat">اطّلع على تفاصيل التقرير</a>
           <div class="lx-svc__foot">
@@ -398,76 +359,60 @@
     </div>
   </section>
 
-  <!-- ── 6. THE JOURNEY ── -->
-  <section class="lx" id="journey">
+  <!-- ── 3. WHAT YOU GET ──
+       Four cream cards, each opened by a number in a white chip. The chip is
+       the only white on this ground, which is what makes the number read as a
+       marker rather than as a heading. -->
+  <section class="lx lx-gets" id="why">
     <div class="lx__in">
-      <p class="lx-eyebrow" data-i18n="jnEyebrow">رحلة المشروع</p>
-      <h2 class="lx-h" data-i18n="jnH">من القراءة الأولى إلى فرص التطوير</h2>
-      <p class="lx-sub" data-i18n="jnSub">تبدأ رحلة المشروع بالقراءة والتقييم، وقد تتقدّم المشاريع المختارة إلى مسار الاستضافة والتواصل مع شركاء في التطوير والإنتاج</p>
-      <div class="lx-jn__grid" data-reveal>
-        <div class="lx-jn__step">
-          <span class="lx-jn__n" data-i18n="jn1N">01</span>
-          <h3 class="lx-jn__t" data-i18n="jn1T">تقديم النص</h3>
-          <p class="lx-jn__b" data-i18n="jn1B">أرسل نصك مع المعلومات الأساسية عن مشروعك</p>
+      <div class="lx-head">
+        <p class="lx-eyebrow" data-i18n="getsEyebrow">لماذا سين ون</p>
+        <h2 class="lx-h" data-i18n="getsH">ما الذي تحصل عليه حين تقدّم نصك</h2>
+      </div>
+      <div class="lx-gets__grid" data-reveal>
+        <div class="lx-gets__c">
+          <span class="lx-gets__n" aria-hidden="true">01</span>
+          <div>
+            <h3 class="lx-gets__t" data-i18n="gets1T">نظرة أعمق إلى قصتك</h3>
+            <p class="lx-gets__b" data-i18n="gets1B">يقرأ نصك متخصص في صناعة الأفلام، ليرى ما يميّز قصتك وما قد لا تلاحظه وأنت تكتبها</p>
+          </div>
         </div>
-        <div class="lx-jn__step">
-          <span class="lx-jn__n" data-i18n="jn2N">02</span>
-          <h3 class="lx-jn__t" data-i18n="jn2T">القراءة والتقييم</h3>
-          <p class="lx-jn__b" data-i18n="jn2B">يقرأ نصك قارئ متخصص ويعدّ تقريرًا يتناول عناصره الأساسية</p>
+        <div class="lx-gets__c">
+          <span class="lx-gets__n" aria-hidden="true">02</span>
+          <div>
+            <h3 class="lx-gets__t" data-i18n="gets2T">ملاحظات دقيقة على مشروعك</h3>
+            <p class="lx-gets__b" data-i18n="gets2B">تعرف أين تكمن قوة قصتك، وما يحتاج إلى تطوير في الشخصيات والحبكة والإيقاع، بعيدًا عن الأحكام العامة</p>
+          </div>
         </div>
-        <div class="lx-jn__step">
-          <span class="lx-jn__n" data-i18n="jn3N">03</span>
-          <h3 class="lx-jn__t" data-i18n="jn3T">استلام التقرير</h3>
-          <p class="lx-jn__b" data-i18n="jn3B">تتسلّم ملاحظات واضحة تساعدك على مراجعة النص وتطوير مسودته التالية</p>
+        <div class="lx-gets__c">
+          <span class="lx-gets__n" aria-hidden="true">03</span>
+          <div>
+            <h3 class="lx-gets__t" data-i18n="gets3T">تعرف من أين تبدأ</h3>
+            <p class="lx-gets__b" data-i18n="gets3B">لا تكتفي بمعرفة ما يحتاج إلى تحسين بل تحصل على ملاحظات عملية تساعدك على اتخاذ قرارات واضحة في مسودتك التالية</p>
+          </div>
         </div>
-        <div class="lx-jn__step">
-          <span class="lx-jn__n" data-i18n="jn4N">04</span>
-          <h3 class="lx-jn__t" data-i18n="jn4T">الترشيح للاستضافة</h3>
-          <p class="lx-jn__b" data-i18n="jn4B">تُرشّح النصوص الأعلى تقييمًا لمسار الاستضافة، بعد الحصول على موافقة الكاتب الخطية</p>
-        </div>
-        <div class="lx-jn__step">
-          <span class="lx-jn__n" data-i18n="jn5N">05</span>
-          <h3 class="lx-jn__t" data-i18n="jn5T">استضافة المشروع وعرضه</h3>
-          <p class="lx-jn__b" data-i18n="jn5B">يُدرج المشروع ضمن مكتبة سين ون الخاصة، ويُعرض على جهات مناسبة في صناعة الأفلام وفق موافقة الكاتب</p>
-        </div>
-        <div class="lx-jn__step">
-          <span class="lx-jn__n" data-i18n="jn6N">06</span>
-          <h3 class="lx-jn__t" data-i18n="jn6T">فرص التطوير والإنتاج</h3>
-          <p class="lx-jn__b" data-i18n="jn6B">نسعى إلى إيجاد شركاء وفرص تساعد المشاريع المختارة على مواصلة التطوير والتقدّم نحو الإنتاج</p>
+        <div class="lx-gets__c">
+          <span class="lx-gets__n" aria-hidden="true">04</span>
+          <div>
+            <h3 class="lx-gets__t" data-i18n="gets4T">بداية لفرص جديدة</h3>
+            <p class="lx-gets__b" data-i18n="gets4B">لا تتوقف رحلتك معنا عند التقييم. فالمشاريع الواعدة تحظى بفرصة للاستضافة والتطوير، والوصول إلى شركاء في صناعة الأفلام</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── 7. TWO AUDIENCES ──
-       A light panel for writers and a black one for the industry, each with its
-       own call to action. Full-bleed: the black half is a slab to the page
-       edge, so the section pads nothing and each panel pads itself. -->
-  <section class="lx lx--flush" id="audience">
-    <div class="lx-split">
-      <div class="lx-split__panel lx-split__panel--light">
-        <p class="lx-eyebrow" data-i18n="wrEyebrow">للكتّاب</p>
-        <h2 class="lx-h lx-h--sm" data-i18n-html="wrH">قراءة تفهم ما تريد أن تقوله</h2>
-        <p class="lx-split__p" data-i18n="wrP1">نبدأ بفهم رؤيتك للفيلم، ثم نعمل معك على تطوير القصة بما يخدمها ويحافظ على صوتك ككاتب</p>
-        <p class="lx-split__p" data-i18n="wrP2">نحن لا نخبرك بما يجب أن يكون عليه فيلمك، بل نساعدك على الوصول إلى أقوى نسخة مما تحاول قوله أنت.</p>
-        <a class="lx-link lx-link--red" href="/submit" data-i18n="btnSubmit">قدّم نصك</a>
-      </div>
-      <div class="lx-split__panel lx-split__panel--white">
-        <p class="lx-eyebrow" data-i18n="indEyebrow">لشركات الإنتاج والمخرجين</p>
-        <h2 class="lx-h lx-h--sm" data-i18n-html="indH">مشاريع أوضح لاتخاذ قرار مدروس</h2>
-        <p class="lx-split__p" data-i18n="indP1">نقدّم مشاريع خضعت لقراءة متخصصة توضّح فكرتها، وعناصر قوتها، واحتياجاتها التطويرية، والجمهور الذي يمكن أن تصل إليه</p>
-        <p class="lx-split__p" data-i18n="indP2">نوفّر عليكم وقت القراءة والتقييم الأولي، ونساعدكم على اختيار المشاريع الأقرب إلى توجهكم</p>
-        <a class="lx-link" href="#contact" data-i18n="navContact">تواصل معنا</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── 8. THE TEAM ── -->
+  <!-- ── 4. THE TEAM ──
+       The head is centred here, as every section head on the page now is, and
+       the row closes on a link to the readers page rather than leaving each
+       portrait as the only way through to it. -->
   <section class="lx" id="team">
     <div class="lx__in">
-      <p class="lx-eyebrow" data-i18n="teamEyebrow">الفريق</p>
-      <h2 class="lx-h" data-i18n="teamH">من يقرأ نصك؟</h2>
-      <p class="lx-sub" data-i18n="teamSub">يضم فريقنا كتّاب سيناريو وصنّاع أفلام يقرؤون النصوص ويقيّمونها، إلى جانب منتج تطوير إبداعي يتولّى متابعة المشاريع المرشّحة للتطوير</p>
+      <div class="lx-head">
+        <p class="lx-eyebrow" data-i18n="teamEyebrow">من يقرأ نصك</p>
+        <h2 class="lx-h" data-i18n="teamH2">فريق القراءة والتطوير</h2>
+        <p class="lx-sub" data-i18n="teamSub">كتّاب سيناريو وصنّاع أفلام يقرؤون كل مشروع بالمعايير نفسها التي تُقرأ بها المشاريع في غرف التطوير</p>
+      </div>
       <div class="lx-team__grid" data-reveal>
         <div>
           <!-- The photo is a link into the reader's row on /readers; the brief
@@ -540,76 +485,90 @@
           <p class="lx-team__r" data-i18n="fajrRole">قارئة نصوص</p>
         </div>
       </div>
+      <a class="lx-team__all" href="/readers"><span data-i18n="teamMore">تعرّف على الفريق</span><span class="lx-team__arrow" aria-hidden="true">←</span></a>
     </div>
   </section>
 
-  <!-- ── 8b. WHAT THE WRITERS SAID ──
-       Two real messages, each kept in the language it was written in: a
-       testimonial reads as evidence only while it is still the writer's own
-       words. Only the chrome around them translates.
+  <!-- ── 5. WHAT THE WRITERS SAID ──
+       One message at a time, as the design has it: the pull quote on one side
+       and the message as it actually arrived on the other, with dots, arrows
+       and a counter below. Two real messages, each kept in the language it was
+       written in — a testimonial reads as evidence only while it is still the
+       writer's own words. Only the chrome around them translates.
 
-       Sakeena's is long, so the card shows the first stretch and opens the
-       rest. The toggle is a checkbox and a label, not script: it works on a
-       page with JS off, and the overlay's own script has nothing to bind. -->
-  <section class="lx lx--white" id="voices">
-    <div class="lx__in lx-vox">
-      <div class="lx-vox__head">
+       Every panel is in the document and visible until js/main.js marks the
+       root, so with no script this is two messages stacked and whole rather
+       than one message and five dead controls. The long one's "show the whole
+       message" toggle is the same deal: a checkbox and a label, no script. -->
+  <section class="lx lx--white lx-vox" id="voices">
+    <div class="lx__in">
+      <div class="lx-head">
         <p class="lx-eyebrow" data-i18n="voxEyebrow">تجارب الكتّاب</p>
-        <h2 class="lx-h lx-h--sm" data-i18n="voxH">ماذا قال الكتّاب عن تجربتهم معنا؟</h2>
+        <h2 class="lx-h" data-i18n="voxH">ماذا قال الكتّاب عن تجربتهم معنا؟</h2>
         <p class="lx-sub" data-i18n="voxSub">رسائل شاركنا بها الكتّاب بعد استلام تقاريرهم</p>
       </div>
 
-      <div class="lx-vox__cards" data-reveal>
-        <figure class="lx-vox__card lx-vox__card--wide">
-          <span class="lx-vox__mark" aria-hidden="true">&rdquo;</span>
-          <svg class="lx-vox__via" viewBox="0 0 24 24" role="img" aria-label="وصلتنا عبر البريد الإلكتروني" data-i18n-aria="voxVia1"><rect x="2.6" y="5" width="18.8" height="14" rx="2.4"/><path d="M2.6 7.4 12 14.1l9.4-6.7"/></svg>
-          <input type="checkbox" id="vox-sakeena" class="lx-vox__t" hidden>
-          <div class="lx-vox__box">
-            <p>انا ماعندي استفسار ولاتوضيح</p>
-            <p>بس التقييييم الي جاني ، اول مره احس انه ودي ابكي ، لانه التقييييم الحمد لله كان عادل وانصفني</p>
-            <p>وبالعكس خلاني اتشجع اكثر واكثر في تقديماتي وفي اني احارب عشانه اكثر واكثر انا مؤمنه بليس حرج والحين خليتوني بعد هالتقييييم آمن فيه اكثر واكثر</p>
-            <p>اتمنى اتعرف ع القارئ واقوله شكراً وجميلك راح ارده في انك راح تشوف ليس حرج ان شاء الله يفوز بمنح وراح تشوفه ع الشاشات بإذن الله</p>
-            <p>واحب اشكر منصة سين ع اختيارها لليس حرج وتقييمها لي</p>
-            <p>اكرر شكري</p>
-            <p>تستحقو كل الاحترام والتقدير والشهره ان شاء الله وتوصلو لأعلى المستويات</p>
+      <div class="lx-vox__deck">
+        <figure class="lx-vox__item is-on">
+          <div class="lx-vox__pull">
+            <span class="lx-vox__mark" aria-hidden="true">&rdquo;</span>
+            <p class="lx-vox__q">اول مره احس انه ودي ابكي ، لانه التقييييم الحمد لله كان عادل وانصفني</p>
+            <figcaption class="lx-vox__cap">
+              <span class="lx-vox__name" data-i18n="voxName1">سكينة</span>
+              <span class="lx-vox__role" data-i18n="voxRole1">كاتبة «ليس حرج»</span>
+            </figcaption>
           </div>
-          <label for="vox-sakeena" class="lx-vox__btn">
-            <span class="lx-vox__o" data-i18n="voxMore">عرض الرسالة كاملة ↓</span>
-            <span class="lx-vox__c" data-i18n="voxLess">إخفاء ↑</span>
-          </label>
-          <figcaption>
-            <span class="lx-vox__name" data-i18n="voxName1">سكينة</span>
-            <span class="lx-vox__role" data-i18n="voxRole1">كاتبة «ليس حرج»</span>
-          </figcaption>
+          <div class="lx-vox__full">
+            <p class="lx-vox__lbl" data-i18n="voxAsSent">الرسالة كما وصلتنا</p>
+            <input type="checkbox" id="vox-sakeena" class="lx-vox__t" hidden>
+            <div class="lx-vox__box">
+              <p>انا ماعندي استفسار ولاتوضيح</p>
+              <p>بس التقييييم الي جاني ، اول مره احس انه ودي ابكي ، لانه التقييييم الحمد لله كان عادل وانصفني</p>
+              <p>وبالعكس خلاني اتشجع اكثر واكثر في تقديماتي وفي اني احارب عشانه اكثر واكثر انا مؤمنه بليس حرج والحين خليتوني بعد هالتقييييم آمن فيه اكثر واكثر</p>
+              <p>اتمنى اتعرف ع القارئ واقوله شكراً وجميلك راح ارده في انك راح تشوف ليس حرج ان شاء الله يفوز بمنح وراح تشوفه ع الشاشات بإذن الله</p>
+              <p>واحب اشكر منصة سين ع اختيارها لليس حرج وتقييمها لي</p>
+              <p>اكرر شكري</p>
+              <p>تستحقو كل الاحترام والتقدير والشهره ان شاء الله وتوصلو لأعلى المستويات</p>
+            </div>
+            <label for="vox-sakeena" class="lx-vox__btn">
+              <span class="lx-vox__o" data-i18n="voxMore">عرض الرسالة كاملة ↓</span>
+              <span class="lx-vox__c" data-i18n="voxLess">إخفاء ↑</span>
+            </label>
+          </div>
         </figure>
 
-        <figure class="lx-vox__card lx-vox__card--dark">
-          <span class="lx-vox__mark" dir="ltr" aria-hidden="true">&ldquo;</span>
-          <svg class="lx-vox__via" viewBox="0 0 24 24" role="img" aria-label="وصلتنا عبر إنستغرام" data-i18n-aria="voxVia2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.1"/><circle class="lx-vox__via-dot" cx="17.1" cy="6.9" r="1.15"/></svg>
-          <blockquote dir="ltr">
-            <p class="lx-vox__lead">Another step forward for BRWAL.</p>
-            <p>Grateful to Scene One for this opportunity, and for every step that helps us grow, develop and make film further.</p>
-          </blockquote>
-          <figcaption>
-            <span class="lx-vox__name" data-i18n="voxName2">أحمد كردي</span>
-            <span class="lx-vox__role" data-i18n="voxRole2">كاتب «غشنة»</span>
-          </figcaption>
+        <figure class="lx-vox__item">
+          <div class="lx-vox__pull">
+            <span class="lx-vox__mark" dir="ltr" aria-hidden="true">&ldquo;</span>
+            <p class="lx-vox__q lx-vox__q--en" dir="ltr">Another step forward for BRWAL</p>
+            <figcaption class="lx-vox__cap">
+              <span class="lx-vox__name" data-i18n="voxName2">أحمد كردي</span>
+              <span class="lx-vox__role" data-i18n="voxRole2">كاتب «غشنة»</span>
+            </figcaption>
+          </div>
+          <div class="lx-vox__full">
+            <p class="lx-vox__lbl" data-i18n="voxAsSent">الرسالة كما وصلتنا</p>
+            <div class="lx-vox__box lx-vox__box--short" dir="ltr">
+              <p>Another step forward for BRWAL.</p>
+              <p>Grateful to Scene One for this opportunity, and for every step that helps us grow, develop and make film further.</p>
+            </div>
+          </div>
         </figure>
       </div>
-    </div>
-  </section>
 
-  <!-- ── 9. PARTNERSHIPS ── -->
-  <section class="lx" id="partnership">
-    <div class="lx__in lx-part">
-      <div>
-        <p class="lx-eyebrow" data-i18n="partEyebrow">شراكاتنا</p>
-        <h2 class="lx-h lx-h--sm" data-i18n="partH">نعمل مع شركاء في قطاع السينما</h2>
-        <p class="lx-sub" data-i18n="partSub">نقدّم لأعضاء جمعية السينما السعودية مزايا خاصة على خدمات قراءة النصوص وتقييمها</p>
+      <!-- Hidden until js/main.js takes over: with no script every message is
+           already on the page, so a dot that selects one would do nothing. -->
+      <div class="lx-vox__nav" hidden>
+        <div class="lx-vox__dots">
+          <button class="lx-vox__dot" type="button" data-vox="0" data-i18n-aria="voxGo1" aria-label="الرسالة الأولى"></button>
+          <button class="lx-vox__dot" type="button" data-vox="1" data-i18n-aria="voxGo2" aria-label="الرسالة الثانية"></button>
+        </div>
+        <div class="lx-vox__arrows" dir="ltr">
+          <button class="lx-vox__arw" type="button" data-vox-step="-1" data-i18n-aria="voxPrev" aria-label="السابق">&#8592;</button>
+          <span class="lx-vox__count"><span class="lx-vox__count-i">01</span> <span class="lx-vox__count-n">/ 02</span></span>
+          <button class="lx-vox__arw" type="button" data-vox-step="1" data-i18n-aria="voxNext" aria-label="التالي">&#8594;</button>
+        </div>
       </div>
-      <a href="https://www.cinemaassoc.com" target="_blank" rel="noopener noreferrer">
-        <img class="lx-part__logo" src="assets/partner-cinema-association-dark.png" alt="جمعية السينما Cinema Association" loading="lazy" decoding="async" width="420" height="245">
-      </a>
     </div>
   </section>
 
@@ -902,16 +861,26 @@
     </div>
   </section>
 
-  <!-- ── 10. CLOSING CTA ──
-       The shade is 72% black, which is the opacity the design file paints over
-       this same photograph. -->
+  <!-- ── 6. CLOSING CTA ──
+       A black slab inside the page rather than a full-bleed band over a photo:
+       the two stills are placed on it, not behind it, which is what lets the
+       heading sit on flat black at full contrast instead of over a 72% veil.
+
+       The photographs are decoration — the section's meaning is entirely in
+       its heading — so both carry an empty alt. -->
   <section class="lx lx-cta" id="contact">
-    <img class="lx-cta__bg" src="assets/cta-seats.webp" alt="" loading="lazy" decoding="async" width="1440" height="620">
-    <div class="lx-cta__shade"></div>
-    <div class="lx__in lx-cta__in">
-      <h2 class="lx-h" data-i18n="ctaH">إلى أين يمكن أن يصل نصّك؟</h2>
-      <p class="lx-cta__sub" data-i18n="ctaSub">ابدأ بقراءة مهنية تساعدك على فهم نصّك بعمق، واكتشاف فرص تطويره، ومعرفة خطوتك التالية</p>
-      <a class="lx-cta__btn" href="/submit" data-i18n="btnSubmit">قدّم نصك</a>
+    <div class="lx__in">
+      <div class="lx-cta__box">
+        <div class="lx-cta__copy">
+          <h2 class="lx-cta__h" data-i18n="ctaH">إلى أين يمكن أن يصل نصّك؟</h2>
+          <p class="lx-cta__sub" data-i18n="ctaSub">ابدأ بقراءة مهنية تساعدك على فهم نصّك بعمق، واكتشاف فرص تطويره، ومعرفة خطوتك التالية</p>
+          <a class="lx-cta__btn" href="/submit" data-i18n="btnSubmit">قدّم نصك</a>
+        </div>
+        <div class="lx-cta__stills" aria-hidden="true">
+          <img class="lx-cta__still lx-cta__still--1" src="assets/hero-num-screen.jpg" alt="" loading="lazy" decoding="async" width="700" height="760">
+          <img class="lx-cta__still lx-cta__still--2" src="assets/cta-wall.jpg" alt="" loading="lazy" decoding="async" width="1600" height="620">
+        </div>
+      </div>
     </div>
   </section>
 
@@ -930,7 +899,7 @@
         <div class="lx-foot__col">
           <a href="#coverage-types" data-i18n="footCoverage">تغطية النصوص</a>
           <a href="/readers" data-i18n="footReaders">من يقرأ نصك</a>
-          <a href="#journey" data-i18n="navJourney">رحلة النص</a>
+          <a href="#services" data-i18n="navServices">خدماتنا</a>
           <a href="/partners" data-i18n="footPartners">شركاء</a>
         </div>
         <div class="lx-foot__col">

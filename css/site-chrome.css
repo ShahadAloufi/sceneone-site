@@ -251,11 +251,9 @@
    other two are tools people work in all day. */
 @media (min-width: 1000px) {
   html.z75 { zoom: .75; }
-  /* A viewport-height box is measured against the UNZOOMED viewport, so the
-     hero would stop a quarter short of the fold and show the next section
-     under it. Dividing by the same factor puts it back on the fold. */
-  html.z75 .hn {
-    min-block-size: calc(100vh / .75);
-    min-block-size: calc(100svh / .75);
-  }
 }
+/* The hero used to need a companion rule here: it was a 100svh band, and a
+   viewport-height box is measured against the UNZOOMED viewport, so it stopped
+   a quarter short of the fold. The hero is sized by its content now, so the
+   rule went with the band. Anything viewport-height added to a zoomed page
+   will want the same /.75 treatment. */

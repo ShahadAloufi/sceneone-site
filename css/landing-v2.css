@@ -105,398 +105,227 @@
 .lx-link--red { color: var(--lx-red); }
 .lx-link--red:hover { color: var(--lx-ink); }
 
-/* ---- hero: text only --------------------------------------------------- */
-/* The bottom strip is the only new element here; the title, sub, buttons and
-   video all keep their styles from styles.css untouched. */
-/* styles.css deliberately gives .hero__content no bottom padding, because the
-   old partner badge + quote rule below it spent that space. Both are gone and
-   the trust strip is absolutely positioned, so the content needs to clear it
-   itself or the CTAs sit behind the strip (measured: 55px of overlap). */
-/* `.landing .hero .hero__content` and not the bare class: styles.css corrects
-   this box for English with `html[dir="ltr"] .hero__content`, which outranks a
-   single class and put the margin back to 40px (measured: 8px adrift in EN,
-   flush in AR). Three classes clears it in both directions. */
-.landing .hero .hero__content {
-  /* Clears the trust strip. Below 960 the badge sits under this in the flow and
-     carries its own bottom margin, so the column only needs a small gap. */
-  padding-block-end: 28px;
 
-  /* Put the hero copy on the same container as the nav and every section.
-     styles.css positions this box with PHYSICAL margins (margin-right in
-     Arabic, mirrored to margin-left in a separate html[dir="ltr"] rule) plus a
-     40px inline padding, which left its text edge 48px inside the container.
-     Clearing both and re-stating the offset as a logical margin does two
-     things: it lands the text exactly on the container edge, and it mirrors on
-     its own, so the dir="ltr" rule has nothing left to correct.
-
-     The gutter is a margin rather than padding on purpose — max-width is 768px
-     here, and padding would eat into that column, narrowing the headline as
-     the window grows. */
-  margin: 0;
-  margin-inline-start: max(var(--sec-x), calc((100vw - var(--container)) / 2));
-  margin-inline-end: auto;
-  padding-inline: 0;
+/* ---- centred section head ---------------------------------------------- */
+/* Eyebrow, heading and a line of sub, centred over the block they introduce.
+   Every section on the page now opens this way — it is what replaced the
+   start-aligned head the old structure used, and it is why .lx-sub's own
+   max-inline-size has to be overridden here: 62ch left the sub wider than the
+   heading above it, which read as ragged rather than centred. */
+.lx-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+  margin-block-end: clamp(36px, 4.4vw, 56px);
 }
-@media (min-width: 960px) { .landing .hero .hero__content { padding-block-end: 104px; } }
+.lx-head .lx-eyebrow { margin: 0; font-size: 15px; font-weight: 500; }
+.lx-head .lx-h { max-inline-size: 18ch; }
+.lx-head .lx-sub { margin: 0; max-inline-size: 48ch; }
 
-/* The accreditation badge. It is a direct child of .hero, not of
-   .hero__content, and that placement is the whole trick: .hero__content is
-   positioned, so a badge inside it could only ever anchor to the copy column's
-   edge (measured 228px short of the page gutter). Out here it anchors to the
-   hero itself.
-
-   Wide screens put it in the far corner, opposite the copy — left in Arabic,
-   right in English, since the inset is logical and mirrors. 960px, not a round
-   1024: the copy caps at 768 and the badge is ~96 wide, so side by side they
-   need about 888 inside the container, which a ~936px viewport gives.
-
-   Narrower than that they would collide, so the badge drops back into the flow
-   directly under the CTAs, on the same gutter as the copy — which is what
-   keeps it on a phone, where .hero__strip is dropped entirely. */
-.landing .hero .partner {
-  /* position + z-index even in the flow case: .hero__shade is an absolutely
-     positioned sibling, and a static element paints below positioned ones —
-     the badge was laid out correctly and rendered underneath the shade, i.e.
-     invisible. .hero__content escapes the same trap with its own z-index: 10. */
-  position: relative;
-  z-index: 3;
-  align-self: flex-start;
-  margin-inline-start: max(var(--sec-x), calc((100vw - var(--container)) / 2));
-  margin-block-end: 76px;
+/* ---- partners strip ----------------------------------------------------
+   A line under the hero, not a section: no heading, no paragraph, just the
+   label and the marks. It replaced a full band that had both. */
+.lx-logos {
+  padding-block: clamp(44px, 5vw, 64px);
+  padding-inline: var(--lx-x);
+  background: var(--lx-white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
 }
-@media (max-width: 640px) { .landing .hero .partner { margin-block-end: 40px; } }
-
-@media (min-width: 960px) {
-  .landing .hero .partner {
-    position: absolute;
-    inset-block-end: 88px;
-    inset-inline-end: max(var(--sec-x), calc((100% - var(--container)) / 2));
-    margin: 0;
-    z-index: 3;
-  }
-}
-
-/* The trust strip pinned to the foot of the hero: accreditation on one side,
-   the SAIP note on the other. Replaces the old stacked badge + NDA line. */
-.hero__strip {
-  position: absolute;
-  inset-inline: 0;
-  inset-block-end: 0;
-  /* Above .hero__content, which is z-index 10 and — despite ending its copy at
-     the CTA — stretches its box all the way to the foot of the hero. That empty
-     tail was painting over this strip and swallowing every click on the SAIP
-     link: the link was reachable at narrow widths only because the strip is
-     hidden under 600px and the copy column is shorter above it.
-     Safe to lift: this band holds nothing else interactive — the CTA ends at
-     796px and the accreditation badge at 812px, well clear of the strip's top
-     at 846px. */
-  z-index: 11;
+.lx-logos__lbl { margin: 0; font-size: 14px; color: var(--lx-muted-2); text-align: center; }
+.lx-logos__row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px 28px;
-  padding-block: 16px;
-  padding-inline: max(var(--lx-x), calc((100% - var(--lx-w)) / 2));
-  /* No plate, no hairline, no blur: the line sits on the video itself.
-     .hero__shade already ends at an opaque --bg, so the foot of the hero is
-     dark and the text is legible on it — the strip's own 55% black on top of
-     that was a second darkening, and its hard top edge read as a black band
-     cut across the picture. */
+  justify-content: center;
+  gap: clamp(36px, 5vw, 72px);
 }
-.hero__strip p { margin: 0; font-size: 13px; line-height: 1.7; color: rgba(255,255,255,.62); }
-.hero__strip a {
-  color: rgba(255,255,255,.92);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  /* The hit area, not the ink. "SAIP" sets at 24x13 CSS px, under WCAG 2.2
-     Target Size (Minimum)'s 24x24, and it is a four-letter word inside a
-     sentence — easy to miss by a pixel or two. The pseudo-element grows the
-     clickable box to 36x29 without touching the line box, so the sentence does
-     not reflow and the underline stays the width of the word. It fits inside
-     the strip's own 16px padding, so it reaches no other control. */
-  position: relative;
+.lx-logos__img {
+  display: block;
+  block-size: clamp(40px, 4.4vw, 54px);
+  inline-size: auto;
+  opacity: .7;
+  transition: opacity 200ms ease;
 }
-.hero__strip a::after {
-  content: "";
-  position: absolute;
-  inset-block: -8px;
-  inset-inline: -6px;
+.lx-logos__row a:hover .lx-logos__img { opacity: 1; }
+/* The forum's artwork is white line art — the only white asset in the row —
+   so it is knocked to black here rather than shipped a second time. Its own
+   cut runs a little taller than the association's at the same height, hence
+   the 4px. */
+.lx-logos__img--knock {
+  filter: brightness(0);
+  block-size: clamp(44px, 4.8vw, 58px);
 }
-.hero__strip a:hover { color: #fff; }
-@media (max-width: 600px) { .hero__strip { display: none; } }
 
-/* ---- 1. intro: text only ----------------------------------------------- */
-/* No photo. The heading and the paragraph block sit side by side and share a
-   bottom edge — `align-items: end`, so the two finish on the same line
-   however many lines the heading takes. The copy is a fixed 440 against the
-   heading's flexible column, which is what keeps the measure readable while
-   the heading does the stretching. */
-.lx-intro .lx__in { display: grid; gap: 48px; }
+/* ---- 1. services: four cards on a bento grid ---------------------------
+   Two columns, 1.65fr beside 1fr, and two rows. The two photographic cards
+   take the wide cell and the two flat ones the narrow, alternating sides so
+   neither column is all photograph.
+
+   PLACEMENT IS EXPLICIT, and it has to be: in source order the cream card
+   would fall into the wide cell on row two and the hosting photograph into
+   the narrow one, which is what the design's own export does — against its
+   own comments, which call card 04 the wide one. */
+.lx-bento { display: grid; gap: 20px; }
 @media (min-width: 900px) {
-  .lx-intro .lx__in {
-    grid-template-columns: minmax(0, 1fr) 440px;
-    gap: clamp(48px, 6.6vw, 96px);
-    align-items: end;
+  .lx-bento {
+    grid-template-columns: 1.65fr 1fr;
+    grid-template-rows: repeat(2, clamp(320px, 27vw, 390px));
   }
+  .lx-bento__c--a { grid-area: 1 / 1; }
+  .lx-bento__c--b { grid-area: 1 / 2; }
+  .lx-bento__c--c { grid-area: 2 / 2; }
+  .lx-bento__c--d { grid-area: 2 / 1; }
 }
-/* The redesigned sections set the eyebrow larger and lighter than the page's
-   default — the headings beside it are twice any other, and 13px/700 read as
-   a label on something small. Listed rather than changed globally: the
-   sections further down still carry the old scale. */
-.lx-intro .lx-eyebrow,
-.lx-do .lx-eyebrow,
-.lx-read .lx-eyebrow { font-size: 15px; font-weight: 500; }
-.lx-intro .lx-eyebrow { margin-block-end: 28px; }
-.lx-do .lx-eyebrow { margin-block-end: 22px; }
-.lx-read .lx-eyebrow { margin-block-end: 26px; }
-.lx-intro__h {
-  margin: 0;
-  /* Far bigger than .lx-h: this is the page's one statement, and the design
-     sets it at 72px on a 1440 frame. It carries no <br> — the column is
-     measured so the line falls where the design breaks it. */
-  font-family: var(--font-head);
-  font-size: clamp(28px, 5vw, 72px);
-  font-weight: 600;
-  line-height: 1.3;
-  letter-spacing: -.01em;
-  color: var(--lx-black);
-}
-.lx-intro__copy {
-  /* The grid places it now; the rule is what ties it to the heading. Logical
-     side on purpose: inline-start is the edge facing the heading in both
-     directions — right in Arabic, left in English. */
-  border-inline-start: 2px solid var(--lx-red);
-  padding-inline-start: 28px;
-  /* Lifts the text off the shared baseline just enough that the rule, not the
-     last line, is what lines up with the heading. */
-  margin-block-end: 14px;
-}
-.lx-intro__p {
-  margin: 0;
-  font-size: clamp(15px, 1.25vw, 18px);
-  font-weight: 300;
-  line-height: 1.95;
-  /* The design's own value. Lighter than --lx-ink but darker than --lx-muted,
-     which is too quiet at this size. */
-  color: rgba(0, 0, 0, .68);
-}
-.lx-intro__kicker {
-  margin: 22px 0 0;
-  font-family: var(--font-head);
-  font-size: clamp(15px, 1.25vw, 18px);
-  font-weight: 600;
-  color: var(--lx-black);
-}
-.lx-intro__link { margin-block-start: 22px; font-size: 16px; font-weight: 500; border-block-end-width: 1.5px; }
-
-/* ---- 2. what we do: three numbered steps ------------------------------- */
-.lx-do__h {
-  margin: 0;
-  font-family: var(--font-head);
-  font-size: clamp(28px, 5vw, 72px);
-  font-weight: 600;
-  line-height: 1.25;
-  letter-spacing: -.01em;
-  color: var(--lx-black);
-}
-.lx-do__grid {
-  display: grid;
-  gap: 34px clamp(34px, 4.4vw, 64px);
-  /* The air under the heading is part of the composition here, not the usual
-     gap between a heading and what follows. */
-  margin-block-start: clamp(48px, 6.6vw, 96px);
-}
-@media (min-width: 760px) { .lx-do__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.lx-do__col { display: flex; flex-direction: column; gap: 18px; }
-/* Set in the heading face with tracking and tabular figures rather than the
-   design's monospace: one more font request for two digits is not worth it,
-   and the figures are what wanted monospace. Same call as .hn__count. */
-.lx-do__n {
-  font-family: var(--font-head);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  font-variant-numeric: tabular-nums;
-  color: var(--lx-red);
-}
-.lx-do__t {
-  margin: 0;
-  font-family: var(--font-head);
-  font-size: clamp(22px, 2.5vw, 36px);
-  font-weight: 600;
-  color: var(--lx-black);
-}
-.lx-do__b {
-  margin: 0;
-  max-inline-size: 340px;
-  font-size: clamp(15px, 1.35vw, 19px);
-  font-weight: 300;
-  line-height: 1.85;
-  color: rgba(0, 0, 0, .72);
-}
-
-/* ---- 4. what we look for: five numbered cards on white ------------------ */
-/* Was a stack of ruled rows with a red dot. The design turns it into cards,
-   and the row it wants is three then two — so the grid is SIX columns and the
-   cards span 2 and 3 rather than being a three-up grid with an orphan row. */
-.lx-look__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 14px;
-  margin: 48px 0 0;
-  padding: 0;
-  list-style: none;
-}
-.lx-look__card {
-  box-sizing: border-box;
+.lx-bento__c {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  min-block-size: 300px;
+  padding: 40px;
   display: flex;
   flex-direction: column;
-  /* The number rides at the top and the statement sits on the floor of the
-     card, which is what gives the row its common baseline even though the
-     statements run to different lengths. */
   justify-content: space-between;
-  gap: 20px;
-  padding: 26px 24px;
+  gap: 24px;
+}
+.lx-bento__c--dark { background: var(--lx-black); color: var(--lx-cream); }
+.lx-bento__c--cream { background: var(--lx-white); color: var(--lx-ink); }
+/* The photographic pair. The copy sits on the bottom edge and the veil is
+   what it sits on, so the padding goes on .lx-bento__body instead — a card
+   with a photo pads its text, not its image. */
+.lx-bento__c--ph { background: #151515; color: var(--lx-cream); padding: 0; justify-content: flex-end; }
+.lx-bento__bg {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  opacity: .55;
+}
+.lx-bento__bg--gray { filter: grayscale(1); opacity: .6; }
+.lx-bento__veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(0,0,0,.85) 10%, rgba(0,0,0,0) 70%);
+}
+.lx-bento__body {
+  position: relative;
+  z-index: 2;
+  padding: 36px 40px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 30px;
+}
+.lx-bento__col { display: flex; flex-direction: column; gap: 10px; }
+.lx-bento__n {
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--lx-red);
+  font-variant-numeric: tabular-nums;
+}
+.lx-bento__t {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(22px, 2.4vw, 32px);
+  font-weight: 600;
+  line-height: 1.3;
+}
+.lx-bento__c--dark .lx-bento__t,
+.lx-bento__c--cream .lx-bento__t { font-size: clamp(22px, 2.2vw, 30px); }
+.lx-bento__b {
+  margin: 0;
+  max-inline-size: 52ch;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(249, 244, 239, .8);
+}
+.lx-bento__c--cream .lx-bento__b { color: var(--lx-muted); }
+.lx-bento__c--dark .lx-bento__b { color: rgba(249, 244, 239, .72); }
+/* The chip on card 01. It is inside an <a>, so it is a label on a link rather
+   than a link of its own — nesting one would be invalid and would give a
+   screen reader two targets for one destination. */
+.lx-bento__go {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: rgba(249, 244, 239, .14);
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--lx-cream);
+  white-space: nowrap;
+  transition: background-color 200ms ease;
+}
+.lx-bento__c--a:hover .lx-bento__go { background: rgba(249, 244, 239, .26); }
+.lx-bento__c--a:focus-visible { outline: 2px solid var(--lx-red); outline-offset: 3px; }
+/* The glyph is the RTL-facing one, flipped for English — the convention every
+   arrow on this page follows. */
+.lx-bento__arrow { display: inline-block; }
+html[dir="ltr"] .lx-bento__arrow { transform: scaleX(-1); }
+@media (max-width: 899px) {
+  .lx-bento__body { flex-direction: column; align-items: flex-start; gap: 20px; }
+}
+@media (max-width: 600px) {
+  .lx-bento__c { padding: 28px; min-block-size: 260px; }
+  .lx-bento__c--ph { padding: 0; }
+  .lx-bento__body { padding: 28px; }
+  .lx-bento__b { font-size: 15px; }
+}
+
+/* ---- 3. what you get: four numbered cards ------------------------------
+   The design has cream cards with a white chip on a white page; this section
+   sits on the cream ground, so the pair is inverted — a white card with a
+   cream chip. The chip is the only tint on the card, which is what makes the
+   number read as a marker rather than as a second heading. The
+   46px gap under it is the design's: the chip belongs to the top edge of the
+   card and the text to the bottom, not to each other. */
+.lx-gets__grid { display: grid; gap: 20px; }
+@media (min-width: 640px)  { .lx-gets__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1040px) { .lx-gets__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.lx-gets__c {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(28px, 3.4vw, 46px);
+  padding: 32px 28px;
+  border-radius: 8px;
+  background: var(--lx-white);
+}
+.lx-gets__n {
+  inline-size: 40px;
+  block-size: 40px;
+  flex: none;
   border-radius: 8px;
   background: var(--lx-cream);
-}
-/* On white, the cards are cream; the fifth inverts to close the block. */
-.lx-look__card--dark { background: var(--lx-black); }
-
-.lx-look__head { display: flex; align-items: center; gap: 14px; }
-.lx-look__n {
+  color: var(--lx-red);
   font-family: var(--font-head);
   font-size: 16px;
   font-weight: 700;
-  letter-spacing: 1px;
-  color: var(--lx-red);
-}
-/* The rule runs from the number to the card's edge, so it has to be the
-   flexible one in the row rather than a fixed width. */
-.lx-look__rule { flex: 1 1 auto; block-size: 1px; background: rgba(0, 0, 0, .1); }
-.lx-look__card--dark .lx-look__rule { background: rgba(249, 244, 239, .2); }
-
-.lx-look__t {
-  margin: 0;
-  font-family: var(--font-head);
-  font-size: clamp(19px, 1.9vw, 28px);
-  font-weight: 600;
-  line-height: 1.55;
-  color: var(--lx-black);
-}
-.lx-look__card--dark .lx-look__t { color: var(--lx-cream); }
-
-/* The break is placed, not left to the box width: wrapping on its own split
-   "غير مألوفة" across two lines on the third card and gave each card a
-   different shape. It is a real <br>, so it only helps where there IS room
-   for two lines — off on a phone, where the card is full width and the text
-   finds its own breaks, and on from the two-up layout upwards. */
-.lx-look__br { display: none; }
-@media (min-width: 700px) { .lx-look__br { display: inline; } }
-
-/* Two up, with the fifth taking the full width rather than sitting alone in
-   half a row. */
-@media (min-width: 700px) {
-  .lx-look__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-  .lx-look__card { padding: 30px 30px; }
-  .lx-look__card--dark { grid-column: 1 / -1; }
-}
-/* The design's own arrangement, once there is room for three across. */
-@media (min-width: 1040px) {
-  .lx-look__grid { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 24px; }
-  .lx-look__card { grid-column: span 2; min-block-size: 230px; padding: 32px 36px; gap: 28px; }
-  /* The bottom row is two cards over the same six columns. */
-  .lx-look__card:nth-child(4),
-  .lx-look__card:nth-child(5) { grid-column: span 3; }
-}
-
-/* ---- 3. the read: a wide strip, then copy and the eight axes ------------ */
-/* The portrait photograph that used to sit beside the copy is gone; the
-   section opens on a full-width strip and the text answers it underneath.
-   assets/reading-chair.webp is unreferenced as a result. */
-.lx-read { padding-block-start: 0; }   /* it reads as one block with 'what we do' above */
-.lx-read__strip {
-  display: block;
-  inline-size: 100%;
-  block-size: clamp(200px, 30vw, 440px);
-  /* A 2560x879 frame in a box whose shape changes with the window, so it has
-     to crop. 40% down keeps the circled dialogue and off the blank margin. */
-  object-fit: cover;
-  object-position: center 40%;
-  background: #1a1613;
-}
-.lx-read__row {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 48px clamp(40px, 6.6vw, 96px);
-  margin-block-start: clamp(44px, 6vw, 88px);
-}
-.lx-read__copy { flex: 1 1 320px; max-inline-size: 560px; }
-.lx-read__h {
-  margin: 0;
-  font-family: var(--font-head);
-  font-size: clamp(26px, 4.2vw, 60px);
-  font-weight: 600;
-  line-height: 1.3;
-  letter-spacing: -.01em;
-  color: var(--lx-black);
-}
-.lx-read__p {
-  margin: 26px 0 0;
-  font-size: clamp(15px, 1.35vw, 19px);
-  font-weight: 300;
-  line-height: 1.95;
-  color: rgba(0, 0, 0, .72);
-}
-.lx-read__link { margin-block-start: 30px; font-size: 16px; font-weight: 500; border-block-end-width: 1.5px; }
-/* The axes column starts lower than the heading beside it — the design hangs
-   it off the heading's baseline rather than the row's top. Only once the two
-   are actually side by side, or it is just a gap on a phone. */
-.lx-read__axes-col { flex: 1 1 300px; }
-@media (min-width: 900px) { .lx-read__axes-col { padding-block-start: 52px; } }
-.lx-read__lbl {
-  margin: 0 0 30px;
-  font-size: clamp(15px, 1.2vw, 17px);
-  font-weight: 500;
-  line-height: 1.7;
-  color: var(--lx-black);
-}
-.lx-read__axes {
-  display: grid;
-  /* One column on a phone: two columns of 21px Arabic wrap every entry onto
-     a second line, which turns a list into a block of text. */
-  grid-template-columns: minmax(0, 1fr);
-  column-gap: 56px;
-  row-gap: 26px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-@media (min-width: 560px) { .lx-read__axes { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.lx-read__axes li {
-  display: flex;
-  align-items: baseline;
-  gap: 18px;
-  font-size: clamp(16px, 1.5vw, 21px);
-  font-weight: 400;
-  color: var(--lx-black);
-}
-/* Same reasoning as .lx-do__n: the heading face with tracking and tabular
-   figures, not a second font for sixteen digits. */
-.lx-read__n {
-  flex: none;
-  inline-size: 22px;
-  font-family: var(--font-head);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 1px;
+  align-items: center;
+  justify-content: center;
   font-variant-numeric: tabular-nums;
-  color: var(--lx-red);
 }
+.lx-gets__t {
+  margin: 0 0 8px;
+  font-family: var(--font-head);
+  font-size: clamp(19px, 1.8vw, 21px);
+  font-weight: 600;
+  line-height: 1.35;
+}
+.lx-gets__b { margin: 0; font-size: 15px; font-weight: 300; line-height: 1.8; color: var(--lx-muted); }
 
-/* ---- 5. services: three price cards ------------------------------------ */
+/* ---- 2. the coverage products: three price cards ----------------------- */
 .lx-svc__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; }
 .lx-svc__grid { display: grid; gap: 20px; margin-block-start: 44px; }
 @media (min-width: 860px) { .lx-svc__grid { grid-template-columns: repeat(3, 1fr); } }
@@ -610,37 +439,8 @@
 .lx-svc__btn:hover { background: var(--lx-ink); color: var(--lx-cream); }
 .lx-svc__note { margin: 26px 0 0; font-size: 13px; line-height: 1.8; color: var(--lx-muted-2); }
 
-/* ---- 6. journey: six numbered steps ------------------------------------ */
-.lx-jn__grid { display: grid; gap: 40px 40px; margin-block-start: 52px; }
-@media (min-width: 700px)  { .lx-jn__grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1000px) { .lx-jn__grid { grid-template-columns: repeat(3, 1fr); } }
-.lx-jn__step { padding-block-start: 18px; border-block-start: 1px solid var(--lx-line); }
-.lx-jn__n { display: block; font-size: 12px; font-weight: 700; color: var(--lx-muted-2); font-variant-numeric: tabular-nums; }
-.lx-jn__t { margin: 10px 0 10px; font-family: var(--font-head); font-size: 18px; font-weight: 800; }
-.lx-jn__b { margin: 0; font-size: 14px; line-height: 1.9; color: var(--lx-muted); max-inline-size: 34ch; }
 
-/* ---- 7. two audiences: cream beside white ------------------------------ */
-.lx-split { display: grid; gap: 0; background: var(--lx-cream); }
-@media (min-width: 900px) { .lx-split { grid-template-columns: 1fr 1fr; align-items: stretch; } }
-.lx-split__panel {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-block: clamp(48px, 7vw, 92px);
-  padding-inline: var(--lx-x);
-}
-@media (min-width: 900px) {
-  /* The light half is the page's own ground, so its copy lines up with the
-     container; the black half is a slab and pads itself evenly. */
-  .lx-split__panel--light { padding-inline-start: max(var(--lx-x), calc((100vw - var(--lx-w)) / 2)); }
-  .lx-split__panel--white { padding-inline: clamp(40px, 5vw, 72px); }
-}
-.lx-split__panel--white { background: var(--lx-white); color: var(--lx-ink); }
-.lx-split__panel--white .lx-link { color: var(--lx-black); border-color: rgba(0,0,0,.28); }
-.lx-split__panel--white .lx-link:hover { color: var(--lx-red); border-color: var(--lx-red); }
-.lx-split__p { margin: 22px 0 0; font-size: 14.5px; line-height: 1.95; color: var(--lx-muted); max-inline-size: 44ch; }
-
-/* ---- 8. team ----------------------------------------------------------- */
+/* ---- 4. team ----------------------------------------------------------- */
 /* One card per row on a phone. Two-up leaves a 156px card, and once its
    padding, the More button and the gap are taken out there are 73px left for
    the brief — three lines, cut mid-sentence. Full width gives the card ~350px
@@ -725,207 +525,256 @@
 .lx-team__n { margin: 16px 0 0; font-family: var(--font-head); font-size: 16px; font-weight: 800; text-align: center; }
 .lx-team__r { margin: 6px 0 0; font-size: 13px; color: var(--lx-red); text-align: center; }
 
-/* ---- 8b. what the writers said ----------------------------------------- */
-
-.lx-vox { display: grid; gap: 48px; align-items: center; }
-@media (min-width: 1000px) { .lx-vox { grid-template-columns: 380px minmax(0, 1fr); gap: 72px; } }
-.lx-vox__head { display: flex; flex-direction: column; gap: 14px; }
-.lx-vox__head .lx-sub { margin: 0; max-inline-size: 42ch; }
-
-.lx-vox__cards { display: grid; gap: 24px; align-items: stretch; }
-/* The long message earns the wider card. */
-@media (min-width: 760px) { .lx-vox__cards { grid-template-columns: 1.35fr 1fr; } }
-
-.lx-vox__card {
-  margin: 0;
-  min-inline-size: 0;
-  box-sizing: border-box;
-  padding: clamp(32px, 4vw, 48px) clamp(28px, 4vw, 52px);
+/* The row closes on a link through to the readers page. Centred, and
+   pulled up a touch: the grid already ends on a 48px gap. */
+.lx-team__all {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-block-start: 36px;
+  margin-inline: auto;
+  padding: 14px 26px;
   border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  background: var(--lx-white);
+  color: var(--lx-black);
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 200ms ease, color 200ms ease;
 }
-.lx-vox__card--wide { background: var(--lx-cream); }
-.lx-vox__card--dark { background: var(--lx-black); gap: 22px; }
+.lx-team__all:hover { background: var(--lx-black); color: var(--lx-cream); }
+/* The glyph is the RTL-facing one, flipped for English. */
+.lx-team__arrow { display: inline-block; }
+html[dir="ltr"] .lx-team__arrow { transform: scaleX(-1); }
+/* .lx__in is a plain block, so the link needs a row of its own to be
+   centred in — align-self alone has nothing to act against. */
+#team .lx__in { display: flex; flex-direction: column; }
 
+/* ---- 5. what the writers said ------------------------------------------
+   The pull quote on one side, the message as it arrived on the other, one
+   writer at a time. voxDeck() in js/main.js switches panels; everything here
+   renders a finished section without it, which is why `.is-on` is a resting
+   state and not the only visible one — see the `.lx-vox--js` scoping below. */
+
+.lx-vox__deck { display: flex; flex-direction: column; gap: clamp(40px, 5vw, 64px); }
+.lx-vox__item {
+  margin: 0;
+  display: grid;
+  gap: 40px;
+  border-block-start: 2px solid var(--lx-black);
+  padding-block-start: 44px;
+}
+@media (min-width: 900px) {
+  .lx-vox__item { grid-template-columns: minmax(0, 1fr) 440px; gap: clamp(48px, 6.6vw, 96px); }
+}
+/* Only once the script owns the deck does a panel hide. With no JS every
+   message is on the page and the nav below stays hidden, so nothing promises
+   a control that cannot work. */
+.lx-vox--js .lx-vox__item { display: none; }
+.lx-vox--js .lx-vox__item.is-on { display: grid; }
+@keyframes lx-vox-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+.lx-vox--js .lx-vox__item.is-on { animation: lx-vox-in .6s cubic-bezier(.2,.7,.2,1) both; }
+@media (prefers-reduced-motion: reduce) {
+  .lx-vox--js .lx-vox__item.is-on { animation: none; }
+}
+
+.lx-vox__pull { display: flex; flex-direction: column; gap: 28px; min-inline-size: 0; }
+/* The mark is set in the Latin face in both languages: it is a typographic
+   ornament, and the Arabic face draws it at a size that reads as punctuation
+   rather than as the 150px flourish the design wants. block-size clips the
+   line box so the quote below it is not pushed down by the glyph's leading. */
 .lx-vox__mark {
-  font-size: 112px;
-  line-height: .5;
-  block-size: 56px;
-  font-weight: 800;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 150px;
+  line-height: .6;
+  block-size: 64px;
+  font-weight: 600;
   color: var(--lx-red);
 }
-
-.lx-vox__card p { margin: 0 0 14px; font-size: 17px; line-height: 2; color: var(--lx-ink); }
-.lx-vox__card p:last-child { margin-bottom: 0; }
-.lx-vox__card--dark blockquote { margin: 0; display: flex; flex-direction: column; gap: 14px; text-align: left; }
-.lx-vox__card--dark p { margin: 0; font-size: 16px; line-height: 1.85; color: rgba(249, 244, 239, .8); }
-.lx-vox__lead { font-size: 24px !important; font-weight: 700; line-height: 1.6 !important; color: var(--lx-cream) !important; }
-
-/* The message runs long, so the card shows a fixed stretch of it and fades the
-   cut rather than slicing a line in half. Ticking the box drops the mask and
-   lets the box scroll — no script, so it works with JS off and there is no
-   handler to bind. */
-.lx-vox__box {
-  position: relative;
-  block-size: 300px;
-  flex: none;
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(#000 70%, transparent);
-  mask-image: linear-gradient(#000 70%, transparent);
+.lx-vox__q {
+  margin: 0;
+  font-size: clamp(26px, 3.4vw, 46px);
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--lx-black);
 }
-.lx-vox__t:checked ~ .lx-vox__box {
-  overflow-y: auto;
-  -webkit-mask-image: none;
-  mask-image: none;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, .25) transparent;
+/* The English quote runs shorter, so it is set a step larger, as the design
+   has it, and left-aligned — it is already dir="ltr" in the markup. */
+.lx-vox__q--en { font-size: clamp(28px, 4vw, 54px); text-align: left; }
+.lx-vox__cap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 18px; margin-block-start: 12px; }
+.lx-vox__name { font-family: var(--font-head); font-size: 22px; font-weight: 600; color: var(--lx-black); }
+.lx-vox__role { font-size: 16px; color: var(--lx-red); }
+
+.lx-vox__full { display: flex; flex-direction: column; gap: 16px; min-inline-size: 0; }
+.lx-vox__lbl { margin: 0; font-size: 14px; font-weight: 500; color: var(--lx-muted-2); }
+/* Clamped with a fade over the cut, opened by the checkbox below. The fade is
+   painted in --lx-white because this section is the white one; on cream it
+   would show as a band. */
+.lx-vox__box { position: relative; max-block-size: 300px; overflow: hidden; }
+.lx-vox__box::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  block-size: 90px;
+  background: linear-gradient(180deg, rgba(255,255,255,0), var(--lx-white));
 }
+.lx-vox__t:checked ~ .lx-vox__box { max-block-size: 1200px; }
+.lx-vox__t:checked ~ .lx-vox__box::after { display: none; }
+/* The short message needs neither the clamp nor the fade. */
+.lx-vox__box--short { max-block-size: none; }
+.lx-vox__box--short::after { display: none; }
+.lx-vox__box p {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.95;
+  color: var(--lx-ink);
+}
+.lx-vox__box p:last-child { margin-block-end: 0; }
 .lx-vox__btn {
   align-self: flex-start;
-  cursor: pointer;
+  padding-block-end: 5px;
+  border-block-end: 1.5px solid var(--lx-black);
   font-family: var(--font-head);
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--lx-black);
-  border-block-end: 1px solid rgba(0, 0, 0, .3);
-  padding-block-end: 4px;
+  cursor: pointer;
+  transition: color 200ms ease, border-color 200ms ease;
 }
 .lx-vox__btn:hover { color: var(--lx-red); border-block-end-color: var(--lx-red); }
 .lx-vox__c { display: none; }
 .lx-vox__t:checked ~ .lx-vox__btn .lx-vox__o { display: none; }
 .lx-vox__t:checked ~ .lx-vox__btn .lx-vox__c { display: inline; }
-/* Keyboard users get the same affordance: the box is hidden, so the ring has
-   to land on the label it drives. */
 .lx-vox__t:focus-visible ~ .lx-vox__btn { outline: 2px solid var(--lx-red); outline-offset: 4px; }
 
-/* Where the message reached us — Gmail on one card, Instagram on the other.
-   It sits directly under the quote mark at the head of the card, so the pair
-   reads as one unit: a quotation, and where the quotation came from. Small on
-   purpose: a provenance mark, not a logo placement. */
-/* Drawn rather than placed: these were the Gmail and Instagram logos in full
-   colour, two brands' palettes landing in the middle of a card that has one.
-   They are line marks in the card's own ink now, the same treatment as the
-   WhatsApp glyph in the footer — currentColor, so each card's text colour
-   carries them and the dark card needs no second rule. */
-.lx-vox__via {
-  display: block;
-  inline-size: 26px;
-  block-size: 26px;
-  margin-block-start: 14px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  /* The quotation is the loud thing on the card; this is a footnote saying
-     where it arrived from. */
-  opacity: .55;
-}
-/* The one solid part of either mark. */
-.lx-vox__via-dot { fill: currentColor; stroke: none; }
-/* The dark card never set a text colour of its own — it paints its paragraphs
-   and its name individually — so currentColor here resolved to the section's
-   ink and the mark all but vanished on black. Setting `color` rather than
-   `stroke` fixes the dot too, which fills with the same keyword. */
-.lx-vox__card--dark .lx-vox__via { color: var(--lx-cream); opacity: .6; }
-
-.lx-vox__card figcaption {
-  margin-block-start: auto;
-  padding-block-start: 18px;
-  border-block-start: 1px solid rgba(0, 0, 0, .1);
+.lx-vox__nav {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-block-start: clamp(28px, 3.4vw, 36px);
 }
-.lx-vox__card--dark figcaption { border-block-start-color: rgba(249, 244, 239, .16); }
-.lx-vox__name { font-family: var(--font-head); font-size: 18px; font-weight: 800; color: var(--lx-black); }
-.lx-vox__card--dark .lx-vox__name { color: var(--lx-cream); }
-.lx-vox__role { font-size: 14px; color: var(--lx-red); }
-/* A step brighter on black. The brand red is mixed for the cream ground, where
-   it carries; against this card it sinks into the background and the line
-   under the name all but disappears. Same hue, lifted — not a second accent. */
-.lx-vox__card--dark .lx-vox__role { color: #e63208; }
+.lx-vox__dots { display: flex; gap: 8px; }
+.lx-vox__dot {
+  position: relative;
+  inline-size: 56px;
+  block-size: 3px;
+  padding: 0;
+  border: 0;
+  background: rgba(0, 0, 0, .15);
+  cursor: pointer;
+  transition: background-color 200ms ease;
+}
+/* 3px is far under any usable target, so the hit area is grown around the
+   line without moving it — the same trick .hn__bar uses. */
+.lx-vox__dot::after { content: ""; position: absolute; inset-block: -14px; inset-inline: 0; }
+.lx-vox__dot[aria-current="true"] { background: var(--lx-red); }
+.lx-vox__dot:focus-visible { outline: 2px solid var(--lx-red); outline-offset: 6px; }
+.lx-vox__arrows { display: flex; align-items: center; gap: 28px; }
+.lx-vox__arw {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--lx-black);
+  cursor: pointer;
+  transition: opacity 200ms ease;
+}
+.lx-vox__arw:hover { opacity: .6; }
+.lx-vox__arw:focus-visible { outline: 2px solid var(--lx-red); outline-offset: 4px; }
+.lx-vox__count { font-size: 14px; letter-spacing: 1px; color: var(--lx-black); font-variant-numeric: tabular-nums; }
+.lx-vox__count-n { opacity: .4; }
 
-/* The phone cut of the same block: the two cards stack (they already do, from
-   the grid above), and every fixed measure steps down to the mobile design's
-   own numbers. The headings are left to the page's shared type scale rather
-   than pinned here, so this section keeps step with the sections around it. */
 @media (max-width: 760px) {
-  .lx-vox { gap: 28px; }
-  .lx-vox__cards { gap: 16px; }
-  .lx-vox__card { padding: 30px 24px; border-radius: 8px; gap: 14px; }
-  .lx-vox__card--dark { padding: 28px 24px; gap: 16px; }
-  .lx-vox__mark { font-size: 80px; block-size: 40px; }
-  .lx-vox__card p { font-size: 16px; margin-block-end: 12px; }
-  .lx-vox__card--dark p { font-size: 15px; }
-  .lx-vox__lead { font-size: 20px !important; }
-  .lx-vox__box { block-size: 230px; }
-  .lx-vox__card figcaption { padding-block-start: 10px; }
-  .lx-vox__name { font-size: 17px; }
+  .lx-vox__item { padding-block-start: 28px; gap: 28px; }
+  .lx-vox__mark { font-size: 90px; block-size: 40px; }
+  .lx-vox__name { font-size: 19px; }
+  .lx-vox__role { font-size: 14px; }
+  .lx-vox__box p { font-size: 15px; }
 }
 
-/* ---- 9. partnerships --------------------------------------------------- */
-.lx-part { display: grid; gap: 40px; align-items: center; }
-@media (min-width: 860px) { .lx-part { grid-template-columns: 1fr 1fr; } }
-/* Positioned by auto margins, not by justify-self: the grid item here is the
-   <a> wrapping this image, so justify-self on the image itself was inert.
+/* ---- 6. closing CTA ----------------------------------------------------
+   A slab inside the page, not a full-bleed band over a photograph. The two
+   stills are placed ON the black rather than behind it, so the heading reads
+   at full contrast instead of through a veil.
 
-   Stacked, the mark sits on its own row under the copy and is centred in it.
-   Beside the copy it goes to the far side instead — margin-inline-start:auto
-   puts that at the page's left edge in Arabic and its right edge in English. */
-.lx-part__logo {
-  display: block;
-  inline-size: 100%;
-  max-inline-size: 300px;
-  block-size: auto;
-  margin-inline: auto;
-}
-@media (min-width: 860px) {
-  .lx-part__logo { margin-inline-start: auto; margin-inline-end: 0; }
-}
-
-/* ---- 10. closing CTA over a photo -------------------------------------- */
-.lx-cta {
+   The stills are absolutely positioned against the box and are the first
+   thing dropped as it narrows: at phone width the box is the copy. */
+.lx-cta { background: var(--lx-cream); }
+.lx-cta__box {
   position: relative;
   overflow: hidden;
-  text-align: center;
-  /* Taller than the design's own 620-at-1440: at that height the seats are
-     cropped to a band and the room around them is lost. The vw term holds the
-     proportion as the window changes, the clamp stops it becoming a letterbox
-     on a phone or a void on a very wide screen. Centred rather than
-     top-aligned, so the extra height falls evenly above and below the copy. */
+  border-radius: 8px;
+  background: var(--lx-black);
+  color: var(--lx-cream);
+  min-block-size: clamp(360px, 36vw, 460px);
+  display: flex;
+  align-items: center;
+  padding: clamp(40px, 5vw, 64px);
+}
+.lx-cta__copy {
+  position: relative;
+  z-index: 2;
+  max-inline-size: 620px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  min-block-size: clamp(520px, 52vw, 760px);
+  gap: 22px;
 }
-.lx-cta__bg { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; z-index: 0; }
-.lx-cta__shade { position: absolute; inset: 0; z-index: 1; background: rgba(0,0,0,.72); }
-.lx-cta__in { position: relative; z-index: 2; }
-.lx-cta .lx-h { color: #fff; }
-.lx-cta__sub { margin: 24px auto 0; font-size: 15px; line-height: 1.85; color: rgba(255,255,255,.66); max-inline-size: 52ch; }
+.lx-cta__h {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(26px, 3.6vw, 44px);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--lx-cream);
+}
+.lx-cta__sub { margin: 0; font-size: clamp(15px, 1.4vw, 18px); font-weight: 300; line-height: 1.8; color: rgba(249, 244, 239, .72); }
 .lx-cta__btn {
+  align-self: flex-start;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-block-size: 50px;
-  margin-block-start: 34px;
-  padding-inline: 38px;
+  margin-block-start: 6px;
+  padding-inline: 34px;
   border-radius: 8px;
-  background: var(--lx-cream);
-  color: #000;
+  background: var(--lx-red);
+  color: #fff;
   font-family: var(--font-head);
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 17px;
+  font-weight: 600;
   transition: background-color 200ms ease;
 }
-.lx-cta__btn:hover { background: #fff; }
+.lx-cta__btn:hover { background: #e63208; }
+/* The far side of the box, past the copy's own 620. Hidden below 1100 rather
+   than scaled down: at the widths between, the copy and the stills meet. */
+.lx-cta__stills { display: none; }
+@media (min-width: 1100px) {
+  .lx-cta__stills { display: block; }
+  .lx-cta__still { position: absolute; z-index: 1; object-fit: cover; filter: grayscale(1); }
+  /* Flush to the bottom edge, so it reads as standing in the box. */
+  .lx-cta__still--1 {
+    inset-inline-end: 230px;
+    inset-block-end: 0;
+    inline-size: 230px;
+    block-size: 300px;
+    border-radius: 8px 8px 0 0;
+  }
+  .lx-cta__still--2 {
+    inset-inline-end: 40px;
+    inset-block-start: 40px;
+    inline-size: 210px;
+    block-size: 260px;
+    border-radius: 8px;
+  }
+}
 
-/* ---- 12. FAQ ------------------------------------------------------------
+/* ---- 7. FAQ -------------------------------------------------------------
    Kept by request though the design has none, and dropped in just before the
    closing CTA. The markup is the previous page's, so js/main.js still drives
    the accordion and the category filter with no changes. What it needed was a
@@ -979,6 +828,7 @@
 .landing .faq-item__sign::before,
 .landing .faq-item__sign::after { background: var(--lx-ink); }
 .landing .faq-item__btn:hover .faq-item__sign { border-color: var(--lx-ink); }
+
 
 /* ============================================================================
    LIGHT HERO — the landing's own colour scheme.
@@ -1115,19 +965,20 @@ html[dir="ltr"] .landing .hero__shade {
 .landing .hero__strip p { color: var(--lx-ink); }
 .landing .hero__strip a { color: var(--lx-ink); }
 .landing .hero__strip a:hover { color: var(--lx-black); }
-
 /* ============================================================================
-   HERO — SCENE ONE BY THE NUMBERS (.hn)
+   HERO (.hn)
 
-   Built from the 1440x900 design export. The artboard is a fixed canvas, so
+   Built from the 1440x720 design export. The artboard is a fixed canvas, so
    its pixel values are the DESKTOP end of each scale rather than the whole
-   story: the figure, the headline and the gutters all clamp down to a phone.
+   story: the headline, the frame and the figure inside it all clamp down to a
+   phone.
 
-   The old `.hero` markup this replaced is gone from index.html, so the
-   `.landing .hero*` rules earlier in this file and in css/styles.css no longer
-   match anything on this page. They are left where they are: styles.css's
-   block still dresses the readers, terms and privacy heroes, and this file's
-   is dead weight measured in bytes against the risk of a careless delete.
+   The band used to be the whole screen, with the three figures behind the
+   headline and the headline BEING the current slide's label. The new structure
+   splits them: copy in one column, the figures in a frame in the other, and
+   the label is a line inside that frame. So the h1 is a fixed headline again
+   — which is also why it is the h1: the page's one real title, not a caption
+   that changed every few seconds.
 
    One figure is one slide. Each wipes up over the last, and three things move
    on their own clocks inside it — photo, figure, label — which is what makes
@@ -1137,23 +988,111 @@ html[dir="ltr"] .landing .hero__shade {
    ========================================================================= */
 
 .hn {
-  position: relative;
-  /* The design is 900px under an 84px bar. Ours is a fixed 104px bar over a
-     full screen; svh so a phone's collapsing toolbar cannot crop the foot. */
-  min-block-size: 100vh;
-  min-block-size: 100svh;
-  overflow: hidden;
-  background: #000;
-  /* The slides are absolutely positioned, so the section needs its own height
-     rather than taking one from content. */
-  display: block;
+  /* The design's 30px top is under an 84px bar; ours is a fixed 104px. */
+  padding-block-start: calc(104px + clamp(16px, 3vw, 40px));
+  padding-block-end: clamp(48px, 6vw, 80px);
+  padding-inline: var(--lx-x);
+  background: var(--lx-white);
+  color: var(--lx-ink);
 }
-/* The gutter the fixed nav uses, so the hero's corners line up with the bar
-   above them at every width. */
-.hn__count,
-.hn__foot { --hn-x: max(var(--lx-x), calc((100% - var(--lx-w)) / 2)); }
+.hn__in {
+  inline-size: 100%;
+  max-inline-size: var(--lx-w);
+  margin-inline: auto;
+  display: grid;
+  gap: clamp(36px, 5vw, 72px);
+  align-items: start;
+}
+@media (min-width: 1000px) {
+  .hn__in { grid-template-columns: minmax(0, 1fr) clamp(420px, 40vw, 580px); }
+  /* The design starts the copy 80px below the frame's top edge; the two are
+     deliberately not top-aligned, which is what keeps the figure reading as
+     the taller object. */
+  .hn__copy { padding-block-start: clamp(24px, 5.5vw, 80px); }
+}
 
-/* ---- the slides --------------------------------------------------------- */
+/* ---- the copy ----------------------------------------------------------- */
+
+.hn__copy { display: flex; flex-direction: column; gap: clamp(20px, 2.4vw, 28px); align-items: flex-start; }
+/* The social-proof pill. Asymmetric padding: the faces need less room on
+   their own side than the text does on its, or the row looks loose. */
+.hn__pill {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 16px 7px 7px;
+  border-radius: 8px;
+  background: var(--lx-cream);
+}
+/* dir="ltr" on the faces so the overlap always runs the same way round, and
+   the negative margin is a physical margin-left to match. */
+.hn__faces { display: flex; }
+.hn__faces img {
+  inline-size: 28px;
+  block-size: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--lx-cream);
+}
+.hn__faces img + img { margin-left: -9px; }
+.hn__pill-t { font-size: 14px; font-weight: 500; color: var(--lx-ink); }
+.hn__pill-n { font-family: var(--font-head); font-weight: 700; color: var(--lx-red); }
+.hn__h {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(32px, 4.6vw, 64px);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -.5px;
+  color: var(--lx-ink);
+}
+/* Latin display type takes the negative tracking; Arabic letters join, so
+   tightening them pulls the joins together and the line starts to smudge at
+   this size. Same rule the /about hero carries. */
+[dir="rtl"] .hn__h { letter-spacing: normal; }
+.hn__p {
+  margin: 0;
+  max-inline-size: 48ch;
+  font-size: clamp(16px, 1.6vw, 20px);
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--lx-muted);
+}
+.hn__acts { display: flex; flex-wrap: wrap; gap: 14px; margin-block-start: 6px; }
+.hn__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 34px;
+  border-radius: 8px;
+  background: var(--lx-black);
+  color: var(--lx-cream);
+  font-family: var(--font-head);
+  font-size: clamp(15px, 1.4vw, 17px);
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+.hn__cta:hover { background: var(--lx-red); }
+.hn__cta--quiet { padding-inline: 30px; background: var(--lx-cream); color: var(--lx-black); font-weight: 500; }
+.hn__cta--quiet:hover { background: var(--lx-line); color: var(--lx-black); }
+
+/* ---- the frame ---------------------------------------------------------- */
+
+.hn__stage {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #000;
+  /* The figure inside scales with this box, not with the window — see
+     --hn-num below — which is what this container exists for. */
+  container-type: inline-size;
+  /* The design's 640 at its own 580-wide frame, held as a ratio so the box
+     keeps its proportion at every width instead of letterboxing. */
+  aspect-ratio: 580 / 640;
+  min-block-size: 420px;
+}
 
 .hn__slides { position: absolute; inset: 0; }
 .hn-slide {
@@ -1183,8 +1122,8 @@ html[dir="ltr"] .landing .hero__shade {
 .hn-slide--chair .hn-slide__ph { background-image: url('../assets/hero-num-chair.jpg'); }
 .hn-slide--screen .hn-slide__ph { background-image: url('../assets/hero-num-screen.jpg'); }
 
-/* Heaviest at the two edges, where the copy sits, and lightest across the
-   middle, where the photograph is the only thing to look at. */
+/* Heaviest at the two edges, where the label and the foot sit, and lightest
+   across the middle, where the photograph is the only thing to look at. */
 .hn-slide__shade {
   position: absolute;
   inset: 0;
@@ -1195,18 +1134,36 @@ html[dir="ltr"] .landing .hero__shade {
     rgba(0, 0, 0, .82) 100%);
 }
 
+/* The slide's own label, inside the slide so the wipe carries it. The loop
+   fades and lifts it on its own clock a beat after the figure. */
+.hn-slide__lab {
+  position: absolute;
+  inset-block-start: 30px;
+  inset-inline-end: 32px;
+  z-index: 2;
+  margin: 0;
+  max-inline-size: 340px;
+  font-size: clamp(15px, 1.4vw, 18px);
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--lx-cream);
+  /* JS drives opacity and transform from here; .is-on is the resting state,
+     and it is also what renders a finished frame if main.js never runs. */
+  opacity: 0;
+}
+.hn-slide__lab.is-on { opacity: 1; }
+
 /* The figure. --hn-num drives BOTH the type size and the mask's height: they
    have to agree exactly, or the slide-up reveal clips at the wrong line. */
 .hn-slide__mask {
-  /* 31vw lands on the design's 440px at its own 1440 canvas — 26vw had been
-     undersizing it by a sixth everywhere, and bottoming out at the floor on a
-     phone. The floor is now a size the figure actually reads at rather than
-     the smallest that fits. */
-  --hn-num: clamp(160px, 31vw, 520px);
+  /* The design's 250px in a 580 frame. cqw rather than vw: the frame is now a
+     column of the hero rather than the window, so the figure has to scale with
+     the box it is in and not with the screen. */
+  --hn-num: clamp(110px, 43cqw, 250px);
   position: absolute;
   inset-inline: 0;
-  /* 170 / 900 of the design's canvas, which also clears the fixed bar. */
-  inset-block-start: 19%;
+  /* 190 / 640 of the design's frame. */
+  inset-block-start: 28%;
   /* Taller than the figure's own line box, with the figure centred in the
      slack. The design's mask is the line box exactly, which clipped the tops
      of the digits: the face's glyphs stand slightly proud of a .98 line, and
@@ -1222,21 +1179,24 @@ html[dir="ltr"] .landing .hero__shade {
   font-weight: 600;
   font-size: var(--hn-num);
   line-height: 1;
-  /* -18px at 440px. In em so it holds as the figure clamps down. */
-  letter-spacing: -.041em;
+  /* -10px at 250px. In em so it holds as the figure clamps down. */
+  letter-spacing: -.04em;
   color: var(--lx-cream);
   will-change: transform;
 }
+/* The plus is a qualifier on the figure, not part of it, so it is set well
+   below the digits' size. em, so it tracks the clamp. */
+.hn-slide__plus { font-size: .36em; font-weight: 500; letter-spacing: 0; margin-inline-start: .1em; }
 
 /* ---- the fixed frame over the slides ------------------------------------ */
 
 .hn__count {
   position: absolute;
-  inset-block-start: calc(104px + 28px);
-  inset-inline-end: var(--hn-x);
+  inset-block-start: 32px;
+  inset-inline-start: 32px;
   z-index: 4;
   margin: 0;
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: 1px;
   color: var(--lx-cream);
   /* The design sets this in a monospace face. One extra font request for two
@@ -1247,10 +1207,6 @@ html[dir="ltr"] .landing .hero__shade {
 .hn__count-n { opacity: .45; }
 
 /* Announced, never shown: the slides themselves are aria-hidden. */
-/* The plus is a qualifier on the figure, not part of it, so it is set well
-   below the digits' size. em, so it tracks the clamp. */
-.hn-slide__plus { font-size: .36em; font-weight: 500; letter-spacing: 0; margin-inline-start: .1em; }
-
 .hn__live {
   position: absolute;
   inline-size: 1px; block-size: 1px;
@@ -1260,69 +1216,29 @@ html[dir="ltr"] .landing .hero__shade {
 
 .hn__foot {
   position: absolute;
-  inset-block-end: clamp(28px, 5vh, 56px);
-  inset-inline: var(--hn-x);
+  inset-block-end: 32px;
+  inset-inline: 32px;
   z-index: 4;
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-  gap: 28px 48px;
+  gap: 16px 24px;
 }
-.hn__lede { max-inline-size: 640px; display: flex; flex-direction: column; gap: 14px; }
 .hn__eyebrow {
   margin: 0;
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 14px;
-  color: rgba(249, 244, 239, .7);
+  color: rgba(249, 244, 239, .75);
 }
-.hn__dot { inline-size: 9px; block-size: 9px; border-radius: 50%; background: var(--lx-red); flex: none; }
-.hn__h {
-  margin: 0;
-  /* All three labels share one cell, so the block keeps the height of the
-     longest and the CTA beside it never shifts mid-cycle. */
-  display: grid;
-  font-family: var(--font-head);
-  font-size: clamp(24px, 3vw, 40px);
-  font-weight: 600;
-  line-height: 1.4;
-  color: var(--lx-cream);
-}
-.hn__h-l {
-  grid-area: 1 / 1;
-  /* JS drives opacity and transform from here; .is-on is the resting state,
-     and it is also what renders a finished hero if main.js never runs. */
-  opacity: 0;
-}
-.hn__h-l.is-on { opacity: 1; }
+.hn__dot { inline-size: 8px; block-size: 8px; border-radius: 50%; background: var(--lx-red); flex: none; }
 
-.hn__act { display: flex; flex-direction: column; align-items: flex-end; gap: 22px; }
-.hn__cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 34px;
-  border-radius: 8px;
-  background: var(--lx-cream);
-  color: #000;
-  font-family: var(--font-head);
-  font-size: 17px;
-  font-weight: 600;
-  white-space: nowrap;
-  transition: background-color 200ms ease;
-}
-.hn__cta:hover { background: #fff; }
-/* The glyph is the RTL-facing one, flipped for English — the same convention
-   .overlay__go follows in css/styles.css. */
-.hn__arrow { display: inline-block; }
-html[dir="ltr"] .hn__arrow { transform: scaleX(-1); }
-
-.hn__bars { display: flex; gap: 8px; }
+.hn__bars { display: flex; gap: 6px; }
 .hn__bar {
   position: relative;
-  inline-size: 64px;
+  inline-size: 44px;
   block-size: 3px;
   padding: 0;
   border: 0;
@@ -1331,8 +1247,7 @@ html[dir="ltr"] .hn__arrow { transform: scaleX(-1); }
   cursor: pointer;
 }
 /* 3px is the design's bar and far under any usable target, so the hit area is
-   grown around it without moving the line — the same trick .hero__strip's SAIP
-   link uses. */
+   grown around it without moving the line. */
 .hn__bar::after { content: ""; position: absolute; inset-block: -14px; inset-inline: 0; }
 .hn__bar:focus-visible { outline: 2px solid var(--lx-cream); outline-offset: 6px; }
 /* Fills from the inline start, so it runs the way the page reads. */
@@ -1346,17 +1261,20 @@ html[dir="ltr"] .hn__arrow { transform: scaleX(-1); }
 }
 
 /* ---- narrow -------------------------------------------------------------
-   The foot stacks and the figure comes down, but nothing is dropped: on a
-   phone the three numbers ARE the hero. */
-@media (max-width: 860px) {
-  .hn__foot { flex-direction: column; align-items: stretch; }
-  .hn__act { align-items: flex-start; }
-  /* Centred in the band the frame leaves it: the counter ends around 149px
-     and the foot starts around 570px on a 812px phone, so the figure sits on
-     that midpoint rather than in the top third as the desktop 19% put it. */
-  .hn-slide__mask { inset-block-start: 32%; }
+   The frame goes under the copy and gets shorter, but nothing is dropped: on
+   a phone the three numbers are still the hero's other half. */
+@media (max-width: 999px) {
+  .hn__stage { aspect-ratio: 4 / 5; max-block-size: 70vh; }
 }
 @media (max-width: 600px) {
-  .hn__cta { padding: 14px 26px; font-size: 16px; }
-  .hn__bar { inline-size: 48px; }
+  .hn__stage { aspect-ratio: 3 / 4; min-block-size: 360px; }
+  /* Derived, not a fraction: the counter sits opposite the label on the same
+     line, so the label's room is the frame less that corner — 22px of inset
+     either side, the counter's own width, and a gap. A percentage happened to
+     clear it at 375 and would not at every width. */
+  .hn-slide__lab { inset-block-start: 22px; inset-inline-end: 22px; max-inline-size: calc(100% - 110px); }
+  .hn__count { inset-block-start: 24px; inset-inline-start: 22px; }
+  .hn__foot { inset-block-end: 22px; inset-inline: 22px; }
+  .hn__cta { padding: 14px 26px; }
+  .hn__cta--quiet { padding-inline: 22px; }
 }

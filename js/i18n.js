@@ -134,6 +134,43 @@
       heroEyebrow: "دار اكتشاف وتطوير سينمائي",
       heroPartner: "شريك معتمد لدى جمعية السينما السعودية",
 
+      /* ---- landing v2: the restructured page ---------------------------- */
+      navServices: "خدماتنا", navVoices: "تجارب الكتّاب", navFaq: "الأسئلة الشائعة",
+
+      hnH: "نكتشف الأصوات التي تستحق أن تصل إلى الشاشة",
+      hnP: "نكتشف الأصوات الجديدة، نطوّر أفلامها، ونبني لها طريقًا إلى الشاشة",
+      hnPill: "مشروعًا قرأها فريقنا منذ سبتمبر",
+      hnSample: "اطّلع على نموذج تقرير",
+
+      logosLbl: "نعمل مع جهات في قطاع السينما السعودي",
+
+      bentoEyebrow: "خدماتنا", bentoH: "من القراءة الأولى إلى تطوير المشروع",
+      bentoSub: "أربعة مسارات يمرّ بها المشروع عندنا، ويختار الكاتب منها ما يناسب مرحلته",
+      bento1T: "تغطية النصوص",
+      bento1B: "تقرير مكتوب يعدّه قارئ متخصص للأفلام القصيرة والطويلة والمعالجات، عبر تسعة محاور واضحة",
+      bento2T: "التطوير الإبداعي",
+      bento2B: "جلسات منظمة مع الكاتب والمخرج على البنية الدرامية والشخصيات والرؤية، مع الحفاظ على هوية المشروع",
+      bento3T: "اكتشاف المواهب",
+      bento3B: "نبحث عن الأصوات الجديدة من خلال المنصة وتحدي القصة ومسارات التدريب العملي مع محترفين في الصناعة",
+      bento4T: "استضافة المشاريع وربطها بالصناعة",
+      bento4B: "نرشّح المشاريع الأعلى تقييمًا ونقدّمها لجهات الإنتاج، بموافقة كتّابها الكتابية وبأسمائهم",
+
+      getsEyebrow: "لماذا سين ون", getsH: "ما الذي تحصل عليه حين تقدّم نصك",
+      gets1T: "نظرة أعمق إلى قصتك",
+      gets1B: "يقرأ نصك متخصص في صناعة الأفلام، ليرى ما يميّز قصتك وما قد لا تلاحظه وأنت تكتبها",
+      gets2T: "ملاحظات دقيقة على مشروعك",
+      gets2B: "تعرف أين تكمن قوة قصتك، وما يحتاج إلى تطوير في الشخصيات والحبكة والإيقاع، بعيدًا عن الأحكام العامة",
+      gets3T: "تعرف من أين تبدأ",
+      gets3B: "لا تكتفي بمعرفة ما يحتاج إلى تحسين بل تحصل على ملاحظات عملية تساعدك على اتخاذ قرارات واضحة في مسودتك التالية",
+      gets4T: "بداية لفرص جديدة",
+      gets4B: "لا تتوقف رحلتك معنا عند التقييم. فالمشاريع الواعدة تحظى بفرصة للاستضافة والتطوير، والوصول إلى شركاء في صناعة الأفلام",
+
+      teamH2: "فريق القراءة والتطوير",
+
+      voxAsSent: "الرسالة كما وصلتنا",
+      voxGo1: "الرسالة الأولى", voxGo2: "الرسالة الثانية",
+      voxPrev: "السابق", voxNext: "التالي",
+
       introEyebrow: "البداية",
       introH: "هناك كتّاب موهوبون وقصص تستحق أن تُروى",
       introP: "كثير من الكتّاب لديهم أفكار ونصوص واعدة، لكنهم لا يجدون قراءة جادة لأعمالهم، أو توجيهًا يساعدهم على تطويرها ومعرفة خطوتهم التالية",
@@ -765,6 +802,43 @@
 
       heroEyebrow: "A film discovery and development house",
       heroPartner: "Accredited partner of the Saudi Cinema Association",
+
+      /* ---- landing v2: the restructured page ---------------------------- */
+      navServices: "Services", navVoices: "From the writers", navFaq: "FAQ",
+
+      hnH: "We find the voices that deserve to reach the screen",
+      hnP: "We discover new voices, develop their films, and build them a path to the screen",
+      hnPill: "projects read by our team since September",
+      hnSample: "See a sample report",
+
+      logosLbl: "We work with organizations across the Saudi film sector",
+
+      bentoEyebrow: "Services", bentoH: "From the first read to developing the project",
+      bentoSub: "Four tracks a project can take with us, and the writer picks the one their stage calls for",
+      bento1T: "Script coverage",
+      bento1B: "A written report by a specialist reader, for shorts, features and treatments, across nine clear axes",
+      bento2T: "Creative development",
+      bento2B: "Structured sessions with the writer and director on dramatic structure, characters and vision, holding on to the project's own identity",
+      bento3T: "Finding talent",
+      bento3B: "We look for new voices through the platform, the Story Challenge, and hands-on training tracks with industry professionals",
+      bento4T: "Hosting projects and connecting them to the industry",
+      bento4B: "We put the highest-rated projects forward to production companies, with their writers' explicit written consent and under their own names",
+
+      getsEyebrow: "Why Scene One", getsH: "What you get when you submit your script",
+      gets1T: "A deeper look at your story",
+      gets1B: "A film-industry specialist reads your script, to see what sets your story apart and what you may not notice while writing it",
+      gets2T: "Precise notes on your project",
+      gets2B: "You learn where your story's strength lies, and what needs development in character, plot and pace, away from general verdicts",
+      gets3T: "You know where to start",
+      gets3B: "Not just what needs improving: practical notes that help you make clear decisions in your next draft",
+      gets4T: "A start on new opportunities",
+      gets4B: "Your journey with us does not stop at the evaluation. Promising projects get a chance at hosting, development, and reaching partners in the film industry",
+
+      teamH2: "The reading and development team",
+
+      voxAsSent: "The message as it reached us",
+      voxGo1: "First message", voxGo2: "Second message",
+      voxPrev: "Previous", voxNext: "Next",
 
       introEyebrow: "The beginning",
       introH: "Talented writers. Stories worth telling.",
