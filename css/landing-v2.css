@@ -1245,18 +1245,12 @@ html[dir="ltr"] .landing .hero__shade {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  /* The bars are the only thing in here since the eyebrow was removed, and
+     `space-between` would park a lone child on the START edge — the side the
+     eyebrow used to hold. flex-end keeps them where they have always been. */
+  justify-content: flex-end;
   gap: 16px 24px;
 }
-.pg--wide .hn__eyebrow {
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 12px;
-  color: rgba(249, 244, 239, .75);
-}
-.pg--wide .hn__dot { inline-size: 8px; block-size: 8px; border-radius: 50%; background: var(--lx-red); flex: none; }
 
 .pg--wide .hn__bars { display: flex; gap: 6px; }
 .pg--wide .hn__bar {

@@ -166,6 +166,12 @@ Actively iterating on UX polish and workflow features.
     has no route from the desktop landing at all (the narrow page still has
     four). `hnSample` is orphaned in `js/i18n.js`. `.hn__acts` is still a flex
     row, so a second button can come back without touching the CSS.
+  - **«سين ون بالأرقام» and its red dot are gone from the frame's foot**, so
+    the bars are the only thing left in it — hence `justify-content: flex-end`
+    there, since `space-between` parks a lone child on the START edge, which is
+    the side the eyebrow used to hold. **The frame keeps that line as its
+    `aria-label`**: it is the carousel's accessible name, and dropping it too
+    would leave the control unnamed. `hnEyebrow` is still the narrow page's.
   - **The slide's caption sits UNDER the figure, centred** (it was in the
     frame's top corner, opposite the counter). It is placed from the mask's own
     geometry — the mask's `28%` top plus its height — so the two cannot drift

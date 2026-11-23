@@ -230,9 +230,13 @@
         <p class="hn__live" aria-live="polite"></p>
 
         <div class="hn__foot">
-          <p class="hn__eyebrow"><span class="hn__dot" aria-hidden="true"></span><span data-i18n="hnEyebrow">سين ون بالأرقام</span></p>
-          <!-- Each bar is the control for its slide AND the autoplay timer for
-               it, which is why they are buttons and not decoration. -->
+          <!-- The bars are all that is left in the foot: «سين ون بالأرقام»
+               and its red dot were removed on request. The frame keeps that
+               line as its aria-label, which is the carousel's accessible
+               name — dropping that too would leave it unnamed.
+
+               Each bar is the control for its slide AND the autoplay timer
+               for it, which is why they are buttons and not decoration. -->
           <div class="hn__bars">
             <button class="hn__bar" type="button" data-go="0" data-i18n-aria="hnGo1" aria-label="الشريحة الأولى"><span class="hn__fill"></span></button>
             <button class="hn__bar" type="button" data-go="1" data-i18n-aria="hnGo2" aria-label="الشريحة الثانية"><span class="hn__fill"></span></button>
