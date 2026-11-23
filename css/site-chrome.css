@@ -231,3 +231,31 @@
     transition: none;
   }
 }
+
+/* ---- the page's own zoom -------------------------------------------------
+   The design is drawn to be read at a browser zoom of 75%, and a visitor
+   should not have to set that themselves — so the public pages carry it.
+
+   `zoom` and not `transform: scale()`: zoom re-runs layout, so text reflows
+   and nothing is blurred or clipped, which is exactly what the browser's own
+   zoom control does. Firefox only learned it in 126; an older one simply
+   renders at 100%, which is the right thing to degrade to.
+
+   DESKTOP ONLY. A phone layout is already sized for its screen, and 75% of it
+   is just small. The breakpoint is the nav's, so the bar and the body change
+   character at the same width.
+
+   Opt-in by class rather than a bare `html` rule: the writer's report, the
+   coverage workspace and the admin panel must keep their own scale — the
+   report is a deliverable (and is what /api/report-pdf renders), and the
+   other two are tools people work in all day. */
+@media (min-width: 1000px) {
+  html.z75 { zoom: .75; }
+  /* A viewport-height box is measured against the UNZOOMED viewport, so the
+     hero would stop a quarter short of the fold and show the next section
+     under it. Dividing by the same factor puts it back on the fold. */
+  html.z75 .hn {
+    min-block-size: calc(100vh / .75);
+    min-block-size: calc(100svh / .75);
+  }
+}
