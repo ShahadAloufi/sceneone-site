@@ -270,8 +270,6 @@
 }
 
 @media (min-width: 1000px) {
-  /* .lx-foot__col a's two values, inverted for a light ground. */
-  .landing .nav__links a { color: rgba(0, 0, 0, .62); }
   .landing .nav__links a:hover { color: var(--lx-black); }
 }
 .landing .menu-btn span { background: var(--lx-black); }
@@ -283,6 +281,125 @@
    what the design draws, and it matches the hero's own primary button. */
 .landing .nav__cta { background: var(--lx-black); color: var(--lx-cream); }
 .landing .nav__cta:hover { background: var(--lx-red); color: #fff; }
+
+/* The artboard's bar is 92px with a 36px mark; ours is 104px with a 56px one,
+   which is load-bearing elsewhere — the readers, terms and privacy heroes each
+   pay for a 104px bar and every in-page anchor is offset by it. So the BAR
+   keeps its height and only the mark comes down to the artboard's size, on
+   this page alone. */
+.landing .nav__logo { height: 36px; }
+/* Dark links at the artboard's own weight, not the .62 of a dark bar. */
+@media (min-width: 1000px) {
+  .landing .nav__links { gap: 34px; }
+  .landing .nav__links a { color: #2a2622; font-weight: 400; font-size: 15px; }
+}
+
+/* ============================================================================
+   THE LANDING'S FOOTER — light, and its own markup.
+
+   The block above is the DARK footer, and it stays: /readers, /terms,
+   /privacy, /submit and /about all end on black and still carry that markup.
+   The landing's artboard draws a white footer with a different shape — the
+   mark instead of the lockup, a contact row under the blurb, and three link
+   columns rather than four mixed ones — so it gets its own element names and
+   this block recolours everything the two still share.
+
+   What the artboard does NOT have, and the landing therefore lost: the call
+   and WhatsApp buttons. Someone arriving from the flyer QR now finds the
+   e-mail and nothing else on this page. The other five pages still have both.
+   ========================================================================= */
+
+.landing .pg--wide .lx-foot {
+  background: var(--lx-white);
+  color: var(--lx-ink);
+  padding-block: 72px 0;
+  border-block-start: 1px solid rgba(0, 0, 0, .08);
+}
+@media (min-width: 860px) {
+  .landing .pg--wide .lx-foot__top {
+    display: flex;
+    justify-content: space-between;
+    gap: clamp(48px, 6vw, 80px);
+  }
+}
+.landing .pg--wide .lx-foot__brand-col {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: flex-start;
+}
+/* The artboard's 420 belongs to the desktop row and ONLY there. Below 860 the
+   top row is still the base grid, whose implicit column is sized to content —
+   so a fixed 420 widened the column rather than being clamped by it, and
+   `max-inline-size: 100%` resolved against that same 420 and did nothing. The
+   page overflowed to 444 and the fixed bar stretched with it. */
+@media (min-width: 860px) {
+  .landing .pg--wide .lx-foot__brand-col { inline-size: 420px; max-inline-size: 100%; }
+}
+/* The mark, not the lockup — at 40px the full lockup's wordmark is a smear.
+   Same split the rest of the site follows: a wide surface gets the lockup, a
+   short one gets the mark alone. */
+.landing .pg--wide .lx-foot__mark { block-size: 40px; inline-size: auto; }
+.landing .pg--wide .lx-foot__blurb {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.85;
+  color: #4a443d;
+  max-inline-size: none;
+}
+/* Drawn as a field with a button in it. It is a LINK, all of it: there is
+   nothing to post a field to — the interest endpoint was deleted in August —
+   and an input that goes nowhere is worse than a mailto that works. */
+.landing .pg--wide .lx-foot__mailrow {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-block-start: 8px;
+  padding: 6px;
+  border-radius: 8px;
+  background: var(--lx-cream);
+}
+.landing .pg--wide .lx-foot__mailrow-t {
+  flex: 1;
+  padding-inline: 16px;
+  font-size: 15px;
+  color: var(--lx-muted-2);
+}
+.landing .pg--wide .lx-foot__mailrow-b {
+  flex: none;
+  padding: 11px 22px;
+  border-radius: 8px;
+  background: var(--lx-black);
+  color: var(--lx-cream);
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background-color 200ms ease;
+}
+.landing .pg--wide .lx-foot__mailrow:hover .lx-foot__mailrow-b { background: var(--lx-red); color: #fff; }
+
+.landing .pg--wide .lx-foot__cols { display: flex; flex-wrap: wrap; gap: 40px clamp(40px, 5vw, 72px); }
+.landing .pg--wide .lx-foot__col { gap: 14px; }
+.landing .pg--wide .lx-foot__col a,
+.landing .pg--wide .lx-foot__col p { font-size: 15px; color: #4a443d; }
+.landing .pg--wide .lx-foot__col a:hover { color: var(--lx-red); }
+.landing .pg--wide .lx-foot__lbl {
+  color: var(--lx-black) !important;
+  font-size: 16px !important;
+  font-weight: 700;
+  margin-block-end: 4px !important;
+}
+.landing .pg--wide .lx-foot__bar {
+  margin-block-start: clamp(40px, 5vw, 64px);
+  padding-block: 24px;
+  border-block-start-color: rgba(0, 0, 0, .1);
+}
+.landing .pg--wide .lx-foot__cr,
+.landing .pg--wide .lx-foot__cr-mail { font-size: 13px; color: var(--lx-muted-2); }
+.landing .pg--wide .lx-foot__cr-mail:hover { color: var(--lx-red); }
 
 /* ---- the page's own zoom -------------------------------------------------
    The design is drawn to be read at a browser zoom of 75%, and a visitor

@@ -136,6 +136,9 @@
 
       /* ---- landing v2: the restructured page ---------------------------- */
       navServices: "خدماتنا", navVoices: "تجارب الكتّاب", navFaq: "الأسئلة الشائعة",
+      navWhy: "لماذا سين ون",
+      footLinks: "روابط", footFollow: "تابعنا", footLegal: "قانوني",
+      footMailPrompt: "اكتب بريدك الإلكتروني",
 
       hnH: "نكتشف الأصوات التي تستحق أن تصل إلى الشاشة",
       hnP: "نكتشف الأصوات الجديدة، نطوّر أفلامها، ونبني لها طريقًا إلى الشاشة",
@@ -805,6 +808,9 @@
 
       /* ---- landing v2: the restructured page ---------------------------- */
       navServices: "Services", navVoices: "From the writers", navFaq: "FAQ",
+      navWhy: "Why Scene One",
+      footLinks: "Links", footFollow: "Follow us", footLegal: "Legal",
+      footMailPrompt: "Write your email address",
 
       hnH: "We find the voices that deserve to reach the screen",
       hnP: "We discover new voices, develop their films, and build them a path to the screen",

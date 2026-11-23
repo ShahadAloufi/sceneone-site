@@ -48,87 +48,145 @@ coverage workspace + report, role-based access, deadlines, and report delivery t
 writers. **The payment gate is live and has taken real money** (see below).
 Actively iterating on UX polish and workflow features.
 
-**Recently shipped (2026-11-23) — the landing page, restructured:**
+**Recently shipped (2026-11-23) — the landing page, restructured (DESKTOP ONLY):**
 
-- **`index.html` was rebuilt to a new artboard**, and the change is STRUCTURAL,
-  not a reskin. The page is now: hero → partners strip → services (four bento
-  cards) → the three coverage products → what you get (four cards) → the team →
-  the writers' messages → FAQ → closing CTA → footer.
-  **Six sections were deleted** with their copy, CSS and i18n: البداية
-  (`.lx-intro`), ما نقدمه (`.lx-do`), القراءة and its nine axes (`.lx-read`),
-  ما نبحث عنه (`.lx-look`), رحلة النص (`.lx-jn`), and جمهوران (`.lx-split`).
-  The partnership band (`.lx-part`) went too, replaced by the slim logo strip.
-  Their **dictionary keys are still in `js/i18n.js`** — the file already carried
-  a long dead tail from the v1 pages, so pruning just these would have been
-  arbitrary; a real prune is its own job.
-- **The hero is two columns now, and the h1 is a fixed headline again.** It used
-  to be a full-screen band where the headline WAS the current slide's label.
-  Copy sits in one column (a social-proof pill, «نكتشف الأصوات التي تستحق أن
-  تصل إلى الشاشة», a sub, two CTAs) and the three-figure carousel in a framed
-  box in the other. **The label moved INTO the frame**, one per slide
-  (`.hn-slide__lab`), which is why `heroNumbers()` now queries that instead of
-  `.hn__h-l`, and why its `root` is `.hn__stage` and not `.hn` — the
-  click-to-advance must not fire from the headline beside it.
-  - The slide machinery is otherwise untouched: same wipe, same per-slide
-    clocks, same first-load entrance, same no-JS fallback (slide one composed
-    in the markup).
-  - **The figure scales with the FRAME, not the window** — `--hn-num` is in
-    `cqw` against a `container-type: inline-size` on `.hn__stage`. In `vw` it
-    tracked a viewport the box no longer spans.
-  - **`html.z75 .hn`'s `calc(100svh / .75)` is gone** from `site-chrome.css`
-    with the full-screen band. The note explaining why a viewport-height box
-    needs that on a zoomed page is kept where the rule was.
-- **The pricing cards were KEPT, deliberately, and the design does not have
-  them.** It folds coverage into one bento card labelled «عرض التغطيات ←» with
-  nothing behind it. Deleting `#coverage-types` would have left
-  `/treatment-submit` unreachable from the landing page entirely — the treatment
-  product would still be purchasable only by typing the URL. So card 01 links
-  to that section and the section stays. If the cards should really go, the
-  treatment intake needs another route first.
-- **The bento's placement is EXPLICIT (`grid-area`), and that is a fix, not a
-  preference.** In source order the cream card falls into the wide cell on row
-  two and the hosting photograph into the narrow one — which is what the
-  design's own export renders, against its own comments, which call card 04 the
-  wide one. Measured on the artboard: 785 / 475 / 785 / 475. The two
-  photographic cards are the wide pair here.
-- **The writers' messages are one at a time** (`.lx-vox__item`, `voxDeck()` in
-  `js/main.js`): pull quote on one side, the message as it arrived on the
-  other, with dots, arrows and a counter. **No autoplay** — the hero cycles
-  because its three figures are one statement; moving someone's words on a
-  timer while they are being read is the wrong motion. Every panel renders
-  visible and the nav is `hidden` until the script marks the root
-  (`.lx-vox--js`), so a page with no JS is two whole messages rather than one
-  message and five dead controls.
-- **The CTA is a slab INSIDE the page, not a full-bleed band over a photo.** Two
-  grayscale stills are placed on the black rather than behind it, so the
-  heading reads at full contrast instead of through a 72% veil. The stills are
-  dropped below 1100px, where the copy and the collage would meet.
-- **The nav is five destinations plus home**: الرئيسية · خدماتنا · من نحن · من
-  يقرأ نصك · تجارب الكتّاب · الأسئلة الشائعة. `#journey` and the bar's
-  `#coverage-types` are gone with their sections; the footer's رحلة النص link
-  became خدماتنا. The bar and the overlay still list the same six in the same
-  order — keep them in step.
-  - **The bar is GLASS now, and the landing has left the shared dark group.**
-    It shipped black for an hour and was changed on request: the hero opens on
-    white, so the black slab read as a band across the top of it. The landing's
-    `.nav` is `rgba(255,255,255,.72)` with `backdrop-filter: saturate(180%)
-    blur(18px)`, dark links, a black `.nav__cta`, and the **-ink cut of the
-    mark** rather than the light one the other pages use. Three things that
-    look optional and are not: an `@supports` fallback that paints it SOLID
-    where `backdrop-filter` is unsupported (translucent white over the cards
-    below would leave them legible through the links); a **hairline, not a
-    shadow**, and only on `.scrolled`, since a shadow under glass reads as
-    grime; and `.scrolled` kept in step with the resting state so the scroll
-    handler in `js/main.js` still has nothing to undo.
-    **`.rd2`/`.tm2`/`.sb2`/`.ab2` keep the black bar** — they all still open on
-    a dark hero. So the landing's bar no longer matches theirs, which is the
-    intended trade: a bar belongs to the page under it before it matches the
-    page next door.
+- **`index.html` now carries TWO page structures and switches between them at
+  1000px.** The desktop one is the new artboard; the narrow one is yesterday's
+  page, verbatim from `3b774b1`. The artboard is desktop-only by the owner's
+  instruction and the phone is to keep what it had until a mobile artboard
+  arrives, and the two shapes are too different to be one set of markup — the
+  hero, the writers' section, the closing CTA and the footer are each a
+  different shape, and the narrow page carries six sections the desktop one
+  deleted. See `.pg` in `css/landing-v2.css`.
+  - **THIS IS TEMPORARY AND IT IS NOT CHEAP.** Every visitor downloads both and
+    the copy exists twice. When the mobile artboard lands, `.pg--narrow`, every
+    `.pg--narrow`-scoped rule and the restored sections go, and the remaining
+    block loses its wrapper and its `-d` id suffixes.
+  - **The narrow block keeps the CANONICAL ids** (`#top`, `#about`, `#what`,
+    `#reading`, `#looking`, `#coverage-types`, `#journey`, `#audience`, `#team`,
+    `#voices`, `#partnership`, `#faq`, `#contact`) and the desktop block's
+    collisions are suffixed `-d`. That way round because the OVERLAY — the only
+    menu below 1000px — links to yesterday's anchors unchanged, while the
+    desktop bar is `display:none` there and points at the `-d` copies.
+  - **Scoping is by wrapper, not by media query.** Most of each page's CSS names
+    classes the other does not have and needs none; the ones that exist in both
+    with different values are listed together under "what the two blocks fight
+    over" — the ground colour, the FAQ's ground, `.lx-team__n/__r` — plus the
+    whole of `.hn*`, `.lx-vox*` and `.lx-cta*`, which are prefixed `.pg--wide`
+    (today's) or `.pg--narrow` (yesterday's).
+  - **Two JS fixes were forced by the duplication, and both are real bugs the
+    single page would never have shown:**
+    - `heroNumbers` is **a function called per hero** rather than an IIFE over
+      the first one. It takes `.hn__stage` if the hero has one and the `.hn`
+      itself otherwise, and finds the labels at `.hn-slide__lab` or, failing
+      that, `.hn__h-l`. The hidden hero costs nothing: its
+      IntersectionObserver never fires for a `display:none` element, so that
+      loop is never started.
+    - **The FAQ binds per block.** `id="faqCats"` became `class="faq-cats"`
+      (two of an id is invalid) and the filter now scopes its items to the
+      enclosing `.faq`. Before that, one `getElementById` bound one set of
+      pills, left the other dead, and still filtered EVERY `.faq-item` on the
+      page — so the hidden block's list drove the visible one's.
+    - `voxDeck` picks the `.lx-vox` that actually contains a `.lx-vox__nav`,
+      since both structures have a `.lx-vox` and yesterday's is the two-card
+      block with no deck in it.
+
+**The desktop structure**, hero → partners strip → services (four bento cards)
+→ what you get → the team → the writers' messages → FAQ → closing CTA → footer:
+
+- **The hero is two columns and the h1 is a fixed headline again.** It was a
+  full-screen band where the headline WAS the current slide's label; copy now
+  sits in one column and the three figures in a framed box in the other, with
+  the label moved inside the frame, one per slide. The wipe, the per-slide
+  clocks and the no-JS fallback are untouched. **The figure scales with the
+  FRAME, not the window** — `--hn-num` in `cqw` against a `container-type:
+  inline-size` on `.hn__stage`; in `vw` it tracked a viewport the box no longer
+  spans.
+- **The photo→figure mapping follows the artboard: seats on 30+, chair on 3+,
+  screen on 80+.** It had been chair / seats / screen because the seats
+  photograph was picked for the hosting slide on request; the artboard orders
+  them the other way and "as is" took it. **If that request still stands, the
+  classes on the three `.hn-slide` articles are the whole change.**
+- **⚠️ `#coverage-types` is GONE from the desktop page, and with it the only
+  desktop route to `/treatment-submit`.** The three price cards were kept on
+  the first pass because the artboard has no equivalent — it folds coverage into
+  one bento card labelled «عرض التغطيات ←» with nothing behind it. That was
+  raised and overruled ("APPLY THE DESIGN AS IS"), so the section is deleted and
+  card 01 links to `#services`, the band it is already in.
+  **On a desktop the treatment product can now only be bought by typing the
+  URL** — the narrow page still has the cards, so a phone can still reach it.
+  `/submit` is unaffected (nav pill, hero, CTA, footer).
+- **The bento is SOURCE-ORDER flow**, so the wide cell takes 01 and 03 and the
+  narrow one 02 and 04 — the cream card is wide on row two and the hosting
+  photograph narrow. The artboard's own comments call card 04 wide and its
+  render does not; this was briefly overridden with `grid-area` to match the
+  comments, then put back to match the render, which is what "as is" means.
+  **Do not re-fix it.**
+- **The desktop page is WHITE throughout.** Every band on the artboard is
+  `#FFFFFF`, measured; the cream is a CARD colour only — the hero's pill and
+  quiet button, bento 03, the four "what you get" cards, the readers' link, the
+  footer's contact row. `.lx` therefore paints white, `.lx--white` is a no-op
+  kept so the modifier still resolves, and `.pg--narrow .lx` puts the cream back
+  for yesterday's page.
+- **The writers' messages are one at a time** (`.lx-vox__item`, `voxDeck()`):
+  pull quote on one side, the message as it arrived on the other, with dots,
+  arrows and a counter. **No autoplay** — the hero cycles because its three
+  figures are one statement; moving someone's words on a timer while they are
+  being read is the wrong motion. Every panel renders visible and the nav is
+  `hidden` until the script marks the root (`.lx-vox--js`), so a page with no JS
+  is two whole messages rather than one message and five dead controls.
+- **The CTA is a slab INSIDE the page**, not a full-bleed band over a photo: two
+  grayscale stills are placed ON the black rather than behind it, so the heading
+  reads at full contrast instead of through a 72% veil. The stills drop below
+  1100px, where the copy and the collage would meet.
+- **The nav bar is the artboard's five**: خدماتنا · لماذا سين ون · من يقرأ نصك ·
+  تجارب الكتّاب · الأسئلة الشائعة. **The OVERLAY carries yesterday's six**, and
+  that asymmetry is deliberate — below 1000px the overlay is the only menu and
+  it has to serve the narrow page's own anchors. The mark comes down to the
+  artboard's 36px while the BAR keeps its 104px: that height is load-bearing,
+  since the readers, terms and privacy heroes each pay for it and every in-page
+  anchor is offset by it.
+- **The bar is GLASS.** It shipped black and was changed on request: the hero
+  opens on white, so a black slab read as a band across the top of it. The
+  landing's `.nav` is `rgba(255,255,255,.72)` with `backdrop-filter:
+  saturate(180%) blur(18px)`, dark links, a black `.nav__cta`, and the **-ink
+  cut of the mark** rather than the light one the other pages use. Three things
+  that look optional and are not: an `@supports` fallback that paints it SOLID
+  where `backdrop-filter` is unsupported (translucent white over the cards below
+  would leave them legible through the links); a **hairline, not a shadow**, and
+  only on `.scrolled`, since a shadow under glass reads as grime; and
+  `.scrolled` kept in step with the resting state so the scroll handler in
+  `js/main.js` still has nothing to undo.
+  **`.rd2`/`.tm2`/`.sb2`/`.ab2` keep the black bar** — they all still open on a
+  dark hero — so the landing's bar no longer matches theirs. Intended trade: a
+  bar belongs to the page under it before it matches the page next door.
+  **The bar is NOT width-switched**, so the glass is on the narrow page too; it
+  is chrome rather than page content.
+- **The footer was rebuilt to the artboard, on the desktop block only.** Light,
+  the MARK rather than the lockup, the blurb, a contact row, and three columns
+  (روابط / تابعنا / قانوني). `.lx-foot`'s dark block stays for `/readers`,
+  `/terms`, `/privacy`, `/submit`, `/about` **and the narrow page**, which all
+  carry the old markup; the desktop one is `.landing .pg--wide .lx-foot`.
+  - **The contact row LOOKS like a field and is a link.** The artboard draws a
+    placeholder beside a button; there is nothing to post it to (the interest
+    endpoint was deleted in August), so the whole row is one `mailto:`.
+  - **The call and WhatsApp buttons are not on the desktop footer.** The
+    artboard has neither. The narrow page and the other five pages keep both.
+  - **`.lx-foot__brand-col`'s 420 is INSIDE the ≥860 query**, and has to be:
+    below that the top row is the base grid, whose implicit column is sized to
+    content, so a fixed 420 widened the column instead of being clamped by it —
+    `max-inline-size: 100%` then resolved against that same 420 and did
+    nothing. The page overflowed to 444 and the fixed bar stretched with it.
 - **New assets:** `partner-saudi-film-confex.png` (white artwork, knocked to
   black in CSS rather than shipped twice), `svc-hosting-stage.jpg` (bento 04),
-  `cta-wall.jpg` (the CTA collage's second still). The hero keeps its own
-  photo→figure mapping — the design swaps slides 1 and 2's photographs, but the
-  seats photo was chosen for the 3+ hosting slide on request and stays there.
+  `cta-wall.jpg` (the CTA collage's second still), and `hero-num-seats-v2.jpg` —
+  the artboard's own export of the seats photograph, a cooler grade at
+  2576x1610 against the old 2000x1333. Renamed rather than replaced, per the
+  cache rule; `hero-num-seats.jpg` is still live on the narrow page.
+- **The deleted sections' i18n keys are still in `js/i18n.js`** — the narrow
+  page uses them, and the file already carried a long dead tail from the v1
+  pages besides. A real prune is its own job.
+
 
 **Recently shipped (2026-09-07 → 09-11):**
 

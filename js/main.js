@@ -100,9 +100,17 @@
      aria-pressed, not a tablist. Switching category collapses whatever was open:
      leaving a panel expanded behind a filter change means the list reappears
      mid-scroll at a height the reader did not ask for. */
-  var faqCats = document.getElementById("faqCats");
-  if (faqCats) {
-    var faqItems = Array.prototype.slice.call(document.querySelectorAll(".faq-item"));
+  /* Per FAQ block, not per page: while the desktop and narrow structures both
+     live in index.html there are TWO of these, and a single
+     getElementById("faqCats") bound one set of pills and left the other dead
+     while still filtering every .faq-item on the page — so the hidden block's
+     list drove the visible one's. Each block now owns its own pills and its
+     own items. (The id became a class for the same reason: two of it was
+     invalid.) */
+  document.querySelectorAll(".faq").forEach(function (faq) {
+    var faqCats = faq.querySelector(".faq-cats");
+    if (!faqCats) return;
+    var faqItems = Array.prototype.slice.call(faq.querySelectorAll(".faq-item"));
     var pills = Array.prototype.slice.call(faqCats.querySelectorAll(".faq-cat"));
 
     function applyFaqFilter(cat) {
@@ -133,7 +141,7 @@
        the categories are defined. */
     var firstPill = faqCats.querySelector(".faq-cat.is-active") || pills[0];
     if (firstPill) applyFaqFilter(firstPill.getAttribute("data-faq-filter"));
-  }
+  });
 
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") closeMenu();
@@ -225,16 +233,29 @@
      prefers-reduced-motion is honoured by not running the loop at all: each
      slide is painted at its finished position, and autoplay never advances.
      The bars still work, so the hero stays usable without moving on its own. */
-  (function heroNumbers() {
-    // The frame, not the whole hero: the copy beside it is not part of the
-    // carousel, and the click-to-advance below must not fire from the headline.
-    var root = document.querySelector(".hn__stage");
+  /* Once per hero, because there are two of them while the desktop and narrow
+     structures share index.html: the restructured hero keeps its carousel in a
+     .hn__stage frame beside the headline, and the narrow one IS the carousel,
+     full-bleed, with the labels stacked under it. Same loop drives both — what
+     differs is only the root and where the labels live.
+
+     The hidden one costs nothing: the IntersectionObserver at the end never
+     fires for a display:none element, so that loop is never started. */
+  Array.prototype.forEach.call(document.querySelectorAll(".hn"), function (hn) {
+    // No :has() here on purpose — this has to work on an older browser too,
+    // and the frame is simply "the stage if this hero has one".
+    heroNumbers(hn.querySelector(".hn__stage") || hn);
+  });
+  function heroNumbers(root) {
     if (!root) return;
 
     var slides = Array.prototype.slice.call(root.querySelectorAll(".hn-slide"));
     var fills = Array.prototype.slice.call(root.querySelectorAll(".hn__fill"));
     var bars = Array.prototype.slice.call(root.querySelectorAll(".hn__bar"));
+    // Inside each slide on the restructured hero, stacked in the h1 on the
+    // narrow one. Whichever this hero has.
     var labs = Array.prototype.slice.call(root.querySelectorAll(".hn-slide__lab"));
+    if (!labs.length) labs = Array.prototype.slice.call(root.querySelectorAll(".hn__h-l"));
     var countEl = root.querySelector(".hn__count-i");
     var liveEl = root.querySelector(".hn__live");
     var n = slides.length;
@@ -411,7 +432,7 @@
 
     announce();
     if (reduce) paint(performance.now()); else start();
-  })();
+  }
 
 
 
@@ -426,7 +447,14 @@
      figures are one statement; a testimonial is someone's words, and moving
      them on a timer while they are being read is the wrong kind of motion. */
   (function voxDeck() {
-    var root = document.querySelector(".lx-vox");
+    // The one that actually carries a deck. Both page structures have a
+    // .lx-vox while they share index.html — the narrow one is yesterday's
+    // two-card block, which has no items and no nav — so this picks by what is
+    // inside rather than by document order.
+    var root = null;
+    Array.prototype.forEach.call(document.querySelectorAll(".lx-vox"), function (el) {
+      if (!root && el.querySelector(".lx-vox__nav")) root = el;
+    });
     if (!root) return;
 
     var items = Array.prototype.slice.call(root.querySelectorAll(".lx-vox__item"));
