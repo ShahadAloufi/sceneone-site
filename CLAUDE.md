@@ -152,6 +152,12 @@ Actively iterating on UX polish and workflow features.
   FRAME, not the window** — `--hn-num` in `cqw` against a `container-type:
   inline-size` on `.hn__stage`; in `vw` it tracked a viewport the box no longer
   spans.
+  - **The slide's caption sits UNDER the figure, centred** (it was in the
+    frame's top corner, opposite the counter). It is placed from the mask's own
+    geometry — the mask's `28%` top plus its height — so the two cannot drift
+    apart, **which is why `--hn-num` is declared on `.hn-slide` and not on
+    `.hn-slide__mask`**: the caption reads it too. Positioning it off a hard
+    number instead would come apart the first time the figure resized.
 - **The photo→figure mapping follows the artboard: seats on 30+, chair on 3+,
   screen on 80+.** It had been chair / seats / screen because the seats
   photograph was picked for the hosting slide on request; the artboard orders
