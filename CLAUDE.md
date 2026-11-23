@@ -220,8 +220,10 @@ Actively iterating on UX polish and workflow features.
     rather than on a button that would promise a purchase that does not exist.
   - Each card carries a step chip on the page's READING edge
     (`.lx-bento__step`, `inset-inline-start`) — top-right in Arabic, top-left
-    in English — with the number in red. It sat on `inline-end` at first, so
-    in Arabic you met the step last. `aria-hidden`, because the step is a
+    in English. It sat on `inline-end` at first, so in Arabic you met the step
+    last. **The ordinal is spelled out** — «الخطوة الأولى» / «الخطوة الثانية»
+    — rather than «الخطوة» beside a red «01», so each chip is one string and
+    there is no figure left to colour. `aria-hidden`, because the step is a
     position in a sequence the two headings already carry.
   - **No arrow glyphs on the buttons.** `.lx-bento__arrow` and
     `.lx-team__arrow` are gone with the `←` they drew; the narrow page's

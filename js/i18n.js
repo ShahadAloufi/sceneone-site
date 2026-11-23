@@ -149,7 +149,7 @@
 
       bentoEyebrow: "خدماتنا", bentoH: "من التقرير إلى الاستضافة",
       bentoSub: "تبدأ رحلتك بتقرير تغطية لنصك، وعلى أساسه تُرشَّح المشاريع الواعدة لمسار الاستضافة",
-      bentoStep: "الخطوة",
+      bentoStep1: "الخطوة الأولى", bentoStep2: "الخطوة الثانية",
       bento2Note: "بالترشيح بعد استلام التقرير",
       bento1T: "تغطية النصوص",
       bento1B: "تقرير مكتوب يعدّه قارئ متخصص للأفلام القصيرة والطويلة والمعالجات، عبر تسعة محاور واضحة",
@@ -828,7 +828,7 @@
 
       bentoEyebrow: "Services", bentoH: "From the report to hosting",
       bentoSub: "Your journey starts with a coverage report on your script, and on that basis the promising projects are nominated for the hosting track",
-      bentoStep: "Step",
+      bentoStep1: "First step", bentoStep2: "Second step",
       bento2Note: "By nomination, after your report",
       bento1T: "Script coverage",
       bento1B: "A written report by a specialist reader, for shorts, features and treatments, across nine clear axes",

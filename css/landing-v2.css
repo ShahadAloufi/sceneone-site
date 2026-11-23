@@ -228,9 +228,10 @@
   gap: 22px;
 }
 .lx-bento__col { display: flex; flex-direction: column; gap: 10px; }
-/* The step, in the corner opposite the page's reading edge. A chip rather
-   than a bare number: on a photograph a number alone reads as part of the
-   picture. */
+/* The step, on the page's reading edge. A chip rather than bare text: on a
+   photograph, words alone read as part of the picture. It carried «الخطوة»
+   beside a red «01»; it spells the ordinal out now, so there is no figure
+   left to colour and the whole chip is one string. */
 .lx-bento__step {
   position: absolute;
   z-index: 2;
@@ -240,7 +241,6 @@
   inset-inline-start: 24px;
   display: inline-flex;
   align-items: baseline;
-  gap: 6px;
   padding: 8px 14px;
   border-radius: 8px;
   background: rgba(0, 0, 0, .55);
@@ -252,7 +252,6 @@
   font-weight: 700;
   color: var(--lx-cream);
 }
-.lx-bento__step-n { color: var(--lx-red); font-variant-numeric: tabular-nums; }
 /* Card 02 ends on what it is rather than on a button: hosting is not bought,
    it is nominated, and a CTA there would promise a purchase that does not
    exist. */
