@@ -164,8 +164,8 @@
 
   var SCRIPT_SCHEMA = {
     key: "script",
-    glance: ["Premise & Theme", "Hook", "Stakes & Plot", "Character", "Dialogue", "Structure & Pace", "Producibility", "Overall presentation"],
-    eval: ["Premise & Theme", "Hook", "Stakes & Plot", "Character", "Dialogue", "Structure & Pace", "Producibility", "Presentation"],
+    glance: ["Premise & Theme", "Hook", "Originality", "Stakes & Plot", "Character", "Dialogue", "Structure & Pace", "Producibility", "Overall presentation"],
+    eval: ["Premise & Theme", "Hook", "Originality", "Stakes & Plot", "Character", "Dialogue", "Structure & Pace", "Producibility", "Presentation"],
     market: [
       { k: "audience", label: "Audience" },
       { k: "genreDemand", label: "Genre and demand" },

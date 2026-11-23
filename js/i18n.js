@@ -115,7 +115,7 @@
       rdM1T: "خبرة عملية",
       rdM1B: "قرّاء يجمعون بين العمل الفعلي في الكتابة والإخراج والإنتاج، وفهم عميق لمتطلبات السوق العربي والعالمي.",
       rdM2T: "معايير واضحة",
-      rdM2B: "كل نص يُقرأ عبر ثمانية محاور ثابتة، فتعرف موقع نصك بدقة وتتخذ قرارات تطوير واضحة.",
+      rdM2B: "كل نص يُقرأ عبر تسعة محاور ثابتة، فتعرف موقع نصك بدقة وتتخذ قرارات تطوير واضحة.",
       rdM3T: "ما بعد القراءة",
       rdM3B: "التقرير ليس نهاية الطريق. المشاريع التي تصل إلى الجاهزية نأخذها إلى جهات في الصناعة.",
 
@@ -125,8 +125,9 @@
       haifaTag1: "الدراما النفسية والاجتماعية", haifaTag2: "الشخصيات",
       fajrTag1: "بناء القصة", fajrTag2: "اللغة البصرية",
 
-      rdAxesEyebrow: "ما الذي يصلك", rdAxesH: "تقرير مفصّل عبر ثمانية محاور",
-      rdCtaH: "نصك يستحق أن يقرأه من يعرف ما الذي تحاول قوله",
+      rdAxesEyebrow: "ما الذي يصلك", rdAxesH: "تقرير مفصّل عبر تسعة محاور",
+      rdCtaH: "إلى أين يمكن أن يصل نصّك؟",
+      rdCtaSub: "ابدأ بقراءة مهنية تساعدك على فهم نصّك بعمق، واكتشاف فرص تطويره، ومعرفة خطوتك التالية",
 
       /* ---- landing v2 ------------------------------------------------- */
       navAboutUs: "من نحن", navCoverage: "تغطية النصوص",
@@ -155,11 +156,11 @@
 
       readEyebrow: "قراءة النصوص وتقييمها", readH: "نبدأ من النص",
       readP: "نقرأ نصك لنتعرّف إلى ما يميّزه وما يحتاج إلى تطوير، ونساعدك على تحديد خطوتك التالية، من العمل على مسودة جديدة إلى تطوير المشروع أو تقديمه إلى جهة مناسبة في صناعة الأفلام",
-      readLbl: "تحصل على تقرير مفصّل يعدّه قارئ متخصص، ويغطي ثمانية محاور أساسية في النص",
+      readLbl: "تحصل على تقرير مفصّل يعدّه قارئ متخصص، ويغطي تسعة محاور أساسية في النص",
       readLink: "اطّلع على نموذج التقرير",
       readImgAlt: "صفحة سيناريو عليها ملاحظات بخط اليد",
-      axis1: "الفكرة والموضوع", axis2: "عنصر الجذب", axis3: "الرهانات والحبكة", axis4: "الشخصيات",
-      axis5: "الحوار", axis6: "البناء والإيقاع", axis7: "قابلية الإنتاج", axis8: "العرض والتنسيق",
+      axis1: "الفكرة والموضوع", axis2: "عنصر الجذب", axis3: "الأصالة", axis4: "الرهانات والحبكة", axis5: "الشخصيات",
+      axis6: "الحوار", axis7: "البناء والإيقاع", axis8: "قابلية الإنتاج", axis9: "العرض والتنسيق",
 
       svcEyebrow: "الخدمات", svcH: "ابدأ من المرحلة التي وصل إليها مشروعك", svcPill: "أسعار إطلاق مؤقتة",
       svcBtn: "قدّم نصك",
@@ -748,7 +749,7 @@
       rdM1T: "Working experience",
       rdM1B: "Readers who combine real work in writing, directing and producing with a close understanding of what the Arab and international markets ask for.",
       rdM2T: "Clear standards",
-      rdM2B: "Every script is read across the same eight axes, so you know exactly where yours stands and can make clear decisions about developing it.",
+      rdM2B: "Every script is read across the same nine axes, so you know exactly where yours stands and can make clear decisions about developing it.",
       rdM3T: "After the read",
       rdM3B: "The report is not the end of the road. Projects that reach readiness are taken to industry partners.",
 
@@ -758,8 +759,9 @@
       haifaTag1: "Psychological & social drama", haifaTag2: "Character",
       fajrTag1: "Story construction", fajrTag2: "Visual language",
 
-      rdAxesEyebrow: "What you receive", rdAxesH: "A detailed report across eight axes",
-      rdCtaH: "Your script deserves a reader who understands what you are trying to say",
+      rdAxesEyebrow: "What you receive", rdAxesH: "A detailed report across nine axes",
+      rdCtaH: "How far can your script go?",
+      rdCtaSub: "Start with a professional read that helps you understand your script in depth, find where it can grow, and know your next step",
 
       /* ---- landing v2 ------------------------------------------------- */
       navAboutUs: "About", navCoverage: "Coverage",
@@ -788,11 +790,11 @@
 
       readEyebrow: "The read", readH: "It all starts with the script",
       readP: "We read your script to understand what makes it distinctive and where it can grow. Then we help you identify the next step: a rewrite, deeper project development, or finding the right industry opportunity.",
-      readLbl: "A detailed report from a specialist reader, covering eight key areas",
+      readLbl: "A detailed report from a specialist reader, covering nine key areas",
       readLink: "View a sample report",
       readImgAlt: "A screenplay page marked up by hand",
-      axis1: "Concept and theme", axis2: "Hook", axis3: "Stakes and plot", axis4: "Characters",
-      axis5: "Dialogue", axis6: "Structure and pacing", axis7: "Production feasibility", axis8: "Presentation and formatting",
+      axis1: "Concept and theme", axis2: "Hook", axis3: "Originality", axis4: "Stakes and plot", axis5: "Characters",
+      axis6: "Dialogue", axis7: "Structure and pacing", axis8: "Production feasibility", axis9: "Presentation and formatting",
 
       svcEyebrow: "Services", svcH: "Where to start", svcPill: "Limited-time launch pricing",
       svcBtn: "Submit your script",
