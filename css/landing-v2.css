@@ -572,13 +572,23 @@ html[dir="ltr"] .lx-team__arrow { transform: scaleX(-1); }
    it went when the quote took its own guillemets: a mark and a pair of
    quotation marks are the same device twice. */
 
+/* With no JS this is a column of whole messages, one under the other. */
 .pg--wide .lx-vox__deck { display: flex; flex-direction: column; gap: clamp(40px, 5vw, 64px); }
 .pg--wide .lx-vox__item { margin: 0; display: grid; }
-/* Only once the script owns the deck does a panel hide. With no JS every
-   message is on the page and the nav below stays hidden, so nothing promises
-   a control that cannot work. */
-.pg--wide .lx-vox--js .lx-vox__item { display: none; }
-.pg--wide .lx-vox--js .lx-vox__item.is-on { display: grid; }
+
+/* Once the script owns the deck, every panel moves into ONE grid cell and the
+   inactive ones are hidden with `visibility`, not `display`.
+
+   That is the whole point: the messages are 1, 3 and 6 lines long, and with
+   `display: none` the deck collapsed to whichever one was showing — so the
+   arrows and dots under it jumped up and down as you clicked through them. In
+   one cell the deck is always as tall as the LONGEST message, and the controls
+   never move. It costs nothing in meaning: `visibility: hidden` takes a panel
+   out of the accessibility tree and out of tab order exactly as `display:none`
+   does. Same technique the hero's three labels use. */
+.pg--wide .lx-vox--js .lx-vox__deck { display: grid; }
+.pg--wide .lx-vox--js .lx-vox__item { grid-area: 1 / 1; visibility: hidden; }
+.pg--wide .lx-vox--js .lx-vox__item.is-on { visibility: visible; }
 @keyframes lx-vox-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 .pg--wide .lx-vox--js .lx-vox__item.is-on { animation: lx-vox-in .6s cubic-bezier(.2,.7,.2,1) both; }
 @media (prefers-reduced-motion: reduce) {

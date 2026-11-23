@@ -224,6 +224,15 @@ Actively iterating on UX polish and workflow features.
     quote, which is where it had to go — dropping the column without that would
     have lost half of what he wrote. `voxAsSent` is orphaned in `js/i18n.js`;
     `voxMore`/`voxLess` are still the narrow page's.
+  - **The panels share ONE grid cell, hidden with `visibility`, not
+    `display`.** The three messages are 1, 3 and 6 lines long, so with
+    `display: none` the deck collapsed to whichever was showing and the arrows
+    and dots under it jumped up and down as you clicked through. In one cell
+    the deck is always as tall as the longest message and the controls never
+    move. It costs nothing in meaning — `visibility: hidden` takes a panel out
+    of the accessibility tree and out of tab order exactly as `display: none`
+    does — and it is scoped to `.lx-vox--js`, so the no-JS fallback is still a
+    column of whole messages rather than three stacked on top of each other.
   - **No autoplay** — the hero cycles because its three
   figures are one statement; moving someone's words on a timer while they are
   being read is the wrong motion. Every panel renders visible and the nav is
