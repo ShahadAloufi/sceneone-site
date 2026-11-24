@@ -1,15 +1,20 @@
 /* ============================================================================
-   /about — the founders page, English only.
+   /about — من نحن. Arabic-first and bilingual, like every other public page.
 
-   Built from the 1440px design export. The artboard is a fixed canvas, so its
-   literal pixel values are the DESKTOP end of each scale here rather than the
-   whole story: sizes are clamped so the page holds together down to a phone,
-   and the palette comes from css/tokens.css, which already carries this
-   design's exact colours (#F9F4EF, #2A2622, #CD2E07, #7A736A, #D9D4CC).
+   Rebuilt 2026-11-24 from the new artboard, which restructured it: a centred
+   hero, a why-we-exist band with a photograph, the two founders as cards, and
+   the landing's closing slab. The «ما يميّز سين ون» trust cards and the
+   contact rows went with the redraw — the footer still carries the e-mail and
+   the phone, which is all the contact block held.
 
-   The wrapper is .ab2. It is registered alongside .rd2/.tm2/.sb2 in
-   css/tokens.css (for the palette) and css/site-chrome.css (for the white nav
-   on a light page), so the bar above this page matches the others.
+   The artboard is a fixed 1440 canvas, so its literal pixel values are the
+   DESKTOP end of each scale here rather than the whole story: sizes clamp so
+   the page holds together down to a phone, and the palette comes from
+   css/tokens.css, which already carries this design's exact colours.
+
+   The wrapper is .ab2. It is registered in css/tokens.css (palette) and in
+   css/site-chrome.css, where it now shares the LANDING's glass bar rather than
+   the dark one — this page opens on white, which is what that bar is for.
    ========================================================================= */
 
 /* ---- shared type -------------------------------------------------------- */
@@ -17,28 +22,33 @@
 .ab2-eyebrow {
   margin: 0;
   font-family: var(--font-head);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 1.6px;
-  text-transform: uppercase;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
   color: var(--lx-red);
 }
 .ab2-h {
   margin: 0;
   font-family: var(--font-head);
-  font-size: clamp(28px, 3.8vw, 44px);
+  font-size: clamp(28px, 4.4vw, 48px);
   font-weight: 600;
-  line-height: 1.2;
+  line-height: clamp(36px, 5.6vw, 60px);
   color: var(--lx-ink);
 }
-.ab2-head { display: flex; flex-direction: column; gap: 14px; }
+/* Centred section head, the same device the landing uses. */
+.ab2-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
 
-/* Each band is the shared container, centred, so the page lines up with the
-   fixed nav above it exactly as the other v2 pages do. */
 .ab2-hero__in,
+.ab2-story__in,
 .ab2-founders__in,
-.ab2-trust__in,
-.ab2-contact__in {
+.ab2-cta__in {
+  inline-size: 100%;
   max-inline-size: var(--lx-w);
   margin-inline: auto;
 }
@@ -46,186 +56,220 @@
 /* ---- 01 · hero ---------------------------------------------------------- */
 
 .ab2-hero {
-  /* Pays for the fixed 104px bar, as the readers and terms heroes do. */
+  /* Pays for the fixed 104px bar. */
   padding-block-start: calc(104px + clamp(40px, 5vw, 80px));
-  padding-block-end: clamp(56px, 7vw, 96px);
+  padding-block-end: clamp(40px, 5vw, 72px);
   padding-inline: var(--lx-x);
   background: var(--lx-white);
 }
-.ab2-hero__in { display: flex; flex-direction: column; gap: 22px; }
-.ab2-hero__h {
-  margin: 0;
-  max-inline-size: 1180px;
-  font-family: var(--font-head);
-  font-size: clamp(32px, 4.6vw, 60px);
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -1px;
-  color: var(--lx-ink);
-}
-.ab2-hero__cols {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(28px, 4.4vw, 64px);
-  margin-block-start: clamp(10px, 1.4vw, 18px);
-  border-block-start: 2px solid var(--lx-ink);
-  padding-block-start: 28px;
-}
-.ab2-hero__cols p {
-  margin: 0;
-  font-size: clamp(16px, 1.4vw, 19px);
-  line-height: 1.75;
-  color: var(--lx-muted);
-}
-
-/* ---- 02 · founders ------------------------------------------------------ */
-
-.ab2-founders {
-  padding-block: clamp(64px, 8vw, 110px);
-  padding-inline: var(--lx-x);
-  background: var(--lx-cream);
-}
-.ab2-founders__in { display: flex; flex-direction: column; gap: clamp(36px, 4vw, 56px); }
-.ab2-founders__grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(24px, 3.4vw, 48px);
-}
-.ab2-founder {
+.ab2-hero__in {
   display: flex;
   flex-direction: column;
-  gap: 22px;
-  padding: 28px;
-  border-radius: 12px;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+}
+.ab2-hero__h {
+  margin: 0;
+  max-inline-size: 1000px;
+  font-family: var(--font-head);
+  font-size: clamp(32px, 4.6vw, 64px);
+  font-weight: 600;
+  line-height: clamp(40px, 6vw, 84px);
+  letter-spacing: -.5px;
+  color: var(--lx-ink);
+}
+/* Latin display type takes the negative tracking; Arabic letters join, so
+   tightening them pulls the joins together at this size. */
+[dir="rtl"] .ab2-hero__h { letter-spacing: normal; }
+.ab2-hero__sub {
+  margin: 0;
+  max-inline-size: 720px;
+  font-size: clamp(16px, 1.6vw, 20px);
+  font-weight: 300;
+  line-height: clamp(28px, 3vw, 36px);
+  color: #4a443d;
+}
+.ab2-hero__acts { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-block-start: 6px; }
+/* The landing's pair, same red primary and cream secondary. */
+.ab2-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 34px;
+  border-radius: 8px;
+  background: var(--lx-red);
+  color: #fff;
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+.ab2-btn:hover { background: #e63208; }
+.ab2-btn--quiet { padding-inline: 30px; background: var(--lx-cream); color: var(--lx-black); font-weight: 500; }
+.ab2-btn--quiet:hover { background: var(--lx-line); color: var(--lx-black); }
+
+/* ---- 02 · why the company exists ---------------------------------------- */
+
+.ab2-story {
+  padding-block: clamp(40px, 5vw, 72px);
+  padding-inline: var(--lx-x);
   background: var(--lx-white);
+}
+.ab2-story__in { display: grid; gap: clamp(32px, 4.4vw, 64px); align-items: center; }
+@media (min-width: 900px) {
+  /* The photograph takes the flexible column and the copy a fixed 560, so the
+     measure stays put as the window changes and only the picture grows. */
+  .ab2-story__in { grid-template-columns: minmax(0, 1fr) 560px; }
+}
+.ab2-story__photo {
+  inline-size: 100%;
+  block-size: clamp(300px, 36vw, 520px);
+  object-fit: cover;
+  filter: grayscale(1);
+  border-radius: 8px;
+}
+.ab2-story__copy { display: flex; flex-direction: column; gap: 20px; }
+.ab2-story__h {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(24px, 3vw, 40px);
+  font-weight: 600;
+  line-height: clamp(32px, 4vw, 56px);
+  color: var(--lx-ink);
+}
+.ab2-story__p {
+  margin: 0;
+  font-size: clamp(16px, 1.5vw, 18px);
+  font-weight: 300;
+  line-height: clamp(28px, 2.8vw, 36px);
+  color: #4a443d;
+}
+
+/* ---- 03 · the founders -------------------------------------------------- */
+
+.ab2-founders {
+  padding-block: clamp(56px, 7vw, 100px);
+  padding-inline: var(--lx-x);
+  background: var(--lx-white);
+}
+.ab2-founders__in { display: flex; flex-direction: column; gap: clamp(36px, 4.4vw, 56px); }
+.ab2-founders__grid { display: grid; gap: 20px; }
+@media (min-width: 900px) { .ab2-founders__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.ab2-founder {
+  display: grid;
+  gap: 28px;
+  padding: 24px;
+  border-radius: 8px;
+  background: var(--lx-cream);
+}
+@media (min-width: 620px) {
+  /* Portrait beside the copy. Below this it stacks, because a 230px column
+     and a paragraph do not both fit on a phone. */
+  .ab2-founder { grid-template-columns: 230px minmax(0, 1fr); align-items: center; }
 }
 .ab2-founder__photo {
   inline-size: 100%;
-  /* The design's frame is 560x560 — a square, once the 1440 canvas is divided
-     into two columns and the card's own 28px padding comes off. A ratio rather
-     than that fixed height keeps the same crop at every width. Both source
-     photographs are square too, so nothing is cut. */
-  aspect-ratio: 1 / 1;
-  block-size: auto;
+  block-size: 100%;
+  min-block-size: 340px;
   object-fit: cover;
-  /* Both photographs are wider than the frame and the face sits off-centre;
-     these are the design's own crop points. */
+  /* Both photographs are square and the face sits off-centre; these are the
+     artboard's own crop points. */
   object-position: 45% 30%;
   border-radius: 8px;
+  filter: grayscale(1);
 }
-.ab2-founder__photo--right { object-position: 65% 30%; }
-.ab2-founder__id { display: flex; flex-direction: column; gap: 6px; }
+.ab2-founder__photo--right { object-position: 62% 30%; }
+@media (max-width: 619px) { .ab2-founder__photo { min-block-size: 280px; } }
+.ab2-founder__body { display: flex; flex-direction: column; justify-content: center; gap: 12px; padding-block: 8px; }
 .ab2-founder__name {
   margin: 0;
   font-family: var(--font-head);
-  font-size: clamp(24px, 2.4vw, 30px);
+  font-size: clamp(22px, 2.4vw, 28px);
   font-weight: 600;
+  line-height: 36px;
   color: var(--lx-ink);
 }
-.ab2-founder__role {
+.ab2-founder__role { margin: 0 0 6px; font-size: 16px; line-height: 24px; color: var(--lx-red); }
+.ab2-founder__bio {
   margin: 0;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--lx-red);
-}
-.ab2-founder__focus {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--lx-muted);
-}
-.ab2-founder__quote {
-  margin: 0;
-  font-size: clamp(15px, 1.3vw, 17px);
-  line-height: 1.75;
-  color: var(--lx-ink);
+  font-size: clamp(15px, 1.4vw, 17px);
+  font-weight: 300;
+  line-height: clamp(26px, 2.6vw, 32px);
+  color: #4a443d;
 }
 
-/* ---- 03 · why us -------------------------------------------------------- */
-
-.ab2-trust {
-  padding-block: clamp(64px, 7.5vw, 100px);
+/* ---- 04 · closing CTA ---------------------------------------------------
+   The landing's slab, the same shape and the same two stills — see
+   css/landing-v2.css for why the photographs sit ON the black rather than
+   behind it, and why they drop below 1100. */
+.ab2-cta {
+  padding-block: clamp(40px, 5vw, 60px) clamp(56px, 7vw, 80px);
   padding-inline: var(--lx-x);
   background: var(--lx-white);
 }
-.ab2-trust__in { display: flex; flex-direction: column; gap: clamp(32px, 3.6vw, 48px); }
-.ab2-trust__grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(28px, 3.4vw, 48px);
-}
-.ab2-trust__card {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  border-block-start: 2px solid var(--lx-ink);
-  padding-block-start: 24px;
-}
-.ab2-trust__card h3 {
-  margin: 0;
-  font-family: var(--font-head);
-  font-size: clamp(19px, 1.8vw, 22px);
-  font-weight: 600;
-  color: var(--lx-ink);
-}
-.ab2-trust__card p {
-  margin: 0;
-  font-size: clamp(15px, 1.3vw, 16px);
-  line-height: 1.75;
-  color: var(--lx-muted);
-}
-
-/* ---- 04 · contact ------------------------------------------------------- */
-
-.ab2-contact {
-  padding-block: clamp(64px, 7vw, 96px);
-  padding-inline: var(--lx-x);
-  background: var(--lx-cream);
-}
-.ab2-contact__in {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: clamp(40px, 6.6vw, 96px);
-}
-.ab2-contact__lede {
-  inline-size: 640px;
-  flex: none;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-.ab2-contact__rows { flex-grow: 1; display: flex; flex-direction: column; }
-.ab2-contact__row {
+.ab2-cta__box {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--lx-black);
+  color: var(--lx-cream);
+  min-block-size: clamp(360px, 36vw, 460px);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding-block: 20px;
-  border-block-end: 1px solid var(--lx-line);
+  padding: clamp(40px, 5vw, 64px);
 }
-.ab2-contact__row:last-child { border-block-end: 0; }
-.ab2-contact__k { font-size: 16px; font-weight: 600; color: var(--lx-ink); }
-.ab2-contact__v { font-size: 16px; font-weight: 500; color: var(--lx-ink); }
-.ab2-contact__v:hover { color: var(--lx-red); }
-
-/* ---- narrow ------------------------------------------------------------- */
-
-@media (max-width: 900px) {
-  .ab2-hero__cols,
-  .ab2-founders__grid,
-  .ab2-trust__grid { grid-template-columns: minmax(0, 1fr); }
-  .ab2-contact__in { flex-direction: column; }
-  .ab2-contact__lede { inline-size: 100%; }
+.ab2-cta__copy {
+  position: relative;
+  z-index: 2;
+  max-inline-size: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
-@media (max-width: 600px) {
-  .ab2-founder { padding: 18px; }
-  .ab2-hero__h { letter-spacing: -.4px; }
+.ab2-cta__h {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(24px, 3.6vw, 44px);
+  font-weight: 600;
+  line-height: clamp(32px, 4.9vw, 60px);
+  color: var(--lx-cream);
 }
-
-/* ---- Arabic ------------------------------------------------------------- */
-
-/* The hero's negative tracking is set for Latin display type. Arabic letters
-   join, so tightening them pulls the joins together and the line starts to
-   smudge at this size. */
-[dir="rtl"] .ab2-hero__h { letter-spacing: normal; }
+.ab2-cta__sub { margin: 0; font-size: clamp(16px, 1.4vw, 20px); font-weight: 300; line-height: clamp(28px, 2.5vw, 36px); color: rgba(249, 244, 239, .72); }
+.ab2-cta__btn {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 52px;
+  margin-block-start: 4px;
+  padding-inline: 34px;
+  border-radius: 8px;
+  background: var(--lx-red);
+  color: #fff;
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 600;
+  transition: background-color 200ms ease;
+}
+.ab2-cta__btn:hover { background: #e63208; }
+.ab2-cta__stills { display: none; }
+@media (min-width: 1100px) {
+  .ab2-cta__stills { display: block; }
+  .ab2-cta__still { position: absolute; z-index: 1; object-fit: cover; filter: grayscale(1); }
+  .ab2-cta__still--1 {
+    inset-inline-end: 230px;
+    inset-block-end: 0;
+    inline-size: 230px;
+    block-size: 300px;
+    border-radius: 8px 8px 0 0;
+  }
+  .ab2-cta__still--2 {
+    inset-inline-end: 40px;
+    inset-block-start: 40px;
+    inline-size: 210px;
+    block-size: 260px;
+    border-radius: 8px;
+  }
+}

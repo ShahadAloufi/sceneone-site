@@ -48,6 +48,32 @@ coverage workspace + report, role-based access, deadlines, and report delivery t
 writers. **The payment gate is live and has taken real money** (see below).
 Actively iterating on UX polish and workflow features.
 
+**Recently shipped (2026-11-24) — /about, rebuilt:**
+
+- **`about.html` follows the new artboard**: a centred hero, a «لماذا تأسست
+  سين ون؟» band with a photograph beside it, the two founders as cards, and
+  the landing's closing slab. `css/about-v2.css` was rewritten with it.
+  - **Two sections went:** «ما يميّز سين ون» (the three trust cards) and the
+    contact rows. The footer still carries the e-mail and the phone, which is
+    everything the contact block held. The artboard also carries a four-figure
+    stats band, shipped `display: none` in the export, so it was not built.
+  - **The page joined the LANDING's glass bar**, leaving `.rd2`/`.tm2`/`.sb2`
+    in the dark group. It opens on white and always did, so the black bar had
+    been sitting on a white hero — the nav mark is the `-ink` cut here now,
+    and the bar's five links match the landing's.
+  - **The founders keep their existing `.webp` portraits.** The artboard ships
+    the same two 800x800 crops as `.jpg`; there was nothing to gain by
+    carrying a second copy of the same frame in a heavier format.
+  - **The CTA points at `/#services`.** The artboard links a coverage page
+    that does not exist yet — repoint it when that page is built.
+  - **`/#coverage-types` and `/#journey` were repointed** in the overlay and
+    the footer. Those ids now live only in the landing's NARROW block, so from
+    here they resolved to a `display:none` element on a desktop: not a broken
+    link, a dead one. Same trap as the bento chip; worth checking on every
+    page that links INTO the landing.
+  - Orphaned in `js/i18n.js`: `abT1H`…`abT3P`, `abWhyEyebrow`, `abWhyH`,
+    `abContact*`, `abRawanFocus`/`abShahadFocus`, `abRawanQuote`/`abShahadQuote`.
+
 **Recently shipped (2026-11-23) — the landing page, restructured (DESKTOP ONLY):**
 
 - **`index.html` now carries TWO page structures and switches between them at

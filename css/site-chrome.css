@@ -138,8 +138,7 @@
    light bar over one of those would be the wrong way round. */
 .rd2 .nav,     .rd2 .nav.scrolled,
 .tm2 .nav,     .tm2 .nav.scrolled,
-.sb2 .nav,     .sb2 .nav.scrolled,
-.ab2 .nav,     .ab2 .nav.scrolled {
+.sb2 .nav,     .sb2 .nav.scrolled {
   background: var(--lx-black);
   box-shadow: none;
 }
@@ -147,30 +146,24 @@
 @media (min-width: 1000px) {
   .rd2 .nav__links a,
   .tm2 .nav__links a,
-  .sb2 .nav__links a,
-  .ab2 .nav__links a { color: rgba(255, 255, 255, .62); }
+  .sb2 .nav__links a { color: rgba(255, 255, 255, .62); }
   .rd2 .nav__links a:hover,
   .tm2 .nav__links a:hover,
-  .sb2 .nav__links a:hover,
-  .ab2 .nav__links a:hover { color: #fff; }
+  .sb2 .nav__links a:hover { color: #fff; }
 }
 .rd2 .menu-btn span,
 .tm2 .menu-btn span,
-.sb2 .menu-btn span,
-.ab2 .menu-btn span { background: #fff; }
+.sb2 .menu-btn span { background: #fff; }
 /* The same hairline the footer's call/WhatsApp buttons carry. */
 .rd2 .lang-toggle-group,
 .tm2 .lang-toggle-group,
-.sb2 .lang-toggle-group,
-.ab2 .lang-toggle-group { border-color: rgba(255, 255, 255, .22); }
+.sb2 .lang-toggle-group { border-color: rgba(255, 255, 255, .22); }
 .rd2 .lang-btn,
 .tm2 .lang-btn,
-.sb2 .lang-btn,
-.ab2 .lang-btn { color: rgba(255, 255, 255, .86); }
+.sb2 .lang-btn { color: rgba(255, 255, 255, .86); }
 .rd2 .lang-btn:hover,
 .tm2 .lang-btn:hover,
-.sb2 .lang-btn:hover,
-.ab2 .lang-btn:hover { color: #fff; }
+.sb2 .lang-btn:hover { color: #fff; }
 
 /* The pill needs no override any more: .nav__cta's own cream-on-black above is
    already what a dark bar wants, and it matches .lx-foot__btn's hover state. */
@@ -256,7 +249,8 @@
    -ink cut of the same drawing, which is also what the overlay uses.
    ========================================================================= */
 
-.landing .nav, .landing .nav.scrolled {
+.landing .nav, .landing .nav.scrolled,
+.ab2 .nav, .ab2 .nav.scrolled {
   background: rgba(255, 255, 255, .72);
   -webkit-backdrop-filter: saturate(180%) blur(18px);
   backdrop-filter: saturate(180%) blur(18px);
@@ -264,23 +258,32 @@
   box-shadow: none;
 }
 /* The edge only once something is actually running under the bar. */
-.landing .nav.scrolled { border-block-end-color: rgba(0, 0, 0, .08); }
+.landing .nav.scrolled,
+.ab2 .nav.scrolled { border-block-end-color: rgba(0, 0, 0, .08); }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .landing .nav, .landing .nav.scrolled { background: var(--lx-white); }
+  .landing .nav, .landing .nav.scrolled,
+  .ab2 .nav, .ab2 .nav.scrolled { background: var(--lx-white); }
 }
 
 @media (min-width: 1000px) {
-  .landing .nav__links a:hover { color: var(--lx-black); }
+  .landing .nav__links a:hover,
+  .ab2 .nav__links a:hover { color: var(--lx-black); }
 }
-.landing .menu-btn span { background: var(--lx-black); }
-.landing .lang-toggle-group { border-color: rgba(0, 0, 0, .18); }
-.landing .lang-btn { color: rgba(0, 0, 0, .7); }
-.landing .lang-btn:hover { color: var(--lx-black); }
+.landing .menu-btn span,
+.ab2 .menu-btn span { background: var(--lx-black); }
+.landing .lang-toggle-group,
+.ab2 .lang-toggle-group { border-color: rgba(0, 0, 0, .18); }
+.landing .lang-btn,
+.ab2 .lang-btn { color: rgba(0, 0, 0, .7); }
+.landing .lang-btn:hover,
+.ab2 .lang-btn:hover { color: var(--lx-black); }
 /* The pill inverts with the bar: .nav__cta is cream-on-black for a dark bar,
    which on this one would be a white pill on white. Black-on-light is also
    what the design draws, and it matches the hero's own primary button. */
-.landing .nav__cta { background: var(--lx-black); color: var(--lx-cream); }
-.landing .nav__cta:hover { background: var(--lx-red); color: #fff; }
+.landing .nav__cta,
+.ab2 .nav__cta { background: var(--lx-black); color: var(--lx-cream); }
+.landing .nav__cta:hover,
+.ab2 .nav__cta:hover { background: var(--lx-red); color: #fff; }
 /* The pill is shared chrome at 14px. The landing's type is on a 4px grid, so
    it takes 16 HERE only — the other four pages keep the 14 they were drawn
    with. */
@@ -291,7 +294,8 @@
    pay for a 104px bar and every in-page anchor is offset by it. So the BAR
    keeps its height and only the mark comes down to the artboard's size, on
    this page alone. */
-.landing .nav__logo { height: 36px; }
+.landing .nav__logo,
+.ab2 .nav__logo { height: 36px; }
 /* The links sit in the MIDDLE of the bar on this page. styles.css pushes them
    toward the nav__end group with an auto margin, which is right for the pages
    that keep a dense bar; here the brand and the end group each take an equal
@@ -299,15 +303,20 @@
    without absolute positioning and without caring how wide either side is.
    The auto margin has to go or it would fight the flex. */
 .landing .nav__brand,
-.landing .nav__end { flex: 1 1 0; }
-.landing .nav__end { justify-content: flex-end; }
+.landing .nav__end,
+.ab2 .nav__brand,
+.ab2 .nav__end { flex: 1 1 0; }
+.landing .nav__end,
+.ab2 .nav__end { justify-content: flex-end; }
 @media (min-width: 1000px) {
   /* Both, and the second is not redundant: styles.css's English mirror is
      `html[dir="ltr"] .nav__links`, which outranks a plain `.landing` scope,
      so without it the left margin survived and nudged the group 11px off
      centre in English only. */
-  .landing .nav__links { margin: 0; }
-  html[dir="ltr"] .landing .nav__links { margin: 0; }
+  .landing .nav__links,
+  .ab2 .nav__links { margin: 0; }
+  html[dir="ltr"] .landing .nav__links,
+  html[dir="ltr"] .ab2 .nav__links { margin: 0; }
 }
 /* Dark links at the artboard's own weight, not the .62 of a dark bar. */
 @media (min-width: 1000px) {
@@ -315,8 +324,10 @@
      Arabic — five labels plus the pill — and a fixed 34 left the group
      touching the pill at 1024, which pushed it off centre. There were briefly
      TWO gap rules here and the later one silently won; keep it to one. */
-  .landing .nav__links { gap: clamp(16px, 2.4vw, 34px); }
-  .landing .nav__links a { color: #2a2622; font-weight: 400; font-size: 16px; }
+  .landing .nav__links,
+  .ab2 .nav__links { gap: clamp(16px, 2.4vw, 34px); }
+  .landing .nav__links a,
+  .ab2 .nav__links a { color: #2a2622; font-weight: 400; font-size: 16px; }
 }
 
 /* ============================================================================
