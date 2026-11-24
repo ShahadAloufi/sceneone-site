@@ -1057,8 +1057,8 @@ html[dir="ltr"] .landing .hero__shade {
 
 .pg--wide .hn__copy { display: flex; flex-direction: column; gap: clamp(20px, 2.4vw, 28px); align-items: flex-start; }
 /* The social-proof line. NO chip — it sits straight on the white, reading
-   (in Arabic) text · 55 · hairline · faces. Source order IS that order, so
-   the whole row mirrors with the document and English reads faces-first. */
+   (in Arabic) faces · hairline · 55 · text. Source order IS that order, so
+   the whole row mirrors with the document and the faces always lead. */
 .pg--wide .hn__pill {
   margin: 0;
   display: flex;
