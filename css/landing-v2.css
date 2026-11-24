@@ -1086,7 +1086,10 @@ html[dir="ltr"] .landing .hero__shade {
   color: var(--lx-ink);
   /* A measure, so it breaks onto the artboard's two lines instead of
      stretching the row out to one. */
-  max-inline-size: 15ch;
+  /* The copy carries its own <br>, so this measure is only a backstop
+     against a longer string stretching the row — it must stay WIDE enough
+     that it never breaks the line the copy already broke. */
+  max-inline-size: 24ch;
   /* Centred, not start-aligned: the two lines are different lengths and
      ragging them against the figure leaves a notch beside it. */
   text-align: center;
@@ -1098,9 +1101,6 @@ html[dir="ltr"] .landing .hero__shade {
   font-weight: 700;
   color: var(--lx-red);
 }
-/* English is a longer string in a wider face, so 15ch sends it to three
-   lines. A wider measure keeps both languages on the artboard's two. */
-html[dir="ltr"] .pg--wide .hn__pill-t { max-inline-size: 24ch; }
 .pg--wide .hn__pill-rule {
   inline-size: 1px;
   block-size: 40px;

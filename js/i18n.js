@@ -148,7 +148,7 @@
 
       hnH: "نحو تطوير المواهب في الكتابة السينمائية",
       hnP: "تسعى سين ون إلى دعم الكتّاب وصنّاع الأفلام من خلال تقديم خدمات متخصصة في تقييم النصوص وتطوير المشاريع، وإتاحة فرص التواصل والتعاون مع الجهات العاملة في القطاع السينمائي",
-      hnPill: "مشروعًا قرأها فريقنا منذ سبتمبر",
+      hnPill: "مشروعًا قيّمها فريقنا<br>منذ سبتمبر",
       hnSample: "اطّلع على نموذج تقرير",
 
       logosLbl: "نعمل مع جهات في قطاع السينما السعودي",
@@ -844,7 +844,7 @@
 
       hnH: "Toward developing talent in screenwriting",
       hnP: "Scene One supports writers and filmmakers with specialist services in script evaluation and project development, and opens opportunities to connect and collaborate with organizations working across the film sector",
-      hnPill: "projects read by our team since September",
+      hnPill: "projects evaluated by our team<br>since September",
       hnSample: "See a sample report",
 
       logosLbl: "We work with organizations across the Saudi film sector",
