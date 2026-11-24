@@ -1110,15 +1110,18 @@ html[dir="ltr"] .landing .hero__shade {
   justify-content: center;
   padding: 16px 34px;
   border-radius: 8px;
-  background: var(--lx-black);
-  color: var(--lx-cream);
+  /* The same red as the closing CTA's button, so the page's one action looks
+     like one action in both places it appears. It was black with cream, which
+     made the hero's and the CTA's read as two different buttons. */
+  background: var(--lx-red);
+  color: #fff;
   font-family: var(--font-head);
   font-size: 16px;
   font-weight: 600;
   white-space: nowrap;
   transition: background-color 200ms ease, color 200ms ease;
 }
-.pg--wide .hn__cta:hover { background: var(--lx-red); }
+.pg--wide .hn__cta:hover { background: #e63208; }
 
 /* ---- the frame ---------------------------------------------------------- */
 
