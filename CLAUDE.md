@@ -78,9 +78,13 @@ Actively iterating on UX polish and workflow features.
   own column is far narrower than the viewport and a 900px test let the four
   columns overflow it. Test the COLUMN, not the window.
 - **Three things were corrected against the artboard, all of them factual:**
-  - **The treatment row reads «70–150»**, not the artboard's flat 150.
-    `PRICES` has `treatment_short` 70 and `treatment_feature` 150, and the
-    writer picks between them on the form's own «نوع المشروع» select.
+  - ~~The treatment row reads «70–150»~~ — **WRONG, corrected the same day.
+    BOTH treatments are 150.** `PRICES` has `treatment_feature` and
+    `treatment_short` at 15000 halalas each, and `treatment-submit.html`'s
+    two options both carry `data-price="150"`. The artboard's flat 150 was
+    right; the 70 came from a stale note in this file, which said 70 / 150
+    in five places and has been corrected throughout. **The two tiers differ
+    by page cap and turnaround, not by price.**
   - **Its turnaround reads «7 إلى 10 أيام»**, not «7 إلى 12». `TURNAROUND` in
     `js/admin.js` is 7 and 10.
   - The two script rows' prices and turnarounds already matched.
@@ -512,7 +516,7 @@ Actively iterating on UX polish and workflow features.
     link means — is what renders. `#packages-partners` in the URL opens the
     partners tab and scrolls to the section.
   - **Treatment is ONE card.** Short and feature are still separate products
-    (`treatment_short` / `treatment_feature`, 70 / 150), but the writer picks on
+    (`treatment_short` / `treatment_feature`, 150 each), but the writer picks on
     the form's own required «نوع المشروع» select. **The card's link must carry no
     `?type=`** — `preselectType()` returns early without one, which is what
     leaves that select on its placeholder. Re-adding a `?type=` silently
@@ -1075,15 +1079,17 @@ Actively iterating on UX polish and workflow features.
   - **The pricing cards carry the tier in the link** (`?type=treatment_short` /
     `?type=treatment_feature`) and the form pre-selects it. A default, not a lock —
     the writer can still change it, and an unknown or missing value selects nothing.
-    Without this, someone who clicked the 70 SAR card could quietly land on the 150
-    SAR option and be invoiced for it.
+    (Written when the two tiers were thought to carry different prices. They
+    do not — both are 150 — so the preselect now only saves the writer from
+    picking the wrong page cap and turnaround, which it is still worth doing.)
 - **Treatment coverage is priced and purchasable, wired end to end**
-  (2026-08-19): `treatment_short` 70 SAR / `treatment_feature` 150 SAR. A
+  (2026-08-19): `treatment_short` and `treatment_feature`, **150 SAR each** —
+  they differ by page cap (5 / 15) and turnaround (7 / 10 days), not by price. A
   story-stage read, NOT the eight-point script coverage: its own eight-item card
   list, its own sample (`sample-treatment-report.html`), page caps of 5 / 15, and
   turnaround of **7 / 10 days** — quicker than every script tier, which is why
   `deadlineDays()` in `js/admin.js` now reads a `TURNAROUND` map instead of a
-  feature/else ternary. Card order: script coverage first (short 100–400, feature 800–1200), treatments after (70, 150).
+  feature/else ternary. Card order: script coverage first (short 100–400, feature 800–1200), treatments after (150 each).
   The reader workspace and the writer's report both follow the schema (below), so a
   treatment reader is asked the treatment's own questions.
 - **Third price tier shipped end to end: `short_under_30`, 350 SAR** (card first in
@@ -1605,7 +1611,7 @@ must be in the `supabase_realtime` publication for live updates to fire.
   homepage: the two treatments are fixed (`PRICES`, in halalas), and both script
   coverages are **per page** (`PER_PAGE`) — see the pricing bullet below.
 - **Four products, keyed on `film_type`.** Two fixed-price treatments
-  (`treatment_short` 70, `treatment_feature` 150) and two **per-page** script
+  (`treatment_short` and `treatment_feature`, 150 each) and two **per-page** script
   coverages (`short` 10–40pp, `feature` 80–120pp, 10 SAR a page → 100–400 and
   800–1200). `short_under_30` is **retired** — gone from `FILM_TYPES`, its price and
   labels kept only so old rows still render.
