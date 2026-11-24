@@ -93,6 +93,13 @@ Actively iterating on UX polish and workflow features.
   `css/submit-v2.css`: h1 30px, sections on hairlines 36px apart, fields one
   per row at 52px, and the aside as the form's last block at the slab's 12px
   gutters rather than a column beside it.
+- ⚠️ **«رحلة التسليم» is THREE steps, not four.** «04 نحدد معك الخطوة
+  التالية» was removed on request from both forms: it promises a
+  conversation after the report that is not part of the service. Nothing
+  else on the site makes that promise to a WRITER — the remaining «خطوتك
+  التالية» strings (`readP`, `ctaSub`, `faqA35`, `abP1`) describe what the
+  report itself contains, and `pnDoneP` is the PARTNERS form telling an
+  enquirer that a human will reply, which is a real process.
 - **The section descriptions are GONE** from both forms, desktop and mobile
   («ما نحتاج معرفته عن العمل نفسه.» and the other five). Each section is its
   number and its heading now. `.sb2-sec__p` had no CSS of its own — it rode
