@@ -111,8 +111,23 @@
 .sv2-row__lbl { font-size: 13px; line-height: 20px; color: var(--lx-muted-2); }
 .sv2-row__price, .sv2-row__time { display: flex; flex-direction: column; gap: 2px; }
 .sv2-row__time { font-size: 16px; line-height: 24px; color: var(--lx-muted); }
+/* The symbol LEADS the amount, so in Arabic it sits on the right of it —
+   the same way a currency mark is read everywhere. */
+.sv2-price { display: inline-flex; align-items: center; gap: 6px; }
 .sv2-num { font-family: var(--font-head); font-size: 28px; line-height: 36px; font-weight: 700; color: var(--lx-ink); }
-.sv2-cur { font-size: 14px; color: var(--lx-muted-2); }
+/* The riyal mark, painted as a mask off the artwork rather than loaded as an
+   image, exactly as the landing's price cards do it — the box carries the
+   SVG's own 37:41 proportions so `contain` has nothing to letterbox, and it
+   is sized in em so it tracks the figure beside it. */
+.sv2-riyal {
+  display: inline-block;
+  inline-size: .63em;
+  block-size: .70em;
+  font-size: 28px;
+  background-color: var(--lx-muted-2);
+  -webkit-mask: url('../assets/riyal.svg') no-repeat center / contain;
+  mask: url('../assets/riyal.svg') no-repeat center / contain;
+}
 .sv2-row__go {
   display: inline-flex;
   align-items: center;

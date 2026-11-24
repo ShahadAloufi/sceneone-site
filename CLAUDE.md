@@ -88,6 +88,12 @@ Actively iterating on UX polish and workflow features.
   - **Its turnaround reads «7 إلى 10 أيام»**, not «7 إلى 12». `TURNAROUND` in
     `js/admin.js` is 7 and 10.
   - The two script rows' prices and turnarounds already matched.
+- **The price is the riyal MARK leading the figure**, not the word «ريال»
+  trailing it — so in Arabic the mark sits on the right of the amount, the
+  way a currency mark is read. It reuses the landing's technique: the
+  `assets/riyal.svg` artwork painted as a CSS mask off a box carrying its own
+  37:41 proportions, sized in `em` so it tracks the figure. `svCurrency` is
+  gone from both dicts; `svCurrencyAria` carries the accessible name.
 - **The two notes under the table are NOT cards** (updated artboard, same
   day): plain blocks either side of a 1px rule. The rule is its OWN grid
   item rather than a border on one of them, so it spans whichever block is
