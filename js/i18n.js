@@ -112,8 +112,8 @@
       rdHeroCta2: "تعرّف على الفريق",
       rdTeamEyebrow: "فريق القرّاء", rdTeamH: "قرّاء من صنّاع الأفلام وكتّاب السيناريو",
       rdTeamSub: "ومنتج تطوير إبداعي يتولّى المشاريع بعد التوصية",
-      rdCtaH: "نصك يستحق قارئًا يفهم ما تحاول قوله",
-      rdCtaSub: "قدّم نصك، ويصلك تقرير مكتوب من قارئ متخصص",
+      rdCtaH: "تعرّف على إمكانات نصك من منظور متخصص",
+      rdCtaSub: "احصل على تقييم مهني لنصك من فريق متخصص في القراءة والتطوير السينمائي",
       rdTitle: "من يقرأ نصك",
       rdLede: "يقرأ نصك صانع أفلام أو كاتب سيناريو، بالمعايير نفسها التي تُقرأ بها المشاريع في غرف التطوير، ويكتب لك أين تكمن قوة نصك وما الذي يحتاج تطويرًا",
 
@@ -808,8 +808,8 @@
       rdHeroCta2: "Meet the team",
       rdTeamEyebrow: "The readers", rdTeamH: "Readers who are filmmakers and screenwriters",
       rdTeamSub: "and a creative development producer who takes a project on once it is recommended",
-      rdCtaH: "Your script deserves a reader who understands what you are trying to say",
-      rdCtaSub: "Submit your script and a written report from a specialist reader follows",
+      rdCtaH: "See what your script can be, from a specialist's perspective",
+      rdCtaSub: "Get a professional evaluation of your script from a team that specialises in reading and film development",
       rdTitle: "Who reads your script",
       rdLede: "Your script is read by a filmmaker or a screenwriter, against the same standards projects meet in development rooms, and they write down where its strength lies and what needs work. After the report, we carry on developing the promising projects with the writer and the director, then take them to production companies to back the writer.",
 
