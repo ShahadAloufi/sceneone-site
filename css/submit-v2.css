@@ -486,6 +486,12 @@ html[dir="ltr"] .sb2 .sub-field select { background-position: right 18px center;
    `start` was landing on the left. Stated outright: the fields are Arabic, and
    the placeholder follows the field. The two dir="ltr" inputs (the English
    title, the email, the membership number) set their own alignment inline. */
+/* Stated on the FIELD as well as on the placeholder. The fields were on
+   `start`, which resolves to the right edge here and measured correctly — but
+   it only does so while the field's own direction is the page's, and a
+   placeholder is a separate bidi context that engines place differently. An
+   explicit `right` on both removes the dependency outright. */
+.sb2 .sub-field input:not([dir="ltr"]),
 .sb2 .sub-field textarea { direction: rtl; text-align: right; }
 .sb2 .sub-field input::placeholder,
 .sb2 .sub-field textarea::placeholder { direction: rtl; text-align: right; }
