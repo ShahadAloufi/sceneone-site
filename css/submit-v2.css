@@ -18,7 +18,10 @@
    Numerals are Latin, matching the rest of the site.
    ========================================================================= */
 
-.sb2 { background: var(--lx-cream); color: var(--lx-ink); }
+/* White throughout, like every other redesigned page. The cream is a FIELD
+   and CARD colour here, not the ground — inverted from the first pass when
+   the artboard arrived. */
+.sb2 { background: var(--lx-white); color: var(--lx-ink); }
 
 /* ---- hero ---------------------------------------------------------------- */
 
@@ -69,7 +72,47 @@
    ends a hundred pixels inside the bar above it reads as a mistake. The column
    takes --lx-w, which aliases --container, so the fields line up with the nav,
    the hero and the footer at both edges. */
-.sb2-col { inline-size: 100%; max-inline-size: var(--lx-w); margin-inline: auto; }
+/* The form IS the grid. One column of sections, one aside. Below 1100 the
+   aside drops under the form, where it reads as the last step rather than a
+   panel beside one. */
+.sb2-grid {
+  inline-size: 100%;
+  max-inline-size: var(--lx-w);
+  margin-inline: auto;
+  display: grid;
+  gap: clamp(28px, 4vw, 56px);
+}
+@media (min-width: 1100px) { .sb2-grid { grid-template-columns: minmax(0, 1fr) 400px; align-items: start; } }
+.sb2-col { min-inline-size: 0; }
+
+/* ---- the aside --------------------------------------------------------- */
+
+.sb2-aside { display: flex; flex-direction: column; gap: 16px; min-inline-size: 0; }
+/* Sticky only where there is a second column to be beside. The offset clears
+   the fixed 104px bar. */
+@media (min-width: 1100px) { .sb2-aside { position: sticky; inset-block-start: 128px; } }
+.sb2-card {
+  border-radius: 12px;
+  background: var(--lx-cream);
+  padding: clamp(24px, 3vw, 32px);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.sb2-card--quiet { gap: 16px; padding: clamp(22px, 2.6vw, 28px); }
+.sb2-card__h { margin: 0; font-family: var(--font-head); font-size: 20px; line-height: 28px; font-weight: 600; color: var(--lx-ink); }
+.sb2-card__h--sm { font-size: 17px; line-height: 24px; }
+.sb2-card__rule { block-size: 1px; background: rgba(0, 0, 0, .12); }
+.sb2-card--quiet .sb2-card__rule { background: rgba(0, 0, 0, .08); }
+
+.sb2-sum { display: flex; flex-direction: column; gap: 14px; }
+.sb2-sum__row { display: flex; justify-content: space-between; gap: 16px; font-size: 15px; line-height: 24px; }
+.sb2-sum__k { color: var(--lx-muted); }
+.sb2-sum__v { font-weight: 500; color: var(--lx-ink); text-align: end; }
+
+.sb2-steps { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.sb2-steps li { display: flex; gap: 14px; font-size: 14px; line-height: 24px; color: var(--lx-muted); }
+.sb2-steps__n { flex: none; font-family: var(--font-head); font-weight: 700; color: var(--lx-red); font-variant-numeric: tabular-nums; }
 
 .sb2-sec { padding-block: clamp(36px, 4vw, 56px); }
 .sb2-sec + .sb2-sec { border-block-start: 1px solid rgba(0, 0, 0, .1); }
@@ -109,7 +152,7 @@
   padding-inline: 20px;
   border: 1px solid transparent;
   border-radius: 12px;
-  background: var(--lx-white);
+  background: var(--lx-cream);
   color: var(--lx-black);
   font-family: var(--font-body);
   font-size: 16px;
@@ -165,7 +208,7 @@ html[dir="ltr"] .sb2 .sub-field select { background-position: right 18px center;
   padding-inline: 20px;
   border: 1px solid transparent;
   border-radius: 12px;
-  background: var(--lx-white);
+  background: var(--lx-cream);
   cursor: pointer;
   transition: border-color 180ms ease;
 }
@@ -180,7 +223,7 @@ html[dir="ltr"] .sb2 .sub-field select { background-position: right 18px center;
 }
 .sb2 .sub-radio input:checked ~ .sub-radio__dot {
   background: var(--lx-red);
-  box-shadow: inset 0 0 0 3px var(--lx-white);
+  box-shadow: inset 0 0 0 3px var(--lx-cream);
 }
 .sb2 .sub-radio input:checked ~ .sub-radio__label { font-weight: 600; }
 .sb2 .sub-radio:has(input:checked) { border-color: var(--lx-red); }
@@ -199,7 +242,7 @@ html[dir="ltr"] .sb2 .sub-field select { background-position: right 18px center;
   padding: 20px;
   border: 1px dashed var(--lx-line);
   border-radius: 12px;
-  background: var(--lx-white);
+  background: var(--lx-cream);
   text-align: center;
   cursor: pointer;
   transition: border-color 180ms ease, background-color 180ms ease;
@@ -233,7 +276,7 @@ html[dir="ltr"] .sb2 .sub-field select { background-position: right 18px center;
   padding: 20px;
   border: 1px solid var(--lx-red);
   border-radius: 14px;
-  background: var(--lx-white);
+  background: var(--lx-cream);
 }
 .sb2 .sub-nda[hidden] { display: none; }
 .sb2 .sub-nda__head { display: flex; gap: 12px; align-items: flex-start; }
@@ -391,11 +434,14 @@ html[dir="ltr"] .sb2 .sub-field select { background-position: right 18px center;
 .sb2 .sub-submit:disabled { opacity: .5; cursor: not-allowed; }
 .sb2 .sub-submit:disabled:hover { background: var(--lx-red); }
 .sb2 .sub-submit:focus-visible { outline: 2px solid var(--lx-black); outline-offset: 3px; }
-.sb2-total { text-align: start; }
-.sb2-total__label { margin: 0 0 6px; font-size: 14px; color: var(--lx-muted); }
-.sb2 .sub-quote { margin: 0; font-family: var(--font-head); font-size: clamp(18px, 2.2vw, 24px); font-weight: 700; color: var(--lx-black); }
+/* In the card the total is a baseline row — label on one side, figure on the
+   other — rather than the block it was under the old full-width send bar. */
+.sb2-total { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; text-align: start; }
+.sb2-total__label { font-family: var(--font-head); font-weight: 600; }
+.sb2-total__label { margin: 0; font-size: 16px; color: var(--lx-ink); }
+.sb2 .sub-quote { margin: 0; font-family: var(--font-head); font-size: clamp(28px, 3vw, 40px); line-height: 1; font-weight: 700; color: var(--lx-black); text-align: end; }
 .sb2 .sub-quote[hidden] { display: none; }
-.sb2-total__empty { margin: 0; font-size: 16px; color: var(--lx-muted); }
+.sb2-total__empty { margin: 0; font-size: 13px; line-height: 20px; color: var(--lx-muted); text-align: end; }
 
 /* ---- the delivery-journey strip ------------------------------------------ */
 /* Sits between the hero and the form: what happens after the writer sends. */
@@ -464,3 +510,30 @@ html[dir="ltr"] .sb2 .sub-field select { background-position: right 18px center;
    the card. That is right for a file name and wrong for the Arabic prompt that
    sits there until one is chosen, so it applies only once a file is picked. */
 .sb2 .sub-drop__text { word-break: normal; overflow-wrap: anywhere; }
+
+/* ---- the aside card, LAST ------------------------------------------------
+   These sit at the end of the file deliberately. Every one of them is equal
+   in specificity to a .sb2 rule above, so source order is what decides, and
+   putting them next to the aside layout had the earlier .sb2 .sub-submit win
+   silently — the send button came out red instead of black. */
+
+/* The three controls below are SHARED with treatment-submit.html, which still
+   carries the old full-width .sb2-send bar. Everything the card needs is
+   therefore scoped to .sb2-card, so that page is untouched. */
+.sb2-card .sub-submit {
+  inline-size: 100%;
+  min-block-size: 56px;
+  padding-inline: 20px;
+  font-size: 16px;
+  background: var(--lx-black);
+}
+.sb2-card .sub-submit:hover { background: var(--lx-red); }
+.sb2-card .sb2-consent { padding-block-end: 0; gap: 12px; }
+.sb2-card .sb2-consent__box { inline-size: 18px; block-size: 18px; border-radius: 5px; }
+.sb2-card .sb2-consent input:checked ~ .sb2-consent__box::after { inset-inline-start: 5.5px; inset-block-start: 2px; inline-size: 5px; block-size: 9px; }
+.sb2-card .sb2-consent__text { font-size: 13px; line-height: 22px; color: var(--lx-muted); }
+.sb2-card .sb2-consent-wrap { display: flex; flex-direction: column; gap: 8px; }
+/* In the card the strip is the card's own last block, not a panel of its own. */
+.sb2-card .sb2-times { padding: 0; border-radius: 0; background: none; flex-direction: column; align-items: flex-start; gap: 6px; }
+.sb2-card .sb2-times__label { letter-spacing: 0; font-size: 14px; color: var(--lx-ink); }
+.sb2-card .sb2-times p { font-size: 14px; line-height: 24px; font-weight: 400; color: var(--lx-muted); }

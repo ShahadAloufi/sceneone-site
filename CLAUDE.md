@@ -48,6 +48,46 @@ coverage workspace + report, role-based access, deadlines, and report delivery t
 writers. **The payment gate is live and has taken real money** (see below).
 Actively iterating on UX polish and workflow features.
 
+**Recently shipped (2026-11-24) — /submit, the order summary:**
+
+- **`submit.html` is TWO COLUMNS now**, from the «تقديم النص · بالهيكل الجديد»
+  artboard: the four sections in one column, a sticky aside in the other
+  carrying an **«ملخص الطلب»** card (service · page count · total · consent ·
+  send) and the **«رحلة التسليم»** card the page used to show as a full-width
+  band above the form.
+  - **The `<form>` IS the grid**, not a child of one. The consent box and the
+    submit button live in the aside and both have to stay inside the form
+    element for `requiredFields()` and the submit handler to reach them.
+    Verified: `#submitForm .sub-submit` and `#submitForm #consent` both
+    resolve.
+  - **Sticky only at ≥1100px**, offset 128 to clear the fixed bar. Below that
+    the aside drops under the form, where it reads as the last step; a sticky
+    card would eat most of a phone's viewport.
+- **The palette INVERTED: the page is white and the cream is the FIELD
+  colour**, which is how the artboard has it and how every other redesigned
+  page works. It had been a cream page with white fields. `.sb2` also left
+  the dark-bar group for the LANDING's glass bar and took the `-ink` mark,
+  since it no longer opens on anything dark. **`.tm2` is now alone in the
+  dark group** — /terms is the last page opening on a dark hero.
+- **Two new summary rows cost a JS change, and it is DISPLAY ONLY.**
+  `syncSummaryService()` and `syncSummaryPages()` in `js/submit.js` write
+  `#sumService` and `#sumPages` and touch nothing else — not the posted body,
+  not the price, not validation. A form without the card
+  (`treatment-submit.html`) has no elements to write to and every call is a
+  no-op. The page figure is **billable** pages (raw − 1), the same count the
+  quote and the invoice are built from, so the two numbers in the card agree.
+  `showQuote()` was left exactly as it was.
+  ⚠️ The service row reads the option's TEXT but tests its **value** — an
+  unpicked `<select>` still has a selected option, its placeholder.
+- ⚠️ **`.sb2-send`, `.sb2-journey` and the old full-width bar's rules STAY.**
+  `treatment-submit.html` still carries that markup and has not been
+  redesigned. Everything the new card needed is therefore scoped to
+  `.sb2-card`, and **that block sits at the END of `css/submit-v2.css`** —
+  it is equal in specificity to the `.sb2 …` rules above it, so source order
+  decides, and next to the aside layout the earlier `.sb2 .sub-submit` won
+  silently and the send button came out red instead of black. The recurring
+  trap in this codebase, hit again.
+
 **Recently shipped (2026-11-24) — /services, a NEW page:**
 
 - **`services.html` + `css/services-v2.css`**, built from the «خدماتنا ·

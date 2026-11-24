@@ -26,7 +26,7 @@
   <!-- ── NAV ── -->
   <nav class="nav">
     <a class="nav__brand" href="/"><!-- The dark-ink cut: this page's bar is white. -->
-      <img class="nav__logo" src="assets/scene-one-mark-v5.svg" alt="Scene One"></a>
+      <img class="nav__logo" src="assets/scene-one-mark-v5-ink.svg" alt="Scene One"></a>
     <!-- Inline links on desktop; below the breakpoint they collapse and the
          hamburger's overlay carries the same six destinations. -->
     <ul class="nav__links">
@@ -112,19 +112,6 @@
     </div>
   </section>
 
-  <!-- ── WHAT HAPPENS AFTER SENDING ── -->
-  <section class="sb2-journey">
-    <div class="sb2-journey__card">
-      <p class="sb2-journey__label">رحلة التسليم</p>
-      <div class="sb2-journey__steps">
-        <div class="sb2-journey__step"><span class="sb2-journey__n">01</span><span class="sb2-journey__t">يصلك تأكيد الاستلام على بريدك.</span></div>
-        <div class="sb2-journey__step"><span class="sb2-journey__n">02</span><span class="sb2-journey__t">يُسنَد النص إلى قارئ مختص.</span></div>
-        <div class="sb2-journey__step"><span class="sb2-journey__n">03</span><span class="sb2-journey__t">يصلك تقرير مكتوب عبر تسعة محاور.</span></div>
-        <div class="sb2-journey__step"><span class="sb2-journey__n">04</span><span class="sb2-journey__t">نحدد معك الخطوة التالية.</span></div>
-      </div>
-    </div>
-  </section>
-
   <!-- ── FORM ──
        The form element and every hook inside it (the `name` attributes, the
        .sub-field[data-field] wrappers, the .req stars, the .sub-err messages,
@@ -132,7 +119,12 @@
        contract js/submit.js reads. The design changes the surface around them,
        not the contract. -->
   <main class="sb2-main">
-    <form class="sb2-col" id="submitForm" novalidate>
+    <!-- The FORM is the grid, not a child of one: the consent box and the
+         submit button live in the aside, and both have to stay inside the
+         form element for requiredFields() and the submit handler to reach
+         them. -->
+    <form class="sb2-grid" id="submitForm" novalidate>
+      <div class="sb2-col">
 
       <!-- ── 01 · ABOUT THE SCRIPT ── -->
       <section class="sb2-sec">
@@ -429,42 +421,77 @@
         </div>
       </section>
 
-      <!-- ── EXPECTED TURNAROUND ── -->
-      <!-- Hidden until a tier is picked, then only that tier's line shows:
-           quoting both at once asks the writer to work out which one is theirs.
-           syncTimes() in js/submit.js matches data-for against the dropdown. -->
-      <div class="sb2-times" id="timesStrip" hidden>
-        <p class="sb2-times__label">المدة المتوقعة</p>
-        <p data-for="short">10 إلى 15 يوم عمل <span>· الفيلم القصير</span></p>
-        <p data-for="feature">حتى 4 أسابيع <span>· الفيلم الطويل</span></p>
-      </div>
+      </div><!-- /.sb2-col -->
 
-      <!-- ── CONSENT + SEND ── -->
-      <div class="sb2-send" id="submit">
-        <!-- Not a .sub-field: requiredFields() builds its generic list from
-             .sub-field[data-field] wrappers carrying a .req star, and this row
-             has none. It still carries data-field so markInvalid("consent", …)
-             can reach it, the same way the membership fields are reached. -->
-        <div class="sb2-consent-wrap" data-field="consent">
-          <label class="sb2-consent">
-            <input type="checkbox" id="consent" name="consent" value="yes">
-            <span class="sb2-consent__box" aria-hidden="true"></span>
-            <span class="sb2-consent__text">أوافق على معالجة النص وفق <a href="/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a>، وأقرّ بأن النص من تأليفي وأنني أملك كامل حقوق الملكية الفكرية الخاصة به، وأن تسجيل هذه الحقوق مسؤوليتي. يبقى النص ملكي بالكامل في كل مراحل الخدمة.</span>
-          </label>
-          <p class="sb2-consent__err">يلزم الموافقة قبل إرسال النص.</p>
-        </div>
+      <!-- ── ORDER SUMMARY + SEND ──
+           The aside. It is sticky on a desktop so the figure the writer is
+           about to pay stays on screen while they fill a long form, and it
+           falls back to a plain block below the breakpoint, where a sticky
+           card would eat most of a phone's viewport. -->
+      <aside class="sb2-aside">
+        <div class="sb2-card">
+          <p class="sb2-card__h">ملخص الطلب</p>
 
-        <div class="sb2-send__row">
-          <button type="submit" class="sub-submit">إرسال النص والدفع</button>
+          <!-- Written by syncSummary() in js/submit.js. Both rows carry an em
+               dash until there is something to say, so the card has a resting
+               state rather than appearing a row at a time. -->
+          <div class="sb2-sum">
+            <div class="sb2-sum__row">
+              <span class="sb2-sum__k">الخدمة</span>
+              <span class="sb2-sum__v" id="sumService">—</span>
+            </div>
+            <div class="sb2-sum__row">
+              <span class="sb2-sum__k">عدد الصفحات</span>
+              <span class="sb2-sum__v" id="sumPages">—</span>
+            </div>
+          </div>
+
+          <div class="sb2-card__rule"></div>
+
           <div class="sb2-total">
             <p class="sb2-total__label">الإجمالي</p>
-            <!-- Filled and unhidden by showQuote() in js/submit.js once a tier is
-                 chosen and the file has been counted. -->
+            <!-- Filled and unhidden by showQuote() in js/submit.js once a tier
+                 is chosen and the file has been counted. -->
             <p class="sub-quote" id="priceQuote" hidden></p>
             <p class="sb2-total__empty">يظهر بعد اختيار نوع الفيلم وإرفاق النص.</p>
           </div>
+
+          <!-- Not a .sub-field: requiredFields() builds its generic list from
+               .sub-field[data-field] wrappers carrying a .req star, and this row
+               has none. It still carries data-field so markInvalid("consent", …)
+               can reach it, the same way the membership fields are reached. -->
+          <div class="sb2-consent-wrap" data-field="consent" id="submit">
+            <label class="sb2-consent">
+              <input type="checkbox" id="consent" name="consent" value="yes">
+              <span class="sb2-consent__box" aria-hidden="true"></span>
+              <span class="sb2-consent__text">أوافق على معالجة النص وفق <a href="/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a>، وأقرّ بأن النص من تأليفي وأنني أملك كامل حقوق الملكية الفكرية الخاصة به، وأن تسجيل هذه الحقوق مسؤوليتي. يبقى النص ملكي بالكامل في كل مراحل الخدمة.</span>
+            </label>
+            <p class="sb2-consent__err">يلزم الموافقة قبل إرسال النص.</p>
+          </div>
+
+          <button type="submit" class="sub-submit">إرسال النص والدفع</button>
         </div>
-      </div>
+
+        <div class="sb2-card sb2-card--quiet">
+          <p class="sb2-card__h sb2-card__h--sm">رحلة التسليم</p>
+          <ol class="sb2-steps">
+            <li><span class="sb2-steps__n">01</span><span>يصلك تأكيد الاستلام على بريدك</span></li>
+            <li><span class="sb2-steps__n">02</span><span>يُسنَد النص إلى قارئ مختص</span></li>
+            <li><span class="sb2-steps__n">03</span><span>يصلك تقرير مكتوب عبر تسعة محاور</span></li>
+            <li><span class="sb2-steps__n">04</span><span>نحدد معك الخطوة التالية</span></li>
+          </ol>
+          <div class="sb2-card__rule"></div>
+          <!-- Hidden until a tier is picked, then only that tier's line shows:
+               quoting both at once asks the writer to work out which one is
+               theirs. syncTimes() in js/submit.js matches data-for against the
+               dropdown. -->
+          <div class="sb2-times" id="timesStrip" hidden>
+            <p class="sb2-times__label">المدة المتوقعة</p>
+            <p data-for="short">10 إلى 15 يوم عمل <span>· الفيلم القصير</span></p>
+            <p data-for="feature">حتى 4 أسابيع <span>· الفيلم الطويل</span></p>
+          </div>
+        </div>
+      </aside>
 
     </form>
   </main>

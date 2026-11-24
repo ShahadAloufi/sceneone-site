@@ -134,29 +134,22 @@
    footer has none either, and black on cream needs no help separating.
 
    THE LANDING IS NOT IN THIS GROUP ANY MORE — its bar is the glass one at the
-   end of this file. Every other page here still opens on a dark hero, so a
+   end of this file. /terms still opens on a dark hero, so a
    light bar over one of those would be the wrong way round. */
-.tm2 .nav,     .tm2 .nav.scrolled,
-.sb2 .nav,     .sb2 .nav.scrolled {
+.tm2 .nav,     .tm2 .nav.scrolled {
   background: var(--lx-black);
   box-shadow: none;
 }
 /* .lx-foot__col a's two values, so a link reads the same weight in both bars. */
 @media (min-width: 1000px) {
-  .tm2 .nav__links a,
-  .sb2 .nav__links a { color: rgba(255, 255, 255, .62); }
-  .tm2 .nav__links a:hover,
-  .sb2 .nav__links a:hover { color: #fff; }
+  .tm2 .nav__links a { color: rgba(255, 255, 255, .62); }
+  .tm2 .nav__links a:hover { color: #fff; }
 }
-.tm2 .menu-btn span,
-.sb2 .menu-btn span { background: #fff; }
+.tm2 .menu-btn span { background: #fff; }
 /* The same hairline the footer's call/WhatsApp buttons carry. */
-.tm2 .lang-toggle-group,
-.sb2 .lang-toggle-group { border-color: rgba(255, 255, 255, .22); }
-.tm2 .lang-btn,
-.sb2 .lang-btn { color: rgba(255, 255, 255, .86); }
-.tm2 .lang-btn:hover,
-.sb2 .lang-btn:hover { color: #fff; }
+.tm2 .lang-toggle-group { border-color: rgba(255, 255, 255, .22); }
+.tm2 .lang-btn { color: rgba(255, 255, 255, .86); }
+.tm2 .lang-btn:hover { color: #fff; }
 
 /* The pill needs no override any more: .nav__cta's own cream-on-black above is
    already what a dark bar wants, and it matches .lx-foot__btn's hover state. */
@@ -245,6 +238,7 @@
 .landing .nav, .landing .nav.scrolled,
 .ab2 .nav, .ab2 .nav.scrolled,
 .sv2 .nav, .sv2 .nav.scrolled,
+.sb2 .nav, .sb2 .nav.scrolled,
 .rd2 .nav, .rd2 .nav.scrolled {
   background: rgba(255, 255, 255, .72);
   -webkit-backdrop-filter: saturate(180%) blur(18px);
@@ -256,11 +250,13 @@
 .landing .nav.scrolled,
 .ab2 .nav.scrolled,
 .sv2 .nav.scrolled,
+.sb2 .nav.scrolled,
 .rd2 .nav.scrolled { border-block-end-color: rgba(0, 0, 0, .08); }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .landing .nav, .landing .nav.scrolled,
   .ab2 .nav, .ab2 .nav.scrolled,
   .sv2 .nav, .sv2 .nav.scrolled,
+  .sb2 .nav, .sb2 .nav.scrolled,
   .rd2 .nav, .rd2 .nav.scrolled { background: var(--lx-white); }
 }
 
@@ -268,23 +264,28 @@
   .landing .nav__links a:hover,
   .ab2 .nav__links a:hover,
   .sv2 .nav__links a:hover,
+  .sb2 .nav__links a:hover,
   .rd2 .nav__links a:hover { color: var(--lx-black); }
 }
 .landing .menu-btn span,
 .ab2 .menu-btn span,
 .sv2 .menu-btn span,
+.sb2 .menu-btn span,
 .rd2 .menu-btn span { background: var(--lx-black); }
 .landing .lang-toggle-group,
 .ab2 .lang-toggle-group,
 .sv2 .lang-toggle-group,
+.sb2 .lang-toggle-group,
 .rd2 .lang-toggle-group { border-color: rgba(0, 0, 0, .18); }
 .landing .lang-btn,
 .ab2 .lang-btn,
 .sv2 .lang-btn,
+.sb2 .lang-btn,
 .rd2 .lang-btn { color: rgba(0, 0, 0, .7); }
 .landing .lang-btn:hover,
 .ab2 .lang-btn:hover,
 .sv2 .lang-btn:hover,
+.sb2 .lang-btn:hover,
 .rd2 .lang-btn:hover { color: var(--lx-black); }
 /* The pill inverts with the bar: .nav__cta is cream-on-black for a dark bar,
    which on this one would be a white pill on white. Black-on-light is also
@@ -292,10 +293,12 @@
 .landing .nav__cta,
 .ab2 .nav__cta,
 .sv2 .nav__cta,
+.sb2 .nav__cta,
 .rd2 .nav__cta { background: var(--lx-black); color: var(--lx-cream); }
 .landing .nav__cta:hover,
 .ab2 .nav__cta:hover,
 .sv2 .nav__cta:hover,
+.sb2 .nav__cta:hover,
 .rd2 .nav__cta:hover { background: var(--lx-red); color: #fff; }
 /* The pill is shared chrome at 14px. The landing's type is on a 4px grid, so
    it takes 16 HERE only — the other four pages keep the 14 they were drawn
@@ -310,6 +313,7 @@
 .landing .nav__logo,
 .ab2 .nav__logo,
 .sv2 .nav__logo,
+.sb2 .nav__logo,
 .rd2 .nav__logo { height: 36px; }
 /* The links sit in the MIDDLE of the bar on this page. styles.css pushes them
    toward the nav__end group with an auto margin, which is right for the pages
@@ -323,11 +327,14 @@
 .ab2 .nav__end,
 .rd2 .nav__brand,
 .sv2 .nav__brand,
+.sb2 .nav__brand,
 .sv2 .nav__end,
+.sb2 .nav__end,
 .rd2 .nav__end { flex: 1 1 0; }
 .landing .nav__end,
 .ab2 .nav__end,
 .sv2 .nav__end,
+.sb2 .nav__end,
 .rd2 .nav__end { justify-content: flex-end; }
 @media (min-width: 1000px) {
   /* Both, and the second is not redundant: styles.css's English mirror is
@@ -337,10 +344,12 @@
   .landing .nav__links,
   .ab2 .nav__links,
   .sv2 .nav__links,
+  .sb2 .nav__links,
   .rd2 .nav__links { margin: 0; }
   html[dir="ltr"] .landing .nav__links,
   html[dir="ltr"] .ab2 .nav__links,
   html[dir="ltr"] .sv2 .nav__links,
+  html[dir="ltr"] .sb2 .nav__links,
   html[dir="ltr"] .rd2 .nav__links { margin: 0; }
 }
 /* Dark links at the artboard's own weight, not the .62 of a dark bar. */
@@ -352,10 +361,12 @@
   .landing .nav__links,
   .ab2 .nav__links,
   .sv2 .nav__links,
+  .sb2 .nav__links,
   .rd2 .nav__links { gap: clamp(16px, 2.4vw, 34px); }
   .landing .nav__links a,
   .ab2 .nav__links a,
   .sv2 .nav__links a,
+  .sb2 .nav__links a,
   .rd2 .nav__links a { color: #2a2622; font-weight: 400; font-size: 16px; }
 }
 
@@ -374,10 +385,12 @@
   .landing .nav__links,
   .ab2 .nav__links,
   .sv2 .nav__links,
+  .sb2 .nav__links,
   .rd2 .nav__links { display: none; }
   .landing .menu-btn,
   .ab2 .menu-btn,
   .sv2 .menu-btn,
+  .sb2 .menu-btn,
   .rd2 .menu-btn { display: flex; }
 }
 

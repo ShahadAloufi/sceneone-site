@@ -487,7 +487,7 @@
   function checkFileNow() {
     var ticket = ++checkTicket;
     var file = fileInput && fileInput.files ? fileInput.files[0] : null;
-    if (!file) { showQuote(flatQuote()); return showFileError(null); }
+    if (!file) { syncSummaryPages(null); showQuote(flatQuote()); return showFileError(null); }
 
     var exts = acceptedExts();
     if (exts.indexOf(fileExt(file.name)) === -1) {
@@ -500,12 +500,13 @@
 
     var cap = selectedCap();
     var perPage = selectedRate();
-    if (!cap && !perPage) { showQuote(flatQuote()); return; }   // not sold by length
+    if (!cap && !perPage) { syncSummaryPages(null); showQuote(flatQuote()); return; }   // not sold by length
     countPdfPages(file).then(function (pages) {
       if (ticket !== checkTicket) return;   // a newer file is being checked
-      if (!pages) { showQuote(flatQuote()); return; }
+      if (!pages) { syncSummaryPages(null); showQuote(flatQuote()); return; }
       // Same arithmetic as the server: the count includes a title page.
       var billable = pages > 1 ? pages - 1 : pages;
+      syncSummaryPages(billable);
 
       if (perPage) {
         if (billable < perPage.min) {
@@ -543,6 +544,28 @@
     });
   }
   // The turnaround strip. Only the selected tier's line is of any use to the
+  /* ---------- THE ORDER SUMMARY ----------
+     Two rows in the aside card: the service and the page count. DISPLAY ONLY —
+     nothing here reaches the posted body, the price or the validation path, so
+     a form without the card (treatment-submit.html) simply has no elements to
+     write to and every call is a no-op. The em dash is the resting state, so
+     the card has a shape before a tier is picked rather than growing a row at
+     a time. */
+  var sumServiceEl = document.getElementById("sumService");
+  var sumPagesEl = document.getElementById("sumPages");
+  function setSummary(el, value) { if (el) el.textContent = value || "—"; }
+  function syncSummaryService() {
+    var opt = selectedOption();
+    // An unpicked <select> still has a selected option — its placeholder — so
+    // the VALUE is what says whether a tier was chosen, not the option itself.
+    setSummary(sumServiceEl, opt && opt.value ? opt.textContent.trim() : null);
+  }
+  // Billable pages, the same count the quote and the invoice are built from —
+  // raw minus the title page — so the two figures in the card agree.
+  function syncSummaryPages(billable) {
+    setSummary(sumPagesEl, billable ? String(billable) : null);
+  }
+
   // writer, so the strip stays away until there is a tier to speak for. A form
   // whose strip carries no data-for lines (the treatment one) is left alone.
   var timesStrip = document.getElementById("timesStrip");
@@ -559,10 +582,13 @@
   }
 
   if (typeSelect) {
-    typeSelect.addEventListener("change", function () { syncAcceptUi(); syncTimes(); checkFileNow(); });
+    typeSelect.addEventListener("change", function () {
+      syncAcceptUi(); syncTimes(); syncSummaryService(); checkFileNow();
+    });
     syncAcceptUi();
     syncTimes();
   }
+  syncSummaryService();
 
   /* ---------- CONSENT GATE ----------
      Both submission forms carry a consent tick. Everything here is skipped when
