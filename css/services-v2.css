@@ -352,3 +352,94 @@
     border-radius: 8px;
   }
 }
+
+/* ============================================================================
+   MOBILE (≤999px) — the «خدماتنا · جوال 390» artboard.
+
+   Same breakpoint as the landing's, so every page changes character with the
+   nav. The heads go to the reading edge (the desktop centres them), the table
+   becomes one block per package, and the hosting panel puts its photograph on
+   top of its copy instead of beside it.
+
+   ⚠️ The artboard has NO nine-axes band — it was drawn before that section
+   moved here from /readers on the same day. The section stays, and falls to
+   the one-column chip stack its own 640px rule already gives it.
+   ========================================================================= */
+
+@media (max-width: 999px) {
+  /* ---- heads read from the edge, not the middle ---- */
+  .sv2-hero { padding-block: calc(64px + 40px) 0; padding-inline: 20px; }
+  .sv2-hero__in { align-items: flex-start; text-align: start; gap: 14px; }
+  .sv2-hero__h { font-size: 34px; line-height: 44px; }
+  .sv2-hero__p { font-size: 15px; line-height: 26px; }
+  .sv2-eyebrow { font-size: 13px; line-height: 20px; }
+
+  .sv2-step { padding-block: 48px 0; padding-inline: 20px; }
+  .sv2-step__in { gap: 16px; }
+  .sv2-step__copy { gap: 14px; }
+  .sv2-step__h { font-size: 28px; line-height: 38px; }
+  .sv2-step__p { font-size: 15px; line-height: 26px; }
+  .sv2-quiet { min-block-size: 42px; padding-inline: 20px; font-size: 14px; }
+
+  /* ---- the table becomes one block per package: the name and the price on
+       one line, the turnaround and the button on the next. The per-cell
+       labels stay hidden — at this size each value is unambiguous beside its
+       own package name, and the head above still carries the two that are
+       not. ---- */
+  .sv2-tbl__head {
+    display: flex;
+    justify-content: space-between;
+    padding-block-end: 10px;
+    border-block-end: 1px solid var(--lx-black);
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--lx-muted-2);
+  }
+  /* Only «نوع الخدمة» and «السعر» — the other two columns do not exist here. */
+  .sv2-tbl__head span:nth-child(n+3) { display: none; }
+  .sv2-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "pack price" "time go";
+    gap: 14px 12px;
+    align-items: center;
+    padding-block: 20px;
+  }
+  .sv2-row__pack  { grid-area: pack; }
+  .sv2-row__price { grid-area: price; align-items: flex-end; }
+  .sv2-row__time  { grid-area: time; }
+  .sv2-row__go    { grid-area: go; min-block-size: 38px; padding-inline: 18px; font-size: 13px; }
+  .sv2-row__lbl { display: none; }
+  .sv2-row__name { font-size: 18px; line-height: 26px; }
+  .sv2-row__note { font-size: 13px; line-height: 20px; }
+  .sv2-row__time { font-size: 13px; line-height: 20px; }
+  .sv2-num { font-size: 22px; line-height: 30px; }
+  .sv2-riyal { font-size: 22px; }
+
+  /* ---- the two notes: rows on a hairline, as the desktop has them ---- */
+  .sv2-notes { grid-template-columns: 1fr; gap: 0; margin-block-start: 8px; }
+  .sv2-note { padding-block: 16px; font-size: 13px; line-height: 22px; }
+  .sv2-note + .sv2-note { border-block-start: 1px solid rgba(0, 0, 0, .08); }
+  .sv2-note b { font-size: 15px; line-height: 24px; }
+
+  /* ---- the axes. Not in the artboard; the chips simply stack. ---- */
+  .sv2-sec { padding-block: 48px 0; padding-inline: 20px; }
+  .sv2-h { font-size: 28px; line-height: 38px; }
+  .sv2-head { align-items: flex-start; text-align: start; gap: 8px; margin-block-end: 24px; }
+  .sv2-axes__item { padding: 18px 20px; gap: 14px; }
+  .sv2-axes__t { font-size: 16px; line-height: 24px; }
+
+  /* ---- hosting: the photograph on TOP of the copy ---- */
+  .sv2-host { padding-block: 40px 0; padding-inline: 12px; }
+  .sv2-host__box { display: flex; flex-direction: column; }
+  .sv2-host__img { order: -1; block-size: 220px; }
+  .sv2-host__copy { padding: 26px 22px 28px; gap: 12px; }
+  .sv2-host__copy .sv2-step__h { font-size: 26px; line-height: 36px; }
+  .sv2-host__copy .sv2-step__p { font-size: 14px; line-height: 24px; }
+
+  /* ---- the closing slab, the landing's ---- */
+  .sv2-cta { padding-block: 64px 0; padding-inline: 12px; }
+  .sv2-cta__box { padding: 32px 24px; min-block-size: 0; }
+  .sv2-cta__h { font-size: 26px; line-height: 36px; }
+  .sv2-cta__sub { font-size: 14px; line-height: 24px; }
+  .sv2-cta__btn { inline-size: 100%; }
+}

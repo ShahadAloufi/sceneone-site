@@ -189,6 +189,17 @@ Actively iterating on UX polish and workflow features.
   **400–100** — read right-to-left that is 100 then 400 — and in English it
   renders 100–400. One string, correct both ways. Putting `dir="ltr"` back
   pins the glyph order and makes the Arabic range read backwards.
+- **Mobile (2026-11-24, «خدماتنا · جوال 390»)**: one `@media (max-width:
+  999px)` block at the end of `css/services-v2.css`, on the landing's
+  breakpoint. The heads go to the reading edge (the desktop centres them),
+  the hosting panel puts its photograph ON TOP of its copy, and the table
+  becomes **one block per package** — `grid-template-areas: "pack price" /
+  "time go"` — rather than the labelled stack it used between 900 and 1200.
+  The head keeps only «نوع الخدمة» and «السعر»; the other two spans are
+  hidden, since each value is unambiguous beside its own package name.
+  ⚠️ **The artboard has NO axes band** — it was drawn before that section
+  moved here the same day. The section stays and falls to the one-column
+  chip stack its own 640px rule gives it.
 - **The nine axes MOVED HERE from /readers** (same day): they describe the
   REPORT, which is the service, not the people who write it. The band sits
   between the packages and hosting, and the whole block — markup, the
