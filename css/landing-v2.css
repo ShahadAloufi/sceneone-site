@@ -1434,8 +1434,11 @@ html[dir="ltr"] .landing .hero__shade {
   .faq__eyebrow { font-size: 13px; }
   .faq__title { font-size: 28px; line-height: 38px; }
   .faq-cat { padding: 9px 16px; font-size: 13px; }
-  .faq-item { border-radius: 8px; background: var(--lx-cream); }
-  .faq-item__btn { padding: 16px 18px; }
+  /* No fill: the desktop's hairline-separated rows, unchanged. The artboard
+     draws each question on a grey card; it was built that way and taken back
+     out on request — the page already has grey cards in three other sections
+     and the FAQ reads as a list, not a set of panels. */
+  .faq-item__btn { padding: 16px 2px; }
   .faq-item__q { font-size: 15px; line-height: 24px; }
   .faq-item__a { font-size: 14px; line-height: 24px; }
 

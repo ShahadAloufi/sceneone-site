@@ -318,7 +318,11 @@ Actively iterating on UX polish and workflow features.
   - The mobile styles are one `@media (max-width: 999px)` block at the END of
     `css/landing-v2.css`, keyed on the nav's own breakpoint so the bar and the
     body still change character at the same width.
-  - **Two things the artboard has that the page does not**, both deliberate:
+  - **Three things the artboard has that the page does not**, all deliberate:
+    the FAQ rows are the desktop's **hairlines, not grey cards** — the
+    artboard draws each question on a panel, it was built that way and taken
+    back out on request, since three other sections already use grey cards
+    and the FAQ reads as a list;
     the hero button is **red**, not the artboard's black, because the owner
     asked for it to match the CTA's; and the closing slab has **no
     photograph** on a phone, since the two stills are `display:none` below
