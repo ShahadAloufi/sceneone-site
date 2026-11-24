@@ -164,60 +164,6 @@
   color: #4a443d;
 }
 
-/* ---- 03 · the nine axes -------------------------------------------------
-   A chip each, three across. The figure is a count rather than a position in
-   the report — see the note in readers.html. */
-
-.rd2-axes__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 16px;
-}
-@media (min-width: 640px)  { .rd2-axes__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 1000px) { .rd2-axes__list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.rd2-axes__item {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  padding: 26px 28px;
-  border-radius: 8px;
-  background: var(--lx-cream);
-}
-.rd2-axes__n {
-  font-family: var(--font-head);
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 700;
-  color: var(--lx-red);
-  font-variant-numeric: tabular-nums;
-}
-.rd2-axes__t {
-  font-family: var(--font-head);
-  font-size: clamp(16px, 1.7vw, 20px);
-  line-height: 28px;
-  font-weight: 600;
-  color: var(--lx-ink);
-}
-.rd2-axes__link {
-  display: flex;
-  inline-size: fit-content;
-  align-items: center;
-  justify-content: center;
-  margin-inline: auto;
-  margin-block-start: clamp(32px, 4vw, 48px);
-  padding: 14px 26px;
-  border-radius: 8px;
-  background: var(--lx-black);
-  color: var(--lx-cream);
-  font-family: var(--font-head);
-  font-size: 16px;
-  font-weight: 600;
-  transition: background-color 200ms ease;
-}
-.rd2-axes__link:hover { background: var(--lx-red); color: #fff; }
-
 /* ---- 04 · closing CTA ---------------------------------------------------
    The landing's slab — see css/landing-v2.css for why the photographs sit ON
    the black rather than behind it, and why they drop below 1100. */

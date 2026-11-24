@@ -157,6 +157,18 @@ Actively iterating on UX polish and workflow features.
   **400–100** — read right-to-left that is 100 then 400 — and in English it
   renders 100–400. One string, correct both ways. Putting `dir="ltr"` back
   pins the glyph order and makes the Arabic range read backwards.
+- **The nine axes MOVED HERE from /readers** (same day): they describe the
+  REPORT, which is the service, not the people who write it. The band sits
+  between the packages and hosting, and the whole block — markup, the
+  `.sv2-axes` CSS and the `axis*` keys — came across unchanged but for the
+  prefix. `/readers` is hero → team → CTA now.
+  - **It carries no «نموذج تقرير» button of its own.** Step 01 above already
+    has one, a few hundred pixels up. That button was `/readers`'s only link
+    to `/sample-report`, so **that page no longer routes there** — `/services`
+    does, which is the point.
+  - ⚠️ The numbering is still the ARTBOARD's and still disagrees with
+    `SCRIPT_SCHEMA`: الأصالة is 09 here, Originality is third in the schema.
+    A count of nine, not a table of contents.
 - **The price is the riyal MARK, after the figure**, where the word «ريال»
   used to be — so in Arabic it sits on the left of the amount. (It led the
   figure for one commit; put back on request.) It reuses the landing's

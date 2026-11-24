@@ -191,7 +191,68 @@
   color: var(--lx-ink);
 }
 
-/* ---- 03 · step 02, hosting ---------------------------------------------- */
+/* A plain white band with a centred head — the same device the landing,
+   /about and /readers use. .sv2-sec exists only for this section. */
+.sv2-sec {
+  padding-block: clamp(40px, 5vw, 60px);
+  padding-inline: var(--lx-x);
+  background: var(--lx-white);
+}
+.sv2-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+  margin-block-end: clamp(36px, 4.4vw, 48px);
+}
+.sv2-h {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(28px, 4.4vw, 48px);
+  font-weight: 600;
+  line-height: clamp(36px, 5.6vw, 60px);
+  color: var(--lx-ink);
+}
+
+/* ---- 03 · the nine axes (moved here from /readers) -------------------------------------------------
+   A chip each, three across. The figure is a count rather than a position in
+   the report — see the note in services.html. */
+
+.sv2-axes__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+}
+@media (min-width: 640px)  { .sv2-axes__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1000px) { .sv2-axes__list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.sv2-axes__item {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 26px 28px;
+  border-radius: 8px;
+  background: var(--lx-cream);
+}
+.sv2-axes__n {
+  font-family: var(--font-head);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 700;
+  color: var(--lx-red);
+  font-variant-numeric: tabular-nums;
+}
+.sv2-axes__t {
+  font-family: var(--font-head);
+  font-size: clamp(16px, 1.7vw, 20px);
+  line-height: 28px;
+  font-weight: 600;
+  color: var(--lx-ink);
+}
+
+/* ---- 04 · step 02, hosting ---------------------------------------------- */
 
 .sv2-host {
   padding-block: clamp(32px, 4vw, 60px);
@@ -219,7 +280,7 @@
   .sv2-host__img { block-size: 100%; }
 }
 
-/* ---- 04 · closing CTA ---------------------------------------------------
+/* ---- 05 · closing CTA ---------------------------------------------------
    The landing's slab, verbatim but for the prefix. */
 
 .sv2-cta {
