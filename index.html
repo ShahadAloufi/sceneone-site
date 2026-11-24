@@ -68,7 +68,7 @@
     <ul class="nav__links">
       <li><a href="/" data-i18n="navHome">الرئيسية</a></li>
       <li><a href="/about" data-i18n="navAboutUs">من نحن</a></li>
-      <li><a href="#services" data-i18n="navServices">خدماتنا</a></li>
+      <li><a href="/services" data-i18n="navServices">خدماتنا</a></li>
       <li><a href="#why" data-i18n="navWhy">لماذا سين ون</a></li>
       <li><a href="/readers" data-i18n="navReaders">من يقرأ نصك</a></li>
       <li><a href="#voices-d" data-i18n="navVoices">تجارب الكتّاب</a></li>
@@ -77,7 +77,7 @@
     <div class="nav__end">
       <!-- Styled in css/landing-v2.css: this pill is the landing page's, not
            the shared bar's, so the other pages' navs are unchanged. -->
-      <a class="nav__cta" href="/submit" data-i18n="btnSubmit">قدّم نصك</a>
+      <a class="nav__cta" href="/services" data-i18n="btnSubmit">قدّم نصك</a>
       <!-- Text is set by js/i18n.js (shows the language you'd switch TO). -->
       <div class="lang-toggle-group" role="group" aria-label="Language"><button class="lang-btn" type="button" data-lang="en">EN</button><button class="lang-btn" type="button" data-lang="ar">AR</button></div>
       <button class="menu-btn" data-menu-open data-i18n-aria="menuLabel" aria-label="القائمة">
@@ -132,7 +132,7 @@
     </nav>
     <div class="overlay__foot">
       <div class="overlay__actions">
-        <a class="overlay__cta" href="/submit" data-menu-close data-i18n="btnSubmit">قدّم نصك</a>
+        <a class="overlay__cta" href="/services" data-menu-close data-i18n="btnSubmit">قدّم نصك</a>
           <div class="lang-toggle-group lang-toggle-group--overlay" role="group" aria-label="Language"><button class="lang-btn" type="button" data-lang="en">EN</button><button class="lang-btn" type="button" data-lang="ar">AR</button></div>
       </div>
       <div class="overlay__contact">
@@ -198,7 +198,7 @@
              on request; .hn__acts stays a flex row so a second one can come
              back without touching the CSS. -->
         <div class="hn__acts">
-          <a class="hn__cta" href="/submit" data-i18n="btnSubmit">قدّم نصك</a>
+          <a class="hn__cta" href="/services" data-i18n="btnSubmit">قدّم نصك</a>
         </div>
       </div>
 
@@ -292,9 +292,9 @@
         <!-- To /submit, not to a coverage page: the artboard has none, and the
              pricing section this used to point at only exists in the narrow
              block now — so on a desktop the anchor resolved to a display:none
-             element and the chip did nothing. Repoint it when the coverage
-             services page is designed. -->
-        <a class="lx-bento__c lx-bento__c--ph" href="/submit">
+             element and the chip did nothing. It goes to /services, the page
+             it always meant, built 2026-11-24. -->
+        <a class="lx-bento__c lx-bento__c--ph" href="/services">
           <img class="lx-bento__bg" src="assets/read-script-strip.jpg" alt="" data-i18n-alt="readImgAlt" loading="lazy" decoding="async" width="2560" height="879">
           <span class="lx-bento__veil" aria-hidden="true"></span>
           <!-- aria-hidden: the step is a position in a sequence the headings
@@ -836,7 +836,7 @@
         <div class="lx-cta__copy">
           <h2 class="lx-cta__h" data-i18n="ctaH2">الجيل القادم من صنّاع الأفلام لا ينبغي أن ينتظر حتى يكتشفه أحد</h2>
           <p class="lx-cta__sub" data-i18n="ctaSub2">هل كتبت قصة تستحق أن تُرى؟ ابدأ من المشهد الأول</p>
-          <a class="lx-cta__btn" href="/submit" data-i18n="btnSubmit">قدّم نصك</a>
+          <a class="lx-cta__btn" href="/services" data-i18n="btnSubmit">قدّم نصك</a>
         </div>
         <div class="lx-cta__stills" aria-hidden="true">
           <img class="lx-cta__still lx-cta__still--1" src="assets/hero-num-screen.jpg" alt="" loading="lazy" decoding="async" width="700" height="760">
@@ -870,10 +870,10 @@
         <div class="lx-foot__cols">
           <div class="lx-foot__col">
             <a href="/booklet" target="_blank" rel="noopener" data-i18n="footStory">حكاية سين ون</a>
-            <a href="#services" data-i18n="navServices">خدماتنا</a>
+            <a href="/services" data-i18n="navServices">خدماتنا</a>
             <a href="/about" data-i18n="navAboutUs">من نحن</a>
             <a href="/readers" data-i18n="footReaders">من يقرأ نصك</a>
-            <a href="/submit" data-i18n="btnSubmit">قدّم نصك</a>
+            <a href="/services" data-i18n="btnSubmit">قدّم نصك</a>
           </div>
           <div class="lx-foot__col">
             <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
@@ -956,7 +956,7 @@
         </h1>
       </div>
       <div class="hn__act">
-        <a class="hn__cta" href="/submit"><span data-i18n="btnSubmit">قدّم نصك</span><span class="hn__arrow" aria-hidden="true">←</span></a>
+        <a class="hn__cta" href="/services"><span data-i18n="btnSubmit">قدّم نصك</span><span class="hn__arrow" aria-hidden="true">←</span></a>
         <!-- Each bar is the control for its slide AND the autoplay timer for it,
              which is why they are buttons and not decoration. -->
         <div class="hn__bars">
@@ -1208,7 +1208,7 @@
         <h2 class="lx-h lx-h--sm" data-i18n-html="wrH">قراءة تفهم ما تريد أن تقوله</h2>
         <p class="lx-split__p" data-i18n="wrP1">نبدأ بفهم رؤيتك للفيلم، ثم نعمل معك على تطوير القصة بما يخدمها ويحافظ على صوتك ككاتب</p>
         <p class="lx-split__p" data-i18n="wrP2">نحن لا نخبرك بما يجب أن يكون عليه فيلمك، بل نساعدك على الوصول إلى أقوى نسخة مما تحاول قوله أنت.</p>
-        <a class="lx-link lx-link--red" href="/submit" data-i18n="btnSubmit">قدّم نصك</a>
+        <a class="lx-link lx-link--red" href="/services" data-i18n="btnSubmit">قدّم نصك</a>
       </div>
       <div class="lx-split__panel lx-split__panel--white">
         <p class="lx-eyebrow" data-i18n="indEyebrow">لشركات الإنتاج والمخرجين</p>
@@ -1669,7 +1669,7 @@
     <div class="lx__in lx-cta__in">
       <h2 class="lx-h" data-i18n="ctaH">إلى أين يمكن أن يصل نصّك؟</h2>
       <p class="lx-cta__sub" data-i18n="ctaSub">ابدأ بقراءة مهنية تساعدك على فهم نصّك بعمق، واكتشاف فرص تطويره، ومعرفة خطوتك التالية</p>
-      <a class="lx-cta__btn" href="/submit" data-i18n="btnSubmit">قدّم نصك</a>
+      <a class="lx-cta__btn" href="/services" data-i18n="btnSubmit">قدّم نصك</a>
     </div>
   </section>
 

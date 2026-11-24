@@ -1,0 +1,265 @@
+/* ============================================================================
+   /services — خدماتنا.
+
+   Built 2026-11-24 from the «خدماتنا · تصميم مبسّط» artboard: a centred hero,
+   the coverage packages as a TABLE beside their copy, hosting on a cream
+   panel, and the landing's closing slab.
+
+   The artboard is a fixed 1440 canvas, so its literal pixel values are the
+   DESKTOP end of each scale here; sizes clamp down to a phone and the palette
+   comes from css/tokens.css. The wrapper is .sv2, registered there and in
+   css/site-chrome.css.
+
+   A TABLE and not three cards, which is the one structural thing to keep: the
+   page exists so the three packages can be compared on the same three axes,
+   and a row is what puts a price under a price. Below 900px there is no width
+   left to compare across, so each row becomes a labelled stack instead — hence
+   the .sv2-row__lbl spans, which are the table head repeated per cell and
+   hidden on a desktop.
+   ========================================================================= */
+
+.sv2-in {
+  inline-size: 100%;
+  max-inline-size: var(--lx-w);
+  margin-inline: auto;
+}
+.sv2-eyebrow {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  color: var(--lx-red);
+}
+
+/* ---- 01 · hero ---------------------------------------------------------- */
+
+.sv2-hero {
+  padding-block: calc(104px + clamp(40px, 5vw, 72px)) clamp(32px, 4vw, 48px);
+  padding-inline: var(--lx-x);
+  background: var(--lx-white);
+}
+.sv2-hero__in { display: flex; flex-direction: column; align-items: center; text-align: center; gap: clamp(16px, 2vw, 24px); }
+.sv2-hero__h {
+  margin: 0;
+  max-inline-size: 1000px;
+  font-family: var(--font-head);
+  font-size: clamp(32px, 4.6vw, 64px);
+  font-weight: 600;
+  line-height: clamp(40px, 6vw, 84px);
+  letter-spacing: -.5px;
+  color: var(--lx-ink);
+}
+.sv2-hero__p {
+  margin: 0;
+  max-inline-size: 720px;
+  font-size: clamp(16px, 1.4vw, 20px);
+  font-weight: 300;
+  line-height: clamp(28px, 2.6vw, 36px);
+  color: var(--lx-muted);
+}
+
+/* ---- 02 · step 01, the packages ----------------------------------------- */
+
+.sv2-step {
+  padding-block: clamp(32px, 4vw, 40px) clamp(48px, 6vw, 60px);
+  padding-inline: var(--lx-x);
+  background: var(--lx-white);
+}
+.sv2-step__in { display: grid; gap: clamp(32px, 5vw, 72px); align-items: start; }
+@media (min-width: 1000px) { .sv2-step__in { grid-template-columns: 360px 1fr; } }
+.sv2-step__copy { display: flex; flex-direction: column; gap: 16px; }
+.sv2-step__h {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(24px, 3.2vw, 40px);
+  font-weight: 600;
+  line-height: clamp(32px, 4.4vw, 56px);
+  color: var(--lx-ink);
+}
+.sv2-step__p {
+  margin: 0;
+  font-size: clamp(15px, 1.2vw, 17px);
+  font-weight: 300;
+  line-height: clamp(26px, 2.3vw, 32px);
+  color: var(--lx-muted);
+}
+/* The quiet button: cream, no border. Same control as the hero's old
+   secondary on the landing. */
+.sv2-quiet {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 48px;
+  margin-block-start: 4px;
+  padding-inline: 24px;
+  border-radius: 8px;
+  background: var(--lx-cream);
+  color: var(--lx-ink);
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 200ms ease;
+}
+.sv2-quiet:hover { background: #ede9e0; }
+
+.sv2-tbl { display: flex; flex-direction: column; }
+.sv2-tbl__head { display: none; }
+.sv2-row { display: grid; gap: 16px; padding-block: 24px; border-block-end: 1px solid rgba(0, 0, 0, .08); }
+.sv2-row__pack { display: flex; flex-direction: column; gap: 4px; }
+.sv2-row__name { font-family: var(--font-head); font-size: 20px; line-height: 28px; font-weight: 600; color: var(--lx-ink); }
+.sv2-row__note { font-size: 14px; line-height: 20px; color: var(--lx-muted-2); }
+.sv2-row__lbl { font-size: 13px; line-height: 20px; color: var(--lx-muted-2); }
+.sv2-row__price, .sv2-row__time { display: flex; flex-direction: column; gap: 2px; }
+.sv2-row__time { font-size: 16px; line-height: 24px; color: var(--lx-muted); }
+.sv2-num { font-family: var(--font-head); font-size: 28px; line-height: 36px; font-weight: 700; color: var(--lx-ink); }
+.sv2-cur { font-size: 14px; color: var(--lx-muted-2); }
+.sv2-row__go {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 44px;
+  padding-inline: 20px;
+  border-radius: 8px;
+  background: var(--lx-black);
+  color: var(--lx-cream);
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 600;
+  transition: background-color 200ms ease;
+}
+.sv2-row__go:hover { background: var(--lx-red); color: #fff; }
+
+/* 1200, not 900: above 1000 the copy takes a fixed 360 out of the container,
+   so the table's own column is far narrower than the viewport and a 900px
+   test lets the four columns overflow it. This is the width at which the
+   REMAINING column can hold them. */
+@media (min-width: 1200px) {
+  .sv2-tbl__head {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) 150px;
+    gap: 24px;
+    padding-block-end: 14px;
+    border-block-end: 1px solid var(--lx-black);
+    font-size: 13px;
+    line-height: 20px;
+    color: var(--lx-muted-2);
+  }
+  .sv2-row { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) 150px; gap: 24px; align-items: center; }
+  /* On a desktop the head carries the labels, so the per-cell repeats go. */
+  .sv2-row__lbl { display: none; }
+  .sv2-row__go { align-self: center; }
+}
+
+.sv2-notes { display: grid; gap: 16px; margin-block-start: 28px; }
+@media (min-width: 760px) { .sv2-notes { grid-template-columns: 1fr 1fr; } }
+.sv2-note {
+  margin: 0;
+  border-radius: 8px;
+  background: var(--lx-cream);
+  padding: 20px 24px;
+  font-size: 16px;
+  line-height: 28px;
+  color: var(--lx-muted);
+}
+.sv2-note b { display: block; color: var(--lx-red); font-weight: 600; }
+
+/* ---- 03 · step 02, hosting ---------------------------------------------- */
+
+.sv2-host {
+  padding-block: clamp(32px, 4vw, 60px);
+  padding-inline: var(--lx-x);
+  background: var(--lx-white);
+}
+.sv2-host__box {
+  display: grid;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--lx-cream);
+}
+.sv2-host__copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  padding: clamp(28px, 4vw, 64px);
+}
+.sv2-host__copy .sv2-step__p { max-inline-size: 520px; }
+.sv2-host__cond { margin: 4px 0 0; font-size: 14px; line-height: 20px; color: var(--lx-muted-2); }
+.sv2-host__img { inline-size: 100%; block-size: 240px; object-fit: cover; filter: grayscale(1); }
+@media (min-width: 1000px) {
+  .sv2-host__box { grid-template-columns: 1fr 520px; min-block-size: clamp(420px, 39vw, 560px); }
+  .sv2-host__img { block-size: 100%; }
+}
+
+/* ---- 04 · closing CTA ---------------------------------------------------
+   The landing's slab, verbatim but for the prefix. */
+
+.sv2-cta {
+  padding-block: clamp(40px, 5vw, 60px) clamp(56px, 7vw, 80px);
+  padding-inline: var(--lx-x);
+  background: var(--lx-white);
+}
+.sv2-cta__box {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--lx-black);
+  color: var(--lx-cream);
+  min-block-size: clamp(360px, 36vw, 460px);
+  display: flex;
+  align-items: center;
+  padding: clamp(40px, 5vw, 64px);
+}
+.sv2-cta__copy {
+  position: relative;
+  z-index: 2;
+  max-inline-size: 708px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.sv2-cta__h {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(24px, 3.6vw, 44px);
+  font-weight: 600;
+  line-height: clamp(32px, 4.9vw, 60px);
+  color: var(--lx-cream);
+}
+.sv2-cta__sub { margin: 0; font-size: clamp(16px, 1.4vw, 20px); font-weight: 300; line-height: clamp(28px, 2.5vw, 36px); color: rgba(249, 244, 239, .72); }
+.sv2-cta__btn {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 52px;
+  margin-block-start: 4px;
+  padding-inline: 34px;
+  border-radius: 8px;
+  background: var(--lx-red);
+  color: #fff;
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 600;
+  transition: background-color 200ms ease;
+}
+.sv2-cta__btn:hover { background: #e63208; }
+.sv2-cta__stills { display: none; }
+@media (min-width: 1100px) {
+  .sv2-cta__stills { display: block; }
+  .sv2-cta__still { position: absolute; z-index: 1; object-fit: cover; filter: grayscale(1); }
+  .sv2-cta__still--1 {
+    inset-inline-end: 230px;
+    inset-block-end: 0;
+    inline-size: 230px;
+    block-size: 300px;
+    border-radius: 8px 8px 0 0;
+  }
+  .sv2-cta__still--2 {
+    inset-inline-end: 40px;
+    inset-block-start: 40px;
+    inline-size: 210px;
+    block-size: 260px;
+    border-radius: 8px;
+  }
+}

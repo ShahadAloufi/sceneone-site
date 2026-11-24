@@ -48,6 +48,54 @@ coverage workspace + report, role-based access, deadlines, and report delivery t
 writers. **The payment gate is live and has taken real money** (see below).
 Actively iterating on UX polish and workflow features.
 
+**Recently shipped (2026-11-24) — /services, a NEW page:**
+
+- **`services.html` + `css/services-v2.css`**, built from the «خدماتنا ·
+  تصميم مبسّط» artboard: a centred hero, the coverage packages as a TABLE
+  beside their copy, hosting on a cream panel, and the landing's closing
+  slab. Wrapper is `.sv2`, registered in `css/tokens.css` and in the glass-bar
+  group in `css/site-chrome.css`. **No new assets** — the three photographs
+  the artboard ships are files we already had.
+- **It is the new front door. «قدّم نصك» now goes to `/services`, not
+  `/submit`**, everywhere on the site: the nav CTA, the overlay CTA, the
+  footer link and every closing slab, on all ten pages. The two forms are
+  reached from this page's own «احجز التقييم» rows — `/treatment-submit` on
+  the first, `/submit` on the other two. **That closes two standing gaps:**
+  the desktop landing had no route to `/treatment-submit` and none to
+  `/sample-report`, which is the step-01 quiet button here.
+- **Every nav «خدماتنا» was repointed from `/#services` to `/services`** on
+  all ten pages, the landing's own bar included. One label, one destination;
+  the landing keeps the bento section and its id for the overlay.
+  **The landing's bento chip «عرض التغطيات» also goes here now** — it had
+  been parked on `/submit` precisely until this page existed.
+- **A TABLE and not three cards, which is the structural thing to keep.**
+  The page exists so the three packages can be compared on the same three
+  axes, and a row is what puts a price under a price. Below **1200px** each
+  row becomes a labelled stack — hence the `.sv2-row__lbl` spans, which are
+  the table head repeated per cell and `display:none` on a desktop.
+  ⚠️ **The breakpoint is 1200, not the 900 it was first written as.** Above
+  1000 the copy column takes a fixed 360 out of the container, so the table's
+  own column is far narrower than the viewport and a 900px test let the four
+  columns overflow it. Test the COLUMN, not the window.
+- **Three things were corrected against the artboard, all of them factual:**
+  - **The treatment row reads «70–150»**, not the artboard's flat 150.
+    `PRICES` has `treatment_short` 70 and `treatment_feature` 150, and the
+    writer picks between them on the form's own «نوع المشروع» select.
+  - **Its turnaround reads «7 إلى 10 أيام»**, not «7 إلى 12». `TURNAROUND` in
+    `js/admin.js` is 7 and 10.
+  - The two script rows' prices and turnarounds already matched.
+- ⚠️ **«ضمان الخدمة» PROMISES SOMETHING `terms.html` DOES NOT.** The card
+  offers «تقرير مصحح أو استرداد كامل خلال 7 أيام إذا لم يطابق التقرير وصف
+  الخدمة»; the published policy is a full refund *before assignment*, none
+  once work begins, and a full refund within 14 business days on platform
+  failure. Shipped as the artboard wrote it, because it is the owner's copy —
+  but **one of the two has to move**, and refunds are manual in the Moyasar
+  dashboard either way, so honouring it is a business decision rather than a
+  code one. Same trap as the 50% refund that was drafted and dropped on
+  2026-08-19.
+- ⚠️ **The row links are the only desktop route to either form now.** If this
+  page is ever removed, `/submit` and `/treatment-submit` lose their way in.
+
 **Recently shipped (2026-11-24) — /readers, rebuilt:**
 
 - **`readers.html` follows the new artboard**: a centred hero, the five

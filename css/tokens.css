@@ -1,6 +1,6 @@
 /* ============================================================================
    Shared design tokens for the redesigned pages (the landing, /readers,
-   /terms, /privacy and /submit).
+   /terms, /privacy, /submit and /services).
 
    These used to sit inside css/landing-v2.css. They moved here when the readers
    page was rebuilt to the same design language: two copies of a palette is how
@@ -16,7 +16,8 @@
 .rd2,
 .tm2,
 .sb2,
-.ab2 {
+.ab2,
+.sv2 {
   /* The page ground. Off-white rather than the warm cream it used to be
      (#f9f4ef): it reads as white now, with just enough in it to stay off
      pure #fff — which is still the raised-card colour below, and has to

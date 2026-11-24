@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="zoomed">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <title data-i18n-doctitle="docTitleServices">خدماتنا | Scene One</title>
+  <meta name="description" content="خدمات سين ون: تقرير تغطية مكتوب لنصك عبر تسعة محاور، ومسار استضافة للمشاريع الأعلى تقييمًا.">
+  <link rel="icon" type="image/png" href="assets/favicon-v2.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/site-chrome.css">
+  <link rel="stylesheet" href="css/services-v2.css">
+  <!-- Reveal-on-scroll gate. Inline and in <head> on purpose: the hidden state
+       lives behind this class, so it has to be set before the first paint or a
+       deep link to a card section flashes the cards and then hides them.
+
+       It is also the failure switch. No class means no hidden state, so if this
+       script is blocked, or the browser has no IntersectionObserver, or the
+       reader asked for reduced motion, every card is simply visible. Content
+       must never depend on an animation to exist. -->
+  <script>
+    try {
+      if ("IntersectionObserver" in window &&
+          !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("js-reveal");
+      }
+    } catch (e) { /* leave everything visible */ }
+  </script>
+  <!-- Vercel Web Analytics — served by Vercel's edge at this path; no npm/build needed. -->
+  <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+<div class="sv2 page">
+
+  <!-- ── NAV ── -->
+  <nav class="nav">
+    <a class="nav__brand" href="/"><!-- The dark-ink cut: this page's bar is white. -->
+      <!-- The ink cut: this page's bar is light now. -->
+      <img class="nav__logo" src="assets/scene-one-mark-v5-ink.svg" alt="Scene One"></a>
+    <!-- Inline links on desktop; below the breakpoint they collapse and the
+         hamburger's overlay carries the same six destinations. -->
+    <ul class="nav__links">
+      <li><a href="/" data-i18n="navHome">الرئيسية</a></li>
+      <li><a href="/about" data-i18n="navAboutUs">من نحن</a></li>
+      <li><a href="/services" aria-current="page" data-i18n="navServices">خدماتنا</a></li>
+      <li><a href="/#why" data-i18n="navWhy">لماذا سين ون</a></li>
+      <li><a href="/readers" data-i18n="navReaders">من يقرأ نصك</a></li>
+      <li><a href="/#voices" data-i18n="navVoices">تجارب الكتّاب</a></li>
+      <li><a href="/#faq" data-i18n="navFaq">الأسئلة الشائعة</a></li>
+    </ul>
+    <div class="nav__end">
+      <a class="nav__cta" href="/services" data-i18n="btnSubmit">قدّم نصك</a>
+      <div class="lang-toggle-group" role="group" aria-label="Language"><button class="lang-btn" type="button" data-lang="en">EN</button><button class="lang-btn" type="button" data-lang="ar">AR</button></div>
+      <button class="menu-btn" data-menu-open data-i18n-aria="menuLabel" aria-label="القائمة">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── MENU OVERLAY ── -->
+  <div class="overlay" id="menu">
+    <div class="overlay__top">
+      <a class="overlay__brand" href="/" data-menu-close>
+        <img src="assets/scene-one-mark-v5-ink.svg" alt="Scene One">
+      </a>
+      <button class="overlay__close" data-menu-close data-i18n-aria="closeLabel" aria-label="إغلاق">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <!-- One row per destination: its number, its name, and an arrow pointing the
+         way the page reads. The numbers are decorative, hence aria-hidden. -->
+    <nav class="overlay__links">
+        <a href="/" data-menu-close>
+          <span class="overlay__n" aria-hidden="true">01</span>
+          <span class="overlay__label" data-i18n="navHome">الرئيسية</span>
+          <span class="overlay__go" aria-hidden="true">←</span>
+        </a>
+        <a href="/about" data-menu-close>
+          <span class="overlay__n" aria-hidden="true">02</span>
+          <span class="overlay__label" data-i18n="navAboutUs">من نحن</span>
+          <span class="overlay__go" aria-hidden="true">←</span>
+        </a>
+        <a href="/services" aria-current="page" data-menu-close>
+          <span class="overlay__n" aria-hidden="true">03</span>
+          <span class="overlay__label" data-i18n="navServices">خدماتنا</span>
+          <span class="overlay__go" aria-hidden="true">←</span>
+        </a>
+        <a href="/readers" data-menu-close>
+          <span class="overlay__n" aria-hidden="true">04</span>
+          <span class="overlay__label" data-i18n="navReaders">من يقرأ نصك</span>
+          <span class="overlay__go" aria-hidden="true">←</span>
+        </a>
+        <a href="/#why" data-menu-close>
+          <span class="overlay__n" aria-hidden="true">05</span>
+          <span class="overlay__label" data-i18n="navWhy">لماذا سين ون</span>
+          <span class="overlay__go" aria-hidden="true">←</span>
+        </a>
+        <a href="/#contact" data-menu-close>
+          <span class="overlay__n" aria-hidden="true">06</span>
+          <span class="overlay__label" data-i18n="navContact">تواصل معنا</span>
+          <span class="overlay__go" aria-hidden="true">←</span>
+        </a>
+    </nav>
+    <div class="overlay__foot">
+      <div class="overlay__actions">
+        <a class="overlay__cta" href="/services" data-menu-close data-i18n="btnSubmit">قدّم نصك</a>
+          <div class="lang-toggle-group lang-toggle-group--overlay" role="group" aria-label="Language"><button class="lang-btn" type="button" data-lang="en">EN</button><button class="lang-btn" type="button" data-lang="ar">AR</button></div>
+      </div>
+      <div class="overlay__contact">
+        <a class="overlay__mail" href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
+        <div class="overlay__soc">
+          <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X</a>
+          <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 01 · HERO ──
+       Centred, like /readers and /about. -->
+  <section class="sv2-hero" id="top">
+    <div class="sv2-in sv2-hero__in">
+      <p class="sv2-eyebrow" data-i18n="navServices">خدماتنا</p>
+      <h1 class="sv2-hero__h" data-i18n="svTitle">من التقرير إلى الاستضافة</h1>
+      <p class="sv2-hero__p" data-i18n="svLede">تبدأ رحلتك بتقرير تغطية لنصك، وعلى أساسه تُرشَّح المشاريع الواعدة لمسار الاستضافة</p>
+    </div>
+  </section>
+
+  <!-- ── 02 · STEP 01 · COVERAGE ──
+       The copy on its own column, the packages as a table beside it. A table
+       and not three cards: the whole point of this page is that the three are
+       compared on the same three axes, which is what a row does and a card
+       does not. It becomes a stack of labelled rows below 900px, where there
+       is no width left to compare across. -->
+  <section class="sv2-step" id="coverage">
+    <div class="sv2-in sv2-step__in">
+      <div class="sv2-step__copy">
+        <p class="sv2-eyebrow" data-i18n="svStep1">الخطوة 01</p>
+        <h2 class="sv2-step__h" data-i18n="svCovH">تغطية النصوص</h2>
+        <p class="sv2-step__p" data-i18n="svCovP">تقرير مكتوب يعدّه قارئ متخصص عبر تسعة محاور، يحدد نقاط قوة نصك وما يحتاج إلى تطوير</p>
+        <a class="sv2-quiet" href="/sample-report" data-i18n="svSample">اطّلع على نموذج تقرير</a>
+      </div>
+
+      <div class="sv2-tbl">
+        <!-- The head is aria-hidden and every cell repeats its own label on a
+             narrow screen, so the stacked rows stay readable without it. -->
+        <div class="sv2-tbl__head" aria-hidden="true">
+          <span data-i18n="svColPack">الباقة</span>
+          <span data-i18n="svColPrice">السعر · إطلاق مؤقت</span>
+          <span data-i18n="svColTime">مدة التسليم</span>
+          <span></span>
+        </div>
+
+        <div class="sv2-row">
+          <div class="sv2-row__pack">
+            <span class="sv2-row__name" data-i18n="svPack1">تغطية المعالجة</span>
+            <span class="sv2-row__note" data-i18n="svPack1Note">قبل أن يصبح سيناريو</span>
+          </div>
+          <div class="sv2-row__price">
+            <span class="sv2-row__lbl" data-i18n="svColPrice">السعر · إطلاق مؤقت</span>
+            <span><b class="sv2-num" dir="ltr">70–150</b> <span class="sv2-cur" data-i18n="svCurrency">ريال</span></span>
+          </div>
+          <div class="sv2-row__time">
+            <span class="sv2-row__lbl" data-i18n="svColTime">مدة التسليم</span>
+            <span data-i18n="svTime1">7 إلى 10 أيام</span>
+          </div>
+          <a class="sv2-row__go" href="/treatment-submit" data-i18n="svBook">احجز التقييم</a>
+        </div>
+
+        <div class="sv2-row">
+          <div class="sv2-row__pack">
+            <span class="sv2-row__name" data-i18n="svPack2">النصوص القصيرة</span>
+            <span class="sv2-row__note" data-i18n="svPack2Note">من 10 إلى 40 صفحة</span>
+          </div>
+          <div class="sv2-row__price">
+            <span class="sv2-row__lbl" data-i18n="svColPrice">السعر · إطلاق مؤقت</span>
+            <span><b class="sv2-num" dir="ltr">100–400</b> <span class="sv2-cur" data-i18n="svCurrency">ريال</span></span>
+          </div>
+          <div class="sv2-row__time">
+            <span class="sv2-row__lbl" data-i18n="svColTime">مدة التسليم</span>
+            <span data-i18n="svTime2">10 إلى 15 يوم عمل</span>
+          </div>
+          <a class="sv2-row__go" href="/submit" data-i18n="svBook">احجز التقييم</a>
+        </div>
+
+        <div class="sv2-row">
+          <div class="sv2-row__pack">
+            <span class="sv2-row__name" data-i18n="svPack3">النصوص الطويلة</span>
+            <span class="sv2-row__note" data-i18n="svPack3Note">من 80 إلى 120 صفحة</span>
+          </div>
+          <div class="sv2-row__price">
+            <span class="sv2-row__lbl" data-i18n="svColPrice">السعر · إطلاق مؤقت</span>
+            <span><b class="sv2-num" dir="ltr">800–1200</b> <span class="sv2-cur" data-i18n="svCurrency">ريال</span></span>
+          </div>
+          <div class="sv2-row__time">
+            <span class="sv2-row__lbl" data-i18n="svColTime">مدة التسليم</span>
+            <span data-i18n="svTime3">حتى 4 أسابيع</span>
+          </div>
+          <a class="sv2-row__go" href="/submit" data-i18n="svBook">احجز التقييم</a>
+        </div>
+
+        <div class="sv2-notes">
+          <p class="sv2-note">
+            <b data-i18n="svNote1H">Draft 2 مجانًا</b>
+            <span data-i18n="svNote1P">أعد تقديم نسخة مطوّرة من العمل نفسه بعد استلام التقييم الأول</span>
+          </p>
+          <p class="sv2-note">
+            <b data-i18n="svNote2H">ضمان الخدمة</b>
+            <span data-i18n="svNote2P">تقرير مصحح أو استرداد كامل خلال 7 أيام إذا لم يطابق التقرير وصف الخدمة</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 03 · STEP 02 · HOSTING ──
+       No button, deliberately: hosting is not something a writer can buy. It
+       closes on the condition instead, in the terms' own words. -->
+  <section class="sv2-host" id="hosting">
+    <div class="sv2-in">
+      <div class="sv2-host__box">
+        <div class="sv2-host__copy">
+          <p class="sv2-eyebrow" data-i18n="svStep2">الخطوة 02</p>
+          <h2 class="sv2-step__h" data-i18n="svHostH">استضافة المشاريع</h2>
+          <p class="sv2-step__p" data-i18n="svHostP">بناءً على التقرير، نرشّح المشاريع الأعلى تقييمًا لمسار الاستضافة، ونطوّرها مع الكاتب، ثم نقدّمها لجهات الإنتاج بموافقة كتّابها الكتابية وبأسمائهم</p>
+          <p class="sv2-host__cond" data-i18n="svHostCond">بالترشيح فقط، بعد استلام تقرير التغطية</p>
+        </div>
+        <img class="sv2-host__img" src="assets/svc-hosting-stage.jpg" alt="" loading="lazy" decoding="async" width="2880" height="1040">
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 04 · CLOSING CTA ──
+       The landing's slab, same shape and the same two stills. -->
+  <section class="sv2-cta" id="submit">
+    <div class="sv2-in">
+      <div class="sv2-cta__box">
+        <div class="sv2-cta__copy">
+          <h2 class="sv2-cta__h" data-i18n="svCtaH">ابدأ من الخطوة الأولى</h2>
+          <p class="sv2-cta__sub" data-i18n="svCtaSub">قدّم نصك، ويصلك تقرير مكتوب من قارئ متخصص</p>
+          <a class="sv2-cta__btn" href="/services" data-i18n="btnSubmit">قدّم نصك</a>
+        </div>
+        <div class="sv2-cta__stills" aria-hidden="true">
+          <img class="sv2-cta__still sv2-cta__still--1" src="assets/hero-num-screen.jpg" alt="" loading="lazy" decoding="async" width="700" height="760">
+          <img class="sv2-cta__still sv2-cta__still--2" src="assets/cta-wall.jpg" alt="" loading="lazy" decoding="async" width="1600" height="620">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ──
+       The landing's light footer, the unified one. Keyed on .lx-foot--light
+       rather than on a page wrapper, so the two pages share a stylesheet
+       block as well as a shape — keep the markup identical; the links differ
+       only in being root-relative here. -->
+  <footer class="lx-foot lx-foot--light">
+    <div class="lx-foot__in">
+      <div class="lx-foot__top">
+        <div class="lx-foot__brand-col">
+          <img class="lx-foot__mark" src="assets/scene-one-mark-v5-ink.svg" alt="Scene One" width="906" height="805">
+          <p class="lx-foot__blurb" data-i18n="footBlurb">نكتشف الكتّاب، ونطوّر مشاريعهم، ونصل بقصصهم إلى فرصتها التالية</p>
+        </div>
+        <div class="lx-foot__cols">
+          <div class="lx-foot__col">
+            <a href="/booklet" target="_blank" rel="noopener" data-i18n="footStory">حكاية سين ون</a>
+            <a href="/services" data-i18n="navServices">خدماتنا</a>
+            <a href="/about" data-i18n="navAboutUs">من نحن</a>
+            <a href="/readers" data-i18n="footReaders">من يقرأ نصك</a>
+            <a href="/services" data-i18n="btnSubmit">قدّم نصك</a>
+          </div>
+          <div class="lx-foot__col">
+            <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X</a>
+            <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          </div>
+          <div class="lx-foot__col">
+            <a href="/terms" data-i18n="footerTerms">الشروط والأحكام</a>
+            <a href="/privacy" data-i18n="footerPrivacy">سياسة الخصوصية</a>
+          </div>
+        </div>
+      </div>
+      <div class="lx-foot__bar">
+        <p class="lx-foot__cr" data-i18n="footCr">© 2026 جميع الحقوق محفوظة لـ سين ون · الرقم الموحد 7054791293</p>
+        <a class="lx-foot__cr-mail" href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script src="js/i18n.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
