@@ -461,6 +461,32 @@
 .lx-foot--light .lx-foot__col { gap: 14px; }
 .lx-foot--light .lx-foot__col a { font-size: 16px; color: #4a443d; }
 .lx-foot--light .lx-foot__col a:hover { color: var(--lx-red); }
+/* The social set is a ROW of pills. `align-content: flex-start` keeps them at
+   the top of the column track instead of stretching down beside the taller
+   links column, and `align-self: flex-start` on the links stops each pill
+   growing to the row's height. */
+.lx-foot--light .lx-foot__col--soc {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 10px;
+}
+.lx-foot--light .lx-foot__col--soc a {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 44px;
+  padding-inline: 22px;
+  border-radius: 10px;
+  background: var(--lx-black);
+  color: #fff;
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 700;
+  transition: background-color 200ms ease;
+}
+.lx-foot--light .lx-foot__col--soc a:hover { background: var(--lx-red); color: #fff; }
 .lx-foot--light .lx-foot__bar {
   margin-block-start: clamp(40px, 5vw, 64px);
   padding-block: 24px;

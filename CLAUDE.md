@@ -48,6 +48,17 @@ coverage workspace + report, role-based access, deadlines, and report delivery t
 writers. **The payment gate is live and has taken real money** (see below).
 Actively iterating on UX polish and workflow features.
 
+**Recently shipped (2026-11-24) — the footer's social links:**
+
+- **They are black PILLS in a row**, not a column of text links, on all six
+  pages carrying `.lx-foot--light`. The column is marked
+  `lx-foot__col--soc`, the only row among the footer's columns.
+  - `align-content: flex-start` on the row and `align-self: flex-start` on
+    each link are both load-bearing: without them the pills stretch to the
+    height of the taller links column beside them.
+  - Source order is Instagram · X · LinkedIn, so an RTL page renders them
+    LinkedIn · X · Instagram left to right, which is the reference.
+
 **Recently shipped (2026-11-24) — the surface colour:**
 
 - **`--lx-cream` is `#f4f4f4`, a neutral grey**, not the warm `#f6f4ee` the
