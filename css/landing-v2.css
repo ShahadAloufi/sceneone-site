@@ -23,6 +23,14 @@
 /* Palette and rhythm tokens live in css/tokens.css now, shared with the
    readers page so the two pages cannot drift apart. */
 .landing {
+  /* ⚠️ WHITE, overriding `background: var(--bg)` (#0e0202) in styles.css from
+     when this page was dark. The bands all paint white over it, so it looks
+     the same either way — until two sections meet on a fractional boundary
+     and a sub-pixel sliver of the ground shows through as a hairline across
+     the page. That is what it was doing on a phone. */
+  background: var(--lx-white);
+  color: var(--lx-ink);
+
   /* Rhythm. One knob for the gap between sections; every lx- section pays it
      on both edges, so the visible gap between any two is twice the token. */
   --lx-y: 64px;

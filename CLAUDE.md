@@ -338,6 +338,13 @@ Actively iterating on UX polish and workflow features.
     asked for it to match the CTA's; and the closing slab has **no
     photograph** on a phone, since the two stills are `display:none` below
     1100px and reinstating one is layout work the artboard does not justify.
+  - ⚠️ **`.landing` paints WHITE now**, overriding `background: var(--bg)`
+    (#0e0202) in `styles.css` from when the page was dark. The bands all
+    paint white over it, so it looked identical — until two sections met on
+    a fractional boundary and a sub-pixel sliver of the near-black ground
+    showed through as a hairline across the page. That is what the "thin
+    line" between sections was on a phone. Any page whose bands are all
+    white wants the same: the wrapper's colour has to agree with them.
   - ⚠️ **`.hn__in` must say `align-items: stretch` there.** The base rule sets
     `start` for the desktop GRID, and in a column flex container that is the
     CROSS axis — so the hero's frame shrank to its content and sat against
