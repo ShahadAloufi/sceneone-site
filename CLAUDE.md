@@ -95,8 +95,8 @@ Actively iterating on UX polish and workflow features.
   root-relative links. The dark `.lx-foot` it replaced carried its own
   three columns, the call/WhatsApp buttons and `id="contact"`; nothing on
   the page links that id, and the e-mail is still in the bottom bar.
-  **`/terms`, `/privacy`, `/partners`, `/about-coverage` and
-  `/treatment-submit` are the pages still on the dark footer.**
+  `/treatment-submit` carries it too. **`/terms`, `/privacy`, `/partners`
+  and `/about-coverage` are the pages still on the dark footer.**
 - ⚠️ **`.sb2-send`, `.sb2-journey` and the old full-width bar's rules STAY.**
   `treatment-submit.html` still carries that markup and has not been
   redesigned. Everything the new card needed is therefore scoped to
