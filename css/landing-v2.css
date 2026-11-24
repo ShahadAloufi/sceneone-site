@@ -1087,7 +1087,9 @@ html[dir="ltr"] .landing .hero__shade {
   /* A measure, so it breaks onto the artboard's two lines instead of
      stretching the row out to one. */
   max-inline-size: 15ch;
-  text-align: start;
+  /* Centred, not start-aligned: the two lines are different lengths and
+     ragging them against the figure leaves a notch beside it. */
+  text-align: center;
 }
 .pg--wide .hn__pill-n {
   font-family: var(--font-head);
