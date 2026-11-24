@@ -48,6 +48,30 @@ coverage workspace + report, role-based access, deadlines, and report delivery t
 writers. **The payment gate is live and has taken real money** (see below).
 Actively iterating on UX polish and workflow features.
 
+**Recently shipped (2026-11-24) — /readers, rebuilt:**
+
+- **`readers.html` follows the new artboard**: a centred hero, the five
+  readers as ROWS on hairlines (portrait, number, name + role on one baseline,
+  bio, two tag chips), the nine axes as a 3x3 of cream chips, and the
+  landing's closing slab. `css/readers-v2.css` was rewritten with it.
+  - **The «المنهج» three-column band went** with the redraw. Its keys
+    (`rdMethod*`, `rdM1T`…`rdM3B`) are orphaned in `js/i18n.js`.
+  - **The page joined the LANDING's glass bar**, so only `.tm2` and `.sb2` are
+    left in the dark group — /terms, /privacy and /submit, which do still open
+    on a dark hero. Its nav mark is the `-ink` cut and its bar is the same six
+    links, and it carries the unified `.lx-foot--light` footer.
+  - **The name/role/bio read the SAME keys the landing's team strip does**, so
+    the two pages cannot describe the same person differently. The artboard
+    trims three of the bios; those edits therefore show in both places, which
+    is the point of sharing the keys.
+  - ⚠️ **The axes are numbered 01–09 in the ARTBOARD's order, which is not
+    the report's.** It puts الأصالة last; `SCRIPT_SCHEMA` in
+    `js/report-render.js` has Originality THIRD. The figures on this page are
+    a count of nine, not a table of contents — if they are ever meant to be
+    read as positions, the page and the schema have to be reconciled.
+  - The old hero art (`readers-hero-bg-*.jpg`, `readers-hero-wordmark.svg`,
+    `cta-readers-set.webp`) is unreferenced now but left on disk.
+
 **Recently shipped (2026-11-24) — /about, rebuilt:**
 
 - **`about.html` follows the new artboard**: a centred hero, a «لماذا تأسست

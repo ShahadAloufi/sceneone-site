@@ -1,256 +1,292 @@
 /* ============================================================================
-   READERS v2 — /readers rebuilt to the supplied design.
+   /readers — من يقرأ نصك.
 
-   Same arrangement as the landing: a separate file, every selector prefixed
-   (`rd2-`), and nothing in css/styles.css touched — that sheet dresses fifteen
-   other pages and a range edit in it has taken live sections down before. The
-   old .au-* rules there are now unreferenced by this page and are left alone.
+   Rebuilt 2026-11-24 from the new artboard: a centred hero, the five readers
+   as rows on hairlines, the nine axes as a 3x3 of chips, and the landing's
+   closing slab. The «المنهج» three-column band went with the redraw.
 
-   Shared with the landing: css/tokens.css (palette + container) and the
-   .nav/.overlay chrome from styles.css.
-
-   Two deliberate departures from the design file, both for consistency with
-   the rest of the site rather than disagreement with the design:
-     - the accent is #cd2e07 (--lx-red), the site's red, not the mockup's
-       default #ea6e30. The mockup lists #cd2e07 among its own options.
-     - type is Tajawal, the family every other page uses, not IBM Plex Sans
-       Arabic. Weights are mapped to the nearest Tajawal has.
+   The artboard is a fixed 1440 canvas, so its literal pixel values are the
+   DESKTOP end of each scale here; sizes clamp down to a phone and the palette
+   comes from css/tokens.css. The wrapper is .rd2, registered there and in
+   css/site-chrome.css.
    ========================================================================= */
 
-.rd2 { background: var(--lx-cream); color: var(--lx-ink); }
-
-/* ---- section scaffolding ------------------------------------------------ */
-
-.rd2-sec {
-  padding-block: clamp(56px, 7vw, 88px);
-  padding-inline: var(--lx-x);
-  background: var(--lx-cream);
+.rd2-in {
+  inline-size: 100%;
+  max-inline-size: var(--lx-w);
+  margin-inline: auto;
 }
-.rd2-sec--dark { background: var(--lx-black); color: var(--lx-cream); }
-.rd2-in { inline-size: 100%; max-inline-size: var(--lx-w); margin-inline: auto; }
-
+.rd2-sec {
+  padding-block: clamp(56px, 7vw, 100px);
+  padding-inline: var(--lx-x);
+  background: var(--lx-white);
+}
 .rd2-eyebrow {
-  margin: 0 0 16px;
+  margin: 0;
   font-family: var(--font-head);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: .04em;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
   color: var(--lx-red);
 }
 .rd2-h {
   margin: 0;
   font-family: var(--font-head);
-  font-size: clamp(28px, 3.6vw, 42px);
-  font-weight: 700;
-  line-height: 1.4;
-  color: var(--lx-black);
+  font-size: clamp(28px, 4.4vw, 48px);
+  font-weight: 600;
+  line-height: clamp(36px, 5.6vw, 60px);
+  color: var(--lx-ink);
 }
-.rd2-sec--dark .rd2-h { color: var(--lx-cream); }
+.rd2-sub {
+  margin: 0;
+  max-inline-size: 680px;
+  font-size: clamp(16px, 1.5vw, 18px);
+  font-weight: 300;
+  line-height: clamp(28px, 2.8vw, 32px);
+  color: var(--lx-muted);
+}
+/* Centred section head, the same device the landing and /about use. */
+.rd2-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+  margin-block-end: clamp(36px, 4.4vw, 48px);
+}
 
 /* ---- 01 · hero ---------------------------------------------------------- */
 
 .rd2-hero {
-  /* The nav is fixed and overlays the top of the page, so the hero has to pay
-     for it: measured 104px tall, and without the allowance the eyebrow sat
-     behind the bar. The block-end padding stays on the section's own rhythm. */
-  padding-block-start: calc(104px + clamp(48px, 6vw, 92px));
-  padding-block-end: clamp(72px, 9vw, 116px);
+  /* Pays for the fixed 104px bar. */
+  padding-block-start: calc(104px + clamp(40px, 5vw, 80px));
+  padding-block-end: clamp(40px, 5vw, 72px);
   padding-inline: var(--lx-x);
-  /* The hero is light now, like the landing's. Everything below it was already
-     cream or black and is unchanged; only this band and the bar above it
-     invert. */
   background: var(--lx-white);
-  color: var(--lx-ink);
 }
+.rd2-hero__in { display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; }
 .rd2-hero__h {
   margin: 0;
+  max-inline-size: 1000px;
   font-family: var(--font-head);
-  font-size: clamp(38px, 5.6vw, 62px);
-  font-weight: 700;
-  line-height: 1.35;
-  max-inline-size: 20ch;
-  color: var(--lx-black);
-}
-.rd2-hero__p {
-  margin: 26px 0 0;
-  max-inline-size: 62ch;
-  font-size: clamp(16px, 1.5vw, 20px);
-  font-weight: 400;
-  line-height: 1.9;
-  color: var(--lx-ink);
-}
-
-/* ---- 02 · method: three columns under rules ----------------------------- */
-
-.rd2-method__grid {
-  display: grid;
-  gap: 40px clamp(32px, 4vw, 56px);
-  margin-block-start: 46px;
-}
-@media (min-width: 780px) { .rd2-method__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.rd2-method__col { padding-block-start: 26px; border-block-start: 2px solid var(--lx-black); }
-.rd2-method__t { margin: 0 0 18px; font-family: var(--font-head); font-size: clamp(20px, 2vw, 24px); font-weight: 700; }
-.rd2-method__b { margin: 0; font-size: 16px; font-weight: 400; line-height: 1.95; color: var(--lx-ink); }
-
-/* ---- 03 · the readers --------------------------------------------------- */
-
-.rd2-team__head {
-  padding-block-end: 46px;
-  border-block-end: 1px solid rgba(0, 0, 0, .12);
-}
-
-.rd2-reader {
-  /* Landing on #wad etc. from the home page's team strip: the nav is fixed, so
-     without this the row's top sits under the bar. */
-  scroll-margin-block-start: 124px;
-  display: grid;
-  gap: 32px;
-  padding-block: clamp(44px, 5vw, 62px);
-  border-block-end: 1px solid rgba(0, 0, 0, .1);
-  align-items: center;
-}
-.rd2-reader:last-child { border-block-end: 0; }
-@media (min-width: 860px) {
-  /* Copy takes the room it needs, the portrait a fixed column — the design's
-     660 / 340 split, expressed so it holds at any container width. */
-  .rd2-reader { grid-template-columns: minmax(0, 1fr) 340px; gap: clamp(40px, 5vw, 80px); }
-  /* Alternating sides. The portrait is always second in the DOM, so reading
-     order stays name-then-face; `order` only moves it visually, and it mirrors
-     with the writing direction on its own.
-
-     nth-of-type, NOT nth-child: the heading block is the first child of this
-     container, so the four articles are children 2-5 and nth-child(even)
-     selected readers 1 and 3 — the whole sequence ran a row out of phase with
-     the design. Counting articles only puts 02 and 04 on the flipped side. */
-  .rd2-reader:nth-of-type(even) .rd2-reader__photo { order: -1; }
-  /* The track sizes have to travel with the photo. `order` alone moved the
-     picture into the wide track and squeezed the bio into the 340px one —
-     measured 340px of text where 583 was intended. */
-  .rd2-reader:nth-of-type(even) { grid-template-columns: 340px minmax(0, 1fr); }
-}
-
-.rd2-reader__meta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-.rd2-reader__n { font-size: 15px; font-weight: 700; color: var(--lx-red); font-variant-numeric: tabular-nums; }
-.rd2-reader__rule { inline-size: 44px; block-size: 1px; background: var(--lx-red); flex: 0 0 auto; }
-.rd2-reader__role { font-size: 15px; font-weight: 400; color: var(--lx-muted); }
-.rd2-reader__name {
-  margin: 20px 0 0;
-  font-family: var(--font-head);
-  font-size: clamp(26px, 3.2vw, 38px);
-  font-weight: 700;
-  color: var(--lx-black);
-}
-.rd2-reader__bio {
-  margin: 20px 0 0;
-  max-inline-size: 58ch;
-  font-size: 17px;
-  font-weight: 400;
-  line-height: 1.95;
-  color: var(--lx-ink);
-}
-.rd2-reader__tags { display: flex; flex-wrap: wrap; gap: 10px; margin-block-start: 28px; }
-.rd2-reader__tag {
-  padding: 9px 20px;
-  border: 1px solid rgba(0, 0, 0, .16);
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 400;
-  color: #252525;
-}
-.rd2-reader__photo {
-  inline-size: 100%;
-  max-inline-size: 340px;
-  aspect-ratio: 340 / 400;
-  /* block-size: auto is load-bearing. The img carries width/height attributes
-     (600x800), which give it a DEFINITE height that beats aspect-ratio — the
-     portrait rendered 340x800 instead of 340x400. Setting the block size back
-     to auto lets the ratio decide. */
-  block-size: auto;
-  object-fit: cover;
-  border-radius: 8px;
-  display: block;
-  background: #211d1a;
-}
-
-/* ---- 04 · the eight axes ------------------------------------------------ */
-
-.rd2-axes { display: grid; gap: 40px clamp(48px, 6vw, 96px); }
-@media (min-width: 900px) { .rd2-axes { grid-template-columns: 380px minmax(0, 1fr); align-items: start; } }
-.rd2-axes__link {
-  display: inline-block;
-  align-self: flex-start;
-  margin-block-start: 22px;
-  padding-block-end: 6px;
-  border-block-end: 1px solid rgba(249, 244, 239, .3);
-  font-family: var(--font-head);
-  font-size: 16px;
+  font-size: clamp(32px, 4.6vw, 64px);
   font-weight: 600;
-  color: var(--lx-cream);
-  transition: color 200ms ease, border-color 200ms ease;
+  line-height: clamp(40px, 6vw, 84px);
+  letter-spacing: -.5px;
+  color: var(--lx-ink);
 }
-.rd2-axes__link:hover { color: var(--lx-red); border-block-end-color: var(--lx-red); }
-.rd2-axes__list { display: grid; margin: 0; padding: 0; list-style: none; column-gap: clamp(32px, 5vw, 72px); }
-@media (min-width: 640px) { .rd2-axes__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.rd2-axes__item {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  padding-block: 20px;
-  border-block-end: 1px solid rgba(249, 244, 239, .14);
-}
-.rd2-axes__t { font-size: clamp(16px, 1.6vw, 18px); font-weight: 400; color: var(--lx-cream); }
-.rd2-axes__n { font-size: 14px; color: rgba(249, 244, 239, .35); font-variant-numeric: tabular-nums; }
-
-/* ---- 05 · closing CTA --------------------------------------------------- */
-
-.rd2-cta {
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  min-block-size: clamp(420px, 36vw, 520px);
-  padding-inline: var(--lx-x);
-  background: var(--lx-black);
-}
-.rd2-cta__bg { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; z-index: 0; }
-.rd2-cta__shade { position: absolute; inset: 0; z-index: 1; background: rgba(0, 0, 0, .76); }
-.rd2-cta__in { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 28px; }
-.rd2-cta__h {
+/* Latin display type takes the negative tracking; Arabic letters join. */
+[dir="rtl"] .rd2-hero__h { letter-spacing: normal; }
+.rd2-hero__p {
   margin: 0;
-  max-inline-size: 900px;
-  font-family: var(--font-head);
-  font-size: clamp(26px, 3.6vw, 42px);
-  font-weight: 700;
-  line-height: 1.6;
-  color: var(--lx-cream);
+  max-inline-size: 720px;
+  font-size: clamp(16px, 1.6vw, 20px);
+  font-weight: 300;
+  line-height: clamp(28px, 3vw, 36px);
+  color: #4a443d;
 }
-/* Matches .lx-cta__sub on the landing. Margin is 0, not the landing's
-   24px: .rd2-cta__in is a flex column with its own 28px gap, and a margin on
-   top of that would space this one line differently from the same line there. */
-.rd2-cta__sub {
-  margin: 0;
-  max-inline-size: 52ch;
-  font-size: 15px;
-  line-height: 1.85;
-  color: rgba(255, 255, 255, .66);
-}
-.rd2-cta__btn {
+.rd2-hero__acts { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-block-start: 6px; }
+.rd2-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-block-size: 56px;
-  margin-block-start: 8px;
-  padding-inline: 48px;
+  padding: 16px 34px;
+  border-radius: 8px;
+  background: var(--lx-red);
+  color: #fff;
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+.rd2-btn:hover { background: #e63208; }
+.rd2-btn--quiet { padding-inline: 30px; background: var(--lx-cream); color: var(--lx-black); font-weight: 500; }
+.rd2-btn--quiet:hover { background: var(--lx-line); color: var(--lx-black); }
+
+/* ---- 02 · the readers ---------------------------------------------------
+   Rows on hairlines, not cards. The rule above the first one is the list's
+   own top edge, so it is drawn on the container rather than on each row. */
+
+.rd2-readers { border-block-start: 1px solid rgba(0, 0, 0, .1); }
+.rd2-reader {
+  display: grid;
+  gap: clamp(24px, 3.4vw, 48px);
+  align-items: center;
+  padding-block: clamp(24px, 3vw, 32px);
+  border-block-end: 1px solid rgba(0, 0, 0, .1);
+}
+@media (min-width: 760px) { .rd2-reader { grid-template-columns: 260px minmax(0, 1fr); } }
+.rd2-reader__photo {
+  inline-size: 100%;
+  max-inline-size: 260px;
+  block-size: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  filter: grayscale(1);
+}
+.rd2-reader__body { display: flex; flex-direction: column; gap: 12px; max-inline-size: 760px; }
+.rd2-reader__n {
+  font-family: var(--font-head);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  color: var(--lx-red);
+  font-variant-numeric: tabular-nums;
+}
+/* Name and role share a baseline, which is why this is a flex row and not two
+   stacked blocks: at 28px and 16px, stacking leaves the role looking detached
+   from the name it belongs to. */
+.rd2-reader__id { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; }
+.rd2-reader__name {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(22px, 2.4vw, 28px);
+  font-weight: 600;
+  line-height: 36px;
+  color: var(--lx-ink);
+}
+.rd2-reader__role { font-size: 16px; line-height: 24px; color: var(--lx-red); }
+.rd2-reader__bio {
+  margin: 0;
+  font-size: clamp(15px, 1.4vw, 17px);
+  font-weight: 300;
+  line-height: clamp(26px, 2.6vw, 32px);
+  color: #4a443d;
+}
+.rd2-reader__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-block-start: 4px; }
+.rd2-reader__tag {
+  padding: 7px 14px;
   border-radius: 8px;
   background: var(--lx-cream);
-  color: #000;
+  font-size: 12px;
+  line-height: 16px;
+  color: #4a443d;
+}
+
+/* ---- 03 · the nine axes -------------------------------------------------
+   A chip each, three across. The figure is a count rather than a position in
+   the report — see the note in readers.html. */
+
+.rd2-axes__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+}
+@media (min-width: 640px)  { .rd2-axes__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1000px) { .rd2-axes__list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.rd2-axes__item {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 26px 28px;
+  border-radius: 8px;
+  background: var(--lx-cream);
+}
+.rd2-axes__n {
   font-family: var(--font-head);
-  font-size: 18px;
+  font-size: 16px;
+  line-height: 24px;
   font-weight: 700;
+  color: var(--lx-red);
+  font-variant-numeric: tabular-nums;
+}
+.rd2-axes__t {
+  font-family: var(--font-head);
+  font-size: clamp(16px, 1.7vw, 20px);
+  line-height: 28px;
+  font-weight: 600;
+  color: var(--lx-ink);
+}
+.rd2-axes__link {
+  display: flex;
+  inline-size: fit-content;
+  align-items: center;
+  justify-content: center;
+  margin-inline: auto;
+  margin-block-start: clamp(32px, 4vw, 48px);
+  padding: 14px 26px;
+  border-radius: 8px;
+  background: var(--lx-black);
+  color: var(--lx-cream);
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 600;
   transition: background-color 200ms ease;
 }
-.rd2-cta__btn:hover { background: #fff; }
+.rd2-axes__link:hover { background: var(--lx-red); color: #fff; }
+
+/* ---- 04 · closing CTA ---------------------------------------------------
+   The landing's slab — see css/landing-v2.css for why the photographs sit ON
+   the black rather than behind it, and why they drop below 1100. */
+.rd2-cta {
+  padding-block: clamp(40px, 5vw, 60px) clamp(56px, 7vw, 80px);
+  padding-inline: var(--lx-x);
+  background: var(--lx-white);
+}
+.rd2-cta__box {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--lx-black);
+  color: var(--lx-cream);
+  min-block-size: clamp(360px, 36vw, 460px);
+  display: flex;
+  align-items: center;
+  padding: clamp(40px, 5vw, 64px);
+}
+.rd2-cta__copy {
+  position: relative;
+  z-index: 2;
+  max-inline-size: 708px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.rd2-cta__h {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(24px, 3.6vw, 44px);
+  font-weight: 600;
+  line-height: clamp(32px, 4.9vw, 60px);
+  color: var(--lx-cream);
+}
+.rd2-cta__sub { margin: 0; font-size: clamp(16px, 1.4vw, 20px); font-weight: 300; line-height: clamp(28px, 2.5vw, 36px); color: rgba(249, 244, 239, .72); }
+.rd2-cta__btn {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 52px;
+  margin-block-start: 4px;
+  padding-inline: 34px;
+  border-radius: 8px;
+  background: var(--lx-red);
+  color: #fff;
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 600;
+  transition: background-color 200ms ease;
+}
+.rd2-cta__btn:hover { background: #e63208; }
+.rd2-cta__stills { display: none; }
+@media (min-width: 1100px) {
+  .rd2-cta__stills { display: block; }
+  .rd2-cta__still { position: absolute; z-index: 1; object-fit: cover; filter: grayscale(1); }
+  .rd2-cta__still--1 {
+    inset-inline-end: 230px;
+    inset-block-end: 0;
+    inline-size: 230px;
+    block-size: 300px;
+    border-radius: 8px 8px 0 0;
+  }
+  .rd2-cta__still--2 {
+    inset-inline-end: 40px;
+    inset-block-start: 40px;
+    inline-size: 210px;
+    block-size: 260px;
+    border-radius: 8px;
+  }
+}
