@@ -354,7 +354,18 @@ Actively iterating on UX polish and workflow features.
   - The mobile styles are one `@media (max-width: 999px)` block at the END of
     `css/landing-v2.css`, keyed on the nav's own breakpoint so the bar and the
     body still change character at the same width.
-  - **Three things the artboard has that the page does not**, all deliberate:
+  - **The closing slab DOES carry its photograph on a phone** (added
+    2026-11-24, on both the landing and /services). The two stills are
+    `position: absolute` for the desktop collage and `display:none` below
+    1100; one of them comes back as a plain 200px block in the flow.
+    - ⚠️ **`display: contents` on `.lx-cta__copy` is what makes that
+      possible.** The button is the copy's last child, so without dissolving
+      that box the image can only land above the heading or below the
+      button, and the artboard puts it between the sub and the button. The
+      box takes over the copy's gap as a result.
+    - **still--1, not --2**: `cta-wall.jpg` is a near-black wall and reads as
+      an empty panel on a black slab.
+  - **Two things the artboard has that the page does not**, both deliberate:
     the FAQ rows are the desktop's **hairlines, not grey cards** — the
     artboard draws each question on a panel, it was built that way and taken
     back out on request, since three other sections already use grey cards

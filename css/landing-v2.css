@@ -1476,4 +1476,31 @@ html[dir="ltr"] .landing .hero__shade {
   .lx-cta__h { font-size: 26px; line-height: 36px; }
   .lx-cta__sub { font-size: 14px; line-height: 24px; }
   .lx-cta__btn { inline-size: 100%; }
+
+  /* The artboard puts a photograph inside the slab, between the sub and the
+     button. The two stills are `position: absolute` for the desktop collage
+     and `display:none` below 1100; here ONE of them comes back as a plain
+     200px block in the flow.
+
+     `display: contents` on the copy is what makes that possible: the button
+     is the copy's last child, so without dissolving that box the image can
+     only land above the heading or below the button. The box takes over the
+     copy's gap as a result. */
+  .lx-cta__box { flex-direction: column; align-items: stretch; gap: 14px; }
+  .lx-cta__copy { display: contents; }
+  .lx-cta__h { order: 1; }
+  .lx-cta__sub { order: 2; }
+  .lx-cta__stills { order: 3; display: block; margin-block-start: 4px; }
+  .lx-cta__btn { order: 4; }
+  /* still--1, not --2: cta-wall is a near-black wall and reads as an empty
+     panel on a black slab. */
+  .lx-cta__still--2 { display: none; }
+  .lx-cta__still--1 {
+    position: static;
+    inline-size: 100%;
+    block-size: 200px;
+    border-radius: 8px;
+    object-fit: cover;
+    filter: grayscale(1);
+  }
 }
