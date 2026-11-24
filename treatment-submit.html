@@ -112,6 +112,16 @@
   <section class="sb2-hero" id="top">
     <div class="sb2-hero__in">
       <h1 class="sb2-hero__h">تقديم المعالجة</h1>
+      <!-- The product switch. A phone meets one form at a time and has no
+           pricing page beside it, so the two intakes name each other here.
+           Two LINKS, not a control: they are separate pages, and the current
+           one carries aria-current rather than being disabled, so it still
+           reads as the place you are. Hidden above 1000px, where the artboard
+           has no switch and /services does the choosing. -->
+      <div class="sb2-switch" role="group" data-i18n-aria="subSwitchAria" aria-label="نوع التقديم">
+        <a class="sb2-switch__o" href="/submit">نص سيناريو</a>
+        <a class="sb2-switch__o" aria-current="page" href="/treatment-submit">معالجة</a>
+      </div>
     </div>
   </section>
 

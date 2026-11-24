@@ -76,6 +76,23 @@ Actively iterating on UX polish and workflow features.
   - Two hardcoded copies went with it: `booklet.html`'s inline style and
     `css/checkout.css`'s `var(--lx-cream, …)` fallback.
 
+**Recently shipped (2026-11-24) — mobile for both forms:**
+
+- The two «جوال 390» artboards are identical but for their copy, so both
+  forms take one `@media (max-width: 999px)` block at the end of
+  `css/submit-v2.css`: h1 30px, sections on hairlines 36px apart, fields one
+  per row at 52px, and the aside as the form's last block at the slab's 12px
+  gutters rather than a column beside it.
+- **NEW MARKUP: a product switch under the h1**, «نص سيناريو» / «معالجة»,
+  on both forms.
+  - **Two LINKS, not a control.** They are separate pages; the current one
+    carries `aria-current="page"` and is filled black, rather than being
+    disabled, so it still reads as where you are.
+  - **MOBILE-ONLY** (`.sb2-switch { display: none }` outside the query).
+    Above 1000px the artboard has none and `/services` is where the two
+    products are compared and chosen. A phone meets one form at a time with
+    no pricing page beside it, which is what the switch is for.
+
 **Recently shipped (2026-11-24) — /submit, the order summary:**
 
 - **`submit.html` is TWO COLUMNS now**, from the «تقديم النص · بالهيكل الجديد»
