@@ -188,44 +188,39 @@
     </div>
   </section>
 
-  <!-- ── FOOTER ── -->
-  <footer class="lx-foot">
+  <!-- ── FOOTER ──
+       The landing's light footer, the unified one. Keyed on .lx-foot--light
+       rather than on a page wrapper, so the two pages share a stylesheet
+       block as well as a shape — keep the markup identical; the links differ
+       only in being root-relative here. -->
+  <footer class="lx-foot lx-foot--light">
     <div class="lx-foot__in">
       <div class="lx-foot__top">
-        <div>
-          <div class="lx-foot__brand">
-            <img src="assets/scene-one-logo-v5.svg" alt="Scene One">
+        <div class="lx-foot__brand-col">
+          <img class="lx-foot__mark" src="assets/scene-one-mark-v5-ink.svg" alt="Scene One" width="906" height="805">
+          <p class="lx-foot__blurb" data-i18n="footBlurb">نكتشف الكتّاب، ونطوّر مشاريعهم، ونصل بقصصهم إلى فرصتها التالية</p>
+        </div>
+        <div class="lx-foot__cols">
+          <div class="lx-foot__col">
+            <a href="/booklet" target="_blank" rel="noopener" data-i18n="footStory">حكاية سين ون</a>
+            <a href="/#services" data-i18n="navServices">خدماتنا</a>
+            <a href="/readers" data-i18n="footReaders">من يقرأ نصك</a>
+            <a href="/submit" data-i18n="btnSubmit">قدّم نصك</a>
           </div>
-          <p class="lx-foot__blurb" data-i18n="footBlurb">نكتشف الأصوات الجديدة، نطوّر أفلامها، ونبني لها طريقًا إلى الشاشة</p>
-        </div>
-        <div class="lx-foot__col">
-          <a href="/#services" data-i18n="navServices">خدماتنا</a>
-          <a href="/readers" data-i18n="footReaders">من يقرأ نصك</a>
-          <a href="/#why" data-i18n="navWhy">لماذا سين ون</a>
-          <a href="/partners" data-i18n="footPartners">شركاء</a>
-        </div>
-        <div class="lx-foot__col">
-          <a href="/privacy" data-i18n="footerPrivacy">سياسة الخصوصية</a>
-          <a href="/terms" data-i18n="footerTerms">الشروط والأحكام</a>
-          <a href="/booklet" target="_blank" rel="noopener" data-i18n="footStory">حكاية سين ون</a>
-        </div>
-        <div class="lx-foot__col">
-          <p class="lx-foot__lbl" data-i18n="footContact">للتواصل</p>
-          <a class="lx-foot__mail" href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
-          <div class="lx-foot__actions">
-            <a class="lx-foot__btn" href="tel:+966580503970" dir="ltr" data-i18n-aria="footCallAria">966580503970</a>
-            <a class="lx-foot__btn lx-foot__btn--wa" href="https://wa.me/966580503970"
-               target="_blank" rel="noopener noreferrer" data-i18n-aria="footWaAria"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.61.14-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.42-.07-.13-.27-.2-.57-.35z"/><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.25 8.24a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.17 8.17 0 0 1-1.26-4.38c0-4.54 3.7-8.25 8.24-8.25z"/></svg><span data-i18n="footWa">واتساب</span></a>
+          <div class="lx-foot__col">
+            <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X</a>
+            <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          </div>
+          <div class="lx-foot__col">
+            <a href="/terms" data-i18n="footerTerms">الشروط والأحكام</a>
+            <a href="/privacy" data-i18n="footerPrivacy">سياسة الخصوصية</a>
           </div>
         </div>
       </div>
       <div class="lx-foot__bar">
         <p class="lx-foot__cr" data-i18n="footCr">© 2026 جميع الحقوق محفوظة لـ سين ون · الرقم الموحد 7054791293</p>
-        <div class="lx-foot__soc">
-          <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X</a>
-          <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
-          <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        </div>
+        <a class="lx-foot__cr-mail" href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
       </div>
     </div>
   </footer>

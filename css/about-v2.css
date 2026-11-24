@@ -155,14 +155,15 @@
   background: var(--lx-white);
 }
 .ab2-founders__in { display: flex; flex-direction: column; gap: clamp(36px, 4.4vw, 56px); }
-.ab2-founders__grid { display: grid; gap: 20px; }
+/* No card around them. The artboard sets each founder on a cream panel; it
+   was dropped on request, so the two sit straight on the white page — which
+   also means the 20px that separated two padded cards is now the only thing
+   between two blocks of text, hence the wider gap. */
+.ab2-founders__grid { display: grid; gap: clamp(32px, 4vw, 64px); }
 @media (min-width: 900px) { .ab2-founders__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .ab2-founder {
   display: grid;
   gap: 28px;
-  padding: 24px;
-  border-radius: 8px;
-  background: var(--lx-cream);
 }
 @media (min-width: 620px) {
   /* Portrait beside the copy. Below this it stacks, because a 230px column

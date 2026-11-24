@@ -61,6 +61,21 @@ Actively iterating on UX polish and workflow features.
     in the dark group. It opens on white and always did, so the black bar had
     been sitting on a white hero — the nav mark is the `-ink` cut here now,
     and the bar's five links match the landing's.
+  - **The founders sit on NO card.** The artboard sets each on a cream panel;
+    it was dropped on request, so the two go straight on the white page — and
+    the 20px that separated two padded cards became the only thing between two
+    blocks of text, hence the wider gap.
+  - **The footer is `.lx-foot--light`, the unified one.** It began life as
+    `.landing .pg--wide .lx-foot`, which meant this page could not have it
+    without a second selector; it is keyed on a MODIFIER now and the landing
+    and /about both carry it. **Keep the two markups identical** — they differ
+    only in the links being root-relative here. Verified identical computed
+    style and height.
+    ⚠️ Rescoping that block by find-and-replace on `.landing .pg--wide
+    .lx-foot` mangles the BEM children into `.lx-foot--light__col`, which
+    matches nothing and fails silently — the footer went white with the dark
+    footer's type still on it. If it is ever rescoped again, check the
+    children.
   - **The founders keep their existing `.webp` portraits.** The artboard ships
     the same two 800x800 crops as `.jpg`; there was nothing to gain by
     carrying a second copy of the same frame in a heavier format.
