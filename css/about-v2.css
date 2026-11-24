@@ -279,3 +279,70 @@
     border-radius: 8px;
   }
 }
+
+/* ============================================================================
+   MOBILE (≤999px) — the «من نحن · جوال 390» artboard.
+
+   The landing's breakpoint. Heads to the reading edge, the hero's two buttons
+   stacked full-width, the story's photograph above its copy instead of beside
+   it, and the two founders on cards.
+   ========================================================================= */
+
+@media (max-width: 999px) {
+  .ab2-hero { padding-block: calc(64px + 40px) 0; padding-inline: 20px; }
+  .ab2-hero__in { align-items: flex-start; text-align: start; gap: 14px; }
+  .ab2-hero__h { font-size: 32px; line-height: 42px; }
+  .ab2-hero__sub { font-size: 15px; line-height: 26px; }
+  .ab2-eyebrow { font-size: 13px; line-height: 20px; }
+  /* Side by side at this measure the two labels wrap inside their buttons. */
+  .ab2-hero__acts { display: flex; flex-direction: column; gap: 10px; inline-size: 100%; }
+  .ab2-btn { inline-size: 100%; min-block-size: 52px; }
+
+  /* ---- the story: photograph on top ---- */
+  .ab2-story { padding-block: 56px 0; padding-inline: 20px; }
+  .ab2-story__in { display: flex; flex-direction: column; gap: 16px; }
+  .ab2-story__photo { order: -1; inline-size: 100%; max-inline-size: none; block-size: 260px; aspect-ratio: auto; object-fit: cover; }
+  .ab2-story__copy { gap: 12px; }
+  .ab2-story__h { font-size: 26px; line-height: 36px; }
+  .ab2-story__p { font-size: 15px; line-height: 26px; }
+
+  /* ---- the founders ----
+     ⚠️ ON CARDS here, which the DESKTOP deliberately is not — the panel
+     behind each founder was dropped on request there, and the artboard puts
+     it back for the phone. Stacked in one column the card is what separates
+     one founder from the next; on the desktop the two columns already do. */
+  .ab2-founders { padding-block: 56px 0; padding-inline: 20px; }
+  .ab2-head { align-items: flex-start; text-align: start; gap: 8px; margin-block-end: 20px; }
+  .ab2-h { font-size: 26px; line-height: 36px; }
+  .ab2-founders__grid { grid-template-columns: 1fr; gap: 20px; }
+  .ab2-founder {
+    border-radius: 8px;
+    background: var(--lx-cream);
+    overflow: hidden;
+  }
+  .ab2-founder__photo { inline-size: 100%; max-inline-size: none; block-size: 340px; aspect-ratio: auto; object-fit: cover; object-position: 45% 30%; border-radius: 0; }
+  .ab2-founder__photo--right { object-position: 62% 30%; }
+  .ab2-founder__body { padding: 22px 20px 24px; gap: 8px; }
+  .ab2-founder__name { font-size: 22px; line-height: 30px; }
+  .ab2-founder__role { font-size: 13px; line-height: 20px; }
+  .ab2-founder__bio { font-size: 14px; line-height: 24px; }
+
+  /* ---- the closing slab, the landing's, photograph and all ---- */
+  .ab2-cta { padding-block: 64px 0; padding-inline: 12px; }
+  .ab2-cta__box { flex-direction: column; align-items: stretch; gap: 14px; padding: 32px 24px; min-block-size: 0; }
+  .ab2-cta__copy { display: contents; }
+  .ab2-cta__h { order: 1; font-size: 26px; line-height: 36px; }
+  .ab2-cta__sub { order: 2; font-size: 14px; line-height: 24px; }
+  .ab2-cta__stills { order: 3; display: block; margin-block-start: 4px; }
+  .ab2-cta__btn { order: 4; inline-size: 100%; }
+  /* still--1, not --2: cta-wall is a near-black wall on a black slab. */
+  .ab2-cta__still--2 { display: none; }
+  .ab2-cta__still--1 {
+    position: static;
+    inline-size: 100%;
+    block-size: 200px;
+    border-radius: 8px;
+    object-fit: cover;
+    filter: grayscale(1);
+  }
+}

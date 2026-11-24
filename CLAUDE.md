@@ -285,6 +285,22 @@ Actively iterating on UX polish and workflow features.
   - The old hero art (`readers-hero-bg-*.jpg`, `readers-hero-wordmark.svg`,
     `cta-readers-set.webp`) is unreferenced now but left on disk.
 
+**Recently shipped (2026-11-24) — mobile for /about:**
+
+- The «من نحن · جوال 390» artboard, one `@media (max-width: 999px)` block at
+  the end of `css/about-v2.css`: heads to the reading edge, the hero's two
+  buttons stacked full-width, the story's photograph **above** its copy
+  rather than beside it, and the closing slab carrying its photograph the
+  same way the landing's and /services' do.
+- ⚠️ **The founders ARE on cards here, and the desktop deliberately is not.**
+  The cream panel behind each one was dropped on request for the desktop;
+  the artboard puts it back for the phone, and it is right to: stacked in
+  one column the card is what separates one founder from the next, where on
+  the desktop the two columns already do.
+- Each portrait carries its OWN `object-position` (45% 30% and 62% 30%),
+  from the artboard — a 340px band of either photograph centred would cut
+  the subject out of frame.
+
 **Recently shipped (2026-11-24) — /about, rebuilt:**
 
 - **`about.html` follows the new artboard**: a centred hero, a «لماذا تأسست
