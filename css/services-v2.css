@@ -150,18 +150,26 @@
   .sv2-row__go { align-self: center; }
 }
 
-.sv2-notes { display: grid; gap: 16px; margin-block-start: 28px; }
-@media (min-width: 760px) { .sv2-notes { grid-template-columns: 1fr 1fr; } }
-.sv2-note {
-  margin: 0;
-  border-radius: 8px;
-  background: var(--lx-cream);
-  padding: 20px 24px;
-  font-size: 16px;
-  line-height: 28px;
-  color: var(--lx-muted);
+/* The two notes are NOT cards — plain blocks either side of a hairline.
+   The rule is its own grid item, not a border on one of them, so it can
+   span whichever block is taller; a border stops at its own box. It is
+   also the only thing to drop when the two stack. */
+.sv2-notes { display: grid; gap: 24px; margin-block-start: 36px; align-items: stretch; }
+.sv2-notes__rule { display: none; }
+@media (min-width: 760px) {
+  .sv2-notes { grid-template-columns: 1fr 1px 1fr; gap: 32px; }
+  .sv2-notes__rule { display: block; inline-size: 1px; background: rgba(0, 0, 0, .12); }
 }
-.sv2-note b { display: block; color: var(--lx-red); font-weight: 600; }
+.sv2-note { margin: 0; font-size: 14px; font-weight: 300; line-height: 24px; color: #5e5850; }
+.sv2-note b {
+  display: block;
+  margin-block-end: 4px;
+  font-family: var(--font-head);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  color: var(--lx-ink);
+}
 
 /* ---- 03 · step 02, hosting ---------------------------------------------- */
 

@@ -84,6 +84,11 @@ Actively iterating on UX polish and workflow features.
   - **Its turnaround reads «7 إلى 10 أيام»**, not «7 إلى 12». `TURNAROUND` in
     `js/admin.js` is 7 and 10.
   - The two script rows' prices and turnarounds already matched.
+- **The two notes under the table are NOT cards** (updated artboard, same
+  day): plain blocks either side of a 1px rule. The rule is its OWN grid
+  item rather than a border on one of them, so it spans whichever block is
+  taller — a border stops at its own box — and it is the one thing that
+  drops when the two stack. «Draft 2 مجانًا» became «المسودة الثانية مجانًا».
 - ⚠️ **«ضمان الخدمة» PROMISES SOMETHING `terms.html` DOES NOT.** The card
   offers «تقرير مصحح أو استرداد كامل خلال 7 أيام إذا لم يطابق التقرير وصف
   الخدمة»; the published policy is a full refund *before assignment*, none

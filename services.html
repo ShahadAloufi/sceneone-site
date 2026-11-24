@@ -203,11 +203,16 @@
           <a class="sv2-row__go" href="/submit" data-i18n="svBook">احجز التقييم</a>
         </div>
 
+        <!-- No cards here: two plain blocks either side of a hairline. The
+             rule is its own element rather than a border on one of them,
+             because it has to span the TALLER block and a border stops at
+             its own box. -->
         <div class="sv2-notes">
           <p class="sv2-note">
-            <b data-i18n="svNote1H">Draft 2 مجانًا</b>
+            <b data-i18n="svNote1H">المسودة الثانية مجانًا</b>
             <span data-i18n="svNote1P">أعد تقديم نسخة مطوّرة من العمل نفسه بعد استلام التقييم الأول</span>
           </p>
+          <span class="sv2-notes__rule" aria-hidden="true"></span>
           <p class="sv2-note">
             <b data-i18n="svNote2H">ضمان الخدمة</b>
             <span data-i18n="svNote2P">تقرير مصحح أو استرداد كامل خلال 7 أيام إذا لم يطابق التقرير وصف الخدمة</span>
