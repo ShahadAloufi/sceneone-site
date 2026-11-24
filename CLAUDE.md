@@ -79,6 +79,17 @@ Actively iterating on UX polish and workflow features.
   `showQuote()` was left exactly as it was.
   ⚠️ The service row reads the option's TEXT but tests its **value** — an
   unpicked `<select>` still has a selected option, its placeholder.
+- **The fields have NO fill**: a 1px `--lx-line` outline on the white page,
+  and the box-shadow went with the fill, since a raised edge on a flat field
+  reads as a seam. **`input[type="tel"]` joined the selector list** — it had
+  never been in it, so the phone box was rendering as the browser's own
+  control. That accident is what the outlined look was copied from.
+- ⚠️ **`/treatment-submit` IS `.sb2` TOO**, so the white ground, the glass bar
+  and the outlined fields all reached it. Its own `.sb2-send`, `.sb2-times`
+  and `.sb2-journey__card` were white cards and went invisible; they are cream
+  now, and its nav mark is the `-ink` cut. **Check that page whenever a `.sb2`
+  rule changes** — it has not been redesigned and shares every one of them.
+- **Section 02 is «عن الكاتب»**, on both forms, not «عنك».
 - **The footer is `.lx-foot--light`**, the unified one — the same markup as
   the landing, /about, /readers and /services, byte for byte but for the
   root-relative links. The dark `.lx-foot` it replaced carried its own

@@ -144,19 +144,21 @@
 
 .sb2 .sub-field input[type="text"],
 .sb2 .sub-field input[type="email"],
+.sb2 .sub-field input[type="tel"],
 .sb2 .sub-field select,
 .sb2 .sub-field textarea {
   inline-size: 100%;
   box-sizing: border-box;
   min-block-size: 58px;
   padding-inline: 20px;
-  border: 1px solid transparent;
+  /* No fill. An outlined field on the white page — the shadow went with the
+     fill, since a raised edge on a flat field reads as a seam. */
+  border: 1px solid var(--lx-line);
   border-radius: 12px;
-  background: var(--lx-cream);
+  background: transparent;
   color: var(--lx-black);
   font-family: var(--font-body);
   font-size: 16px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
   transition: border-color 180ms ease, box-shadow 180ms ease;
 }
 .sb2 .sub-field textarea {
@@ -358,7 +360,7 @@ html[dir="ltr"] .sb2 .sub-field select { background-position: right 18px center;
   gap: 16px 32px;
   padding: 28px 36px;
   border-radius: 16px;
-  background: var(--lx-white);
+  background: var(--lx-cream);
 }
 /* display:flex outranks the hidden attribute, so both need saying. */
 .sb2-times[hidden] { display: none; }
@@ -369,7 +371,10 @@ html[dir="ltr"] .sb2 .sub-field select { background-position: right 18px center;
 
 /* ---- the closing card ---------------------------------------------------- */
 
-.sb2-send { margin-block-start: 24px; padding: clamp(28px, 4vw, 40px) clamp(24px, 4vw, 44px); border-radius: 20px; background: var(--lx-white); }
+/* Cream, not white — these three are /treatment-submit's own blocks and the
+   page ground went white with the /submit redesign, so a white card on it was
+   invisible. */
+.sb2-send { margin-block-start: 24px; padding: clamp(28px, 4vw, 40px) clamp(24px, 4vw, 44px); border-radius: 20px; background: var(--lx-cream); }
 .sb2-consent { display: flex; align-items: flex-start; gap: 16px; padding-block-end: 28px; cursor: pointer; }
 .sb2-consent input { position: absolute; opacity: 0; pointer-events: none; }
 .sb2-consent__box {
@@ -454,7 +459,7 @@ html[dir="ltr"] .sb2 .sub-field select { background-position: right 18px center;
   box-sizing: border-box;
   padding: 32px clamp(22px, 3vw, 36px);
   border-radius: 16px;
-  background: var(--lx-white);
+  background: var(--lx-cream);
 }
 .sb2-journey__label { margin: 0 0 24px; font-family: var(--font-head); font-size: 14px; font-weight: 600; letter-spacing: .06em; color: var(--lx-muted); }
 .sb2-journey__steps { display: grid; gap: 22px 28px; grid-template-columns: 1fr; }
