@@ -303,6 +303,21 @@ Actively iterating on UX polish and workflow features.
   artboard's 36px while the BAR keeps its 104px: that height is load-bearing,
   since the readers, terms and privacy heroes each pay for it and every in-page
   anchor is offset by it.
+- **The links sit in the MIDDLE of the bar** on this page. `styles.css` pushes
+  them toward the `nav__end` group with an auto margin, which suits the denser
+  bars elsewhere; here the brand and the end group each take an equal share of
+  the leftover space (`flex: 1 1 0`), which centres whatever is between them
+  without absolute positioning and without caring how wide either side is.
+  - **The auto margin needs beating TWICE.** `styles.css`'s English mirror is
+    `html[dir="ltr"] .nav__links` (0,2,1), which outranks a plain `.landing`
+    scope — without the matching override the left margin survived and nudged
+    the group 11px off centre in English only.
+  - **The link gap closes as the bar narrows** (`clamp(16px, 2.4vw, 34px)`).
+    English runs wider than Arabic — five labels plus the pill — and a fixed 34
+    left the group touching the pill at 1024, which pushed it off centre. There
+    were briefly TWO gap rules here and the later one silently won; keep it to
+    one. Centred to the pixel in both languages from 1024 up; English at
+    exactly 1000, where the bar is fullest, still drifts ~7px.
 - **The bar is GLASS.** It shipped black and was changed on request: the hero
   opens on white, so a black slab read as a band across the top of it. The
   landing's `.nav` is `rgba(255,255,255,.72)` with `backdrop-filter:
