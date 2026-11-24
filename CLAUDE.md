@@ -83,6 +83,10 @@ Actively iterating on UX polish and workflow features.
   `css/submit-v2.css`: h1 30px, sections on hairlines 36px apart, fields one
   per row at 52px, and the aside as the form's last block at the slab's 12px
   gutters rather than a column beside it.
+- **The section descriptions are GONE** from both forms, desktop and mobile
+  («ما نحتاج معرفته عن العمل نفسه.» and the other five). Each section is its
+  number and its heading now. `.sb2-sec__p` had no CSS of its own — it rode
+  `.sub-hint` — so nothing was orphaned.
 - **NEW MARKUP: a product switch under the h1**, «نص سيناريو» / «معالجة»,
   on both forms.
   - **Two LINKS, not a control.** They are separate pages; the current one
