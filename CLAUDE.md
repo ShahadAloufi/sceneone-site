@@ -337,8 +337,20 @@ Actively iterating on UX polish and workflow features.
   grayscale stills are placed ON the black rather than behind it, so the heading
   reads at full contrast instead of through a 72% veil. The stills drop below
   1100px, where the copy and the collage would meet.
-- **The nav bar is the artboard's five**: خدماتنا · لماذا سين ون · من يقرأ نصك ·
-  تجارب الكتّاب · الأسئلة الشائعة. **The OVERLAY carries yesterday's six**, and
+- **The nav bar is SIX**: من نحن · خدماتنا · لماذا سين ون · من يقرأ نصك ·
+  تجارب الكتّاب · الأسئلة الشائعة. The artboard draws five and drops both
+  الرئيسية and من نحن; **من نحن had to come back** — it lived only in the
+  hamburger overlay, which is hidden above 1000px, so on the landing and on
+  /about themselves `/about` could not be reached on a desktop at all. Every
+  other page already had it in the bar. It is in the unified footer's first
+  column too.
+  ⚠️ **A cross-page link into the landing cannot know which block is
+  showing.** /about's bar says `/#voices`, which on a desktop is the HIDDEN
+  narrow block's section. `visibleTarget()` in `js/main.js` resolves it: take
+  the canonical element if its `offsetParent` is set, otherwise its `-d` twin.
+  It runs on load and on `hashchange`, since the browser's own jump will
+  already have gone to the wrong one.
+  **The OVERLAY carries yesterday's six**, and
   that asymmetry is deliberate — below 1000px the overlay is the only menu and
   it has to serve the narrow page's own anchors. The mark comes down to the
   artboard's 36px while the BAR keeps its 104px: that height is load-bearing,
