@@ -19,6 +19,11 @@
 
 /* ---- shared type -------------------------------------------------------- */
 
+/* WHITE, like .landing — see the note there: styles.css paints the page
+   #0e0202, and it shows through between two bands that meet on a fractional
+   pixel as a hairline across the page. */
+.ab2 { background: var(--lx-white); color: var(--lx-ink); }
+
 .ab2-eyebrow {
   margin: 0;
   font-family: var(--font-head);

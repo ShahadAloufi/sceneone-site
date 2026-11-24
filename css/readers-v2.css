@@ -11,6 +11,12 @@
    css/site-chrome.css.
    ========================================================================= */
 
+/* ⚠️ WHITE, like .landing. styles.css paints the page #0e0202 from when
+   these pages were dark; every band covers it, so it looks identical — until
+   two sections meet on a fractional boundary and a sub-pixel sliver shows
+   through as a hairline across the page. See the note on .landing. */
+.rd2 { background: var(--lx-white); color: var(--lx-ink); }
+
 .rd2-in {
   inline-size: 100%;
   max-inline-size: var(--lx-w);
@@ -235,4 +241,67 @@
     block-size: 260px;
     border-radius: 8px;
   }
+}
+
+/* ============================================================================
+   MOBILE (≤999px) — the «من يقرأ نصك · جوال 390» artboard.
+
+   The landing's breakpoint, so every page changes character with the nav.
+   Heads go to the reading edge, the hero's two buttons stack full-width, and
+   each reader becomes a 320px portrait with its name, bio and chips beneath
+   it rather than beside it.
+
+   ⚠️ The artboard carries the nine-axes band. It does NOT belong here any
+   more — that section moved to /services on 2026-11-24, on the grounds that
+   it describes the report rather than the people, and the artboard was drawn
+   before the move.
+   ========================================================================= */
+
+@media (max-width: 999px) {
+  .rd2-hero { padding-block: calc(64px + 40px) 0; padding-inline: 20px; }
+  .rd2-hero__in { align-items: flex-start; text-align: start; gap: 14px; }
+  .rd2-hero__h { font-size: 34px; line-height: 44px; }
+  .rd2-hero__p { font-size: 15px; line-height: 26px; }
+  .rd2-eyebrow { font-size: 13px; line-height: 20px; }
+  /* Stacked and full width: side by side at this measure the two labels wrap
+     inside their own buttons. */
+  .rd2-hero__acts { display: flex; flex-direction: column; gap: 10px; inline-size: 100%; }
+  .rd2-btn { inline-size: 100%; min-block-size: 52px; }
+
+  .rd2-sec { padding-block: 56px 0; padding-inline: 20px; }
+  .rd2-head { align-items: flex-start; text-align: start; gap: 8px; margin-block-end: 28px; }
+  .rd2-h { font-size: 26px; line-height: 36px; }
+  .rd2-sub { font-size: 14px; line-height: 24px; }
+
+  /* ---- the readers: portrait over copy, one per hairline ----
+       `object-position: center 25%` is the artboard's, and it matters at this
+       crop: a 320px band of a 600x800 portrait centred vertically cuts the
+       face in half. */
+  .rd2-readers { border-block-start: 0; }
+  .rd2-reader {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-block: 0 28px;
+    border-block-end: 1px solid rgba(0, 0, 0, .08);
+  }
+  .rd2-reader + .rd2-reader { padding-block-start: 28px; }
+  /* max-inline-size: 260px is the desktop COLUMN's width; stacked, the
+     portrait is the full measure. */
+  .rd2-reader__photo { max-inline-size: none; block-size: 320px; object-fit: cover; object-position: center 25%; }
+  /* The ordinal is a desktop device — the rows are numbered down a column
+     there. Stacked, each portrait already separates one reader from the next. */
+  .rd2-reader__n { display: none; }
+  .rd2-reader__body { gap: 12px; }
+  .rd2-reader__name { font-size: 22px; line-height: 30px; }
+  .rd2-reader__role { font-size: 13px; line-height: 20px; }
+  .rd2-reader__bio { font-size: 14px; line-height: 24px; }
+  .rd2-reader__tag { padding: 6px 12px; font-size: 12px; }
+
+  /* ---- the closing slab, the landing's ---- */
+  .rd2-cta { padding-block: 56px 0; padding-inline: 12px; }
+  .rd2-cta__box { padding: 32px 24px; min-block-size: 0; }
+  .rd2-cta__h { font-size: 26px; line-height: 36px; }
+  .rd2-cta__sub { font-size: 14px; line-height: 24px; }
+  .rd2-cta__btn { inline-size: 100%; }
 }

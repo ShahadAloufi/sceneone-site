@@ -236,6 +236,31 @@ Actively iterating on UX polish and workflow features.
 - ⚠️ **The row links are the only desktop route to either form now.** If this
   page is ever removed, `/submit` and `/treatment-submit` lose their way in.
 
+**Recently shipped (2026-11-24) — mobile for /readers, and the page grounds:**
+
+- **`/readers` has its artboard** («من يقرأ نصك · جوال 390»), one
+  `@media (max-width: 999px)` block at the end of `css/readers-v2.css`:
+  heads to the reading edge, the hero's two buttons stacked full-width, and
+  each reader a **320px portrait over** its name, bio and chips rather than
+  beside them, on the same hairlines.
+  - `object-position: center 25%` is the artboard's and it matters: a 320px
+    band of a 600x800 portrait centred vertically cuts the face in half.
+  - `max-inline-size: none` on the photo — the 260px cap is the DESKTOP
+    column's width, and stacked the portrait is the full measure.
+  - The ordinal (`.rd2-reader__n`) is hidden. It numbers rows down a column
+    on the desktop; stacked, each portrait already separates one from the
+    next.
+  - ⚠️ **The artboard carries the nine-axes band.** It does not belong here
+    any more — that section moved to `/services` the same day, and the
+    artboard was drawn before the move.
+- ⚠️ **`.rd2`, `.ab2` and `.sv2` now paint WHITE**, like `.landing`.
+  `styles.css` paints the page `#0e0202` from when these pages were dark;
+  every band covers it, so it looked identical until two sections met on a
+  fractional pixel and a sliver showed through as a hairline across the
+  page. **Any new light page wants the same** — the wrapper's colour has to
+  agree with the bands on it. `.sb2` already did; `.tm2` is cream and dark
+  by design.
+
 **Recently shipped (2026-11-24) — /readers, rebuilt:**
 
 - **`readers.html` follows the new artboard**: a centred hero, the five
