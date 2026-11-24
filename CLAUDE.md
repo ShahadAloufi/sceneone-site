@@ -343,10 +343,16 @@ Actively iterating on UX polish and workflow features.
     CROSS axis — so the hero's frame shrank to its content and sat against
     the page's reading edge with the width empty beside it. Caught on a real
     phone, not in the pane.
-  - **The hero figure is `34cqw` on mobile, down from `43`.** The caption is
-    placed off the mask's own geometry, so at 43 the two-line Arabic caption
-    ran straight through the progress bars at the frame's foot. 27px clear
-    at 390 now.
+  - **The hero figure is `34cqw` on mobile, down from `43`**, so it does not
+    crowd the caption in a 380px frame.
+  - ⚠️ **The slide CAPTION is anchored to the frame's FOOT there, not to the
+    mask.** On the desktop it hangs off the mask's own geometry (28% plus the
+    figure's height) so the two cannot drift apart — but that makes its
+    position a function of the figure, and in a short frame a tall figure
+    walks it onto the progress bars. Shrinking the figure alone was not
+    enough: the three captions are 1 and 2 lines long, and only
+    bottom-anchoring clears the bars for all of them. 31px clear at 390,
+    identical on every slide.
   - ⚠️ **`.lx-team__over` is `display: none` below 1000px.** It is a HOVER
     panel, and a phone has no hover, so it sat permanently open over every
     portrait. The bio it carries is on `/readers`.

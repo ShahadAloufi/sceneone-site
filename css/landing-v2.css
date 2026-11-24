@@ -1384,10 +1384,17 @@ html[dir="ltr"] .landing .hero__shade {
      edge with the page's width empty beside it. */
   .hn__in { display: flex; flex-direction: column; align-items: stretch; gap: 22px; }
   .hn__stage { order: -1; block-size: 380px; }
-  /* The figure comes down from 43cqw. At the artboard's 380px frame the
-     caption is placed off the mask's own geometry, and at 43 the two-line
-     Arabic caption ran straight through the progress bars at the foot. */
+  /* The figure comes down from 43cqw, so it does not crowd the caption in a
+     380px frame. */
   .hn-slide { --hn-num: clamp(96px, 34cqw, 248px); }
+  /* ⚠️ The caption is anchored to the frame's FOOT here, not to the mask.
+     On the desktop it hangs off the mask's own geometry (28% + the figure's
+     height) so the two cannot drift apart — but that makes its position a
+     function of the figure, and in a short frame a tall figure walks it
+     straight onto the progress bars. The three captions are 1 and 2 lines
+     long, so bottom-anchoring is the only placement that clears the bars for
+     all of them whatever the figure does. */
+  .hn-slide__lab { inset-block-start: auto; inset-block-end: 56px; margin: 0; }
   .hn__copy { padding-inline: 8px; gap: 16px; align-items: stretch; }
   .hn__h { font-size: 34px; line-height: 44px; }
   .hn__p { font-size: 15px; line-height: 26px; }
