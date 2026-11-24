@@ -73,6 +73,16 @@ Actively iterating on UX polish and workflow features.
     shifted from `#f6f4ee` to `#f4f4f4` too, which on black is imperceptible
     and arguably more correct. If a warm off-white is ever wanted back on the
     dark grounds, that needs a SECOND token; do not reopen the surface value.
+  - ⚠️ **`--lx-line` and `--lx-line-soft` went neutral too, later the same
+    day** (`#dcdcdc` / `#e4e4e4`, from the warm `#d9d4cc` / `#e2dcd3`). They
+    stayed behind when the surface changed, which left every hairline and
+    every field border reading beige against a grey ground — most visibly
+    the submission forms' dashed drop zones. **Change the line tokens with
+    the surface, not after it.**
+  - **The unified footer lost its `border-block-start`.** On a white page
+    the footer's own padding and the bottom bar's hairline are enough; a
+    full-bleed line across the top read as a seam between the page and its
+    footer.
   - Two hardcoded copies went with it: `booklet.html`'s inline style and
     `css/checkout.css`'s `var(--lx-cream, …)` fallback.
 
