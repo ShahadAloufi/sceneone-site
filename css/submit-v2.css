@@ -263,7 +263,8 @@ html[dir="ltr"] .sb2 .sub-field select { background-position: right 18px center;
   flex-direction: column;
   gap: 16px;
   padding: 20px;
-  border: 1px solid var(--lx-red);
+  /* No red rule. The panel is a step the writer has to take, not an error,
+     and the grey ground already separates it from the fields around it. */
   border-radius: 14px;
   background: var(--lx-cream);
 }
