@@ -88,6 +88,12 @@ Actively iterating on UX polish and workflow features.
   - **Its turnaround reads «7 إلى 10 أيام»**, not «7 إلى 12». `TURNAROUND` in
     `js/admin.js` is 7 and 10.
   - The two script rows' prices and turnarounds already matched.
+- ⚠️ **The ranges carry NO `dir="ltr"`, deliberately.** The source says
+  «100–400» and the bidi algorithm lays it out per the document: in Arabic
+  the en dash is a neutral between two LTR digit runs, so it renders
+  **400–100** — read right-to-left that is 100 then 400 — and in English it
+  renders 100–400. One string, correct both ways. Putting `dir="ltr"` back
+  pins the glyph order and makes the Arabic range read backwards.
 - **The price is the riyal MARK, after the figure**, where the word «ريال»
   used to be — so in Arabic it sits on the left of the amount. (It led the
   figure for one commit; put back on request.) It reuses the landing's
