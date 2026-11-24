@@ -23,13 +23,37 @@
     requestAnimationFrame(step);
   }
 
-  /* ---------- IN-PAGE ANCHOR LINKS: SLOWER, SMOOTHER SCROLL ---------- */
+  /* Where a section was RENAMED between the two structures rather than
+     suffixed. The shared overlay points at the narrow page's own anchors —
+     it is the only menu below 1150px, and between 1000 and 1149 the DESKTOP
+     block is the one showing — so these two would otherwise lead nowhere in
+     that band. The -d fallback cannot help: there is no #coverage-types-d. */
+  var HASH_ALIAS = { "coverage-types": "services", "journey": "why" };
+
+  function visibleTarget(id) {
+    var el = document.getElementById(id);
+    if (el && el.offsetParent) return el;
+    var alt = document.getElementById(id + "-d");
+    if (alt && alt.offsetParent) return alt;
+    if (HASH_ALIAS[id]) {
+      var aka = document.getElementById(HASH_ALIAS[id]);
+      if (aka && aka.offsetParent) return aka;
+    }
+    return el || alt;
+  }
+
+  /* ---------- IN-PAGE ANCHOR LINKS: SLOWER, SMOOTHER SCROLL ----------
+     The target is resolved AT CLICK TIME, not when the handler is bound: the
+     landing carries two page structures and which one is showing depends on
+     the window's width, so an element captured at load can be the hidden one
+     by the time anybody clicks. See visibleTarget() below. */
   document.querySelectorAll('a[href^="#"]').forEach(function (a) {
     var id = a.getAttribute("href").slice(1);
     if (!id) return;
-    var target = document.getElementById(id);
-    if (!target) return;
+    if (!document.getElementById(id) && !document.getElementById(id + "-d")) return;
     a.addEventListener("click", function (e) {
+      var target = visibleTarget(id);
+      if (!target) return;
       e.preventDefault();
       var y = target.getBoundingClientRect().top + window.pageYOffset - 100;
       smoothScrollTo(y, 1400);
@@ -501,14 +525,6 @@
      `offsetParent` is the test, and null means a display:none ancestor, which
      is exactly how .pg--wide/.pg--narrow switch. Both this and the fallback
      are guarded, so a hash naming neither simply does nothing. */
-  function visibleTarget(id) {
-    var el = document.getElementById(id);
-    if (el && el.offsetParent) return el;
-    var alt = document.getElementById(id + "-d");
-    if (alt && alt.offsetParent) return alt;
-    return el || alt;
-  }
-
   if (window.location.hash) {
     var target = visibleTarget(window.location.hash.replace("#", ""));
     if (target) {

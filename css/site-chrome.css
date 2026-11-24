@@ -341,6 +341,26 @@
   .rd2 .nav__links a { color: #2a2622; font-weight: 400; font-size: 16px; }
 }
 
+/* ---- where the bar gives way ---------------------------------------------
+   These three pages carry SEVEN links where the older bars carry six, and the
+   English labels run wider than the Arabic. At 1024 that is more than the bar
+   holds: the group ends up flush against the pill and 57px off centre. So the
+   inline links stop a breakpoint sooner HERE and the hamburger — which has
+   carried every destination all along — takes over from 1150 down rather than
+   from 1000. 1150 and not 1100: English was still 32px off centre at 1100.
+
+   The two rules are a pair: styles.css hides .menu-btn above 1000px, so the
+   links cannot simply be hidden without putting it back, or the band between
+   1000 and 1099 would have no menu at all. */
+@media (min-width: 1000px) and (max-width: 1149px) {
+  .landing .nav__links,
+  .ab2 .nav__links,
+  .rd2 .nav__links { display: none; }
+  .landing .menu-btn,
+  .ab2 .menu-btn,
+  .rd2 .menu-btn { display: flex; }
+}
+
 /* ============================================================================
    THE LIGHT FOOTER (.lx-foot--light) — shared, and its own markup.
 
