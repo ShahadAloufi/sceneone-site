@@ -162,6 +162,11 @@
   .sv2-row { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) 150px; gap: 24px; align-items: center; }
   /* On a desktop the head carries the labels, so the per-cell repeats go. */
   .sv2-row__lbl { display: none; }
+  /* The prices CENTRE in their column rather than starting at its edge: the
+     three are 3, 7 and 8 glyphs long, so ragged to the start they read as
+     three unrelated figures. The column head centres with them. */
+  .sv2-row__price { align-items: center; }
+  .sv2-tbl__head span:nth-child(2) { text-align: center; }
   .sv2-row__go { align-self: center; }
 }
 
