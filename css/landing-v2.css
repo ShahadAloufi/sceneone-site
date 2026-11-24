@@ -1378,8 +1378,16 @@ html[dir="ltr"] .landing .hero__shade {
        as a caption to it. `order` rather than a second markup, since the
        source order is the one a screen reader should hear. ---- */
   .hn { padding-block: calc(64px + 4px) 0; padding-inline: 12px; }
-  .hn__in { display: flex; flex-direction: column; gap: 22px; }
+  /* `align-items: stretch`, and it is load-bearing: the base rule sets
+     `start` for the desktop GRID, and in a column flex container that is the
+     CROSS axis — so the frame shrank to its content and sat on the right
+     edge with the page's width empty beside it. */
+  .hn__in { display: flex; flex-direction: column; align-items: stretch; gap: 22px; }
   .hn__stage { order: -1; block-size: 380px; }
+  /* The figure comes down from 43cqw. At the artboard's 380px frame the
+     caption is placed off the mask's own geometry, and at 43 the two-line
+     Arabic caption ran straight through the progress bars at the foot. */
+  .hn-slide { --hn-num: clamp(96px, 34cqw, 248px); }
   .hn__copy { padding-inline: 8px; gap: 16px; align-items: stretch; }
   .hn__h { font-size: 34px; line-height: 44px; }
   .hn__p { font-size: 15px; line-height: 26px; }

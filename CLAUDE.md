@@ -338,6 +338,15 @@ Actively iterating on UX polish and workflow features.
     asked for it to match the CTA's; and the closing slab has **no
     photograph** on a phone, since the two stills are `display:none` below
     1100px and reinstating one is layout work the artboard does not justify.
+  - ⚠️ **`.hn__in` must say `align-items: stretch` there.** The base rule sets
+    `start` for the desktop GRID, and in a column flex container that is the
+    CROSS axis — so the hero's frame shrank to its content and sat against
+    the page's reading edge with the width empty beside it. Caught on a real
+    phone, not in the pane.
+  - **The hero figure is `34cqw` on mobile, down from `43`.** The caption is
+    placed off the mask's own geometry, so at 43 the two-line Arabic caption
+    ran straight through the progress bars at the frame's foot. 27px clear
+    at 390 now.
   - ⚠️ **`.lx-team__over` is `display: none` below 1000px.** It is a HOVER
     panel, and a phone has no hover, so it sat permanently open over every
     portrait. The bio it carries is on `/readers`.
