@@ -435,6 +435,14 @@ Actively iterating on UX polish and workflow features.
     showed through as a hairline across the page. That is what the "thin
     line" between sections was on a phone. Any page whose bands are all
     white wants the same: the wrapper's colour has to agree with them.
+  - **The social-proof row SPREADS on a phone** (`justify-content:
+    space-between`), and its copy grows into what is left and **reflows** to
+    that width — the desktop's forced break would leave the line short of
+    the box.
+    ⚠️ **That is why the string carries a SPACE before its `<br>`.** Hide a
+    break with no space around it and «فريقنا» and «منذ» render as one word.
+    The space collapses wherever the break is honoured, so the desktop is
+    unaffected — but do not remove it from either dictionary.
   - ⚠️ **`.hn__in` must say `align-items: stretch` there.** The base rule sets
     `start` for the desktop GRID, and in a column flex container that is the
     CROSS axis — so the hero's frame shrank to its content and sat against

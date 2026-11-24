@@ -1414,7 +1414,21 @@ html[dir="ltr"] .landing .hero__shade {
   .hn__cta { display: flex; inline-size: 100%; min-block-size: 52px; font-size: 16px; }
   /* The faces move BELOW the button, where the artboard has them: on a phone
      the proof follows the ask instead of delaying it. */
-  .hn__pill { order: 3; gap: 12px; }
+  /* The row SPREADS across the copy's width instead of bunching on the
+     reading edge: faces on one end, the two-line copy on the other, the
+     figure and its rule between. The copy also grows, so its centred lines
+     sit in the space rather than beside it. */
+  .hn__pill { order: 3; gap: 12px; justify-content: space-between; }
+  /* The copy grows into whatever is left beside the faces and the figure,
+     and REFLOWS to that width — the desktop's forced break would leave the
+     line short of the box.
+
+     ⚠️ The string carries a SPACE before its <br> for exactly this: hide a
+     break with no space around it and «فريقنا» and «منذ» run together as
+     one word. The space collapses wherever the break is honoured, so the
+     desktop is unaffected. */
+  .hn__pill-t { flex: 1 1 auto; }
+  .hn__pill-t br { display: none; }
   .hn__faces img { inline-size: 30px; block-size: 30px; }
   .hn__pill-n { font-size: 20px; line-height: 28px; }
   .hn__pill-t { font-size: 13px; line-height: 20px; max-inline-size: none; text-align: start; }

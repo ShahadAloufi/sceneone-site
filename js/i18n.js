@@ -148,7 +148,7 @@
 
       hnH: "نحو تطوير المواهب في الكتابة السينمائية",
       hnP: "تسعى سين ون إلى دعم الكتّاب وصنّاع الأفلام من خلال تقديم خدمات متخصصة في تقييم النصوص وتطوير المشاريع، وإتاحة فرص التواصل والتعاون مع الجهات العاملة في القطاع السينمائي",
-      hnPill: "مشروعًا قيّمها فريقنا<br>منذ سبتمبر",
+      hnPill: "مشروعًا قيّمها فريقنا <br>منذ سبتمبر",
       docTitleServices: "خدماتنا | Scene One",
       svTitle: "من التقرير إلى الاستضافة",
       svLede: "تبدأ رحلتك بتقرير تغطية لنصك، وعلى أساسه تُرشَّح المشاريع الواعدة لمسار الاستضافة",
@@ -875,7 +875,7 @@
 
       hnH: "Toward developing talent in screenwriting",
       hnP: "Scene One supports writers and filmmakers with specialist services in script evaluation and project development, and opens opportunities to connect and collaborate with organizations working across the film sector",
-      hnPill: "projects evaluated by our team<br>since September",
+      hnPill: "projects evaluated by our team <br>since September",
       docTitleServices: "Services | Scene One",
       svTitle: "From the report to hosting",
       svLede: "Your journey starts with a coverage report, and on its strength the most promising projects are nominated for the hosting track",
