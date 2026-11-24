@@ -1056,30 +1056,54 @@ html[dir="ltr"] .landing .hero__shade {
 /* ---- the copy ----------------------------------------------------------- */
 
 .pg--wide .hn__copy { display: flex; flex-direction: column; gap: clamp(20px, 2.4vw, 28px); align-items: flex-start; }
-/* The social-proof pill. Asymmetric padding: the faces need less room on
-   their own side than the text does on its, or the row looks loose. */
+/* The social-proof line. NO chip — it sits straight on the white, reading
+   (in Arabic) text · 55 · hairline · faces. Source order IS that order, so
+   the whole row mirrors with the document and English reads faces-first. */
 .pg--wide .hn__pill {
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 7px 16px 7px 7px;
-  border-radius: 8px;
-  background: var(--lx-cream);
+  gap: 16px;
+  padding: 0;
+  background: none;
 }
 /* dir="ltr" on the faces so the overlap always runs the same way round, and
-   the negative margin is a physical margin-left to match. */
+   the negative margin is a physical margin-left to match. The border is the
+   PAGE's white, not the old cream chip's — there is no chip any more. */
 .pg--wide .hn__faces { display: flex; }
 .pg--wide .hn__faces img {
-  inline-size: 28px;
-  block-size: 28px;
+  inline-size: 44px;
+  block-size: 44px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid var(--lx-cream);
+  border: 3px solid #fff;
 }
-.pg--wide .hn__faces img + img { margin-left: -9px; }
-.pg--wide .hn__pill-t { font-size: 16px; font-weight: 500; color: var(--lx-ink); }
-.pg--wide .hn__pill-n { font-family: var(--font-head); font-weight: 700; color: var(--lx-red); }
+.pg--wide .hn__faces img + img { margin-left: -14px; }
+.pg--wide .hn__pill-t {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  color: var(--lx-ink);
+  /* A measure, so it breaks onto the artboard's two lines instead of
+     stretching the row out to one. */
+  max-inline-size: 15ch;
+  text-align: start;
+}
+.pg--wide .hn__pill-n {
+  font-family: var(--font-head);
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 700;
+  color: var(--lx-red);
+}
+/* English is a longer string in a wider face, so 15ch sends it to three
+   lines. A wider measure keeps both languages on the artboard's two. */
+html[dir="ltr"] .pg--wide .hn__pill-t { max-inline-size: 24ch; }
+.pg--wide .hn__pill-rule {
+  inline-size: 1px;
+  block-size: 40px;
+  background: rgba(14, 2, 2, .14);
+}
 .pg--wide .hn__h {
   margin: 0;
   font-family: var(--font-head);
