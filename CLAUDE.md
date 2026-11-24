@@ -84,11 +84,16 @@ Actively iterating on UX polish and workflow features.
   reads as a seam. **`input[type="tel"]` joined the selector list** — it had
   never been in it, so the phone box was rendering as the browser's own
   control. That accident is what the outlined look was copied from.
-- ⚠️ **`/treatment-submit` IS `.sb2` TOO**, so the white ground, the glass bar
-  and the outlined fields all reached it. Its own `.sb2-send`, `.sb2-times`
-  and `.sb2-journey__card` were white cards and went invisible; they are cream
-  now, and its nav mark is the `-ink` cut. **Check that page whenever a `.sb2`
-  rule changes** — it has not been redesigned and shares every one of them.
+- **`/treatment-submit` has the SAME SHAPE** (applied the same day): the same
+  two columns, the same sticky aside, the same two cards — only the copy is
+  the treatment's. The two forms are now one design, which is what `.sb2`
+  sharing every rule always implied.
+  - Its own `.sb2-send`, `.sb2-times` band and `.sb2-journey__card` are gone
+    from the markup. **The CSS for all three stays** — nothing uses the first
+    two any more, but `.sb2-times` is still the strip inside the aside card.
+  - ⚠️ **Its «المدة المتوقعة» said «10 إلى 15 يوم عمل», which is the SCRIPT
+    turnaround.** `TURNAROUND` in `js/admin.js` gives a treatment 7 or 10
+    days, so it reads «7 إلى 10 أيام» now, matching /services.
 - **Section 02 is «عن الكاتب»**, on both forms, not «عنك».
 - **The footer is `.lx-foot--light`**, the unified one — the same markup as
   the landing, /about, /readers and /services, byte for byte but for the

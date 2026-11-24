@@ -113,27 +113,13 @@
     </div>
   </section>
 
-  <!-- ── WHAT HAPPENS AFTER SENDING ── -->
-  <section class="sb2-journey">
-    <div class="sb2-journey__card">
-      <p class="sb2-journey__label">رحلة التسليم</p>
-      <div class="sb2-journey__steps">
-        <div class="sb2-journey__step"><span class="sb2-journey__n">01</span><span class="sb2-journey__t">يصلك تأكيد الاستلام على بريدك.</span></div>
-        <div class="sb2-journey__step"><span class="sb2-journey__n">02</span><span class="sb2-journey__t">تُسنَد المعالجة إلى قارئ مختص.</span></div>
-        <div class="sb2-journey__step"><span class="sb2-journey__n">03</span><span class="sb2-journey__t">يصلك تقييم مكتوب لمعالجتك.</span></div>
-        <div class="sb2-journey__step"><span class="sb2-journey__n">04</span><span class="sb2-journey__t">نحدد معك الخطوة التالية.</span></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── FORM ──
-       Same script as the script form: js/submit.js reads the required fields off
-       the .req stars and the accepted extensions off data-accept. Every hook it
-       depends on (the `name` attributes, the .sub-field[data-field] wrappers,
-       the .req stars, the .sub-err messages, the drop-zone ids and the <option>
-       data-* attributes) is unchanged; the design changes the surface only. -->
-  <main class="sb2-main">
-    <form class="sb2-col" id="submitForm" data-kind="treatment" data-accept="pdf" novalidate>
+    <main class="sb2-main">
+    <!-- The FORM is the grid, not a child of one: the consent box and the
+         submit button live in the aside, and both have to stay inside the
+         form element for requiredFields() and the submit handler to reach
+         them. Same shape as /submit. -->
+    <form class="sb2-grid" id="submitForm" data-kind="treatment" data-accept="pdf" novalidate>
+      <div class="sb2-col">
 
       <!-- ── 01 · ABOUT THE TREATMENT ── -->
       <section class="sb2-sec">
@@ -370,40 +356,70 @@
         </div>
       </section>
 
-      <!-- ── EXPECTED TURNAROUND ──
-           One figure for both tiers, unlike the script form, which quotes the
-           short and the feature separately. -->
-      <div class="sb2-times">
-        <p class="sb2-times__label">المدة المتوقعة</p>
-        <p>10 إلى 15 يوم عمل <span>· المعالجة القصيرة والطويلة</span></p>
-      </div>
+      </div><!-- /.sb2-col -->
 
-      <!-- ── CONSENT + SEND ── -->
-      <div class="sb2-send" id="submit">
-        <!-- Not a .sub-field: requiredFields() builds its generic list from
-             .sub-field[data-field] wrappers carrying a .req star, and this row
-             has none. It still carries data-field so markInvalid("consent", …)
-             can reach it. -->
-        <div class="sb2-consent-wrap" data-field="consent">
-          <label class="sb2-consent">
-            <input type="checkbox" id="consent" name="consent" value="yes">
-            <span class="sb2-consent__box" aria-hidden="true"></span>
-            <span class="sb2-consent__text">أوافق على معالجة العمل وفق <a href="/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a>، وأقرّ بأن المعالجة من تأليفي وأنني أملك كامل حقوق الملكية الفكرية الخاصة بها، وأن تسجيل هذه الحقوق مسؤوليتي. تبقى المعالجة ملكي بالكامل في كل مراحل الخدمة.</span>
-          </label>
-          <p class="sb2-consent__err">يلزم الموافقة قبل إرسال المعالجة.</p>
-        </div>
+      <!-- ── ORDER SUMMARY + SEND ──
+           /submit's aside, same markup and the same sticky behaviour; only
+           the copy is the treatment's. -->
+      <aside class="sb2-aside">
+        <div class="sb2-card">
+          <p class="sb2-card__h">ملخص الطلب</p>
 
-        <div class="sb2-send__row">
-          <button type="submit" class="sub-submit">إرسال المعالجة والدفع</button>
+          <!-- Written by syncSummary() in js/submit.js. Both rows carry an em
+               dash until there is something to say. -->
+          <div class="sb2-sum">
+            <div class="sb2-sum__row">
+              <span class="sb2-sum__k">الخدمة</span>
+              <span class="sb2-sum__v" id="sumService">—</span>
+            </div>
+            <div class="sb2-sum__row">
+              <span class="sb2-sum__k">عدد الصفحات</span>
+              <span class="sb2-sum__v" id="sumPages">—</span>
+            </div>
+          </div>
+
+          <div class="sb2-card__rule"></div>
+
           <div class="sb2-total">
             <p class="sb2-total__label">الإجمالي</p>
-            <!-- Filled and unhidden by showQuote() in js/submit.js. These tiers
-                 are flat-priced, so it appears as soon as one is chosen. -->
             <p class="sub-quote" id="priceQuote" hidden></p>
             <p class="sb2-total__empty">يظهر بعد اختيار نوع المشروع.</p>
           </div>
+
+          <!-- Not a .sub-field: requiredFields() builds its generic list from
+               .sub-field[data-field] wrappers carrying a .req star, and this row
+               has none. It still carries data-field so markInvalid("consent", …)
+               can reach it. -->
+          <div class="sb2-consent-wrap" data-field="consent" id="submit">
+            <label class="sb2-consent">
+              <input type="checkbox" id="consent" name="consent" value="yes">
+              <span class="sb2-consent__box" aria-hidden="true"></span>
+              <span class="sb2-consent__text">أوافق على معالجة العمل وفق <a href="/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a>، وأقرّ بأن المعالجة من تأليفي وأنني أملك كامل حقوق الملكية الفكرية الخاصة بها، وأن تسجيل هذه الحقوق مسؤوليتي. تبقى المعالجة ملكي بالكامل في كل مراحل الخدمة.</span>
+            </label>
+            <p class="sb2-consent__err">يلزم الموافقة قبل إرسال المعالجة.</p>
+          </div>
+
+          <button type="submit" class="sub-submit">إرسال المعالجة والدفع</button>
         </div>
-      </div>
+
+        <div class="sb2-card sb2-card--quiet">
+          <p class="sb2-card__h sb2-card__h--sm">رحلة التسليم</p>
+          <ol class="sb2-steps">
+            <li><span class="sb2-steps__n">01</span><span>يصلك تأكيد الاستلام على بريدك</span></li>
+            <li><span class="sb2-steps__n">02</span><span>تُسنَد المعالجة إلى قارئ مختص</span></li>
+            <li><span class="sb2-steps__n">03</span><span>يصلك تقييم مكتوب لمعالجتك</span></li>
+            <li><span class="sb2-steps__n">04</span><span>نحدد معك الخطوة التالية</span></li>
+          </ol>
+          <div class="sb2-card__rule"></div>
+          <!-- One figure for both tiers, unlike the script form, which quotes
+               the short and the feature separately. It carries no data-for
+               lines, so syncTimes() leaves it alone and it is always shown. -->
+          <div class="sb2-times">
+            <p class="sb2-times__label">المدة المتوقعة</p>
+            <p>7 إلى 10 أيام <span>· المعالجة القصيرة والطويلة</span></p>
+          </div>
+        </div>
+      </aside>
 
     </form>
   </main>
