@@ -22,7 +22,12 @@
      (#f9f4ef): it reads as white now, with just enough in it to stay off
      pure #fff — which is still the raised-card colour below, and has to
      keep lifting off this. */
-  --lx-cream:      #f6f4ee;  /* the page ground for every light section       */
+  /* The tinted SURFACE: cards, fields, chips, every panel that lifts off the
+     white. It was the warm #f6f4ee the artboards are drawn in; changed to a
+     neutral grey on request (2026-11-24), site-wide and in one place.
+     The name is kept — it is referenced in ~60 declarations and in every
+     page's comments, and a rename would be churn for no gain. */
+  --lx-cream:      #f4f4f4;  /* the tinted surface for every light section    */
   --lx-white:      #ffffff;  /* raised cards only, so they lift off the cream */
   --lx-black:      #000000;
   --lx-ink:        #2a2622;  /* headings and body on light                    */

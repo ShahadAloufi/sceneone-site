@@ -48,6 +48,23 @@ coverage workspace + report, role-based access, deadlines, and report delivery t
 writers. **The payment gate is live and has taken real money** (see below).
 Actively iterating on UX polish and workflow features.
 
+**Recently shipped (2026-11-24) — the surface colour:**
+
+- **`--lx-cream` is `#f4f4f4`, a neutral grey**, not the warm `#f6f4ee` the
+  artboards are drawn in. One line in `css/tokens.css`, so every card, field,
+  chip and panel on every redesigned page changed together — the landing,
+  /about, /readers, /services, both forms, /terms and /privacy.
+  - **The NAME was kept.** It is referenced in roughly sixty declarations and
+    in most of this file's notes; renaming it would be churn for no gain. Read
+    it as "the tinted surface", which is what its comment now says.
+  - ⚠️ **About half its uses are `color:`, not `background:`** — it is the
+    near-white that type takes on the black slabs and the nav CTA. Those
+    shifted from `#f6f4ee` to `#f4f4f4` too, which on black is imperceptible
+    and arguably more correct. If a warm off-white is ever wanted back on the
+    dark grounds, that needs a SECOND token; do not reopen the surface value.
+  - Two hardcoded copies went with it: `booklet.html`'s inline style and
+    `css/checkout.css`'s `var(--lx-cream, …)` fallback.
+
 **Recently shipped (2026-11-24) — /submit, the order summary:**
 
 - **`submit.html` is TWO COLUMNS now**, from the «تقديم النص · بالهيكل الجديد»
