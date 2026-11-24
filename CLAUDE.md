@@ -79,6 +79,10 @@ Actively iterating on UX polish and workflow features.
   `showQuote()` was left exactly as it was.
   ⚠️ The service row reads the option's TEXT but tests its **value** — an
   unpicked `<select>` still has a selected option, its placeholder.
+- **The hero is the HEADING and nothing else**, on the reading edge:
+  «تقديم النص» / «تقديم المعالجة» at 64px. The eyebrow said the same words
+  the h1 now carries, and the treatment's sub-line went with it. `.sb2-eyebrow`
+  and `.sb2-hero__p` are deleted, not orphaned — nothing else used them.
 - **The fields have NO fill**: a 1px `--lx-line` outline on the white page,
   and the box-shadow went with the fill, since a raised edge on a flat field
   reads as a seam. **`input[type="tel"]` joined the selector list** — it had
