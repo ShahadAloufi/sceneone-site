@@ -292,9 +292,30 @@
    keeps its height and only the mark comes down to the artboard's size, on
    this page alone. */
 .landing .nav__logo { height: 36px; }
+/* The links sit in the MIDDLE of the bar on this page. styles.css pushes them
+   toward the nav__end group with an auto margin, which is right for the pages
+   that keep a dense bar; here the brand and the end group each take an equal
+   share of the leftover space instead, which centres whatever is between them
+   without absolute positioning and without caring how wide either side is.
+   The auto margin has to go or it would fight the flex. */
+.landing .nav__brand,
+.landing .nav__end { flex: 1 1 0; }
+.landing .nav__end { justify-content: flex-end; }
+@media (min-width: 1000px) {
+  /* Both, and the second is not redundant: styles.css's English mirror is
+     `html[dir="ltr"] .nav__links`, which outranks a plain `.landing` scope,
+     so without it the left margin survived and nudged the group 11px off
+     centre in English only. */
+  .landing .nav__links { margin: 0; }
+  html[dir="ltr"] .landing .nav__links { margin: 0; }
+}
 /* Dark links at the artboard's own weight, not the .62 of a dark bar. */
 @media (min-width: 1000px) {
-  .landing .nav__links { gap: 34px; }
+  /* The artboard's 34, closing as the bar narrows. English runs wider than
+     Arabic — five labels plus the pill — and a fixed 34 left the group
+     touching the pill at 1024, which pushed it off centre. There were briefly
+     TWO gap rules here and the later one silently won; keep it to one. */
+  .landing .nav__links { gap: clamp(16px, 2.4vw, 34px); }
   .landing .nav__links a { color: #2a2622; font-weight: 400; font-size: 16px; }
 }
 
