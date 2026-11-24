@@ -419,7 +419,9 @@
   background: var(--lx-white);
   color: var(--lx-ink);
   padding-block: 72px 0;
-  border-block-start: 1px solid rgba(0, 0, 0, .08);
+  /* No rule above it. On a white page the footer's own padding and the
+     bottom bar's hairline are enough; a full-bleed line across the top read
+     as a seam between the page and its footer. Removed on request. */
 }
 @media (min-width: 860px) {
   .lx-foot--light .lx-foot__top {

@@ -34,8 +34,12 @@
   --lx-red:        #cd2e07;  /* eyebrows, roles, the one accent rule          */
   --lx-muted:      #7a736a;  /* body copy that sits under a heading           */
   --lx-muted-2:    #8c877f;  /* captions, the quietest tier                   */
-  --lx-line:       #d9d4cc;  /* rules over columns, card borders              */
-  --lx-line-soft:  #e2dcd3;  /* separators inside a card                      */
+  /* Neutral, like the surface above. These were the warm #d9d4cc / #e2dcd3
+     of the cream palette and stayed behind when --lx-cream went grey, which
+     left every hairline and every field border reading beige against it —
+     most visibly on the submission forms' dashed drop zones. */
+  --lx-line:       #dcdcdc;  /* rules over columns, card borders              */
+  --lx-line-soft:  #e4e4e4;  /* separators inside a card                      */
 
   --lx-x: var(--sec-x);
   --lx-w: var(--container);
