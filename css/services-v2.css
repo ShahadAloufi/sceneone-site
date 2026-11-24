@@ -111,8 +111,8 @@
 .sv2-row__lbl { font-size: 13px; line-height: 20px; color: var(--lx-muted-2); }
 .sv2-row__price, .sv2-row__time { display: flex; flex-direction: column; gap: 2px; }
 .sv2-row__time { font-size: 16px; line-height: 24px; color: var(--lx-muted); }
-/* The symbol LEADS the amount, so in Arabic it sits on the right of it —
-   the same way a currency mark is read everywhere. */
+/* The mark FOLLOWS the amount, so in Arabic it sits on the left of it —
+   where the word «ريال» used to be. */
 .sv2-price { display: inline-flex; align-items: center; gap: 6px; }
 .sv2-num { font-family: var(--font-head); font-size: 28px; line-height: 36px; font-weight: 700; color: var(--lx-ink); }
 /* The riyal mark, painted as a mask off the artwork rather than loaded as an
