@@ -405,7 +405,7 @@
    two still share.
 
    It is keyed on a MODIFIER rather than on a page wrapper. It began as
-   `.landing .pg--wide .lx-foot`, which meant /about could not have it without
+   `.landing .pg--wide .lx-foot` (that wrapper is gone now), which meant /about could not have it without
    a second selector; a page opts in by adding the class now. The landing and
    /about both carry it, and the two must stay identical — it is the unified
    footer, and the moment one page edits its own copy that stops being true.

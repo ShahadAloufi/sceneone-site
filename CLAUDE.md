@@ -290,7 +290,46 @@ Actively iterating on UX polish and workflow features.
   - Orphaned in `js/i18n.js`: `abT1H`…`abT3P`, `abWhyEyebrow`, `abWhyH`,
     `abContact*`, `abRawanFocus`/`abShahadFocus`, `abRawanQuote`/`abShahadQuote`.
 
-**Recently shipped (2026-11-23) — the landing page, restructured (DESKTOP ONLY):**
+**Recently shipped (2026-11-24) — the landing page is ONE page again:**
+
+- **`.pg--narrow` IS GONE, and with it the dual-structure document.** The
+  «الرئيسية · جوال 390» artboard arrived and turned out to carry the DESKTOP's
+  sections in the desktop's order — hero, partners, services, what-you-get,
+  team, voices, FAQ, CTA, footer — so the phone is this page restyled, not
+  another page. That is the cleanup the entry below always promised.
+  - `index.html` went **1730 → 904 lines**; `css/landing-v2.css` **2173 →
+    ~1450**. Every visitor had been downloading both pages and every string
+    existed twice.
+  - **The `-d` id suffixes are gone.** Every section has its canonical id
+    (`#top`, `#services`, `#why`, `#team`, `#voices`, `#faq`, `#contact`),
+    and the `.pg--wide ` prefix was stripped from ~90 rules.
+  - **The overlay's two dead anchors were repointed**: `#coverage-types` →
+    `/services`, `#journey` → `#why`. `HASH_ALIAS` in `js/main.js` keeps
+    mapping the old names for anything outside the repo still linking them,
+    and `visibleTarget()`'s visibility test is now a no-op kept only as its
+    home — see the comment there.
+  - **Six sections did NOT come back.** The narrow block carried yesterday's
+    intro, three price cards, the eight axes, the journey, the two audiences
+    and the partnership row. The mobile artboard has none of them, so a
+    phone now sees exactly what a desktop sees.
+    ⚠️ **`/treatment-submit` therefore has no route from the landing at all
+    any more** — the price cards were the last one. It is reachable from
+    `/services`, which is where it belongs.
+  - The mobile styles are one `@media (max-width: 999px)` block at the END of
+    `css/landing-v2.css`, keyed on the nav's own breakpoint so the bar and the
+    body still change character at the same width.
+  - **Two things the artboard has that the page does not**, both deliberate:
+    the hero button is **red**, not the artboard's black, because the owner
+    asked for it to match the CTA's; and the closing slab has **no
+    photograph** on a phone, since the two stills are `display:none` below
+    1100px and reinstating one is layout work the artboard does not justify.
+  - ⚠️ **`.lx-team__over` is `display: none` below 1000px.** It is a HOVER
+    panel, and a phone has no hover, so it sat permanently open over every
+    portrait. The bio it carries is on `/readers`.
+
+*(history)* **2026-11-23 — the landing page, restructured (DESKTOP ONLY).** The
+dual-structure document described below was deleted the next day; the notes on
+the desktop design itself all still hold.
 
 - **`index.html` now carries TWO page structures and switches between them at
   1000px.** The desktop one is the new artboard; the narrow one is yesterday's

@@ -71,8 +71,8 @@
       <li><a href="/services" data-i18n="navServices">خدماتنا</a></li>
       <li><a href="#why" data-i18n="navWhy">لماذا سين ون</a></li>
       <li><a href="/readers" data-i18n="navReaders">من يقرأ نصك</a></li>
-      <li><a href="#voices-d" data-i18n="navVoices">تجارب الكتّاب</a></li>
-      <li><a href="#faq-d" data-i18n="navFaq">الأسئلة الشائعة</a></li>
+      <li><a href="#voices" data-i18n="navVoices">تجارب الكتّاب</a></li>
+      <li><a href="#faq" data-i18n="navFaq">الأسئلة الشائعة</a></li>
     </ul>
     <div class="nav__end">
       <!-- Styled in css/landing-v2.css: this pill is the landing page's, not
@@ -109,7 +109,7 @@
           <span class="overlay__label" data-i18n="navAboutUs">من نحن</span>
           <span class="overlay__go" aria-hidden="true">←</span>
         </a>
-        <a href="#coverage-types" data-menu-close>
+        <a href="/services" data-menu-close>
           <span class="overlay__n" aria-hidden="true">03</span>
           <span class="overlay__label" data-i18n="navCoverage">تغطية النصوص</span>
           <span class="overlay__go" aria-hidden="true">←</span>
@@ -119,7 +119,7 @@
           <span class="overlay__label" data-i18n="navReaders">من يقرأ نصك</span>
           <span class="overlay__go" aria-hidden="true">←</span>
         </a>
-        <a href="#journey" data-menu-close>
+        <a href="#why" data-menu-close>
           <span class="overlay__n" aria-hidden="true">05</span>
           <span class="overlay__label" data-i18n="navJourney">رحلة النص</span>
           <span class="overlay__go" aria-hidden="true">←</span>
@@ -151,7 +151,6 @@
        where the block after it takes over — see .pg in css/landing-v2.css for
        why both are in the document at once. Its ids carry a -d suffix because
        the narrow block holds the canonical ones. -->
-  <div class="pg pg--wide">
 
   <!-- ── HERO ──
        Copy on one side, the numbers on the other. The band used to be the
@@ -175,7 +174,7 @@
 
        The figures are Latin digits in both languages, as the design has them,
        and .hn-slide__num carries dir="ltr" so a number is never reordered. -->
-  <section class="hn" id="top-d">
+  <section class="hn" id="top">
     <div class="hn__in">
       <div class="hn__copy">
         <!-- The faces are three of the readers' own portraits, at 28px. They
@@ -371,7 +370,7 @@
        The head is centred here, as every section head on the page now is, and
        the row closes on a link to the readers page rather than leaving each
        portrait as the only way through to it. -->
-  <section class="lx" id="team-d">
+  <section class="lx" id="team">
     <div class="lx__in">
       <div class="lx-head">
         <p class="lx-eyebrow" data-i18n="teamEyebrow">من يقرأ نصك</p>
@@ -471,7 +470,7 @@
        the same thing twice. Sakeena's quote is a TIDIED excerpt rather than a
        verbatim one — her raw words are no longer on the page — while Ahmed's
        is his message entire, which is what the column held for him. -->
-  <section class="lx lx--white lx-vox" id="voices-d">
+  <section class="lx lx--white lx-vox" id="voices">
     <div class="lx__in">
       <div class="lx-head">
         <p class="lx-eyebrow" data-i18n="voxEyebrow">تجارب الكتّاب</p>
@@ -531,846 +530,6 @@
         </div>
         <button class="lx-vox__arw" type="button" data-vox-step="1" data-i18n-aria="voxNext" aria-label="التالي">&#8594;</button>
       </div>
-    </div>
-  </section>
-
-  <!-- ── FAQ ──
-       Not in the new design, kept by request and placed before the closing CTA.
-       The markup is the previous page's verbatim, so js/main.js drives the
-       accordion and the category filter unchanged; only the palette is restated
-       in css/landing-v2.css, because the original was written for a dark page
-       and this one sits between two cream sections. -->
-  <section class="faq" id="faq-d">
-    <div class="faq__wrap">
-      <p class="faq__eyebrow" data-i18n="faqEyebrow">لديك أسئلة؟</p>
-      <h2 class="faq__title" data-i18n="faqTitle">الأسئلة الشائعة</h2>
-
-      <!-- Category filter. The pills are a filter, not tabs: each one narrows the
-           list below rather than swapping panels, so they are plain buttons with
-           aria-pressed and the list keeps its own semantics. -->
-      <div class="faq-cats">
-        <button type="button" class="faq-cat is-active" data-faq-filter="about" aria-pressed="true" data-i18n="faqCatAbout">عن الخدمة</button>
-        <button type="button" class="faq-cat" data-faq-filter="receive" aria-pressed="false" data-i18n="faqCatReceive">ما الذي تحصل عليه</button>
-        <button type="button" class="faq-cat" data-faq-filter="submit" aria-pressed="false" data-i18n="faqCatSubmit">تقديم المشروع</button>
-        <button type="button" class="faq-cat" data-faq-filter="reader" aria-pressed="false" data-i18n="faqCatReader">القارئ والمدة</button>
-        <button type="button" class="faq-cat" data-faq-filter="privacy" aria-pressed="false" data-i18n="faqCatPrivacy">الخصوصية والملكية</button>
-        <button type="button" class="faq-cat" data-faq-filter="referrals" aria-pressed="false" data-i18n="faqCatReferrals">التطوير والترشيح</button>
-        <button type="button" class="faq-cat" data-faq-filter="pricing" aria-pressed="false" data-i18n="faqCatPricing">الأسعار والاسترداد</button>
-        <button type="button" class="faq-cat" data-faq-filter="scope" aria-pressed="false" data-i18n="faqCatScope">ماذا تشمل الخدمة؟</button>
-      </div>
-
-      <div class="faq__list">
-        <div class="faq-item" data-faq-cat="about">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ1">من هم Scene One؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA1">تأسست Scene One بهدف مساعدة كتّاب السيناريو الصاعدين على دخول صناعة الأفلام.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="about">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ2">ماذا أحصل عليه؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA2">تحصل على تقرير مكتوب ومفصل من قارئ متخصص. يوضح التقرير نقاط قوة السيناريو، والجوانب التي يمكن تطويرها، ويقدم اقتراحات عملية للمسودة التالية.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="about">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ3">ما اسم هذه الخدمة في صناعة السينما؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA3">يُعرف هذا النوع من التقارير في صناعة السينما والتلفزيون باسم Script Coverage. ونقدمه في سين ون بوصفه قراءة احترافية متأنية تتضمن ملاحظات عملية تساعد الكاتب على تطوير نصه.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="about">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ4">لمن هذه الخدمة؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA4">هذه الخدمة مخصصة لكتّاب السيناريو وصنّاع الأفلام في مختلف مراحل العمل، ممن يرغبون في الحصول على نظرة خارجية متخصصة قبل إعادة الكتابة، أو تقديم النص، أو طرح المشروع، أو تطويره بشكل أعمق.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="about">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ5">لماذا أطلب ملاحظات على سيناريوهي؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA5">من الصعب أن ترى عملك بموضوعية كاملة عندما تكون أنت مؤلفه. يساعدك القارئ المتخصص على فهم ما ينجح في النص، وما قد يحتاج إلى توضيح، وأين تضعف القصة، وما التغييرات التي قد تحقق أكبر أثر.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="receive">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ6">ماذا يتناول التقرير؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA6">بحسب نوع الخدمة، يتناول التقرير الفكرة والموضوع، وعنصر الجذب، والرهانات والحبكة، والشخصيات، والحوار، والبناء والإيقاع، وقابلية الإنتاج، والعرض العام.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="receive">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ7">هل سأحصل على ملخص لقصتي؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA7">نعم. يتضمن التقرير عرضًا واضحًا لفكرة المشروع وقصته الأساسية، إلى جانب ملاحظات حول نقاط قوته الإبداعية والجوانب التي يمكن تطويرها.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="receive">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ8">هل سيقترح القارئ تغييرات على نصي؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA8">قد يقدم القارئ اقتراحات عملية ويحدد مسارات محتملة لإعادة الكتابة. لكن التقرير لا يتضمن إعادة كتابة السيناريو، ولا يفترض وجود طريقة واحدة صحيحة لتطويره.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="receive">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ9">هل يتضمن التقرير درجة أو تقييمًا نهائيًا؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA9">يركز التقرير أساسًا على ملاحظات واضحة وبنّاءة، بدل اختزال السيناريو في رقم واحد. وعند الاقتضاء، قد تقدم سين ون توصية داخلية أو تحدد مدى ملاءمة المشروع للترشيح.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="submit">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ10">كيف أقدّم سيناريوهي؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA10">اختر الخدمة الأنسب لمشروعك، وأكمل بيانات التقديم، وارفع ملفك، ثم ادفع باستخدام إحدى وسائل الدفع المعتمدة. ستصلك رسالة تأكيد بعد استلام طلبك.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="submit">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ11">ما صيغة الملف التي ينبغي استخدامها؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA11">يرجى تقديم السيناريو بصيغة PDF، ما لم يذكر نموذج التقديم صيغة أخرى. تأكد من أن الملف كامل، وواضح، وجاهز للقراءة.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="submit">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ12">هل يمكنني تقديم معالجة بدل سيناريو كامل؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA12">نعم. تقدم سين ون خدمة منفصلة للمعالجات التي لم تتحول بعد إلى سيناريو مكتمل. وينبغي أن توضح المعالجة القصة، والشخصيات الرئيسية، والمسار الدرامي، والفيلم الذي يتجه المشروع إلى أن يصبحه.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="submit">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ13">ما أعداد الصفحات المقبولة؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA13">نستقبل حاليًا النصوص القصيرة التي تتراوح تقريبًا بين 10 و60 صفحة، ونصوص الأفلام الطويلة التي تتراوح تقريبًا بين 60 و200 صفحة، إضافة إلى المعالجات المقدمة عبر خدمة المعالجة.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="submit">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ14">هل يمكنني تقديم أكثر من مشروع؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA14">نعم. يجب تقديم كل مشروع بشكل منفصل حتى يمكن إسناده ومعالجته وقراءته بصورة مستقلة.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="reader">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ15">من يقرأ سيناريوهي؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA15">يقرأ نصك قارئ متخصص لديه خبرة في كتابة السيناريو، أو صناعة الأفلام، أو تطوير المشاريع، أو مجالات ذات صلة بالصناعة. وقد يختلف القارئ بحسب طبيعة المشروع وتوافر القرّاء.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="reader">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ16">هل يمكنني اختيار القارئ؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA16">تتولى سين ون إسناد النص إلى القارئ المناسب بحسب طبيعة المشروع. وإذا أصبح اختيار القارئ متاحًا، فسيُوضح ذلك بوضوح أثناء التقديم.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="reader">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ17">كم تستغرق العملية؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA17">تستغرق ملاحظات النصوص القصيرة عادةً من 10 إلى 15 يوم عمل. وقد تستغرق ملاحظات نصوص الأفلام الطويلة حتى أربعة أسابيع، بينما تستغرق ملاحظات المعالجات عادةً من 7 إلى 12 يومًا. وتبدأ المدة من لحظة إسناد المشروع إلى أحد القرّاء.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="reader">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ18">كيف سأستلم تقريري؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA18">يُرسل التقرير إلكترونيًا إلى عنوان البريد المرتبط بطلبك.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="reader">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ19">هل يمكنني طرح أسئلة بعد استلام التقرير؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA19">يمكنك التواصل مع سين ون بشأن أي استفسار يتعلق بالخدمة أو التقرير. يشمل ذلك الاستشارات الإضافية أو مناقشة التقرير بشكل موسع بعد استلام التقرير.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="privacy">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ20">هل يبقى سيناريوهي سريًا؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA20">نعم. يُتعامل مع نصك بوصفه مادة سرية، ولا يُشارك إلا مع الأشخاص المخولين بتقديم الخدمة. ولا يُشارك مع الشركاء الإنتاجيين دون موافقتك الكتابية الصريحة.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="privacy">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ21">لمن تعود ملكية سيناريوهي؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA21">تحتفظ بكامل ملكية نصك وجميع حقوق الملكية الفكرية المرتبطة به. ويمنح تقديم العمل سين ون إذنًا محدودًا بالقدر اللازم لقراءته وتخزينه ومعالجته من أجل تقديم الخدمة المطلوبة.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="privacy">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ22">هل يُستخدم سيناريوهي لتدريب أنظمة الذكاء الاصطناعي؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA22">لا. لا تستخدم سين ون النصوص المقدمة لتدريب أنظمة الذكاء الاصطناعي. كما يُمنع القرّاء من إدخال المواد المقدمة في أدوات الذكاء الاصطناعي دون موافقة كتابية مسبقة.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="privacy">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ23">هل ينبغي تسجيل النص قبل تقديمه؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA23">توصي سين ون بالنظر في تسجيل النص لدى الهيئة السعودية للملكية الفكرية أو الجهة المناسبة لتسجيل الحقوق قبل مشاركته. ولا يغني التسجيل عن الاحتفاظ بسجلات واضحة أو طلب المشورة القانونية المناسبة.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="referrals">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ24">هل تشمل الخدمة إعادة الكتابة أو التحرير؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA24">لا. تقدم الخدمة قراءة وملاحظات تطويرية، ولا تشمل إعادة كتابة السيناريو، أو التحرير التفصيلي، أو التدقيق اللغوي، أو تنسيق النص، أو ضمان قبوله من منتج، أو استوديو، أو مهرجان، أو مسابقة.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="referrals">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ25">هل تساعدني سين ون في إعادة كتابة النص؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA25">قد تساعدك الملاحظات على تحديد ما يحتاج إلى إعادة كتابة، والطريقة التي يمكنك من خلالها العمل على مسودتك التالية. أما خدمات إعادة الكتابة أو الإرشاد أو التطوير المستقلة فسيتم توضيحها وتسعيرها بشكل منفصل.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="referrals">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ26">هل يُرسل مشروعي إلى المنتجين؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA26">قد تُنظر بعض المشاريع المختارة للترشيح إلى جهات في الصناعة. ولا يتم الترشيح تلقائيًا، بل بعد الحصول على موافقة الكاتب الكتابية الصريحة. ولا تضمن سين ون اهتمام أي جهة بالمشروع، أو تطويره، أو تمويله، أو إنتاجه.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="referrals">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ27">هل يضمن شراء الخدمة الترشيح؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA27">شراء الخدمة يضمن حصول نصك على قراءة احترافية وتقرير متكامل يساعدك على فهم نقاط قوته وفرص تطويره. أما التوصية أو الترشيح لفرص الصناعة، فتعتمد على جودة النص ومدى جاهزيته، ولا تُعد نتيجة مضمونة لشراء الخدمة. نؤمن بأن كل نص يستحق قراءة جادة، وأن الفرص تُبنى على استحقاق العمل وإمكاناته.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="referrals">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ28">هل يمكنني رفض الترشيح؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA28">نعم. لن يُشارك نصك مع أي شريك إنتاجي دون موافقتك الكتابية الصريحة.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="pricing">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ29">كم تكلفة الخدمة؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA29">تختلف الأسعار بحسب نوع المشروع وحجمه. وتُعرض أسعار الإطلاق الحالية بوضوح في صفحة الخدمات قبل تقديم الطلب.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="pricing">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ30">متى أدفع؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA30">يتم الدفع عند تقديم المشروع، باستخدام إحدى وسائل الدفع المعتمدة الموضحة على المنصة.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="pricing">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ31">هل يمكنني طلب استرداد الرسوم؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA31">يمكنك طلب استرداد كامل الرسوم قبل إسناد نصك إلى أحد القرّاء. وبعد إسناد النص وبدء العمل عليه، لا يمكن عادةً استرداد الرسوم. وإذا تعذر على سين ون تقديم الخدمة لأسباب تعود إلى المنصة، فسيُرد المبلغ كاملًا خلال 14 يوم عمل.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="pricing">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ32">هل يمكنني تقديم مسودة ثانية؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA32">نعم. يمكنك تقديم نسخة مطوّرة من المشروع نفسه — المسودة الثانية — مجانًا بعد استلام التقرير الأول، وفقًا للشروط الموضحة للخدمة المعنية.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="pricing">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ33">هل تحصل المسودة الثانية على تقرير جديد كليًا؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA33">تهدف خدمة المسودة الثانية إلى قراءة مدى تطور المشروع استجابةً للتقرير الأول. وسيتم توضيح نطاق القراءة الثانية عند تقديم النسخة المطوّرة.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="scope">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ34">هل يمكن أن تساعدني سين ون في الوصول إلى فرص إنتاج؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n="faqA34">هدفنا أن نمنح النصوص الجيدة فرصة حقيقية للتقدّم نحو الصناعة. نبدأ بقراءة احترافية تساعدك على فهم إمكانات نصك ومدى جاهزيته، وقد تفتح الأعمال المتميزة بابًا لفرص أوسع من خلال شبكة علاقاتنا في القطاع السينمائي. ومع ذلك، لا نضمن الإنتاج أو التمويل أو القبول في المهرجانات والمسابقات، فهذه قرارات تعود إلى الجهات المعنية وتعتمد على عوامل متعددة.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="scope">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ35">ما الذي سأعرفه عن نصي بعد الحصول على التقرير؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n-html="faqA35">نؤمن بأن كل نص يستحق أكثر من مجرد حكم بأنه جيد أو سيئ. لذلك، يقدم قارئ سين ون تقييمًا مهنيًا يتناول ما ينجح في النص، وما يحتاج إلى مزيد من العمل، مع ملاحظات تطويرية تساعدك على رؤية قصتك من منظور جديد واتخاذ خطواتك التالية بثقة.<br><br>غايتنا ليست إصدار الأحكام على النصوص، بل مساعدتها على الوصول إلى أفضل إمكاناتها.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="scope">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ36">هل تشمل الخدمة التدقيق اللغوي؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n-html="faqA36">تركّز قراءتنا على جوهر العمل السينمائي؛ من البناء الدرامي والشخصيات والحوار إلى وضوح الرؤية وتماسك القصة. وقد يلفت القارئ انتباهك إلى الأخطاء اللغوية التي تؤثر في تجربة القراءة أو فهم النص، لكن الخدمة لا تتضمن تدقيقًا لغويًا أو تحريرًا نصيًا شاملًا.<br><br>بهذا نضمن أن ينصبّ اهتمام التقرير على ما يهمّك في هذه المرحلة: قوة قصتك وإمكاناتها السينمائية.</p></div></div>
-        </div>
-        <div class="faq-item" data-faq-cat="scope">
-          <button class="faq-item__btn" aria-expanded="false">
-            <span class="faq-item__q" data-i18n="faqQ37">هل تشمل الخدمة ملاحظات على العرض التقديمي أو الـLogline؟</span>
-            <span class="faq-item__sign" aria-hidden="true"></span>
-          </button>
-          <div class="faq-item__panel"><div class="faq-item__panel-inner"><p class="faq-item__a" data-i18n-html="faqA37">صُممت خدمة القراءة الاحترافية لتمنح السيناريو الاهتمام الذي يستحقه، لذلك ينصبّ التقييم الأساسي على النص نفسه وعناصره الدرامية والفنية.<br><br>أما إذا كنت ترغب في تطوير عنصر الجذب (Logline) أو العرض التقديمي لمشروعك، فقد تتوفر خدمات مخصصة لذلك، وسيُوضح نطاق كل خدمة ومخرجاتها قبل التقديم، لتختار ما يناسب احتياجات مشروعك ومرحلته.</p></div></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── 6. CLOSING CTA ──
-       A black slab inside the page rather than a full-bleed band over a photo:
-       the two stills are placed on it, not behind it, which is what lets the
-       heading sit on flat black at full contrast instead of over a 72% veil.
-
-       The photographs are decoration — the section's meaning is entirely in
-       its heading — so both carry an empty alt. -->
-  <section class="lx lx-cta" id="contact-d">
-    <div class="lx__in">
-      <div class="lx-cta__box">
-        <div class="lx-cta__copy">
-          <h2 class="lx-cta__h" data-i18n="ctaH2">الجيل القادم من صنّاع الأفلام لا ينبغي أن ينتظر حتى يكتشفه أحد</h2>
-          <p class="lx-cta__sub" data-i18n="ctaSub2">هل كتبت قصة تستحق أن تُرى؟ ابدأ من المشهد الأول</p>
-          <a class="lx-cta__btn" href="/services" data-i18n="btnSubmit">قدّم نصك</a>
-        </div>
-        <div class="lx-cta__stills" aria-hidden="true">
-          <img class="lx-cta__still lx-cta__still--1" src="assets/hero-num-screen.jpg" alt="" loading="lazy" decoding="async" width="700" height="760">
-          <img class="lx-cta__still lx-cta__still--2" src="assets/cta-wall.jpg" alt="" loading="lazy" decoding="async" width="1600" height="620">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── FOOTER ──
-       Rebuilt to the design: light, with the mark rather than the full lockup,
-       the blurb, the contact row, and three link columns. It replaced a dark
-       footer that also carried call and WhatsApp buttons — the design has
-       neither, so the phone is no longer on this page; the e-mail is.
-
-       The contact row LOOKS like a field and is not one. The design draws a
-       placeholder beside a button, but there is nothing to post it to (the
-       interest endpoint was deleted in August), so the whole row is one mailto
-       link instead of an input that would silently go nowhere. -->
-  <footer class="lx-foot lx-foot--light">
-    <div class="lx-foot__in">
-      <div class="lx-foot__top">
-        <div class="lx-foot__brand-col">
-          <img class="lx-foot__mark" src="assets/scene-one-mark-v5-ink.svg" alt="Scene One" width="906" height="805">
-          <p class="lx-foot__blurb" data-i18n="footBlurb">نكتشف الكتّاب، ونطوّر مشاريعهم، ونصل بقصصهم إلى فرصتها التالية</p>
-        </div>
-        <!-- Three columns of links and NO headings: «روابط / تابعنا / قانوني»
-             were the part not wanted, not the links under them. The e-mail
-             row that used to sit under the blurb is gone for good; the address
-             is in the bar below. -->
-        <div class="lx-foot__cols">
-          <div class="lx-foot__col">
-            <a href="/booklet" target="_blank" rel="noopener" data-i18n="footStory">حكاية سين ون</a>
-            <a href="/services" data-i18n="navServices">خدماتنا</a>
-            <a href="/about" data-i18n="navAboutUs">من نحن</a>
-            <a href="/readers" data-i18n="footReaders">من يقرأ نصك</a>
-            <a href="/services" data-i18n="btnSubmit">قدّم نصك</a>
-          </div>
-          <!-- Pills, not a column of links: the three names are short and a
-               stack of them reads as a list of pages rather than a set of
-               accounts. .lx-foot__col--soc is the only row among the columns. -->
-          <div class="lx-foot__col lx-foot__col--soc">
-            <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
-            <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X</a>
-            <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          </div>
-          <div class="lx-foot__col">
-            <a href="/terms" data-i18n="footerTerms">الشروط والأحكام</a>
-            <a href="/privacy" data-i18n="footerPrivacy">سياسة الخصوصية</a>
-          </div>
-        </div>
-      </div>
-      <div class="lx-foot__bar">
-        <p class="lx-foot__cr" data-i18n="footCr">© 2026 جميع الحقوق محفوظة لـ سين ون · الرقم الموحد 7054791293</p>
-        <a class="lx-foot__cr-mail" href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
-      </div>
-    </div>
-  </footer>
-  </div>
-
-  <!-- ══ NARROW (<1000px) ════════════════════════════════════════════════
-       Yesterday's page, verbatim from 3b774b1. The artboard above is DESKTOP
-       ONLY, by the owner's instruction, so the phone keeps the layout it had
-       until a mobile artboard arrives — at which point this whole block goes.
-       It keeps the canonical ids, so every overlay link still resolves. -->
-  <div class="pg pg--narrow">
-
-  <!-- ── HERO: SCENE ONE BY THE NUMBERS ──
-       Three photographic slides, each wiping up over the last, with the figure
-       it carries rising into a mask. Driven by heroNumbers() in js/main.js —
-       one rAF loop, no library — and styled under `.hn` in css/landing-v2.css.
-
-       Everything a reader needs is in the markup before that script runs: the
-       first slide's photo, figure and label are the document's own order, so a
-       blocked or failed script leaves a legible hero rather than an empty black
-       band. The same is true of prefers-reduced-motion, which the loop honours
-       by painting the first slide and never advancing.
-
-       The figures are Latin digits in both languages, as the design has them,
-       and .hn-slide__num carries dir="ltr" so a number is never reordered. -->
-  <section class="hn" id="top" aria-roledescription="carousel" data-i18n-aria="hnRegion" aria-label="سين ون بالأرقام">
-    <!-- aria-hidden: the figure and its label are announced from .hn__live
-         below instead, once per change, rather than three times over. -->
-    <div class="hn__slides" aria-hidden="true">
-      <article class="hn-slide hn-slide--chair is-on">
-        <div class="hn-slide__ph"></div>
-        <div class="hn-slide__shade"></div>
-        <div class="hn-slide__mask"><span class="hn-slide__num" dir="ltr">30<span class="hn-slide__plus">+</span></span></div>
-      </article>
-      <article class="hn-slide hn-slide--seats">
-        <div class="hn-slide__ph"></div>
-        <div class="hn-slide__shade"></div>
-        <div class="hn-slide__mask"><span class="hn-slide__num" dir="ltr">3<span class="hn-slide__plus">+</span></span></div>
-      </article>
-      <article class="hn-slide hn-slide--screen">
-        <div class="hn-slide__ph"></div>
-        <div class="hn-slide__shade"></div>
-        <div class="hn-slide__mask"><span class="hn-slide__num" dir="ltr">80<span class="hn-slide__plus">+</span></span></div>
-      </article>
-    </div>
-
-    <!-- dir="ltr" sits on the INNER span, never on the <p>. On the block it
-         would also flip inset-inline-end, which is how the counter ended up
-         on top of the label instead of opposite it. -->
-    <p class="hn__count"><span dir="ltr"><span class="hn__count-i">01</span> <span class="hn__count-n">/ 03</span></span></p>
-
-    <!-- The one thing a screen reader hears when the slide changes. -->
-    <p class="hn__live" aria-live="polite"></p>
-
-    <div class="hn__foot">
-      <div class="hn__lede">
-        <p class="hn__eyebrow"><span class="hn__dot" aria-hidden="true"></span><span data-i18n="hnEyebrow">سين ون بالأرقام</span></p>
-        <!-- The headline IS the slide's label: the three stack on one grid
-             cell, so the h1 is as tall as the longest of them and nothing
-             below it moves as they cross-fade. Order matches the slides. -->
-        <h1 class="hn__h">
-          <span class="hn__h-l is-on" data-i18n="hnLab2">كاتبًا استلموا تقريرًا تفصيليًا لأفلامهم خلال شهرين</span>
-          <span class="hn__h-l" data-i18n="hnLab1">مشاريع ترشحت لمسار الاستضافة</span>
-          <span class="hn__h-l" data-i18n="hnLab3">فكرة فيلم في تحدي القصة بمنتدى الأفلام السعودي</span>
-        </h1>
-      </div>
-      <div class="hn__act">
-        <a class="hn__cta" href="/services"><span data-i18n="btnSubmit">قدّم نصك</span><span class="hn__arrow" aria-hidden="true">←</span></a>
-        <!-- Each bar is the control for its slide AND the autoplay timer for it,
-             which is why they are buttons and not decoration. -->
-        <div class="hn__bars">
-          <button class="hn__bar" type="button" data-go="0" data-i18n-aria="hnGo1" aria-label="الشريحة الأولى"><span class="hn__fill"></span></button>
-          <button class="hn__bar" type="button" data-go="1" data-i18n-aria="hnGo2" aria-label="الشريحة الثانية"><span class="hn__fill"></span></button>
-          <button class="hn__bar" type="button" data-go="2" data-i18n-aria="hnGo3" aria-label="الشريحة الثالثة"><span class="hn__fill"></span></button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── 1. THE BEGINNING ──
-       Text only. The heading opens the section at the page's own start edge;
-       the paragraph block answers it from the opposite edge, lower down, so
-       the empty space between them is the composition. The photo that used to
-       fill that half is gone (assets/intro-reel.webp is now unreferenced). -->
-  <section class="lx lx-intro" id="about">
-    <div class="lx__in">
-      <div class="lx-intro__head">
-        <p class="lx-eyebrow" data-i18n="introEyebrow">البداية</p>
-        <h2 class="lx-intro__h" data-i18n="introH">هناك كتّاب موهوبون وقصص تستحق أن تُروى</h2>
-      </div>
-      <div class="lx-intro__copy">
-        <p class="lx-intro__p" data-i18n="introP">كثير من الكتّاب لديهم أفكار ونصوص واعدة، لكنهم لا يجدون قراءة جادة لأعمالهم، أو توجيهًا يساعدهم على تطويرها ومعرفة خطوتهم التالية</p>
-        <p class="lx-intro__kicker" data-i18n="introKicker">من هنا بدأت سين ون</p>
-        <a class="lx-link lx-intro__link" href="/booklet" target="_blank" rel="noopener" data-i18n="introLink">اعرف حكاية سين ون</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── 2. WHAT WE DO ──
-       Three steps, each opened by its own number. The hairline over each column
-       is gone: the number is what marks the column now, and a rule above it as
-       well read as two devices doing one job. -->
-  <section class="lx lx-do" id="what">
-    <div class="lx__in">
-      <div class="lx-do__head">
-        <p class="lx-eyebrow" data-i18n="doEyebrow">ما نقدمه</p>
-        <h2 class="lx-do__h" data-i18n="doH">نكتشف المواهب ونطوّر القصص ونفتح لها الطريق</h2>
-      </div>
-      <div class="lx-do__grid" data-reveal>
-        <div class="lx-do__col">
-          <span class="lx-do__n" aria-hidden="true">01</span>
-          <h3 class="lx-do__t" data-i18n="do1T">نكتشف</h3>
-          <p class="lx-do__b" data-i18n="do1B">نبحث عن كتّاب لهم صوتهم الخاص وقصص لم تأخذ فرصتها بعد</p>
-        </div>
-        <div class="lx-do__col">
-          <span class="lx-do__n" aria-hidden="true">02</span>
-          <h3 class="lx-do__t" data-i18n="do2T">نطوّر</h3>
-          <p class="lx-do__b" data-i18n="do2B">نقرأ النص ونتخيّل الفيلم الذي يمكن أن يصبح عليه، ونعمل مع الكاتب على تطويره</p>
-        </div>
-        <div class="lx-do__col">
-          <span class="lx-do__n" aria-hidden="true">03</span>
-          <h3 class="lx-do__t" data-i18n="do3T">نربط</h3>
-          <p class="lx-do__b" data-i18n="do3B">نصل بالمشاريع الواعدة إلى منتجين وشركاء يمكنهم المساهمة في انتقالها إلى الشاشة</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── 3. THE READ ──
-       Ahead of WHAT WE LOOK FOR, which is the order the new design sets: the
-       reading is what the service IS, so it is introduced before the list of
-       what a script needs to show.
-
-       The nine axes are the same nine the real coverage report is written
-       against (see js/report-render.js) — they are the product, so they are
-       named here rather than summarised. -->
-  <section class="lx lx-read" id="reading">
-    <div class="lx__in">
-      <!-- A wide strip rather than the old portrait crop beside the copy: the
-           section now opens on the photograph and the text answers it. -->
-      <img class="lx-read__strip" src="assets/read-script-strip.jpg" alt="" data-i18n-alt="readImgAlt" loading="lazy" decoding="async" width="2560" height="879">
-      <div class="lx-read__row">
-        <div class="lx-read__copy">
-          <p class="lx-eyebrow" data-i18n="readEyebrow">قراءة النصوص وتقييمها</p>
-          <h2 class="lx-read__h" data-i18n="readH">نبدأ من النص</h2>
-          <p class="lx-read__p" data-i18n="readP">نقرأ نصك لنتعرّف إلى ما يميّزه وما يحتاج إلى تطوير، ونساعدك على تحديد خطوتك التالية، من العمل على مسودة جديدة إلى تطوير المشروع أو تقديمه إلى جهة مناسبة في صناعة الأفلام</p>
-          <a class="lx-link lx-read__link" href="/sample-report" data-i18n="readLink">اطّلع على نموذج التقرير</a>
-        </div>
-        <div class="lx-read__axes-col">
-          <p class="lx-read__lbl" data-i18n="readLbl">تحصل على تقرير مفصّل يعدّه قارئ متخصص، ويغطي تسعة محاور أساسية في النص</p>
-          <!-- Numbered in the markup, not by a counter: the numbers are part of
-               the design's typography, and aria-hidden keeps a screen reader
-               from reading "01" before every axis. -->
-          <ul class="lx-read__axes">
-            <li><span class="lx-read__n" aria-hidden="true">01</span><span data-i18n="axis1">الفكرة والموضوع</span></li>
-            <li><span class="lx-read__n" aria-hidden="true">02</span><span data-i18n="axis2">عنصر الجذب</span></li>
-            <li><span class="lx-read__n" aria-hidden="true">03</span><span data-i18n="axis3">الأصالة</span></li>
-            <li><span class="lx-read__n" aria-hidden="true">04</span><span data-i18n="axis4">الرهانات والحبكة</span></li>
-            <li><span class="lx-read__n" aria-hidden="true">05</span><span data-i18n="axis5">الشخصيات</span></li>
-            <li><span class="lx-read__n" aria-hidden="true">06</span><span data-i18n="axis6">الحوار</span></li>
-            <li><span class="lx-read__n" aria-hidden="true">07</span><span data-i18n="axis7">البناء والإيقاع</span></li>
-            <li><span class="lx-read__n" aria-hidden="true">08</span><span data-i18n="axis8">قابلية الإنتاج</span></li>
-            <li><span class="lx-read__n" aria-hidden="true">09</span><span data-i18n="axis9">العرض والتنسيق</span></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ── 4. WHAT WE LOOK FOR ──
-       Five numbered cards on a six-column grid: three across the top at two
-       columns each, then two at three. The fifth is the dark one, which is how
-       the design closes the block.
-
-       The numbers are decorative ordinals, not content — the list already
-       carries the order — so they are hidden from a screen reader along with
-       the rule beside them. -->
-  <section class="lx lx--white" id="looking">
-    <div class="lx__in">
-      <p class="lx-eyebrow" data-i18n="lookEyebrow">قبل أن تُرسل نصك</p>
-      <h2 class="lx-h" data-i18n="lookH">ما الذي نبحث عنه؟</h2>
-      <ul class="lx-look__grid" data-reveal>
-        <li class="lx-look__card">
-          <span class="lx-look__head" aria-hidden="true"><span class="lx-look__n">01</span><span class="lx-look__rule"></span></span>
-          <p class="lx-look__t" data-i18n-html="look1">أصوات جديدة<br class='lx-look__br'>لها بصمة خاصة</p>
-        </li>
-        <li class="lx-look__card">
-          <span class="lx-look__head" aria-hidden="true"><span class="lx-look__n">02</span><span class="lx-look__rule"></span></span>
-          <p class="lx-look__t" data-i18n-html="look2">قصص تستحق أن تُرى<br class='lx-look__br'>على الشاشة</p>
-        </li>
-        <li class="lx-look__card">
-          <span class="lx-look__head" aria-hidden="true"><span class="lx-look__n">03</span><span class="lx-look__rule"></span></span>
-          <p class="lx-look__t" data-i18n-html="look3">أنواع وزوايا<br class='lx-look__br'>وطرق سرد غير مألوفة</p>
-        </li>
-        <li class="lx-look__card">
-          <span class="lx-look__head" aria-hidden="true"><span class="lx-look__n">04</span><span class="lx-look__rule"></span></span>
-          <p class="lx-look__t" data-i18n-html="look4">مشاريع بفكرة قوية<br class='lx-look__br'>ما زالت تحتاج تطويرًا</p>
-        </li>
-        <li class="lx-look__card lx-look__card--dark">
-          <span class="lx-look__head" aria-hidden="true"><span class="lx-look__n">05</span><span class="lx-look__rule"></span></span>
-          <p class="lx-look__t" data-i18n-html="look5">صنّاع أفلام لديهم ما يريدون قوله،<br class='lx-look__br'>ويريدون بناء هوية سينمائية حوله</p>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- ── 5. SERVICES ── -->
-  <section class="lx" id="coverage-types">
-    <div class="lx__in">
-      <div class="lx-svc__head">
-        <div>
-          <p class="lx-eyebrow" data-i18n="svcEyebrow">الخدمات</p>
-          <h2 class="lx-h" data-i18n="svcH">ابدأ من المرحلة التي وصل إليها مشروعك</h2>
-        </div>
-      </div>
-      <div class="lx-svc__grid" data-reveal>
-        <div class="lx-svc__card">
-          <h3 class="lx-svc__t" data-i18n="svc1T">قراءة سيناريو فيلم قصير وتقييمه</h3>
-          <p class="lx-svc__meta" data-i18n="svc1Meta">للسيناريو من 10 إلى 60 صفحة</p>
-          <p class="lx-svc__by" data-i18n="svcByPages">يُحسب السعر بحسب حجم المشروع، ويظهر لك فور اختيار نوع العمل ورفع ملف المشروع</p>
-          <!-- Prices are off the cards for now. Uncomment to put them back.
-          <p class="lx-svc__flag" data-i18n="svcFlag">سعر إطلاق مؤقت</p>
-          <p class="lx-svc__price"><span class="lx-svc__from" data-i18n="svcFrom">ابتداءً من</span><span class="lx-svc__num" data-i18n="svc1Num">100 - 400</span><span class="lx-svc__riyal" role="img" aria-label="ريال سعودي"></span></p>
-          -->
-          <p class="lx-svc__b" data-i18n="svc1B">تقرير مفصّل يوضح نقاط قوة السيناريو والجوانب التي تحتاج إلى تطوير، ويقدّم ملاحظات عملية تساعدك على كتابة المسودة التالية، مع إمكانية ترشيح النصوص المتميزة لجهات مناسبة في صناعة الأفلام</p>
-          <a class="lx-link lx-svc__what" href="/sample-report" data-i18n="svcWhat">اطّلع على تفاصيل التقرير</a>
-          <div class="lx-svc__foot">
-            <p class="lx-svc__dur" data-i18n="svc1Dur">10 إلى 15 يوم عمل</p>
-            <a class="lx-svc__btn" href="/submit" data-i18n="svcBtn">قدّم نصك</a>
-          </div>
-        </div>
-        <div class="lx-svc__card">
-          <h3 class="lx-svc__t" data-i18n="svc2T">قراءة سيناريو فيلم طويل وتقييمه</h3>
-          <p class="lx-svc__meta" data-i18n="svc2Meta">للسيناريو من 60 إلى 200 صفحة</p>
-          <p class="lx-svc__by" data-i18n="svcByPages">يُحسب السعر بحسب حجم المشروع، ويظهر لك فور اختيار نوع العمل ورفع ملف المشروع</p>
-          <!-- Prices are off the cards for now. Uncomment to put them back.
-          <p class="lx-svc__flag" data-i18n="svcFlag">سعر إطلاق مؤقت</p>
-          <p class="lx-svc__price"><span class="lx-svc__from" data-i18n="svcFrom">ابتداءً من</span><span class="lx-svc__num" data-i18n="svc2Num">600 - 2,000</span><span class="lx-svc__riyal" role="img" aria-label="ريال سعودي"></span></p>
-          -->
-          <p class="lx-svc__b" data-i18n="svc2B">قراءة متأنية لسيناريو فيلمك، تتناول بناء القصة والشخصيات والحوار والإيقاع وقابلية الإنتاج، وتقدّم ملاحظات عملية لتطوير المسودة التالية، مع إمكانية ترشيح النصوص المتميزة لجهات مناسبة في صناعة الأفلام</p>
-          <a class="lx-link lx-svc__what" href="/sample-report" data-i18n="svcWhat">اطّلع على تفاصيل التقرير</a>
-          <div class="lx-svc__foot">
-            <p class="lx-svc__dur" data-i18n="svc2Dur">حتى 4 أسابيع</p>
-            <a class="lx-svc__btn" href="/submit" data-i18n="svcBtn">قدّم نصك</a>
-          </div>
-        </div>
-        <div class="lx-svc__card">
-          <h3 class="lx-svc__t" data-i18n="svc3T">قراءة المعالجة السينمائية وتقييمها</h3>
-          <p class="lx-svc__meta" data-i18n="svc3Meta">طوّر قصتك قبل كتابة السيناريو</p>
-          <p class="lx-svc__by" data-i18n="svcPriceOnUpload">يظهر لك السعر فور اختيار نوع العمل ورفع ملف المشروع</p>
-          <!-- Prices are off the cards for now. Uncomment to put them back.
-          <p class="lx-svc__flag" data-i18n="svcFlag">سعر إطلاق مؤقت</p>
-          <p class="lx-svc__price"><span class="lx-svc__num" data-i18n="svc3Num">150</span><span class="lx-svc__riyal" role="img" aria-label="ريال سعودي"></span></p>
-          -->
-          <p class="lx-svc__b" data-i18n="svc3B">تقييم للفكرة وبناء القصة والشخصيات ومسار الأحداث، يساعدك على معرفة ما يحتاج إلى تطوير قبل الانتقال إلى كتابة السيناريو</p>
-          <a class="lx-link lx-svc__what" href="/sample-treatment-report" data-i18n="svcWhat">اطّلع على تفاصيل التقرير</a>
-          <div class="lx-svc__foot">
-            <p class="lx-svc__dur" data-i18n="svc3Dur">7 إلى 12 يومًا</p>
-            <a class="lx-svc__btn" href="/treatment-submit" data-i18n="svcBtn">قدّم نصك</a>
-          </div>
-        </div>
-      </div>
-      <p class="lx-svc__note" data-i18n="svcNote">يمكنك تقديم مسودة جديدة من العمل نفسه لإعادة التقييم مجانًا بعد استلام تقريرك الأول</p>
-    </div>
-  </section>
-
-  <!-- ── 6. THE JOURNEY ── -->
-  <section class="lx" id="journey">
-    <div class="lx__in">
-      <p class="lx-eyebrow" data-i18n="jnEyebrow">رحلة المشروع</p>
-      <h2 class="lx-h" data-i18n="jnH">من القراءة الأولى إلى فرص التطوير</h2>
-      <p class="lx-sub" data-i18n="jnSub">تبدأ رحلة المشروع بالقراءة والتقييم، وقد تتقدّم المشاريع المختارة إلى مسار الاستضافة والتواصل مع شركاء في التطوير والإنتاج</p>
-      <div class="lx-jn__grid" data-reveal>
-        <div class="lx-jn__step">
-          <span class="lx-jn__n" data-i18n="jn1N">01</span>
-          <h3 class="lx-jn__t" data-i18n="jn1T">تقديم النص</h3>
-          <p class="lx-jn__b" data-i18n="jn1B">أرسل نصك مع المعلومات الأساسية عن مشروعك</p>
-        </div>
-        <div class="lx-jn__step">
-          <span class="lx-jn__n" data-i18n="jn2N">02</span>
-          <h3 class="lx-jn__t" data-i18n="jn2T">القراءة والتقييم</h3>
-          <p class="lx-jn__b" data-i18n="jn2B">يقرأ نصك قارئ متخصص ويعدّ تقريرًا يتناول عناصره الأساسية</p>
-        </div>
-        <div class="lx-jn__step">
-          <span class="lx-jn__n" data-i18n="jn3N">03</span>
-          <h3 class="lx-jn__t" data-i18n="jn3T">استلام التقرير</h3>
-          <p class="lx-jn__b" data-i18n="jn3B">تتسلّم ملاحظات واضحة تساعدك على مراجعة النص وتطوير مسودته التالية</p>
-        </div>
-        <div class="lx-jn__step">
-          <span class="lx-jn__n" data-i18n="jn4N">04</span>
-          <h3 class="lx-jn__t" data-i18n="jn4T">الترشيح للاستضافة</h3>
-          <p class="lx-jn__b" data-i18n="jn4B">تُرشّح النصوص الأعلى تقييمًا لمسار الاستضافة، بعد الحصول على موافقة الكاتب الخطية</p>
-        </div>
-        <div class="lx-jn__step">
-          <span class="lx-jn__n" data-i18n="jn5N">05</span>
-          <h3 class="lx-jn__t" data-i18n="jn5T">استضافة المشروع وعرضه</h3>
-          <p class="lx-jn__b" data-i18n="jn5B">يُدرج المشروع ضمن مكتبة سين ون الخاصة، ويُعرض على جهات مناسبة في صناعة الأفلام وفق موافقة الكاتب</p>
-        </div>
-        <div class="lx-jn__step">
-          <span class="lx-jn__n" data-i18n="jn6N">06</span>
-          <h3 class="lx-jn__t" data-i18n="jn6T">فرص التطوير والإنتاج</h3>
-          <p class="lx-jn__b" data-i18n="jn6B">نسعى إلى إيجاد شركاء وفرص تساعد المشاريع المختارة على مواصلة التطوير والتقدّم نحو الإنتاج</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── 7. TWO AUDIENCES ──
-       A light panel for writers and a black one for the industry, each with its
-       own call to action. Full-bleed: the black half is a slab to the page
-       edge, so the section pads nothing and each panel pads itself. -->
-  <section class="lx lx--flush" id="audience">
-    <div class="lx-split">
-      <div class="lx-split__panel lx-split__panel--light">
-        <p class="lx-eyebrow" data-i18n="wrEyebrow">للكتّاب</p>
-        <h2 class="lx-h lx-h--sm" data-i18n-html="wrH">قراءة تفهم ما تريد أن تقوله</h2>
-        <p class="lx-split__p" data-i18n="wrP1">نبدأ بفهم رؤيتك للفيلم، ثم نعمل معك على تطوير القصة بما يخدمها ويحافظ على صوتك ككاتب</p>
-        <p class="lx-split__p" data-i18n="wrP2">نحن لا نخبرك بما يجب أن يكون عليه فيلمك، بل نساعدك على الوصول إلى أقوى نسخة مما تحاول قوله أنت.</p>
-        <a class="lx-link lx-link--red" href="/services" data-i18n="btnSubmit">قدّم نصك</a>
-      </div>
-      <div class="lx-split__panel lx-split__panel--white">
-        <p class="lx-eyebrow" data-i18n="indEyebrow">لشركات الإنتاج والمخرجين</p>
-        <h2 class="lx-h lx-h--sm" data-i18n-html="indH">مشاريع أوضح لاتخاذ قرار مدروس</h2>
-        <p class="lx-split__p" data-i18n="indP1">نقدّم مشاريع خضعت لقراءة متخصصة توضّح فكرتها، وعناصر قوتها، واحتياجاتها التطويرية، والجمهور الذي يمكن أن تصل إليه</p>
-        <p class="lx-split__p" data-i18n="indP2">نوفّر عليكم وقت القراءة والتقييم الأولي، ونساعدكم على اختيار المشاريع الأقرب إلى توجهكم</p>
-        <a class="lx-link" href="#contact" data-i18n="navContact">تواصل معنا</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── 8. THE TEAM ── -->
-  <section class="lx" id="team">
-    <div class="lx__in">
-      <p class="lx-eyebrow" data-i18n="teamEyebrow">الفريق</p>
-      <h2 class="lx-h" data-i18n="teamH">من يقرأ نصك؟</h2>
-      <p class="lx-sub" data-i18n="teamSub">يضم فريقنا كتّاب سيناريو وصنّاع أفلام يقرؤون النصوص ويقيّمونها، إلى جانب منتج تطوير إبداعي يتولّى متابعة المشاريع المرشّحة للتطوير</p>
-      <div class="lx-team__grid" data-reveal>
-        <div>
-          <!-- The photo is a link into the reader's row on /readers; the brief
-               rides on hover and focus, and is the opening of the same bio that
-               page prints in full. -->
-          <a class="lx-team__card" href="/readers#wad">
-            <img class="lx-team__photo" src="assets/reader-wad.webp" alt="ود القبلان" data-i18n-alt="widName" loading="lazy" decoding="async" width="600" height="800">
-            <span class="lx-team__over">
-              <span class="lx-team__brief" data-i18n="widBio">كاتبة سيناريو، منتجة تطوير، وقائدة عمل (showrunner) تهتم بالمحتوى المرئي ومدى تأثيره عاطفيًا على الجمهور. تقرأ ود النصوص بعينٍ تبحث عما ينجح في القصة، وما يمكن تطويره، وأين تكمن قوتها سرديًا، إيمانًا منها بدور القصة الجيدة في إثراء السينما السعودية.</span>
-              <span class="lx-team__more" data-i18n="teamMore">تعرّف على الفريق</span>
-            </span>
-          </a>
-          <p class="lx-team__n" data-i18n="widName">ود القبلان</p>
-          <p class="lx-team__r" data-i18n="widRole">قارئة رئيسية</p>
-        </div>
-        <div>
-          <!-- The photo is a link into the reader's row on /readers; the brief
-               rides on hover and focus, and is the opening of the same bio that
-               page prints in full. -->
-          <a class="lx-team__card" href="/readers#hasan">
-            <img class="lx-team__photo" src="assets/reader-hasan-v2.webp" alt="حسن زروق" data-i18n-alt="hasanName" loading="lazy" decoding="async" width="600" height="800">
-            <span class="lx-team__over">
-              <span class="lx-team__brief" data-i18n="hasanBio">مخرج سينمائي بخبرة تتجاوز 15 عامًا في السينما والتلفزيون، حاصل على ماجستير في الكتابة والإنتاج السينمائي الدوليين من ميلانو. يعمل على تحويل الأفكار إلى مشاريع مؤثرة موجهة للجمهور، بخبرة تمتد عبر أفريقيا والشرق الأوسط وأوروبا.</span>
-              <span class="lx-team__more" data-i18n="teamMore">تعرّف على الفريق</span>
-            </span>
-          </a>
-          <p class="lx-team__n" data-i18n="hasanName">حسن زروق</p>
-          <p class="lx-team__r" data-i18n="hasanRole">قائد التطوير الإبداعي</p>
-        </div>
-<div>
-  <!-- The photo is a link into the reader's row on /readers; the brief
-       rides on hover and focus, and is the opening of the same bio that
-       page prints in full. -->
-  <a class="lx-team__card" href="/readers#hisham">
-    <img class="lx-team__photo" src="assets/reader-hisham-v3.jpg" alt="هشام إبراهيم" data-i18n-alt="hishamName" loading="lazy" decoding="async" width="600" height="800">
-    <span class="lx-team__over">
-      <span class="lx-team__brief" data-i18n="hishamBio">كاتب سيناريو وكاتب إبداعي، وطالب ماجستير في كتابة السيناريو، بدأ مسيرته عام 2018 وتنقّل بين الأفلام الروائية الطويلة والقصيرة والمسلسلات والأنميشن والوثائقي. شارك في كتابة فيلم «عبد» الحائز على ثلاث جوائز في مهرجان أفلام السعودية، ويعمل حاليًا في استوديو صلة ككاتب سيناريو ومنتج تطوير مشاريع. قدّم أكثر من 16 ورشة في كتابة السيناريو وصناعة الأفلام.</span>
-      <span class="lx-team__more" data-i18n="teamMore">تعرّف على الفريق</span>
-    </span>
-  </a>
-  <p class="lx-team__n" data-i18n="hishamName">هشام إبراهيم</p>
-  <p class="lx-team__r" data-i18n="hishamRole">قارئ نصوص ومنتج تطوير</p>
-</div>
-        <div>
-          <!-- The photo is a link into the reader's row on /readers; the brief
-               rides on hover and focus, and is the opening of the same bio that
-               page prints in full. -->
-          <a class="lx-team__card" href="/readers#haifa">
-            <img class="lx-team__photo" src="assets/reader-haifa-v3.jpg" alt="هيفاء السيد" data-i18n-alt="haifaName" loading="lazy" decoding="async" width="600" height="800">
-            <span class="lx-team__over">
-              <span class="lx-team__brief" data-i18n="haifaBio">كاتبة سيناريو متخصصة في الدراما النفسية والاجتماعية. تضم أعمالها مشاريع حائزة على جوائز وعُرضت في مهرجانات ومنصات دولية، مع خبرة في تطوير أفلام ومسلسلات ترتكز على الشخصيات والعمق الإنساني.</span>
-              <span class="lx-team__more" data-i18n="teamMore">تعرّف على الفريق</span>
-            </span>
-          </a>
-          <p class="lx-team__n" data-i18n="haifaName">هيفاء السيد</p>
-          <p class="lx-team__r" data-i18n="haifaRole">قارئة نصوص ومستشارة تطوير</p>
-        </div>
-        <div>
-          <!-- The photo is a link into the reader's row on /readers; the brief
-               rides on hover and focus, and is the opening of the same bio that
-               page prints in full. -->
-          <a class="lx-team__card" href="/readers#fajr">
-            <img class="lx-team__photo" src="assets/reader-fajr.webp" alt="فجر الفرحان" data-i18n-alt="fajrName" loading="lazy" decoding="async" width="600" height="800">
-            <span class="lx-team__over">
-              <span class="lx-team__brief" data-i18n="fajrBio">متخصصة في السينما والفنون الأدائية، بخبرة في كتابة السيناريو والإنتاج الإبداعي والسرد البصري. تركّز في قراءاتها على بناء القصة، واللغة البصرية، والأثر العاطفي للنص.</span>
-              <span class="lx-team__more" data-i18n="teamMore">تعرّف على الفريق</span>
-            </span>
-          </a>
-          <p class="lx-team__n" data-i18n="fajrName">فجر الفرحان</p>
-          <p class="lx-team__r" data-i18n="fajrRole">قارئة نصوص</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── 8b. WHAT THE WRITERS SAID ──
-       Two real messages, each kept in the language it was written in: a
-       testimonial reads as evidence only while it is still the writer's own
-       words. Only the chrome around them translates.
-
-       Sakeena's is long, so the card shows the first stretch and opens the
-       rest. The toggle is a checkbox and a label, not script: it works on a
-       page with JS off, and the overlay's own script has nothing to bind. -->
-  <section class="lx lx--white" id="voices">
-    <div class="lx__in lx-vox">
-      <div class="lx-vox__head">
-        <p class="lx-eyebrow" data-i18n="voxEyebrow">تجارب الكتّاب</p>
-        <h2 class="lx-h lx-h--sm" data-i18n="voxH">ماذا قال الكتّاب عن تجربتهم معنا؟</h2>
-        <p class="lx-sub" data-i18n="voxSub">رسائل شاركنا بها الكتّاب بعد استلام تقاريرهم</p>
-      </div>
-
-      <div class="lx-vox__cards" data-reveal>
-        <figure class="lx-vox__card lx-vox__card--wide">
-          <span class="lx-vox__mark" aria-hidden="true">&rdquo;</span>
-          <svg class="lx-vox__via" viewBox="0 0 24 24" role="img" aria-label="وصلتنا عبر البريد الإلكتروني" data-i18n-aria="voxVia1"><rect x="2.6" y="5" width="18.8" height="14" rx="2.4"/><path d="M2.6 7.4 12 14.1l9.4-6.7"/></svg>
-          <input type="checkbox" id="vox-sakeena" class="lx-vox__t" hidden>
-          <div class="lx-vox__box">
-            <p>انا ماعندي استفسار ولاتوضيح</p>
-            <p>بس التقييييم الي جاني ، اول مره احس انه ودي ابكي ، لانه التقييييم الحمد لله كان عادل وانصفني</p>
-            <p>وبالعكس خلاني اتشجع اكثر واكثر في تقديماتي وفي اني احارب عشانه اكثر واكثر انا مؤمنه بليس حرج والحين خليتوني بعد هالتقييييم آمن فيه اكثر واكثر</p>
-            <p>اتمنى اتعرف ع القارئ واقوله شكراً وجميلك راح ارده في انك راح تشوف ليس حرج ان شاء الله يفوز بمنح وراح تشوفه ع الشاشات بإذن الله</p>
-            <p>واحب اشكر منصة سين ع اختيارها لليس حرج وتقييمها لي</p>
-            <p>اكرر شكري</p>
-            <p>تستحقو كل الاحترام والتقدير والشهره ان شاء الله وتوصلو لأعلى المستويات</p>
-          </div>
-          <label for="vox-sakeena" class="lx-vox__btn">
-            <span class="lx-vox__o" data-i18n="voxMore">عرض الرسالة كاملة ↓</span>
-            <span class="lx-vox__c" data-i18n="voxLess">إخفاء ↑</span>
-          </label>
-          <figcaption>
-            <span class="lx-vox__name" data-i18n="voxName1">سكينة</span>
-            <span class="lx-vox__role" data-i18n="voxRole1">كاتبة «ليس حرج»</span>
-          </figcaption>
-        </figure>
-
-        <figure class="lx-vox__card lx-vox__card--dark">
-          <span class="lx-vox__mark" dir="ltr" aria-hidden="true">&ldquo;</span>
-          <svg class="lx-vox__via" viewBox="0 0 24 24" role="img" aria-label="وصلتنا عبر إنستغرام" data-i18n-aria="voxVia2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.1"/><circle class="lx-vox__via-dot" cx="17.1" cy="6.9" r="1.15"/></svg>
-          <blockquote dir="ltr">
-            <p class="lx-vox__lead">Another step forward for BRWAL.</p>
-            <p>Grateful to Scene One for this opportunity, and for every step that helps us grow, develop and make film further.</p>
-          </blockquote>
-          <figcaption>
-            <span class="lx-vox__name" data-i18n="voxName2">أحمد كردي</span>
-            <span class="lx-vox__role" data-i18n="voxRole2">كاتب «غشنة»</span>
-          </figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── 9. PARTNERSHIPS ── -->
-  <section class="lx" id="partnership">
-    <div class="lx__in lx-part">
-      <div>
-        <p class="lx-eyebrow" data-i18n="partEyebrow">شراكاتنا</p>
-        <h2 class="lx-h lx-h--sm" data-i18n="partH">نعمل مع شركاء في قطاع السينما</h2>
-        <p class="lx-sub" data-i18n="partSub">نقدّم لأعضاء جمعية السينما السعودية مزايا خاصة على خدمات قراءة النصوص وتقييمها</p>
-      </div>
-      <a href="https://www.cinemaassoc.com" target="_blank" rel="noopener noreferrer">
-        <img class="lx-part__logo" src="assets/partner-cinema-association-dark.png" alt="جمعية السينما Cinema Association" loading="lazy" decoding="async" width="420" height="245">
-      </a>
     </div>
   </section>
 
@@ -1663,64 +822,78 @@
     </div>
   </section>
 
-  <!-- ── 10. CLOSING CTA ──
-       The shade is 72% black, which is the opacity the design file paints over
-       this same photograph. -->
+  <!-- ── 6. CLOSING CTA ──
+       A black slab inside the page rather than a full-bleed band over a photo:
+       the two stills are placed on it, not behind it, which is what lets the
+       heading sit on flat black at full contrast instead of over a 72% veil.
+
+       The photographs are decoration — the section's meaning is entirely in
+       its heading — so both carry an empty alt. -->
   <section class="lx lx-cta" id="contact">
-    <img class="lx-cta__bg" src="assets/cta-seats.webp" alt="" loading="lazy" decoding="async" width="1440" height="620">
-    <div class="lx-cta__shade"></div>
-    <div class="lx__in lx-cta__in">
-      <h2 class="lx-h" data-i18n="ctaH">إلى أين يمكن أن يصل نصّك؟</h2>
-      <p class="lx-cta__sub" data-i18n="ctaSub">ابدأ بقراءة مهنية تساعدك على فهم نصّك بعمق، واكتشاف فرص تطويره، ومعرفة خطوتك التالية</p>
-      <a class="lx-cta__btn" href="/services" data-i18n="btnSubmit">قدّم نصك</a>
+    <div class="lx__in">
+      <div class="lx-cta__box">
+        <div class="lx-cta__copy">
+          <h2 class="lx-cta__h" data-i18n="ctaH2">الجيل القادم من صنّاع الأفلام لا ينبغي أن ينتظر حتى يكتشفه أحد</h2>
+          <p class="lx-cta__sub" data-i18n="ctaSub2">هل كتبت قصة تستحق أن تُرى؟ ابدأ من المشهد الأول</p>
+          <a class="lx-cta__btn" href="/services" data-i18n="btnSubmit">قدّم نصك</a>
+        </div>
+        <div class="lx-cta__stills" aria-hidden="true">
+          <img class="lx-cta__still lx-cta__still--1" src="assets/hero-num-screen.jpg" alt="" loading="lazy" decoding="async" width="700" height="760">
+          <img class="lx-cta__still lx-cta__still--2" src="assets/cta-wall.jpg" alt="" loading="lazy" decoding="async" width="1600" height="620">
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- ── FOOTER ──
-       Its own markup, not the shared .footer: the other pages still use that
-       one and it is not meant to change with this page. -->
-  <footer class="lx-foot">
+       Rebuilt to the design: light, with the mark rather than the full lockup,
+       the blurb, the contact row, and three link columns. It replaced a dark
+       footer that also carried call and WhatsApp buttons — the design has
+       neither, so the phone is no longer on this page; the e-mail is.
+
+       The contact row LOOKS like a field and is not one. The design draws a
+       placeholder beside a button, but there is nothing to post it to (the
+       interest endpoint was deleted in August), so the whole row is one mailto
+       link instead of an input that would silently go nowhere. -->
+  <footer class="lx-foot lx-foot--light">
     <div class="lx-foot__in">
       <div class="lx-foot__top">
-        <div>
-          <div class="lx-foot__brand">
-            <img src="assets/scene-one-logo-v5.svg" alt="Scene One">
-          </div>
+        <div class="lx-foot__brand-col">
+          <img class="lx-foot__mark" src="assets/scene-one-mark-v5-ink.svg" alt="Scene One" width="906" height="805">
           <p class="lx-foot__blurb" data-i18n="footBlurb">نكتشف الكتّاب، ونطوّر مشاريعهم، ونصل بقصصهم إلى فرصتها التالية</p>
         </div>
-        <div class="lx-foot__col">
-          <a href="#coverage-types" data-i18n="footCoverage">تغطية النصوص</a>
-          <a href="/readers" data-i18n="footReaders">من يقرأ نصك</a>
-          <a href="#journey" data-i18n="navJourney">رحلة النص</a>
-          <a href="/partners" data-i18n="footPartners">شركاء</a>
-        </div>
-        <div class="lx-foot__col">
-          <a href="/privacy" data-i18n="footerPrivacy">سياسة الخصوصية</a>
-          <a href="/terms" data-i18n="footerTerms">الشروط والأحكام</a>
-          <a href="/booklet" target="_blank" rel="noopener" data-i18n="footStory">حكاية سين ون</a>
-        </div>
-        <div class="lx-foot__col">
-          <p class="lx-foot__lbl" data-i18n="footContact">للتواصل</p>
-          <a class="lx-foot__mail" href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
-          <div class="lx-foot__actions">
-            <a class="lx-foot__btn" href="tel:+966580503970" dir="ltr"
-               data-i18n-aria="footCallAria">966580503970</a>
-            <a class="lx-foot__btn lx-foot__btn--wa" href="https://wa.me/966580503970"
-               target="_blank" rel="noopener noreferrer" data-i18n-aria="footWaAria"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.61.14-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.42-.07-.13-.27-.2-.57-.35z"/><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.25 8.24a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.17 8.17 0 0 1-1.26-4.38c0-4.54 3.7-8.25 8.24-8.25z"/></svg><span data-i18n="footWa">واتساب</span></a>
+        <!-- Three columns of links and NO headings: «روابط / تابعنا / قانوني»
+             were the part not wanted, not the links under them. The e-mail
+             row that used to sit under the blurb is gone for good; the address
+             is in the bar below. -->
+        <div class="lx-foot__cols">
+          <div class="lx-foot__col">
+            <a href="/booklet" target="_blank" rel="noopener" data-i18n="footStory">حكاية سين ون</a>
+            <a href="/services" data-i18n="navServices">خدماتنا</a>
+            <a href="/about" data-i18n="navAboutUs">من نحن</a>
+            <a href="/readers" data-i18n="footReaders">من يقرأ نصك</a>
+            <a href="/services" data-i18n="btnSubmit">قدّم نصك</a>
+          </div>
+          <!-- Pills, not a column of links: the three names are short and a
+               stack of them reads as a list of pages rather than a set of
+               accounts. .lx-foot__col--soc is the only row among the columns. -->
+          <div class="lx-foot__col lx-foot__col--soc">
+            <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X</a>
+            <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          </div>
+          <div class="lx-foot__col">
+            <a href="/terms" data-i18n="footerTerms">الشروط والأحكام</a>
+            <a href="/privacy" data-i18n="footerPrivacy">سياسة الخصوصية</a>
           </div>
         </div>
       </div>
       <div class="lx-foot__bar">
         <p class="lx-foot__cr" data-i18n="footCr">© 2026 جميع الحقوق محفوظة لـ سين ون · الرقم الموحد 7054791293</p>
-        <div class="lx-foot__soc">
-          <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X</a>
-          <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
-          <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        </div>
+        <a class="lx-foot__cr-mail" href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
       </div>
     </div>
   </footer>
-  </div>
 
 </div>
 

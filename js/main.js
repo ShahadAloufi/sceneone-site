@@ -28,6 +28,10 @@
      it is the only menu below 1150px, and between 1000 and 1149 the DESKTOP
      block is the one showing — so these two would otherwise lead nowhere in
      that band. The -d fallback cannot help: there is no #coverage-types-d. */
+  /* The landing used to carry two page structures and suffix one block's ids
+     `-d`; both are gone (2026-11-24) and every section has its canonical id
+     again. These two names outlived their sections, so anything still linking
+     them — an old bookmark, a stale cross-page link — lands somewhere real. */
   var HASH_ALIAS = { "coverage-types": "services", "journey": "why" };
 
   function visibleTarget(id) {
@@ -514,17 +518,18 @@
     show(0);
   })();
 
-  /* ---------- IN-PAGE HASH SMOOTH SCROLL (landing) ----------
-     The landing carries two page structures while the mobile artboard is
-     outstanding, and the desktop one's ids are suffixed -d because the narrow
-     block keeps the canonical ones. A link from ANOTHER page cannot know which
-     is showing — /about's bar says `/#voices`, which on a desktop is the
-     hidden block's section — so the id is resolved here: take the canonical
-     element if it is visible, otherwise its -d twin.
+  /* ---------- CROSS-PAGE HASHES ----------
+     The landing carried two page structures until 2026-11-24, one of them
+     with `-d`-suffixed ids, and this resolved a hash to whichever was
+     showing. There is one structure now and every id is canonical, so the
+     visibility test is a no-op — it is kept because it costs nothing and
+     because HASH_ALIAS still needs a home: two section names (#coverage-types,
+     #journey) outlived their sections and are mapped onto the ones that
+     replaced them.
 
-     `offsetParent` is the test, and null means a display:none ancestor, which
-     is exactly how .pg--wide/.pg--narrow switch. Both this and the fallback
-     are guarded, so a hash naming neither simply does nothing. */
+     `offsetParent` is the test, and null means a display:none ancestor. Both
+     this and the fallback are guarded, so a hash naming neither does
+     nothing. */
   if (window.location.hash) {
     var target = visibleTarget(window.location.hash.replace("#", ""));
     if (target) {
