@@ -490,15 +490,39 @@
     show(0);
   })();
 
-  /* ---------- IN-PAGE HASH SMOOTH SCROLL (landing) ---------- */
+  /* ---------- IN-PAGE HASH SMOOTH SCROLL (landing) ----------
+     The landing carries two page structures while the mobile artboard is
+     outstanding, and the desktop one's ids are suffixed -d because the narrow
+     block keeps the canonical ones. A link from ANOTHER page cannot know which
+     is showing — /about's bar says `/#voices`, which on a desktop is the
+     hidden block's section — so the id is resolved here: take the canonical
+     element if it is visible, otherwise its -d twin.
+
+     `offsetParent` is the test, and null means a display:none ancestor, which
+     is exactly how .pg--wide/.pg--narrow switch. Both this and the fallback
+     are guarded, so a hash naming neither simply does nothing. */
+  function visibleTarget(id) {
+    var el = document.getElementById(id);
+    if (el && el.offsetParent) return el;
+    var alt = document.getElementById(id + "-d");
+    if (alt && alt.offsetParent) return alt;
+    return el || alt;
+  }
+
   if (window.location.hash) {
-    var target = document.getElementById(window.location.hash.replace("#", ""));
+    var target = visibleTarget(window.location.hash.replace("#", ""));
     if (target) {
       requestAnimationFrame(function () {
         target.scrollIntoView({ behavior: "smooth", block: "start" });
       });
     }
   }
+  /* Same resolution for a hash arriving after load — the browser's own jump
+     will have gone to the hidden one. */
+  window.addEventListener("hashchange", function () {
+    var t = visibleTarget(window.location.hash.replace("#", ""));
+    if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
 })();
 
 /* Reveal on scroll — the landing's card groups.
