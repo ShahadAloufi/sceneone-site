@@ -931,13 +931,13 @@
 
       getsEyebrow: "Why Scene One", getsH: "What You Gain from Script Coverage",
       gets1T: "A Deeper Look at Your Story",
-      gets1B: "A professional reading that helps you recognize what makes your story stand out and what you may have overlooked while writing it.",
+      gets1B: "A professional reading that helps you recognize what makes your story stand out and what you may have overlooked while writing it",
       gets2T: "In-Depth Feedback on Your Project",
-      gets2B: "Understand your script’s strengths and areas for development, from concept, characters, and plot to dialogue, structure, and production feasibility.",
+      gets2B: "Understand your script’s strengths and areas for development, from concept, characters, and plot to dialogue, structure, and production feasibility",
       gets3T: "A Clear Direction for Your Next Step",
-      gets3B: "Actionable feedback that helps you make informed creative decisions as you work on your next draft.",
+      gets3B: "Actionable feedback that helps you make informed creative decisions as you work on your next draft",
       gets4T: "A Path to New Opportunities",
-      gets4B: "Promising projects may be nominated for our Project Hosting Program, opening opportunities for further development and connections with film industry partners.",
+      gets4B: "Promising projects may be nominated for our Project Hosting Program, opening opportunities for further development and connections with film industry partners",
 
       teamH2: "The reading and development team",
 
