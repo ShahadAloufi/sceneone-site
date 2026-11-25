@@ -1358,11 +1358,12 @@ html[dir="ltr"] .landing .hero__shade {
 }
 @media (max-width: 600px) {
   .hn__stage { aspect-ratio: 3 / 4; min-block-size: 360px; }
-  /* Derived, not a fraction: the counter sits opposite the label on the same
-     line, so the label's room is the frame less that corner — 22px of inset
-     either side, the counter's own width, and a gap. A percentage happened to
-     clear it at 375 and would not at every width. */
-  .hn-slide__lab { inset-inline: 22px; max-inline-size: none; }
+  /* 36, not the 22 the frame's other corners take: the caption is centred
+     type inside a photograph, and at 22 the long English lines ran within a
+     few pixels of both edges. The counter no longer shares its line — it is
+     in the frame's top corner — so this inset is the caption's own margin
+     rather than room left over beside something else. */
+  .hn-slide__lab { inset-inline: 36px; max-inline-size: none; }
   .hn__count { inset-block-start: 24px; inset-inline-start: 22px; }
   .hn__foot { inset-block-end: 22px; inset-inline: 22px; }
   .hn__cta { padding: 14px 26px; }
