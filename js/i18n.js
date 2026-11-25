@@ -279,6 +279,11 @@
       voxEyebrow: "تجارب الكتّاب", voxH: "ماذا قال الكتّاب عن تجربتهم معنا؟",
       voxSub: "رسائل شاركنا بها الكتّاب بعد استلام تقاريرهم",
       voxMore: "عرض الرسالة كاملة ↓", voxLess: "إخفاء ↑",
+      // The messages themselves. The quotation marks are part of the string:
+      // Arabic takes guillemets, English takes curly quotes.
+      voxQ3a: "«كانت التجربة أكثر من مجرد تقرير تقييم؛ بل كانت خطوة مهمة في رحلتي ككاتب. ساعدتني على رؤية مشروعي من منظور مهني، وفهم نقاط قوته وما يحتاج إلى تطوير. منحتني ثقة أكبر بعملي، ودافعًا للاستمرار في الكتابة وتطوير مشروعي.",
+      voxQ3b: "كل الشكر والتقدير لفريق سين ون على وقتهم وجهودهم واهتمامهم بتقديم تجربة احترافية تثري رحلة الكاتب»",
+      voxQ1: "«التقييم كان عادل وأنصفني، وخلّاني أتشجع وأؤمن بمشروعي أكثر. أتمنى أتعرف على القارئ أكثر وأقول له شكرًا، وجميلك راح أردّه يوم تشوف ‹ليس حرج› يفوز بمنح وينعرض على الشاشات بإذن الله.»",
       voxName1: "سكينة", voxRole1: "كاتبة «ليس حرج»",
       voxName2: "أحمد كردي", voxRole2: "كاتب «غشنة»",
       voxName3: "محمد علي", voxRole3: "كاتب «خِفار المدينة الضائعة»",
@@ -1007,9 +1012,12 @@
       // Names and film titles stay in Arabic in both locales, like the quotes
       // themselves: they are what these people and these films are called, not
       // copy to be rendered.
-      voxName1: "سكينة", voxRole1: "كاتبة «ليس حرج»",
-      voxName2: "أحمد كردي", voxRole2: "كاتب «غشنة»",
-      voxName3: "محمد علي", voxRole3: "كاتب «خِفار المدينة الضائعة»",
+      voxQ3a: "\u201cThis experience was more than just receiving a script evaluation report; it was an important step in my journey as a writer. It helped me see my project from a professional perspective, understand its strengths, and identify areas for improvement. It gave me greater confidence in my work and motivated me to continue writing and developing my project.",
+      voxQ3b: "My sincere thanks and appreciation to the Scene One team for their time, dedication, and commitment to providing a professional experience that enriches the writer\u2019s journey.\u201d",
+      voxQ1: "\u201cThe evaluation was fair and truly did my work justice. It encouraged me and made me believe in my project even more. I hope to get to know the reader and thank them personally. I\u2019ll repay your kindness when you see Lays Haraj receive grants and make it to the screen.\u201d",
+      voxName1: "Sakeena", voxRole1: "Writer of Lays Haraj",
+      voxName2: "Ahmed Kurdi", voxRole2: "Writer of Ghashna",
+      voxName3: "Mohammed Ali", voxRole3: "Writer of Guardians of the Lost City",
       partEyebrow: "Partnerships", partH: "We collaborate with organizations across the film industry",
       partSub: "Saudi Cinema Association members receive special benefits on script coverage services.",
 

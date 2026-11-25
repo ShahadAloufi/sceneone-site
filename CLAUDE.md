@@ -687,6 +687,19 @@ the desktop design itself all still hold.
     the nav's `ltr` at first, which put the first message's dot on the wrong
     side of an Arabic page: an arrow is a glyph with a physical direction, but
     a row of dots is a position in a sequence and reads the way the page does.
+  - **The quotes and the captions are TRANSLATED now** (2026-11-25, copy
+    supplied by the owner). They were hardcoded in the markup and stayed
+    Arabic on an English page; they are `voxQ3a`, `voxQ3b` and `voxQ1` in
+    both dictionaries.
+    ⚠️ **This REVERSES the rule above it**: names and film titles were
+    deliberately left in Arabic in both locales, and the owner's English
+    copy gives «محمد علي» as "Mohammed Ali — Writer of Guardians of the Lost
+    City". All three captions follow suit. **Two of them were transliterated
+    rather than supplied** — Sakeena / Lays Haraj (from the owner's own
+    rendering inside the quote) and Ahmed Kurdi / Ghashna — so check those
+    two spellings with the writers.
+    أحمد كردي's message was written in English to begin with and reads the
+    same in both.
   - **محمد علي opens the deck**, by request. `voxDeck()` starts on the first
     panel, so source order IS the order, and `is-on` belongs to whichever is
     first — it is the resting state a page with no script shows.
