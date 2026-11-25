@@ -1225,7 +1225,7 @@
       faqA37: "The professional read is designed to give the screenplay the attention it deserves, so the assessment centres on the script itself and its dramatic and craft elements.<br><br>If you want to develop your logline or your project's pitch, dedicated services may be available for that, and the scope and deliverables of each will be set out before you submit, so you can choose what suits your project and its stage.",
 
       ctaH: "How far can your script go?",
-      ctaH2: "The next generation of filmmakers shouldn’t have to wait to be discovered.",
+      ctaH2: "The next generation of filmmakers shouldn’t have to wait to be discovered",
       ctaSub2: "Written a story worth telling? Start with Scene One",
       ctaSub: "Start with a professional read that helps you understand your script in depth, find where it can grow, and know your next step",
 
