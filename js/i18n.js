@@ -290,7 +290,7 @@
       partEyebrow: "شراكاتنا", partH: "نعمل مع شركاء في قطاع السينما",
       partSub: "نقدّم لأعضاء جمعية السينما السعودية مزايا خاصة على خدمات قراءة النصوص وتقييمها",
 
-      footBlurb: "نكتشف الكتّاب، ونطوّر مشاريعهم، ونصل بقصصهم إلى فرصتها التالية",
+      footBlurb: "نكتشف الكتّاب ونطوّر المشاريع الواعدة ونفتح للقصص آفاقًا جديدة",
       footCoverage: "تغطية النصوص", footReaders: "من يقرأ نصك", footStory: "حكاية سين ون", footPartners: "شركاء",
       footContact: "للتواصل",
       footWa: "واتساب",
@@ -1021,7 +1021,7 @@
       partEyebrow: "Partnerships", partH: "We collaborate with organizations across the film industry",
       partSub: "Saudi Cinema Association members receive special benefits on script coverage services.",
 
-      footBlurb: "We find new voices, develop their films, and build them a road to the screen",
+      footBlurb: "We discover writers, develop promising projects, and open new doors for their stories",
       footCoverage: "Coverage", footReaders: "Who reads your script", footStory: "The Scene One story", footPartners: "Partners",
       footContact: "Contact",
       footWa: "WhatsApp",
