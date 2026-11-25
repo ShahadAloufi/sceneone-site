@@ -178,8 +178,8 @@
       svHostH: "استضافة المشاريع",
       svHostP: "بناءً على نتائج التقييم، نُرشّح المشاريع الواعدة لمسار الاستضافة، ونعمل مع كتّابها على تطويرها وتقديمها إلى جهات الإنتاج والشركاء في القطاع السينمائي، بموافقتهم الكتابية مع الحفاظ على حقوقهم الفكرية",
       svHostCond: "الانضمام إلى مسار الاستضافة بالترشيح فقط، بعد استلام تقرير التقييم",
-      svCtaH: "ابدأ من الخطوة الأولى",
-      svCtaSub: "قدّم نصك، ويصلك تقرير مكتوب من قارئ متخصص",
+      svCtaH: "اتخذ خطوتك الأولى",
+      svCtaSub: "قدّم نصك واحصل على تقرير تقييم مهني يُعدّه قارئ متخصص في الكتابة السينمائية",
       hnSample: "اطّلع على نموذج تقرير",
 
       logosLbl: "نعمل مع جهات في قطاع السينما السعودي",
@@ -911,8 +911,8 @@
       svHostH: "Project Hosting",
       svHostP: "Based on coverage results, we nominate promising projects for our Project Hosting Program, working closely with their writers to develop their projects and present them to production companies and industry partners, with written consent and full protection of their intellectual property rights",
       svHostCond: "Available by nomination only, following script coverage",
-      svCtaH: "Start with the first step",
-      svCtaSub: "Submit your script and a written report from a specialist reader will reach you",
+      svCtaH: "Take the First Step",
+      svCtaSub: "Submit your script and receive a professional coverage report prepared by a specialist script reader",
       hnSample: "See a sample report",
 
       logosLbl: "Working alongside Saudi Arabia\u2019s film industry",
