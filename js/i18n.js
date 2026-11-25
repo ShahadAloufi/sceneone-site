@@ -878,8 +878,8 @@
       footLinks: "Links", footFollow: "Follow us", footLegal: "Legal",
       footMailPrompt: "Write your email address",
 
-      hnH: "Toward developing talent in screenwriting",
-      hnP: "Scene One supports writers and filmmakers with specialist services in script evaluation and project development, and opens opportunities to connect and collaborate with organizations working across the film sector",
+      hnH: "Developing the Next Generation of Screenwriting Talent",
+      hnP: "Scene One supports writers and filmmakers through professional script assessment, project development, and opportunities to connect and collaborate with industry partners",
       hnPill: "projects evaluated by our team <br>since September",
       docTitleServices: "Services | Scene One",
       svTitle: "From the report to hosting",
