@@ -500,8 +500,8 @@
       ctaH: "إلى أين يمكن أن يصل نصّك؟",
       /* The landing's own pair. ctaH/ctaSub above are shared with /readers and
          with the narrow page, which are not to change. */
-      ctaH2: "الجيل القادم من صنّاع الأفلام لا ينبغي أن ينتظر من يكتشفه",
-      ctaSub2: "هل كتبت قصة تستحق أن تُروى؟ ابدأ من المشهد الأول",
+      ctaH2: "مواهب جديدة تصنع مستقبل السينما",
+      ctaSub2: "نفتح للمواهب الواعدة فرص التطوير والوصول إلى صناعة الأفلام. قدّم نصك وابدأ رحلتك",
       ctaSub: "ابدأ بقراءة مهنية تساعدك على فهم نصّك بعمق، واكتشاف فرص تطويره، ومعرفة خطوتك التالية",
 
       footerCopyHtml: "© 2026 جميع الحقوق محفوظة لـSCENE ONE.<br><span class=\"footer__cr\">الرقم الموحد: 7054791293</span>",
@@ -1227,8 +1227,8 @@
       faqA37: "The professional read is designed to give the screenplay the attention it deserves, so the assessment centres on the script itself and its dramatic and craft elements.<br><br>If you want to develop your logline or your project's pitch, dedicated services may be available for that, and the scope and deliverables of each will be set out before you submit, so you can choose what suits your project and its stage.",
 
       ctaH: "How far can your script go?",
-      ctaH2: "The next generation of filmmakers shouldn’t have to wait to be discovered",
-      ctaSub2: "Written a story worth telling? Start with Scene One",
+      ctaH2: "New Talent Shapes the Future of Cinema",
+      ctaSub2: "We create opportunities for emerging talent to develop their work and connect with the film industry. Your journey starts with your script",
       ctaSub: "Start with a professional read that helps you understand your script in depth, find where it can grow, and know your next step",
 
       footerCopyHtml: "© 2026 All rights reserved to SCENE ONE.<br><span class=\"footer__cr\">Unified National Number: 7054791293</span>",
