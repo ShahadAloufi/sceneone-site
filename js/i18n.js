@@ -185,7 +185,7 @@
       logosLbl: "نعمل مع جهات في قطاع السينما السعودي",
 
       bentoEyebrow: "خدماتنا", bentoH: "من التقرير إلى الاستضافة",
-      bentoSub: "تبدأ رحلتك بتقرير تغطية لنصك، وعلى أساسه تُرشَّح المشاريع الواعدة لمسار الاستضافة",
+      bentoSub: "تبدأ رحلتك بتقييم نصك ومن خلاله نُرشّح المشاريع الواعدة للانضمام إلى مسار الاستضافة",
       bentoStep1: "الخطوة الأولى", bentoStep2: "الخطوة الثانية",
       bento2Note: "بالترشيح بعد استلام التقرير",
       bento1T: "تغطية النصوص",
@@ -916,8 +916,8 @@
 
       logosLbl: "Working alongside Saudi Arabia\u2019s film industry",
 
-      bentoEyebrow: "Services", bentoH: "From the report to hosting",
-      bentoSub: "Your journey starts with a coverage report on your script, and on that basis the promising projects are nominated for the hosting track",
+      bentoEyebrow: "Our Services", bentoH: "From Script Coverage to Script Hosting",
+      bentoSub: "Your journey begins with professional script coverage, through which promising projects are nominated for our Script Hosting Program",
       bentoStep1: "First step", bentoStep2: "Second step",
       bento2Note: "By nomination, after your report",
       bento1T: "Script coverage",
