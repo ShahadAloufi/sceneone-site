@@ -50,7 +50,19 @@ Actively iterating on UX polish and workflow features.
 
 **Recently shipped (2026-11-24) — the footer's social links:**
 
-- **They are black PILLS in a row**, not a column of text links, on all six
+- **SUPERSEDED 2026-11-25 — the footer has THREE LABELLED COLUMNS**
+  (الصفحات / السياسات / تواصل معنا) on all six light-footer pages, and the
+  social accounts moved INTO the contact column under the address as plain
+  links in a row. The labels had been removed on request when the footer was
+  first rebuilt; the new design brings them back under different names.
+  «حكاية سين ون» left the pages column.
+  ⚠️ **The label and address colours need `!important`.** The DARK footer
+  sets `.lx-foot__lbl` and `.lx-foot__mail` to white with `!important`, so on
+  a white footer they were invisible type until the override carried it too.
+  Specificity cannot beat `!important`.
+  The e-mail now appears twice — in the contact column and in the bottom bar.
+  The design shows only the column; the bar was left alone.
+- *(history)* **They were black PILLS in a row**, not a column of text links, on all six
   pages carrying `.lx-foot--light`. The column is marked
   `lx-foot__col--soc`, the only row among the footer's columns.
   - `align-content: flex-start` on the row and `align-self: flex-start` on
