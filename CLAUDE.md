@@ -261,7 +261,13 @@ Actively iterating on UX polish and workflow features.
     does, which is the point.
   - ⚠️ The numbering is still the ARTBOARD's and still disagrees with
     `SCRIPT_SCHEMA`: الأصالة is 09 here, Originality is third in the schema.
-    A count of nine, not a table of contents.
+    A count of nine, not a table of contents. **The owner confirmed this
+    order in the supplied copy (2026-11-25)**, so the page is right and the
+    disagreement is with the schema's own ordering.
+  - ⚠️ **`axis3` reads "Authenticity" in English, not "Originality"**, while
+    `SCRIPT_SCHEMA`'s key is still `Originality` and the report renderer
+    prints it as such. The page and the report therefore name the same axis
+    differently in English.
 - **The price is the riyal MARK, after the figure**, where the word «ريال»
   used to be — so in Arabic it sits on the left of the amount. (It led the
   figure for one commit; put back on request.) It reuses the landing's

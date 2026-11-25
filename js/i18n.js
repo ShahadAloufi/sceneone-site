@@ -131,7 +131,7 @@
       haifaTag1: "الدراما النفسية والاجتماعية", haifaTag2: "الشخصيات",
       fajrTag1: "بناء القصة", fajrTag2: "اللغة البصرية",
 
-      rdAxesEyebrow: "ما الذي يصلك", rdAxesH: "تقرير مفصّل عبر تسعة محاور",
+      rdAxesEyebrow: "ما الذي تحصل عليه", rdAxesH: "تقرير مفصّل وفق تسعة محاور تقييمية",
 
       /* ---- landing v2 ------------------------------------------------- */
       navAboutUs: "من نحن", navCoverage: "تغطية النصوص",
@@ -864,7 +864,7 @@
       haifaTag1: "Psychological & social drama", haifaTag2: "Character",
       fajrTag1: "Story construction", fajrTag2: "Visual language",
 
-      rdAxesEyebrow: "What you receive", rdAxesH: "A detailed report across nine axes",
+      rdAxesEyebrow: "What You Receive", rdAxesH: "A Comprehensive Report Across Nine Evaluation Criteria",
 
       /* ---- landing v2 ------------------------------------------------- */
       navAboutUs: "About", navCoverage: "Coverage",
@@ -969,8 +969,8 @@
       readLbl: "A detailed report from a specialist reader, covering nine key areas",
       readLink: "View a sample report",
       readImgAlt: "A screenplay page marked up by hand",
-      axis1: "Concept and theme", axis2: "Hook", axis3: "Originality", axis4: "Stakes and plot", axis5: "Characters",
-      axis6: "Dialogue", axis7: "Structure and pacing", axis8: "Production feasibility", axis9: "Presentation and formatting",
+      axis1: "Concept & Theme", axis2: "Hook", axis3: "Authenticity", axis4: "Stakes & Plot", axis5: "Characters",
+      axis6: "Dialogue", axis7: "Structure & Pacing", axis8: "Production Feasibility", axis9: "Presentation & Formatting",
 
       svcEyebrow: "Services", svcH: "Where to start", svcPill: "Limited-time launch pricing",
       svcBtn: "Submit your script",
