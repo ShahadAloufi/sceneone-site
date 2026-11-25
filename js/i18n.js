@@ -18,8 +18,8 @@
   // each page just names its own key (see T.ar/T.en "docTitle*" entries).
   // Falls back to the landing page's title if a page doesn't opt in.
   var TITLES = {
-    ar: "Scene One",
-    en: "Scene One"
+    ar: "Scene One | سين ون",
+    en: "Scene One | سين ون"
   };
 
   var T = {
