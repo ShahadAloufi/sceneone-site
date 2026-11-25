@@ -465,6 +465,30 @@
 .lx-foot--light .lx-foot__col { gap: 14px; }
 .lx-foot--light .lx-foot__col a { font-size: 16px; color: #4a443d; }
 .lx-foot--light .lx-foot__col a:hover { color: var(--lx-red); }
+/* ---- the three labelled columns (2026-11-25) ----
+   Each column opens with a grey label. They were removed on request back in
+   November when the footer was first rebuilt; the new design brings them
+   back under different names — الصفحات / السياسات / تواصل معنا — and the
+   social accounts move INTO the contact column as plain links rather than
+   standing as a column of pills of their own. */
+/* ⚠️ !important on the colours, because the DARK footer's own rules carry it
+   — `.lx-foot__lbl` is white-on-38% and `.lx-foot__mail` is pure white, both
+   `!important`, and on this white footer that is invisible type. Specificity
+   cannot beat `!important`; only `!important` can. */
+.lx-foot--light .lx-foot__lbl {
+  margin: 0 0 4px;
+  font-family: var(--font-head);
+  font-size: 13px !important;
+  line-height: 20px;
+  font-weight: 500;
+  color: var(--lx-muted-2) !important;
+}
+.lx-foot--light .lx-foot__mail { font-size: 16px; color: #4a443d !important; }
+.lx-foot--light .lx-foot__mail:hover { color: var(--lx-red) !important; }
+.lx-foot--light .lx-foot__soc-row { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.lx-foot--light .lx-foot__soc-row a { font-size: 16px; color: #4a443d; }
+.lx-foot--light .lx-foot__soc-row a:hover { color: var(--lx-red); }
+
 /* The social set is a ROW of pills. `align-content: flex-start` keeps them at
    the top of the column track instead of stretching down beside the taller
    links column, and `align-self: flex-start` on the links stops each pill
