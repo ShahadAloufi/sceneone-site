@@ -880,7 +880,7 @@
 
       hnH: "Developing the Next Generation of Screenwriting Talent",
       hnP: "Scene One supports writers and filmmakers through professional script assessment, project development, and opportunities to connect and collaborate with industry partners",
-      hnPill: "projects evaluated by our team <br>since September",
+      hnPill: "Projects evaluated by our team <br>since September",
       docTitleServices: "Services | Scene One",
       svTitle: "From the report to hosting",
       svLede: "Your journey starts with a coverage report, and on its strength the most promising projects are nominated for the hosting track",
