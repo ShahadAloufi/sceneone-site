@@ -694,10 +694,9 @@ the desktop design itself all still hold.
     ⚠️ **This REVERSES the rule above it**: names and film titles were
     deliberately left in Arabic in both locales, and the owner's English
     copy gives «محمد علي» as "Mohammed Ali — Writer of Guardians of the Lost
-    City". All three captions follow suit. **Two of them were transliterated
-    rather than supplied** — Sakeena / Lays Haraj (from the owner's own
-    rendering inside the quote) and Ahmed Kurdi / Ghashna — so check those
-    two spellings with the writers.
+    City". All three captions follow suit. **Sukainah** and **Lays Haraj** are
+    the owner's own spellings; **Ahmed Kurdi / Ghashna** is still a
+    transliteration of mine and wants checking with him.
     أحمد كردي's message was written in English to begin with and reads the
     same in both.
   - **محمد علي opens the deck**, by request. `voxDeck()` starts on the first

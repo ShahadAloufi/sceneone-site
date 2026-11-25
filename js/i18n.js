@@ -1015,7 +1015,7 @@
       voxQ3a: "\u201cThis experience was more than just receiving a script evaluation report; it was an important step in my journey as a writer. It helped me see my project from a professional perspective, understand its strengths, and identify areas for improvement. It gave me greater confidence in my work and motivated me to continue writing and developing my project.",
       voxQ3b: "My sincere thanks and appreciation to the Scene One team for their time, dedication, and commitment to providing a professional experience that enriches the writer\u2019s journey.\u201d",
       voxQ1: "\u201cThe evaluation was fair and truly did my work justice. It encouraged me and made me believe in my project even more. I hope to get to know the reader and thank them personally. I\u2019ll repay your kindness when you see Lays Haraj receive grants and make it to the screen.\u201d",
-      voxName1: "Sakeena", voxRole1: "Writer of Lays Haraj",
+      voxName1: "Sukainah", voxRole1: "Writer of Lays Haraj",
       voxName2: "Ahmed Kurdi", voxRole2: "Writer of Ghashna",
       voxName3: "Mohammed Ali", voxRole3: "Writer of Guardians of the Lost City",
       partEyebrow: "Partnerships", partH: "We collaborate with organizations across the film industry",
