@@ -514,7 +514,7 @@
 
       /* ---- /about — the founders page ---------------------------------- */
       /* ---- /about, rebuilt 2026-11-24 ---------------------------------- */
-      abSub: "سين ون شركة سعودية تأسست عام 2026، متخصصة في اكتشاف الكتّاب وتقييم النصوص وتطوير المشاريع السينمائية وربطها بفرص الصناعة",
+      abSub: "سين ون شركة سعودية تأسست عام 2026، متخصصة في اكتشاف الكتّاب، وتقييم النصوص، وتطوير المشاريع السينمائية الواعدة وربطها بفرص وشركاء في القطاع السينمائي",
       abHeroCta2: "تعرّف علينا",
       abStoryEyebrow: "البداية", abStoryH: "لماذا تأسست سين ون؟",
       abStoryP: "تأسست سين ون استجابةً للحاجة إلى خدمات متخصصة في قراءة النصوص وتطويرها، وتمكين الكتّاب من تطوير مشاريعهم وفق معايير مهنية والوصول إلى الفرص المناسبة في القطاع السينمائي",
@@ -1240,10 +1240,10 @@
       docTitleAbout: "About | Scene One",
 
       /* ---- /about — the founders page ---------------------------------- */
-      abEyebrow: "About us",
+      abEyebrow: "About Us",
       /* ---- /about, rebuilt 2026-11-24 ---------------------------------- */
-      abSub: "Scene One is a Saudi company founded in 2026, specialising in finding writers, evaluating scripts, developing film projects and connecting them to opportunities in the industry",
-      abHeroCta2: "Get to know us",
+      abSub: "Founded in 2026, Scene One is a Saudi company specializing in talent discovery, script coverage, and the development of promising film projects, connecting them with industry opportunities and partners",
+      abHeroCta2: "Get to Know Us",
       abStoryEyebrow: "The beginning", abStoryH: "Why Scene One was founded",
       abStoryP: "Scene One was founded in answer to the need for specialist script reading and development — so that writers can develop their projects to professional standards and reach the right opportunities in the film sector",
       abFoundersEyebrow: "The founders",
@@ -1252,7 +1252,7 @@
       abCtaH: "Start developing your film project",
       abCtaSub: "See what we offer writers and filmmakers",
       abCtaBtn: "Explore our services",
-      abH: "Developing talent and film projects",
+      abH: "Developing Screenwriting Talent and Film Projects",
       abP1: "Scene One began with a shared love of storytelling and a question: how can we help more Saudi writers bring their stories to the screen? We saw promising voices that needed dedicated support to develop their scripts and navigate the next steps.",
       abP2: "We founded Scene One to bring that support together. Combining creative development with business strategy, we help writers strengthen their work, understand its production potential, and connect with the people who can help move it forward.",
       abFoundersH: "Leadership",
