@@ -326,8 +326,14 @@
 .lx-gets__c {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: clamp(28px, 3.4vw, 46px);
+  /* TOP-aligned, not space-between. The card's three children are the chip,
+     the heading and the body, so with the slack shared out the heading's
+     position was a function of how long the body underneath it was — card 01
+     has the shortest copy and its heading sat a line and a half below the
+     others'. The gap is carried by the heading's own margin instead, since
+     one flex `gap` cannot be 46px above the heading and 8px below it. */
+  justify-content: flex-start;
+  gap: 0;
   padding: 32px 28px;
   border-radius: 8px;
   background: var(--lx-cream);
@@ -348,7 +354,7 @@
   font-variant-numeric: tabular-nums;
 }
 .lx-gets__t {
-  margin: 0 0 8px;
+  margin: clamp(28px, 3.4vw, 46px) 0 8px;
   font-family: var(--font-head);
   font-size: 20px;
   font-weight: 600;
@@ -1447,7 +1453,8 @@ html[dir="ltr"] .landing .hero__shade {
 
   /* ---- what you get: a 2x2 of grey cards ---- */
   .lx-gets__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .lx-gets__c { padding: 18px 16px; gap: 22px; }
+  .lx-gets__c { padding: 18px 16px; }
+  .lx-gets__t { margin-block-start: 22px; }
   .lx-gets__n { font-size: 13px; }
   .lx-gets__t { font-size: 16px; line-height: 24px; }
   .lx-gets__b { font-size: 13px; line-height: 20px; }

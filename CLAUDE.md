@@ -458,6 +458,13 @@ Actively iterating on UX polish and workflow features.
     enough: the three captions are 1 and 2 lines long, and only
     bottom-anchoring clears the bars for all of them. 31px clear at 390,
     identical on every slide.
+  - ⚠️ **The «ما الذي تحصل عليه» cards are TOP-aligned, not
+    `space-between`.** Their three children are the chip, the heading and
+    the body, so sharing the slack made each heading's position a function
+    of how long the body under it was — card 01 has the shortest copy and
+    its heading sat a line and a half below the others'. The chip-to-heading
+    gap is carried by the HEADING'S OWN MARGIN now, because one flex `gap`
+    cannot be 46px above the heading and 8px below it.
   - ⚠️ **`.lx-team__over` is `display: none` below 1000px.** It is a HOVER
     panel, and a phone has no hover, so it sat permanently open over every
     portrait. The bio it carries is on `/readers`.
