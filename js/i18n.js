@@ -110,8 +110,8 @@
       rdEyebrow: "الفريق",
       /* ---- /readers, rebuilt 2026-11-24 -------------------------------- */
       rdHeroCta2: "تعرّف على الفريق",
-      rdTeamEyebrow: "فريق القرّاء", rdTeamH: "قرّاء من صنّاع الأفلام وكتّاب السيناريو",
-      rdTeamSub: "ومنتج تطوير إبداعي يتولّى المشاريع بعد التوصية",
+      rdTeamEyebrow: "فريق القراءة والتطوير", rdTeamH: "صنّاع أفلام وكتّاب سيناريو يقرؤون نصك",
+      rdTeamSub: "فريق متخصص في تقييم النصوص وتطوير المشاريع السينمائية الواعدة",
       rdCtaH: "تعرّف على إمكانات نصك من منظور متخصص",
       rdCtaSub: "احصل على تقييم مهني لنصك من فريق متخصص في القراءة والتطوير السينمائي",
       rdTitle: "من يقرأ نصك؟",
@@ -843,8 +843,8 @@
       rdEyebrow: "Our Team",
       /* ---- /readers, rebuilt 2026-11-24 -------------------------------- */
       rdHeroCta2: "Meet the Team",
-      rdTeamEyebrow: "The readers", rdTeamH: "Readers who are filmmakers and screenwriters",
-      rdTeamSub: "and a creative development producer who takes a project on once it is recommended",
+      rdTeamEyebrow: "Script Reading & Development Team", rdTeamH: "Filmmakers and Screenwriters Behind Your Script Coverage",
+      rdTeamSub: "A dedicated team specializing in script assessment and the development of selected film projects",
       rdCtaH: "See what your script can be, from a specialist's perspective",
       rdCtaSub: "Get a professional evaluation of your script from a team that specialises in reading and film development",
       rdTitle: "Who Reads Your Script?",
