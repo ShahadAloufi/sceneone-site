@@ -287,19 +287,21 @@
 .sv2 .lang-btn:hover,
 .sb2 .lang-btn:hover,
 .rd2 .lang-btn:hover { color: var(--lx-black); }
-/* The pill inverts with the bar: .nav__cta is cream-on-black for a dark bar,
-   which on this one would be a white pill on white. Black-on-light is also
-   what the design draws, and it matches the hero's own primary button. */
+/* RED, the same primary the hero and the closing slab use (2026-11-25). It
+   was black on these light bars — `.nav__cta`'s own cream-on-black would be
+   a white pill on white — and black read as the design's, but the page has
+   exactly one primary action and it should look the same wherever it is
+   offered. The hover is the hero's hover too. */
 .landing .nav__cta,
 .ab2 .nav__cta,
 .sv2 .nav__cta,
 .sb2 .nav__cta,
-.rd2 .nav__cta { background: var(--lx-black); color: var(--lx-cream); }
+.rd2 .nav__cta { background: var(--lx-red); color: #fff; }
 .landing .nav__cta:hover,
 .ab2 .nav__cta:hover,
 .sv2 .nav__cta:hover,
 .sb2 .nav__cta:hover,
-.rd2 .nav__cta:hover { background: var(--lx-red); color: #fff; }
+.rd2 .nav__cta:hover { background: #e63208; color: #fff; }
 /* The pill is shared chrome at 14px. The landing's type is on a 4px grid, so
    it takes 16 HERE only — the other four pages keep the 14 they were drawn
    with. */

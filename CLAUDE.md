@@ -788,6 +788,11 @@ the desktop design itself all still hold.
   only on `.scrolled`, since a shadow under glass reads as grime; and
   `.scrolled` kept in step with the resting state so the scroll handler in
   `js/main.js` still has nothing to undo.
+  **The bar's pill is RED** (2026-11-25), the same primary the hero and the
+  closing slab use, on all five light-bar pages. It was black — `.nav__cta`'s
+  own cream-on-black would be a white pill on white — and black is what the
+  artboard draws, but the page has exactly one primary action and it should
+  look the same wherever it is offered. Hover is the hero's `#e63208`.
   **`.rd2`/`.tm2`/`.sb2`/`.ab2` keep the black bar** — they all still open on a
   dark hero — so the landing's bar no longer matches theirs. Intended trade: a
   bar belongs to the page under it before it matches the page next door.
