@@ -607,7 +607,11 @@ the desktop design itself all still hold.
   - **«سين ون بالأرقام» and its red dot are gone from the frame's foot**, so
     the bars are the only thing left in it — hence `justify-content: flex-end`
     there, since `space-between` parks a lone child on the START edge, which is
-    the side the eyebrow used to hold. **The frame keeps that line as its
+    the side the eyebrow used to hold. **The bars are CENTRED in the frame
+    at every width** (2026-11-25). They sat on the end edge only because
+    that is where `space-between` left them once the eyebrow went, which is
+    a reason that expired with the eyebrow.
+    **The frame keeps that line as its
     `aria-label`**: it is the carousel's accessible name, and dropping it too
     would leave the control unnamed. `hnEyebrow` is still the narrow page's.
   - **The slide's caption sits UNDER the figure, centred** (it was in the

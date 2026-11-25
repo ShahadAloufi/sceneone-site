@@ -1316,10 +1316,12 @@ html[dir="ltr"] .landing .hero__shade {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  /* The bars are the only thing in here since the eyebrow was removed, and
-     `space-between` would park a lone child on the START edge — the side the
-     eyebrow used to hold. flex-end keeps them where they have always been. */
-  justify-content: flex-end;
+  /* CENTRED, at every width. The bars are the only thing in here since the
+     eyebrow was removed; they sat on the end edge only because that is where
+     `space-between` had left them once the eyebrow went, which is a reason
+     that expired with the eyebrow. A lone control reads as a control under
+     the middle of the frame and as a stray mark in its corner. */
+  justify-content: center;
   gap: 16px 24px;
 }
 
@@ -1409,10 +1411,6 @@ html[dir="ltr"] .landing .hero__shade {
      long, so bottom-anchoring is the only placement that clears the bars for
      all of them whatever the figure does. */
   .hn-slide__lab { inset-block-start: auto; inset-block-end: 56px; margin: 0; }
-  /* The bars centre under the caption rather than sitting on the frame's end
-     edge, where on a narrow frame they read as a stray mark rather than a
-     control. The desktop keeps flex-end — see the note on .hn__foot. */
-  .hn__foot { justify-content: center; }
   .hn__copy { padding-inline: 8px; gap: 16px; align-items: stretch; }
   .hn__h { font-size: 34px; line-height: 44px; }
   .hn__p { font-size: 15px; line-height: 26px; }
