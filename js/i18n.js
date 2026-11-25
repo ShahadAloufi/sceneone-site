@@ -114,8 +114,8 @@
       rdTeamSub: "ومنتج تطوير إبداعي يتولّى المشاريع بعد التوصية",
       rdCtaH: "تعرّف على إمكانات نصك من منظور متخصص",
       rdCtaSub: "احصل على تقييم مهني لنصك من فريق متخصص في القراءة والتطوير السينمائي",
-      rdTitle: "من يقرأ نصك",
-      rdLede: "يقرأ نصك صانع أفلام أو كاتب سيناريو، بالمعايير نفسها التي تُقرأ بها المشاريع في غرف التطوير، ويكتب لك أين تكمن قوة نصك وما الذي يحتاج تطويرًا",
+      rdTitle: "من يقرأ نصك؟",
+      rdLede: "يقرأ نصك كتّاب سيناريو وصنّاع أفلام متخصصون، وفق معايير مهنية تساعدك على معرفة نقاط قوة نصك والجوانب التي تحتاج إلى تطوير",
 
       rdMethodEyebrow: "المنهج", rdMethodH: "كيف نقرأ نصك",
       rdM1T: "خبرة عملية",
@@ -840,15 +840,15 @@
       tmB12: "<p>These terms are governed by and interpreted in accordance with the laws of the <strong>Kingdom of Saudi Arabia</strong>. Saudi courts shall have exclusive jurisdiction over any disputes arising from the use of the service.</p><p>We always seek to resolve any dispute amicably before resorting to litigation, and we encourage users to contact us directly regarding any concerns or disputes.</p>",
 
       /* ---- readers v2 -------------------------------------------------- */
-      rdEyebrow: "The team",
+      rdEyebrow: "Our Team",
       /* ---- /readers, rebuilt 2026-11-24 -------------------------------- */
-      rdHeroCta2: "Meet the team",
+      rdHeroCta2: "Meet the Team",
       rdTeamEyebrow: "The readers", rdTeamH: "Readers who are filmmakers and screenwriters",
       rdTeamSub: "and a creative development producer who takes a project on once it is recommended",
       rdCtaH: "See what your script can be, from a specialist's perspective",
       rdCtaSub: "Get a professional evaluation of your script from a team that specialises in reading and film development",
-      rdTitle: "Who reads your script",
-      rdLede: "Your script is read by a filmmaker or a screenwriter, against the same standards projects meet in development rooms, and they write down where its strength lies and what needs work. After the report, we carry on developing the promising projects with the writer and the director, then take them to production companies to back the writer.",
+      rdTitle: "Who Reads Your Script?",
+      rdLede: "Your script is evaluated by experienced screenwriters and filmmakers using professional assessment criteria to identify its strengths and areas for development",
 
       rdMethodEyebrow: "The method", rdMethodH: "How we read your script",
       rdM1T: "Working experience",
