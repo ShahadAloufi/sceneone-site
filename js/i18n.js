@@ -914,7 +914,7 @@
       svCtaSub: "Submit your script and a written report from a specialist reader will reach you",
       hnSample: "See a sample report",
 
-      logosLbl: "We work with organizations across the Saudi film sector",
+      logosLbl: "Working alongside Saudi Arabia\u2019s film industry",
 
       bentoEyebrow: "Services", bentoH: "From the report to hosting",
       bentoSub: "Your journey starts with a coverage report on your script, and on that basis the promising projects are nominated for the hosting track",
