@@ -276,8 +276,8 @@
 
       // The two quotes themselves stay in the markup, in the language each was
       // written in. Only the chrome around them is translated.
-      voxEyebrow: "تجارب الكتّاب", voxH: "ماذا قال الكتّاب عن تجربتهم معنا؟",
-      voxSub: "رسائل شاركنا بها الكتّاب بعد استلام تقاريرهم",
+      voxEyebrow: "تجارب الكتّاب", voxH: "ماذا يقول الكتّاب عن تجربتهم معنا؟",
+      voxSub: "رسائل شاركنا بها الكتّاب بعد استلام تقارير التقييم",
       voxMore: "عرض الرسالة كاملة ↓", voxLess: "إخفاء ↑",
       // The messages themselves. The quotation marks are part of the string:
       // Arabic takes guillemets, English takes curly quotes.
@@ -1006,8 +1006,8 @@
       teamEyebrow: "Our Team", teamH: "Who reads your script?", teamMore: "Read more",
       teamSub: "Our team brings together screenwriters and filmmakers specializing in script assessment, alongside creative development professionals who guide selected projects through the development process",
 
-      voxEyebrow: "From the writers", voxH: "What our writers say",
-      voxSub: "Feedback from writers after receiving their reports.",
+      voxEyebrow: "Writer Testimonials", voxH: "What Writers Say About Their Experience",
+      voxSub: "Feedback shared by writers after receiving their script coverage reports",
       voxMore: "Read the full message ↓", voxLess: "Hide ↑",
       // Names and film titles stay in Arabic in both locales, like the quotes
       // themselves: they are what these people and these films are called, not
