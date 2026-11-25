@@ -435,6 +435,14 @@ Actively iterating on UX polish and workflow features.
     showed through as a hairline across the page. That is what the "thin
     line" between sections was on a phone. Any page whose bands are all
     white wants the same: the wrapper's colour has to agree with them.
+  - **The social-proof copy is ONE line at every width** (2026-11-25). It had
+    a `<br>` inside the string and a 24ch cap protecting that break; both are
+    gone, so it runs beside the figure rather than stacking under the faces.
+    - The `<br>` stays in the string and is hidden in CSS, so a narrow
+      desktop can still wrap it — English does, at 1000px, which is the
+      graceful case. **No `white-space: nowrap`**: at 1000 the English line
+      needs exactly the width it has, and nowrap would overflow where
+      wrapping merely costs a second line.
   - **The social-proof row SPREADS on a phone** (`justify-content:
     space-between`), and its copy grows into what is left and **reflows** to
     that width — the desktop's forced break would leave the line short of

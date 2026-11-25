@@ -1098,16 +1098,16 @@ html[dir="ltr"] .landing .hero__shade {
   line-height: 24px;
   font-weight: 500;
   color: var(--lx-ink);
-  /* A measure, so it breaks onto the artboard's two lines instead of
-     stretching the row out to one. */
-  /* The copy carries its own <br>, so this measure is only a backstop
-     against a longer string stretching the row — it must stay WIDE enough
-     that it never breaks the line the copy already broke. */
-  max-inline-size: 24ch;
-  /* Centred, not start-aligned: the two lines are different lengths and
-     ragging them against the figure leaves a notch beside it. */
+  /* ONE line, no measure. The copy was broken onto the artboard's two lines
+     by a <br> inside the string and capped at 24ch to protect that break;
+     both are gone, so it runs beside the figure instead of stacking under
+     the faces. The <br> stays in the string — the mobile row would still
+     break there if it needed to — and the SPACE before it is what keeps
+     «فريقنا» and «منذ» apart once the break is suppressed. */
+  max-inline-size: none;
   text-align: center;
 }
+.hn__pill-t br { display: none; }
 .hn__pill-n {
   font-family: var(--font-head);
   font-size: 32px;
@@ -1434,7 +1434,6 @@ html[dir="ltr"] .landing .hero__shade {
      one word. The space collapses wherever the break is honoured, so the
      desktop is unaffected. */
   .hn__pill-t { flex: 1 1 auto; }
-  .hn__pill-t br { display: none; }
   .hn__faces img { inline-size: 30px; block-size: 30px; }
   .hn__pill-n { font-size: 20px; line-height: 28px; }
   .hn__pill-t { font-size: 13px; line-height: 20px; max-inline-size: none; text-align: start; }
