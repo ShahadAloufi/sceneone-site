@@ -272,7 +272,7 @@
       indP2: "نوفّر عليكم وقت القراءة والتقييم الأولي، ونساعدكم على اختيار المشاريع الأقرب إلى توجهكم",
 
       teamEyebrow: "الفريق", teamH: "من يقرأ نصك؟", teamMore: "تعرّف على الفريق",
-      teamSub: "يضم فريقنا كتّاب سيناريو وصنّاع أفلام يقرؤون النصوص ويقيّمونها، إلى جانب منتج تطوير إبداعي يتولّى متابعة المشاريع المرشّحة للتطوير",
+      teamSub: "يضم فريقنا كتّاب سيناريو وصنّاع أفلام متخصصين في تقييم النصوص، إلى جانب فريق تطوير إبداعي يتولى متابعة المشاريع المرشّحة للتطوير",
 
       // The two quotes themselves stay in the markup, in the language each was
       // written in. Only the chrome around them is translated.
@@ -561,7 +561,7 @@
       auTeamTitle: "فريق القرّاء",
       haifaName: "هيفاء السيد", haifaRole: "قارئة نصوص ومستشارة تطوير",
       haifaBio: "كاتبة سيناريو متخصصة في الدراما النفسية والاجتماعية. تضم أعمالها مشاريع حائزة على جوائز وعُرضت في مهرجانات ومنصات دولية، مع خبرة في تطوير أفلام ومسلسلات ترتكز على الشخصيات والعمق الإنساني.",
-      widName: "ود القبلان", widRole: "قارئة رئيسية",
+      widName: "ود القبلان", widRole: "قائدة فريق القراءة",
       widBio: "كاتبة سيناريو، منتجة تطوير، وقائدة عمل (showrunner) تهتم بالمحتوى المرئي ومدى تأثيره عاطفيًا على الجمهور. تقرأ ود النصوص بعينٍ تبحث عما ينجح في القصة، وما يمكن تطويره، وأين تكمن قوتها سرديًا، إيمانًا منها بدور القصة الجيدة في إثراء السينما السعودية.",
       fajrName: "فجر الفرحان", fajrRole: "قارئة نصوص",
       fajrBio: "متخصصة في السينما والفنون الأدائية، بخبرة في كتابة السيناريو والإنتاج الإبداعي والسرد البصري. تركّز في قراءاتها على بناء القصة، واللغة البصرية، والأثر العاطفي للنص.",
@@ -939,7 +939,7 @@
       gets4T: "A Path to New Opportunities",
       gets4B: "Promising projects may be nominated for our Project Hosting Program, opening opportunities for further development and connections with film industry partners",
 
-      teamH2: "The reading and development team",
+      teamH2: "Script Reading & Development Team",
 
       voxAsSent: "The message as it reached us",
       voxGo1: "First message", voxGo2: "Second message", voxGo3: "Third message",
@@ -1003,8 +1003,8 @@
       indP1: "Every project we present has been carefully read and evaluated to identify its strengths and the areas it still needs to develop.",
       indP2: "We save you time on initial script evaluation by presenting projects with clearer stories, stronger creative direction, and a defined understanding of the film and its intended audience.",
 
-      teamEyebrow: "The team", teamH: "Who reads your script?", teamMore: "Read more",
-      teamSub: "Our readers include filmmakers and screenwriters, alongside a creative development producer who takes projects forward after recommendation.",
+      teamEyebrow: "Our Team", teamH: "Who reads your script?", teamMore: "Read more",
+      teamSub: "Our team brings together screenwriters and filmmakers specializing in script assessment, alongside creative development professionals who guide selected projects through the development process",
 
       voxEyebrow: "From the writers", voxH: "What our writers say",
       voxSub: "Feedback from writers after receiving their reports.",
@@ -1283,15 +1283,15 @@
       auAboutP2: "We do not offer an impressionistic read. We offer an industry evaluation held to the standards of professional reading rooms, one that helps writers understand exactly where their script stands and make clear decisions about developing it.",
       auAboutP3: "We work as the link between promising scripts and real opportunities in the film industry, through close reading, practical analysis, and a perspective that helps a project move from draft to ready.",
       auTeamTitle: "Readers Profile",
-      haifaName: "Haifa Alsaeed", haifaRole: "Script Reader and Development Consultant",
+      haifaName: "Haifa Alsaeed", haifaRole: "Script Reader & Development Consultant",
       haifaBio: "Screenwriter specializing in psychological and social narratives. Her work has been featured in festivals and international platforms, with experience in developing both films and series. Her approach focuses on character depth and human-driven storytelling.",
-      widName: "Wid AlQublan", widRole: "Lead Reader",
+      widName: "Wid AlQublan", widRole: "Lead Script Reader",
       widBio: "Screenwriter, development producer and showrunner, drawn to visual storytelling and how deeply it lands with an audience. Wad reads for what is working in a story, what can be developed, and where its narrative strength lies, out of a belief in what a good story does for Saudi cinema.",
       fajrName: "Fajr Alfarhan", fajrRole: "Script Reader",
       fajrBio: "Specialized in film and performing arts, with experience in screenwriting, creative production, and visual storytelling. Her analysis focuses on story structure, visual language, and the emotional impact of the script.",
-      hasanName: "Hasan Zarroug", hasanRole: "Head of Creative Development",
+      hasanName: "Hasan Zarroug", hasanRole: "Creative Development Lead",
       hasanBio: "Film director with over 15 years in film and television, holding a master's in international screenwriting and film production from Milan. He turns ideas into affecting, audience-facing projects, drawing on experience across Africa, the Middle East and Europe.",
-      hishamName: "Hisham Ibrahim", hishamRole: "Script reader and development producer",
+      hishamName: "Hisham Ibrahim", hishamRole: "Script Reader & Development Producer",
       hishamBio: "Screenwriter and creative writer, and a screenwriting master's student, who began in 2018 and has worked across features, shorts, series, animation and documentary. He co-wrote the film «Abd», winner of three awards at the Saudi Film Festival, and is now a writer and development producer at Sila Studio. He has led more than 16 workshops in screenwriting and filmmaking.",
 
       // ---- about-coverage.html ----
