@@ -1401,9 +1401,16 @@ html[dir="ltr"] .landing .hero__shade {
      edge with the page's width empty beside it. */
   .hn__in { display: flex; flex-direction: column; align-items: stretch; gap: 22px; }
   .hn__stage { order: -1; block-size: 380px; }
-  /* The figure comes down from 43cqw, so it does not crowd the caption in a
-     380px frame. */
-  .hn-slide { --hn-num: clamp(96px, 34cqw, 248px); }
+  /* ⚠️ The figure is CAPPED at 132, and the cap is what matters. The frame
+     is a fixed 380px tall here but as wide as the viewport, so a figure
+     sized in `cqw` keeps growing on a tablet while the box it sits in does
+     not: at 820px the mask reached the frame's floor and sat 107px over the
+     caption. 34cqw is still what a phone gets (124px at 390); the cap only
+     binds above ~390.
+     The mask also starts higher, 18% rather than 28%, which is the room the
+     three-line captions need below it. */
+  .hn-slide { --hn-num: clamp(96px, 34cqw, 132px); }
+  .hn-slide__mask { inset-block-start: 18%; }
   /* ⚠️ The caption is anchored to the frame's FOOT here, not to the mask.
      On the desktop it hangs off the mask's own geometry (28% + the figure's
      height) so the two cannot drift apart — but that makes its position a
