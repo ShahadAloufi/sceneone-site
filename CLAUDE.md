@@ -494,8 +494,15 @@ Actively iterating on UX polish and workflow features.
     CROSS axis — so the hero's frame shrank to its content and sat against
     the page's reading edge with the width empty beside it. Caught on a real
     phone, not in the pane.
-  - **The hero figure is `34cqw` on mobile, down from `43`**, so it does not
-    crowd the caption in a 380px frame.
+  - **The hero figure is `34cqw` on mobile, down from `43`, AND CAPPED AT
+    132px** (2026-11-26). ⚠️ **The cap is the load-bearing half.** The frame
+    is a fixed 380px tall below 1000px but as wide as the viewport, so a
+    figure sized in `cqw` keeps growing on a tablet while the box it sits in
+    does not — at 820px the mask reached the frame's floor and sat **107px
+    over** the bottom-anchored caption. The phone is unaffected (34cqw is
+    124px at 390); the cap only binds above it.
+    **The mask also starts at 18%, not the desktop's 28%** — that is the
+    room the three-line captions need below it.
   - ⚠️ **The slide CAPTION is anchored to the frame's FOOT there, not to the
     mask.** On the desktop it hangs off the mask's own geometry (28% plus the
     figure's height) so the two cannot drift apart — but that makes its
