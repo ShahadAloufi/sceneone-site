@@ -2756,17 +2756,22 @@ html[dir="ltr"] .toc button { text-align: left; }
 }
 .overlay__brand { display: flex; align-items: center; gap: 11px; }
 .overlay__brand img { height: 36px; width: auto; }
+.overlay__top-end { display: flex; align-items: center; gap: 10px; }
+/* A SOLID square, not a bare glyph: beside the language pill a plain ✕ read
+   as a third, quieter control rather than the way out. */
 .overlay__close {
-  inline-size: 44px;
-  block-size: 44px;
+  inline-size: 40px;
+  block-size: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #000;
+  border-radius: 8px;
+  background: #000;
+  color: #f9f4ef;
   padding: 0;
 }
-.overlay__close:hover { color: #000; opacity: .6; }
-.overlay__close svg { height: 22px; width: 22px; }
+.overlay__close:hover { background: #241f1b; color: #f9f4ef; opacity: 1; }
+.overlay__close svg { height: 18px; width: 18px; }
 
 /* ---- the destinations ---- */
 
@@ -2776,15 +2781,14 @@ html[dir="ltr"] .toc button { text-align: left; }
   flex: 0 0 auto;
   justify-content: flex-start;
   gap: 0;
-  padding: 4px 24px 0;
-  border-block-start: 1px solid rgba(0, 0, 0, .1);
-  margin-block-start: 4px;
+  padding: 20px 20px 0;
 }
 .overlay__links a {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 18px;
-  min-block-size: 66px;
+  padding-block: 18px;
   border-block-end: 1px solid rgba(0, 0, 0, .1);
   letter-spacing: normal;
   color: #000;
@@ -2802,7 +2806,7 @@ html[dir="ltr"] .toc button { text-align: left; }
 }
 .overlay__label {
   font-family: var(--font-head);
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 600;
   line-height: 1.3;
   color: #000;
@@ -2840,14 +2844,13 @@ html[dir="ltr"] .overlay__go { transform: scaleX(-1); display: inline-block; }
   margin-block-start: auto;
   display: flex;
   flex-direction: column;
-  gap: 26px;
-  padding: 32px 24px;
+  gap: 22px;
+  padding: 0 20px 28px;
 }
-.overlay__actions { display: flex; align-items: center; gap: 12px; }
 .overlay__cta {
-  flex: 1 1 auto;
+  display: block;
   text-align: center;
-  padding-block: 17px;
+  padding-block: 16px;
   border-radius: 8px;
   background: #000;
   color: #f9f4ef;
@@ -2857,22 +2860,32 @@ html[dir="ltr"] .overlay__go { transform: scaleX(-1); display: inline-block; }
   transition: background-color .2s ease;
 }
 .overlay__cta:hover { background: #241f1b; }
-.overlay__contact { display: flex; flex-direction: column; gap: 14px; }
-.overlay__mail { align-self: flex-start; font-size: 16px; font-weight: 600; color: #cd2e07; }
-.overlay__mail:hover { color: #000; }
-.overlay__soc { display: flex; gap: 24px; font-size: 14px; color: #7a736a; }
+/* One row, the address against the accounts, on a hairline. */
+.overlay__contact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 18px;
+  padding-block-start: 18px;
+  border-block-start: 1px solid rgba(0, 0, 0, .1);
+}
+.overlay__mail { font-size: 14px; font-weight: 500; color: #4a443d; }
+.overlay__mail:hover { color: #cd2e07; }
+.overlay__soc { display: flex; gap: 14px; font-size: 14px; color: #7a736a; }
 .overlay__soc a { color: #7a736a; }
 .overlay__soc a:hover { color: #000; }
 
-/* The toggle sits beside the CTA on the design's bottom row, so it loses the
-   top margin the old stacked layout gave it and takes the light treatment. */
+/* A filled pill in the top row now, not an outlined control beside the CTA. */
 .lang-toggle-group--overlay {
   align-self: auto;
   margin-top: 0;
   flex: 0 0 auto;
-  border-color: rgba(0, 0, 0, .35);
-  padding: 4px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--lx-cream, #f4f4f4);
+  padding: 0;
 }
-.lang-toggle-group--overlay .lang-btn { color: var(--lx-ink, #2a2622); padding: 9px 12px; }
+.lang-toggle-group--overlay .lang-btn { color: var(--lx-ink, #2a2622); padding: 8px 12px; font-size: 13px; }
 .lang-toggle-group--overlay .lang-btn:hover { color: #000; }
 

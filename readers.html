@@ -62,58 +62,51 @@
 
   <!-- ── MENU OVERLAY ── -->
   <div class="overlay" id="menu">
+    <!-- The bar's own row, repeated: the mark, the language pill and a solid
+         close button. The pill moved up here from the foot, where it used to
+         sit beside the CTA — switching language is chrome, not a destination. -->
     <div class="overlay__top">
       <a class="overlay__brand" href="/" data-menu-close>
         <img src="assets/scene-one-mark-v5-ink.svg" alt="Scene One">
       </a>
-      <button class="overlay__close" data-menu-close data-i18n-aria="closeLabel" aria-label="إغلاق">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-      </button>
+      <div class="overlay__top-end">
+        <div class="lang-toggle-group lang-toggle-group--overlay" role="group" aria-label="Language"><button class="lang-btn" type="button" data-lang="en">EN</button><button class="lang-btn" type="button" data-lang="ar">AR</button></div>
+        <button class="overlay__close" data-menu-close data-i18n-aria="closeLabel" aria-label="إغلاق">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
     </div>
-    <!-- One row per destination: its number, its name, and an arrow pointing the
-         way the page reads. The numbers are decorative, hence aria-hidden. -->
+    <!-- Five destinations, each its name and an arrow pointing the way the
+         page reads. The 01-06 ordinals went with the redesign. -->
     <nav class="overlay__links">
         <a href="/" data-menu-close>
-          <span class="overlay__n" aria-hidden="true">01</span>
           <span class="overlay__label" data-i18n="navHome">الرئيسية</span>
           <span class="overlay__go" aria-hidden="true">←</span>
         </a>
-        <a href="/about" data-menu-close>
-          <span class="overlay__n" aria-hidden="true">02</span>
-          <span class="overlay__label" data-i18n="navAboutUs">من نحن</span>
-          <span class="overlay__go" aria-hidden="true">←</span>
-        </a>
         <a href="/services" data-menu-close>
-          <span class="overlay__n" aria-hidden="true">03</span>
           <span class="overlay__label" data-i18n="navServices">خدماتنا</span>
           <span class="overlay__go" aria-hidden="true">←</span>
         </a>
         <a href="/readers" aria-current="page" data-menu-close>
-          <span class="overlay__n" aria-hidden="true">04</span>
           <span class="overlay__label" data-i18n="navReaders">من يقرأ نصك</span>
           <span class="overlay__go" aria-hidden="true">←</span>
         </a>
-        <a href="/#why" data-menu-close>
-          <span class="overlay__n" aria-hidden="true">05</span>
-          <span class="overlay__label" data-i18n="navWhy">لماذا سين ون</span>
+        <a href="/about" data-menu-close>
+          <span class="overlay__label" data-i18n="navAboutUs">من نحن</span>
           <span class="overlay__go" aria-hidden="true">←</span>
         </a>
-        <a href="/#contact" data-menu-close>
-          <span class="overlay__n" aria-hidden="true">06</span>
-          <span class="overlay__label" data-i18n="navContact">تواصل معنا</span>
+        <a href="/#faq" data-menu-close>
+          <span class="overlay__label" data-i18n="navFaq">الأسئلة الشائعة</span>
           <span class="overlay__go" aria-hidden="true">←</span>
         </a>
     </nav>
     <div class="overlay__foot">
-      <div class="overlay__actions">
-        <a class="overlay__cta" href="/services" data-menu-close data-i18n="btnSubmit">قدّم نصك</a>
-          <div class="lang-toggle-group lang-toggle-group--overlay" role="group" aria-label="Language"><button class="lang-btn" type="button" data-lang="en">EN</button><button class="lang-btn" type="button" data-lang="ar">AR</button></div>
-      </div>
+      <a class="overlay__cta" href="/services" data-menu-close data-i18n="btnSubmit">قدّم نصك</a>
       <div class="overlay__contact">
         <a class="overlay__mail" href="mailto:sceneone.info@gmail.com" dir="ltr">sceneone.info@gmail.com</a>
         <div class="overlay__soc">
-          <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X</a>
           <a href="https://www.instagram.com/sceneone_co/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://x.com/sceneone_co" target="_blank" rel="noopener noreferrer">X</a>
           <a href="https://www.linkedin.com/company/sceneone-co/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </div>
       </div>

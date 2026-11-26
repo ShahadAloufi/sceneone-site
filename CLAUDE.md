@@ -71,6 +71,26 @@ Actively iterating on UX polish and workflow features.
   - Source order is Instagram · X · LinkedIn, so an RTL page renders them
     LinkedIn · X · Instagram left to right, which is the reference.
 
+**Recently shipped (2026-11-26) — the mobile menu, redesigned:**
+
+- The «قائمة الجوال» artboard, rebuilt on **all ten pages** that carry an
+  overlay. It is the only menu below 1150px, so the markup is generated
+  per page rather than copied: each one marks its own row with
+  `aria-current="page"`, and the FAQ anchor is `#faq` on the landing and
+  `/#faq` everywhere else.
+  - **FIVE destinations**, not six: الرئيسية · خدماتنا · من يقرأ نصك ·
+    من نحن · الأسئلة الشائعة. «رحلة النص» and «تواصل معنا» went, and the
+    01–06 ordinals with them.
+  - **The language pill moved to the TOP ROW**, beside the close button,
+    where it used to sit in the foot next to the CTA — switching language
+    is chrome, not a destination. It is a filled `--lx-cream` pill now
+    rather than an outlined control.
+  - **The close button is a SOLID 40px square.** Beside the pill a bare ✕
+    read as a third, quieter control rather than the way out.
+  - The foot is the CTA alone, then ONE row with the address against the
+    three accounts on a hairline — it was a stacked block with the address
+    in red.
+
 **Recently shipped (2026-11-24) — the surface colour:**
 
 - **`--lx-cream` is `#f4f4f4`, a neutral grey**, not the warm `#f6f4ee` the
